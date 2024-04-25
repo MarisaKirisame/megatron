@@ -1,0 +1,13 @@
+(library
+ (name megatron)
+ (libraries core)
+ (preprocess (pps ppx_deriving.show ppx_deriving.ord)))
+
+(menhir
+ (modules parser))
+
+(ocamllex lexer)
+
+(env
+  (dev
+    (flags (:standard -warn-error -A))))

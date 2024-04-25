@@ -1,0 +1,9 @@
+(executable
+ (public_name megatron)
+ (name main)
+ (libraries megatron core))
+
+(menhir
+ (modules parser))
+
+(ocamllex lexer)
