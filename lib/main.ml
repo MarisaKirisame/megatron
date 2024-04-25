@@ -61,6 +61,7 @@ and
 show_value (v: value): string =
 match v with
 | VInt i -> string_of_int i
+| VBool b -> string_of_bool b
 and
 show_ivar_value (IVar v): string = 
 match !v with
@@ -75,7 +76,10 @@ let make_node (children: node list) (p: prog): node = {
 let rec set_children_parent (n: node) = 
   List.iteri n.children ~f:(fun i child -> child.parent := Some (n, i); set_children_parent child)
 
-let int_of_value (VInt x) = x
+let int_of_value x =
+  match x with
+  | VInt i -> i
+  | _ -> raise (EXN (show_value x))
 let bool_of_value (VBool x) = x
 let node_of_value (VNode x) = x
 let list_of_value (VList x) = x

@@ -65,7 +65,12 @@ prop_decl:
 
 arg_list:
     | LPAREN; RPAREN { [] }
-	| LPAREN; x = ID; RPAREN { [x] }
+	| LPAREN; x = arg_plus; RPAREN { x }
+
+arg_plus:
+	| x = ID { [x] }
+	| x = ID; COMMA; y = arg_plus { x :: y }
+	;
 
 proc_decl:
 	| PROC; x = ID; y = arg_list; LCB; z = stmt; RCB { ProcDecl(x, y, z) };
@@ -87,6 +92,7 @@ expr_plus:
 	| x = expr { [x] }
 	| x = expr; COMMA; y = expr_plus { x :: y }
 	;
+
 binop:
 	| LEQ { Leq }
 	| LT { Lt }
