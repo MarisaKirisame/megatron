@@ -1,5 +1,6 @@
 open Megatron.Main;;
 open Megatron.Ast;;
+open Megatron.Eval;;
 
 let prog_decl = simplify (parse "./layout.mt");;
 
