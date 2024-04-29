@@ -63,23 +63,16 @@ prog:
 prop_decl:
 	| PROP; x = ID; SEMICOLON { PropDecl(x) };
 
-arg_list:
-    | LPAREN; RPAREN { [] }
-	| LPAREN; x = arg_plus; RPAREN { x }
-
-arg_plus:
-	| x = ID { [x] }
-	| x = ID; COMMA; y = arg_plus { x :: y }
-	;
-
 proc_decl:
-	| PROC; x = ID; y = arg_list; LCB; z = stmt; RCB { ProcDecl(x, y, z) };
+	| PROC; x = ID; LPAREN; RPAREN; LCB; y = stmt; RCB { ProcDecl(x, y) };
 
 stmt:
 	| x = expr; LARROW; y = expr { WriteRef(x, y) }
  	| IF; e1 = expr; LCB; e2 = stmt; RCB; ELSE; LCB; e3 = stmt; RCB { If (e1, e2, e3) }
 	| x = stmt; SEMICOLON; y = stmt { Seq(x, y) }
-	| x = expr; DOT; y = ID; z = expr_list { TailCallProc(x, y, z) }
+	| CHILDREN; DOT; x = ID; LPAREN; RPAREN { ChildrenCall(x) }
+	| SELF; DOT; x = ID; LPAREN; RPAREN { SelfCall(x) }
+	| SELF; DOT; x = ID; LARROW; y = expr { SelfWrite(x, y) }
 	| { Skip }
 	;
 
@@ -104,7 +97,8 @@ binop:
 expr:
 	| BANG; e=expr { ReadRef e }
 	| x = expr; y = expr_list { Call(x, y) }
-	| lhs = expr; DOT; rhs = ID { Access(lhs, rhs) }
+	| CHILDREN; DOT; id = ID { ChildrenAccess(id) }
+	| PARENT; LPAREN; RPAREN; DOT; id = ID { ParentAccess(id) }
 	| i = INT { Int i }
 	| HAS_PARENT { HasParent }
 	| PARENT { Parent }
@@ -121,6 +115,5 @@ expr:
 	| LET; x = ID; EQUALS; e1 = expr; IN; e2 = expr { Let (x, e1, e2) }
 	| LPAREN; e=expr; RPAREN {e}
 	| x = expr; LBRACKET; y = expr; RBRACKET { Index(x, y) }
-	| SLASH; x = ID; RARROW; y = expr { Func(x, y) }
 	;
 	

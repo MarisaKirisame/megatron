@@ -27,10 +27,10 @@ type expr =
   | Self
   | SelfPos
   | ReadRef of expr
-  | Access of expr * string
   | Call of expr * (expr list)
   | Index of expr * expr
-  | Func of string * expr
+  | ChildrenAccess of string
+  | ParentAccess of string
 [@@deriving show]
 
 type stmt = 
@@ -38,13 +38,15 @@ type stmt =
   | If of expr * stmt * stmt
   | Seq of stmt * stmt
   | Skip
-  | TailCallProc of expr * string * (expr list)
+  | ChildrenCall of string
+  | SelfCall of string
+  | SelfWrite of string * expr
 [@@deriving show]
 
 type prop_decl = PropDecl of string
 [@@deriving show]
 let prop_decl_name (PropDecl(n)) = n
-type proc_decl = ProcDecl of string * (string list) * stmt
+type proc_decl = ProcDecl of string * stmt
 [@@deriving show]
 
 type prog_decl = { prop_decls: prop_decl list; proc_decls: proc_decl list }
@@ -54,5 +56,5 @@ type prog = { props: prop_decl list; procs: (string, proc_decl) Hashtbl.t }
 
 let prog_of_prog_decl (p: prog_decl): prog = { 
   props = p.prop_decls;
-  procs = Hashtbl.of_alist_exn (module String) (List.map p.proc_decls ~f:(fun (ProcDecl(name, args, stmt)as p) -> (name, p)))
+  procs = Hashtbl.of_alist_exn (module String) (List.map p.proc_decls ~f:(fun (ProcDecl(name, stmt)as p) -> (name, p)))
 }
