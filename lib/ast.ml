@@ -31,11 +31,11 @@ type expr =
   | Index of expr * expr
   | ChildrenAccess of string
   | ParentAccess of string
+  | If of expr * expr * expr
 [@@deriving show]
 
 type stmt = 
-  | WriteRef of expr * expr
-  | If of expr * stmt * stmt
+  | LocalDef of string * expr
   | Seq of stmt * stmt
   | Skip
   | ChildrenCall of string

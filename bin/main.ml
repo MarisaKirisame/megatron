@@ -21,3 +21,27 @@ eval n prog;;
 print_endline "EVAL OK!";;
 
 print_endline (show_node n);;
+
+add_children n (make_node [] prog);;
+
+recalculate();;
+
+print_endline "RECALCULATE OK!";;
+
+print_endline (show_node n);;
+
+add_children (List.hd n.children.value) (make_node [] prog);;
+
+recalculate();;
+
+print_endline "RECALCULATE AGAIN OK!";;
+
+print_endline (show_node n);;
+
+add_children (List.hd n.children.value) (make_node [] prog);;
+
+recalculate();;
+
+print_endline "RECALCULATE YET AGAIN OK!";;
+
+print_endline (show_node n);;

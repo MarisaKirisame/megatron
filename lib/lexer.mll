@@ -47,6 +47,7 @@ rule read =
   | "sum" { SUM }
   | "self" { SELF }
   | "self_pos" { SELF_POS }
+  | "then" { THEN }
   | id { ID (Lexing.lexeme lexbuf) }
   | int { INT (int_of_string (Lexing.lexeme lexbuf)) }
   | "\n" { Lexing.new_line lexbuf; read lexbuf }

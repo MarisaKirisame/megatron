@@ -20,6 +20,7 @@ open Ast
 %token EQUALS
 %token IN
 %token IF
+%token THEN
 %token ELSE
 %token EOF
 
@@ -67,8 +68,7 @@ proc_decl:
 	| PROC; x = ID; LPAREN; RPAREN; LCB; y = stmt; RCB { ProcDecl(x, y) };
 
 stmt:
-	| x = expr; LARROW; y = expr { WriteRef(x, y) }
- 	| IF; e1 = expr; LCB; e2 = stmt; RCB; ELSE; LCB; e3 = stmt; RCB { If (e1, e2, e3) }
+	| x = ID; EQUALS; y = expr { LocalDef(x, y) }
 	| x = stmt; SEMICOLON; y = stmt { Seq(x, y) }
 	| CHILDREN; DOT; x = ID; LPAREN; RPAREN { ChildrenCall(x) }
 	| SELF; DOT; x = ID; LPAREN; RPAREN { SelfCall(x) }
@@ -95,6 +95,7 @@ binop:
 	;
 
 expr:
+	| IF; e1 = expr; THEN; e2 = expr; ELSE; e3 = expr { If (e1, e2, e3) }
 	| BANG; e=expr { ReadRef e }
 	| x = expr; y = expr_list { Call(x, y) }
 	| CHILDREN; DOT; id = ID { ChildrenAccess(id) }
