@@ -15,7 +15,7 @@ let n = make_node [make_node[] prog; make_node[] prog] prog;;
 set_children_parent n;;
 
 print_endline (show_node n);;
-
+(*
 eval n prog;;
 
 print_endline "EVAL OK!";;
@@ -45,3 +45,4 @@ recalculate();;
 print_endline "RECALCULATE YET AGAIN OK!";;
 
 print_endline (show_node n);;
+*)

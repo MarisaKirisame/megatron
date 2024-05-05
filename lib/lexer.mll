@@ -41,12 +41,19 @@ rule read =
   | "}" { RCB }
   | "has_parent" { HAS_PARENT }
   | "parent" { PARENT }
+  | "has_first" { HAS_FIRST }
+  | "has_prev" { HAS_PREV }
+  | "has_next" { HAS_NEXT }
+  | "has_last" { HAS_LAST }
   | "children" { CHILDREN }
   | "len" { LEN }
   | "map" { MAP }
   | "sum" { SUM }
   | "self" { SELF }
-  | "self_pos" { SELF_POS }
+  | "first" { FIRST }
+  | "next" { NEXT }
+  | "prev" { PREV }
+  | "last" { LAST }
   | "then" { THEN }
   | id { ID (Lexing.lexeme lexbuf) }
   | int { INT (int_of_string (Lexing.lexeme lexbuf)) }

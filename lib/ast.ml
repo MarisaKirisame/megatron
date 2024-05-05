@@ -11,6 +11,15 @@ type bop =
   | Iff
 [@@deriving show]
 
+type path =
+  | Self
+  | Parent
+  | First
+  | Next
+  | Last
+  | Prev
+[@@deriving show]
+
 (** The type of the abstract syntax tree (AST). *)
 type expr =
   | Var of string
@@ -18,20 +27,14 @@ type expr =
   | Bool of bool  
   | Binop of expr * bop * expr
   | Let of string * expr * expr
-  | HasParent
-  | Parent
+  | HasPath of path
   | Children
   | Len
   | Map
   | Sum
-  | Self
-  | SelfPos
-  | ReadRef of expr
-  | Call of expr * (expr list)
+  | Read of path * string
   | Index of expr * expr
-  | ChildrenAccess of string
-  | ParentAccess of string
-  | If of expr * expr * expr
+  | IfExpr of expr * expr * expr
 [@@deriving show]
 
 type stmt = 
@@ -39,8 +42,9 @@ type stmt =
   | Seq of stmt * stmt
   | Skip
   | ChildrenCall of string
-  | SelfCall of string
-  | SelfWrite of string * expr
+  | TailCall of path * string
+  | IfStmt of expr * stmt * stmt
+  | Write of path * string * expr
 [@@deriving show]
 
 type prop_decl = PropDecl of string

@@ -24,14 +24,22 @@ open Ast
 %token ELSE
 %token EOF
 
-%token HAS_PARENT
-%token PARENT
 %token CHILDREN
 %token LEN
 %token MAP
 %token SUM
+
 %token SELF
-%token SELF_POS
+%token HAS_PARENT
+%token PARENT
+%token HAS_FIRST
+%token FIRST
+%token HAS_NEXT
+%token NEXT
+%token HAS_LAST
+%token LAST
+%token HAS_PREV
+%token PREV
 
 %token SLASH
 %token COMMA
@@ -67,12 +75,21 @@ prop_decl:
 proc_decl:
 	| PROC; x = ID; LPAREN; RPAREN; LCB; y = stmt; RCB { ProcDecl(x, y) };
 
+path:
+    | SELF { Self }
+	| FIRST; LPAREN; RPAREN { First }
+    | NEXT; LPAREN; RPAREN { Next }
+    | LAST; LPAREN; RPAREN { Last }
+    | PARENT; LPAREN; RPAREN { Parent }
+	| PREV; LPAREN; RPAREN { Prev }
+	;
+
 stmt:
 	| x = ID; EQUALS; y = expr { LocalDef(x, y) }
 	| x = stmt; SEMICOLON; y = stmt { Seq(x, y) }
-	| CHILDREN; DOT; x = ID; LPAREN; RPAREN { ChildrenCall(x) }
-	| SELF; DOT; x = ID; LPAREN; RPAREN { SelfCall(x) }
-	| SELF; DOT; x = ID; LARROW; y = expr { SelfWrite(x, y) }
+	| x = path; DOT; y = ID; LPAREN; RPAREN { TailCall(x, y) }
+	| x = path; DOT; y = ID; LARROW; z = expr { Write(x, y, z) }
+	| IF; e1 = expr; LCB; e2 = stmt; RCB; ELSE; LCB; e3 = stmt; RCB { IfStmt (e1, e2, e3) }
 	| { Skip }
 	;
 
@@ -95,20 +112,17 @@ binop:
 	;
 
 expr:
-	| IF; e1 = expr; THEN; e2 = expr; ELSE; e3 = expr { If (e1, e2, e3) }
-	| BANG; e=expr { ReadRef e }
-	| x = expr; y = expr_list { Call(x, y) }
-	| CHILDREN; DOT; id = ID { ChildrenAccess(id) }
-	| PARENT; LPAREN; RPAREN; DOT; id = ID { ParentAccess(id) }
+	| HAS_PARENT; LPAREN; RPAREN { HasPath(Parent) }
+	| HAS_FIRST; LPAREN; RPAREN { HasPath(First) }
+	| HAS_PREV; LPAREN; RPAREN { HasPath(Prev) }
+	| HAS_NEXT; LPAREN; RPAREN { HasPath(Next) }
+	| HAS_LAST; LPAREN; RPAREN { HasPath(Last) }
+	| IF; e1 = expr; THEN; e2 = expr; ELSE; e3 = expr { IfExpr (e1, e2, e3) }
+	| x = path; DOT; y = ID { Read(x, y) }
 	| i = INT { Int i }
-	| HAS_PARENT { HasParent }
-	| PARENT { Parent }
-	| CHILDREN { Children }
 	| LEN { Len }
 	| MAP { Map }
 	| SUM { Sum }
-	| SELF { Self }
-	| SELF_POS { SelfPos }
 	| x = ID { Var x }
 	| TRUE { Bool true }
 	| FALSE { Bool false }
