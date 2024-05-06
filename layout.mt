@@ -7,22 +7,14 @@ proc compute_width() {
     if (has_first()) {
       first().compute_width();
     } else {
-      self.done_compute_width();
-    } 
-}
-
-proc done_compute_width() {
-  if (has_next()) {
-    next().compute_width();
-  } else {
-    self.compute_height();
-  }
+      self.compute_height();
+    }
 }
 
 proc compute_height() {
-  self.height <- if (has_last()) then last().sum_heights else 10;
+  self.height <- if (has_last()) then last().sum_height else 10;
 
-  self.sum_height <- if (has_prev()) then self.height + prev().sum_heights else self.height;
+  self.sum_height <- if (has_prev()) then self.height + prev().sum_height else self.height;
 
   if (has_next()) {
     next().compute_width();

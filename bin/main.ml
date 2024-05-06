@@ -1,6 +1,6 @@
 open Megatron.Main;;
 open Megatron.Ast;;
-open Megatron.Eval;;
+open Megatron.EvalFS;;
 
 let prog_decl = simplify (parse "./layout.mt");;
 
@@ -12,16 +12,17 @@ let prog = prog_of_prog_decl prog_decl;;
 
 let n = make_node [make_node[] prog; make_node[] prog] prog;;
 
-set_children_parent n;;
+set_relation n;;
 
 print_endline (show_node n);;
-(*
-eval n prog;;
+
+eval prog n;;
 
 print_endline "EVAL OK!";;
 
 print_endline (show_node n);;
 
+(*
 add_children n (make_node [] prog);;
 
 recalculate();;

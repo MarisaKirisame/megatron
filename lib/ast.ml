@@ -53,6 +53,8 @@ let prop_decl_name (PropDecl(n)) = n
 type proc_decl = ProcDecl of string * stmt
 [@@deriving show]
 
+let stmt_of_proc_decl (ProcDecl(_, x)) = x
+
 type prog_decl = { prop_decls: prop_decl list; proc_decls: proc_decl list }
 [@@deriving show]
 
