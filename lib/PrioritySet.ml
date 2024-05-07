@@ -20,6 +20,10 @@ module Make (O : Set.OrderedType) = struct
 
   let create () = ref Null
 
+  let is_empty queue = match !queue with
+      | Node ( value, left, right ) -> false
+      | Null -> true
+
   let rec add queue x = match !queue with
       | Node ( value, left, right ) ->
           let dir = O.compare x value in
@@ -33,6 +37,14 @@ module Make (O : Set.OrderedType) = struct
           queue := Node ( x, ref Null, ref Null );
           true
 
+          let rec pop queue = match !queue with
+          | Node ( value, ({ contents=Node _ } as left), _ ) ->
+              pop left
+          | Node ( value, { contents=Null }, right ) ->
+              queue := !right;
+              value
+          | Null ->
+              raise Empty
   let rec pop queue = match !queue with
       | Node ( value, ({ contents=Node _ } as left), _ ) ->
           pop left
@@ -42,6 +54,14 @@ module Make (O : Set.OrderedType) = struct
       | Null ->
           raise Empty
 
+  let rec peek queue = match !queue with
+      | Node ( value, ({ contents=Node _ } as left), _ ) ->
+          peek left
+      | Node ( value, { contents=Null }, right ) ->
+          value
+      | Null ->
+          raise Empty
+    
   let rec remove queue x = match !queue with
       | Node ( value, left, right ) ->
           let dir = O.compare x value in

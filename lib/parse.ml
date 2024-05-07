@@ -1,6 +1,5 @@
 open Ast
 open Core
-open TotalOrder
 
 let parse (path : string): prog_decl =
   let chan = In_channel.create path in

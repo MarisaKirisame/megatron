@@ -3,12 +3,12 @@ prop height;
 prop sum_height;
 
 proc compute_width() {
-    self.width <- if has_parent() then parent().width else 800;
-    if (has_first()) {
-      first().compute_width();
-    } else {
-      self.compute_height();
-    }
+  self.width <- if has_parent() then parent().width else 800;
+  if (has_first()) {
+    first().compute_width();
+  } else {
+    self.compute_height();
+  }
 }
 
 proc compute_height() {

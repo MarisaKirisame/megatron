@@ -2,24 +2,6 @@ open Ast
 open Core
 open EXN
 
-let simplify_expr (e: expr) = e
-
-let rec simplify_stmt (s: stmt) = 
-  match s with
-  | Seq(x, y) ->
-    (match (simplify_stmt x, simplify_stmt y) with
-    | (Skip, y') -> y'
-    | (x', Skip) -> x'
-    | (x', y') -> Seq(x', y'))
-  | Skip | ChildrenCall(_) | TailCall(_, _) | Write(_) | LocalDef(_, _) -> s
-  | IfStmt(x, y, z) -> IfStmt(x, simplify_stmt y, simplify_stmt z)
-  | _ -> raise (EXN (show_stmt s))
-
-let simplify_proc_decl (p: proc_decl): proc_decl = 
-  let ProcDecl(name, stmt) = p in ProcDecl(name, simplify_stmt stmt)
-
-let simplify (p: prog_decl): prog_decl = { prop_decls = p.prop_decls; proc_decls = List.map p.proc_decls ~f:simplify_proc_decl }
-
 type node = { 
   dict: (string, value) Hashtbl.t;
   mutable children: node list;
@@ -56,11 +38,6 @@ let set_relation (n: node) =
   n.prev <- None;
   n.next <- None;
   set_children_relation n
-
-let add_children (x: node) (y: node) =
-  x.children <- y :: x.children;
-  y.parent <- Some(x);
-  ()
 
 let rec show_node (n: node): string =
   let htbl_str =
