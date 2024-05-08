@@ -178,43 +178,52 @@ let eval (p: prog) (n: node) = eval_stmt p n (stmt_of_proc_decl (Hashtbl.find_ex
 
 (*lets try to get add/remove from head of list working then generalize*)
 
-let remove_children (x: node) (p: prog): unit =
+let remove_children (x: node) (n: int) (p: prog): unit =
+  let (lhs, removed :: rhs) = List.split_n x.children n in
   x.children <- List.tl_exn x.children;
-  (match x.children with
-  | [] -> ()
-  | h :: _ -> h.prev <- None);
+  (match removed.prev with
+  | Some prev -> prev.next <- removed.next
+  | None -> ());
+  (match removed.next with
+  | Some next -> next.prev <- removed.prev
+  | None -> ());
+  x.children <- List.append lhs rhs;
   Hashtbl.iter p.procs ~f:(fun (ProcDecl(proc_name, stmt)) -> 
     let reads = reads_of_stmt stmt in
     let dirty read = (
       match read with
       | ReadHasPath(Parent) | ReadProp(Parent, _) -> ()
       | ReadHasPath(First) -> if List.is_empty x.children then proc_dirtied x proc_name else ()
-      | ReadProp(First, _) -> proc_dirtied x proc_name
+      | ReadProp(First, _) -> if List.is_empty lhs then proc_dirtied x proc_name else ()
       | ReadHasPath(Last) -> if List.is_empty x.children then proc_dirtied x proc_name else ()
-      | ReadProp(Last, _) -> ()
-      | ReadHasPath(Prev) | ReadProp(Prev, _) -> if not (List.is_empty x.children) then proc_dirtied (List.hd_exn x.children) proc_name else ()
-      | ReadHasPath(Next) | ReadProp(Next, _) -> ()
+      | ReadProp(Last, _) -> if List.is_empty rhs then proc_dirtied x proc_name else ()
+      | ReadHasPath(Prev) | ReadProp(Prev, _) -> (match removed.next with Some x -> proc_dirtied x proc_name | None -> ())
+      | ReadHasPath(Next) | ReadProp(Next, _) -> (match removed.prev with Some x -> proc_dirtied x proc_name | None -> ())
       | ReadProp(Self, _) -> ()
       | _ -> raise (EXN (show_read read))) in
     List.iter reads ~f:dirty)
-let add_children (x: node) (y: node) (p: prog): unit =
-  (match x.children with
-  | [] -> ()
-  | xch :: _ -> y.next <- Some xch; xch.prev <- Some y);
-  y.prev <- None;
+
+let add_children (x: node) (y: node) (n: int) (p: prog): unit =
+  let (lhs, rhs) = List.split_n x.children n in
+  x.children <- List.append lhs (y :: rhs);
+  (match List.last lhs with
+  | Some tl -> y.prev <- Some tl; tl.next <- Some y
+  | None -> y.prev <- None);
+  (match List.hd rhs with
+  | Some hd -> y.next <- Some hd; hd.prev <- Some y
+  | None -> y.prev <- None);
   y.parent <- Some x;
-  x.children <- y :: x.children;
   Hashtbl.iter p.procs ~f:(fun (ProcDecl(proc_name, stmt)) -> 
     let reads = reads_of_stmt stmt in
     let dirty read = (
       match read with
       | ReadHasPath(Parent) | ReadProp(Parent, _) -> ()
       | ReadHasPath(First) -> if phys_equal (List.length x.children) 1 then proc_dirtied x proc_name else ()
-      | ReadProp(First, _) -> proc_dirtied x proc_name
+      | ReadProp(First, _) -> if List.is_empty lhs then proc_dirtied x proc_name else ()
       | ReadHasPath(Last) -> if phys_equal (List.length x.children) 1 then proc_dirtied x proc_name else ()
-      | ReadProp(Last, _) -> if phys_equal (List.length x.children) 1 then proc_dirtied x proc_name else ()
-      | ReadHasPath(Prev) | ReadProp(Prev, _) -> if 1 < (List.length x.children) then proc_dirtied (List.nth_exn x.children 1) proc_name else ()
-      | ReadHasPath(Next) | ReadProp(Next, _) -> ()
+      | ReadProp(Last, _) -> if List.is_empty rhs then proc_dirtied x proc_name else ()
+      | ReadHasPath(Prev) | ReadProp(Prev, _) -> (match y.next with Some x -> proc_dirtied x proc_name | None -> ())
+      | ReadHasPath(Next) | ReadProp(Next, _) -> (match y.prev with Some x -> proc_dirtied x proc_name | None -> ())
       | ReadProp(Self, _) -> ()
       | _ -> raise (EXN (show_read read))) in
     List.iter reads ~f:dirty;
@@ -231,6 +240,8 @@ let rec recalculate_aux (p: prog) =
   if queue_isempty () then () else 
     let (x, y, z) = queue_peek () in
     print_endline ("peek " ^ (string_of_int y.id) ^ "." ^ z);
+    (* have to set current_time back as evaluating fresh nodes will rely on current_time. 
+       after everything is recalculated, recalculate will rest current_time *)
     current_time := x;
     eval_stmt p y (stmt_of_proc_decl (Hashtbl.find_exn p.procs z));
     let (x', y', z') = queue_pop () in
