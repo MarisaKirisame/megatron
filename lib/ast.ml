@@ -120,4 +120,11 @@ let rec strip_tailcall s =
   | TailCall(_) -> Skip
   | _ -> raise (EXN (show_stmt s))
 
+let rec get_tailcall (s: stmt): (path * string) list = 
+  match s with
+  | IfStmt(_, x, y) | Seq(x, y) -> List.append (get_tailcall x) (get_tailcall y)
+  | TailCall(p, name) -> [(p, name)]
+  | Write(_) | Skip -> []
+  | _ -> raise (EXN (show_stmt s))
+
 let simplify (p: prog_decl): prog_decl = { prop_decls = p.prop_decls; proc_decls = List.map p.proc_decls ~f:simplify_proc_decl }

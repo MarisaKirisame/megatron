@@ -26,7 +26,7 @@ print_endline "EVAL OK!";;
 
 print_endline (show_node n);;
 
-remove_children n prog;
+add_children n (make_node [] prog) prog;
 
 print_endline "EVAL AGAIN...";;
 

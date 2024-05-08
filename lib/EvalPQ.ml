@@ -131,12 +131,14 @@ let reversed_path (p: path) (n: node): node list =
   | Self -> [n]
   | Prev -> Option.to_list n.next
   | Next -> Option.to_list n.prev
-  | Last -> Option.to_list (n.parent)
-  | First -> Option.to_list (n.parent)
+  | First -> (match n.parent with None -> [] | Some np -> if phys_equal (List.hd_exn np.children).id n.id then [np] else [])
+  | Last -> (match n.parent with None -> [] | Some np -> if phys_equal (List.last_exn np.children).id n.id then [np] else [])
   | _ -> raise (EXN (show_path p))
 
 let proc_dirtied (n: node) (proc_name: string): unit = 
-  queue_push (Hashtbl.find_exn n.to_dict proc_name) n proc_name
+  match Hashtbl.find n.to_dict proc_name with
+  | Some order -> queue_push order n proc_name
+  | None -> ()
 
 let prop_modified (p: prog) (n: node) (prop_name: string): unit = 
   Hashtbl.iter p.procs ~f:(fun (ProcDecl(proc_name, stmt)) -> 
@@ -186,7 +188,8 @@ let remove_children (x: node) (p: prog): unit =
     let dirty read = (
       match read with
       | ReadHasPath(Parent) | ReadProp(Parent, _) -> ()
-      | ReadHasPath(First) -> proc_dirtied x proc_name
+      | ReadHasPath(First) -> if List.is_empty x.children then proc_dirtied x proc_name else ()
+      | ReadProp(First, _) -> proc_dirtied x proc_name
       | ReadHasPath(Last) -> if List.is_empty x.children then proc_dirtied x proc_name else ()
       | ReadProp(Last, _) -> ()
       | ReadHasPath(Prev) | ReadProp(Prev, _) -> if not (List.is_empty x.children) then proc_dirtied (List.hd_exn x.children) proc_name else ()
@@ -194,15 +197,49 @@ let remove_children (x: node) (p: prog): unit =
       | ReadProp(Self, _) -> ()
       | _ -> raise (EXN (show_read read))) in
     List.iter reads ~f:dirty)
-let add_children (x: node) (y: node): unit = x.children <- y :: x.children
+let add_children (x: node) (y: node) (p: prog): unit =
+  (match x.children with
+  | [] -> ()
+  | xch :: _ -> y.next <- Some xch; xch.prev <- Some y);
+  y.prev <- None;
+  y.parent <- Some x;
+  x.children <- y :: x.children;
+  Hashtbl.iter p.procs ~f:(fun (ProcDecl(proc_name, stmt)) -> 
+    let reads = reads_of_stmt stmt in
+    let dirty read = (
+      match read with
+      | ReadHasPath(Parent) | ReadProp(Parent, _) -> ()
+      | ReadHasPath(First) -> if phys_equal (List.length x.children) 1 then proc_dirtied x proc_name else ()
+      | ReadProp(First, _) -> proc_dirtied x proc_name
+      | ReadHasPath(Last) -> if phys_equal (List.length x.children) 1 then proc_dirtied x proc_name else ()
+      | ReadProp(Last, _) -> if phys_equal (List.length x.children) 1 then proc_dirtied x proc_name else ()
+      | ReadHasPath(Prev) | ReadProp(Prev, _) -> if 1 < (List.length x.children) then proc_dirtied (List.nth_exn x.children 1) proc_name else ()
+      | ReadHasPath(Next) | ReadProp(Next, _) -> ()
+      | ReadProp(Self, _) -> ()
+      | _ -> raise (EXN (show_read read))) in
+    List.iter reads ~f:dirty;
+    let tailcalls = get_tailcall stmt in 
+    let dirty_tc (path, _) = (
+      match path with
+      | Self | Next | Parent -> ()
+      | First -> proc_dirtied x proc_name
+      | _ -> raise (EXN (show_path path))
+    ) in
+    List.iter tailcalls ~f:dirty_tc)
 
-let rec recalculate (p: prog) =
+let rec recalculate_aux (p: prog) =
   if queue_isempty () then () else 
     let (x, y, z) = queue_peek () in
     print_endline ("peek " ^ (string_of_int y.id) ^ "." ^ z);
+    current_time := x;
     eval_stmt p y (stmt_of_proc_decl (Hashtbl.find_exn p.procs z));
     let (x', y', z') = queue_pop () in
     print_endline ("pop  " ^ (string_of_int y'.id) ^ "." ^ z');
     assert (phys_equal (TotalOrder.compare x x') 0);
-    recalculate p
+    recalculate_aux p
+
+let recalculate (p: prog) = 
+  let x = !current_time in
+  recalculate_aux p;
+  current_time := x
   
