@@ -1,6 +1,7 @@
 open Ast
 open Core
 open EXN
+open Eval
 
 let current_time = ref (TotalOrder.create ())
 
@@ -11,103 +12,26 @@ let count () =
   counter := !counter + 1;
   ret
 
-type node = { 
+type meta = {
   mutable id: int;
-  dict: (string, value) Hashtbl.t;
-  mutable children: node list;
-  mutable parent: node option;
-  mutable next: node option;
-  mutable prev: node option;
   to_dict: (string, TotalOrder.t) Hashtbl.t;
 }
 
-and value = 
-  | VInt of int
-  | VBool of bool
-  | VNode of node
-  | VList of value list
-
-let make_node (children: node list) (p: prog): node = 
+let make_node (children: meta node list) (p: prog): meta node = 
   ignore p; {
-  id = count();
+  m = {
+    id = count();
+    to_dict = Hashtbl.create (module String);
+  };
   dict = Hashtbl.create (module String);
   children = children; 
   parent = None;
   prev = None;
   next = None;
-  to_dict = Hashtbl.create (module String);
 }
 
-let rec set_children_relation (n: node): unit = 
-  List.iter (List.zip_exn (Option.value (List.drop_last n.children) ~default:[]) (Option.value (List.tl n.children) ~default:[]))
-  ~f:(fun (x, y) -> x.parent <- Some n; x.next <- Some y; y.prev <- Some x; set_children_relation x);
-  match List.last n.children with
-  | Some x -> x.parent <- Some n; set_children_relation x
-  | None -> ()
-
-
-let set_relation (n: node) = 
-  n.parent <- None;
-  n.prev <- None;
-  n.next <- None;
-  set_children_relation n
-
-let rec show_node (n: node): string =
-  let htbl_str =
-    "{" ^ "id = " ^ (string_of_int n.id) ^ ", " ^ 
-    List.fold_left (Hashtbl.to_alist n.dict) ~init:"" ~f:(fun lhs (name, value) -> lhs ^ name ^ " = " ^ show_value value ^ ", ") 
-    ^ "}"
-  in
-    List.fold_left n.children ~init:(htbl_str ^ "[") ~f:(fun lhs n -> lhs ^ show_node n ^ ", ") ^ "]"
-and
-  show_value (x: value): string =
-  match x with
-  | VInt i -> string_of_int i
-  | VBool b -> string_of_bool b
-  | _ -> raise (EXN (show_value x))
-  
-let int_of_value x =
-  match x with
-  | VInt i -> i
-  | _ -> raise (EXN (show_value x))
-let bool_of_value x = 
-  match x with
-  | VBool b -> b
-  | _ -> raise (EXN (show_value x))
-let node_of_value (VNode x) = x
-let list_of_value (VList x) = x
-
-let eval_binop (b: bop) (lhs: value) (rhs: value) =
-  match b with
-  | Lt -> VBool (int_of_value lhs < int_of_value rhs)
-  | Gt -> VBool (int_of_value lhs > int_of_value rhs)
-  | Add -> VInt (int_of_value lhs + int_of_value rhs)
-  | _ -> raise (EXN (show_bop b))
-
-let eval_path_opt (n: node) (p: path) = 
-  match p with
-  | Self -> Some n
-  | Parent -> n.parent
-  | First -> List.hd n.children
-  | Next -> n.next
-  | Prev -> n.prev
-  | Last -> List.last n.children
-  | _ -> raise (EXN (show_path p))
-
-let eval_path n p = Option.value_exn (eval_path_opt n p)
-
-let rec eval_expr (n: node) (e: expr): value =
-  let recurse e = eval_expr n e in
-  match e with
-  | Int i -> VInt i
-  | IfExpr(c, t, e) -> if bool_of_value (recurse c) then recurse t else recurse e
-  | Binop(lhs, op, rhs) -> eval_binop op (recurse lhs) (recurse rhs)
-  | HasPath(p) -> VBool (Option.is_some (eval_path_opt n p))
-  | Read(p, prop_name) -> Hashtbl.find_exn (eval_path n p).dict prop_name
-  | _ -> raise (EXN (show_expr e))
-
 module PriorityQueue = PrioritySet.Make (struct
-  type t = TotalOrder.t * node * string
+  type t = TotalOrder.t * meta node * string
   let compare (l, _, _) (r, _, _) = TotalOrder.compare l r
 end)
 
@@ -122,25 +46,25 @@ let queue_peek () = PriorityQueue.peek queue
 let queue_push x y z: unit = 
   if PriorityQueue.add queue (x, y, z) 
   then
-    print_endline (string_of_int (y.id) ^ "." ^ z ^ " enqueued!")
+    print_endline (string_of_int (y.m.id) ^ "." ^ z ^ " enqueued!")
   else ()
 
-let reversed_path (p: path) (n: node): node list = 
+let reversed_path (p: path) (n: meta node): meta node list = 
   match p with
   | Parent -> n.children
   | Self -> [n]
   | Prev -> Option.to_list n.next
   | Next -> Option.to_list n.prev
-  | First -> (match n.parent with None -> [] | Some np -> if phys_equal (List.hd_exn np.children).id n.id then [np] else [])
-  | Last -> (match n.parent with None -> [] | Some np -> if phys_equal (List.last_exn np.children).id n.id then [np] else [])
+  | First -> (match n.parent with None -> [] | Some np -> if phys_equal (List.hd_exn np.children).m.id n.m.id then [np] else [])
+  | Last -> (match n.parent with None -> [] | Some np -> if phys_equal (List.last_exn np.children).m.id n.m.id then [np] else [])
   | _ -> raise (EXN (show_path p))
 
-let proc_dirtied (n: node) (proc_name: string): unit = 
-  match Hashtbl.find n.to_dict proc_name with
+let proc_dirtied (n: meta node) (proc_name: string): unit = 
+  match Hashtbl.find n.m.to_dict proc_name with
   | Some order -> queue_push order n proc_name
   | None -> ()
 
-let prop_modified (p: prog) (n: node) (prop_name: string): unit = 
+let prop_modified (p: prog) (n: meta node) (prop_name: string): unit = 
   Hashtbl.iter p.procs ~f:(fun (ProcDecl(proc_name, stmt)) -> 
     let reads = reads_of_stmt stmt in
     let dirty read = 
@@ -152,16 +76,16 @@ let prop_modified (p: prog) (n: node) (prop_name: string): unit =
       | ReadHasPath _ -> () (*property being changed cannot change haspath status*)) in
     List.iter reads ~f:dirty)
 
-let rec eval_stmt (p: prog) (n: node) (s: stmt) = 
+let rec eval_stmt (p: prog) (n: meta node) (s: stmt) = 
   let recurse s = eval_stmt p n s in
   match s with
   | TailCall(path, proc_name) -> 
       let new_node = eval_path n path in
-      if Option.is_none (Hashtbl.find new_node.to_dict proc_name) 
+      if Option.is_none (Hashtbl.find new_node.m.to_dict proc_name) 
       then (
         print_endline "tailcalling!";
         current_time := TotalOrder.add_next (!current_time);
-        Hashtbl.add_exn new_node.to_dict ~key:proc_name ~data:(!current_time);
+        Hashtbl.add_exn new_node.m.to_dict ~key:proc_name ~data:(!current_time);
         eval_stmt p new_node (stmt_of_proc_decl (Hashtbl.find_exn p.procs proc_name))
       )
       else ()
@@ -174,11 +98,11 @@ let rec eval_stmt (p: prog) (n: node) (s: stmt) =
   | Skip -> ()
   | _ -> raise (EXN (show_stmt s))
     
-let eval (p: prog) (n: node) = eval_stmt p n (stmt_of_proc_decl (Hashtbl.find_exn p.procs "main"))
+let eval (p: prog) (n: meta node) = eval_stmt p n (stmt_of_proc_decl (Hashtbl.find_exn p.procs "main"))
 
 (*lets try to get add/remove from head of list working then generalize*)
 
-let remove_children (x: node) (n: int) (p: prog): unit =
+let remove_children (x: meta node) (n: int) (p: prog): unit =
   let (lhs, removed :: rhs) = List.split_n x.children n in
   x.children <- List.tl_exn x.children;
   (match removed.prev with
@@ -203,7 +127,7 @@ let remove_children (x: node) (n: int) (p: prog): unit =
       | _ -> raise (EXN (show_read read))) in
     List.iter reads ~f:dirty)
 
-let add_children (x: node) (y: node) (n: int) (p: prog): unit =
+let add_children (x: meta node) (y: meta node) (n: int) (p: prog): unit =
   let (lhs, rhs) = List.split_n x.children n in
   x.children <- List.append lhs (y :: rhs);
   (match List.last lhs with
@@ -239,13 +163,13 @@ let add_children (x: node) (y: node) (n: int) (p: prog): unit =
 let rec recalculate_aux (p: prog) =
   if queue_isempty () then () else 
     let (x, y, z) = queue_peek () in
-    print_endline ("peek " ^ (string_of_int y.id) ^ "." ^ z);
+    print_endline ("peek " ^ (string_of_int y.m.id) ^ "." ^ z);
     (* have to set current_time back as evaluating fresh nodes will rely on current_time. 
        after everything is recalculated, recalculate will rest current_time *)
     current_time := x;
     eval_stmt p y (stmt_of_proc_decl (Hashtbl.find_exn p.procs z));
     let (x', y', z') = queue_pop () in
-    print_endline ("pop  " ^ (string_of_int y'.id) ^ "." ^ z');
+    print_endline ("pop  " ^ (string_of_int y'.m.id) ^ "." ^ z');
     assert (phys_equal (TotalOrder.compare x x') 0);
     recalculate_aux p
 
