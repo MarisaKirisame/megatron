@@ -1,6 +1,6 @@
 open Megatron.Parse;;
 open Megatron.Ast;;
-open Megatron.EvalPQ;;
+open Megatron.EvalDB;;
 open Megatron.Eval;;
 open Core;;
 
@@ -33,7 +33,7 @@ print_endline (show_node n);;
 
 print_endline "EVAL AGAIN...";;
 
-recalculate prog;
+recalculate n prog;
 
 print_endline "EVAL AGAIN OK!";;
 
