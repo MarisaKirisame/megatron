@@ -5,6 +5,7 @@ open Eval
 
 let make_node (children: unit node list) (p: prog): unit node = 
   ignore p; {
+  id = count();
   dict = Hashtbl.create (module String);
   children = children; 
   parent = None;

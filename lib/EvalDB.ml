@@ -13,7 +13,6 @@ let count () =
   ret
 
 type meta = {
-  mutable id: int;
   (* unran proc is not inside *)
   dirtied_set: (string, bool) Hashtbl.t;
   mutable dirty_bit: bool;
@@ -21,8 +20,8 @@ type meta = {
 
 let make_node (children: meta node list) (p: prog): meta node = 
   ignore p; {
+  id = count();
   m = {
-    id = count();
     dirtied_set = Hashtbl.create (module String);
     dirty_bit = false;
   };
@@ -39,8 +38,8 @@ let reversed_path (p: path) (n: meta node): meta node list =
   | Self -> [n]
   | Prev -> Option.to_list n.next
   | Next -> Option.to_list n.prev
-  | First -> (match n.parent with None -> [] | Some np -> if phys_equal (List.hd_exn np.children).m.id n.m.id then [np] else [])
-  | Last -> (match n.parent with None -> [] | Some np -> if phys_equal (List.last_exn np.children).m.id n.m.id then [np] else [])
+  | First -> (match n.parent with None -> [] | Some np -> if phys_equal (List.hd_exn np.children).id n.id then [np] else [])
+  | Last -> (match n.parent with None -> [] | Some np -> if phys_equal (List.last_exn np.children).id n.id then [np] else [])
   | _ -> raise (EXN (show_path p))
 
 let rec set_dirtybit (n: meta node): unit =

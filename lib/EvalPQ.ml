@@ -5,24 +5,16 @@ open Eval
 
 let current_time = ref (TotalOrder.create ())
 
-let counter: int ref = ref 0
-
-let count () = 
-  let ret = !counter in
-  counter := !counter + 1;
-  ret
-
 type meta = {
-  mutable id: int;
   to_dict: (string, TotalOrder.t) Hashtbl.t;
 }
 
 let make_node (children: meta node list) (p: prog): meta node = 
   ignore p; {
   m = {
-    id = count();
     to_dict = Hashtbl.create (module String);
   };
+  id = count();
   dict = Hashtbl.create (module String);
   children = children; 
   parent = None;
@@ -46,7 +38,7 @@ let queue_peek () = PriorityQueue.peek queue
 let queue_push x y z: unit = 
   if PriorityQueue.add queue (x, y, z) 
   then
-    print_endline (string_of_int (y.m.id) ^ "." ^ z ^ " enqueued!")
+    print_endline (string_of_int (y.id) ^ "." ^ z ^ " enqueued!")
   else ()
 
 let reversed_path (p: path) (n: meta node): meta node list = 
@@ -55,8 +47,8 @@ let reversed_path (p: path) (n: meta node): meta node list =
   | Self -> [n]
   | Prev -> Option.to_list n.next
   | Next -> Option.to_list n.prev
-  | First -> (match n.parent with None -> [] | Some np -> if phys_equal (List.hd_exn np.children).m.id n.m.id then [np] else [])
-  | Last -> (match n.parent with None -> [] | Some np -> if phys_equal (List.last_exn np.children).m.id n.m.id then [np] else [])
+  | First -> (match n.parent with None -> [] | Some np -> if phys_equal (List.hd_exn np.children).id n.id then [np] else [])
+  | Last -> (match n.parent with None -> [] | Some np -> if phys_equal (List.last_exn np.children).id n.id then [np] else [])
   | _ -> raise (EXN (show_path p))
 
 let proc_dirtied (n: meta node) (proc_name: string): unit = 
@@ -163,13 +155,13 @@ let add_children (x: meta node) (y: meta node) (n: int) (p: prog): unit =
 let rec recalculate_aux (p: prog) =
   if queue_isempty () then () else 
     let (x, y, z) = queue_peek () in
-    print_endline ("peek " ^ (string_of_int y.m.id) ^ "." ^ z);
+    print_endline ("peek " ^ (string_of_int y.id) ^ "." ^ z);
     (* have to set current_time back as evaluating fresh nodes will rely on current_time. 
        after everything is recalculated, recalculate will rest current_time *)
     current_time := x;
     eval_stmt p y (stmt_of_proc_decl (Hashtbl.find_exn p.procs z));
     let (x', y', z') = queue_pop () in
-    print_endline ("pop  " ^ (string_of_int y'.m.id) ^ "." ^ z');
+    print_endline ("pop  " ^ (string_of_int y'.id) ^ "." ^ z');
     assert (phys_equal (TotalOrder.compare x x') 0);
     recalculate_aux p
 

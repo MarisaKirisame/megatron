@@ -2,8 +2,16 @@ open Ast
 open Core
 open EXN
 
+let counter: int ref = ref 0
+
+let count () = 
+  let ret = !counter in
+  counter := !counter + 1;
+  ret
+
 type 'meta node = { 
   dict: (string, 'meta value) Hashtbl.t;
+  mutable id: int;
   mutable children: 'meta node list;
   mutable parent: 'meta node option;
   mutable next: 'meta node option;
