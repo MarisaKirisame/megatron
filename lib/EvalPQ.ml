@@ -41,16 +41,6 @@ let queue_push x y z: unit =
     print_endline (string_of_int (y.id) ^ "." ^ z ^ " enqueued!")
   else ()
 
-let reversed_path (p: path) (n: meta node): meta node list = 
-  match p with
-  | Parent -> n.children
-  | Self -> [n]
-  | Prev -> Option.to_list n.next
-  | Next -> Option.to_list n.prev
-  | First -> (match n.parent with None -> [] | Some np -> if phys_equal (List.hd_exn np.children).id n.id then [np] else [])
-  | Last -> (match n.parent with None -> [] | Some np -> if phys_equal (List.last_exn np.children).id n.id then [np] else [])
-  | _ -> raise (EXN (show_path p))
-
 let proc_dirtied (n: meta node) (proc_name: string): unit = 
   match Hashtbl.find n.m.to_dict proc_name with
   | Some order -> queue_push order n proc_name

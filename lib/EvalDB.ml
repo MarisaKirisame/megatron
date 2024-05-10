@@ -32,16 +32,6 @@ let make_node (children: meta node list) (p: prog): meta node =
   next = None;
 }
 
-let reversed_path (p: path) (n: meta node): meta node list = 
-  match p with
-  | Parent -> n.children
-  | Self -> [n]
-  | Prev -> Option.to_list n.next
-  | Next -> Option.to_list n.prev
-  | First -> (match n.parent with None -> [] | Some np -> if phys_equal (List.hd_exn np.children).id n.id then [np] else [])
-  | Last -> (match n.parent with None -> [] | Some np -> if phys_equal (List.last_exn np.children).id n.id then [np] else [])
-  | _ -> raise (EXN (show_path p))
-
 let rec set_dirtybit (n: meta node): unit =
   if n.m.dirty_bit then () else
   n.m.dirty_bit <- true;

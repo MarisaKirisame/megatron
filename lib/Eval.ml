@@ -90,3 +90,14 @@ let rec eval_expr (n: 'meta node) (e: expr): 'meta value =
   | HasPath(p) -> VBool (Option.is_some (eval_path_opt n p))
   | Read(p, prop_name) -> Hashtbl.find_exn (eval_path n p).dict prop_name
   | _ -> raise (EXN (show_expr e))
+
+let reversed_path (p: path) (n: 'a node): 'a node list = 
+  match p with
+  | Parent -> n.children
+  | Self -> [n]
+  | Prev -> Option.to_list n.next
+  | Next -> Option.to_list n.prev
+  | First -> (match n.parent with None -> [] | Some np -> if phys_equal (List.hd_exn np.children).id n.id then [np] else [])
+  | Last -> (match n.parent with None -> [] | Some np -> if phys_equal (List.last_exn np.children).id n.id then [np] else [])
+  | _ -> raise (EXN (show_path p))
+  
