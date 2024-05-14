@@ -60,9 +60,12 @@ let stmt_of_proc_decl (ProcDecl(_, x)) = x
 type prog_decl = { prop_decls: prop_decl list; proc_decls: proc_decl list }
 [@@deriving show]
 
-type prog = { props: prop_decl list; procs: (string, proc_decl) Hashtbl.t }
+type 'rest prog = {
+  props: prop_decl list; 
+  procs: (string, proc_decl) Hashtbl.t
+}
 
-let prog_of_prog_decl (p: prog_decl): prog = { 
+let prog_of_prog_decl (p: prog_decl): unit prog = { 
   props = p.prop_decls;
   procs = Hashtbl.of_alist_exn (module String) (List.map p.proc_decls ~f:(fun (ProcDecl(name, stmt)as p) -> (name, p)))
 }

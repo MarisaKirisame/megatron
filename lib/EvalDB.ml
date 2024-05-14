@@ -18,7 +18,7 @@ type meta = {
   mutable dirty_bit: bool;
 }
 
-let make_node (children: meta node list) (p: prog): meta node = 
+let make_node (children: meta node list) (p: _ prog): meta node = 
   ignore p; {
   id = count();
   m = {
@@ -43,7 +43,7 @@ let proc_dirtied (n: meta node) (proc_name: string): unit =
   Hashtbl.set n.m.dirtied_set proc_name true;
   set_dirtybit n
 
-let prop_modified (p: prog) (n: meta node) (prop_name: string): unit = 
+let prop_modified (p: _ prog) (n: meta node) (prop_name: string): unit = 
   Hashtbl.iter p.procs ~f:(fun (ProcDecl(proc_name, stmt)) -> 
     let reads = reads_of_stmt stmt in
     let dirty read = 
@@ -55,7 +55,7 @@ let prop_modified (p: prog) (n: meta node) (prop_name: string): unit =
       | ReadHasPath _ -> () (*property being changed cannot change haspath status*)) in
     List.iter reads ~f:dirty)
 
-let rec eval_stmt (p: prog) (n: meta node) (s: stmt) = 
+let rec eval_stmt (p: _ prog) (n: meta node) (s: stmt) = 
   let recurse s = eval_stmt p n s in
   match s with
   | TailCall(path, proc_name) -> 
@@ -77,11 +77,11 @@ let rec eval_stmt (p: prog) (n: meta node) (s: stmt) =
   | Skip -> ()
   | _ -> raise (EXN (show_stmt s))
     
-let eval (p: prog) (n: meta node) = eval_stmt p n (stmt_of_proc_decl (Hashtbl.find_exn p.procs "main"))
+let eval (p: _ prog) (n: meta node) = eval_stmt p n (stmt_of_proc_decl (Hashtbl.find_exn p.procs "main"))
 
 (*lets try to get add/remove from head of list working then generalize*)
 
-let remove_children (x: meta node) (n: int) (p: prog): unit =
+let remove_children (x: meta node) (n: int) (p: _ prog): unit =
   let (lhs, removed :: rhs) = List.split_n x.children n in
   x.children <- List.tl_exn x.children;
   (match removed.prev with
@@ -106,7 +106,7 @@ let remove_children (x: meta node) (n: int) (p: prog): unit =
       | _ -> raise (EXN (show_read read))) in
     List.iter reads ~f:dirty)
 
-let add_children (x: meta node) (y: meta node) (n: int) (p: prog): unit =
+let add_children (x: meta node) (y: meta node) (n: int) (p: _ prog): unit =
   let (lhs, rhs) = List.split_n x.children n in
   x.children <- List.append lhs (y :: rhs);
   (match List.last lhs with
@@ -139,7 +139,7 @@ let add_children (x: meta node) (y: meta node) (n: int) (p: prog): unit =
     ) in
     List.iter tailcalls ~f:dirty_tc)
 
-let rec recalculate (n: meta node) (p: prog): unit = 
+let rec recalculate (n: meta node) (p: _ prog): unit = 
   if n.m.dirty_bit then
     (List.iter n.children (fun n -> recalculate n p);
     (if Hashtbl.find_exn n.m.dirtied_set "compute_width" then eval_stmt p n (stmt_of_proc_decl (Hashtbl.find_exn p.procs "compute_width")) else ());

@@ -9,23 +9,23 @@ let count () =
   counter := !counter + 1;
   ret
 
-type 'meta node = { 
-  dict: (string, 'meta value) Hashtbl.t;
+type 'rest node = { 
+  dict: (string, 'rest value) Hashtbl.t;
   mutable id: int;
-  mutable children: 'meta node list;
-  mutable parent: 'meta node option;
-  mutable next: 'meta node option;
-  mutable prev: 'meta node option;
-  m: 'meta;
+  mutable children: 'rest node list;
+  mutable parent: 'rest node option;
+  mutable next: 'rest node option;
+  mutable prev: 'rest node option;
+  m: 'rest;
 }
 
-and 'meta value = 
+and 'rest value = 
   | VInt of int
   | VBool of bool
-  | VNode of 'meta node
-  | VList of 'meta value list
+  | VNode of 'rest node
+  | VList of 'rest value list
 
-let rec set_children_relation (n: 'meta node): unit = 
+let rec set_children_relation (n: 'rest node): unit = 
   List.iter (List.zip_exn (Option.value (List.drop_last n.children) ~default:[]) (Option.value (List.tl n.children) ~default:[]))
   ~f:(fun (x, y) -> x.parent <- Some n; x.next <- Some y; y.prev <- Some x; set_children_relation x);
   match List.last n.children with
@@ -33,19 +33,19 @@ let rec set_children_relation (n: 'meta node): unit =
   | None -> ()
 
 
-let set_relation (n: 'meta node) = 
+let set_relation (n: 'rest node) = 
   n.parent <- None;
   n.prev <- None;
   n.next <- None;
   set_children_relation n
 
-let rec show_node (n: 'meta node): string =
+let rec show_node (n: 'rest node): string =
   let htbl_str =
     "{" ^ List.fold_left (Hashtbl.to_alist n.dict) ~init:"" ~f:(fun lhs (name, value) -> lhs ^ name ^ " = " ^ show_value value ^ ", ") ^ "}"
   in
     List.fold_left n.children ~init:(htbl_str ^ "[") ~f:(fun lhs n -> lhs ^ show_node n ^ ", ") ^ "]"
 and
-  show_value (x: 'meta value): string =
+  show_value (x: 'rest value): string =
   match x with
   | VInt i -> string_of_int i
   | VBool b -> string_of_bool b
@@ -62,14 +62,14 @@ let bool_of_value x =
 let node_of_value (VNode x) = x
 let list_of_value (VList x) = x
 
-let eval_binop (b: bop) (lhs: 'meta value) (rhs: 'meta value) =
+let eval_binop (b: bop) (lhs: 'rest value) (rhs: 'rest value) =
   match b with
   | Lt -> VBool (int_of_value lhs < int_of_value rhs)
   | Gt -> VBool (int_of_value lhs > int_of_value rhs)
   | Add -> VInt (int_of_value lhs + int_of_value rhs)
   | _ -> raise (EXN (show_bop b))
 
-let eval_path_opt (n: 'meta node) (p: path) = 
+let eval_path_opt (n: 'rest node) (p: path) = 
   match p with
   | Self -> Some n
   | Parent -> n.parent
@@ -81,7 +81,7 @@ let eval_path_opt (n: 'meta node) (p: path) =
 
 let eval_path n p = Option.value_exn (eval_path_opt n p)
 
-let rec eval_expr (n: 'meta node) (e: expr): 'meta value =
+let rec eval_expr (n: 'rest node) (e: expr): 'rest value =
   let recurse e = eval_expr n e in
   match e with
   | Int i -> VInt i
