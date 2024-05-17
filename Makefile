@@ -1,2 +1,2 @@
 nightly:
-  dune exec megatron
+	dune exec megatron
