@@ -9,8 +9,6 @@ open Core;;
 open Yojson;;
 open Megatron.Metric;;
 
-let json = Yojson.Basic.from_file "data.json";;
-
 let prog_def = parse "./layout.mt";;
 
 Out_channel.newline stdout;;
@@ -19,9 +17,9 @@ print_endline (show_prog_def prog_def);;
 
 let prog = prog_of_prog_def prog_def;;
 
-let m = fresh_metric ();;
-
 print_endline (show_prog prog);;
+let json = Yojson.Basic.from_file "data.json";;
+let m = fresh_metric ();;
 
 let rec json_to_node j: _ node = 
   let open Yojson.Basic.Util in
