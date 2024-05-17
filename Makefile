@@ -1,8 +1,8 @@
 nightly:
 	opam switch create megatron --empty || true
-	opam switch megatron
+	opam switch megatron	
+	eval $(opam env)
 	opam update
 	opam upgrade -y
-	eval $(opam env)
-	opam install dune
+	opam install dune -y
 	dune exec megatron
