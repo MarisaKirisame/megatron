@@ -3,8 +3,6 @@ open Core
 open EXN
 open Eval
 
-let current_time = ref (TotalOrder.create ())
-
 let counter: int ref = ref 0
 
 let count () = 
@@ -13,17 +11,16 @@ let count () =
   ret
 
 type meta = {
-  (* unran proc is not inside *)
-  dirtied_set: (string, bool) Hashtbl.t;
-  mutable dirty_bit: bool;
+  bb_dirtied: (string, bool) Hashtbl.t;
+  recursive_bb_dirtied: (string, bool) Hashtbl.t;
 }
 
 let make_node (children: meta node list) (p: _ prog): meta node = 
   ignore p; {
   id = count();
   m = {
-    dirtied_set = Hashtbl.create (module String);
-    dirty_bit = false;
+    bb_dirtied = Hashtbl.create (module String);
+    recursive_bb_dirtied = Hashtbl.create (module String);
   };
   dict = Hashtbl.create (module String);
   children = children; 
@@ -32,56 +29,55 @@ let make_node (children: meta node list) (p: _ prog): meta node =
   next = None;
 }
 
-let rec set_dirtybit (n: meta node): unit =
-  if n.m.dirty_bit then () else
-  n.m.dirty_bit <- true;
-  match n.parent with
-  | Some p -> set_dirtybit p
-  | None -> ()
+let rec set_recursive_bb_dirtied (n: meta node) (bb_name: string): unit =
+  if Hashtbl.find_exn n.m.recursive_bb_dirtied bb_name then () 
+  else
+    Hashtbl.set n.m.recursive_bb_dirtied ~key:bb_name ~data:true;
+    match n.parent with
+    | Some p -> set_recursive_bb_dirtied p bb_name
+    | None -> ()
 
-let proc_dirtied (n: meta node) (proc_name: string): unit = 
-  Hashtbl.set n.m.dirtied_set proc_name true;
-  set_dirtybit n
+let bb_dirtied (n: meta node) (bb_name: string): unit = 
+  Hashtbl.set n.m.bb_dirtied ~key:bb_name ~data:true;
+  set_recursive_bb_dirtied n bb_name
 
-let prop_modified (p: _ prog) (n: meta node) (prop_name: string): unit = 
-  Hashtbl.iter p.procs ~f:(fun (ProcDecl(proc_name, stmt)) -> 
-    let reads = reads_of_stmt stmt in
+let rec initialize_bb_dirtied_aux (n: meta node) (bb_name: string): unit = 
+  Hashtbl.set n.m.bb_dirtied ~key:bb_name ~data:true;
+  Hashtbl.set n.m.recursive_bb_dirtied ~key:bb_name ~data:true;
+  List.iter n.children (fun n -> initialize_bb_dirtied_aux n bb_name)
+let initialize_bb_dirtied (n: meta node) (bb_name: string): unit = 
+initialize_bb_dirtied_aux n bb_name;
+set_recursive_bb_dirtied n bb_name
+
+let prop_modified (p: _ prog) (n: meta node) (prop_name: string): unit =
+  Hashtbl.iter p.bbs ~f:(fun (BasicBlock(bb_name, stmts)) -> 
+    let reads = reads_of_stmts stmts in
     let dirty read = 
       (match read with
       | ReadProp(path, read_prop_name) -> 
           if String.equal prop_name read_prop_name then 
-          List.iter (reversed_path path n) ~f:(fun dirtied_node -> proc_dirtied dirtied_node proc_name)
+          List.iter (reversed_path path n) ~f:(fun dirtied_node -> bb_dirtied dirtied_node bb_name)
           else ()
       | ReadHasPath _ -> () (*property being changed cannot change haspath status*)) in
     List.iter reads ~f:dirty)
 
-let rec eval_stmt (p: _ prog) (n: meta node) (s: stmt) = 
-  let recurse s = eval_stmt p n s in
+let rec eval_stmt (p: _ prog) (n: meta node) (s: stmt): unit = 
   match s with
-  | TailCall(path, proc_name) -> 
-      let new_node = eval_path n path in
-      if Option.is_none (Hashtbl.find new_node.m.dirtied_set proc_name) 
-      then (
-        print_endline "tailcalling!";
-        current_time := TotalOrder.add_next (!current_time);
-        Hashtbl.add_exn new_node.m.dirtied_set ~key:proc_name ~data:false;
-        eval_stmt p new_node (stmt_of_proc_decl (Hashtbl.find_exn p.procs proc_name))
-      )
-      else ()
-  | Seq(x, y) -> recurse x; recurse y
+  | ChildrenCall(proc_name) -> 
+    List.iter n.children (fun new_node -> eval_stmts p new_node (stmts_of_processed_proc p proc_name))
   | Write(path, prop_name, expr) -> 
       let new_node = eval_path n path in
       if Option.is_some (Hashtbl.find new_node.dict prop_name) then prop_modified p new_node prop_name else ();
       Hashtbl.set new_node.dict ~key:prop_name ~data:(eval_expr n expr) 
-  | IfStmt(i, t, e) -> if bool_of_value (eval_expr n i) then recurse t else recurse e
-  | Skip -> ()
+  | BBCall(bb_name) -> 
+    (Hashtbl.add_exn n.m.bb_dirtied ~key:bb_name ~data:false;
+    Hashtbl.add_exn n.m.recursive_bb_dirtied ~key:bb_name ~data:false;
+    eval_stmts p n (stmts_of_basic_block p bb_name))
   | _ -> raise (EXN (show_stmt s))
-    
-let eval (p: _ prog) (n: meta node) = eval_stmt p n (stmt_of_proc_decl (Hashtbl.find_exn p.procs "main"))
+and eval_stmts (p: _ prog) (n: meta node) (s: stmts): unit = List.iter s (eval_stmt p n)
+let eval (p: _ prog) (n: meta node) =  List.iter p.order ~f:(fun pass_name -> eval_stmts p n (stmts_of_processed_proc p pass_name))
 
-(*lets try to get add/remove from head of list working then generalize*)
-
-let remove_children (x: meta node) (n: int) (p: _ prog): unit =
+let remove_children (p: _ prog) (x: meta node) (n: int): unit =
   let (lhs, removed :: rhs) = List.split_n x.children n in
   x.children <- List.tl_exn x.children;
   (match removed.prev with
@@ -91,22 +87,20 @@ let remove_children (x: meta node) (n: int) (p: _ prog): unit =
   | Some next -> next.prev <- removed.prev
   | None -> ());
   x.children <- List.append lhs rhs;
-  Hashtbl.iter p.procs ~f:(fun (ProcDecl(proc_name, stmt)) -> 
-    let reads = reads_of_stmt stmt in
+  Hashtbl.iter p.bbs ~f:(fun (BasicBlock(bb_name, stmts)) -> 
+    let reads = reads_of_stmts stmts in
     let dirty read = (
       match read with
-      | ReadHasPath(Parent) | ReadProp(Parent, _) -> ()
-      | ReadHasPath(First) -> if List.is_empty x.children then proc_dirtied x proc_name else ()
-      | ReadProp(First, _) -> if List.is_empty lhs then proc_dirtied x proc_name else ()
-      | ReadHasPath(Last) -> if List.is_empty x.children then proc_dirtied x proc_name else ()
-      | ReadProp(Last, _) -> if List.is_empty rhs then proc_dirtied x proc_name else ()
-      | ReadHasPath(Prev) | ReadProp(Prev, _) -> (match removed.next with Some x -> proc_dirtied x proc_name | None -> ())
-      | ReadHasPath(Next) | ReadProp(Next, _) -> (match removed.prev with Some x -> proc_dirtied x proc_name | None -> ())
-      | ReadProp(Self, _) -> ()
+      | ReadProp(Self, _) | ReadHasPath(Parent) | ReadProp(Parent, _) -> ()
+      | ReadHasPath(First) | ReadHasPath(Last) -> if List.is_empty x.children then bb_dirtied x bb_name else ()
+      | ReadProp(First, _) -> if List.is_empty lhs then bb_dirtied x bb_name else ()
+      | ReadProp(Last, _) -> if List.is_empty rhs then bb_dirtied x bb_name else ()
+      | ReadHasPath(Prev) | ReadProp(Prev, _) -> (match removed.next with Some x -> bb_dirtied x bb_name | None -> ())
+      | ReadHasPath(Next) | ReadProp(Next, _) -> (match removed.prev with Some x -> bb_dirtied x bb_name | None -> ())
       | _ -> raise (EXN (show_read read))) in
     List.iter reads ~f:dirty)
 
-let add_children (x: meta node) (y: meta node) (n: int) (p: _ prog): unit =
+let add_children (p: _ prog) (x: meta node) (y: meta node) (n: int): unit =
   let (lhs, rhs) = List.split_n x.children n in
   x.children <- List.append lhs (y :: rhs);
   (match List.last lhs with
@@ -116,34 +110,41 @@ let add_children (x: meta node) (y: meta node) (n: int) (p: _ prog): unit =
   | Some hd -> y.next <- Some hd; hd.prev <- Some y
   | None -> y.prev <- None);
   y.parent <- Some x;
-  Hashtbl.iter p.procs ~f:(fun (ProcDecl(proc_name, stmt)) -> 
-    let reads = reads_of_stmt stmt in
+  Hashtbl.iter p.bbs ~f:(fun (BasicBlock(bb_name, stmts)) -> 
+    initialize_bb_dirtied y bb_name;
+    let reads = reads_of_stmts stmts in
     let dirty read = (
       match read with
       | ReadHasPath(Parent) | ReadProp(Parent, _) -> ()
-      | ReadHasPath(First) -> if phys_equal (List.length x.children) 1 then proc_dirtied x proc_name else ()
-      | ReadProp(First, _) -> if List.is_empty lhs then proc_dirtied x proc_name else ()
-      | ReadHasPath(Last) -> if phys_equal (List.length x.children) 1 then proc_dirtied x proc_name else ()
-      | ReadProp(Last, _) -> if List.is_empty rhs then proc_dirtied x proc_name else ()
-      | ReadHasPath(Prev) | ReadProp(Prev, _) -> (match y.next with Some x -> proc_dirtied x proc_name | None -> ())
-      | ReadHasPath(Next) | ReadProp(Next, _) -> (match y.prev with Some x -> proc_dirtied x proc_name | None -> ())
+      | ReadHasPath(First) | ReadHasPath(Last) -> if phys_equal (List.length x.children) 1 then bb_dirtied x bb_name else ()
+      | ReadProp(First, _) -> if List.is_empty lhs then bb_dirtied x bb_name else ()
+      | ReadProp(Last, _) -> if List.is_empty rhs then bb_dirtied x bb_name else ()
+      | ReadHasPath(Prev) | ReadProp(Prev, _) -> (match y.next with Some x -> bb_dirtied x bb_name | None -> ())
+      | ReadHasPath(Next) | ReadProp(Next, _) -> (match y.prev with Some x -> bb_dirtied x bb_name | None -> ())
       | ReadProp(Self, _) -> ()
       | _ -> raise (EXN (show_read read))) in
-    List.iter reads ~f:dirty;
-    let tailcalls = get_tailcall stmt in 
-    let dirty_tc (path, _) = (
-      match path with
-      | Self | Next | Parent -> ()
-      | First -> proc_dirtied x proc_name
-      | _ -> raise (EXN (show_path path))
-    ) in
-    List.iter tailcalls ~f:dirty_tc)
+    List.iter reads ~f:dirty)
 
-let rec recalculate (n: meta node) (p: _ prog): unit = 
-  if n.m.dirty_bit then
-    (List.iter n.children (fun n -> recalculate n p);
-    (if Hashtbl.find_exn n.m.dirtied_set "compute_width" then eval_stmt p n (stmt_of_proc_decl (Hashtbl.find_exn p.procs "compute_width")) else ());
-    (if Hashtbl.find_exn n.m.dirtied_set "compute_height" then eval_stmt p n (stmt_of_proc_decl (Hashtbl.find_exn p.procs "compute_height")) else ());
-    n.m.dirty_bit <- false)
+let rec recalculate_aux (p: _ prog) (n: meta node) (down_name: string option) (up_name: string option) = 
+  let rerun_if_dirty name = 
+    if Hashtbl.find_exn n.m.bb_dirtied name 
+    then
+      (eval_stmts p n (stmts_of_basic_block p name);
+      Hashtbl.set n.m.bb_dirtied name false)
+    else () in
+  let optional_recursive_dirtied name =
+    match name with
+    | None -> false
+    | Some name -> Hashtbl.find_exn n.m.recursive_bb_dirtied name in
+  if optional_recursive_dirtied down_name || optional_recursive_dirtied up_name then
+    ((match down_name with 
+    | None -> () 
+    | Some dn -> Hashtbl.set n.m.recursive_bb_dirtied dn false; rerun_if_dirty dn);
+    List.iter n.children ~f:(fun n -> recalculate_aux p n down_name up_name);
+    (match up_name with
+    | None -> () 
+    | Some un -> rerun_if_dirty un; Hashtbl.set n.m.recursive_bb_dirtied un false))
   else ()
-  
+
+let rec recalculate (p: _ prog) (n: meta node): unit = 
+  List.iter p.order ~f:(fun name -> let down, up = get_bb_from_proc p name in recalculate_aux p n down up)

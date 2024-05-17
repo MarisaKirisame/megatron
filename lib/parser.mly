@@ -1,5 +1,6 @@
 %{
 open Ast
+open Core
 %}
 
 %token <int> INT
@@ -59,21 +60,30 @@ open Ast
 %left PLUS
 %left TIMES  
 
-%start <Ast.prog_decl> prog
+%start <Ast.prog_def> prog
 
 %%
 
 prog:
-	| EOF { {prop_decls = []; proc_decls = [] } }
-	| x = prop_decl; y = prog { {prop_decls = x :: y.prop_decls; proc_decls = y.proc_decls} }
-	| x = proc_decl; y = prog { {prop_decls = y.prop_decls; proc_decls = x :: y.proc_decls} }
+	| EOF { {prop_decls = []; proc_defs = []; order_decls = [] } }
+	| x = prop_decl; y = prog { {prop_decls = x :: y.prop_decls; proc_defs = y.proc_defs; order_decls = y.order_decls} }
+	| x = proc_decl; y = prog { {prop_decls = y.prop_decls; proc_defs = x :: y.proc_defs; order_decls = y.order_decls} }
+	| x = order_decl; y = prog { assert (List.is_empty y.order_decls); {prop_decls = y.prop_decls; proc_defs = y.proc_defs; order_decls = x} }
 	;
 	
+order_decl:
+	| LBRACKET; RBRACKET; { [] }
+	| LBRACKET; x = procname_plus; RBRACKET; { x }
+
+procname_plus:
+	| x = ID; { [x] }
+	| x = ID; SEMICOLON; y = procname_plus { x :: y }
+
 prop_decl:
 	| PROP; x = ID; SEMICOLON { PropDecl(x) };
 
 proc_decl:
-	| PROC; x = ID; LPAREN; RPAREN; LCB; y = stmt; RCB { ProcDecl(x, y) };
+	| PROC; x = ID; LPAREN; RPAREN; LCB; y = stmt_list; RCB { ProcDef(x, y) };
 
 path:
     | SELF { Self }
@@ -85,13 +95,13 @@ path:
 	;
 
 stmt:
-	| x = ID; EQUALS; y = expr { LocalDef(x, y) }
-	| x = stmt; SEMICOLON; y = stmt { Seq(x, y) }
-	| x = path; DOT; y = ID; LPAREN; RPAREN { TailCall(x, y) }
-	| x = path; DOT; y = ID; LARROW; z = expr { Write(x, y, z) }
-	| IF; e1 = expr; LCB; e2 = stmt; RCB; ELSE; LCB; e3 = stmt; RCB { IfStmt (e1, e2, e3) }
-	| { Skip }
+	| SELF; DOT; y = ID; LARROW; z = expr { Write(Self, y, z) }
+	| CHILDREN; DOT; x = ID; LPAREN; RPAREN { ChildrenCall(x) }
 	;
+
+stmt_list:
+    | { [] }
+	| x = stmt; SEMICOLON; y = stmt_list; { x :: y }
 
 expr_list:
     | LPAREN; RPAREN { [] } 

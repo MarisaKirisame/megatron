@@ -41,7 +41,7 @@ let set_relation (n: 'rest node) =
 
 let rec show_node (n: 'rest node): string =
   let htbl_str =
-    "{" ^ List.fold_left (Hashtbl.to_alist n.dict) ~init:"" ~f:(fun lhs (name, value) -> lhs ^ name ^ " = " ^ show_value value ^ ", ") ^ "}"
+    "{" ^ List.fold_left (Hashtbl.to_alist n.dict) ~init:("id = " ^ string_of_int n.id ^ ", ") ~f:(fun lhs (name, value) -> lhs ^ name ^ " = " ^ show_value value ^ ", ") ^ "}"
   in
     List.fold_left n.children ~init:(htbl_str ^ "[") ~f:(fun lhs n -> lhs ^ show_node n ^ ", ") ^ "]"
 and
@@ -77,7 +77,6 @@ let eval_path_opt (n: 'rest node) (p: path) =
   | Next -> n.next
   | Prev -> n.prev
   | Last -> List.last n.children
-  | _ -> raise (EXN (show_path p))
 
 let eval_path n p = Option.value_exn (eval_path_opt n p)
 
@@ -99,5 +98,4 @@ let reversed_path (p: path) (n: 'a node): 'a node list =
   | Next -> Option.to_list n.prev
   | First -> (match n.parent with None -> [] | Some np -> if phys_equal (List.hd_exn np.children).id n.id then [np] else [])
   | Last -> (match n.parent with None -> [] | Some np -> if phys_equal (List.last_exn np.children).id n.id then [np] else [])
-  | _ -> raise (EXN (show_path p))
   

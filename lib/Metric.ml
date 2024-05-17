@@ -5,8 +5,8 @@ type metric = {
   mutable write_count : int;
 }
 
-let read (m: metric) (n: 'a node): unit =
+let read (m: metric) (_: 'a node): unit =
   m.read_count <- m.read_count + 1
 
-let read (m: metric) (n: 'a node): unit =
+let read (m: metric) (_: 'a node): unit =
   m.write_count <- m.write_count + 1

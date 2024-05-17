@@ -1,7 +1,7 @@
 open Ast
 open Core
 
-let parse (path : string): prog_decl =
+let parse (path : string): prog_def =
   let chan = In_channel.create path in
   let lexbuf = Lexing.from_channel chan in
   try Parser.prog Lexer.read lexbuf

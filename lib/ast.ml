@@ -40,54 +40,75 @@ type expr =
 [@@deriving show]
 
 type stmt = 
-  | LocalDef of string * expr
-  | Seq of stmt * stmt
-  | Skip
+  | BBCall of string
   | ChildrenCall of string
-  | TailCall of path * string
-  | IfStmt of expr * stmt * stmt
   | Write of path * string * expr
+[@@deriving show]
+
+type stmts = stmt list
 [@@deriving show]
 
 type prop_decl = PropDecl of string
 [@@deriving show]
 let prop_decl_name (PropDecl(n)) = n
-type proc_decl = ProcDecl of string * stmt
+
+type proc_def = ProcDef of string * stmts
 [@@deriving show]
 
-let stmt_of_proc_decl (ProcDecl(_, x)) = x
+(*procedure that does not call other procedure*)
+type basic_block = BasicBlock of string * stmts
 
-type prog_decl = { prop_decls: prop_decl list; proc_decls: proc_decl list }
+(*all proc should only call bb or more procs.*)
+type processed_proc = ProcessedProc of string * stmts
+
+
+let stmts_of_proc_def (ProcDef(_, x)) = x
+
+type prog_def = { 
+  prop_decls: prop_decl list;
+  proc_defs: proc_def list;
+  order_decls: string list; (*the order to execute the procs*)
+}
 [@@deriving show]
 
 type 'rest prog = {
   props: prop_decl list; 
-  procs: (string, proc_decl) Hashtbl.t
+  bbs: (string, basic_block) Hashtbl.t;
+  procs: (string, processed_proc) Hashtbl.t;
+  order: string list;
 }
 
-let prog_of_prog_decl (p: prog_decl): unit prog = { 
+let show_prog (p: unit prog): string = 
+  Hashtbl.fold p.procs ~init:"" ~f:(fun ~key:key ~data:(ProcessedProc(_, stmts)) acc -> acc ^ key ^ " -> " ^ show_stmts stmts ^ "\n") ^
+  Hashtbl.fold p.bbs ~init:"" ~f:(fun ~key:key ~data:(BasicBlock(_, stmts)) acc -> acc ^ key ^ " -> " ^ show_stmts stmts ^ "\n")
+
+let stmts_of_processed_proc (p: _ prog) (s: string): stmts = let ProcessedProc(_, stmts) = Hashtbl.find_exn p.procs s in stmts
+let stmts_of_basic_block (p: _ prog) (s: string): stmts = let BasicBlock(_, stmts) = Hashtbl.find_exn p.bbs s in stmts
+let prog_of_prog_def (p: prog_def): unit prog = 
+  let bb = Hashtbl.create (module String) in
+  let rec split seen_children_call stmts acc =
+    match stmts with
+    | [] -> [List.rev acc]
+    | ChildrenCall(n) :: rest -> 
+      assert (not seen_children_call);
+      List.rev acc :: [ChildrenCall(n)] :: split true rest []
+    | x :: rest -> split seen_children_call rest (x :: acc) in
+  let transform (ProcDef(name, stmts)) = 
+    let transformed_stmts = List.fold_right (split false stmts []) ~init:[]
+    ~f:(fun stmts acc ->
+      match stmts with
+      | [] -> acc
+      | [ChildrenCall(n)] -> ChildrenCall(n) :: acc
+      | _ -> 
+      let bb_name = "bb_" ^ string_of_int (Hashtbl.length bb) in
+      Hashtbl.add_exn bb ~key:bb_name ~data:(BasicBlock(bb_name, stmts));
+      BBCall(bb_name) :: acc) in
+    (name, ProcessedProc(name, transformed_stmts)) in {
   props = p.prop_decls;
-  procs = Hashtbl.of_alist_exn (module String) (List.map p.proc_decls ~f:(fun (ProcDecl(name, stmt)as p) -> (name, p)))
+  bbs = bb;
+  procs = Hashtbl.of_alist_exn (module String) (List.map p.proc_defs ~f:transform);
+  order = p.order_decls;
 }
-
-let simplify_expr (e: expr) = e
-
-let rec simplify_stmt (s: stmt) = 
-  match s with
-  | Seq(x, y) ->
-    (match (simplify_stmt x, simplify_stmt y) with
-    | (Skip, y') -> y'
-    | (x', Skip) -> x'
-    | (x', y') -> Seq(x', y'))
-  | Skip | ChildrenCall(_) | TailCall(_, _) | Write(_) | LocalDef(_, _) -> s
-  | IfStmt(x, y, z) -> 
-    (match (simplify_stmt y, simplify_stmt z) with
-    | (Skip, Skip) -> Skip
-    | (y', z') -> IfStmt(x, y', z'))
-  | _ -> raise (EXN (show_stmt s))
-
-let simplify_proc_decl (p: proc_decl): proc_decl = 
-  let ProcDecl(name, stmt) = p in ProcDecl(name, simplify_stmt stmt)
 
 type read = ReadProp of path * string | ReadHasPath of path
 [@@deriving show]
@@ -101,33 +122,22 @@ let rec reads_of_expr (e: expr): read list =
   | Int(_) -> []
   | IfExpr(x, y, z) -> List.append (recurse x) (List.append (recurse y) (recurse z))
   | Read(p, n) -> [ReadProp(p, n)]
-  | Binop(x, op, y) -> List.append (recurse x) (recurse y)
+  | Binop(x, _, y) -> List.append (recurse x) (recurse y)
   | _ -> raise (EXN (show_expr e))
       
-let rec exprs_of_stmt (s: stmt): expr list = 
+let exprs_of_stmt (s: stmt): expr list = 
   match s with
-  | IfStmt(x, y, z) -> x :: (List.append (exprs_of_stmt y) (exprs_of_stmt z))
-  | Seq(x, y) -> List.append (exprs_of_stmt x) (exprs_of_stmt y)
-  | Skip | TailCall(_) -> []
+  | ChildrenCall(_) -> []
   | Write(_, _, x) -> [x]
-  | _ -> raise (EXN (show_stmt s))
+  | _ -> panic "todo"
 
 let reads_of_stmt (s: stmt): read list = 
   List.(>>=) (exprs_of_stmt s) (fun e -> reads_of_expr e)
+let reads_of_stmts (s: stmts): read list = 
+  List.(>>=) s reads_of_stmt
 
-let rec strip_tailcall s = 
-  match s with
-  | Seq(x, y) -> Seq(strip_tailcall x, strip_tailcall y)
-  | IfStmt(i, t, e) -> IfStmt(i, strip_tailcall t, strip_tailcall e)
-  | Skip | Write(_) -> s
-  | TailCall(_) -> Skip
-  | _ -> raise (EXN (show_stmt s))
-
-let rec get_tailcall (s: stmt): (path * string) list = 
-  match s with
-  | IfStmt(_, x, y) | Seq(x, y) -> List.append (get_tailcall x) (get_tailcall y)
-  | TailCall(p, name) -> [(p, name)]
-  | Write(_) | Skip -> []
-  | _ -> raise (EXN (show_stmt s))
-
-let simplify (p: prog_decl): prog_decl = { prop_decls = p.prop_decls; proc_decls = List.map p.proc_decls ~f:simplify_proc_decl }
+let get_bb_from_proc (p: _ prog) (n: string): (string option * string option) = 
+  match stmts_of_processed_proc p n with
+  | [BBCall(x); ChildrenCall(_); BBCall(y)] -> (Some x, Some y)
+  | stmts -> panic (show_stmts stmts)
+  

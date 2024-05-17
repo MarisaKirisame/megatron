@@ -14,17 +14,15 @@ let make_node (children: unit node list) (p: _ prog): unit node =
   m = ();
 }
 
-let rec eval_stmt (p: _ prog) (n: unit node) (s: stmt) = 
-  let recurse s = eval_stmt p n s in
+let rec eval_stmt (p: _ prog) (n: unit node) (s: stmt): unit = 
   match s with
-  | TailCall(path, proc_name) -> eval_stmt p (eval_path n path) (stmt_of_proc_decl (Hashtbl.find_exn p.procs proc_name))
-  | Seq(x, y) -> recurse x; recurse y
+  | ChildrenCall(proc_name) -> List.iter n.children ~f:(fun n -> eval_stmts p n (stmts_of_processed_proc p proc_name))
   | Write(path, prop_name, expr) -> 
-      Hashtbl.add_exn (eval_path n path).dict ~key:prop_name ~data:(eval_expr n expr) 
+      Hashtbl.add_exn (eval_path n path).dict ~key:prop_name ~data:(eval_expr n expr)
       (*we use add_exn to make sure the same element isnt touched twice.
         however, this mean we have to reset the hashtable to rerun.*)
-  | IfStmt(i, t, e) -> if bool_of_value (eval_expr n i) then recurse t else recurse e
-  | Skip -> ()
-  | _ -> raise (EXN (show_stmt s))
+  | BBCall(bb_name) -> eval_stmts p n (stmts_of_basic_block p bb_name)
+and eval_stmts (p: _ prog) (n: unit node) (s: stmts): unit = List.iter s (eval_stmt p n)
 
-let eval (p: _ prog) (n: unit node) = eval_stmt p n (stmt_of_proc_decl (Hashtbl.find_exn p.procs "main"))
+let eval (p: _ prog) (n: unit node) = 
+  List.iter p.order ~f:(fun pass_name -> eval_stmts p n (stmts_of_processed_proc p pass_name))
