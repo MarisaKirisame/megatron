@@ -1,0 +1,2 @@
+nightly:
+  dune exec megatron
