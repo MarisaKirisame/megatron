@@ -1,6 +1,8 @@
 nightly:
 	opam switch create megatron --empty || true
-	opam switch megatron	
+	opam switch megatron
+	opam env
+	echo $(opam env)
 	eval $(opam env)
 	opam update
 	opam upgrade -y
