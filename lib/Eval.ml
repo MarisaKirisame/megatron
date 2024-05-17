@@ -1,6 +1,7 @@
 open Ast
 open Core
 open EXN
+open Metric
 
 let counter: int ref = ref 0
 
@@ -80,14 +81,14 @@ let eval_path_opt (n: 'rest node) (p: path) =
 
 let eval_path n p = Option.value_exn (eval_path_opt n p)
 
-let rec eval_expr (n: 'rest node) (e: expr): 'rest value =
-  let recurse e = eval_expr n e in
+let rec eval_expr (n: 'rest node) (e: expr) (m: metric): 'rest value =
+  let recurse e = eval_expr n e m in
   match e with
   | Int i -> VInt i
   | IfExpr(c, t, e) -> if bool_of_value (recurse c) then recurse t else recurse e
   | Binop(lhs, op, rhs) -> eval_binop op (recurse lhs) (recurse rhs)
   | HasPath(p) -> VBool (Option.is_some (eval_path_opt n p))
-  | Read(p, prop_name) -> Hashtbl.find_exn (eval_path n p).dict prop_name
+  | Read(p, prop_name) -> read m n.id; Hashtbl.find_exn (eval_path n p).dict prop_name
   | _ -> raise (EXN (show_expr e))
 
 let reversed_path (p: path) (n: 'a node): 'a node list = 

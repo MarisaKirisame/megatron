@@ -1,9 +1,13 @@
 (executable
  (public_name megatron)
  (name main)
- (libraries megatron core))
+ (libraries megatron core yojson))
 
 (menhir
  (modules parser))
 
 (ocamllex lexer)
+
+(env
+  (dev
+    (flags (:standard -warn-error -A))))
