@@ -4,4 +4,5 @@ nightly:
 	opam update
 	opam upgrade -y
 	eval $(opam env)
+	opam install dune
 	dune exec megatron
