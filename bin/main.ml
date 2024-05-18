@@ -25,8 +25,7 @@ let m = fresh_metric ()
 module Main (EVAL : Eval) = struct
   let rec json_to_node j : _ node =
     let open Yojson.Basic.Util in
-    EVAL.make_node prog
-      (List.map (j |> member "children" |> to_list) ~f:json_to_node)
+    EVAL.make_node prog (List.map (j |> member "children" |> to_list) ~f:json_to_node)
 
   let n = json_to_node json;;
 
@@ -38,12 +37,7 @@ module Main (EVAL : Eval) = struct
 
   let rec modify (n : _ node) : unit =
     let children_size = List.map n.children size in
-    let fuel =
-      ref
-        (Some
-           (Random.int
-              (1 + List.sum (module Int) children_size ~f:(fun i -> i))))
-    in
+    let fuel = ref (Some (Random.int (1 + List.sum (module Int) children_size ~f:(fun i -> i)))) in
     let consume i =
       match !fuel with
       | None -> false
@@ -56,9 +50,7 @@ module Main (EVAL : Eval) = struct
             true)
     in
     if consume 1 then EVAL.add_children prog n (EVAL.make_node prog []) 0 m
-    else
-      List.iter n.children ~f:(fun n ->
-          if consume (size n) then modify n else ())
+    else List.iter n.children ~f:(fun n -> if consume (size n) then modify n else ())
   ;;
 
   Random.init 1729;;
@@ -68,3 +60,6 @@ module Main (EVAL : Eval) = struct
   print_endline "EVAL AGAIN OK!";;
   print_endline (show_metric m)
 end
+
+module MainDB = Main (Megatron.EvalDB.EVAL)
+module MainPQ = Main (Megatron.EvalPQ.EVAL)

@@ -6,18 +6,12 @@ open Main
 (** [make_i n i s] makes an OUnit test named [n] that expects
     [s] to evalute to [Int i]. *)
 let make_i n i s =
-  [
-    (n >:: fun _ -> assert_equal (Int i) (interp_small s));
-    (n >:: fun _ -> assert_equal (Int i) (interp_big s));
-  ]
+  [ (n >:: fun _ -> assert_equal (Int i) (interp_small s)); (n >:: fun _ -> assert_equal (Int i) (interp_big s)) ]
 
 (** [make_b n b s] makes an OUnit test named [n] that expects
     [s] to evalute to [Bool b]. *)
 let make_b n b s =
-  [
-    (n >:: fun _ -> assert_equal (Bool b) (interp_small s));
-    (n >:: fun _ -> assert_equal (Bool b) (interp_big s));
-  ]
+  [ (n >:: fun _ -> assert_equal (Bool b) (interp_small s)); (n >:: fun _ -> assert_equal (Bool b) (interp_big s)) ]
 
 (** [make_t n s] makes an OUnit test named [n] that expects
     [s] to fail type checking with error string [s']. *)

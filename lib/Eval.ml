@@ -20,11 +20,7 @@ type 'rest node = {
   m : 'rest;
 }
 
-and 'rest value =
-  | VInt of int
-  | VBool of bool
-  | VNode of 'rest node
-  | VList of 'rest value list
+and 'rest value = VInt of int | VBool of bool | VNode of 'rest node | VList of 'rest value list
 
 let rec size (n : _ node) : int = 1 + List.sum (module Int) n.children ~f:size
 
@@ -55,26 +51,16 @@ let rec show_node (n : 'rest node) : string =
     "{"
     ^ List.fold_left (Hashtbl.to_alist n.dict)
         ~init:("id = " ^ string_of_int n.id ^ ", ")
-        ~f:(fun lhs (name, value) ->
-          lhs ^ name ^ " = " ^ show_value value ^ ", ")
+        ~f:(fun lhs (name, value) -> lhs ^ name ^ " = " ^ show_value value ^ ", ")
     ^ "}"
   in
-  List.fold_left n.children ~init:(htbl_str ^ "[") ~f:(fun lhs n ->
-      lhs ^ show_node n ^ ", ")
-  ^ "]"
+  List.fold_left n.children ~init:(htbl_str ^ "[") ~f:(fun lhs n -> lhs ^ show_node n ^ ", ") ^ "]"
 
 and show_value (x : 'rest value) : string =
-  match x with
-  | VInt i -> string_of_int i
-  | VBool b -> string_of_bool b
-  | _ -> raise (EXN (show_value x))
+  match x with VInt i -> string_of_int i | VBool b -> string_of_bool b | _ -> raise (EXN (show_value x))
 
-let int_of_value x =
-  match x with VInt i -> i | _ -> raise (EXN (show_value x))
-
-let bool_of_value x =
-  match x with VBool b -> b | _ -> raise (EXN (show_value x))
-
+let int_of_value x = match x with VInt i -> i | _ -> raise (EXN (show_value x))
+let bool_of_value x = match x with VBool b -> b | _ -> raise (EXN (show_value x))
 let node_of_value (VNode x) = x
 let list_of_value (VList x) = x
 
@@ -100,8 +86,7 @@ let rec eval_expr (n : 'rest node) (e : expr) (m : metric) : 'rest value =
   let recurse e = eval_expr n e m in
   match e with
   | Int i -> VInt i
-  | IfExpr (c, t, e) ->
-      if bool_of_value (recurse c) then recurse t else recurse e
+  | IfExpr (c, t, e) -> if bool_of_value (recurse c) then recurse t else recurse e
   | Binop (lhs, op, rhs) -> eval_binop op (recurse lhs) (recurse rhs)
   | HasPath p -> VBool (Option.is_some (eval_path_opt n p))
   | Read (p, prop_name) ->
@@ -116,15 +101,11 @@ let reversed_path (p : path) (n : 'a node) : 'a node list =
   | Prev -> Option.to_list n.next
   | Next -> Option.to_list n.prev
   | First -> (
-      match n.parent with
-      | None -> []
-      | Some np ->
-          if phys_equal (List.hd_exn np.children).id n.id then [ np ] else [])
+      match n.parent with None -> [] | Some np -> if phys_equal (List.hd_exn np.children).id n.id then [ np ] else [])
   | Last -> (
       match n.parent with
       | None -> []
-      | Some np ->
-          if phys_equal (List.last_exn np.children).id n.id then [ np ] else [])
+      | Some np -> if phys_equal (List.last_exn np.children).id n.id then [ np ] else [])
 
 module type Eval = sig
   type meta

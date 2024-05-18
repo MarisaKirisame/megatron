@@ -32,9 +32,7 @@ module Make (O : Set.OrderedType) : S with type data = O.t = struct
     match !queue with
     | Node (value, left, right) ->
         let dir = O.compare x value in
-        if dir == 0 then false
-        else if dir < 0 then add_node left x
-        else add_node right x
+        if dir == 0 then false else if dir < 0 then add_node left x else add_node right x
     | Null ->
         queue := Node (x, ref Null, ref Null);
         true
