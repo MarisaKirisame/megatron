@@ -7,9 +7,11 @@ let digit = ['0'-'9']
 let int = '-'? digit+
 let letter = ['a'-'z' 'A'-'Z' '_']
 let id = letter (letter|digit)*
+let newline = '\r' | '\n' | "\r\n"
 
 rule read = 
   parse
+  | "(*" { read_comment lexbuf }
   | white { read lexbuf }
   | "true" { TRUE }
   | "false" { FALSE }
@@ -57,6 +59,11 @@ rule read =
   | "then" { THEN }
   | id { ID (Lexing.lexeme lexbuf) }
   | int { INT (int_of_string (Lexing.lexeme lexbuf)) }
-  | "\n" { Lexing.new_line lexbuf; read lexbuf }
+  | newline { Lexing.new_line lexbuf; read lexbuf }
   | eof { EOF }
   | _ as c { failwith (Printf.sprintf "unexpected character: %C" c) }
+and read_comment = parse
+  | "*)" { read lexbuf }
+  | newline { Lexing.new_line lexbuf; read_comment lexbuf }
+  | eof { failwith (Printf.sprintf "unterminated comment") }
+  | _ { read_comment lexbuf }
