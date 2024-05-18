@@ -5,7 +5,7 @@ open Core
 open Yojson
 open Megatron.Metric
 
-let out_file = Stdlib.Out_channel.open_text "out.json"
+let out_file = Stdio.Out_channel.create "out.json"
 let prog_def = parse "./layout.mt";;
 
 Out_channel.newline stdout;;
