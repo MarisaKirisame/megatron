@@ -5,6 +5,7 @@ open Eval
 open Metric
 
 module EVAL : Eval = struct
+  let name = "DB"
   let counter : int ref = ref 0
 
   let count () =

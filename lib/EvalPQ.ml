@@ -5,6 +5,7 @@ open Eval
 open Metric
 
 module EVAL : Eval = struct
+  let name = "PQ"
   let current_time = ref (TotalOrder.create ())
 
   type meta = { (*time of bbs*)

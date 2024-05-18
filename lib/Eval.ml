@@ -59,10 +59,10 @@ let rec show_node (n : 'rest node) : string =
 and show_value (x : 'rest value) : string =
   match x with VInt i -> string_of_int i | VBool b -> string_of_bool b | _ -> raise (EXN (show_value x))
 
-let int_of_value x = match x with VInt i -> i | _ -> raise (EXN (show_value x))
-let bool_of_value x = match x with VBool b -> b | _ -> raise (EXN (show_value x))
-let node_of_value (VNode x) = x
-let list_of_value (VList x) = x
+let int_of_value x = match x with VInt i -> i | _ -> panic (show_value x)
+let bool_of_value x = match x with VBool b -> b | _ -> panic (show_value x)
+let node_of_value x = match x with VNode n -> n | _ -> panic (show_value x)
+let list_of_value x = match x with VList x -> x | _ -> panic (show_value x)
 
 let eval_binop (b : bop) (lhs : 'rest value) (rhs : 'rest value) =
   match b with
@@ -108,6 +108,8 @@ let reversed_path (p : path) (n : 'a node) : 'a node list =
       | Some np -> if phys_equal (List.last_exn np.children).id n.id then [ np ] else [])
 
 module type Eval = sig
+  val name : string
+
   type meta
 
   val make_node : _ prog -> meta node list -> meta node
