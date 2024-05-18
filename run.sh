@@ -1,3 +1,5 @@
+set -e
+
 opam switch create megatron --empty || true
 opam switch megatron
 eval $(opam env)
