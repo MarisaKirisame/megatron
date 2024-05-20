@@ -26,7 +26,7 @@ for l in readlines_file("out.json"):
 
 doc = make_doc(title=out_path)
 with doc:
-    with table():
+    with table(border="1"):
         with thead():
             tr(*[td(h) for h in header])
         with tbody():
