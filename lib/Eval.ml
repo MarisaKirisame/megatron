@@ -11,6 +11,7 @@ let count () =
   ret
 
 type 'rest node = {
+  input: (string, 'rest value) Hashtbl.t; 
   dict : (string, 'rest value) Hashtbl.t;
   mutable id : int;
   mutable children : 'rest node list;
@@ -91,7 +92,9 @@ let rec eval_expr (n : 'rest node) (e : expr) (m : metric) : 'rest value =
   | HasPath p -> VBool (Option.is_some (eval_path_opt n p))
   | Read (p, prop_name) ->
       read m n.id;
-      Hashtbl.find_exn (eval_path n p).dict prop_name
+      match Hashtbl.find (eval_path n p).input prop_name with
+      | Some v -> v
+      | None -> Hashtbl.find_exn (eval_path n p).dict prop_name
   | _ -> raise (EXN (show_expr e))
 
 let reversed_path (p : path) (n : 'a node) : 'a node list =

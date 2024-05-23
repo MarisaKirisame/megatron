@@ -1,8 +1,8 @@
 prop width;
 prop height;
 prop sum_height;
-prop x;
-prop y;
+(*prop x;*)
+(*prop y;*)
 
 proc pass_0() {
   self.width <- if has_parent() then parent().width else 800;

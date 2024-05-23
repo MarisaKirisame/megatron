@@ -20,6 +20,7 @@ module EVAL : Eval = struct
     {
       id = count ();
       m = { bb_dirtied = Hashtbl.create (module String); recursive_bb_dirtied = Hashtbl.create (module String) };
+      input = Hashtbl.create (module String);
       dict = Hashtbl.create (module String);
       children;
       parent = None;
@@ -47,6 +48,7 @@ module EVAL : Eval = struct
 
   let initialize_bb_dirtied (n : meta node) (bb_name : string) (m : metric) : unit =
     initialize_bb_dirtied_aux n bb_name m;
+    Hashtbl.set n.m.recursive_bb_dirtied ~key:bb_name ~data:false;
     set_recursive_bb_dirtied n bb_name m;
     m.meta_write_count <- m.meta_write_count - 1
 
@@ -119,7 +121,7 @@ module EVAL : Eval = struct
     | Some hd ->
         y.next <- Some hd;
         hd.prev <- Some y
-    | None -> y.prev <- None);
+    | None -> y.next <- None);
     y.parent <- Some x;
     Hashtbl.iter p.bbs ~f:(fun (BasicBlock (bb_name, stmts)) ->
         initialize_bb_dirtied y bb_name m;
@@ -142,6 +144,7 @@ module EVAL : Eval = struct
 
   let rec recalculate_aux (p : _ prog) (n : meta node) (down_name : string option) (up_name : string option)
       (m : metric) =
+    (*print_endline "enter";*)
     meta_read m n.id;
     let rerun_if_dirty name =
       if Hashtbl.find_exn n.m.bb_dirtied name then (
@@ -161,10 +164,20 @@ module EVAL : Eval = struct
       match oname with None -> () | Some name -> Hashtbl.set n.m.recursive_bb_dirtied ~key:name ~data:false
     in
     clean down_name;
-    clean up_name
+    clean up_name;
+    (*print_endline "exit";*)
+    ()
+
+  let rec check (p: _ prog) (n: meta node): unit = 
+    Hashtbl.iter p.bbs ~f:(fun (BasicBlock (bb, _)) ->
+      assert (not (Hashtbl.find_exn n.m.bb_dirtied bb));
+      assert (not (Hashtbl.find_exn n.m.recursive_bb_dirtied bb)));
+    List.iter p.props ~f:(fun (PropDecl p) -> ignore (Hashtbl.find_exn n.dict p));
+    List.iter n.children ~f:(check p)
 
   let recalculate (p : _ prog) (n : meta node) (m : metric) : unit =
     List.iter p.order ~f:(fun name ->
         let down, up = get_bb_from_proc p name in
-        recalculate_aux p n down up m)
+        recalculate_aux p n down up m);
+    check p n
 end

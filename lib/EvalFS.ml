@@ -11,7 +11,7 @@ module EVAL : Eval = struct
 
   let make_node (p : _ prog) (children : meta node list) : meta node =
     ignore p;
-    { id = count (); dict = Hashtbl.create (module String); children; parent = None; prev = None; next = None; m = () }
+    { id = count (); input = Hashtbl.create (module String); dict = Hashtbl.create (module String); children; parent = None; prev = None; next = None; m = () }
 
   let rec eval_stmt (p : _ prog) (n : meta node) (s : stmt) (m : metric) : unit =
     match s with
@@ -51,7 +51,7 @@ module EVAL : Eval = struct
     | Some hd ->
         y.next <- Some hd;
         hd.prev <- Some y
-    | None -> y.prev <- None);
+    | None -> y.next <- None);
     y.parent <- Some x
 
   let rec remove_prop (n : meta node) : unit =
