@@ -146,6 +146,8 @@ module EVAL : Eval = struct
       (m : metric) =
     (*print_endline "enter";*)
     meta_read m n.id;
+    meta_read m n.id;
+    (*reading twice as there is two dirtied bits*)
     let rerun_if_dirty name =
       if Hashtbl.find_exn n.m.bb_dirtied name then (
         eval_stmts p n (stmts_of_basic_block p name) m;
@@ -168,10 +170,10 @@ module EVAL : Eval = struct
     (*print_endline "exit";*)
     ()
 
-  let rec check (p: _ prog) (n: meta node): unit = 
+  let rec check (p : _ prog) (n : meta node) : unit =
     Hashtbl.iter p.bbs ~f:(fun (BasicBlock (bb, _)) ->
-      assert (not (Hashtbl.find_exn n.m.bb_dirtied bb));
-      assert (not (Hashtbl.find_exn n.m.recursive_bb_dirtied bb)));
+        assert (not (Hashtbl.find_exn n.m.bb_dirtied bb));
+        assert (not (Hashtbl.find_exn n.m.recursive_bb_dirtied bb)));
     List.iter p.props ~f:(fun (PropDecl p) -> ignore (Hashtbl.find_exn n.dict p));
     List.iter n.children ~f:(check p)
 

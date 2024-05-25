@@ -102,8 +102,8 @@ module EVAL : Eval = struct
             List.iter reads ~f:dirty)
     | _ -> panic "bad argument"
 
-  let rec fix_init (current_time : TotalOrder.t ref) (x : meta node) (down : string option) (up : string option) m : unit
-      =
+  let rec fix_init (current_time : TotalOrder.t ref) (x : meta node) (down : string option) (up : string option) m :
+      unit =
     (match down with
     | Some d ->
         current_time := TotalOrder.add_next !current_time;
@@ -152,9 +152,17 @@ module EVAL : Eval = struct
     (*print_endline ("add: " ^ string_of_int y.id);*)
     Hashtbl.iter p.procs ~f:(fun (ProcessedProc (proc, _)) ->
         let down, up = get_bb_from_proc p proc in
-        let time: TotalOrder.t = match y.prev with 
-        | Some x -> Hashtbl.find_exn x.m.time_table (Option.value_exn up)
-        | None -> Hashtbl.find_exn x.m.time_table (Option.value_exn down) in
+        let time : TotalOrder.t =
+          match y.prev with
+          | None ->
+              (*if previous node does not exist, use the down time of parent*)
+              Hashtbl.find_exn x.m.time_table (Option.value_exn down)
+          | Some x -> (
+              (*try to use the up time of previous node, or the down time of the rightmost node if there's no downpass*)
+              match up with
+              | Some u -> Hashtbl.find_exn x.m.time_table u
+              | None -> Hashtbl.find_exn (rightmost x).m.time_table (Option.value_exn down))
+        in
         fix_init (ref time) y down up m)
 
   let total_queue_size = ref 0
@@ -166,11 +174,9 @@ module EVAL : Eval = struct
     print_endline (string_of_int (queue_size ()));
     print_endline (string_of_int (!total_queue_size / !queue_size_count))
 
-  let rec recursive_print_id_up (n: meta node): unit = 
+  let rec recursive_print_id_up (n : meta node) : unit =
     print_endline (string_of_int n.id ^ List.to_string n.children ~f:(fun n -> string_of_int n.id));
-    match n.parent with
-    | None -> ()
-    | Some p -> recursive_print_id_up p
+    match n.parent with None -> () | Some p -> recursive_print_id_up p
 
   let rec recalculate_aux (p : _ prog) (m : metric) =
     if queue_isempty () then ()
@@ -181,9 +187,11 @@ module EVAL : Eval = struct
       let x', y', z' = queue_pop () in
       ignore (y', z');
       if not (phys_equal (TotalOrder.compare x x') 0) then (
-        print_endline ("peek " ^ (string_of_int y.id) ^ "." ^ z);
-      print_endline ("pop  " ^ (string_of_int y'.id) ^ "." ^ z');
-    recursive_print_id_up y; recursive_print_id_up y') else ();
+        print_endline ("peek " ^ string_of_int y.id ^ "." ^ z);
+        print_endline ("pop  " ^ string_of_int y'.id ^ "." ^ z');
+        recursive_print_id_up y;
+        recursive_print_id_up y')
+      else ();
       assert (phys_equal (TotalOrder.compare x x') 0);
       recalculate_aux p m
 

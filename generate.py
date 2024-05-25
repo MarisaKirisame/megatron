@@ -35,6 +35,13 @@ def regularize(j):
             if c is not None:
                 tmp.append(c)
         j["children"] = tmp
+
+        if "attributes" not in j:
+            j["attributes"] = {}
+
+        if "properties" not in j:
+            j["properties"] = {}
+        
         return j
 
 TOTAL_DIFF_SIZE = 0
@@ -47,12 +54,22 @@ def report_diff(x):
 output = open("command.json", "w")
 def out(x):
     output.write(json.dumps(x) + "\n")    
-    
+
+def diff_simple_dict(l_dict, r_dict):
+    assert list(l_dict.keys()) == list(r_dict.keys())
+    for k in l_dict.keys():
+        if l_dict[k] != r_dict[k]:
+            print(k, l_dict[k], r_dict[k])
+
 def diff(lhs, rhs, path):
     if lhs["id"] != rhs["id"]:
         report_diff(rhs)
         out(command_replace(path, rhs))
     else:
+        if lhs["attributes"] != rhs["attributes"]:
+            diff_simple_dict(lhs["attributes"], rhs["attributes"])
+        if lhs["properties"] != rhs["properties"]:
+            diff_simple_dict(lhs["properties"], rhs["properties"])
         l_children = lhs["children"]
         r_children = rhs["children"]
         for i in range(min(len(l_children), len(r_children))):
@@ -76,7 +93,7 @@ def enforce_unique_id(j, s):
     for c in j["children"]:
         enforce_unique_id(c, s)
     
-with open("google.trace") as f:
+with open("google_haskell.trace") as f:
     j_old = None
     for l in f.readlines():
         lhs, rhs = l.split(",", 1)

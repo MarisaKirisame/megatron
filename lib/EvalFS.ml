@@ -11,7 +11,16 @@ module EVAL : Eval = struct
 
   let make_node (p : _ prog) (children : meta node list) : meta node =
     ignore p;
-    { id = count (); input = Hashtbl.create (module String); dict = Hashtbl.create (module String); children; parent = None; prev = None; next = None; m = () }
+    {
+      id = count ();
+      input = Hashtbl.create (module String);
+      dict = Hashtbl.create (module String);
+      children;
+      parent = None;
+      prev = None;
+      next = None;
+      m = ();
+    }
 
   let rec eval_stmt (p : _ prog) (n : meta node) (s : stmt) (m : metric) : unit =
     match s with

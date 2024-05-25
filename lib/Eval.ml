@@ -11,7 +11,7 @@ let count () =
   ret
 
 type 'rest node = {
-  input: (string, 'rest value) Hashtbl.t; 
+  input : (string, 'rest value) Hashtbl.t;
   dict : (string, 'rest value) Hashtbl.t;
   mutable id : int;
   mutable children : 'rest node list;
@@ -46,6 +46,8 @@ let set_relation (n : 'rest node) =
   n.prev <- None;
   n.next <- None;
   set_children_relation n
+
+let rec rightmost (x : _ node) : _ node = match List.last x.children with Some x -> rightmost x | None -> x
 
 let rec show_node (n : 'rest node) : string =
   let htbl_str =
@@ -90,12 +92,12 @@ let rec eval_expr (n : 'rest node) (e : expr) (m : metric) : 'rest value =
   | IfExpr (c, t, e) -> if bool_of_value (recurse c) then recurse t else recurse e
   | Binop (lhs, op, rhs) -> eval_binop op (recurse lhs) (recurse rhs)
   | HasPath p -> VBool (Option.is_some (eval_path_opt n p))
-  | Read (p, prop_name) ->
+  | Read (p, prop_name) -> (
       read m n.id;
       match Hashtbl.find (eval_path n p).input prop_name with
       | Some v -> v
       | None -> Hashtbl.find_exn (eval_path n p).dict prop_name
-  | _ -> raise (EXN (show_expr e))
+      | _ -> raise (EXN (show_expr e)))
 
 let reversed_path (p : path) (n : 'a node) : 'a node list =
   match p with
