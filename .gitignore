@@ -9,6 +9,7 @@
 *.cmxa
 *.json
 *~
+*.out
 output/
 
 # ocamlbuild working directory
@@ -30,3 +31,4 @@ setup.log
 
 # Local OPAM switch
 _opam/
+__pycache__

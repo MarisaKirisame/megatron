@@ -2,7 +2,7 @@ open Core
 open EXN
 
 (** The type of binary operators. *)
-type bop = Add | Mult | Leq | Lt | Geq | Gt | IEq | Iff [@@deriving show]
+type bop = Add | Mult | Leq | Lt | Geq | Gt | Eq | Iff | Neq [@@deriving show]
 
 type path = Self | Parent | First | Next | Last | Prev [@@deriving show]
 
@@ -11,6 +11,7 @@ type expr =
   | Var of string
   | Int of int
   | Bool of bool
+  | String of string
   | Binop of expr * bop * expr
   | Let of string * expr * expr
   | HasPath of path
@@ -21,13 +22,20 @@ type expr =
   | Read of path * string
   | Index of expr * expr
   | IfExpr of expr * expr * expr
+  | HasProperty of string
+  | GetProperty of string
+  | HasAttribute of string
+  | GetAttribute of string
+  | PxToInt of expr * expr
+  | And of expr * expr
+  | Or of expr * expr
 [@@deriving show]
 
 type stmt = BBCall of string | ChildrenCall of string | Write of path * string * expr [@@deriving show]
 type stmts = stmt list [@@deriving show]
-type prop_decl = PropDecl of string [@@deriving show]
+type var_decl = VarDecl of string [@@deriving show]
 
-let prop_decl_name (PropDecl n) = n
+let var_decl_name (VarDecl n) = n
 
 type proc_def = ProcDef of string * stmts [@@deriving show]
 
@@ -40,14 +48,14 @@ type processed_proc = ProcessedProc of string * stmts
 let stmts_of_proc_def (ProcDef (_, x)) = x
 
 type prog_def = {
-  prop_decls : prop_decl list;
+  var_decls : var_decl list;
   proc_defs : proc_def list;
   order_decls : string list; (*the order to execute the procs*)
 }
 [@@deriving show]
 
 type 'rest prog = {
-  props : prop_decl list;
+  vars : var_decl list;
   bbs : (string, basic_block) Hashtbl.t;
   procs : (string, processed_proc) Hashtbl.t;
   order : string list;
@@ -91,13 +99,13 @@ let prog_of_prog_def (p : prog_def) : unit prog =
     (name, ProcessedProc (name, transformed_stmts))
   in
   {
-    props = p.prop_decls;
+    vars = p.var_decls;
     bbs = bb;
     procs = Hashtbl.of_alist_exn (module String) (List.map p.proc_defs ~f:transform);
     order = p.order_decls;
   }
 
-type read = ReadProp of path * string | ReadHasPath of path [@@deriving show]
+type read = ReadVar of path * string | ReadHasPath of path | ReadAttr of string | ReadProp of string [@@deriving show]
 
 let string_of_reads (reads : read list) : string = List.to_string reads ~f:show_read
 
@@ -105,10 +113,12 @@ let rec reads_of_expr (e : expr) : read list =
   let recurse e = reads_of_expr e in
   match e with
   | HasPath p -> [ ReadHasPath p ]
-  | Int _ -> []
+  | Int _ | String _ -> []
   | IfExpr (x, y, z) -> List.append (recurse x) (List.append (recurse y) (recurse z))
-  | Read (p, n) -> [ ReadProp (p, n) ]
-  | Binop (x, _, y) -> List.append (recurse x) (recurse y)
+  | Binop (x, _, y) | PxToInt (x, y) -> List.append (recurse x) (recurse y)
+  | Read (p, n) -> [ ReadVar (p, n) ]
+  | GetProperty x | HasProperty x -> [ ReadProp x ]
+  | GetAttribute x | HasAttribute x -> [ ReadAttr x ]
   | _ -> raise (EXN (show_expr e))
 
 let exprs_of_stmt (s : stmt) : expr list =

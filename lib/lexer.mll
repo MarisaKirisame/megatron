@@ -24,11 +24,12 @@ rule read =
   | "(" { LPAREN }
   | ")" { RPAREN }
   | "let" { LET }
-  | "=" { EQUALS }
+  | "=" { EQ }
+  | "!=" { NEQ }
   | "in" { IN }
   | "if" { IF }
   | "else" { ELSE }
-  | "prop" { PROP }
+  | "var" { VAR }
   | "proc" { PROC }
   | "<-" { LARROW }
   | "->" { RARROW }
@@ -41,6 +42,9 @@ rule read =
   | "." { DOT }
   | "{" { LCB }
   | "}" { RCB }
+  | "||" { OR }
+  | "&&" { AND }
+  | '"' { read_string (Buffer.create 17) lexbuf }
   | "has_parent" { HAS_PARENT }
   | "parent" { PARENT }
   | "has_first" { HAS_FIRST }
@@ -48,6 +52,10 @@ rule read =
   | "has_next" { HAS_NEXT }
   | "has_last" { HAS_LAST }
   | "children" { CHILDREN }
+  | "has_prop" { HAS_PROPERTY }
+  | "get_prop" { GET_PROPERTY }
+  | "has_attr" { HAS_ATTRIBUTE }
+  | "get_attr" { GET_ATTRIBUTE }
   | "len" { LEN }
   | "map" { MAP }
   | "sum" { SUM }
@@ -57,6 +65,7 @@ rule read =
   | "prev" { PREV }
   | "last" { LAST }
   | "then" { THEN }
+  | "px_to_int" { PX_TO_INT }
   | id { ID (Lexing.lexeme lexbuf) }
   | int { INT (int_of_string (Lexing.lexeme lexbuf)) }
   | newline { Lexing.new_line lexbuf; read lexbuf }
@@ -65,5 +74,21 @@ rule read =
 and read_comment = parse
   | "*)" { read lexbuf }
   | newline { Lexing.new_line lexbuf; read_comment lexbuf }
-  | eof { failwith (Printf.sprintf "unterminated comment") }
+  | eof { failwith "unterminated comment" }
   | _ { read_comment lexbuf }
+and read_string buf =
+  parse
+  | '"'       { STRING (Buffer.contents buf) }
+  | '\\' '/'  { Buffer.add_char buf '/'; read_string buf lexbuf }
+  | '\\' '\\' { Buffer.add_char buf '\\'; read_string buf lexbuf }
+  | '\\' 'b'  { Buffer.add_char buf '\b'; read_string buf lexbuf }
+  | '\\' 'f'  { Buffer.add_char buf '\012'; read_string buf lexbuf }
+  | '\\' 'n'  { Buffer.add_char buf '\n'; read_string buf lexbuf }
+  | '\\' 'r'  { Buffer.add_char buf '\r'; read_string buf lexbuf }
+  | '\\' 't'  { Buffer.add_char buf '\t'; read_string buf lexbuf }
+  | [^ '"' '\\']+
+    { Buffer.add_string buf (Lexing.lexeme lexbuf);
+      read_string buf lexbuf
+    }
+  | _ { failwith ("Illegal string character: " ^ (Lexing.lexeme lexbuf)) }
+  | eof { failwith "String is not terminated" }

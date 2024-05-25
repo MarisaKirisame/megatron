@@ -9,12 +9,13 @@ module EVAL : Eval = struct
 
   type meta = unit
 
-  let make_node (p : _ prog) (children : meta node list) : meta node =
+  let make_node (p : _ prog) ~attr ~prop (children : meta node list) : meta node =
     ignore p;
     {
       id = count ();
-      input = Hashtbl.create (module String);
-      dict = Hashtbl.create (module String);
+      attr;
+      prop;
+      var = Hashtbl.create (module String);
       children;
       parent = None;
       prev = None;
@@ -28,7 +29,7 @@ module EVAL : Eval = struct
         List.iter n.children ~f:(fun n -> eval_stmts p n (stmts_of_processed_proc p proc_name) m)
     | Write (path, prop_name, expr) ->
         write m n.id;
-        Hashtbl.add_exn (eval_path n path).dict ~key:prop_name ~data:(eval_expr n expr m)
+        Hashtbl.add_exn (eval_path n path).var ~key:prop_name ~data:(eval_expr n expr m)
         (*we use add_exn to make sure the same element isnt touched twice.
           however, this mean we have to reset the hashtable to rerun.*)
     | BBCall bb_name -> eval_stmts p n (stmts_of_basic_block p bb_name) m
@@ -48,7 +49,7 @@ module EVAL : Eval = struct
         x.children <- List.append lhs rhs
     | _ -> panic "bad argument"
 
-  let add_children (p : _ prog) (x : meta node) (y : meta node) (n : int) (m : metric) : unit =
+  let add_children (_ : _ prog) (x : meta node) (y : meta node) (n : int) (m : metric) : unit =
     let lhs, rhs = List.split_n x.children n in
     x.children <- List.append lhs (y :: rhs);
     (match List.last lhs with
@@ -63,11 +64,29 @@ module EVAL : Eval = struct
     | None -> y.next <- None);
     y.parent <- Some x
 
-  let rec remove_prop (n : meta node) : unit =
-    Hashtbl.clear n.dict;
-    List.iter n.children ~f:remove_prop
+  let rec remove_var (n : meta node) : unit =
+    Hashtbl.clear n.var;
+    List.iter n.children ~f:remove_var
 
   let recalculate (p : _ prog) (n : meta node) (m : metric) : unit =
-    remove_prop n;
+    remove_var n;
     eval p n m
+
+  let add_prop (_ : _ prog) (n : meta node) (name : string) (v : value) (m : metric) : unit =
+    write m n.id;
+    Hashtbl.add_exn n.prop name v
+
+  let remove_prop (_ : _ prog) (n : meta node) (name : string) (m : metric) : unit =
+    write m n.id;
+    ignore (Hashtbl.find_exn n.prop name);
+    Hashtbl.remove n.prop name
+
+  let add_attr (_ : _ prog) (n : meta node) (name : string) (v : value) (m : metric) : unit =
+    write m n.id;
+    Hashtbl.add_exn n.attr name v
+
+  let remove_attr (_ : _ prog) (n : meta node) (name : string) (m : metric) : unit =
+    write m n.id;
+    ignore (Hashtbl.find_exn n.attr name);
+    Hashtbl.remove n.attr name
 end

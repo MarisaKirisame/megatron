@@ -5,6 +5,7 @@ open Core
 
 %token <int> INT
 %token <string> ID
+%token <string> STRING
 %token TRUE
 %token FALSE
 %token LEQ
@@ -18,12 +19,15 @@ open Core
 %token LBRACKET
 %token RBRACKET
 %token LET
-%token EQUALS
+%token EQ
+%token NEQ
 %token IN
 %token IF
 %token THEN
 %token ELSE
 %token EOF
+%token AND
+%token OR
 
 %token CHILDREN
 %token LEN
@@ -42,6 +46,11 @@ open Core
 %token HAS_PREV
 %token PREV
 
+%token HAS_PROPERTY
+%token GET_PROPERTY
+%token HAS_ATTRIBUTE
+%token GET_ATTRIBUTE
+
 %token SLASH
 %token COMMA
 %token SEMICOLON
@@ -51,8 +60,10 @@ open Core
 %token RARROW
 %token LCB
 %token RCB
-%token PROP
+%token VAR
 %token PROC
+
+%token PX_TO_INT
 
 %nonassoc IN
 %nonassoc ELSE
@@ -65,10 +76,10 @@ open Core
 %%
 
 prog:
-	| EOF { {prop_decls = []; proc_defs = []; order_decls = [] } }
-	| x = prop_decl; y = prog { {prop_decls = x :: y.prop_decls; proc_defs = y.proc_defs; order_decls = y.order_decls} }
-	| x = proc_decl; y = prog { {prop_decls = y.prop_decls; proc_defs = x :: y.proc_defs; order_decls = y.order_decls} }
-	| x = order_decl; y = prog { assert (List.is_empty y.order_decls); {prop_decls = y.prop_decls; proc_defs = y.proc_defs; order_decls = x} }
+	| EOF { {var_decls = []; proc_defs = []; order_decls = [] } }
+	| x = var_decl; y = prog { {var_decls = x :: y.var_decls; proc_defs = y.proc_defs; order_decls = y.order_decls} }
+	| x = proc_decl; y = prog { {var_decls = y.var_decls; proc_defs = x :: y.proc_defs; order_decls = y.order_decls} }
+	| x = order_decl; y = prog { assert (List.is_empty y.order_decls); {var_decls = y.var_decls; proc_defs = y.proc_defs; order_decls = x} }
 	;
 	
 order_decl:
@@ -79,8 +90,8 @@ procname_plus:
 	| x = ID; { [x] }
 	| x = ID; SEMICOLON; y = procname_plus { x :: y }
 
-prop_decl:
-	| PROP; x = ID; SEMICOLON { PropDecl(x) };
+var_decl:
+	| VAR; x = ID; SEMICOLON { VarDecl(x) };
 
 proc_decl:
 	| PROC; x = ID; LPAREN; RPAREN; LCB; y = stmt_list; RCB { ProcDef(x, y) };
@@ -119,6 +130,8 @@ binop:
 	| GEQ { Geq }
 	| GT { Gt }
 	| PLUS { Add }
+	| EQ { Eq }
+	| NEQ { Neq }
 	;
 
 expr:
@@ -127,18 +140,26 @@ expr:
 	| HAS_PREV; LPAREN; RPAREN { HasPath(Prev) }
 	| HAS_NEXT; LPAREN; RPAREN { HasPath(Next) }
 	| HAS_LAST; LPAREN; RPAREN { HasPath(Last) }
+	| HAS_PROPERTY; LPAREN; x = ID; RPAREN { HasProperty(x) }
+	| GET_PROPERTY; LPAREN; x = ID; RPAREN { GetProperty(x) }
+	| HAS_ATTRIBUTE; LPAREN; x = ID; RPAREN { HasAttribute(x) }
+	| GET_ATTRIBUTE; LPAREN; x = ID; RPAREN { GetAttribute(x) }
 	| IF; e1 = expr; THEN; e2 = expr; ELSE; e3 = expr { IfExpr (e1, e2, e3) }
+	| x = STRING { String(x) }
 	| x = path; DOT; y = ID { Read(x, y) }
 	| i = INT { Int i }
 	| LEN { Len }
 	| MAP { Map }
 	| SUM { Sum }
+	| PX_TO_INT; LPAREN; x = expr; COMMA; y = expr; RPAREN { PxToInt(x, y) }
 	| x = ID { Var x }
 	| TRUE { Bool true }
 	| FALSE { Bool false }
 	| x = expr; y = binop; z = expr { Binop (x, y, z) }
-	| LET; x = ID; EQUALS; e1 = expr; IN; e2 = expr { Let (x, e1, e2) }
+	| LET; x = ID; EQ; e1 = expr; IN; e2 = expr { Let (x, e1, e2) }
 	| LPAREN; e=expr; RPAREN {e}
 	| x = expr; LBRACKET; y = expr; RBRACKET { Index(x, y) }
+	| x = expr; AND; y = expr { And(x, y) }
+	| x = expr; OR; y = expr { Or(x, y) }
 	;
 	

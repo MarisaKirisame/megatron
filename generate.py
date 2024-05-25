@@ -1,48 +1,6 @@
 import json
-
-# the four command: init, recalculate, add, remove.
-# path is a list of int.
-def command_init(node):
-    return { "name": "init", "node": node }
-
-def command_recalculate():
-    return { "name": "recalculate" }
-
-def command_add(path, node):
-    return { "name": "add", "path": path, "node": node }
-
-def command_remove(path):
-    return { "name": "remove", "path": path }
-
-def command_replace(path, node):
-    return { "name": "replace", "path": path, "node": node }
-
-def size(j):
-    ret = 1
-    for c in j["children"]:
-        ret += size(c)
-    return ret
-
-def regularize(j):
-    if "id" not in j:
-        return None
-    else:
-        if "children" not in j:
-            j["children"] = []
-        tmp = []
-        for c in j["children"]:
-            c = regularize(c)
-            if c is not None:
-                tmp.append(c)
-        j["children"] = tmp
-
-        if "attributes" not in j:
-            j["attributes"] = {}
-
-        if "properties" not in j:
-            j["properties"] = {}
-        
-        return j
+import sys
+from common import *
 
 TOTAL_DIFF_SIZE = 0
 TOTAL_SIZE = 0
@@ -51,39 +9,66 @@ def report_diff(x):
     global TOTAL_DIFF_SIZE
     TOTAL_DIFF_SIZE += size(x)
 
+trace_path = sys.argv[1]
+
 output = open("command.json", "w")
 def out(x):
     output.write(json.dumps(x) + "\n")    
 
-def diff_simple_dict(l_dict, r_dict):
-    assert list(l_dict.keys()) == list(r_dict.keys())
+def diff_simple_dict(l_dict, r_dict, path, type_):
     for k in l_dict.keys():
-        if l_dict[k] != r_dict[k]:
-            print(k, l_dict[k], r_dict[k])
+        if k in r_dict:
+            if l_dict[k] != r_dict[k]:
+                out(command_replace_value(path, type_, k, l_dict[k], r_dict[k]))
+        else:
+            out(command_delete_value(path, type_, k, l_dict[k]))
+    for k in r_dict.keys():
+        if k not in l_dict:
+            out(command_insert_value(path, type_, k, r_dict[k]))
 
-def diff(lhs, rhs, path):
+def diff_dom_tree(lhs, rhs, path):
     if lhs["id"] != rhs["id"]:
         report_diff(rhs)
-        out(command_replace(path, rhs))
+        out(command_replace(path, lhs, rhs))
     else:
         if lhs["attributes"] != rhs["attributes"]:
-            diff_simple_dict(lhs["attributes"], rhs["attributes"])
+            diff_simple_dict(lhs["attributes"], rhs["attributes"], path, "attributes")
         if lhs["properties"] != rhs["properties"]:
-            diff_simple_dict(lhs["properties"], rhs["properties"])
+            diff_simple_dict(lhs["properties"], rhs["properties"], path, "properties")
         l_children = lhs["children"]
         r_children = rhs["children"]
         for i in range(min(len(l_children), len(r_children))):
-            diff(l_children[i], r_children[i], path + [i])
+            diff_dom_tree(l_children[i], r_children[i], path + [i])
         if len(l_children) > len(r_children): 
             extra = list(l_children[len(r_children):])
             for i in range(len(extra)):
-                out(command_remove(path + [len(l_children) - 1 - i]))
-        elif len(l_children) < len(r_children):
+                out(command_remove(path + [len(l_children) - 1 - i], l_children[len(l_children) - 1 - i]))
+        elif len(l_children) < len(r_children): 
             extra = list(r_children[len(l_children):])
             for i in range(len(extra)):
                 out(command_add(path + [len(l_children) + i], extra[i]))
                 report_diff(extra[i])
 
+def layout_info(node):
+    key = ["type", "x", "y", "width", "height"]
+    return {k: node[k] for k in key}
+
+def diff_layout_tree(lhs, rhs, path):
+    if layout_info(lhs) != layout_info(rhs):
+        out(command_layout_info_changed(path, layout_info(lhs), layout_info(rhs)))
+    l_children = lhs["children"]
+    r_children = rhs["children"]
+    if len(l_children) > len(r_children):
+        extra = list(l_children[len(r_children):])
+        for i in range(len(extra)):
+            out(command_layout_remove(path + [len(l_children) - 1 - i], l_children[len(l_children) - 1 - i]))
+    elif len(l_children) < len(r_children):
+        extra = list(r_children[len(l_children):])
+        for i in range(len(extra)):
+            out(command_layout_add(path + [len(l_children) + i], extra[i]))
+    for i in range(min(len(l_children), len(r_children))):
+        diff_layout_tree(l_children[i], r_children[i], path + [i])
+    
 def semantic_check(j):
     enforce_unique_id(j, set())
 
@@ -93,18 +78,25 @@ def enforce_unique_id(j, s):
     for c in j["children"]:
         enforce_unique_id(c, s)
     
-with open("google_haskell.trace") as f:
-    j_old = None
+with open(trace_path) as f:
+    dom_tree_old = None
+    layout_tree_old = None
     for l in f.readlines():
-        lhs, rhs = l.split(",", 1)
-        j = regularize(json.loads(rhs))
-        semantic_check(j)
-        TOTAL_SIZE += size(j)
-        if j_old is None:
-            out(command_init(j))
+        j = json.loads(l)
+        dom_tree = regularize_dom(j["dom_tree"])
+        layout_tree = regularize_layout(j["layout_tree"])
+        semantic_check(dom_tree)
+        TOTAL_SIZE += size(dom_tree)
+        if dom_tree_old is None:
+            assert layout_tree_old is None
+            out(command_init(dom_tree))
+            out(command_layout_init(layout_tree))
         else:
-            diff(j_old, j, [])
+            assert layout_tree_old is not None
+            diff_dom_tree(dom_tree_old, dom_tree, [])
+            diff_layout_tree(layout_tree_old, layout_tree, [])
             out(command_recalculate())
-        j_old = j
+        dom_tree_old = dom_tree
+        layout_tree_old = layout_tree
 
 print((TOTAL_DIFF_SIZE, TOTAL_SIZE))

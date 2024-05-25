@@ -1,18 +1,22 @@
-prop width;
-prop height;
-prop sum_height;
+var width;
+var height;
+var sum_height;
+var display;
 
 proc pass_0() {
-  self.width <- if has_parent() then parent().width else 800;
+  self.display <- if has_prop(display) then get_prop(display) else "block";
+  self.width_px <- if has_prop(width) then get_prop(width) else "auto";
+  self.width <- 
+    if self.display = "none"
+    then 0
+    else px_to_int(self.width_px, (if has_parent() then parent().width else 800));
   children.pass_0();
-  self.height <- if has_last() then last().sum_height else 10;
+  self.height <- if self.display = "none" then 0 else if has_last() then last().sum_height else 10;
   self.sum_height <- if has_prev() then self.height + prev().sum_height else self.height;
 }
 
-(*[pass_0]*)
-
-prop x;
-prop y;
+var x;
+var y;
 proc pass_1() {
   self.x <- 
     if has_first() then 

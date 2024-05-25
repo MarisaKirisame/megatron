@@ -11,13 +11,14 @@ module EVAL : Eval = struct
   type meta = { (*time of bbs*)
                 time_table : (string, TotalOrder.t) Hashtbl.t }
 
-  let make_node (p : _ prog) (children : meta node list) : meta node =
+  let make_node (p : _ prog) ~attr ~prop (children : meta node list) : meta node =
     ignore p;
     {
       m = { time_table = Hashtbl.create (module String) };
       id = count ();
-      dict = Hashtbl.create (module String);
-      input = Hashtbl.create (module String);
+      attr;
+      prop;
+      var = Hashtbl.create (module String);
       children;
       parent = None;
       prev = None;
@@ -44,16 +45,17 @@ module EVAL : Eval = struct
   let bb_dirtied (n : meta node) (bb_name : string) (m : metric) : unit =
     match Hashtbl.find n.m.time_table bb_name with Some order -> queue_push order n bb_name m | None -> panic "?"
 
-  let prop_modified (p : _ prog) (n : meta node) (prop_name : string) (m : metric) : unit =
+  let var_modified (p : _ prog) (n : meta node) (prop_name : string) (m : metric) : unit =
     Hashtbl.iter p.bbs ~f:(fun (BasicBlock (bb_name, stmts)) ->
         let reads = reads_of_stmts stmts in
         let dirty read =
           match read with
-          | ReadProp (path, read_prop_name) ->
+          | ReadVar (path, read_prop_name) ->
               if String.equal prop_name read_prop_name then
                 List.iter (reversed_path path n) ~f:(fun dirtied_node -> bb_dirtied dirtied_node bb_name m)
               else ()
           | ReadHasPath _ -> () (*property being changed cannot change haspath status*)
+          | ReadProp _ | ReadAttr _ -> ()
         in
         List.iter reads ~f:dirty)
 
@@ -61,9 +63,12 @@ module EVAL : Eval = struct
     match s with
     | Write (path, prop_name, expr) ->
         write m n.id;
+        let new_value = eval_expr n expr m in
         let new_node = eval_path n path in
-        if Option.is_some (Hashtbl.find new_node.dict prop_name) then prop_modified p new_node prop_name m else ();
-        Hashtbl.set new_node.dict ~key:prop_name ~data:(eval_expr n expr m)
+        (match Hashtbl.find new_node.var prop_name with
+        | None -> ()
+        | Some value -> if equal_value value new_value then () else var_modified p new_node prop_name m);
+        Hashtbl.set new_node.var ~key:prop_name ~data:new_value
     | BBCall bb_name ->
         current_time := TotalOrder.add_next !current_time;
         Hashtbl.add_exn n.m.time_table ~key:bb_name ~data:!current_time;
@@ -88,15 +93,15 @@ module EVAL : Eval = struct
             let reads = reads_of_stmts stmts in
             let dirty read =
               match read with
-              | ReadHasPath Parent | ReadProp (Parent, _) -> ()
+              | ReadHasPath Parent | ReadVar (Parent, _) -> ()
               | ReadHasPath First | ReadHasPath Last -> if List.is_empty x.children then bb_dirtied x bb_name m else ()
-              | ReadProp (First, _) -> if List.is_empty lhs then bb_dirtied x bb_name m else ()
-              | ReadProp (Last, _) -> if List.is_empty rhs then bb_dirtied x bb_name m else ()
-              | ReadHasPath Prev | ReadProp (Prev, _) -> (
+              | ReadVar (First, _) -> if List.is_empty lhs then bb_dirtied x bb_name m else ()
+              | ReadVar (Last, _) -> if List.is_empty rhs then bb_dirtied x bb_name m else ()
+              | ReadHasPath Prev | ReadVar (Prev, _) -> (
                   match removed.next with Some x -> bb_dirtied x bb_name m | None -> ())
-              | ReadHasPath Next | ReadProp (Next, _) -> (
+              | ReadHasPath Next | ReadVar (Next, _) -> (
                   match removed.prev with Some x -> bb_dirtied x bb_name m | None -> ())
-              | ReadProp (Self, _) -> ()
+              | ReadVar (Self, _) | ReadProp _ | ReadAttr _ -> ()
               | _ -> raise (EXN (show_read read))
             in
             List.iter reads ~f:dirty)
@@ -136,16 +141,14 @@ module EVAL : Eval = struct
         let reads = reads_of_stmts stmts in
         let dirty read =
           match read with
-          | ReadHasPath Parent | ReadProp (Parent, _) -> ()
+          | ReadHasPath Parent | ReadVar (Parent, _) -> ()
           | ReadHasPath First | ReadHasPath Last ->
               if phys_equal (List.length x.children) 1 then bb_dirtied x bb_name m else ()
-          | ReadProp (First, _) -> if List.is_empty lhs then bb_dirtied x bb_name m else ()
-          | ReadProp (Last, _) -> if List.is_empty rhs then bb_dirtied x bb_name m else ()
-          | ReadHasPath Prev | ReadProp (Prev, _) -> (
-              match y.next with Some x -> bb_dirtied x bb_name m | None -> ())
-          | ReadHasPath Next | ReadProp (Next, _) -> (
-              match y.prev with Some x -> bb_dirtied x bb_name m | None -> ())
-          | ReadProp (Self, _) -> ()
+          | ReadVar (First, _) -> if List.is_empty lhs then bb_dirtied x bb_name m else ()
+          | ReadVar (Last, _) -> if List.is_empty rhs then bb_dirtied x bb_name m else ()
+          | ReadHasPath Prev | ReadVar (Prev, _) -> ( match y.next with Some x -> bb_dirtied x bb_name m | None -> ())
+          | ReadHasPath Next | ReadVar (Next, _) -> ( match y.prev with Some x -> bb_dirtied x bb_name m | None -> ())
+          | ReadVar (Self, _) | ReadProp _ | ReadAttr _ -> ()
           | _ -> raise (EXN (show_read read))
         in
         List.iter reads ~f:dirty);
@@ -195,5 +198,53 @@ module EVAL : Eval = struct
       assert (phys_equal (TotalOrder.compare x x') 0);
       recalculate_aux p m
 
-  let recalculate (p : _ prog) (n : meta node) (m : metric) = recalculate_aux p m
+  let recalculate (p : _ prog) (_ : meta node) (m : metric) = recalculate_aux p m
+
+  let add_prop (p : _ prog) (n : meta node) (name : string) (v : value) (m : metric) : unit =
+    write m n.id;
+    Hashtbl.add_exn n.prop name v;
+    Hashtbl.iter p.bbs ~f:(fun (BasicBlock (bb_name, stmts)) ->
+        let reads = reads_of_stmts stmts in
+        let dirty read =
+          match read with
+          | ReadHasPath _ | ReadVar _ | ReadAttr _ -> ()
+          | ReadProp read_name -> if String.equal name read_name then bb_dirtied n bb_name m else ()
+          | _ -> raise (EXN (show_read read))
+        in
+        List.iter reads ~f:dirty)
+
+  let remove_prop (p : _ prog) (n : meta node) (name : string) (m : metric) : unit =
+    write m n.id;
+    ignore (Hashtbl.find_exn n.prop name);
+    Hashtbl.remove n.prop name;
+    Hashtbl.iter p.bbs ~f:(fun (BasicBlock (bb_name, stmts)) ->
+        let reads = reads_of_stmts stmts in
+        let dirty read =
+          match read with
+          | ReadHasPath _ | ReadVar _ | ReadAttr _ -> ()
+          | ReadProp read_name -> if String.equal name read_name then bb_dirtied n bb_name m else ()
+          | _ -> raise (EXN (show_read read))
+        in
+        List.iter reads ~f:dirty)
+
+  let add_attr (p : _ prog) (n : meta node) (name : string) (v : value) (m : metric) : unit =
+    write m n.id;
+    Hashtbl.add_exn n.attr name v;
+    Hashtbl.iter p.bbs ~f:(fun (BasicBlock (bb_name, stmts)) ->
+        let reads = reads_of_stmts stmts in
+        let dirty read =
+          match read with ReadHasPath _ | ReadVar _ | ReadProp _ -> () | _ -> raise (EXN (show_read read))
+        in
+        List.iter reads ~f:dirty)
+
+  let remove_attr (p : _ prog) (n : meta node) (name : string) (m : metric) : unit =
+    write m n.id;
+    ignore (Hashtbl.find_exn n.attr name);
+    Hashtbl.remove n.attr name;
+    Hashtbl.iter p.bbs ~f:(fun (BasicBlock (bb_name, stmts)) ->
+        let reads = reads_of_stmts stmts in
+        let dirty read =
+          match read with ReadHasPath _ | ReadVar _ | ReadProp _ -> () | _ -> raise (EXN (show_read read))
+        in
+        List.iter reads ~f:dirty)
 end

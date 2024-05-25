@@ -1,11 +1,18 @@
 set -e
 
-opam switch create megatron --empty || true
-opam switch megatron
-eval $(opam env)
-opam update
-opam upgrade -y
-opam install core dune menhir ppx_deriving yojson -y
-python3 generate.py
-dune exec megatron
+process(){
+  tar -xf $1.tar.xz
+  python3 generate.py $1.trace
+  dune exec megatron -- $1.out
+}
+
+rm *.trace
+process google_hover
+process google_searchbar
+process google_searchpage
+process github_nologin
+process wikipedia_idle
+process wikipedia_hover
+process hn_type
+rm *.trace
 python3 report.py
