@@ -32,3 +32,4 @@ setup.log
 # Local OPAM switch
 _opam/
 __pycache__
+*.webm

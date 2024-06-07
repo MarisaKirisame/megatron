@@ -1,12 +1,12 @@
 # path is a list of int.
-def command_init(node):
-    return { "name": "init", "node": node }
+def command_init(node, time):
+    return { "name": "init", "node": node, "time": time }
 
 def command_layout_init(node):
     return { "name": "layout_init", "node": node }
 
-def command_recalculate():
-    return { "name": "recalculate" }
+def command_recalculate(time):
+    return { "name": "recalculate", "time": time }
 
 def command_add(path, node):
     return { "name": "add", "path": path, "node": node }
@@ -26,14 +26,14 @@ def command_replace(path, old_node, node):
 def command_layout_replace(path, old_node, node):
     return { "name": "layout_replace", "path": path, "old_node": old_node, "node": node }
 
-def command_replace_value(path, type_, k, old_value, v):
-    return { "name": "replace_value", "path": path, "type": type_, "key": k, "old_value": old_value, "value": v }
+def command_replace_value(path, on, type_, k, old_value, v):
+    return { "name": "replace_value", "path": path, "on": on, "type": type_, "key": k, "old_value": old_value, "value": v }
 
-def command_insert_value(path, type_, k, v):
-    return { "name": "insert_value", "path": path, "type": type_, "key": k, "value": v }
+def command_insert_value(path, on, type_, k, v):
+    return { "name": "insert_value", "path": path, "on": on, "type": type_, "key": k, "value": v }
 
-def command_delete_value(path, type_, k, old_value):
-    return { "name": "delete_value", "path": path, "type": type_, "key": k, "old_value": old_value }
+def command_delete_value(path, on, type_, k, old_value):
+    return { "name": "delete_value", "path": path, "on": on, "type": type_, "key": k, "old_value": old_value }
 
 def command_layout_info_changed(path, old, new):
     return { "name": "layout_info_changed", "path": path, "old": old, "new": new }

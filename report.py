@@ -94,14 +94,20 @@ def default_count_to_strip_default(default_count):
         strip_default[k] = max_dv
     return strip_default
 
-   
+def get_time(js):
+    for j in js:
+        if j["name"] in ["init", "recalculate"]:
+            return j["time"]
+    print(js)
+    raise
+    
 def per_trace(trace_out_path):
     default_count = {}
     j_by_diff = {}
     for l in readlines_file(trace_out_path):
         j = json.loads(l)
         anal(j, default_count)
-        header = list(j.keys()) + ["full_command"]
+        header = list(j.keys()) + ["full_command", "time"]
         diff_num = j["diff_num"]
         if diff_num not in j_by_diff:
             j_by_diff[diff_num] = []
@@ -121,15 +127,16 @@ def per_trace(trace_out_path):
                         processed = {}
                         processed["command"] = string_as_link("click me", "[" + ",\n".join([json.dumps(strip(c, strip_default)) for c in j["command"]]) + "]", "json")
                         processed["full_command"] = string_as_link("click me", "[" + ",\n".join([json.dumps(c) for c in j["command"]]) + "]", "json")
+                        processed["time"] = get_time(j["command"])
                         for k in j.keys():
                             if k not in processed:
                                 processed[k] = j[k]
                         tr(*[td(processed[h]) for h in header])
                         name = j["name"]
                         if name not in summary:
-                            summary[name] = {"name": name, "diff_num": "total", "command": "NA", "full_command": "NA"}
+                            summary[name] = {"name": name, "diff_num": "total", "command": "NA", "full_command": "NA", "time": "NA"}
                         for k in j.keys():
-                            if k not in set(["name", "diff_num", "command", "full_command"]):
+                            if k not in set(["name", "diff_num", "command", "full_command", "time"]):
                                 if k not in summary[name]:
                                     summary[name][k] = 0
                                 summary[name][k] += j[k]

@@ -15,16 +15,16 @@ output = open("command.json", "w")
 def out(x):
     output.write(json.dumps(x) + "\n")    
 
-def diff_simple_dict(l_dict, r_dict, path, type_):
+def diff_simple_dict(l_dict, r_dict, path, on, type_):
     for k in l_dict.keys():
         if k in r_dict:
             if l_dict[k] != r_dict[k]:
-                out(command_replace_value(path, type_, k, l_dict[k], r_dict[k]))
+                out(command_replace_value(path, on, type_, k, l_dict[k], r_dict[k]))
         else:
-            out(command_delete_value(path, type_, k, l_dict[k]))
+            out(command_delete_value(path, on, type_, k, l_dict[k]))
     for k in r_dict.keys():
         if k not in l_dict:
-            out(command_insert_value(path, type_, k, r_dict[k]))
+            out(command_insert_value(path, on, type_, k, r_dict[k]))
 
 def diff_dom_tree(lhs, rhs, path):
     if lhs["id"] != rhs["id"]:
@@ -32,9 +32,9 @@ def diff_dom_tree(lhs, rhs, path):
         out(command_replace(path, lhs, rhs))
     else:
         if lhs["attributes"] != rhs["attributes"]:
-            diff_simple_dict(lhs["attributes"], rhs["attributes"], path, "attributes")
+            diff_simple_dict(lhs["attributes"], rhs["attributes"], path, str(lhs)[:120], "attributes")
         if lhs["properties"] != rhs["properties"]:
-            diff_simple_dict(lhs["properties"], rhs["properties"], path, "properties")
+            diff_simple_dict(lhs["properties"], rhs["properties"], path, str(lhs)[:120], "properties")
         l_children = lhs["children"]
         r_children = rhs["children"]
         for i in range(min(len(l_children), len(r_children))):
@@ -89,13 +89,13 @@ with open(trace_path) as f:
         TOTAL_SIZE += size(dom_tree)
         if dom_tree_old is None:
             assert layout_tree_old is None
-            out(command_init(dom_tree))
+            out(command_init(dom_tree, j["time"]))
             out(command_layout_init(layout_tree))
         else:
             assert layout_tree_old is not None
             diff_dom_tree(dom_tree_old, dom_tree, [])
             diff_layout_tree(layout_tree_old, layout_tree, [])
-            out(command_recalculate())
+            out(command_recalculate(j["time"]))
         dom_tree_old = dom_tree
         layout_tree_old = layout_tree
 
