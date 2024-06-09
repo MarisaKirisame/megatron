@@ -9,12 +9,12 @@ module EVAL : Eval = struct
   let current_time = ref (TotalOrder.create ())
 
   type meta = { (*time of bbs*)
-                time_table : (string, TotalOrder.t) Hashtbl.t }
+                time_table : (string, TotalOrder.t) Hashtbl.t; mutable alive : bool }
 
   let make_node (p : _ prog) ~attr ~prop (children : meta node list) : meta node =
     ignore p;
     {
-      m = { time_table = Hashtbl.create (module String) };
+      m = { time_table = Hashtbl.create (module String); alive = true };
       id = count ();
       attr;
       prop;
@@ -88,12 +88,13 @@ module EVAL : Eval = struct
         x.children <- List.tl_exn x.children;
         (match removed.prev with Some prev -> prev.next <- removed.next | None -> ());
         (match removed.next with Some next -> next.prev <- removed.prev | None -> ());
+        removed.m.alive <- false;
         x.children <- List.append lhs rhs;
         Hashtbl.iter p.bbs ~f:(fun (BasicBlock (bb_name, stmts)) ->
             let reads = reads_of_stmts stmts in
             let dirty read =
               match read with
-              | ReadHasPath Parent | ReadVar (Parent, _) -> ()
+              | ReadVar (Self, _) | ReadHasPath Parent | ReadVar (Parent, _) -> ()
               | ReadHasPath First | ReadHasPath Last -> if List.is_empty x.children then bb_dirtied x bb_name m else ()
               | ReadVar (First, _) -> if List.is_empty lhs then bb_dirtied x bb_name m else ()
               | ReadVar (Last, _) -> if List.is_empty rhs then bb_dirtied x bb_name m else ()
@@ -101,7 +102,7 @@ module EVAL : Eval = struct
                   match removed.next with Some x -> bb_dirtied x bb_name m | None -> ())
               | ReadHasPath Next | ReadVar (Next, _) -> (
                   match removed.prev with Some x -> bb_dirtied x bb_name m | None -> ())
-              | ReadVar (Self, _) | ReadProp _ | ReadAttr _ -> ()
+              | ReadProp _ | ReadAttr _ -> ()
               | _ -> raise (EXN (show_read read))
             in
             List.iter reads ~f:dirty)
@@ -186,7 +187,7 @@ module EVAL : Eval = struct
     else
       let x, y, z = queue_peek () in
       meta_read m y.id;
-      eval_stmts p y (stmts_of_basic_block p z) m;
+      if y.m.alive then eval_stmts p y (stmts_of_basic_block p z) m else ();
       let x', y', z' = queue_pop () in
       ignore (y', z');
       if not (phys_equal (TotalOrder.compare x x') 0) then (
