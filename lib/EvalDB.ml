@@ -47,9 +47,10 @@ module EVAL : Eval = struct
 
   let bb_dirtied (n : meta node) (proc_name : string) (bb_name : string) (m : metric) : unit =
     meta_write m n.id;
-    if Option.is_some (Hashtbl.find n.m.proc_inited proc_name) then
-    (Hashtbl.set n.m.bb_dirtied ~key:bb_name ~data:true;
-    set_recursive_proc_dirtied n proc_name m) else ()
+    if Option.is_some (Hashtbl.find n.m.proc_inited proc_name) then (
+      Hashtbl.set n.m.bb_dirtied ~key:bb_name ~data:true;
+      set_recursive_proc_dirtied n proc_name m)
+    else ()
 
   let var_modified (p : _ prog) (n : meta node) (var_name : string) (m : metric) : unit =
     Hashtbl.iter p.procs ~f:(fun (ProcessedProc (proc_name, _)) ->
@@ -75,8 +76,8 @@ module EVAL : Eval = struct
     match s with
     | ChildrenCall proc_name ->
         List.iter n.children ~f:(fun new_node ->
-          Hashtbl.add_exn new_node.m.proc_inited ~key:proc_name ~data:();
-          Hashtbl.add_exn new_node.m.recursive_proc_dirtied ~key:proc_name ~data:false;
+            Hashtbl.add_exn new_node.m.proc_inited ~key:proc_name ~data:();
+            Hashtbl.add_exn new_node.m.recursive_proc_dirtied ~key:proc_name ~data:false;
             eval_stmts p new_node (stmts_of_processed_proc p proc_name) m)
     | Write (path, prop_name, expr) ->
         write m n.id;
@@ -94,10 +95,10 @@ module EVAL : Eval = struct
     List.iter s ~f:(fun stmt -> eval_stmt p n stmt m)
 
   let eval (p : _ prog) (n : meta node) (m : metric) : unit =
-    List.iter p.order ~f:(fun proc_name -> 
-      Hashtbl.add_exn n.m.recursive_proc_dirtied ~key:proc_name ~data:false;
-      Hashtbl.add_exn n.m.proc_inited ~key:proc_name ~data:();
-      eval_stmts p n (stmts_of_processed_proc p proc_name) m)
+    List.iter p.order ~f:(fun proc_name ->
+        Hashtbl.add_exn n.m.recursive_proc_dirtied ~key:proc_name ~data:false;
+        Hashtbl.add_exn n.m.proc_inited ~key:proc_name ~data:();
+        eval_stmts p n (stmts_of_processed_proc p proc_name) m)
 
   let remove_children (p : _ prog) (x : meta node) (n : int) (m : metric) : unit =
     match List.split_n x.children n with
@@ -183,14 +184,14 @@ module EVAL : Eval = struct
         Hashtbl.set n.m.bb_dirtied ~key:name ~data:false)
       else ()
     in
-    if Hashtbl.find_exn n.m.recursive_proc_dirtied proc_name then (
+    if Hashtbl.find_exn n.m.recursive_proc_dirtied proc_name then
       if Option.is_none (Hashtbl.find n.m.proc_inited proc_name) then (
         Hashtbl.add_exn n.m.proc_inited proc_name ();
-        eval_stmts p n (stmts_of_processed_proc p proc_name) m
-      ) else
-      ((match down_name with None -> () | Some dn -> rerun_if_dirty dn);
-      List.iter n.children ~f:(fun n -> recalculate_aux p n proc_name down_name up_name m);
-      match up_name with None -> () | Some un -> rerun_if_dirty un))
+        eval_stmts p n (stmts_of_processed_proc p proc_name) m)
+      else (
+        (match down_name with None -> () | Some dn -> rerun_if_dirty dn);
+        List.iter n.children ~f:(fun n -> recalculate_aux p n proc_name down_name up_name m);
+        match up_name with None -> () | Some un -> rerun_if_dirty un)
     else ();
     Hashtbl.set n.m.recursive_proc_dirtied ~key:proc_name ~data:false;
     (*print_endline "exit";*)
@@ -198,10 +199,9 @@ module EVAL : Eval = struct
 
   let rec check (p : _ prog) (n : meta node) : unit =
     Hashtbl.iter p.procs ~f:(fun (ProcessedProc (proc, _)) ->
-      Hashtbl.find_exn n.m.proc_inited proc;
-      assert (not (Hashtbl.find_exn n.m.recursive_proc_dirtied proc)));
-    Hashtbl.iter p.bbs ~f:(fun (BasicBlock (bb, _)) -> 
-      assert (not (Hashtbl.find_exn n.m.bb_dirtied bb)));
+        Hashtbl.find_exn n.m.proc_inited proc;
+        assert (not (Hashtbl.find_exn n.m.recursive_proc_dirtied proc)));
+    Hashtbl.iter p.bbs ~f:(fun (BasicBlock (bb, _)) -> assert (not (Hashtbl.find_exn n.m.bb_dirtied bb)));
     List.iter p.vars ~f:(fun (VarDecl p) -> ignore (Hashtbl.find_exn n.var p));
     List.iter n.children ~f:(check p)
 

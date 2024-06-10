@@ -216,9 +216,9 @@ module Main (EVAL : Eval) = struct
             (*print_endline "recalculate!";*)
             EVAL.recalculate prog n m;
             diff_evaluated ()
-        | "remove" -> 
-          (*print_endline ("remove_node:");*)
-          remove_node (get_path j) n
+        | "remove" ->
+            (*print_endline ("remove_node:");*)
+            remove_node (get_path j) n
         | "replace" -> replace_node (get_path j) n (get_node j)
         | "replace_value" -> replace_value (get_path j) n (get_type j) (get_key j) (get_value j)
         | "delete_value" -> delete_value (get_path j) n (get_type j) (get_key j)
