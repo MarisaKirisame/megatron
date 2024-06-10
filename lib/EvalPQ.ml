@@ -8,13 +8,24 @@ module EVAL : Eval = struct
   let name = "PQ"
   let current_time = ref (TotalOrder.create ())
 
-  type meta = { (*time of bbs*)
-                time_table : (string, TotalOrder.t) Hashtbl.t; mutable alive : bool }
+  type proc_time = Open of TotalOrder.t | Close of TotalOrder.t * TotalOrder.t
+
+  type meta = {
+    (*time of bbs*)
+    bb_time_table : (string, TotalOrder.t) Hashtbl.t;
+    proc_time_table : (string, proc_time) Hashtbl.t;
+    mutable alive : bool;
+  }
 
   let make_node (p : _ prog) ~attr ~prop (children : meta node list) : meta node =
     ignore p;
     {
-      m = { time_table = Hashtbl.create (module String); alive = true };
+      m =
+        {
+          bb_time_table = Hashtbl.create (module String);
+          proc_time_table = Hashtbl.create (module String);
+          alive = true;
+        };
       id = count ();
       attr;
       prop;
@@ -25,8 +36,12 @@ module EVAL : Eval = struct
       next = None;
     }
 
+  type recompute_func = RecomputeBB of string | RecomputeProc of string
+
+  let recompute_to_string = function RecomputeBB x -> x | RecomputeProc x -> x
+
   module PriorityQueue = PrioritySet.Make (struct
-    type t = TotalOrder.t * meta node * string
+    type t = TotalOrder.t * meta node * recompute_func
 
     let compare (l, _, _) (r, _, _) = TotalOrder.compare l r
   end)
@@ -38,12 +53,19 @@ module EVAL : Eval = struct
   let queue_size () = PriorityQueue.size queue
 
   let queue_push x y z m : unit =
+    let result = PriorityQueue.add queue (x, y, z) in
+    ignore result;
+    (*print_endline ("pushed " ^ (string_of_int y.id) ^ " " ^ string_of_bool result);*)
+    meta_write m y.id
+
+  let queue_force_push x y z m : unit =
     meta_write m y.id;
-    if PriorityQueue.add queue (x, y, z) then () (*print_endline (string_of_int (y.id) ^ "." ^ z ^ " enqueued!")*)
-    else ()
+    if PriorityQueue.add queue (x, y, z) then () else panic "push false"
 
   let bb_dirtied (n : meta node) (bb_name : string) (m : metric) : unit =
-    match Hashtbl.find n.m.time_table bb_name with Some order -> queue_push order n bb_name m | None -> panic "?"
+    match Hashtbl.find n.m.bb_time_table bb_name with
+    | Some order -> queue_push order n (RecomputeBB bb_name) m
+    | None -> ()
 
   let var_modified (p : _ prog) (n : meta node) (prop_name : string) (m : metric) : unit =
     Hashtbl.iter p.bbs ~f:(fun (BasicBlock (bb_name, stmts)) ->
@@ -71,16 +93,24 @@ module EVAL : Eval = struct
         Hashtbl.set new_node.var ~key:prop_name ~data:new_value
     | BBCall bb_name ->
         current_time := TotalOrder.add_next !current_time;
-        Hashtbl.add_exn n.m.time_table ~key:bb_name ~data:!current_time;
+        Hashtbl.add_exn n.m.bb_time_table ~key:bb_name ~data:!current_time;
         eval_stmts p n (stmts_of_basic_block p bb_name) m
     | ChildrenCall proc_name ->
-        List.iter n.children ~f:(fun new_node -> eval_stmts p new_node (stmts_of_processed_proc p proc_name) m)
+        List.iter n.children ~f:(fun new_node ->
+            current_time := TotalOrder.add_next !current_time;
+            let open_time = !current_time in
+            eval_stmts p new_node (stmts_of_processed_proc p proc_name) m;
+            Hashtbl.add_exn new_node.m.proc_time_table ~key:proc_name ~data:(Close (open_time, !current_time)))
 
   and eval_stmts (p : _ prog) (n : meta node) (s : stmts) (m : metric) : unit =
     List.iter s ~f:(fun stmt -> eval_stmt p n stmt m)
 
   let eval (p : _ prog) (n : meta node) (m : metric) =
-    List.iter p.order ~f:(fun pass_name -> eval_stmts p n (stmts_of_processed_proc p pass_name) m)
+    List.iter p.order ~f:(fun pass_name ->
+        current_time := TotalOrder.add_next !current_time;
+        let open_time = !current_time in
+        eval_stmts p n (stmts_of_processed_proc p pass_name) m;
+        Hashtbl.add_exn n.m.proc_time_table ~key:pass_name ~data:(Close (open_time, !current_time)))
 
   let remove_children (p : _ prog) (x : meta node) (n : int) (m : metric) : unit =
     match List.split_n x.children n with
@@ -107,22 +137,6 @@ module EVAL : Eval = struct
             in
             List.iter reads ~f:dirty)
     | _ -> panic "bad argument"
-
-  let rec fix_init (current_time : TotalOrder.t ref) (x : meta node) (down : string option) (up : string option) m :
-      unit =
-    (match down with
-    | Some d ->
-        current_time := TotalOrder.add_next !current_time;
-        Hashtbl.add_exn x.m.time_table ~key:d ~data:!current_time;
-        queue_push !current_time x d m
-    | None -> ());
-    List.iter x.children ~f:(fun children -> fix_init current_time children down up m);
-    match up with
-    | Some u ->
-        current_time := TotalOrder.add_next !current_time;
-        Hashtbl.add_exn x.m.time_table ~key:u ~data:!current_time;
-        queue_push !current_time x u m
-    | None -> ()
 
   let add_children (p : _ prog) (x : meta node) (y : meta node) (n : int) (m : metric) : unit =
     let lhs, rhs = List.split_n x.children n in
@@ -155,62 +169,67 @@ module EVAL : Eval = struct
         List.iter reads ~f:dirty);
     (*print_endline ("add: " ^ string_of_int y.id);*)
     Hashtbl.iter p.procs ~f:(fun (ProcessedProc (proc, _)) ->
-        let down, up = get_bb_from_proc p proc in
-        let time : TotalOrder.t =
-          match y.prev with
-          | None ->
-              (*if previous node does not exist, use the down time of parent*)
-              Hashtbl.find_exn x.m.time_table (Option.value_exn down)
-          | Some x -> (
-              (*try to use the up time of previous node, or the down time of the rightmost node if there's no downpass*)
-              match up with
-              | Some u -> Hashtbl.find_exn x.m.time_table u
-              | None -> Hashtbl.find_exn (rightmost x).m.time_table (Option.value_exn down))
-        in
-        fix_init (ref time) y down up m)
-
-  let total_queue_size = ref 0
-  let queue_size_count = ref 0
-
-  let queue_size_stat () =
-    total_queue_size := !total_queue_size + queue_size ();
-    queue_size_count := !queue_size_count + 1;
-    print_endline (string_of_int (queue_size ()));
-    print_endline (string_of_int (!total_queue_size / !queue_size_count))
-
-  let rec recursive_print_id_up (n : meta node) : unit =
-    print_endline (string_of_int n.id ^ List.to_string n.children ~f:(fun n -> string_of_int n.id));
-    match n.parent with None -> () | Some p -> recursive_print_id_up p
+        if Option.is_some (Hashtbl.find x.m.proc_time_table proc) then (
+          let down, up = get_bb_from_proc p proc in
+          let time : TotalOrder.t =
+            match y.prev with
+            | None -> TotalOrder.add_next (Hashtbl.find_exn x.m.bb_time_table (Option.value_exn down))
+            | Some x -> (
+                match Hashtbl.find_exn x.m.proc_time_table proc with
+                | Open t -> TotalOrder.add_next t
+                | Close (_, t) -> TotalOrder.add_next t)
+          in
+          (*print_endline ("pushed " ^ string_of_int y.id ^ "." ^ proc);*)
+          Hashtbl.add_exn y.m.proc_time_table proc (Open time);
+          queue_force_push time y (RecomputeProc proc) m)
+        else () (*otherwise this proc is already in the queue with y's ancestor.*))
 
   let rec recalculate_aux (p : _ prog) (m : metric) =
     if queue_isempty () then ()
     else
       let x, y, z = queue_peek () in
       meta_read m y.id;
-      if y.m.alive then eval_stmts p y (stmts_of_basic_block p z) m else ();
+      m.queue_size_acc <- m.queue_size_acc + queue_size ();
+      (*(match z with RecomputeProc z | RecomputeBB z -> print_endline ("popped " ^ string_of_int y.id ^ "." ^ z); recursive_print_id_up y);*)
+      if y.m.alive then (
+        match z with
+        | RecomputeBB z -> eval_stmts p y (stmts_of_basic_block p z) m
+        | RecomputeProc z ->
+            let old_time = !current_time in
+            current_time := x;
+            eval_stmts p y (stmts_of_processed_proc p z) m;
+            Hashtbl.set y.m.proc_time_table ~key:z ~data:(Close (x, !current_time));
+            current_time := old_time)
+      else ();
       let x', y', z' = queue_pop () in
       ignore (y', z');
       if not (phys_equal (TotalOrder.compare x x') 0) then (
-        print_endline ("peek " ^ string_of_int y.id ^ "." ^ z);
-        print_endline ("pop  " ^ string_of_int y'.id ^ "." ^ z');
+        print_endline ("peek " ^ string_of_int y.id ^ "." ^ recompute_to_string z);
+        print_endline ("pop  " ^ string_of_int y'.id ^ "." ^ recompute_to_string z');
         recursive_print_id_up y;
         recursive_print_id_up y')
       else ();
       assert (phys_equal (TotalOrder.compare x x') 0);
       recalculate_aux p m
 
-  let recalculate (p : _ prog) (_ : meta node) (m : metric) = recalculate_aux p m
+  let rec check (p : _ prog) (n : meta node) : unit =
+    Hashtbl.iter p.bbs ~f:(fun (BasicBlock (bb, _)) -> ignore (Hashtbl.find_exn n.m.bb_time_table bb));
+    List.iter p.vars ~f:(fun (VarDecl p) -> ignore (Hashtbl.find_exn n.var p));
+    List.iter n.children ~f:(check p)
+
+  let recalculate (p : _ prog) (n : meta node) (m : metric) =
+    recalculate_aux p m;
+    check p n
 
   let add_prop (p : _ prog) (n : meta node) (name : string) (v : value) (m : metric) : unit =
     write m n.id;
-    Hashtbl.add_exn n.prop name v;
+    Hashtbl.add_exn n.prop ~key:name ~data:v;
     Hashtbl.iter p.bbs ~f:(fun (BasicBlock (bb_name, stmts)) ->
         let reads = reads_of_stmts stmts in
         let dirty read =
           match read with
           | ReadHasPath _ | ReadVar _ | ReadAttr _ -> ()
           | ReadProp read_name -> if String.equal name read_name then bb_dirtied n bb_name m else ()
-          | _ -> raise (EXN (show_read read))
         in
         List.iter reads ~f:dirty)
 
@@ -224,7 +243,6 @@ module EVAL : Eval = struct
           match read with
           | ReadHasPath _ | ReadVar _ | ReadAttr _ -> ()
           | ReadProp read_name -> if String.equal name read_name then bb_dirtied n bb_name m else ()
-          | _ -> raise (EXN (show_read read))
         in
         List.iter reads ~f:dirty)
 
@@ -232,6 +250,7 @@ module EVAL : Eval = struct
     write m n.id;
     Hashtbl.add_exn n.attr name v;
     Hashtbl.iter p.bbs ~f:(fun (BasicBlock (bb_name, stmts)) ->
+        ignore bb_name;
         let reads = reads_of_stmts stmts in
         let dirty read =
           match read with ReadHasPath _ | ReadVar _ | ReadProp _ -> () | _ -> raise (EXN (show_read read))
@@ -243,6 +262,7 @@ module EVAL : Eval = struct
     ignore (Hashtbl.find_exn n.attr name);
     Hashtbl.remove n.attr name;
     Hashtbl.iter p.bbs ~f:(fun (BasicBlock (bb_name, stmts)) ->
+        ignore bb_name;
         let reads = reads_of_stmts stmts in
         let dirty read =
           match read with ReadHasPath _ | ReadVar _ | ReadProp _ -> () | _ -> raise (EXN (show_read read))

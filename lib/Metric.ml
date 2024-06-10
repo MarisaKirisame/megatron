@@ -3,6 +3,7 @@ type metric = {
   mutable meta_read_count : int;
   mutable write_count : int;
   mutable meta_write_count : int;
+  mutable queue_size_acc : int;
   mutable input_change_count : int;
   mutable output_change_count : int;
 }
@@ -19,6 +20,7 @@ let fresh_metric () =
     meta_read_count = 0;
     write_count = 0;
     meta_write_count = 0;
+    queue_size_acc = 0;
     input_change_count = 0;
     output_change_count = 0;
   }
@@ -28,5 +30,6 @@ let reset_metric m =
   m.meta_read_count <- 0;
   m.write_count <- 0;
   m.meta_write_count <- 0;
+  m.queue_size_acc <- 0;
   m.input_change_count <- 0;
   m.output_change_count <- 0

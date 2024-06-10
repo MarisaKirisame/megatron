@@ -97,6 +97,7 @@ module Main (EVAL : Eval) = struct
           ("meta_read_count", `Int m.meta_read_count);
           ("write_count", `Int m.write_count);
           ("meta_write_count", `Int m.meta_write_count);
+          ("queue_size_acc", `Int m.queue_size_acc);
           ("input_change_count", `Int m.input_change_count);
           ("output_change_count", `Int m.output_change_count);
           ("command", `List !command);
@@ -209,13 +210,15 @@ module Main (EVAL : Eval) = struct
         command := List.append !command [ j ];
         match get_command j with
         | "add" ->
-            (*print_endline (List.to_string string_of_int (get_path j));*)
+            (*print_endline ("add_node: " ^ List.to_string string_of_int (get_path j));*)
             add_node (get_path j) n (get_node j)
         | "recalculate" ->
             (*print_endline "recalculate!";*)
             EVAL.recalculate prog n m;
             diff_evaluated ()
-        | "remove" -> remove_node (get_path j) n
+        | "remove" -> 
+          (*print_endline ("remove_node:");*)
+          remove_node (get_path j) n
         | "replace" -> replace_node (get_path j) n (get_node j)
         | "replace_value" -> replace_value (get_path j) n (get_type j) (get_key j) (get_value j)
         | "delete_value" -> delete_value (get_path j) n (get_type j) (get_key j)

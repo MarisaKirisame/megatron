@@ -22,7 +22,7 @@ type 'meta node = {
   m : 'meta;
 }
 
-and value = VInt of int | VBool of bool | VList of value list | VString of string
+and value = VInt of int | VBool of bool | VString of string
 
 let rec node_size (n : _ node) : int = 1 + List.sum (module Int) n.children ~f:node_size
 
@@ -65,7 +65,6 @@ and show_value (x : value) : string =
 
 let int_of_value x = match x with VInt i -> i | _ -> panic (show_value x)
 let bool_of_value x = match x with VBool b -> b | _ -> panic (show_value x)
-let list_of_value x = match x with VList x -> x | _ -> panic (show_value x)
 let string_of_value x = match x with VString x -> x | _ -> panic (show_value x)
 
 let equal_value x y : bool =
@@ -145,6 +144,10 @@ let reversed_path (p : path) (n : 'a node) : 'a node list =
       | None -> []
       | Some np -> if phys_equal (List.last_exn np.children).id n.id then [ np ] else [])
 
+let rec recursive_print_id_up (n : _ node) : unit =
+  print_endline (string_of_int n.id ^ List.to_string n.children ~f:(fun n -> string_of_int n.id));
+  match n.parent with None -> () | Some p -> recursive_print_id_up p
+
 module type Eval = sig
   val name : string
 
@@ -164,6 +167,11 @@ module type Eval = sig
 end
 
 let rec assert_node_value_equal l r =
-  assert (Hashtbl.equal equal_value l.var r.var);
+  assert (Hashtbl.length l.var == Hashtbl.length r.var);
   assert (List.length l.children == List.length r.children);
-  List.iter2_exn l.children r.children ~f:(fun l r -> assert_node_value_equal l r)
+  List.iter2_exn l.children r.children ~f:(fun l r -> assert_node_value_equal l r);
+  if Hashtbl.equal equal_value l.var r.var then ()
+  else (
+    print_endline (string_of_int l.id ^ " bad!");
+    recursive_print_id_up l);
+  assert (Hashtbl.equal equal_value l.var r.var)
