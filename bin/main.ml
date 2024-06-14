@@ -17,6 +17,10 @@ let json_to_value (j : Yojson.Basic.t) : value =
   | `Int i -> VInt i
   | _ -> panic ("unknown value in json_to_value: " ^ Yojson.Basic.pretty_to_string j)
 
+let json_to_string j : string =
+  let open Yojson.Basic.Util in
+  to_string j
+
 let json_to_dict (j : Yojson.Basic.t) : (string, value) Hashtbl.t =
   let open Yojson.Basic.Util in
   Hashtbl.map (Hashtbl.of_alist_exn (module String) (to_assoc j)) ~f:json_to_value
@@ -42,6 +46,7 @@ module Main (EVAL : Eval) = struct
     let open Yojson.Basic.Util in
     EVAL.make_node prog
       (List.map (j |> member "children" |> to_list) ~f:json_to_node_aux)
+      ~name:(j |> member "name" |> json_to_string)
       ~attr:(j |> member "attributes" |> json_to_dict)
       ~prop:(j |> member "properties" |> json_to_dict)
 
@@ -51,7 +56,9 @@ module Main (EVAL : Eval) = struct
     v
 
   let rec node_to_fs_node_aux n : Megatron.EvalFS.EVAL.meta node =
-    Megatron.EvalFS.EVAL.make_node prog (List.map n.children ~f:node_to_fs_node_aux) ~attr:n.attr ~prop:n.prop
+    Megatron.EvalFS.EVAL.make_node prog
+      (List.map n.children ~f:node_to_fs_node_aux)
+      ~name:n.name ~attr:n.attr ~prop:n.prop
 
   let node_to_fs_node n =
     let v = node_to_fs_node_aux n in

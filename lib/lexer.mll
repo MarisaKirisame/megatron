@@ -56,9 +56,11 @@ rule read =
   | "get_prop" { GET_PROPERTY }
   | "has_attr" { HAS_ATTRIBUTE }
   | "get_attr" { GET_ATTRIBUTE }
+  | "get_name" { GET_NAME }
   | "len" { LEN }
   | "map" { MAP }
   | "sum" { SUM }
+  | "max" { MAX }
   | "self" { SELF }
   | "first" { FIRST }
   | "next" { NEXT }
@@ -66,6 +68,8 @@ rule read =
   | "last" { LAST }
   | "then" { THEN }
   | "px_to_int" { PX_TO_INT }
+  | "as_int" { AS_INT }
+  | "panic" { PANIC }
   | id { ID (Lexing.lexeme lexbuf) }
   | int { INT (int_of_string (Lexing.lexeme lexbuf)) }
   | newline { Lexing.new_line lexbuf; read lexbuf }

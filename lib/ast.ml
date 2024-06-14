@@ -2,7 +2,7 @@ open Core
 open EXN
 
 (** The type of binary operators. *)
-type bop = Add | Mult | Leq | Lt | Geq | Gt | Eq | Iff | Neq [@@deriving show]
+type bop = Add | Mult | Leq | Lt | Geq | Gt | Eq | Iff | Neq | Max [@@deriving show]
 
 type path = Self | Parent | First | Next | Last | Prev [@@deriving show]
 
@@ -16,9 +16,6 @@ type expr =
   | Let of string * expr * expr
   | HasPath of path
   | Children
-  | Len
-  | Map
-  | Sum
   | Read of path * string
   | Index of expr * expr
   | IfExpr of expr * expr * expr
@@ -26,9 +23,12 @@ type expr =
   | GetProperty of string
   | HasAttribute of string
   | GetAttribute of string
+  | GetName
+  | AsInt of expr
   | PxToInt of expr * expr
   | And of expr * expr
   | Or of expr * expr
+  | Panic of expr list
 [@@deriving show]
 
 type stmt = BBCall of string | ChildrenCall of string | Write of path * string * expr [@@deriving show]
@@ -113,12 +113,14 @@ let rec reads_of_expr (e : expr) : read list =
   let recurse e = reads_of_expr e in
   match e with
   | HasPath p -> [ ReadHasPath p ]
-  | Int _ | String _ -> []
+  | Int _ | String _ | GetName | Bool _ -> []
   | IfExpr (x, y, z) -> List.append (recurse x) (List.append (recurse y) (recurse z))
   | Binop (x, _, y) | PxToInt (x, y) -> List.append (recurse x) (recurse y)
   | Read (p, n) -> [ ReadVar (p, n) ]
   | GetProperty x | HasProperty x -> [ ReadProp x ]
   | GetAttribute x | HasAttribute x -> [ ReadAttr x ]
+  | Panic _ -> [] (*on zeroth glance it look like we should recurse into the children, 
+     but semantic of panic technically does not depend on the child - it is just bottom.*)
   | _ -> raise (EXN (show_expr e))
 
 let exprs_of_stmt (s : stmt) : expr list =

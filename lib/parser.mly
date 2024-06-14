@@ -45,11 +45,15 @@ open Core
 %token LAST
 %token HAS_PREV
 %token PREV
+%token MAX
 
 %token HAS_PROPERTY
 %token GET_PROPERTY
 %token HAS_ATTRIBUTE
 %token GET_ATTRIBUTE
+%token GET_NAME
+
+%token AS_INT
 
 %token SLASH
 %token COMMA
@@ -62,6 +66,7 @@ open Core
 %token RCB
 %token VAR
 %token PROC
+%token PANIC
 
 %token PX_TO_INT
 
@@ -144,13 +149,14 @@ expr:
 	| GET_PROPERTY; LPAREN; x = ID; RPAREN { GetProperty(x) }
 	| HAS_ATTRIBUTE; LPAREN; x = ID; RPAREN { HasAttribute(x) }
 	| GET_ATTRIBUTE; LPAREN; x = ID; RPAREN { GetAttribute(x) }
+	| PANIC; x = expr_list { Panic(x) }
+	| AS_INT; LPAREN; x = expr; RPAREN { AsInt(x) }
+	| MAX; LPAREN; x = expr; COMMA; y = expr; RPAREN { Binop(x, Max, y) }
+	| GET_NAME; LPAREN; RPAREN { GetName }
 	| IF; e1 = expr; THEN; e2 = expr; ELSE; e3 = expr { IfExpr (e1, e2, e3) }
 	| x = STRING { String(x) }
 	| x = path; DOT; y = ID { Read(x, y) }
 	| i = INT { Int i }
-	| LEN { Len }
-	| MAP { Map }
-	| SUM { Sum }
 	| PX_TO_INT; LPAREN; x = expr; COMMA; y = expr; RPAREN { PxToInt(x, y) }
 	| x = ID { Var x }
 	| TRUE { Bool true }

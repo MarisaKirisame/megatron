@@ -9,10 +9,11 @@ module EVAL : Eval = struct
 
   type meta = unit
 
-  let make_node (p : _ prog) ~attr ~prop (children : meta node list) : meta node =
+  let make_node (p : _ prog) ~name ~attr ~prop (children : meta node list) : meta node =
     ignore p;
     {
       id = count ();
+      name;
       attr;
       prop;
       var = Hashtbl.create (module String);

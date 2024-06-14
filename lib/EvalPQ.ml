@@ -17,7 +17,7 @@ module EVAL : Eval = struct
     mutable alive : bool;
   }
 
-  let make_node (p : _ prog) ~attr ~prop (children : meta node list) : meta node =
+  let make_node (p : _ prog) ~name ~attr ~prop (children : meta node list) : meta node =
     ignore p;
     {
       m =
@@ -27,6 +27,7 @@ module EVAL : Eval = struct
           alive = true;
         };
       id = count ();
+      name;
       attr;
       prop;
       var = Hashtbl.create (module String);
@@ -253,7 +254,10 @@ module EVAL : Eval = struct
         ignore bb_name;
         let reads = reads_of_stmts stmts in
         let dirty read =
-          match read with ReadHasPath _ | ReadVar _ | ReadProp _ -> () | _ -> raise (EXN (show_read read))
+          match read with
+          | ReadHasPath _ | ReadVar _ | ReadProp _ -> ()
+          | ReadAttr read_name -> if String.equal name read_name then bb_dirtied n bb_name m else ()
+          | _ -> raise (EXN (show_read read))
         in
         List.iter reads ~f:dirty)
 
@@ -265,7 +269,10 @@ module EVAL : Eval = struct
         ignore bb_name;
         let reads = reads_of_stmts stmts in
         let dirty read =
-          match read with ReadHasPath _ | ReadVar _ | ReadProp _ -> () | _ -> raise (EXN (show_read read))
+          match read with
+          | ReadHasPath _ | ReadVar _ | ReadProp _ -> ()
+          | ReadAttr read_name -> if String.equal name read_name then bb_dirtied n bb_name m else ()
+          | _ -> raise (EXN (show_read read))
         in
         List.iter reads ~f:dirty)
 end

@@ -11,6 +11,7 @@ let count () =
   ret
 
 type 'meta node = {
+  name : string;
   attr : (string, value) Hashtbl.t;
   prop : (string, value) Hashtbl.t;
   var : (string, value) Hashtbl.t;
@@ -61,7 +62,7 @@ let rec show_node (n : 'meta node) : string =
   List.fold_left n.children ~init:(htbl_str ^ "[") ~f:(fun lhs n -> lhs ^ show_node n ^ ", ") ^ "]"
 
 and show_value (x : value) : string =
-  match x with VInt i -> string_of_int i | VBool b -> string_of_bool b | VString s -> "\"" ^ String.escaped s ^ "\""
+  match x with VInt i -> string_of_int i | VBool b -> string_of_bool b | VString s -> String.escaped s
 
 let int_of_value x = match x with VInt i -> i | _ -> panic (show_value x)
 let bool_of_value x = match x with VBool b -> b | _ -> panic (show_value x)
@@ -71,7 +72,8 @@ let equal_value x y : bool =
   match (x, y) with
   | VString x, VString y -> String.equal x y
   | VInt x, VInt y -> Int.equal x y
-  | _ -> panic (show_value x ^ " " ^ show_value y)
+  | VBool x, VBool y -> Bool.equal x y
+  | _ -> panic ("unhandled case in equal_value: " ^ show_value x ^ " " ^ show_value y)
 
 let eval_binop (b : bop) (lhs : value) (rhs : value) =
   match b with
@@ -80,6 +82,7 @@ let eval_binop (b : bop) (lhs : value) (rhs : value) =
   | Add -> VInt (int_of_value lhs + int_of_value rhs)
   | Eq -> VBool (equal_value lhs rhs)
   | Neq -> VBool (not (equal_value lhs rhs))
+  | Max -> VInt (Int.max (int_of_value lhs) (int_of_value rhs))
   | _ -> raise (EXN (show_bop b))
 
 let eval_path_opt (n : 'meta node) (p : path) =
@@ -97,11 +100,23 @@ let has_suffix s sfx =
   String.length s >= String.length sfx
   && String.equal sfx (String.sub s (String.length s - String.length sfx) (String.length sfx))
 
-let strip_suffix s sfx = String.sub s 0 (String.length s - String.length sfx)
+  let has_prefix s pfx = 
+    String.length s >= String.length pfx
+    && String.equal pfx (String.sub s 0 (String.length pfx))
+  let strip_prefix s pfx = 
+    if (has_prefix s pfx) then 
+    String.sub s (String.length pfx) (String.length s - String.length pfx)
+  else panic s
+
+  let strip_suffix s sfx =
+    assert (has_suffix s sfx);
+     String.sub s 0 (String.length s - String.length sfx)
 
 let rec eval_expr (n : 'meta node) (e : expr) (m : metric) : value =
+  (* print_endline (show_expr e); *)
   let recurse e = eval_expr n e m in
   match e with
+  | Panic x -> panic (String.concat ~sep:", " (List.map x ~f:(fun x -> show_value (recurse x))))
   | HasProperty p -> VBool (Option.is_some (Hashtbl.find n.prop p))
   | GetProperty p ->
       read m n.id;
@@ -129,7 +144,9 @@ let rec eval_expr (n : 'meta node) (e : expr) (m : metric) : value =
       | _ -> VInt i
       | _ -> panic ("cannot convert px to int: " ^ s))
   | And (x, y) -> if bool_of_value (recurse x) then recurse y else VBool false
-  | _ -> panic (show_expr e)
+  | GetName -> VString n.name
+  | Bool x -> VBool x
+  | _ -> panic ("unhandled case in eval_expr:" ^ show_expr e)
 
 let reversed_path (p : path) (n : 'a node) : 'a node list =
   match p with
@@ -154,7 +171,12 @@ module type Eval = sig
   type meta
 
   val make_node :
-    _ prog -> attr:(string, value) Hashtbl.t -> prop:(string, value) Hashtbl.t -> meta node list -> meta node
+    _ prog ->
+    name:string ->
+    attr:(string, value) Hashtbl.t ->
+    prop:(string, value) Hashtbl.t ->
+    meta node list ->
+    meta node
 
   val eval : _ prog -> meta node -> metric -> unit
   val add_children : _ prog -> meta node -> meta node -> int -> metric -> unit

@@ -19,7 +19,7 @@ module EVAL : Eval = struct
     recursive_proc_dirtied : (string, bool) Hashtbl.t;
   }
 
-  let make_node (p : _ prog) ~attr ~prop (children : meta node list) : meta node =
+  let make_node (p : _ prog) ~name ~attr ~prop (children : meta node list) : meta node =
     ignore p;
     {
       id = count ();
@@ -29,6 +29,7 @@ module EVAL : Eval = struct
           proc_inited = Hashtbl.create (module String);
           recursive_proc_dirtied = Hashtbl.create (module String);
         };
+      name;
       attr;
       prop;
       var = Hashtbl.create (module String);
@@ -46,11 +47,10 @@ module EVAL : Eval = struct
       match n.parent with Some p -> set_recursive_proc_dirtied p proc_name m | None -> ())
 
   let bb_dirtied (n : meta node) (proc_name : string) (bb_name : string) (m : metric) : unit =
-    meta_write m n.id;
     if Option.is_some (Hashtbl.find n.m.proc_inited proc_name) then (
       Hashtbl.set n.m.bb_dirtied ~key:bb_name ~data:true;
       set_recursive_proc_dirtied n proc_name m)
-    else ()
+    else meta_write m n.id
 
   let var_modified (p : _ prog) (n : meta node) (var_name : string) (m : metric) : unit =
     Hashtbl.iter p.procs ~f:(fun (ProcessedProc (proc_name, _)) ->
@@ -176,8 +176,6 @@ module EVAL : Eval = struct
       (up_name : string option) (m : metric) =
     (*print_endline "enter";*)
     meta_read m n.id;
-    meta_read m n.id;
-    (*one down-read and one up-read*)
     let rerun_if_dirty name =
       if Hashtbl.find_exn n.m.bb_dirtied name then (
         eval_stmts p n (stmts_of_basic_block p name) m;
@@ -255,21 +253,39 @@ module EVAL : Eval = struct
   let add_attr (p : _ prog) (n : meta node) (name : string) (v : value) (m : metric) : unit =
     write m n.id;
     Hashtbl.add_exn n.attr name v;
-    Hashtbl.iter p.bbs ~f:(fun (BasicBlock (bb_name, stmts)) ->
-        let reads = reads_of_stmts stmts in
-        let dirty read =
-          match read with ReadHasPath _ | ReadVar _ | ReadProp _ -> () | _ -> raise (EXN (show_read read))
+    Hashtbl.iter p.procs ~f:(fun (ProcessedProc (proc_name, _)) ->
+        let work bb_name =
+          let (BasicBlock (_, stmts)) = Hashtbl.find_exn p.bbs bb_name in
+          let reads = reads_of_stmts stmts in
+          let dirty read =
+            match read with
+            | ReadHasPath _ | ReadVar _ | ReadProp _ -> ()
+            | ReadAttr read_name -> if String.equal name read_name then bb_dirtied n proc_name bb_name m else ()
+            | _ -> raise (EXN (show_read read))
+          in
+          List.iter reads ~f:dirty
         in
-        List.iter reads ~f:dirty)
+        let down, up = get_bb_from_proc p proc_name in
+        Option.iter down ~f:work;
+        Option.iter up ~f:work)
 
   let remove_attr (p : _ prog) (n : meta node) (name : string) (m : metric) : unit =
     write m n.id;
     ignore (Hashtbl.find_exn n.attr name);
     Hashtbl.remove n.attr name;
-    Hashtbl.iter p.bbs ~f:(fun (BasicBlock (bb_name, stmts)) ->
-        let reads = reads_of_stmts stmts in
-        let dirty read =
-          match read with ReadHasPath _ | ReadVar _ | ReadProp _ -> () | _ -> raise (EXN (show_read read))
+    Hashtbl.iter p.procs ~f:(fun (ProcessedProc (proc_name, _)) ->
+        let work bb_name =
+          let (BasicBlock (_, stmts)) = Hashtbl.find_exn p.bbs bb_name in
+          let reads = reads_of_stmts stmts in
+          let dirty read =
+            match read with
+            | ReadHasPath _ | ReadVar _ | ReadProp _ -> ()
+            | ReadAttr read_name -> if String.equal name read_name then bb_dirtied n proc_name bb_name m else ()
+            | _ -> raise (EXN (show_read read))
+          in
+          List.iter reads ~f:dirty
         in
-        List.iter reads ~f:dirty)
+        let down, up = get_bb_from_proc p proc_name in
+        Option.iter down ~f:work;
+        Option.iter up ~f:work)
 end

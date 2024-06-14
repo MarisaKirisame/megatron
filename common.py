@@ -47,6 +47,8 @@ def size(j):
 def regularize_dom(j):
     if "id" not in j:
         return None
+    elif j["name"] == "#comment":
+        return None
     else:
         if "children" not in j:
             j["children"] = []
