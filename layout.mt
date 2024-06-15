@@ -108,8 +108,8 @@ proc pass_1() {
 var x;
 var y;
 proc pass_2() {
-  self.x <- if has_prev() then prev().next_x else (if has_parent() then parent().next_x else 0);
-  self.y <- if has_prev() then prev().next_y else (if has_parent() then parent().next_y else 0);
+  self.x <- if has_prev() then prev().next_x else (if has_parent() then parent().x else 0);
+  self.y <- if has_prev() then prev().next_y else (if has_parent() then parent().y else 0);
   self.next_x <- if self.position = "absolute" then self.x else self.x + self.width;
   self.next_y <- if self.position = "absolute" then self.y else self.y + self.height;
   children.pass_2();
