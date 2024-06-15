@@ -125,6 +125,7 @@ def per_trace(trace_out_path):
                 for i in range(len(j_by_diff)):
                     for j in j_by_diff[i]:
                         processed = {}
+                        processed["html"] = string_as_link("click me", j["html"], "html")
                         processed["command"] = string_as_link("click me", "[" + ",\n".join([json.dumps(strip(c, strip_default)) for c in j["command"]]) + "]", "json")
                         processed["full_command"] = string_as_link("click me", "[" + ",\n".join([json.dumps(c) for c in j["command"]]) + "]", "json")
                         processed["time"] = get_time(j["command"])
@@ -134,9 +135,9 @@ def per_trace(trace_out_path):
                         tr(*[td(processed[h]) for h in header])
                         name = j["name"]
                         if name not in summary:
-                            summary[name] = {"name": name, "diff_num": "total", "command": "NA", "full_command": "NA", "time": "NA"}
+                            summary[name] = {"name": name, "diff_num": "total", "html": "NA", "command": "NA", "full_command": "NA", "time": "NA"}
                         for k in j.keys():
-                            if k not in set(["name", "diff_num", "command", "full_command", "time"]):
+                            if k not in set(["name", "diff_num", "html", "command", "full_command", "time"]):
                                 if k not in summary[name]:
                                     summary[name][k] = 0
                                 summary[name][k] += j[k]

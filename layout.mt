@@ -44,7 +44,7 @@ proc pass_0() {
     else if get_name() = "#text"
     then 100
     else if get_name() = "IMG"
-    then (if has_attr(image_width) then get_attr(image_width) else 0)
+    then (if has_attr(image_width) then (if has_attr(image_height) then get_attr(image_width) else panic("todo")) else 0)
     else if true
     then self.children_intrinsic_width
     else panic("intrinsic_width", get_name());
@@ -66,7 +66,7 @@ proc pass_0() {
     else if get_name() = "#text"
     then 10
     else if get_name() = "IMG"
-    then (if has_attr(image_height) then get_attr(image_height) else 0)
+    then (if has_attr(image_height) then (if has_attr(image_width) then get_attr(image_height) else panic("todo")) else 0)
     else if true
     then self.children_intrinsic_height
     else panic("intrinsic_height", get_name());

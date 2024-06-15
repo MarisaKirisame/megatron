@@ -29,17 +29,138 @@ let out_file_path = Sys.argv.(1)
 let out_file = Stdio.Out_channel.create out_file_path
 let prog_def = parse "./layout.mt";;
 
-Out_channel.newline stdout;;
-print_endline (show_prog_def prog_def)
+Out_channel.newline stdout
 
-let prog = prog_of_prog_def prog_def;;
+(*print_endline (show_prog_def prog_def)*)
 
-print_endline (show_prog prog)
+let prog = prog_of_prog_def prog_def
+
+(*print_endline (show_prog prog)*)
 
 let lines : string list = Stdio.In_channel.read_lines "command.json"
 let (line_init :: line_layout_init :: line_rest) = lines
 let json_init = Yojson.Basic.from_string line_init
 let json_layout_init = Yojson.Basic.from_string line_layout_init
+let tag t str = "<" ^ t ^ ">" ^ str ^ "</" ^ t ^ ">"
+
+let default_tag : (string, unit) Hashtbl.t =
+  Hashtbl.of_alist_exn
+    (module String)
+    [
+      ("#document", ());
+      ("#doctype", ());
+      ("HTML", ());
+      ("BODY", ());
+      ("DIV", ());
+      ("SECTION", ());
+      ("BUTTON", ());
+      ("UL", ());
+      ("HEADER", ());
+      ("H2", ());
+      ("A", ());
+      ("LI", ());
+      ("INPUT", ());
+      ("#shadow-root", ());
+      ("NAV", ());
+      ("ARTICLE", ());
+      ("IMG", ());
+      ("SPAN", ());
+      ("FOOTER", ());
+      ("P", ());
+      ("FIGURE", ());
+      ("PICTURE", ());
+      ("SOURCE", ());
+      ("H3", ());
+      ("FIGCAPTION", ());
+      ("IFRAME", ());
+      ("HEAD", ());
+      ("MAIN", ());
+      ("SUP", ());
+      ("svg", ());
+      ("defs", ());
+      ("symbol", ());
+      ("path", ());
+      ("rect", ());
+      ("OL", ());
+      ("CENTER", ());
+      ("BR", ());
+      ("FORM", ());
+      ("TABLE", ());
+      ("TBODY", ());
+      ("TR", ());
+      ("TD", ());
+      ("B", ());
+      ("NOSCRIPT", ());
+      ("ACCORDION-ENTRY-SEARCH-ICON", ());
+      ("REACT-PARTIAL", ());
+      ("GLOBAL-BANNER", ());
+      ("ACTIVE-GLOBAL-BANNERS", ());
+      ("QBSEARCH-INPUT", ());
+      ("MODAL-DIALOG", ());
+      ("DIALOG-HELPER", ());
+      ("CUSTOM-SCOPES", ());
+      ("INCLUDE-FRAGMENT", ());
+      ("H1", ());
+      ("DL", ());
+      ("DT", ());
+      ("LABEL", ());
+      ("DD", ());
+      ("EM", ());
+      ("CARD-SKEW", ());
+      ("filter", ());
+      ("feFlood", ());
+      ("feBlend", ());
+      ("feColorMatrix", ());
+      ("feOffset", ());
+      ("feGaussianBlur", ());
+      ("feComposite", ());
+      ("radialGradient", ());
+      ("linearGradient", ());
+      ("stop", ());
+      ("circle", ());
+      ("g", ());
+      ("TIME", ());
+      ("COOKIE-CONSENT-LINK", ());
+      ("FULLSTORY-CAPTURE", ());
+      ("GHCC-CONSENT", ());
+      ("SLOT", ());
+      ("VIDEO", ());
+      ("I", ());
+      ("ABBR", ());
+      ("SMALL", ());
+      ("clipPath", ());
+      ("image", ());
+      ("polyline", ());
+      ("TEXTAREA", ());
+      ("FONT", ());
+      ("U", ());
+    ]
+
+let rec node_to_html_buffer (b : Buffer.t) (n : _ node) : unit =
+  let recurse () = List.iter n.children ~f:(node_to_html_buffer b) in
+  match Hashtbl.find n.prop "display" with
+  | Some (VString "none") -> ()
+  | _ ->
+      let content =
+        match n.name with
+        | x when Option.is_some (Hashtbl.find default_tag x) -> n.name
+        | "#text" -> "some text"
+        | _ -> panic n.name
+      in
+      Buffer.add_string b "<div style=\"";
+      Buffer.add_string b ("top: " ^ string_of_int (int_of_value (Hashtbl.find_exn n.var "x")) ^ ";");
+      Buffer.add_string b ("left: " ^ string_of_int (int_of_value (Hashtbl.find_exn n.var "y")) ^ ";");
+      Buffer.add_string b ("width: " ^ string_of_int (int_of_value (Hashtbl.find_exn n.var "width")) ^ ";");
+      Buffer.add_string b ("height: " ^ string_of_int (int_of_value (Hashtbl.find_exn n.var "height")) ^ ";");
+      Buffer.add_string b "position: absolute; outline:1px solid black;\">";
+      Buffer.add_string b content;
+      recurse ();
+      Buffer.add_string b "</div>"
+
+let node_to_html (n : _ node) : string =
+  let b = Buffer.create 0 in
+  node_to_html_buffer b n;
+  Buffer.contents b
 
 module Main (EVAL : Eval) = struct
   let rec json_to_node_aux j : _ node =
@@ -107,6 +228,7 @@ module Main (EVAL : Eval) = struct
           ("queue_size_acc", `Int m.queue_size_acc);
           ("input_change_count", `Int m.input_change_count);
           ("output_change_count", `Int m.output_change_count);
+          ("html", `String (node_to_html n));
           ("command", `List !command);
         ]);
     output_string out_file "\n";

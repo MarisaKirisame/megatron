@@ -100,17 +100,14 @@ let has_suffix s sfx =
   String.length s >= String.length sfx
   && String.equal sfx (String.sub s (String.length s - String.length sfx) (String.length sfx))
 
-  let has_prefix s pfx = 
-    String.length s >= String.length pfx
-    && String.equal pfx (String.sub s 0 (String.length pfx))
-  let strip_prefix s pfx = 
-    if (has_prefix s pfx) then 
-    String.sub s (String.length pfx) (String.length s - String.length pfx)
-  else panic s
+let has_prefix s pfx = String.length s >= String.length pfx && String.equal pfx (String.sub s 0 (String.length pfx))
 
-  let strip_suffix s sfx =
-    assert (has_suffix s sfx);
-     String.sub s 0 (String.length s - String.length sfx)
+let strip_prefix s pfx =
+  if has_prefix s pfx then String.sub s (String.length pfx) (String.length s - String.length pfx) else panic s
+
+let strip_suffix s sfx =
+  assert (has_suffix s sfx);
+  String.sub s 0 (String.length s - String.length sfx)
 
 let rec eval_expr (n : 'meta node) (e : expr) (m : metric) : value =
   (* print_endline (show_expr e); *)

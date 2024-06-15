@@ -119,8 +119,10 @@ let rec reads_of_expr (e : expr) : read list =
   | Read (p, n) -> [ ReadVar (p, n) ]
   | GetProperty x | HasProperty x -> [ ReadProp x ]
   | GetAttribute x | HasAttribute x -> [ ReadAttr x ]
-  | Panic _ -> [] (*on zeroth glance it look like we should recurse into the children, 
-     but semantic of panic technically does not depend on the child - it is just bottom.*)
+  | Panic _ ->
+      []
+      (*on zeroth glance it look like we should recurse into the children,
+        but semantic of panic technically does not depend on the child - it is just bottom.*)
   | _ -> raise (EXN (show_expr e))
 
 let exprs_of_stmt (s : stmt) : expr list =
