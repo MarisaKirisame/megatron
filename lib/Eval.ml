@@ -141,6 +141,8 @@ let rec eval_expr (n : 'meta node) (e : expr) (m : metric) : value =
       | _ -> VInt i
       | _ -> panic ("cannot convert px to int: " ^ s))
   | And (x, y) -> if bool_of_value (recurse x) then recurse y else VBool false
+  | Or (x, y) -> if bool_of_value (recurse x) then VBool true else recurse y
+  | Not x -> VBool (not (bool_of_value (recurse x)))
   | GetName -> VString n.name
   | Bool x -> VBool x
   | _ -> panic ("unhandled case in eval_expr:" ^ show_expr e)

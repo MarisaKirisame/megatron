@@ -38,7 +38,7 @@ rule read =
   | "\\" { SLASH }
   | "," { COMMA }
   | ";" { SEMICOLON }
-  | "!" { BANG }
+  | "!" { NOT }
   | "." { DOT }
   | "{" { LCB }
   | "}" { RCB }

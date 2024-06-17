@@ -58,7 +58,7 @@ open Core
 %token SLASH
 %token COMMA
 %token SEMICOLON
-%token BANG
+%token NOT
 %token DOT
 %token LARROW
 %token RARROW
@@ -167,5 +167,6 @@ expr:
 	| x = expr; LBRACKET; y = expr; RBRACKET { Index(x, y) }
 	| x = expr; AND; y = expr { And(x, y) }
 	| x = expr; OR; y = expr { Or(x, y) }
+	| NOT; x = expr { Not(x) }
 	;
 	

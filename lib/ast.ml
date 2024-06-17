@@ -26,8 +26,11 @@ type expr =
   | GetName
   | AsInt of expr
   | PxToInt of expr * expr
+  | CalcIntrinsicSize of expr * expr
+  | CalcSize of expr * expr
   | And of expr * expr
   | Or of expr * expr
+  | Not of expr
   | Panic of expr list
 [@@deriving show]
 
@@ -115,10 +118,11 @@ let rec reads_of_expr (e : expr) : read list =
   | HasPath p -> [ ReadHasPath p ]
   | Int _ | String _ | GetName | Bool _ -> []
   | IfExpr (x, y, z) -> List.append (recurse x) (List.append (recurse y) (recurse z))
-  | Binop (x, _, y) | PxToInt (x, y) -> List.append (recurse x) (recurse y)
+  | Binop (x, _, y) | PxToInt (x, y) | And(x, y) | Or(x, y) -> List.append (recurse x) (recurse y)
   | Read (p, n) -> [ ReadVar (p, n) ]
   | GetProperty x | HasProperty x -> [ ReadProp x ]
   | GetAttribute x | HasAttribute x -> [ ReadAttr x ]
+  | Not x -> recurse x
   | Panic _ ->
       []
       (*on zeroth glance it look like we should recurse into the children,

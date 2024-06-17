@@ -7,8 +7,10 @@ var display;
 proc pass_0() {
   self.display <- if has_prop(display) then get_prop(display) else "block";
   self.line_break <- 
-    if self.display = "none"
+     if self.display = "none"
     then false
+    else if has_parent() && ((parent().display = "flex") || parent().display = "inline-flex")
+    then true
     else if self.display = "block"
     then true
     else if self.display = "inline"
@@ -16,7 +18,7 @@ proc pass_0() {
     else if self.display = "inline-block"
     then false
     else if self.display = "flex"
-    then false
+    then true
     else if self.display = "inline-flex"
     then false
     else if self.display = "contents"
@@ -35,46 +37,56 @@ proc pass_0() {
     then true
     else panic("line_break", self.display);
   children.pass_0();
+
   self.children_intrinsic_width <- if has_last() then last().intrinsic_width_max else 0;
-  self.intrinsic_width <- 
-    if self.display = "none"
+  self.calc_width <- if has_prop(width) then get_prop(width) else "auto";
+  self.intrinsic_width <- calc_intrinsic_size(self.calc_width, self.children_intrinsic_width);
+  
+    self.children_intrinsic_width +
+    (if self.display = "none"
     then 0
     else if get_name() = "#document"
-    then self.children_intrinsic_width
+    then 0
     else if get_name() = "#text"
     then 100
     else if get_name() = "IMG"
-    then (if has_attr(image_width) then (if has_attr(image_height) then get_attr(image_width) else panic("todo")) else 0)
+    then (if has_attr(image_width) then (if has_attr(image_height) then get_attr(image_width) else panic("img todo")) else 0)
     else if true
-    then self.children_intrinsic_width
-    else panic("intrinsic_width", get_name());
+    then 0
+    else panic("intrinsic_width", get_name()));
+
   self.intrinsic_current_line_width <-
-    if self.line_break 
-    then self.intrinsic_width 
-    else if has_prev()
-    then prev().intrinsic_next_x + self.intrinsic_width 
-    else self.intrinsic_width;
-  self.intrinsic_next_x <- if self.line_break then 0 else self.intrinsic_current_line_width;
+    self.intrinsic_width + 
+    if has_prev() && !prev().line_break 
+    then prev().intrinsic_current_line_width
+    else 0;
+
   self.intrinsic_width_max <-
-    if has_prev() then max(prev().intrinsic_width_max, self.intrinsic_current_line_width) else self.intrinsic_current_line_width;
+    max(self.intrinsic_current_line_width,
+      if has_prev() then prev().intrinsic_width_max else 0);
+
   self.children_intrinsic_height <- if has_last() then last().intrinsic_height_sum else 10;
   self.intrinsic_height <-
-    if self.display = "none"
+    self.children_intrinsic_height +
+    (if self.display = "none"
     then 0
     else if get_name() = "#document"
-    then self.children_intrinsic_height
+    then 0
     else if get_name() = "#text"
     then 10
     else if get_name() = "IMG"
     then (if has_attr(image_height) then (if has_attr(image_width) then get_attr(image_height) else panic("todo")) else 0)
     else if true
-    then self.children_intrinsic_height
-    else panic("intrinsic_height", get_name());
+    then 0
+    else panic("intrinsic_height", get_name()));
+
+  (*the height of the current ongoing line*)
   self.intrinsic_current_line_height <-
-    if self.line_break then
-    0
-    else if has_prev() then max(prev().intrinsic_current_line_height, self.intrinsic_height)
-    else self.intrinsic_height;
+    if self.line_break 
+    then 0
+    else max(self.intrinsic_height, if has_prev() then prev().intrinsic_current_line_height else 0);
+
+  (*the sum of intrinsic height of all finished line: exclude current ongoing line*)
   self.finished_intrinsic_height_sum <-
     if has_prev() then
       (if self.line_break 
