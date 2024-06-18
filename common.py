@@ -49,6 +49,8 @@ def regularize_dom(j):
         return None
     elif j["name"] == "#comment":
         return None
+    elif j["name"] == "#doctype":
+        return None
     else:
         if "children" not in j:
             j["children"] = []

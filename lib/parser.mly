@@ -170,7 +170,6 @@ expr:
 	| HAS_PREFIX; LPAREN; x = expr; COMMA; y = expr; RPAREN { HasPrefix(x, y) }
 	| STRIP_SUFFIX; LPAREN; x = expr; COMMA; y = expr; RPAREN { StripSuffix(x, y) }
 	| STRIP_PREFIX; LPAREN; x = expr; COMMA; y = expr; RPAREN { StripPrefix(x, y) }
-	| x = ID { Var x }
 	| TRUE { Bool true }
 	| FALSE { Bool false }
 	| x = expr; y = binop; z = expr { Binop (x, y, z) }

@@ -5,6 +5,9 @@ var display;
 (*calculate display, intrinsic_width, and intrinsic_height*)
 proc pass_0() {
   self.display <- if has_prop(display) then get_prop(display) else "block";
+  self.is_svg_block <- get_name() = "svg";
+  self.inside_svg <- has_parent() && (parent().is_svg_block || parent().inside_svg);
+
   self.line_break <- 
      if self.display = "none"
     then false
@@ -40,15 +43,18 @@ proc pass_0() {
   self.children_intrinsic_width <- 
     if has_last() then last().intrinsic_width_max else 0;
 
+  self.width_expr <- if has_prop(width) then get_prop(width) else if has_attr(width) then get_attr(width) else "auto";
+
   self.intrinsic_width <- 
     if self.display = "none" then 0
-    else if (has_prop(width)) && (get_prop(width) != "auto") && (!has_suffix(get_prop(width), "%"))
+    else if self.inside_svg then 0
+    else if (self.width_expr != "auto") && (!has_suffix(self.width_expr, "%"))
     then 
-      (if has_suffix(get_prop(width), "px") 
-      then string_to_int(strip_suffix(get_prop(width), "px"))
-      else if has_suffix(get_prop(width), "ch")
-      then string_to_int(strip_suffix(get_prop(width), "ch"))
-      else panic("intrinsic_width: ", get_prop(width)))
+      (if has_suffix(self.width_expr, "px") 
+      then string_to_int(strip_suffix(self.width_expr, "px"))
+      else if has_suffix(self.width_expr, "ch")
+      then string_to_int(strip_suffix(self.width_expr, "ch"))
+      else panic("intrinsic_width: ", self.width_expr))
     else 
       self.children_intrinsic_width +
       (if (get_name() = "#text")
@@ -92,17 +98,20 @@ proc pass_0() {
   self.children_intrinsic_height <- 
     if has_last() then last().finished_intrinsic_height_sum + last().intrinsic_current_line_height else 0;
 
+  self.height_expr <- if has_prop(height) then get_prop(height) else if has_attr(height) then get_attr(height) else "auto";
+
   self.intrinsic_height <- 
     if self.display = "none" then 0 
-    else if has_prop(height) && (get_prop(height) != "auto") && (!has_suffix(get_prop(height), "%"))
+    else if self.inside_svg then 0
+    else if (self.height_expr != "auto") && (!has_suffix(self.height_expr, "%"))
     then 
-      (if has_suffix(get_prop(height), "px") 
-      then string_to_int(strip_suffix(get_prop(height), "px"))
-      else if has_suffix(get_prop(height), "ch")
-      then string_to_int(strip_suffix(get_prop(height), "ch"))
-      else if has_suffix(get_prop(height), "lh")
-      then string_to_int(strip_suffix(get_prop(height), "lh"))
-      else panic("intrinsic_height: ", get_prop(height)))
+      (if has_suffix(self.height_expr, "px") 
+      then string_to_int(strip_suffix(self.height_expr, "px"))
+      else if has_suffix(self.height_expr, "ch")
+      then string_to_int(strip_suffix(self.height_expr, "ch"))
+      else if has_suffix(self.height_expr, "lh")
+      then string_to_int(strip_suffix(self.height_expr, "lh"))
+      else panic("intrinsic_height: ", self.height_expr))
     else 
       self.children_intrinsic_height +
       (if (get_name() = "#text")
@@ -168,8 +177,8 @@ proc pass_1() {
   self.width <- 
     if self.display = "none"
     then 0
-    else if has_prop(width) && has_suffix(get_prop(width), "%")
-    then (self.box_width - self.x) * 100 / string_to_int(strip_suffix(get_prop(width), "%"))
+    else if has_prop(width) && has_suffix(self.width_expr, "%")
+    then (self.box_width - self.x) * 100 / string_to_int(strip_suffix(self.width_expr, "%"))
     else self.intrinsic_width;
 
   self.box_height <- if has_parent() then parent().height else 1080;
@@ -183,8 +192,8 @@ proc pass_1() {
   self.height <- 
     if self.display = "none"
     then 0
-    else if has_prop(height) && has_suffix(get_prop(height), "%")
-    then (self.box_height - self.y) * 100 / string_to_int(strip_suffix(get_prop(height), "%"))
+    else if has_suffix(self.height_expr, "%")
+    then (self.box_height - self.y) * 100 / string_to_int(strip_suffix(self.height_expr, "%"))
     else self.intrinsic_height;
 
 

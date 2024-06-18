@@ -8,7 +8,6 @@ type path = Self | Parent | First | Next | Last | Prev [@@deriving show]
 
 (** The type of the abstract syntax tree (AST). *)
 type expr =
-  | Var of string
   | Int of int
   | Bool of bool
   | String of string
