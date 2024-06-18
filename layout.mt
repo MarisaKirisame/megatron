@@ -1,6 +1,5 @@
-var width;
-var height;
-var sum_height;
+var intrinsic_width;
+var intrinsic_height;
 var display;
 
 (*calculate display, intrinsic_width, and intrinsic_height*)
@@ -39,21 +38,23 @@ proc pass_0() {
   children.pass_0();
 
   self.children_intrinsic_width <- if has_last() then last().intrinsic_width_max else 0;
-  self.calc_width <- if has_prop(width) then get_prop(width) else "auto";
-  self.intrinsic_width <- calc_intrinsic_size(self.calc_width, self.children_intrinsic_width);
-  
-    self.children_intrinsic_width +
-    (if self.display = "none"
-    then 0
-    else if get_name() = "#document"
-    then 0
-    else if get_name() = "#text"
-    then 100
-    else if get_name() = "IMG"
-    then (if has_attr(image_width) then (if has_attr(image_height) then get_attr(image_width) else panic("img todo")) else 0)
-    else if true
-    then 0
-    else panic("intrinsic_width", get_name()));
+  self.intrinsic_width_aux <- 
+    if has_prop(width) && get_prop(width) != "auto"
+    then 
+      (if has_suffix(get_prop(width), "px") 
+      then string_to_int(strip_suffix(get_prop(width), "px"))
+      else panic("intrinsic_width_aux: ", get_prop(width)))
+    else 
+      self.children_intrinsic_width +
+      (if get_name() = "#text" 
+      then 100 
+      else if get_name() = "IMG"
+      then panic("IMG")
+      else if true 
+      then 0
+      else panic(get_name()));
+
+  self.intrinsic_width <- if self.display = "none" then 0 else self.intrinsic_width_aux;
 
   self.intrinsic_current_line_width <-
     self.intrinsic_width + 
@@ -65,20 +66,24 @@ proc pass_0() {
     max(self.intrinsic_current_line_width,
       if has_prev() then prev().intrinsic_width_max else 0);
 
-  self.children_intrinsic_height <- if has_last() then last().intrinsic_height_sum else 10;
-  self.intrinsic_height <-
-    self.children_intrinsic_height +
-    (if self.display = "none"
-    then 0
-    else if get_name() = "#document"
-    then 0
-    else if get_name() = "#text"
-    then 10
-    else if get_name() = "IMG"
-    then (if has_attr(image_height) then (if has_attr(image_width) then get_attr(image_height) else panic("todo")) else 0)
-    else if true
-    then 0
-    else panic("intrinsic_height", get_name()));
+  self.children_intrinsic_height <- if has_last() then last().finished_intrinsic_height_sum + last().intrinsic_current_line_height else 0;
+
+  self.intrinsic_height_aux <- 
+    if has_prop(height) && get_prop(height) != "auto"
+    then 
+      (if has_suffix(get_prop(height), "px") 
+      then string_to_int(strip_suffix(get_prop(height), "px"))
+      else panic("intrinsic_height_aux: ", get_prop(width)))
+    else 
+      self.children_intrinsic_height +
+      (if get_name() = "#text" 
+      then 10
+      else if get_name() = "IMG"
+      then panic("IMG")
+      else if true 
+      then 0
+      else panic(get_name()));
+  self.intrinsic_height <- if self.display = "none" then 0 else self.children_intrinsic_height + self.intrinsic_height_aux;
 
   (*the height of the current ongoing line*)
   self.intrinsic_current_line_height <-
@@ -94,19 +99,59 @@ proc pass_0() {
       else prev().finished_intrinsic_height_sum)
     else
       (if self.line_break then self.intrinsic_height else 0);
-  self.intrinsic_height_sum <- self.finished_intrinsic_height_sum + self.intrinsic_current_line_height;
 }
+
+var width;
+var height;
+var x;
+var y;
 
 proc pass_1() {
   self.position <- if has_prop(position) then get_prop(position) else "static";
-  self.width <- 
-    if self.display = "none"
+
+  self.children_width <- if has_last() then last().width_max else 0;
+
+  self.box_width <- if has_parent() then parent().width else 1920;
+  self.x <- 
+    if has_prev() 
+    then 
+      (if (self.line_break || prev().line_break) then 0 else prev().x + prev().width)
+    else if has_parent() then parent().x else 0;
+
+  self.width_aux <- 
+    if has_prop(width)
+    then 
+      (if has_suffix(get_prop(width), "px") 
+      then string_to_int(strip_suffix(get_prop(width), "px"))
+      else panic("width_aux: ", get_prop(width)))
+    else 
+      self.intrinsic_width;
+
+  self.width <- if self.display = "none" then 0 else self.width_aux;
+
+  self.box_height <- if has_parent() then prent().height else 1080;
+
+  (*the height of the current ongoing line*)
+  self.current_line_height <-
+    if self.line_break 
     then 0
-    else if has_attr(width)
-    then px_to_int(get_attr(width), self.intrinsic_width)
-    else self.intrinsic_width;
-  children.pass_1();
-  self.height <- 
+    else max(self.height, if has_prev() then prev().current_line_height else 0);
+
+  self.y <- 
+    if has_prev() 
+    then 
+      (if self.line_break || prev().line_break then prev().y + prev().current_line_height else prev().y)
+    else if has_parent() then parent().y else 0;
+
+  self.height_aux <- 
+    if has_prop(height)
+    then
+      (if has_suffix(get_prop(height), "px") 
+      then string_to_int(strip_suffix(get_prop(height), "px"))
+      else panic("height_aux: ", get_prop(height)))
+    else 
+      self.intrinsic_height;
+
     if self.display = "none"
     then 0
     else if has_attr(height)
@@ -115,16 +160,8 @@ proc pass_1() {
   self.height_acc <- if self.position = "absolute" then 0 else self.height;
   self.sum_height <- 
      if has_prev() then self.height_acc + prev().sum_height else self.height_acc;
+
+  children.pass_1();
 }
 
-var x;
-var y;
-proc pass_2() {
-  self.x <- if has_prev() then prev().next_x else (if has_parent() then parent().x else 0);
-  self.y <- if has_prev() then prev().next_y else (if has_parent() then parent().y else 0);
-  self.next_x <- if self.position = "absolute" then self.x else self.x + self.width;
-  self.next_y <- if self.position = "absolute" then self.y else self.y + self.height;
-  children.pass_2();
-}
-
-[pass_0; pass_1; pass_2]
+[pass_0; pass_1]

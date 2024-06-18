@@ -57,6 +57,11 @@ rule read =
   | "has_attr" { HAS_ATTRIBUTE }
   | "get_attr" { GET_ATTRIBUTE }
   | "get_name" { GET_NAME }
+  | "has_suffix" { HAS_SUFFIX }
+  | "strip_suffix" { STRIP_SUFFIX }
+  | "has_prefix" { HAS_PREFIX }
+  | "strip_prefix" { STRIP_PREFIX }
+  | "string_to_int" { STRING_TO_INT }
   | "len" { LEN }
   | "map" { MAP }
   | "sum" { SUM }
@@ -67,8 +72,6 @@ rule read =
   | "prev" { PREV }
   | "last" { LAST }
   | "then" { THEN }
-  | "px_to_int" { PX_TO_INT }
-  | "as_int" { AS_INT }
   | "panic" { PANIC }
   | id { ID (Lexing.lexeme lexbuf) }
   | int { INT (int_of_string (Lexing.lexeme lexbuf)) }

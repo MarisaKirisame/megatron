@@ -53,7 +53,11 @@ open Core
 %token GET_ATTRIBUTE
 %token GET_NAME
 
-%token AS_INT
+%token HAS_SUFFIX
+%token HAS_PREFIX
+%token STRIP_SUFFIX
+%token STRIP_PREFIX
+%token STRING_TO_INT
 
 %token SLASH
 %token COMMA
@@ -67,8 +71,6 @@ open Core
 %token VAR
 %token PROC
 %token PANIC
-
-%token PX_TO_INT
 
 %nonassoc IN
 %nonassoc ELSE
@@ -150,20 +152,23 @@ expr:
 	| HAS_ATTRIBUTE; LPAREN; x = ID; RPAREN { HasAttribute(x) }
 	| GET_ATTRIBUTE; LPAREN; x = ID; RPAREN { GetAttribute(x) }
 	| PANIC; x = expr_list { Panic(x) }
-	| AS_INT; LPAREN; x = expr; RPAREN { AsInt(x) }
+	| STRING_TO_INT; LPAREN; x = expr; RPAREN { StringToInt(x) }
 	| MAX; LPAREN; x = expr; COMMA; y = expr; RPAREN { Binop(x, Max, y) }
 	| GET_NAME; LPAREN; RPAREN { GetName }
 	| IF; e1 = expr; THEN; e2 = expr; ELSE; e3 = expr { IfExpr (e1, e2, e3) }
 	| x = STRING { String(x) }
 	| x = path; DOT; y = ID { Read(x, y) }
 	| i = INT { Int i }
-	| PX_TO_INT; LPAREN; x = expr; COMMA; y = expr; RPAREN { PxToInt(x, y) }
+	| HAS_SUFFIX; LPAREN; x = expr; COMMA; y = expr; RPAREN { HasSuffix(x, y) }
+	| HAS_PREFIX; LPAREN; x = expr; COMMA; y = expr; RPAREN { HasPrefix(x, y) }
+	| STRIP_SUFFIX; LPAREN; x = expr; COMMA; y = expr; RPAREN { StripSuffix(x, y) }
+	| STRIP_PREFIX; LPAREN; x = expr; COMMA; y = expr; RPAREN { StripPrefix(x, y) }
 	| x = ID { Var x }
 	| TRUE { Bool true }
 	| FALSE { Bool false }
 	| x = expr; y = binop; z = expr { Binop (x, y, z) }
 	| LET; x = ID; EQ; e1 = expr; IN; e2 = expr { Let (x, e1, e2) }
-	| LPAREN; e=expr; RPAREN {e}
+	| LPAREN; e=expr; RPAREN { e }
 	| x = expr; LBRACKET; y = expr; RBRACKET { Index(x, y) }
 	| x = expr; AND; y = expr { And(x, y) }
 	| x = expr; OR; y = expr { Or(x, y) }

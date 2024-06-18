@@ -32,6 +32,11 @@ type expr =
   | Or of expr * expr
   | Not of expr
   | Panic of expr list
+  | HasPrefix of expr * expr
+  | HasSuffix of expr * expr
+  | StripPrefix of expr * expr
+  | StripSuffix of expr * expr
+  | StringToInt of expr
 [@@deriving show]
 
 type stmt = BBCall of string | ChildrenCall of string | Write of path * string * expr [@@deriving show]
