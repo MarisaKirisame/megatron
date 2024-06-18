@@ -12,8 +12,12 @@ open Core
 %token GEQ
 %token LT
 %token GT
-%token TIMES  
+
 %token PLUS
+%token MINUS
+%token TIMES
+%token DIVIDE
+
 %token LPAREN
 %token RPAREN
 %token LBRACKET
@@ -136,7 +140,10 @@ binop:
 	| LT { Lt }
 	| GEQ { Geq }
 	| GT { Gt }
-	| PLUS { Add }
+	| PLUS { Plus }
+	| MINUS { Minus }
+	| TIMES { Mult }
+	| DIVIDE { Div }
 	| EQ { Eq }
 	| NEQ { Neq }
 	;

@@ -19,8 +19,10 @@ rule read =
   | "<" { LT }
   | ">=" { GEQ }
   | ">" { GT }
-  | "*" { TIMES }
   | "+" { PLUS }
+  | "-" { MINUS }
+  | "*" { TIMES }
+  | "/" { DIVIDE }
   | "(" { LPAREN }
   | ")" { RPAREN }
   | "let" { LET }

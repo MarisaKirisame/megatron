@@ -33,3 +33,4 @@ setup.log
 _opam/
 __pycache__
 *.webm
+\#*#

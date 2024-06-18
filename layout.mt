@@ -34,27 +34,50 @@ proc pass_0() {
     then true
     else if self.display = "grid"
     then true
-    else panic("line_break", self.display);
+    else panic("line_break: ", self.display);
   children.pass_0();
 
-  self.children_intrinsic_width <- if has_last() then last().intrinsic_width_max else 0;
-  self.intrinsic_width_aux <- 
-    if has_prop(width) && get_prop(width) != "auto"
+  self.children_intrinsic_width <- 
+    if has_last() then last().intrinsic_width_max else 0;
+
+  self.intrinsic_width <- 
+    if self.display = "none" then 0
+    else if (has_prop(width)) && (get_prop(width) != "auto") && (!has_suffix(get_prop(width), "%"))
     then 
       (if has_suffix(get_prop(width), "px") 
       then string_to_int(strip_suffix(get_prop(width), "px"))
-      else panic("intrinsic_width_aux: ", get_prop(width)))
+      else if has_suffix(get_prop(width), "ch")
+      then string_to_int(strip_suffix(get_prop(width), "ch"))
+      else panic("intrinsic_width: ", get_prop(width)))
     else 
       self.children_intrinsic_width +
-      (if get_name() = "#text" 
-      then 100 
-      else if get_name() = "IMG"
-      then panic("IMG")
-      else if true 
+      (if (get_name() = "#text")
+      then (if has_first() then panic("intrinsic_width ICE") else 100)
+      else if
+        (get_name() = "#document") ||
+        (get_name() = "#shadow-root") ||
+        (get_name() = "DIV") ||
+        (get_name() = "HTML") ||
+        (get_name() = "BODY") ||
+        (get_name() = "FORM") ||
+        (get_name() = "CENTER") ||
+        (get_name() = "TD") ||
+        (get_name() = "TR") ||
+        (get_name() = "TBODY") ||
+        (get_name() = "TABLE") || 
+        (get_name() = "SPAN") || 
+        (get_name() = "FONT") || 
+        (get_name() = "A") || 
+        (get_name() = "P") || 
+        (get_name() = "U") || 
+        (get_name() = "B") ||
+        (get_name() = "I")
       then 0
-      else panic(get_name()));
-
-  self.intrinsic_width <- if self.display = "none" then 0 else self.intrinsic_width_aux;
+      else if get_name() = "BR"
+      then (if has_first() then panic("intrinsic_width ICE") else 0)
+      else if get_name() = "INPUT"
+      then 100
+      else panic("intrinsic_width name: ", get_name()));
 
   self.intrinsic_current_line_width <-
     self.intrinsic_width + 
@@ -66,24 +89,49 @@ proc pass_0() {
     max(self.intrinsic_current_line_width,
       if has_prev() then prev().intrinsic_width_max else 0);
 
-  self.children_intrinsic_height <- if has_last() then last().finished_intrinsic_height_sum + last().intrinsic_current_line_height else 0;
+  self.children_intrinsic_height <- 
+    if has_last() then last().finished_intrinsic_height_sum + last().intrinsic_current_line_height else 0;
 
-  self.intrinsic_height_aux <- 
-    if has_prop(height) && get_prop(height) != "auto"
+  self.intrinsic_height <- 
+    if self.display = "none" then 0 
+    else if has_prop(height) && (get_prop(height) != "auto") && (!has_suffix(get_prop(height), "%"))
     then 
       (if has_suffix(get_prop(height), "px") 
       then string_to_int(strip_suffix(get_prop(height), "px"))
-      else panic("intrinsic_height_aux: ", get_prop(width)))
+      else if has_suffix(get_prop(height), "ch")
+      then string_to_int(strip_suffix(get_prop(height), "ch"))
+      else if has_suffix(get_prop(height), "lh")
+      then string_to_int(strip_suffix(get_prop(height), "lh"))
+      else panic("intrinsic_height: ", get_prop(height)))
     else 
       self.children_intrinsic_height +
-      (if get_name() = "#text" 
-      then 10
-      else if get_name() = "IMG"
-      then panic("IMG")
-      else if true 
+      (if (get_name() = "#text")
+      then (if has_first() then panic("intrinisc_height ICE") else 10)
+      else if 
+        (get_name() = "#document") || 
+        (get_name() = "#shadow-root") ||
+        (get_name() = "DIV") ||
+        (get_name() = "HTML") ||
+        (get_name() = "BODY") ||
+        (get_name() = "FORM") ||
+        (get_name() = "CENTER") ||
+        (get_name() = "TD") || 
+        (get_name() = "TR") || 
+        (get_name() = "TBODY") || 
+        (get_name() = "TABLE") || 
+        (get_name() = "SPAN") || 
+        (get_name() = "FONT") || 
+        (get_name() = "A") || 
+        (get_name() = "P") || 
+        (get_name() = "U") || 
+        (get_name() = "B") ||
+        (get_name() = "I")
       then 0
-      else panic(get_name()));
-  self.intrinsic_height <- if self.display = "none" then 0 else self.children_intrinsic_height + self.intrinsic_height_aux;
+      else if get_name() = "BR"
+      then (if has_first() then panic("intrinsic_height BR ICE") else 0)
+      else if get_name() = "INPUT"
+      then 10
+      else panic("intrinisc_height name: ", get_name()));
 
   (*the height of the current ongoing line*)
   self.intrinsic_current_line_height <-
@@ -109,33 +157,22 @@ var y;
 proc pass_1() {
   self.position <- if has_prop(position) then get_prop(position) else "static";
 
-  self.children_width <- if has_last() then last().width_max else 0;
-
   self.box_width <- if has_parent() then parent().width else 1920;
+
   self.x <- 
     if has_prev() 
     then 
       (if (self.line_break || prev().line_break) then 0 else prev().x + prev().width)
     else if has_parent() then parent().x else 0;
 
-  self.width_aux <- 
-    if has_prop(width)
-    then 
-      (if has_suffix(get_prop(width), "px") 
-      then string_to_int(strip_suffix(get_prop(width), "px"))
-      else panic("width_aux: ", get_prop(width)))
-    else 
-      self.intrinsic_width;
-
-  self.width <- if self.display = "none" then 0 else self.width_aux;
-
-  self.box_height <- if has_parent() then prent().height else 1080;
-
-  (*the height of the current ongoing line*)
-  self.current_line_height <-
-    if self.line_break 
+  self.width <- 
+    if self.display = "none"
     then 0
-    else max(self.height, if has_prev() then prev().current_line_height else 0);
+    else if has_prop(width) && has_suffix(get_prop(width), "%")
+    then (self.box_width - self.x) * 100 / string_to_int(strip_suffix(get_prop(width), "%"))
+    else self.intrinsic_width;
+
+  self.box_height <- if has_parent() then parent().height else 1080;
 
   self.y <- 
     if has_prev() 
@@ -143,23 +180,19 @@ proc pass_1() {
       (if self.line_break || prev().line_break then prev().y + prev().current_line_height else prev().y)
     else if has_parent() then parent().y else 0;
 
-  self.height_aux <- 
-    if has_prop(height)
-    then
-      (if has_suffix(get_prop(height), "px") 
-      then string_to_int(strip_suffix(get_prop(height), "px"))
-      else panic("height_aux: ", get_prop(height)))
-    else 
-      self.intrinsic_height;
-
+  self.height <- 
     if self.display = "none"
     then 0
-    else if has_attr(height)
-    then px_to_int(get_attr(height), self.intrinsic_height)
-    else if has_last() then last().sum_height else 10;
-  self.height_acc <- if self.position = "absolute" then 0 else self.height;
-  self.sum_height <- 
-     if has_prev() then self.height_acc + prev().sum_height else self.height_acc;
+    else if has_prop(height) && has_suffix(get_prop(height), "%")
+    then (self.box_height - self.y) * 100 / string_to_int(strip_suffix(get_prop(height), "%"))
+    else self.intrinsic_height;
+
+
+  (*the height of the current ongoing line*)
+  self.current_line_height <-
+    if self.line_break 
+    then 0
+    else max(self.height, if has_prev() then prev().current_line_height else 0);
 
   children.pass_1();
 }

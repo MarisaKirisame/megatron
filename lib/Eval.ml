@@ -79,7 +79,10 @@ let eval_binop (b : bop) (lhs : value) (rhs : value) =
   match b with
   | Lt -> VBool (int_of_value lhs < int_of_value rhs)
   | Gt -> VBool (int_of_value lhs > int_of_value rhs)
-  | Add -> VInt (int_of_value lhs + int_of_value rhs)
+  | Plus -> VInt (int_of_value lhs + int_of_value rhs)
+  | Minus -> VInt (int_of_value lhs - int_of_value rhs)
+  | Mult -> VInt (int_of_value lhs * int_of_value rhs)
+  | Div -> VInt (int_of_value lhs / int_of_value rhs)
   | Eq -> VBool (equal_value lhs rhs)
   | Neq -> VBool (not (equal_value lhs rhs))
   | Max -> VInt (Int.max (int_of_value lhs) (int_of_value rhs))
@@ -113,7 +116,7 @@ let rec eval_expr (n : 'meta node) (e : expr) (m : metric) : value =
   (* print_endline (show_expr e); *)
   let recurse e = eval_expr n e m in
   match e with
-  | Panic x -> panic (String.concat ~sep:", " (List.map x ~f:(fun x -> show_value (recurse x))))
+  | Panic x -> panic (String.concat ~sep:" " (List.map x ~f:(fun x -> show_value (recurse x))))
   | HasProperty p -> VBool (Option.is_some (Hashtbl.find n.prop p))
   | GetProperty p ->
       read m n.id;
@@ -145,6 +148,11 @@ let rec eval_expr (n : 'meta node) (e : expr) (m : metric) : value =
   | Not x -> VBool (not (bool_of_value (recurse x)))
   | GetName -> VString n.name
   | Bool x -> VBool x
+  | HasSuffix (s, sfx) -> VBool (has_suffix (string_of_value (recurse s)) (string_of_value (recurse sfx)))
+  | HasPrefix (s, sfx) -> VBool (has_prefix (string_of_value (recurse s)) (string_of_value (recurse sfx)))
+  | StripSuffix (s, sfx) -> VString (strip_suffix (string_of_value (recurse s)) (string_of_value (recurse sfx)))
+  | StripPrefix (s, sfx) -> VString (strip_prefix (string_of_value (recurse s)) (string_of_value (recurse sfx)))
+  | StringToInt x -> VInt (int_of_string (string_of_value (recurse x)))
   | _ -> panic ("unhandled case in eval_expr:" ^ show_expr e)
 
 let reversed_path (p : path) (n : 'a node) : 'a node list =

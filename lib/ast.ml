@@ -2,7 +2,7 @@ open Core
 open EXN
 
 (** The type of binary operators. *)
-type bop = Add | Mult | Leq | Lt | Geq | Gt | Eq | Iff | Neq | Max [@@deriving show]
+type bop = Plus | Minus | Mult | Div | Leq | Lt | Geq | Gt | Eq | Iff | Neq | Max [@@deriving show]
 
 type path = Self | Parent | First | Next | Last | Prev [@@deriving show]
 
@@ -123,11 +123,19 @@ let rec reads_of_expr (e : expr) : read list =
   | HasPath p -> [ ReadHasPath p ]
   | Int _ | String _ | GetName | Bool _ -> []
   | IfExpr (x, y, z) -> List.append (recurse x) (List.append (recurse y) (recurse z))
-  | Binop (x, _, y) | PxToInt (x, y) | And(x, y) | Or(x, y) -> List.append (recurse x) (recurse y)
+  | Binop (x, _, y)
+  | PxToInt (x, y)
+  | And (x, y)
+  | Or (x, y)
+  | HasPrefix (x, y)
+  | HasSuffix (x, y)
+  | StripPrefix (x, y)
+  | StripSuffix (x, y) ->
+      List.append (recurse x) (recurse y)
   | Read (p, n) -> [ ReadVar (p, n) ]
   | GetProperty x | HasProperty x -> [ ReadProp x ]
   | GetAttribute x | HasAttribute x -> [ ReadAttr x ]
-  | Not x -> recurse x
+  | Not x | StringToInt x -> recurse x
   | Panic _ ->
       []
       (*on zeroth glance it look like we should recurse into the children,
