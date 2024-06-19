@@ -72,9 +72,11 @@ rule read =
   | "last" { LAST }
   | "then" { THEN }
   | "panic" { PANIC }
+  | "float" { FLOAT }
+  | ":" { COLON }
   | int { let s = (Lexing.lexeme lexbuf) in 
-  let pfx = "i" in INT (int_of_string (String.sub s (String.length pfx) (String.length s - String.length pfx))) }
-  | float { FLOAT (float_of_string (Lexing.lexeme lexbuf)) }
+  let pfx = "i" in INT_LIT (int_of_string (String.sub s (String.length pfx) (String.length s - String.length pfx))) }
+  | float { FLOAT_LIT (float_of_string (Lexing.lexeme lexbuf)) }
   | id { ID (Lexing.lexeme lexbuf) }
   | newline { Lexing.new_line lexbuf; read lexbuf }
   | eof { EOF }
@@ -86,7 +88,7 @@ and read_comment = parse
   | _ { read_comment lexbuf }
 and read_string buf =
   parse
-  | '"'       { STRING (Buffer.contents buf) }
+  | '"'       { STRING_LIT (Buffer.contents buf) }
   | '\\' '/'  { Buffer.add_char buf '/'; read_string buf lexbuf }
   | '\\' '\\' { Buffer.add_char buf '\\'; read_string buf lexbuf }
   | '\\' 'b'  { Buffer.add_char buf '\b'; read_string buf lexbuf }

@@ -49,9 +49,25 @@ type expr =
 
 type stmt = BBCall of string | ChildrenCall of string | Write of path * string * expr [@@deriving show]
 type stmts = stmt list [@@deriving show]
-type var_decl = VarDecl of string [@@deriving show]
+type type_expr = TInt | TString | TFloat | TBool | TVar of type_expr option ref
 
-let var_decl_name (VarDecl n) = n
+let rec resolve (x : type_expr) : type_expr =
+  match x with
+  | TVar x_ -> (
+      match !x_ with
+      | None -> x
+      | Some x__ ->
+          let ret = resolve x__ in
+          x_ := Some ret;
+          ret)
+  | _ -> x
+
+let show_type_expr x : string =
+  match resolve x with TInt -> "Int" | TBool -> "Bool" | TFloat -> "Float" | TString -> "String" | TVar _ -> "Var"
+
+type var_decl = VarDecl of string * type_expr
+
+let var_decl_name (VarDecl (n, expr)) = n
 
 type proc_def = ProcDef of string * stmts [@@deriving show]
 
@@ -68,7 +84,6 @@ type prog_def = {
   proc_defs : proc_def list;
   order_decls : string list; (*the order to execute the procs*)
 }
-[@@deriving show]
 
 type 'rest prog = {
   vars : var_decl list;

@@ -201,7 +201,7 @@ module EVAL : Eval = struct
         Hashtbl.find_exn n.m.proc_inited proc;
         assert (not (Hashtbl.find_exn n.m.recursive_proc_dirtied proc)));
     Hashtbl.iter p.bbs ~f:(fun (BasicBlock (bb, _)) -> assert (not (Hashtbl.find_exn n.m.bb_dirtied bb)));
-    List.iter p.vars ~f:(fun (VarDecl p) -> ignore (Hashtbl.find_exn n.var p));
+    List.iter p.vars ~f:(fun (VarDecl (p, _)) -> ignore (Hashtbl.find_exn n.var p));
     List.iter n.children ~f:(check p)
 
   let recalculate (p : _ prog) (n : meta node) (m : metric) : unit =

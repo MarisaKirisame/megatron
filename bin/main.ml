@@ -1,6 +1,7 @@
 open Megatron.Parse
 open Megatron.Ast
 open Megatron.Eval
+open Megatron.TypeCheck
 open Megatron.EXN
 open Core
 open Yojson
@@ -37,7 +38,9 @@ Out_channel.newline stdout
 
 (*print_endline (show_prog_def prog_def)*)
 
-let prog = prog_of_prog_def prog_def
+let prog = prog_of_prog_def prog_def;;
+
+tyck prog
 
 (*print_endline (show_prog prog)*)
 

@@ -1,6 +1,4 @@
-var intrinsic_width;
-var intrinsic_height;
-var display;
+var finished_intrinsic_height_sum : float;
 
 (*calculate display, intrinsic_width, and intrinsic_height*)
 proc pass_0() {
@@ -271,11 +269,7 @@ proc pass_0() {
       (if self.line_break then self.intrinsic_height else 0);
 }
 
-var width;
-var height;
-var x;
-var y;
-
+var y : float;
 proc pass_1() {
   self.position <- if has_prop(position) then get_prop(position) else "static";
 

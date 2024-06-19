@@ -3,10 +3,15 @@ open Ast
 open Core
 %}
 
-%token <int> INT
-%token <float> FLOAT
+%token <int> INT_LIT
+%token <float> FLOAT_LIT
 %token <string> ID
-%token <string> STRING
+%token <string> STRING_LIT
+
+%token INT
+%token FLOAT
+%token COLON
+
 %token TRUE
 %token FALSE
 %token LEQ
@@ -96,8 +101,13 @@ procname_plus:
 	| x = ID; { [x] }
 	| x = ID; SEMICOLON; y = procname_plus { x :: y }
 
+type_expr:
+	| INT { TInt }
+	| FLOAT { TFloat }
+	;
+
 var_decl:
-	| VAR; x = ID; SEMICOLON { VarDecl(x) };
+	| VAR; x = ID; COLON; y = type_expr SEMICOLON { VarDecl(x, y) };
 
 proc_decl:
 	| PROC; x = ID; LPAREN; RPAREN; LCB; y = stmt_list; RCB { ProcDef(x, y) };
@@ -157,10 +167,10 @@ expr:
 	| f = func; xs = expr_list { Call(f, xs) }
 	| GET_NAME; LPAREN; RPAREN { GetName }
 	| IF; e1 = expr; THEN; e2 = expr; ELSE; e3 = expr { IfExpr (e1, e2, e3) }
-	| x = STRING { String(x) }
+	| x = STRING_LIT { String(x) }
 	| x = path; DOT; y = ID { Read(x, y) }
-	| i = INT { Int i }
-	| f = FLOAT { Float f }
+	| i = INT_LIT { Int i }
+	| f = FLOAT_LIT { Float f }
 	| TRUE { Bool true }
 	| FALSE { Bool false }
 	| x = expr; y = binop; z = expr { Call (y, [x; z]) }

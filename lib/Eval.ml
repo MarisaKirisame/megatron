@@ -119,13 +119,6 @@ let eval_func (f : func) (xs : value list) =
       VString (List.nth_exn (String.split s ~on:(String.get sep 0)) nth)
   | _ -> panic (show_func f ^ List.to_string ~f:show_value xs)
 
-(* | NthBySep (s_, sep_, nth_) ->
-       let s = string_of_value (recurse s_) in
-       let sep = string_of_value (recurse sep_) in
-       let nth = int_of_value (recurse nth_) in
-       VString (List.nth_exn (String.split s ~on:(String.get sep 0)) nth)
-*)
-
 let eval_path_opt (n : 'meta node) (p : path) =
   match p with
   | Self -> Some n
