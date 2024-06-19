@@ -4,6 +4,7 @@ open Core
 %}
 
 %token <int> INT
+%token <float> FLOAT
 %token <string> ID
 %token <string> STRING
 %token TRUE
@@ -50,6 +51,8 @@ open Core
 %token HAS_PREV
 %token PREV
 %token MAX
+%token STRING_TO_FLOAT
+%token INT_TO_FLOAT
 
 %token HAS_PROPERTY
 %token GET_PROPERTY
@@ -62,6 +65,7 @@ open Core
 %token STRIP_SUFFIX
 %token STRIP_PREFIX
 %token STRING_TO_INT
+%token NTH_BY_SEP
 
 %token SLASH
 %token COMMA
@@ -160,12 +164,16 @@ expr:
 	| GET_ATTRIBUTE; LPAREN; x = ID; RPAREN { GetAttribute(x) }
 	| PANIC; x = expr_list { Panic(x) }
 	| STRING_TO_INT; LPAREN; x = expr; RPAREN { StringToInt(x) }
+	| STRING_TO_FLOAT; LPAREN; x = expr; RPAREN { StringToFloat(x) }
+	| INT_TO_FLOAT; LPAREN; x = expr; RPAREN { IntToFloat(x) }
+	| NTH_BY_SEP; LPAREN; x = expr; COMMA; y = expr; COMMA; z = expr; RPAREN { NthBySep(x, y, z) }
 	| MAX; LPAREN; x = expr; COMMA; y = expr; RPAREN { Binop(x, Max, y) }
 	| GET_NAME; LPAREN; RPAREN { GetName }
 	| IF; e1 = expr; THEN; e2 = expr; ELSE; e3 = expr { IfExpr (e1, e2, e3) }
 	| x = STRING { String(x) }
 	| x = path; DOT; y = ID { Read(x, y) }
 	| i = INT { Int i }
+	| f = FLOAT { Float f }
 	| HAS_SUFFIX; LPAREN; x = expr; COMMA; y = expr; RPAREN { HasSuffix(x, y) }
 	| HAS_PREFIX; LPAREN; x = expr; COMMA; y = expr; RPAREN { HasPrefix(x, y) }
 	| STRIP_SUFFIX; LPAREN; x = expr; COMMA; y = expr; RPAREN { StripSuffix(x, y) }

@@ -4,8 +4,9 @@ open Parser
 
 let white = [' ' '\t']+
 let digit = ['0'-'9']
-let int = '-'? digit+
-let letter = ['a'-'z' 'A'-'Z' '_']
+let int = 'i' ('-'?) (digit+)
+let float = '-'? digit+
+let letter = ['a'-'z' 'A'-'Z' '_' '-']
 let id = letter (letter|digit)*
 let newline = '\r' | '\n' | "\r\n"
 
@@ -64,6 +65,9 @@ rule read =
   | "has_prefix" { HAS_PREFIX }
   | "strip_prefix" { STRIP_PREFIX }
   | "string_to_int" { STRING_TO_INT }
+  | "string_to_float" { STRING_TO_FLOAT }
+  | "int_to_float" { INT_TO_FLOAT }
+  | "nth_by_sep" { NTH_BY_SEP }
   | "len" { LEN }
   | "map" { MAP }
   | "sum" { SUM }
@@ -75,8 +79,10 @@ rule read =
   | "last" { LAST }
   | "then" { THEN }
   | "panic" { PANIC }
+  | int { let s = (Lexing.lexeme lexbuf) in 
+  let pfx = "i" in INT (int_of_string (String.sub s (String.length pfx) (String.length s - String.length pfx))) }
+  | float { FLOAT (float_of_string (Lexing.lexeme lexbuf)) }
   | id { ID (Lexing.lexeme lexbuf) }
-  | int { INT (int_of_string (Lexing.lexeme lexbuf)) }
   | newline { Lexing.new_line lexbuf; read lexbuf }
   | eof { EOF }
   | _ as c { failwith (Printf.sprintf "unexpected character: %C" c) }

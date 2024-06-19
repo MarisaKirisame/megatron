@@ -9,6 +9,7 @@ type path = Self | Parent | First | Next | Last | Prev [@@deriving show]
 (** The type of the abstract syntax tree (AST). *)
 type expr =
   | Int of int
+  | Float of float
   | Bool of bool
   | String of string
   | Binop of expr * bop * expr
@@ -36,6 +37,9 @@ type expr =
   | StripPrefix of expr * expr
   | StripSuffix of expr * expr
   | StringToInt of expr
+  | StringToFloat of expr
+  | IntToFloat of expr
+  | NthBySep of expr * expr * expr
 [@@deriving show]
 
 type stmt = BBCall of string | ChildrenCall of string | Write of path * string * expr [@@deriving show]
@@ -120,8 +124,8 @@ let rec reads_of_expr (e : expr) : read list =
   let recurse e = reads_of_expr e in
   match e with
   | HasPath p -> [ ReadHasPath p ]
-  | Int _ | String _ | GetName | Bool _ -> []
-  | IfExpr (x, y, z) -> List.append (recurse x) (List.append (recurse y) (recurse z))
+  | Int _ | String _ | GetName | Bool _ | Float _ -> []
+  | IfExpr (x, y, z) | NthBySep (x, y, z) -> List.append (recurse x) (List.append (recurse y) (recurse z))
   | Binop (x, _, y)
   | PxToInt (x, y)
   | And (x, y)
@@ -134,7 +138,7 @@ let rec reads_of_expr (e : expr) : read list =
   | Read (p, n) -> [ ReadVar (p, n) ]
   | GetProperty x | HasProperty x -> [ ReadProp x ]
   | GetAttribute x | HasAttribute x -> [ ReadAttr x ]
-  | Not x | StringToInt x -> recurse x
+  | Not x | StringToInt x | StringToFloat x | IntToFloat x -> recurse x
   | Panic _ ->
       []
       (*on zeroth glance it look like we should recurse into the children,

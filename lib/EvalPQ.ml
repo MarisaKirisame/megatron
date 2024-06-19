@@ -17,7 +17,7 @@ module EVAL : Eval = struct
     mutable alive : bool;
   }
 
-  let make_node (p : _ prog) ~name ~attr ~prop (children : meta node list) : meta node =
+  let make_node (p : _ prog) ~name ~attr ~prop ~extern_id (children : meta node list) : meta node =
     ignore p;
     {
       m =
@@ -30,6 +30,7 @@ module EVAL : Eval = struct
       name;
       attr;
       prop;
+      extern_id;
       var = Hashtbl.create (module String);
       children;
       parent = None;

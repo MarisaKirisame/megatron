@@ -19,7 +19,7 @@ module EVAL : Eval = struct
     recursive_proc_dirtied : (string, bool) Hashtbl.t;
   }
 
-  let make_node (p : _ prog) ~name ~attr ~prop (children : meta node list) : meta node =
+  let make_node (p : _ prog) ~name ~attr ~prop ~extern_id (children : meta node list) : meta node =
     ignore p;
     {
       id = count ();
@@ -32,6 +32,7 @@ module EVAL : Eval = struct
       name;
       attr;
       prop;
+      extern_id;
       var = Hashtbl.create (module String);
       children;
       parent = None;

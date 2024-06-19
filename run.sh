@@ -1,6 +1,7 @@
 set -e
 
 process(){
+  echo "processing $1..."
   tar -xf $1.tar.xz
   python3 generate.py $1.trace
   dune exec megatron -- $1.out

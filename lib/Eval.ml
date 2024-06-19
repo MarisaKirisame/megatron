@@ -15,7 +15,8 @@ type 'meta node = {
   attr : (string, value) Hashtbl.t;
   prop : (string, value) Hashtbl.t;
   var : (string, value) Hashtbl.t;
-  mutable id : int;
+  id : int;
+  extern_id : int;
   mutable children : 'meta node list;
   mutable parent : 'meta node option;
   mutable next : 'meta node option;
@@ -23,7 +24,7 @@ type 'meta node = {
   m : 'meta;
 }
 
-and value = VInt of int | VBool of bool | VString of string
+and value = VInt of int | VBool of bool | VString of string | VFloat of float
 
 let rec node_size (n : _ node) : int = 1 + List.sum (module Int) n.children ~f:node_size
 
@@ -62,30 +63,52 @@ let rec show_node (n : 'meta node) : string =
   List.fold_left n.children ~init:(htbl_str ^ "[") ~f:(fun lhs n -> lhs ^ show_node n ^ ", ") ^ "]"
 
 and show_value (x : value) : string =
-  match x with VInt i -> string_of_int i | VBool b -> string_of_bool b | VString s -> String.escaped s
+  match x with
+  | VInt i -> string_of_int i
+  | VBool b -> string_of_bool b
+  | VString s -> String.escaped s
+  | VFloat f -> string_of_float f
 
 let int_of_value x = match x with VInt i -> i | _ -> panic (show_value x)
 let bool_of_value x = match x with VBool b -> b | _ -> panic (show_value x)
 let string_of_value x = match x with VString x -> x | _ -> panic (show_value x)
+let float_of_value x = match x with VFloat x -> x | _ -> panic (show_value x)
 
 let equal_value x y : bool =
   match (x, y) with
   | VString x, VString y -> String.equal x y
   | VInt x, VInt y -> Int.equal x y
   | VBool x, VBool y -> Bool.equal x y
+  | VFloat x, VFloat y -> Float.equal x y
   | _ -> panic ("unhandled case in equal_value: " ^ show_value x ^ " " ^ show_value y)
 
 let eval_binop (b : bop) (lhs : value) (rhs : value) =
   match b with
   | Lt -> VBool (int_of_value lhs < int_of_value rhs)
   | Gt -> VBool (int_of_value lhs > int_of_value rhs)
-  | Plus -> VInt (int_of_value lhs + int_of_value rhs)
+  | Plus -> (
+      match (lhs, rhs) with
+      | VInt lhs, VInt rhs -> VInt (lhs + rhs)
+      | VFloat lhs, VFloat rhs -> VFloat (lhs +. rhs)
+      | _ -> panic ("add: " ^ show_value lhs ^ ", " ^ show_value rhs))
   | Minus -> VInt (int_of_value lhs - int_of_value rhs)
-  | Mult -> VInt (int_of_value lhs * int_of_value rhs)
-  | Div -> VInt (int_of_value lhs / int_of_value rhs)
+  | Mult -> (
+      match (lhs, rhs) with
+      | VInt lhs, VInt rhs -> VInt (lhs * rhs)
+      | VFloat lhs, VFloat rhs -> VFloat (lhs *. rhs)
+      | _ -> panic ("add: " ^ show_value lhs ^ ", " ^ show_value rhs))
+  | Div -> (
+      match (lhs, rhs) with
+      | VInt lhs, VInt rhs -> VInt (lhs / rhs)
+      | VFloat lhs, VFloat rhs -> VFloat (lhs /. rhs)
+      | _ -> panic ("add: " ^ show_value lhs ^ ", " ^ show_value rhs))
   | Eq -> VBool (equal_value lhs rhs)
   | Neq -> VBool (not (equal_value lhs rhs))
-  | Max -> VInt (Int.max (int_of_value lhs) (int_of_value rhs))
+  | Max -> (
+      match (lhs, rhs) with
+      | VInt lhs, VInt rhs -> VInt (max lhs rhs)
+      | VFloat lhs, VFloat rhs -> VFloat (Float.max lhs rhs)
+      | _ -> panic ("max: " ^ show_value lhs ^ ", " ^ show_value rhs))
   | _ -> raise (EXN (show_bop b))
 
 let eval_path_opt (n : 'meta node) (p : path) =
@@ -113,36 +136,31 @@ let strip_suffix s sfx =
   String.sub s 0 (String.length s - String.length sfx)
 
 let rec eval_expr (n : 'meta node) (e : expr) (m : metric) : value =
-  (* print_endline (show_expr e); *)
+  (*print_endline (show_expr e);*)
   let recurse e = eval_expr n e m in
   match e with
-  | Panic x -> panic (String.concat ~sep:" " (List.map x ~f:(fun x -> show_value (recurse x))))
+  | Panic x -> panic ("External: " ^ String.concat ~sep:" " (List.map x ~f:(fun x -> show_value (recurse x))))
   | HasProperty p -> VBool (Option.is_some (Hashtbl.find n.prop p))
-  | GetProperty p ->
+  | GetProperty p -> (
       read m n.id;
-      Hashtbl.find_exn n.prop p
+      match Hashtbl.find n.prop p with
+      | Some x -> x
+      | None -> panic ("cannot find property " ^ p ^ " in " ^ string_of_int n.extern_id))
   | HasAttribute p -> VBool (Option.is_some (Hashtbl.find n.attr p))
-  | GetAttribute p ->
+  | GetAttribute p -> (
       read m n.id;
-      Hashtbl.find_exn n.attr p
+      match Hashtbl.find n.attr p with
+      | Some x -> x
+      | None -> panic ("cannot find attribute " ^ p ^ " in " ^ string_of_int n.extern_id))
   | String s -> VString s
   | Int i -> VInt i
+  | Float f -> VFloat f
   | IfExpr (c, t, e) -> if bool_of_value (recurse c) then recurse t else recurse e
   | Binop (lhs, op, rhs) -> eval_binop op (recurse lhs) (recurse rhs)
   | HasPath p -> VBool (Option.is_some (eval_path_opt n p))
   | Read (p, prop_name) ->
       read m n.id;
       Hashtbl.find_exn (eval_path n p).var prop_name
-  | PxToInt (x, y) -> (
-      let s = string_of_value (recurse x) in
-      let i = int_of_value (recurse y) in
-      match s with
-      | "auto" | "fit-content" -> VInt i
-      | _ when has_suffix s "%" -> VInt (int_of_float (float_of_int i *. float_of_string (strip_suffix s "%") /. 100.0))
-      | _ when has_suffix s "px" -> VInt (int_of_string (strip_suffix s "px"))
-      | _ when has_suffix s "ch" -> VInt (int_of_string (strip_suffix s "ch"))
-      | _ -> VInt i
-      | _ -> panic ("cannot convert px to int: " ^ s))
   | And (x, y) -> if bool_of_value (recurse x) then recurse y else VBool false
   | Or (x, y) -> if bool_of_value (recurse x) then VBool true else recurse y
   | Not x -> VBool (not (bool_of_value (recurse x)))
@@ -152,7 +170,19 @@ let rec eval_expr (n : 'meta node) (e : expr) (m : metric) : value =
   | HasPrefix (s, sfx) -> VBool (has_prefix (string_of_value (recurse s)) (string_of_value (recurse sfx)))
   | StripSuffix (s, sfx) -> VString (strip_suffix (string_of_value (recurse s)) (string_of_value (recurse sfx)))
   | StripPrefix (s, sfx) -> VString (strip_prefix (string_of_value (recurse s)) (string_of_value (recurse sfx)))
-  | StringToInt x -> VInt (int_of_string (string_of_value (recurse x)))
+  | StringToInt x -> (
+      let str = string_of_value (recurse x) in
+      match int_of_string_opt str with Some x -> VInt x | None -> panic str)
+  | StringToFloat x -> (
+      let str = string_of_value (recurse x) in
+      match float_of_string_opt str with Some x -> VFloat x | None -> panic str)
+  | NthBySep (s_, sep_, nth_) ->
+      let s = string_of_value (recurse s_) in
+      let sep = string_of_value (recurse sep_) in
+      let nth = int_of_value (recurse nth_) in
+      assert (String.length sep == 1);
+      VString (List.nth_exn (String.split s ~on:(String.get sep 0)) nth)
+      | IntToFloat x -> VFloat (float_of_int (int_of_value (recurse x)))
   | _ -> panic ("unhandled case in eval_expr:" ^ show_expr e)
 
 let reversed_path (p : path) (n : 'a node) : 'a node list =
@@ -182,6 +212,7 @@ module type Eval = sig
     name:string ->
     attr:(string, value) Hashtbl.t ->
     prop:(string, value) Hashtbl.t ->
+    extern_id:int ->
     meta node list ->
     meta node
 

@@ -21,6 +21,10 @@ let json_to_string j : string =
   let open Yojson.Basic.Util in
   to_string j
 
+let json_to_int j : int =
+  let open Yojson.Basic.Util in
+  to_int j
+
 let json_to_dict (j : Yojson.Basic.t) : (string, value) Hashtbl.t =
   let open Yojson.Basic.Util in
   Hashtbl.map (Hashtbl.of_alist_exn (module String) (to_assoc j)) ~f:json_to_value
@@ -101,6 +105,7 @@ let default_tag : (string, unit) Hashtbl.t =
       ("CUSTOM-SCOPES", ());
       ("INCLUDE-FRAGMENT", ());
       ("H1", ());
+      ("H4", ());
       ("DL", ());
       ("DT", ());
       ("LABEL", ());
@@ -148,10 +153,10 @@ let rec node_to_html_buffer (b : Buffer.t) (n : _ node) : unit =
         | _ -> panic n.name
       in
       Buffer.add_string b "<div style=\"";
-      Buffer.add_string b ("top: " ^ string_of_int (int_of_value (Hashtbl.find_exn n.var "x")) ^ ";");
-      Buffer.add_string b ("left: " ^ string_of_int (int_of_value (Hashtbl.find_exn n.var "y")) ^ ";");
-      Buffer.add_string b ("width: " ^ string_of_int (int_of_value (Hashtbl.find_exn n.var "width")) ^ ";");
-      Buffer.add_string b ("height: " ^ string_of_int (int_of_value (Hashtbl.find_exn n.var "height")) ^ ";");
+      Buffer.add_string b ("top: " ^ string_of_float (float_of_value (Hashtbl.find_exn n.var "x")) ^ ";");
+      Buffer.add_string b ("left: " ^ string_of_float (float_of_value (Hashtbl.find_exn n.var "y")) ^ ";");
+      Buffer.add_string b ("width: " ^ string_of_float (float_of_value (Hashtbl.find_exn n.var "width")) ^ ";");
+      Buffer.add_string b ("height: " ^ string_of_float (float_of_value (Hashtbl.find_exn n.var "height")) ^ ";");
       Buffer.add_string b "position: absolute; outline:1px solid black;\">";
       Buffer.add_string b content;
       recurse ();
@@ -170,6 +175,7 @@ module Main (EVAL : Eval) = struct
       ~name:(j |> member "name" |> json_to_string)
       ~attr:(j |> member "attributes" |> json_to_dict)
       ~prop:(j |> member "properties" |> json_to_dict)
+      ~extern_id:(j |> member "id" |> json_to_int)
 
   let json_to_node j : _ node =
     let v = json_to_node_aux j in
@@ -179,7 +185,7 @@ module Main (EVAL : Eval) = struct
   let rec node_to_fs_node_aux n : Megatron.EvalFS.EVAL.meta node =
     Megatron.EvalFS.EVAL.make_node prog
       (List.map n.children ~f:node_to_fs_node_aux)
-      ~name:n.name ~attr:n.attr ~prop:n.prop
+      ~name:n.name ~attr:n.attr ~prop:n.prop ~extern_id:n.extern_id
 
   let node_to_fs_node n =
     let v = node_to_fs_node_aux n in
