@@ -146,10 +146,10 @@ proc pass_0() {
     else if self.disabled then 0
     else if 
       (self.width_expr != "auto") && 
-      (!has_suffix(self.width_expr, "%")) && 
+      (!(has_suffix(self.width_expr, "%"))) && 
       (self.width_expr != "fit-content") && 
       (self.width_expr != "max-content") && 
-      (!has_prefix(self.width_expr, "calc"))
+      (!(has_prefix(self.width_expr, "calc")))
     then 
       (if has_suffix(self.width_expr, "px") 
       then string_to_float(strip_suffix(self.width_expr, "px"))
@@ -177,9 +177,9 @@ proc pass_0() {
       then 
         (if has_attr(width)
         then string_to_float(get_attr(width))
-        else if has_attr(image_width) && !has_attr(height)
+        else if has_attr(image_width) && !(has_attr(height))
         then int_to_float(get_attr(image_width))
-        else if !has_attr(width) && has_attr(height) && has_attr(image_width) && has_attr(image_height)
+        else if !(has_attr(width)) && has_attr(height) && has_attr(image_width) && has_attr(image_height)
         then 
           (if get_attr(image_height) != i0
           then string_to_float(get_attr(height)) * int_to_float(get_attr(image_width)) / int_to_float(get_attr(image_height))
@@ -196,7 +196,7 @@ proc pass_0() {
 
   self.intrinsic_current_line_width <-
     self.intrinsic_width + 
-    if has_prev() && !prev().line_break 
+    if has_prev() && !(prev().line_break)
     then prev().intrinsic_current_line_width
     else 0;
 
@@ -213,7 +213,7 @@ proc pass_0() {
     if self.display = "none" then 0 
     else if self.inside_svg then 0
     else if self.disabled then 0
-    else if (self.height_expr != "auto") && (!has_suffix(self.height_expr, "%")) && (self.height_expr != "fit-content")
+    else if (self.height_expr != "auto") && (!(has_suffix(self.height_expr, "%"))) && (self.height_expr != "fit-content")
     then 
       (if has_suffix(self.height_expr, "px") 
       then string_to_float(strip_suffix(self.height_expr, "px"))
@@ -243,7 +243,7 @@ proc pass_0() {
       then 
         (if has_attr(height)
         then string_to_float(get_attr(height))
-        else if has_attr(image_height) && !has_attr(width)
+        else if has_attr(image_height) && !(has_attr(width))
         then int_to_float(get_attr(image_height))
         else panic("IMG height"))
       else if get_name() = "IFRAME"

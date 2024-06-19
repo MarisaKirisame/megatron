@@ -23,10 +23,8 @@ open Core
 %token RPAREN
 %token LBRACKET
 %token RBRACKET
-%token LET
 %token EQ
 %token NEQ
-%token IN
 %token IF
 %token THEN
 %token ELSE
@@ -35,10 +33,6 @@ open Core
 %token OR
 
 %token CHILDREN
-%token LEN
-%token MAP
-%token SUM
-
 %token SELF
 %token HAS_PARENT
 %token PARENT
@@ -67,20 +61,17 @@ open Core
 %token STRING_TO_INT
 %token NTH_BY_SEP
 
-%token SLASH
 %token COMMA
 %token SEMICOLON
 %token NOT
 %token DOT
 %token LARROW
-%token RARROW
 %token LCB
 %token RCB
 %token VAR
 %token PROC
 %token PANIC
 
-%nonassoc IN
 %nonassoc ELSE
 %left LEQ
 %left PLUS
@@ -162,30 +153,31 @@ expr:
 	| GET_PROPERTY; LPAREN; x = ID; RPAREN { GetProperty(x) }
 	| HAS_ATTRIBUTE; LPAREN; x = ID; RPAREN { HasAttribute(x) }
 	| GET_ATTRIBUTE; LPAREN; x = ID; RPAREN { GetAttribute(x) }
-	| PANIC; x = expr_list { Panic(x) }
-	| STRING_TO_INT; LPAREN; x = expr; RPAREN { StringToInt(x) }
-	| STRING_TO_FLOAT; LPAREN; x = expr; RPAREN { StringToFloat(x) }
-	| INT_TO_FLOAT; LPAREN; x = expr; RPAREN { IntToFloat(x) }
-	| NTH_BY_SEP; LPAREN; x = expr; COMMA; y = expr; COMMA; z = expr; RPAREN { NthBySep(x, y, z) }
-	| MAX; LPAREN; x = expr; COMMA; y = expr; RPAREN { Binop(x, Max, y) }
+	| PANIC; xs = expr_list { Panic(xs) }
+	| f = func; xs = expr_list { Call(f, xs) }
 	| GET_NAME; LPAREN; RPAREN { GetName }
 	| IF; e1 = expr; THEN; e2 = expr; ELSE; e3 = expr { IfExpr (e1, e2, e3) }
 	| x = STRING { String(x) }
 	| x = path; DOT; y = ID { Read(x, y) }
 	| i = INT { Int i }
 	| f = FLOAT { Float f }
-	| HAS_SUFFIX; LPAREN; x = expr; COMMA; y = expr; RPAREN { HasSuffix(x, y) }
-	| HAS_PREFIX; LPAREN; x = expr; COMMA; y = expr; RPAREN { HasPrefix(x, y) }
-	| STRIP_SUFFIX; LPAREN; x = expr; COMMA; y = expr; RPAREN { StripSuffix(x, y) }
-	| STRIP_PREFIX; LPAREN; x = expr; COMMA; y = expr; RPAREN { StripPrefix(x, y) }
 	| TRUE { Bool true }
 	| FALSE { Bool false }
-	| x = expr; y = binop; z = expr { Binop (x, y, z) }
-	| LET; x = ID; EQ; e1 = expr; IN; e2 = expr { Let (x, e1, e2) }
+	| x = expr; y = binop; z = expr { Call (y, [x; z]) }
 	| LPAREN; e=expr; RPAREN { e }
-	| x = expr; LBRACKET; y = expr; RBRACKET { Index(x, y) }
 	| x = expr; AND; y = expr { And(x, y) }
 	| x = expr; OR; y = expr { Or(x, y) }
-	| NOT; x = expr { Not(x) }
 	;
 	
+func:
+	| HAS_SUFFIX { HasSuffix }
+	| HAS_PREFIX { HasPrefix }
+	| STRIP_SUFFIX { StripSuffix }
+	| STRIP_PREFIX  { StripPrefix }
+	| STRING_TO_INT { StringToInt }
+	| STRING_TO_FLOAT { StringToFloat }
+	| INT_TO_FLOAT { IntToFloat }
+	| NTH_BY_SEP { NthBySep }
+	| MAX { Max }
+	| NOT { Not }
+	;

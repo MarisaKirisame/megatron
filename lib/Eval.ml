@@ -82,46 +82,6 @@ let equal_value x y : bool =
   | VFloat x, VFloat y -> Float.equal x y
   | _ -> panic ("unhandled case in equal_value: " ^ show_value x ^ " " ^ show_value y)
 
-let eval_binop (b : bop) (lhs : value) (rhs : value) =
-  match b with
-  | Lt -> VBool (int_of_value lhs < int_of_value rhs)
-  | Gt -> VBool (int_of_value lhs > int_of_value rhs)
-  | Plus -> (
-      match (lhs, rhs) with
-      | VInt lhs, VInt rhs -> VInt (lhs + rhs)
-      | VFloat lhs, VFloat rhs -> VFloat (lhs +. rhs)
-      | _ -> panic ("add: " ^ show_value lhs ^ ", " ^ show_value rhs))
-  | Minus -> VInt (int_of_value lhs - int_of_value rhs)
-  | Mult -> (
-      match (lhs, rhs) with
-      | VInt lhs, VInt rhs -> VInt (lhs * rhs)
-      | VFloat lhs, VFloat rhs -> VFloat (lhs *. rhs)
-      | _ -> panic ("add: " ^ show_value lhs ^ ", " ^ show_value rhs))
-  | Div -> (
-      match (lhs, rhs) with
-      | VInt lhs, VInt rhs -> VInt (lhs / rhs)
-      | VFloat lhs, VFloat rhs -> VFloat (lhs /. rhs)
-      | _ -> panic ("add: " ^ show_value lhs ^ ", " ^ show_value rhs))
-  | Eq -> VBool (equal_value lhs rhs)
-  | Neq -> VBool (not (equal_value lhs rhs))
-  | Max -> (
-      match (lhs, rhs) with
-      | VInt lhs, VInt rhs -> VInt (max lhs rhs)
-      | VFloat lhs, VFloat rhs -> VFloat (Float.max lhs rhs)
-      | _ -> panic ("max: " ^ show_value lhs ^ ", " ^ show_value rhs))
-  | _ -> raise (EXN (show_bop b))
-
-let eval_path_opt (n : 'meta node) (p : path) =
-  match p with
-  | Self -> Some n
-  | Parent -> n.parent
-  | First -> List.hd n.children
-  | Next -> n.next
-  | Prev -> n.prev
-  | Last -> List.last n.children
-
-let eval_path n p = Option.value_exn (eval_path_opt n p)
-
 let has_suffix s sfx =
   String.length s >= String.length sfx
   && String.equal sfx (String.sub s (String.length s - String.length sfx) (String.length sfx))
@@ -134,6 +94,48 @@ let strip_prefix s pfx =
 let strip_suffix s sfx =
   assert (has_suffix s sfx);
   String.sub s 0 (String.length s - String.length sfx)
+
+let eval_func (f : func) (xs : value list) =
+  match (f, xs) with
+  | Lt, [ VInt lhs; VInt rhs ] -> VBool (lhs < rhs)
+  | Gt, [ VInt lhs; VInt rhs ] -> VBool (lhs > rhs)
+  | Eq, [ lhs; rhs ] -> VBool (equal_value lhs rhs)
+  | Neq, [ lhs; rhs ] -> VBool (not (equal_value lhs rhs))
+  | Plus, [ VInt lhs; VInt rhs ] -> VInt (lhs + rhs)
+  | Plus, [ VFloat lhs; VFloat rhs ] -> VFloat (lhs +. rhs)
+  | Mult, [ VFloat lhs; VFloat rhs ] -> VFloat (lhs *. rhs)
+  | Div, [ VFloat lhs; VFloat rhs ] -> VFloat (lhs /. rhs)
+  | Max, [ VFloat lhs; VFloat rhs ] -> VFloat (Float.max lhs rhs)
+  | HasSuffix, [ VString s; VString sfx ] -> VBool (has_suffix s sfx)
+  | HasPrefix, [ VString s; VString sfx ] -> VBool (has_prefix s sfx)
+  | StripSuffix, [ VString s; VString sfx ] -> VString (strip_suffix s sfx)
+  | StripPrefix, [ VString s; VString sfx ] -> VString (strip_prefix s sfx)
+  | Not, [ VBool x ] -> VBool (not x)
+  | StringToFloat, [ VString str ] -> ( match float_of_string_opt str with Some x -> VFloat x | None -> panic str)
+  | StringToInt, [ VString str ] -> ( match int_of_string_opt str with Some x -> VInt x | None -> panic str)
+  | IntToFloat, [ VInt x ] -> VFloat (float_of_int x)
+  | NthBySep, [ VString s; VString sep; VInt nth ] ->
+      assert (String.length sep == 1);
+      VString (List.nth_exn (String.split s ~on:(String.get sep 0)) nth)
+  | _ -> panic (show_func f ^ List.to_string ~f:show_value xs)
+
+(* | NthBySep (s_, sep_, nth_) ->
+       let s = string_of_value (recurse s_) in
+       let sep = string_of_value (recurse sep_) in
+       let nth = int_of_value (recurse nth_) in
+       VString (List.nth_exn (String.split s ~on:(String.get sep 0)) nth)
+*)
+
+let eval_path_opt (n : 'meta node) (p : path) =
+  match p with
+  | Self -> Some n
+  | Parent -> n.parent
+  | First -> List.hd n.children
+  | Next -> n.next
+  | Prev -> n.prev
+  | Last -> List.last n.children
+
+let eval_path n p = Option.value_exn (eval_path_opt n p)
 
 let rec eval_expr (n : 'meta node) (e : expr) (m : metric) : value =
   (*print_endline (show_expr e);*)
@@ -156,33 +158,15 @@ let rec eval_expr (n : 'meta node) (e : expr) (m : metric) : value =
   | Int i -> VInt i
   | Float f -> VFloat f
   | IfExpr (c, t, e) -> if bool_of_value (recurse c) then recurse t else recurse e
-  | Binop (lhs, op, rhs) -> eval_binop op (recurse lhs) (recurse rhs)
   | HasPath p -> VBool (Option.is_some (eval_path_opt n p))
   | Read (p, prop_name) ->
       read m n.id;
       Hashtbl.find_exn (eval_path n p).var prop_name
   | And (x, y) -> if bool_of_value (recurse x) then recurse y else VBool false
   | Or (x, y) -> if bool_of_value (recurse x) then VBool true else recurse y
-  | Not x -> VBool (not (bool_of_value (recurse x)))
   | GetName -> VString n.name
   | Bool x -> VBool x
-  | HasSuffix (s, sfx) -> VBool (has_suffix (string_of_value (recurse s)) (string_of_value (recurse sfx)))
-  | HasPrefix (s, sfx) -> VBool (has_prefix (string_of_value (recurse s)) (string_of_value (recurse sfx)))
-  | StripSuffix (s, sfx) -> VString (strip_suffix (string_of_value (recurse s)) (string_of_value (recurse sfx)))
-  | StripPrefix (s, sfx) -> VString (strip_prefix (string_of_value (recurse s)) (string_of_value (recurse sfx)))
-  | StringToInt x -> (
-      let str = string_of_value (recurse x) in
-      match int_of_string_opt str with Some x -> VInt x | None -> panic str)
-  | StringToFloat x -> (
-      let str = string_of_value (recurse x) in
-      match float_of_string_opt str with Some x -> VFloat x | None -> panic str)
-  | NthBySep (s_, sep_, nth_) ->
-      let s = string_of_value (recurse s_) in
-      let sep = string_of_value (recurse sep_) in
-      let nth = int_of_value (recurse nth_) in
-      assert (String.length sep == 1);
-      VString (List.nth_exn (String.split s ~on:(String.get sep 0)) nth)
-      | IntToFloat x -> VFloat (float_of_int (int_of_value (recurse x)))
+  | Call (f, xs) -> eval_func f (List.map ~f:recurse xs)
   | _ -> panic ("unhandled case in eval_expr:" ^ show_expr e)
 
 let reversed_path (p : path) (n : 'a node) : 'a node list =

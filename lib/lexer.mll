@@ -26,19 +26,15 @@ rule read =
   | "/" { DIVIDE }
   | "(" { LPAREN }
   | ")" { RPAREN }
-  | "let" { LET }
   | "=" { EQ }
   | "!=" { NEQ }
-  | "in" { IN }
   | "if" { IF }
   | "else" { ELSE }
   | "var" { VAR }
   | "proc" { PROC }
   | "<-" { LARROW }
-  | "->" { RARROW }
   | "[" { LBRACKET }
   | "]" { RBRACKET }
-  | "\\" { SLASH }
   | "," { COMMA }
   | ";" { SEMICOLON }
   | "!" { NOT }
@@ -68,9 +64,6 @@ rule read =
   | "string_to_float" { STRING_TO_FLOAT }
   | "int_to_float" { INT_TO_FLOAT }
   | "nth_by_sep" { NTH_BY_SEP }
-  | "len" { LEN }
-  | "map" { MAP }
-  | "sum" { SUM }
   | "max" { MAX }
   | "self" { SELF }
   | "first" { FIRST }
