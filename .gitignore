@@ -34,3 +34,4 @@ _opam/
 __pycache__
 *.webm
 \#*#
+*.trace

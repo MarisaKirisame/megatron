@@ -3,6 +3,28 @@ var finished_intrinsic_height_sum : float;
 (*calculate display, intrinsic_width, and intrinsic_height*)
 proc pass_0() {
   self.display <- if has_prop(display) then get_prop(display) else "block";
+  self.position <- if has_prop(position) then get_prop(position) else "static";
+
+  self.width_attr_expr <- 
+    if !(has_attr(width))
+    then "auto"
+    else if string_is_float(get_attr(width)) || has_suffix(get_attr(width), "%")
+    then get_attr(width)
+    else if get_attr(width) = "Auto"
+    then "auto"
+    else panic("width_attr:", get_attr(width));
+  self.has_width_attr <- self.width_attr_expr != "auto";
+
+  self.height_attr_expr <- 
+    if !(has_attr(height))
+    then "auto"
+    else if string_is_float(get_attr(height)) || has_suffix(get_attr(height), "%")
+    then get_attr(height)
+    else if get_attr(height) = "Auto"
+    then "auto"
+    else panic("height_attr:", get_attr(height));
+  self.has_height_attr <- self.height_attr_expr != "auto";
+
 
   self.is_svg_block <- get_name() = "svg";
   self.inside_svg <- has_parent() && (parent().is_svg_block || parent().inside_svg);
@@ -11,9 +33,13 @@ proc pass_0() {
     if get_name() = "NOSCRIPT"
     then true
     else has_parent() && parent().disabled;
+  
+  self.visible <- (!(has_parent()) || parent().visible) && (self.display != "none") && !(self.inside_svg) && !(self.disabled);
 
   self.line_break <- 
     if self.display = "none"
+    then false
+    else if self.position = "absolute"
     then false
     else if has_parent() && ((parent().display = "flex") || parent().display = "inline-flex")
     then true
@@ -119,6 +145,8 @@ proc pass_0() {
       (get_name() = "ACTIVE-GLOBAL-BANNERS") ||
       (get_name() = "CARD-SKEW") ||
       (get_name() = "EM") ||
+      (get_name() = "ASIDE") ||
+      (get_name() = "AUDIO") ||
       (get_name() = "SUP") ||
       (get_name() = "TIME") ||
       (get_name() = "ABBR") ||
@@ -138,7 +166,22 @@ proc pass_0() {
     then false
     else panic("is_default_case:", get_name());
 
-  self.intrinsic_width <- 
+  self.intrinsic_width_is_width <-
+    if 
+      (self.display = "none") || 
+      self.inside_svg || 
+      self.disabled || 
+      (self.width_expr = "auto") ||
+      has_suffix(self.width_expr, "px") ||
+      has_suffix(self.width_expr, "ch") ||
+      has_prefix(self.width_expr, "calc(") ||
+      (self.width_expr = "max-content")
+    then true
+    else if has_suffix(self.width_expr, "%") || self.width_expr = "fit-content"
+    then false
+    else panic("intrinsic_width_is_width: ", self.width_expr);
+
+  self.intrinsic_width_internal <- 
     if self.display = "none" then 0
     else if self.inside_svg then 0
     else if self.disabled then 0
@@ -153,47 +196,57 @@ proc pass_0() {
       then string_to_float(strip_suffix(self.width_expr, "px"))
       else if has_suffix(self.width_expr, "ch")
       then string_to_float(strip_suffix(self.width_expr, "ch"))
-      else panic("intrinsic_width:", self.width_expr))
+      else panic("intrinsic_width_internal:", self.width_expr))
     else 
       self.children_intrinsic_width +
       (if (get_name() = "#text")
-      then (if has_first() then panic("intrinsic_width ICE") else 100)
+      then (if has_first() then panic("intrinsic_width_internal ICE") else 100)
       else if self.is_default_case 
       then 0
       else if get_name() = "BR"
-      then (if has_first() then panic("intrinsic_width ICE") else 0)
+      then (if has_first() then panic("intrinsic_width_internal ICE") else 0)
       else if get_name() = "INPUT"
       then 100
       else if get_name() = "svg"
       then 
-        (if has_attr(width)
-        then string_to_float(get_attr(width)) 
-        else if has_attr(viewBox)
+        (if self.has_width_attr && string_is_float(self.width_attr_expr)
+        then string_to_float(self.width_attr_expr)
+        else if !(self.has_width_attr) && has_attr(viewBox)
         then string_to_float(nth_by_sep(get_attr(viewBox), " ", i2))
-        else panic("unknown SVG"))
+        else if self.has_width_attr && has_suffix(self.width_attr_expr, "%") && has_attr(viewBox)
+        then string_to_float(nth_by_sep(get_attr(viewBox), " ", i2)) * string_to_float(strip_suffix(self.width_attr_expr, "%")) / 100
+        else panic("unknown SVG", self.width_attr_expr))
       else if get_name() = "IMG"
       then 
-        (if has_attr(width)
-        then string_to_float(get_attr(width))
-        else if has_attr(image_width) && !(has_attr(height))
+        (if self.has_width_attr
+        then string_to_float(self.width_attr_expr)
+        else if has_attr(image_width) && !(self.has_height_attr)
         then int_to_float(get_attr(image_width))
-        else if !(has_attr(width)) && has_attr(height) && has_attr(image_width) && has_attr(image_height)
+        else if !(self.has_width_attr) && self.has_height_attr && has_attr(image_width) && has_attr(image_height)
         then 
           (if get_attr(image_height) != i0
-          then string_to_float(get_attr(height)) * int_to_float(get_attr(image_width)) / int_to_float(get_attr(image_height))
+          then string_to_float(self.height_attr_expr) * int_to_float(get_attr(image_width)) / int_to_float(get_attr(image_height))
           else 0)
-        else panic("IMG width:", has_attr(width), has_attr(height), has_attr(image_width), has_attr(image_height)))
+        else panic("IMG width:", self.has_width_attr, self.has_height_attr, has_attr(image_width), has_attr(image_height)))
       else if get_name() = "IFRAME"
       then
-        (if has_attr(width) 
-        then panic("IFRAME width:", get_attr(width))
+        (if self.has_width_attr
+        then panic("IFRAME width:", self.width_attr_expr)
         else 300)
       else if get_name() = "TEXTAREA"
       then 100
+      else if get_name() = "VIDEO"
+      then 
+        (if self.has_width_attr
+        then panic("VIDEO width:", self.width_attr)
+        else 300)
       else panic("intrinsic_width name:", get_name()));
 
+  self.intrinsic_width_external <- 
+    if self.position = "absolute" then 0 else self.intrinsic_width_internal;
+
   self.intrinsic_current_line_width <-
-    self.intrinsic_width + 
+    self.intrinsic_width_external + 
     if has_prev() && !(prev().line_break)
     then prev().intrinsic_current_line_width
     else 0;
@@ -207,7 +260,22 @@ proc pass_0() {
 
   self.height_expr <- if has_prop(height) then get_prop(height) else "auto";
 
-  self.intrinsic_height <- 
+  self.intrinsic_height_is_height <-
+    if 
+      (self.display = "none") || 
+      self.inside_svg || 
+      self.disabled || 
+      (self.height_expr = "auto") ||
+      has_suffix(self.height_expr, "px") ||
+      has_suffix(self.height_expr, "ch") ||
+      has_suffix(self.height_expr, "lh") ||
+      (self.height_expr = "max-content")
+    then true
+    else if has_suffix(self.height_expr, "%") || self.height_expr = "fit-content"
+    then false
+    else panic("intrinsic_height_is_height: ", self.height_expr);
+
+  self.intrinsic_height_internal <- 
     if self.display = "none" then 0 
     else if self.inside_svg then 0
     else if self.disabled then 0
@@ -223,7 +291,7 @@ proc pass_0() {
     else 
       self.children_intrinsic_height +
       (if (get_name() = "#text")
-      then (if has_first() then panic("intrinisc_height ICE") else 10)
+      then (if has_first() then panic("intrinsic_height ICE") else 10)
       else if self.is_default_case
       then 0
       else if get_name() = "BR"
@@ -232,84 +300,106 @@ proc pass_0() {
       then 10
       else if get_name() = "svg"
       then 
-        (if has_attr(height)
-        then string_to_float(get_attr(height)) 
+        (if self.has_height_attr && string_is_float(self.height_attr_expr)
+        then string_to_float(self.height_attr_expr) 
         else if has_attr(viewBox)
         then string_to_float(nth_by_sep(get_attr(viewBox), " ", i3))
+        else if self.has_height_attr && has_suffix(self.height_attr_expr, "%") && has_attr(viewBox)
+        then string_to_float(nth_by_sep(get_attr(viewBox), " ", i3)) * string_to_float(strip_suffix(self.height_attr_expr, "%")) / 100
         else panic("unknown SVG"))
       else if get_name() = "IMG"
       then 
-        (if has_attr(height)
-        then string_to_float(get_attr(height))
-        else if has_attr(image_height) && !(has_attr(width))
+        (if self.has_height_attr
+        then string_to_float(self.height_attr_expr)
+        else if has_attr(image_height) && !(self.has_width_attr)
         then int_to_float(get_attr(image_height))
-        else panic("IMG height"))
+        else if self.has_width_attr && !(self.has_height_attr) && has_attr(image_width) && has_attr(image_height)
+        then 
+          (if get_attr(image_width) != i0
+          then string_to_float(self.width_attr_expr) * int_to_float(get_attr(image_height)) / int_to_float(get_attr(image_width))
+          else 0)
+        else panic("IMG height", self.has_width_attr, self.has_height_attr, has_attr(image_width), has_attr(image_height)))
       else if get_name() = "IFRAME"
       then
-        (if has_attr(height) 
-        then panic("IFRAME height:", get_attr(height))
+        (if self.has_height_attr
+        then panic("IFRAME height:", self.height_attr_expr)
         else 150)
       else if get_name() = "TEXTAREA"
       then 100
-      else panic("intrinisc_height name:", get_name()));
+      else if get_name() = "VIDEO"
+      then 
+        (if self.has_height_attr
+        then panic("VIDEO height:", self.height_attr)
+        else 150)
+      else panic("intrinsic_height name:", get_name()));
+
+  self.intrinsic_height_external <-
+    if self.position = "absolute" then 0 else self.intrinsic_height_internal;
 
   (*the height of the current ongoing line*)
   self.intrinsic_current_line_height <-
     if self.line_break 
     then 0
-    else max(self.intrinsic_height, if has_prev() then prev().intrinsic_current_line_height else 0);
+    else max(self.intrinsic_height_external, if has_prev() then prev().intrinsic_current_line_height else 0);
 
   (*the sum of intrinsic height of all finished line: exclude current ongoing line*)
   self.finished_intrinsic_height_sum <-
     if has_prev() then
       (if self.line_break 
-      then prev().finished_intrinsic_height_sum + prev().intrinsic_current_line_height + self.intrinsic_height 
+      then prev().finished_intrinsic_height_sum + prev().intrinsic_current_line_height + self.intrinsic_height_external
       else prev().finished_intrinsic_height_sum)
     else
-      (if self.line_break then self.intrinsic_height else 0);
+      (if self.line_break then self.intrinsic_height_external else 0);
 }
 
+var x : float;
 var y : float;
-proc pass_1() {
-  self.position <- if has_prop(position) then get_prop(position) else "static";
 
-  self.box_width <- if has_parent() then parent().width else 1920;
+proc pass_1() {
+  self.box_width <- if has_parent() then parent().width_internal else 1920;
 
   self.x <- 
     if has_prev() 
     then 
-      (if (self.line_break || prev().line_break) then 0 else prev().x + prev().width)
+      (if (self.line_break || prev().line_break) then 0 else prev().x + prev().width_external)
     else if has_parent() then parent().x else 0;
 
-  self.width <- 
-    if self.display = "none"
-    then 0
+  self.width_internal <- 
+    if self.intrinsic_width_is_width then self.intrinsic_width_internal
     else if has_suffix(self.width_expr, "%")
     then self.box_width * string_to_float(strip_suffix(self.width_expr, "%")) / 100
-    else self.intrinsic_width;
+    else if self.width_expr = "fit-content"
+    then max(self.box_width, self.intrinsic_width_internal)
+    else panic("width: ", self.width_expr);
 
-  self.box_height <- if has_parent() then parent().height else 1080;
+  self.width_external <-
+    if self.position = "absolute" then 0 else self.width_internal;
+
+  self.box_height <- if has_parent() then parent().height_internal else 1080;
 
   self.y <- 
     if has_prev() 
     then 
-      (if self.line_break || prev().line_break then prev().y + prev().current_line_height else prev().y)
+      (if self.line_break || prev().line_break then prev().y + prev().line_height else prev().y)
     else if has_parent() then parent().y else 0;
 
-  self.height <- 
-    if self.display = "none"
-    then 0
+  self.height_internal <- 
+    if self.intrinsic_height_is_height 
+    then self.intrinsic_height_internal
     else if has_suffix(self.height_expr, "%")
     then self.box_height * string_to_float(strip_suffix(self.height_expr, "%")) / 100
-    (*todo: handle each case separately*)
-    else self.intrinsic_height;
+    else if self.height_expr = "fit-content"
+    then max(self.box_height, self.intrinsic_height_internal)
+    else panic("height: ", self.height_expr);
 
+  self.height_external <-
+    if self.position = "absolute" then 0 else self.height_internal;
 
-  (*the height of the current ongoing line*)
-  self.current_line_height <-
-    if self.line_break 
-    then 0
-    else max(self.height, if has_prev() then prev().current_line_height else 0);
+  (*the height of the line this node is on*)
+  self.line_height <-
+    if has_prev() && !(prev().line_break)
+    then max(self.height_external, prev().line_height)
+    else self.height_external;
 
   children.pass_1();
 }

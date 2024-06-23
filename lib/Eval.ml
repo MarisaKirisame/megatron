@@ -111,8 +111,11 @@ let eval_func (f : func) (xs : value list) =
   | StripSuffix, [ VString s; VString sfx ] -> VString (strip_suffix s sfx)
   | StripPrefix, [ VString s; VString sfx ] -> VString (strip_prefix s sfx)
   | Not, [ VBool x ] -> VBool (not x)
-  | StringToFloat, [ VString str ] -> ( match float_of_string_opt str with Some x -> VFloat x | None -> panic str)
-  | StringToInt, [ VString str ] -> ( match int_of_string_opt str with Some x -> VInt x | None -> panic str)
+  | StringToFloat, [ VString str ] -> (
+      match float_of_string_opt str with Some x -> VFloat x | None -> panic ("StringToFloat failed: " ^ str))
+  | StringToInt, [ VString str ] -> (
+      match int_of_string_opt str with Some x -> VInt x | None -> panic ("StringToInt failed: " ^ str))
+  | StringIsFloat, [ VString str ] -> VBool (Option.is_some (float_of_string_opt str))
   | IntToFloat, [ VInt x ] -> VFloat (float_of_int x)
   | NthBySep, [ VString s; VString sep; VInt nth ] ->
       assert (String.length sep == 1);
@@ -130,37 +133,42 @@ let eval_path_opt (n : 'meta node) (p : path) =
 
 let eval_path n p = Option.value_exn (eval_path_opt n p)
 
+exception ReRaise of string
+
 let rec eval_expr (n : 'meta node) (e : expr) (m : metric) : value =
-  (*print_endline (show_expr e);*)
   let recurse e = eval_expr n e m in
-  match e with
-  | Panic x -> panic ("External: " ^ String.concat ~sep:" " (List.map x ~f:(fun x -> show_value (recurse x))))
-  | HasProperty p -> VBool (Option.is_some (Hashtbl.find n.prop p))
-  | GetProperty p -> (
-      read m n.id;
-      match Hashtbl.find n.prop p with
-      | Some x -> x
-      | None -> panic ("cannot find property " ^ p ^ " in " ^ string_of_int n.extern_id))
-  | HasAttribute p -> VBool (Option.is_some (Hashtbl.find n.attr p))
-  | GetAttribute p -> (
-      read m n.id;
-      match Hashtbl.find n.attr p with
-      | Some x -> x
-      | None -> panic ("cannot find attribute " ^ p ^ " in " ^ string_of_int n.extern_id))
-  | String s -> VString s
-  | Int i -> VInt i
-  | Float f -> VFloat f
-  | IfExpr (c, t, e) -> if bool_of_value (recurse c) then recurse t else recurse e
-  | HasPath p -> VBool (Option.is_some (eval_path_opt n p))
-  | Read (p, prop_name) ->
-      read m n.id;
-      Hashtbl.find_exn (eval_path n p).var prop_name
-  | And (x, y) -> if bool_of_value (recurse x) then recurse y else VBool false
-  | Or (x, y) -> if bool_of_value (recurse x) then VBool true else recurse y
-  | GetName -> VString n.name
-  | Bool x -> VBool x
-  | Call (f, xs) -> eval_func f (List.map ~f:recurse xs)
-  | _ -> panic ("unhandled case in eval_expr:" ^ show_expr e)
+  try
+    match e with
+    | Panic x -> panic ("External: " ^ String.concat ~sep:" " (List.map x ~f:(fun x -> show_value (recurse x))))
+    | HasProperty p -> VBool (Option.is_some (Hashtbl.find n.prop p))
+    | GetProperty p -> (
+        read m n.id;
+        match Hashtbl.find n.prop p with
+        | Some x -> x
+        | None -> panic ("cannot find property " ^ p ^ " in " ^ string_of_int n.extern_id))
+    | HasAttribute p -> VBool (Option.is_some (Hashtbl.find n.attr p))
+    | GetAttribute p -> (
+        read m n.id;
+        match Hashtbl.find n.attr p with
+        | Some x -> x
+        | None -> panic ("cannot find attribute " ^ p ^ " in " ^ string_of_int n.extern_id))
+    | String s -> VString s
+    | Int i -> VInt i
+    | Float f -> VFloat f
+    | IfExpr (c, t, e) -> if bool_of_value (recurse c) then recurse t else recurse e
+    | HasPath p -> VBool (Option.is_some (eval_path_opt n p))
+    | Read (p, prop_name) ->
+        read m n.id;
+        Hashtbl.find_exn (eval_path n p).var prop_name
+    | And (x, y) -> if bool_of_value (recurse x) then recurse y else VBool false
+    | Or (x, y) -> if bool_of_value (recurse x) then VBool true else recurse y
+    | GetName -> VString n.name
+    | Bool x -> VBool x
+    | Call (f, xs) -> eval_func f (List.map ~f:recurse xs)
+    | _ -> panic ("unhandled case in eval_expr:" ^ show_expr e)
+  with EXN.EXN exn ->
+    print_endline (show_expr e);
+    raise (ReRaise exn)
 
 let reversed_path (p : path) (n : 'a node) : 'a node list =
   match p with

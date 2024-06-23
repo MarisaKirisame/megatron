@@ -62,6 +62,8 @@ rule read =
   | "strip_prefix" { STRIP_PREFIX }
   | "string_to_int" { STRING_TO_INT }
   | "string_to_float" { STRING_TO_FLOAT }
+  | "string_is_int" { STRING_IS_INT }
+  | "string_is_float" { STRING_IS_FLOAT }
   | "int_to_float" { INT_TO_FLOAT }
   | "nth_by_sep" { NTH_BY_SEP }
   | "max" { MAX }

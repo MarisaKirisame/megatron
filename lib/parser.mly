@@ -50,7 +50,11 @@ open Core
 %token HAS_PREV
 %token PREV
 %token MAX
+
+%token STRING_TO_INT
 %token STRING_TO_FLOAT
+%token STRING_IS_INT
+%token STRING_IS_FLOAT
 %token INT_TO_FLOAT
 
 %token HAS_PROPERTY
@@ -63,7 +67,6 @@ open Core
 %token HAS_PREFIX
 %token STRIP_SUFFIX
 %token STRIP_PREFIX
-%token STRING_TO_INT
 %token NTH_BY_SEP
 
 %token COMMA
@@ -186,6 +189,8 @@ func:
 	| STRIP_PREFIX  { StripPrefix }
 	| STRING_TO_INT { StringToInt }
 	| STRING_TO_FLOAT { StringToFloat }
+	| STRING_IS_INT { StringIsInt }
+	| STRING_IS_FLOAT { StringIsFloat }
 	| INT_TO_FLOAT { IntToFloat }
 	| NTH_BY_SEP { NthBySep }
 	| MAX { Max }

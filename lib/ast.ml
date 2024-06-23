@@ -8,6 +8,8 @@ type func =
   | StripSuffix
   | StringToInt
   | StringToFloat
+  | StringIsInt
+  | StringIsFloat
   | IntToFloat
   | NthBySep
   | Not

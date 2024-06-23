@@ -26,6 +26,9 @@ def diff_simple_dict(l_dict, r_dict, path, on, type_):
         if k not in l_dict:
             out(command_insert_value(path, on, type_, k, r_dict[k]))
 
+# tree diffing is very hard.
+# one possible road is to use difftastic, but conversion between our stuff and theirs is also very hard.
+# luckily the diffs is pretty trivial, and we have id to rematch trees.
 def diff_dom_tree(lhs, rhs, path):
     if lhs["id"] != rhs["id"]:
         report_diff(rhs)
@@ -37,17 +40,26 @@ def diff_dom_tree(lhs, rhs, path):
             diff_simple_dict(lhs["properties"], rhs["properties"], path, str(lhs)[:120], "properties")
         l_children = lhs["children"]
         r_children = rhs["children"]
-        for i in range(min(len(l_children), len(r_children))):
-            diff_dom_tree(l_children[i], r_children[i], path + [i])
-        if len(l_children) > len(r_children): 
-            extra = list(l_children[len(r_children):])
-            for i in range(len(extra)):
-                out(command_remove(path + [len(l_children) - 1 - i], l_children[len(l_children) - 1 - i]))
-        elif len(l_children) < len(r_children): 
-            extra = list(r_children[len(l_children):])
-            for i in range(len(extra)):
-                out(command_add(path + [len(l_children) + i], extra[i]))
-                report_diff(extra[i])
+
+        l_ids = list(x["id"] for x in l_children)
+        r_ids = list(x["id"] for x in r_children)
+        unused_l_i = 0
+        # invariant: elements with indexe before r_i have been fixed.
+        # fixing them consume everything before unused_l_id.
+        for r_i in range(len(r_ids)):
+            r_id = r_ids[r_i]
+            found = False
+            for l_i in range(unused_l_i, len(l_ids)):
+                if l_ids[l_i] == r_id:
+                    assert not found
+                    for x in range(l_i - unused_l_i):
+                        out(command_remove(path + [r_i], l_children[unused_l_i + x]))
+                    diff_dom_tree(l_children[l_i], r_children[r_i], path + [r_i])
+                    unused_l_i = l_i + 1
+                    found = True
+                    break
+            if not found:
+                out(command_add(path + [r_i], r_children[r_i]))                
 
 def layout_info(node):
     key = ["type", "x", "y", "width", "height"]

@@ -33,7 +33,7 @@ let attr_from_tyck_env env var = new_tvar_or_get env.attr_type var
 let unify (x : type_expr) (y : type_expr) : unit =
   match (resolve x, resolve y) with
   | TVar x_, TVar y_ ->
-      if phys_equal x_ y_ then () else assert (Option.is_some !x_);
+      if phys_equal x_ y_ then () else assert (Option.is_none !x_);
       x_ := Some y
   | TVar x_, y_ ->
       assert (Option.is_none !x_);
@@ -73,6 +73,9 @@ let tyck_func (f : func) (xs : type_expr list) : type_expr =
   | Max, [ x; TFloat ] ->
       unify x TFloat;
       TFloat
+  | Max, [ TFloat; y ] ->
+      unify TFloat y;
+      TFloat
   | HasPrefix, [ x; y ] ->
       unify x TString;
       unify y TString;
@@ -92,6 +95,9 @@ let tyck_func (f : func) (xs : type_expr list) : type_expr =
   | StringToFloat, [ x ] ->
       unify x TString;
       TFloat
+  | StringIsFloat, [ x ] ->
+      unify x TString;
+      TBool
   | IntToFloat, [ x ] ->
       unify x TInt;
       TFloat

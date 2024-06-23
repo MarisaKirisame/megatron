@@ -148,7 +148,7 @@ def per_trace(trace_out_path):
     write_to(out_path + page_path, str(doc))
     return page_path
 
-outs = ["google_hover.out", "google_searchbar.out", "google_searchpage.out", "github_nologin.out", "wikipedia_idle.out", "wikipedia_hover.out", "hn_type.out", "espn.out"]
+outs = ["google_hover.out", "google_searchbar.out", "google_searchpage.out", "github_nologin.out", "wikipedia_idle.out", "wikipedia_hover.out", "hn_type.out", "espn.out", "discord_nologin.out"]
 doc = make_doc(title=out_path)
 with doc:
     for o in outs:

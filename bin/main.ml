@@ -3,6 +3,7 @@ open Megatron.Ast
 open Megatron.Eval
 open Megatron.TypeCheck
 open Megatron.EXN
+open Sys
 open Core
 open Yojson
 open Megatron.Metric
@@ -53,121 +54,131 @@ let tag t str = "<" ^ t ^ ">" ^ str ^ "</" ^ t ^ ">"
 let default_tag : (string, unit) Hashtbl.t =
   Hashtbl.of_alist_exn
     (module String)
-    [
-      ("#document", ());
-      ("#doctype", ());
-      ("HTML", ());
-      ("BODY", ());
-      ("DIV", ());
-      ("SECTION", ());
-      ("BUTTON", ());
-      ("UL", ());
-      ("HEADER", ());
-      ("H2", ());
-      ("A", ());
-      ("LI", ());
-      ("INPUT", ());
-      ("#shadow-root", ());
-      ("NAV", ());
-      ("ARTICLE", ());
-      ("IMG", ());
-      ("SPAN", ());
-      ("FOOTER", ());
-      ("P", ());
-      ("FIGURE", ());
-      ("PICTURE", ());
-      ("SOURCE", ());
-      ("H3", ());
-      ("FIGCAPTION", ());
-      ("IFRAME", ());
-      ("HEAD", ());
-      ("MAIN", ());
-      ("SUP", ());
-      ("svg", ());
-      ("defs", ());
-      ("symbol", ());
-      ("path", ());
-      ("rect", ());
-      ("OL", ());
-      ("CENTER", ());
-      ("BR", ());
-      ("FORM", ());
-      ("TABLE", ());
-      ("TBODY", ());
-      ("TR", ());
-      ("TD", ());
-      ("B", ());
-      ("NOSCRIPT", ());
-      ("ACCORDION-ENTRY-SEARCH-ICON", ());
-      ("REACT-PARTIAL", ());
-      ("GLOBAL-BANNER", ());
-      ("ACTIVE-GLOBAL-BANNERS", ());
-      ("QBSEARCH-INPUT", ());
-      ("MODAL-DIALOG", ());
-      ("DIALOG-HELPER", ());
-      ("CUSTOM-SCOPES", ());
-      ("INCLUDE-FRAGMENT", ());
-      ("H1", ());
-      ("H4", ());
-      ("DL", ());
-      ("DT", ());
-      ("LABEL", ());
-      ("DD", ());
-      ("EM", ());
-      ("CARD-SKEW", ());
-      ("filter", ());
-      ("feFlood", ());
-      ("feBlend", ());
-      ("feColorMatrix", ());
-      ("feOffset", ());
-      ("feGaussianBlur", ());
-      ("feComposite", ());
-      ("radialGradient", ());
-      ("linearGradient", ());
-      ("stop", ());
-      ("circle", ());
-      ("g", ());
-      ("TIME", ());
-      ("COOKIE-CONSENT-LINK", ());
-      ("FULLSTORY-CAPTURE", ());
-      ("GHCC-CONSENT", ());
-      ("SLOT", ());
-      ("VIDEO", ());
-      ("I", ());
-      ("ABBR", ());
-      ("SMALL", ());
-      ("clipPath", ());
-      ("image", ());
-      ("polyline", ());
-      ("TEXTAREA", ());
-      ("FONT", ());
-      ("U", ());
-    ]
+    (List.map
+       ~f:(fun x -> (x, ()))
+       [
+         "#document";
+         "#doctype";
+         "#shadow-root";
+         "HTML";
+         "BODY";
+         "DIV";
+         "SECTION";
+         "BUTTON";
+         "UL";
+         "HEADER";
+         "H2";
+         "A";
+         "LI";
+         "INPUT";
+         "NAV";
+         "ARTICLE";
+         "IMG";
+         "SPAN";
+         "FOOTER";
+         "P";
+         "FIGURE";
+         "PICTURE";
+         "SOURCE";
+         "H3";
+         "FIGCAPTION";
+         "IFRAME";
+         "HEAD";
+         "MAIN";
+         "SUP";
+         "svg";
+         "defs";
+         "symbol";
+         "path";
+         "rect";
+         "OL";
+         "CENTER";
+         "BR";
+         "FORM";
+         "TABLE";
+         "TBODY";
+         "TR";
+         "TD";
+         "B";
+         "NOSCRIPT";
+         "ACCORDION-ENTRY-SEARCH-ICON";
+         "REACT-PARTIAL";
+         "GLOBAL-BANNER";
+         "ACTIVE-GLOBAL-BANNERS";
+         "QBSEARCH-INPUT";
+         "MODAL-DIALOG";
+         "DIALOG-HELPER";
+         "CUSTOM-SCOPES";
+         "INCLUDE-FRAGMENT";
+         "H1";
+         "H4";
+         "DL";
+         "DT";
+         "LABEL";
+         "DD";
+         "EM";
+         "CARD-SKEW";
+         "filter";
+         "feFlood";
+         "feBlend";
+         "feColorMatrix";
+         "feOffset";
+         "feGaussianBlur";
+         "feComposite";
+         "radialGradient";
+         "linearGradient";
+         "stop";
+         "circle";
+         "g";
+         "TIME";
+         "COOKIE-CONSENT-LINK";
+         "FULLSTORY-CAPTURE";
+         "GHCC-CONSENT";
+         "SLOT";
+         "VIDEO";
+         "I";
+         "ABBR";
+         "SMALL";
+         "clipPath";
+         "image";
+         "polyline";
+         "TEXTAREA";
+         "FONT";
+         "U";
+         "ASIDE";
+         "AUDIO"
+       ])
 
-let rec node_to_html_buffer (b : Buffer.t) (n : _ node) : unit =
-  let recurse () = List.iter n.children ~f:(node_to_html_buffer b) in
-  match Hashtbl.find n.prop "display" with
-  | Some (VString "none") -> ()
-  | _ ->
-      let content =
-        match n.name with
-        | x when Option.is_some (Hashtbl.find default_tag x) -> n.name
-        | "#text" -> "some text"
-        | _ -> panic n.name
-      in
+let rec node_to_html_buffer (b : Buffer.t) (parent_x : int) (parent_y : int) (n : _ node) : unit =
+  if not (bool_of_value (Hashtbl.find_exn n.var "visible")) then ()
+  else
+    let content =
+      match n.name with
+      | x when Option.is_some (Hashtbl.find default_tag x) -> n.name
+      | "#text" -> "some text"
+      | _ -> panic n.name
+    in
+    let float_to_int v = int_of_float (Float.round ~dir:`Nearest (float_of_value v)) in
+    let x = float_to_int (Hashtbl.find_exn n.var "x") in
+    let y = float_to_int (Hashtbl.find_exn n.var "y") in
+    let width = float_to_int (Hashtbl.find_exn n.var "width_internal") in
+    let height = float_to_int (Hashtbl.find_exn n.var "height_internal") in
+    let recurse () = List.iter n.children ~f:(node_to_html_buffer b x y) in
+    if Int.equal width 0 || Int.equal height 0 then recurse ()
+    else (
       Buffer.add_string b "<div style=\"";
-      Buffer.add_string b ("top: " ^ string_of_float (float_of_value (Hashtbl.find_exn n.var "x")) ^ ";");
-      Buffer.add_string b ("left: " ^ string_of_float (float_of_value (Hashtbl.find_exn n.var "y")) ^ ";");
-      Buffer.add_string b ("width: " ^ string_of_float (float_of_value (Hashtbl.find_exn n.var "width")) ^ ";");
-      Buffer.add_string b ("height: " ^ string_of_float (float_of_value (Hashtbl.find_exn n.var "height")) ^ ";");
+      Buffer.add_string b ("left: " ^ string_of_int (x - parent_x) ^ ";");
+      Buffer.add_string b ("top: " ^ string_of_int (y - parent_y) ^ ";");
+      Buffer.add_string b ("width: " ^ string_of_int width ^ ";");
+      Buffer.add_string b ("height: " ^ string_of_int height ^ ";");
       Buffer.add_string b "position: absolute; outline:1px solid black;\">";
       Buffer.add_string b content;
       recurse ();
-      Buffer.add_string b "</div>"
+      Buffer.add_string b "</div>")
 
 let node_to_html (n : _ node) : string =
   let b = Buffer.create 0 in
-  node_to_html_buffer b n;
+  node_to_html_buffer b 0 0 n;
   Buffer.contents b
 
 module Main (EVAL : Eval) = struct
