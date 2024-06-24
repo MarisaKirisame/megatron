@@ -79,7 +79,7 @@ let equal_value x y : bool =
   | VString x, VString y -> String.equal x y
   | VInt x, VInt y -> Int.equal x y
   | VBool x, VBool y -> Bool.equal x y
-  | VFloat x, VFloat y -> Float.equal x y
+  | VFloat x, VFloat y -> (Float.is_nan x && Float.is_nan y) || Float.equal x y
   | _ -> panic ("unhandled case in equal_value: " ^ show_value x ^ " " ^ show_value y)
 
 let has_suffix s sfx =
@@ -104,6 +104,8 @@ let eval_func (f : func) (xs : value list) =
   | Plus, [ VInt lhs; VInt rhs ] -> VInt (lhs + rhs)
   | Plus, [ VFloat lhs; VFloat rhs ] -> VFloat (lhs +. rhs)
   | Mult, [ VFloat lhs; VFloat rhs ] -> VFloat (lhs *. rhs)
+  | Minus, [ VFloat lhs; VFloat rhs ] -> VFloat (lhs -. rhs)
+  | Gt, [ VFloat lhs; VFloat rhs ] -> VBool (Float.( >. ) lhs rhs)
   | Div, [ VFloat lhs; VFloat rhs ] -> VFloat (lhs /. rhs)
   | Max, [ VFloat lhs; VFloat rhs ] -> VFloat (Float.max lhs rhs)
   | HasSuffix, [ VString s; VString sfx ] -> VBool (has_suffix s sfx)
@@ -166,9 +168,11 @@ let rec eval_expr (n : 'meta node) (e : expr) (m : metric) : value =
     | Bool x -> VBool x
     | Call (f, xs) -> eval_func f (List.map ~f:recurse xs)
     | _ -> panic ("unhandled case in eval_expr:" ^ show_expr e)
-  with EXN.EXN exn ->
-    print_endline (show_expr e);
-    raise (ReRaise exn)
+  with
+  | ReRaise exn -> raise (ReRaise exn)
+  | exn ->
+      print_endline (show_expr e);
+      raise (ReRaise (Exn.to_string exn))
 
 let reversed_path (p : path) (n : 'a node) : 'a node list =
   match p with
@@ -217,6 +221,11 @@ let rec assert_node_value_equal l r =
   List.iter2_exn l.children r.children ~f:(fun l r -> assert_node_value_equal l r);
   if Hashtbl.equal equal_value l.var r.var then ()
   else (
+    Hashtbl.iter_keys l.var ~f:(fun name -> 
+      let lv = (Hashtbl.find_exn l.var name) in
+      let rv = (Hashtbl.find_exn r.var name) in
+      if (equal_value lv rv)
+        then () else print_endline (name ^ string_of_value lv ^ string_of_value rv));
     print_endline (string_of_int l.id ^ " bad!");
     recursive_print_id_up l);
   assert (Hashtbl.equal equal_value l.var r.var)

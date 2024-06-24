@@ -55,17 +55,29 @@ let tyck_func (f : func) (xs : type_expr list) : type_expr =
   | Plus, [ TFloat; y ] ->
       unify TFloat y;
       TFloat
+  | Minus, [ TFloat; y ] ->
+      unify TFloat y;
+      TFloat
   | Mult, [ x; TFloat ] ->
       unify x TFloat;
       TFloat
+  | Mult, [ TFloat; y ] ->
+      unify TFloat y;
+      TFloat
   | Div, [ x; TFloat ] ->
       unify x TFloat;
+      TFloat
+  | Div, [ TFloat; y ] ->
+      unify TFloat y;
       TFloat
   | Eq, [ x; y ] ->
       unify x y;
       TBool
   | Neq, [ x; y ] ->
       unify x y;
+      TBool
+  | Gt, [ TFloat; y ] ->
+      unify TFloat y;
       TBool
   | Not, [ x ] ->
       unify x TBool;
@@ -95,6 +107,9 @@ let tyck_func (f : func) (xs : type_expr list) : type_expr =
   | StringToFloat, [ x ] ->
       unify x TString;
       TFloat
+  | StringToInt, [ x ] ->
+      unify x TString;
+      TInt
   | StringIsFloat, [ x ] ->
       unify x TString;
       TBool

@@ -5,6 +5,30 @@ proc pass_0() {
   self.display <- if has_prop(display) then get_prop(display) else "block";
   self.position <- if has_prop(position) then get_prop(position) else "static";
 
+  self.flex_grow <- if has_prop(flex-grow) then string_to_float(get_prop(flex-grow)) else 0;
+  self.flex_shrink <- if has_prop(flex-shrink) then string_to_float(get_prop(flex-shrink)) else 0;
+  self.flex_grow_sum <- (if has_prev() then prev().flex_grow_sum else 0) + self.flex_grow;
+  self.flex_shrink_sum <- (if has_prev() then prev().flex_shrink_sum else 0) + self.flex_shrink;
+  self.flex_direction <- if has_prop(flex-direction) then get_prop(flex-direction) else "";
+  self.is_flex_row <- 
+    if (has_parent() && ((parent().display = "flex") || (parent().display = "inline-flex")))
+    then
+      (if parent().flex_direction = "row"
+      then true
+      else if parent().flex_direction = "column"
+      then false
+      else panic(parent().flex_direction))
+    else false;
+  self.is_flex_column <- 
+    if (has_parent() && ((parent().display = "flex") || (parent().display = "inline-flex")))
+    then
+      (if parent().flex_direction = "column"
+      then true
+      else if parent().flex_direction = "row"
+      then false
+      else panic(parent().flex_direction))
+    else false;
+
   self.width_attr_expr <- 
     if !(has_attr(width))
     then "auto"
@@ -75,10 +99,8 @@ proc pass_0() {
     else if self.display = "grid"
     then true
     else panic("line_break: ", self.display);
-  children.pass_0();
 
-  self.children_intrinsic_width <- 
-    if has_last() then last().intrinsic_width_max else 0;
+  children.pass_0();
 
   self.width_expr <- if has_prop(width) then get_prop(width) else "auto";
 
@@ -170,7 +192,11 @@ proc pass_0() {
     if 
       (self.display = "none") || 
       self.inside_svg || 
-      self.disabled || 
+      self.disabled
+    then true
+    else if (has_parent() && parent().is_flex_row) 
+    then false
+    else if
       (self.width_expr = "auto") ||
       has_suffix(self.width_expr, "px") ||
       has_suffix(self.width_expr, "ch") ||
@@ -180,6 +206,9 @@ proc pass_0() {
     else if has_suffix(self.width_expr, "%") || self.width_expr = "fit-content"
     then false
     else panic("intrinsic_width_is_width: ", self.width_expr);
+
+  self.children_intrinsic_width <- 
+    if has_last() then last().intrinsic_width_max else 0;
 
   self.intrinsic_width_internal <- 
     if self.display = "none" then 0
@@ -255,6 +284,8 @@ proc pass_0() {
     max(self.intrinsic_current_line_width,
       if has_prev() then prev().intrinsic_width_max else 0);
 
+  self.intrinsic_width_sum <- (if has_prev() then prev().intrinsic_width_sum else 0) + self.intrinsic_width_external;
+
   self.children_intrinsic_height <- 
     if has_last() then last().finished_intrinsic_height_sum + last().intrinsic_current_line_height else 0;
 
@@ -264,7 +295,11 @@ proc pass_0() {
     if 
       (self.display = "none") || 
       self.inside_svg || 
-      self.disabled || 
+      self.disabled 
+    then true
+    else if (has_parent() && parent().is_flex_column) 
+    then false
+    else if
       (self.height_expr = "auto") ||
       has_suffix(self.height_expr, "px") ||
       has_suffix(self.height_expr, "ch") ||
@@ -336,6 +371,9 @@ proc pass_0() {
   self.intrinsic_height_external <-
     if self.position = "absolute" then 0 else self.intrinsic_height_internal;
 
+  self.intrinsic_height_sum <-
+    (if has_prev() then prev().intrinsic_height_sum else 0) + self.intrinsic_height_external;
+
   (*the height of the current ongoing line*)
   self.intrinsic_current_line_height <-
     if self.line_break 
@@ -357,6 +395,12 @@ var y : float;
 
 proc pass_1() {
   self.box_width <- if has_parent() then parent().width_internal else 1920;
+  self.box_height <- if has_parent() then parent().height_internal else 1080;
+
+  self.left_over <- if self.is_flex_row then self.box_width - self.intrinsic_width_sum else self.box_height - self.intrinsic_height_sum;
+
+  self.flex_amount <- if has_parent() && parent().left_over > 0 then self.flex_grow else self.flex_shrink;
+  self.flex_unit <- if self.left_over > 0 then self.left_over / self.flex_grow_sum else self.left_over / self.flex_shrink_sum;
 
   self.x <- 
     if has_prev() 
@@ -366,6 +410,8 @@ proc pass_1() {
 
   self.width_internal <- 
     if self.intrinsic_width_is_width then self.intrinsic_width_internal
+    else if (has_parent() && parent().is_flex_row)
+    then self.intrinsic_width_internal + (self.flex_amount * parent().flex_unit)
     else if has_suffix(self.width_expr, "%")
     then self.box_width * string_to_float(strip_suffix(self.width_expr, "%")) / 100
     else if self.width_expr = "fit-content"
@@ -374,8 +420,6 @@ proc pass_1() {
 
   self.width_external <-
     if self.position = "absolute" then 0 else self.width_internal;
-
-  self.box_height <- if has_parent() then parent().height_internal else 1080;
 
   self.y <- 
     if has_prev() 
@@ -386,6 +430,8 @@ proc pass_1() {
   self.height_internal <- 
     if self.intrinsic_height_is_height 
     then self.intrinsic_height_internal
+    else if (has_parent() && parent().is_flex_column)
+    then self.intrinsic_height_internal + (self.flex_amount * parent().flex_unit)
     else if has_suffix(self.height_expr, "%")
     then self.box_height * string_to_float(strip_suffix(self.height_expr, "%")) / 100
     else if self.height_expr = "fit-content"
