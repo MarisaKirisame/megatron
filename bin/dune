@@ -1,7 +1,7 @@
 (executable
  (public_name megatron)
  (name main)
- (libraries megatron core yojson))
+ (libraries megatron core yojson core_unix.sys_unix unix core_unix))
 
 (menhir
  (modules parser))

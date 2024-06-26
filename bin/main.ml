@@ -2,6 +2,7 @@ open Megatron.Parse
 open Megatron.Ast
 open Megatron.Eval
 open Megatron.TypeCheck
+open Megatron.Compile
 open Megatron.EXN
 open Sys
 open Core
@@ -39,9 +40,20 @@ Out_channel.newline stdout
 
 (*print_endline (show_prog_def prog_def)*)
 
-let prog = prog_of_prog_def prog_def;;
+let prog = prog_of_prog_def prog_def
+let env = tyck prog
 
-tyck prog
+let shell cmd =
+  let in_channel = Core_unix.open_process_in cmd in
+  In_channel.iter_lines in_channel ~f:(fun str -> print_endline str);
+  let res = Core_unix.close_process_in in_channel in
+  match res with Ok () -> () | _ -> panic "shell failed"
+;;
+
+Out_channel.write_all "layout.cpp" ~data:(compile prog env);;
+shell "clang-format -i layout.cpp";;
+shell "cat layout.cpp";;
+shell "g++ layout.cpp"
 
 (*print_endline (show_prog prog)*)
 

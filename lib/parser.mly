@@ -166,7 +166,7 @@ expr:
 	| GET_PROPERTY; LPAREN; x = ID; RPAREN { GetProperty(x) }
 	| HAS_ATTRIBUTE; LPAREN; x = ID; RPAREN { HasAttribute(x) }
 	| GET_ATTRIBUTE; LPAREN; x = ID; RPAREN { GetAttribute(x) }
-	| PANIC; xs = expr_list { Panic(xs) }
+	| PANIC; xs = expr_list { Panic(new_tvar(), xs) }
 	| f = func; xs = expr_list { Call(f, xs) }
 	| GET_NAME; LPAREN; RPAREN { GetName }
 	| IF; e1 = expr; THEN; e2 = expr; ELSE; e3 = expr { IfExpr (e1, e2, e3) }

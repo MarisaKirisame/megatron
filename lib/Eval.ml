@@ -141,7 +141,7 @@ let rec eval_expr (n : 'meta node) (e : expr) (m : metric) : value =
   let recurse e = eval_expr n e m in
   try
     match e with
-    | Panic x -> panic ("External: " ^ String.concat ~sep:" " (List.map x ~f:(fun x -> show_value (recurse x))))
+    | Panic(_, x) -> panic ("External: " ^ String.concat ~sep:" " (List.map x ~f:(fun x -> show_value (recurse x))))
     | HasProperty p -> VBool (Option.is_some (Hashtbl.find n.prop p))
     | GetProperty p -> (
         read m n.id;
@@ -221,11 +221,10 @@ let rec assert_node_value_equal l r =
   List.iter2_exn l.children r.children ~f:(fun l r -> assert_node_value_equal l r);
   if Hashtbl.equal equal_value l.var r.var then ()
   else (
-    Hashtbl.iter_keys l.var ~f:(fun name -> 
-      let lv = (Hashtbl.find_exn l.var name) in
-      let rv = (Hashtbl.find_exn r.var name) in
-      if (equal_value lv rv)
-        then () else print_endline (name ^ string_of_value lv ^ string_of_value rv));
+    Hashtbl.iter_keys l.var ~f:(fun name ->
+        let lv = Hashtbl.find_exn l.var name in
+        let rv = Hashtbl.find_exn r.var name in
+        if equal_value lv rv then () else print_endline (name ^ string_of_value lv ^ string_of_value rv));
     print_endline (string_of_int l.id ^ " bad!");
     recursive_print_id_up l);
   assert (Hashtbl.equal equal_value l.var r.var)

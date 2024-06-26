@@ -3,8 +3,6 @@ open Core
 open EXN
 open Eval
 
-let new_tvar () = TVar (ref None)
-
 type tyck_env = {
   var_type : (string, type_expr) Hashtbl.t;
   attr_type : (string, type_expr) Hashtbl.t;
@@ -148,9 +146,9 @@ let rec tyck_expr (env : tyck_env) (x : expr) : type_expr =
   | Bool _ -> TBool
   | Int _ -> TInt
   | GetName _ -> TString
-  | Panic xs ->
+  | Panic (t, xs) ->
       ignore (List.map xs ~f:recurse);
-      new_tvar ()
+      t
   | Read (_, var) -> var_from_tyck_env env var
   | Call (f, xs) ->
       (*print_endline (show_expr x);*)
@@ -162,7 +160,10 @@ let tyck_stmt (env : tyck_env) (x : stmt) : unit =
   | Write (_, var, expr) -> unify (var_from_tyck_env env var) (tyck_expr env expr)
   | _ -> panic ("tyck_stmt: " ^ show_stmt x)
 
-let tyck (p : _ prog) : unit =
+let tyck (p : _ prog) : tyck_env =
   let env = new_tyck_env () in
   List.iter p.vars ~f:(fun (VarDecl (name, type_expr)) -> unify (var_from_tyck_env env name) type_expr);
-  Hashtbl.iter p.bbs ~f:(fun (BasicBlock (_, stmts)) -> List.iter ~f:(tyck_stmt env) stmts)
+  Hashtbl.iter p.bbs ~f:(fun (BasicBlock (_, stmts)) -> List.iter ~f:(tyck_stmt env) stmts);
+  Hashtbl.iteri env.var_type ~f:(fun ~key ~data ->
+      match resolve data with TVar _ -> panic ("cannot deduct type for: " ^ key) | _ -> ());
+  env

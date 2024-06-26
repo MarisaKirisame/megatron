@@ -15,14 +15,14 @@ proc pass_0() {
     then
       (if parent().flex_direction = "row"
       then true
-      else if parent().flex_direction = "column"
+      else if (parent().flex_direction = "column") || (parent().flex_direction = "column-reverse")
       then false
       else panic(parent().flex_direction))
     else false;
   self.is_flex_column <- 
     if (has_parent() && ((parent().display = "flex") || (parent().display = "inline-flex")))
     then
-      (if parent().flex_direction = "column"
+      (if (parent().flex_direction = "column") || (parent().flex_direction = "column-reverse")
       then true
       else if parent().flex_direction = "row"
       then false
@@ -267,7 +267,7 @@ proc pass_0() {
       else if get_name() = "VIDEO"
       then 
         (if self.has_width_attr
-        then panic("VIDEO width:", self.width_attr)
+        then panic("VIDEO width:", self.width_attr_expr)
         else 300)
       else panic("intrinsic_width name:", get_name()));
 
@@ -364,7 +364,7 @@ proc pass_0() {
       else if get_name() = "VIDEO"
       then 
         (if self.has_height_attr
-        then panic("VIDEO height:", self.height_attr)
+        then panic("VIDEO height:", self.height_attr_expr)
         else 150)
       else panic("intrinsic_height name:", get_name()));
 
@@ -397,7 +397,10 @@ proc pass_1() {
   self.box_width <- if has_parent() then parent().width_internal else 1920;
   self.box_height <- if has_parent() then parent().height_internal else 1080;
 
-  self.left_over <- if self.is_flex_row then self.box_width - self.intrinsic_width_sum else self.box_height - self.intrinsic_height_sum;
+  self.left_over <- 
+    if self.is_flex_row 
+    then self.box_width - (if has_last() then last().intrinsic_width_sum else 0)
+    else self.box_height - (if has_last() then last().intrinsic_height_sum else 0);
 
   self.flex_amount <- if has_parent() && parent().left_over > 0 then self.flex_grow else self.flex_shrink;
   self.flex_unit <- if self.left_over > 0 then self.left_over / self.flex_grow_sum else self.left_over / self.flex_shrink_sum;

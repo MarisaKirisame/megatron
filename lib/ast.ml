@@ -45,13 +45,15 @@ type expr =
   | GetName
   | And of expr * expr
   | Or of expr * expr
-  | Panic of expr list
+  | Panic of type_expr * expr list
   | Call of func * expr list
 [@@deriving show]
+and type_expr = TInt | TString | TFloat | TBool | TVar of type_expr option ref
+
+let new_tvar () = TVar (ref None)
 
 type stmt = BBCall of string | ChildrenCall of string | Write of path * string * expr [@@deriving show]
 type stmts = stmt list [@@deriving show]
-type type_expr = TInt | TString | TFloat | TBool | TVar of type_expr option ref
 
 let rec resolve (x : type_expr) : type_expr =
   match x with
