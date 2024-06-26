@@ -2,37 +2,22 @@
 
 #include <cassert>
 
+#include <variant>
+
+#include <unordered_map>
+
+struct Value {
+  std::variant<int, double, bool, std::string> v;
+};
 struct Content;
-template <typename T> T panic() { assert(false); }
-template <typename T> T get_attribute(const Content &self, const std::string &str) { assert(false); }
-bool has_attribute(const Content &self, const std::string &str) { assert(false); }
-template <typename T> T get_property(const Content &self, const std::string &str) { assert(false); }
-bool has_property(const Content &self, const std::string &str) { assert(false); }
-template <typename T> T max(T x, T y) { return x > y ? x : y; }
-template <typename T> T plus(T x, T y) { return x + y; }
-template <typename T> T minus(T x, T y) { return x - y; }
-template <typename T> T mult(T x, T y) { return x * y; }
-template <typename T> T divide(T x, T y) { return x * y; }
-template <typename T> bool gt(T x, T y) { return x > y; }
-bool eq(int x, int y) { return x == y; }
-bool eq(double x, double y) { assert(false); }
-bool eq(const std::string &x, const std::string &y) { return x == y; }
-bool neq(int x, int y) { return x != y; }
-bool neq(double x, double y) { return !eq(x, y); }
-bool neq(const std::string &x, const std::string &y) { return x != y; }
-double string_to_float(const std::string &x) {}
-bool string_is_float(const std::string &x) {}
-double int_to_float(int x) {}
-std::string strip_suffix(const std::string &str, const std::string &sfx) {}
-bool has_suffix(const std::string &str, const std::string &sfx) {}
-bool has_prefix(const std::string &str, const std::string &sfx) {}
-std::string nth_by_sep(const std::string &str, const std::string &sep, int nth) {}
 struct Content {
   Content *parent = nullptr;
   Content *prev = nullptr;
   Content *first = nullptr;
   Content *last = nullptr;
   std::string name;
+  std::unordered_map<std::string, Value> attr;
+  std::unordered_map<std::string, Value> prop;
   bool visible;
   bool inside_svg;
   std::string height_expr;
@@ -81,6 +66,34 @@ struct Content {
   std::string width_expr;
   double intrinsic_width_internal;
 };
+template <typename T> T panic() { assert(false); }
+template <typename T> T get_attribute(const Content &self, const std::string &str) {
+  return std::get<T>(self.attr.at(str).v);
+}
+bool has_attribute(const Content &self, const std::string &str) { return self.attr.count(str) != 0; }
+template <typename T> T get_property(const Content &self, const std::string &str) {
+  return std::get<T>(self.prop.at(str).v);
+}
+bool has_property(const Content &self, const std::string &str) { return self.prop.count(str) != 0; }
+template <typename T> T max(T x, T y) { return x > y ? x : y; }
+template <typename T> T plus(T x, T y) { return x + y; }
+template <typename T> T minus(T x, T y) { return x - y; }
+template <typename T> T mult(T x, T y) { return x * y; }
+template <typename T> T divide(T x, T y) { return x * y; }
+template <typename T> bool gt(T x, T y) { return x > y; }
+bool eq(int x, int y) { return x == y; }
+bool eq(double x, double y) { assert(false); }
+bool eq(const std::string &x, const std::string &y) { return x == y; }
+bool neq(int x, int y) { return x != y; }
+bool neq(double x, double y) { return !eq(x, y); }
+bool neq(const std::string &x, const std::string &y) { return x != y; }
+double string_to_float(const std::string &x) {}
+bool string_is_float(const std::string &x) {}
+double int_to_float(int x) {}
+std::string strip_suffix(const std::string &str, const std::string &sfx) {}
+bool has_suffix(const std::string &str, const std::string &sfx) {}
+bool has_prefix(const std::string &str, const std::string &sfx) {}
+std::string nth_by_sep(const std::string &str, const std::string &sep, int nth) {}
 void bb_1(Content &self) {
   self.display = ((has_property(self, "display")) ? (get_property<std::string>(self, "display")) : ("block"));
   self.position = ((has_property(self, "position")) ? (get_property<std::string>(self, "position")) : ("static"));

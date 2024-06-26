@@ -8,15 +8,30 @@ open List
 let header = 
   "#include <string>\n
   #include <cassert>\n
-  struct Content;
-  template<typename T>
+  #include <variant>\n
+  #include <unordered_map>\n
+  struct Value {
+    std::variant<int, double, bool, std::string> v;
+  };
+  struct Content;"
+  
+let forward = 
+  "template<typename T>
   T panic() { assert(false); }
   template<typename T>
-  T get_attribute(const Content& self, const std::string& str) { assert(false); }
-  bool has_attribute(const Content& self, const std::string& str) { assert(false); }
+  T get_attribute(const Content& self, const std::string& str) { 
+    return std::get<T>(self.attr.at(str).v);
+  }
+  bool has_attribute(const Content& self, const std::string& str) { 
+    return self.attr.count(str) != 0;
+  }
   template<typename T>
-  T get_property(const Content& self, const std::string& str) { assert(false); }
-  bool has_property(const Content& self, const std::string& str) { assert(false); }
+  T get_property(const Content& self, const std::string& str) {
+    return std::get<T>(self.prop.at(str).v);
+  }
+  bool has_property(const Content& self, const std::string& str) {
+    return self.prop.count(str) != 0;
+  }
   template<typename T>
   T max(T x, T y) { return x > y ? x : y; }
   template<typename T>
@@ -75,7 +90,14 @@ let compile_type_expr ty =
 let compile_field name type_expr = compile_type_expr type_expr ^ " " ^ name ^ ";"
 
 let compile_typedef (env : tyck_env) : string =
-  "struct Content { Content* parent = nullptr; Content* prev = nullptr; Content* first = nullptr; Content* last = nullptr; std::string name;"
+  "struct Content { 
+    Content* parent = nullptr; 
+    Content* prev = nullptr; 
+    Content* first = nullptr; 
+    Content* last = nullptr; 
+    std::string name;
+    std::unordered_map<std::string, Value> attr;
+    std::unordered_map<std::string, Value> prop;"
   ^ String.concat (List.map (Hashtbl.to_alist env.var_type) ~f:(fun (x, y) -> compile_field x y))
   ^ "};"
 
@@ -123,6 +145,6 @@ let compile_stmts env stmts = String.concat (List.map stmts ~f:(compile_stmt env
 let compile_bbs env (BasicBlock (name, stmts)) = "void " ^ name ^ "(Content& self)" ^ "{" ^ compile_stmts env stmts ^ "}"
 
 let compile (p : _ prog) (env : tyck_env) : string =
-  header ^ compile_typedef env
+  header ^ compile_typedef env ^ forward
   ^ String.concat (List.map (Hashtbl.to_alist p.bbs) ~f:(fun (_, x) -> compile_bbs env x))
   ^ "int main() {}"
