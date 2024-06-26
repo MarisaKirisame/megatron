@@ -51,7 +51,7 @@ let shell cmd =
 ;;
 
 Out_channel.write_all "layout.cpp" ~data:(compile prog env);;
-shell "clang-format -i layout.cpp";;
+shell "clang-format --style=file -i layout.cpp";;
 shell "cat layout.cpp";;
 shell "g++ layout.cpp"
 

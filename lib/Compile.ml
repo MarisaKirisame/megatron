@@ -17,15 +17,24 @@ let header =
   template<typename T>
   T get_property(const Content& self, const std::string& str) { assert(false); }
   bool has_property(const Content& self, const std::string& str) { assert(false); }
-  int max(int x, int y) { }
-  int plus(int x, int y) { }
-  int minus(int x, int y) { }
-  int mult(int x, int y) { }
-  int divide(int x, int y) { }
-  bool gt(float x, float y) { }
-  bool eq(const std::string& x, const std::string& y) { }
-  bool neq(const std::string& x, const std::string& y) { }
-  bool neq(int x, int y) { }
+  template<typename T>
+  T max(T x, T y) { return x > y ? x : y; }
+  template<typename T>
+  T plus(T x, T y) { return x + y; }
+  template<typename T>
+  T minus(T x, T y) { return x - y; }
+  template<typename T>
+  T mult(T x, T y) { return x * y; }
+  template<typename T>
+  T divide(T x, T y) { return x * y; }
+  template<typename T>
+  bool gt(T x, T y) { return x > y; }
+  bool eq(int x, int y) { return x == y; }
+  bool eq(double x, double y) { assert(false); }
+  bool eq(const std::string& x, const std::string& y) { return x == y; }
+  bool neq(int x, int y) { return x != y; }
+  bool neq(double x, double y) { return !eq(x, y); }
+  bool neq(const std::string& x, const std::string& y) { return x != y; }
   double string_to_float(const std::string& x) { }
   bool string_is_float(const std::string& x) { }
   double int_to_float(int x) { }
@@ -33,7 +42,6 @@ let header =
   bool has_suffix(const std::string& str, const std::string& sfx) { }
   bool has_prefix(const std::string& str, const std::string& sfx) { }
   std::string nth_by_sep(const std::string& str, const std::string& sep, int nth) { }
-
   "
 
 let compile_func f =
@@ -108,7 +116,7 @@ let rec compile_expr env expr =
 
 let compile_stmt env stmt =
   match stmt with
-  | Write (Self, name, expr) -> "self." ^ name ^ "=" ^ compile_expr env expr ^ ";"
+  | Write (Self, name, expr) -> "self." ^ name ^ "=" ^ compile_expr env expr ^ ";\n"
   | _ -> panic (show_stmt stmt)
 
 let compile_stmts env stmts = String.concat (List.map stmts ~f:(compile_stmt env))
