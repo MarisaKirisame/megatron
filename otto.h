@@ -1,9 +1,18 @@
+// Inspired by https://github.com/matthewhammer/ceal/blob/master/src/lib/runtime/totalorder.c
+// Replaced the 2nd level singly linked list with doubly linked list
+// Also made it more cpp native
+// Requires C++20
+
 #pragma once
 
 #include <cstdint>
 #include <type_traits>
 #include <list>
 
+#include <cstdio>
+#include <cassert>
+
+// Expected size: Tau^(-_label_bits) * 2^(_label_bits)
 template <double Tau = 1.4, typename Label = std::uint64_t>
 class total_order
 {
@@ -93,9 +102,10 @@ private:
       }
 
       double denstiy = static_cast<double>(range_count) / (label_mask + 1);
-      if (denstiy < tau)
+      if (denstiy < tau || (label_mask >> (_label_bits - 1)) & 1 == 1)
       {
         // we found the smallest tag-range that is not in overflow
+        // or we have reached the top and have to stop here :(
         break;
       }
       else
@@ -106,11 +116,36 @@ private:
     }
 
     // (ii) relabel
+    _l1_iter cur = lo;
     Label label = lo_label;
     Label incr = (label_mask + 1) / range_count;
-    for (auto cur = lo; cur != hi; ++cur, label += incr)
+
+    if ((label_mask >> (_label_bits - 1)) & 1 == 1)
+    {
+      printf("!!!! Total order overflowing\n");
+      printf("!!!! inited from %u\n", n->label);
+      printf("!!!! relabel range from %u to %u\n", lo->label, hi->label);
+      printf("!!!! relabel starting %u step %u\n", label, incr);
+      printf("!!!! label_mask: %u, range_count: %u\n", label_mask, range_count);
+      for (auto it1 = _l1_nodes.begin(); it1 != _l1_nodes.end(); it1++)
+      {
+        printf("!!!! L1 %u:\n", it1->label);
+        for (auto it2 = it1->children.begin(); it2 != it1->children.end(); it2++)
+        {
+          printf("!!!!     L2 %u\n", it2->label);
+        }
+      }
+      assert(false);
+    }
+
+    while (true)
     {
       cur->label = label;
+      if (cur == hi) {
+        break;
+      }
+      ++cur;
+      label += incr;
     }
   }
 
@@ -205,6 +240,10 @@ private:
   inline void remove(_l2_iter n)
   {
     n->parent->children.erase(n);
+    if (n->parent->children.empty())
+    {
+      _l1_nodes.erase(n->parent);
+    }
   }
 
 public:
@@ -214,14 +253,7 @@ public:
 
     friend inline bool operator<(const _l2_iter_wrapper &l, const _l2_iter_wrapper &r)
     {
-      if (l.inner->parent->label == r.inner->parent->label)
-      {
-        return l.inner->label < r.inner->label;
-      }
-      else
-      {
-        return l.inner->parent->label < r.inner->parent->label;
-      }
+     return *l.inner < *r.inner;
     }
   };
 
@@ -250,6 +282,6 @@ public:
 
   inline void remove(node n)
   {
-    return remove(n.inner);
+    remove(n.inner);
   }
 };
