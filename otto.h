@@ -83,6 +83,7 @@ private:
     // (i) find smallest non-overflowing tag-range
     double tau = 1.0 / Tau;
     Label base_label = n->label;
+    double density;
 
     while (true)
     {
@@ -101,8 +102,8 @@ private:
         ++range_count;
       }
 
-      double denstiy = static_cast<double>(range_count) / (label_mask + 1);
-      if (denstiy < tau || (label_mask >> (_label_bits - 1)) & 1 == 1)
+      density = static_cast<double>(range_count) / (label_mask + 1);
+      if (density < tau || (label_mask >> (_label_bits - 1)) & 1 == 1)
       {
         // we found the smallest tag-range that is not in overflow
         // or we have reached the top and have to stop here :(
@@ -120,7 +121,7 @@ private:
     Label label = lo_label;
     Label incr = (label_mask + 1) / range_count;
 
-    if ((label_mask >> (_label_bits - 1)) & 1 == 1)
+    if ((density >= tau && (label_mask >> (_label_bits - 1)) & 1 == 1) || (incr == 0))
     {
       printf("!!!! Total order overflowing\n");
       printf("!!!! inited from %u\n", n->label);
