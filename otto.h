@@ -121,23 +121,25 @@ private:
     Label label = lo_label;
     Label incr = (label_mask + 1) / range_count;
 
-    if ((density >= tau && (label_mask >> (_label_bits - 1)) & 1 == 1) || (incr == 0))
-    {
-      printf("!!!! Total order overflowing\n");
-      printf("!!!! inited from %u\n", n->label);
-      printf("!!!! relabel range from %u to %u\n", lo->label, hi->label);
-      printf("!!!! relabel starting %u step %u\n", label, incr);
-      printf("!!!! label_mask: %u, range_count: %u\n", label_mask, range_count);
-      for (auto it1 = _l1_nodes.begin(); it1 != _l1_nodes.end(); it1++)
-      {
-        printf("!!!! L1 %u:\n", it1->label);
-        for (auto it2 = it1->children.begin(); it2 != it1->children.end(); it2++)
-        {
-          printf("!!!!     L2 %u\n", it2->label);
-        }
-      }
-      assert(false);
-    }
+    // possibly overflowing check
+    assert((density < tau || (label_mask >> (_label_bits - 1)) & 1 != 1) && (incr != 0));
+
+    // if ((density >= tau && (label_mask >> (_label_bits - 1)) & 1 == 1) || (incr == 0))
+    // {
+      // printf("!!!! Total order overflowing\n");
+      // printf("!!!! inited from %u\n", n->label);
+      // printf("!!!! relabel range from %u to %u\n", lo->label, hi->label);
+      // printf("!!!! relabel starting %u step %u\n", label, incr);
+      // printf("!!!! label_mask: %u, range_count: %u\n", label_mask, range_count);
+      // for (auto it1 = _l1_nodes.begin(); it1 != _l1_nodes.end(); it1++)
+      // {
+      //   printf("!!!! L1 %u:\n", it1->label);
+      //   for (auto it2 = it1->children.begin(); it2 != it1->children.end(); it2++)
+      //   {
+      //     printf("!!!!     L2 %u\n", it2->label);
+      //   }
+      // }
+    // }
 
     while (true)
     {
