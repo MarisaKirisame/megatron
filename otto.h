@@ -122,9 +122,9 @@ private:
     Label incr = (label_mask + 1) / range_count;
 
     // possibly overflowing check
-    assert((density < tau || (label_mask >> (_label_bits - 1)) & 1 != 1) && (incr != 0));
+    assert(incr != 0);
 
-    // if ((density >= tau && (label_mask >> (_label_bits - 1)) & 1 == 1) || (incr == 0))
+    // if (incr == 0)
     // {
       // printf("!!!! Total order overflowing\n");
       // printf("!!!! inited from %u\n", n->label);
