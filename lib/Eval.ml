@@ -199,11 +199,11 @@ module type EvalIn = sig
 
   val fresh_meta : unit -> meta
   val remove_meta : meta -> unit
-  val register_todo_proc : _ prog -> meta node -> string -> metric -> unit
+  val register_todo_proc : prog -> meta node -> string -> metric -> unit
   val bracket_call_bb : meta node -> string -> (unit -> unit) -> unit
   val bracket_call_proc : meta node -> string -> (unit -> unit) -> unit
   val bb_dirtied : meta node -> proc_name:string -> bb_name:string -> metric -> unit
-  val recalculate_internal : _ prog -> meta node -> metric -> (meta node -> stmt list -> unit) -> unit
+  val recalculate_internal : prog -> meta node -> metric -> (meta node -> stmt list -> unit) -> unit
 end
 
 module type Eval = sig
@@ -217,14 +217,14 @@ module type Eval = sig
     meta node list ->
     meta node
 
-  val eval : _ prog -> meta node -> metric -> unit
-  val add_children : _ prog -> meta node -> meta node -> int -> metric -> unit
-  val remove_children : _ prog -> meta node -> int -> metric -> unit
-  val add_prop : _ prog -> meta node -> string -> value -> metric -> unit
-  val remove_prop : _ prog -> meta node -> string -> metric -> unit
-  val add_attr : _ prog -> meta node -> string -> value -> metric -> unit
-  val remove_attr : _ prog -> meta node -> string -> metric -> unit
-  val recalculate : _ prog -> meta node -> metric -> unit
+  val eval : prog -> meta node -> metric -> unit
+  val add_children : prog -> meta node -> meta node -> int -> metric -> unit
+  val remove_children : prog -> meta node -> int -> metric -> unit
+  val add_prop : prog -> meta node -> string -> value -> metric -> unit
+  val remove_prop : prog -> meta node -> string -> metric -> unit
+  val add_attr : prog -> meta node -> string -> value -> metric -> unit
+  val remove_attr : prog -> meta node -> string -> metric -> unit
+  val recalculate : prog -> meta node -> metric -> unit
 end
 
 module MakeEval (EI : EvalIn) : Eval = struct
@@ -246,7 +246,7 @@ module MakeEval (EI : EvalIn) : Eval = struct
       m = EI.fresh_meta ();
     }
 
-  let var_modified (p : _ prog) (n : meta node) (var_name : string) (m : metric) : unit =
+  let var_modified (p : prog) (n : meta node) (var_name : string) (m : metric) : unit =
     Hashtbl.iter p.procs ~f:(fun (ProcessedProc (proc_name, _)) ->
         let down, up = get_bb_from_proc p proc_name in
         let work bb_name =
@@ -267,7 +267,7 @@ module MakeEval (EI : EvalIn) : Eval = struct
         Option.iter down ~f:work;
         Option.iter up ~f:work)
 
-  let rec eval_stmt (p : _ prog) (n : meta node) (s : stmt) (m : metric) : unit =
+  let rec eval_stmt (p : prog) (n : meta node) (s : stmt) (m : metric) : unit =
     match s with
     | Write (prop_name, expr) ->
         write m n.id;
@@ -282,14 +282,14 @@ module MakeEval (EI : EvalIn) : Eval = struct
             bracket_call_proc new_node proc_name (fun _ ->
                 eval_stmts p new_node (stmts_of_processed_proc p proc_name) m))
 
-  and eval_stmts (p : _ prog) (n : meta node) (s : stmts) (m : metric) : unit =
+  and eval_stmts (p : prog) (n : meta node) (s : stmts) (m : metric) : unit =
     List.iter s ~f:(fun stmt -> eval_stmt p n stmt m)
 
-  let eval (p : _ prog) (n : meta node) (m : metric) : unit =
+  let eval (p : prog) (n : meta node) (m : metric) : unit =
     List.iter p.order ~f:(fun proc_name ->
         bracket_call_proc n proc_name (fun _ -> eval_stmts p n (stmts_of_processed_proc p proc_name) m))
 
-  let remove_children (p : _ prog) (x : meta node) (n : int) (m : metric) : unit =
+  let remove_children (p : prog) (x : meta node) (n : int) (m : metric) : unit =
     match List.split_n x.children n with
     | lhs, removed :: rhs ->
         (match removed.prev with Some prev -> prev.next <- removed.next | None -> ());
@@ -321,7 +321,7 @@ module MakeEval (EI : EvalIn) : Eval = struct
             Option.iter up ~f:work)
     | _ -> panic "bad argument"
 
-  let add_children (p : _ prog) (x : meta node) (y : meta node) (n : int) (m : metric) : unit =
+  let add_children (p : prog) (x : meta node) (y : meta node) (n : int) (m : metric) : unit =
     let lhs, rhs = List.split_n x.children n in
     x.children <- List.append lhs (y :: rhs);
     (match List.last lhs with
@@ -361,7 +361,7 @@ module MakeEval (EI : EvalIn) : Eval = struct
         Option.iter up ~f:work)
   (*print_endline ("add: " ^ string_of_int y.id);*)
 
-  let add_prop (p : _ prog) (n : meta node) (name : string) (v : value) (m : metric) : unit =
+  let add_prop (p : prog) (n : meta node) (name : string) (v : value) (m : metric) : unit =
     write m n.id;
     Hashtbl.add_exn n.prop ~key:name ~data:v;
     Hashtbl.iter p.procs ~f:(fun (ProcessedProc (proc_name, _)) ->
@@ -381,7 +381,7 @@ module MakeEval (EI : EvalIn) : Eval = struct
         Option.iter down ~f:work;
         Option.iter up ~f:work)
 
-  let remove_prop (p : _ prog) (n : meta node) (name : string) (m : metric) : unit =
+  let remove_prop (p : prog) (n : meta node) (name : string) (m : metric) : unit =
     write m n.id;
     ignore (Hashtbl.find_exn n.prop name);
     Hashtbl.remove n.prop name;
@@ -402,7 +402,7 @@ module MakeEval (EI : EvalIn) : Eval = struct
         Option.iter down ~f:work;
         Option.iter up ~f:work)
 
-  let add_attr (p : _ prog) (n : meta node) (name : string) (v : value) (m : metric) : unit =
+  let add_attr (p : prog) (n : meta node) (name : string) (v : value) (m : metric) : unit =
     write m n.id;
     Hashtbl.add_exn n.attr ~key:name ~data:v;
     Hashtbl.iter p.procs ~f:(fun (ProcessedProc (proc_name, _)) ->
@@ -421,7 +421,7 @@ module MakeEval (EI : EvalIn) : Eval = struct
         Option.iter down ~f:work;
         Option.iter up ~f:work)
 
-  let remove_attr (p : _ prog) (n : meta node) (name : string) (m : metric) : unit =
+  let remove_attr (p : prog) (n : meta node) (name : string) (m : metric) : unit =
     write m n.id;
     ignore (Hashtbl.find_exn n.attr name);
     Hashtbl.remove n.attr name;
@@ -441,7 +441,7 @@ module MakeEval (EI : EvalIn) : Eval = struct
         Option.iter down ~f:work;
         Option.iter up ~f:work)
 
-  let recalculate (p : _ prog) (n : meta node) (m : metric) : unit =
+  let recalculate (p : prog) (n : meta node) (m : metric) : unit =
     recalculate_internal p n m (fun n stmts -> eval_stmts p n stmts m)
 end
 

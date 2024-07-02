@@ -16,6 +16,6 @@ module EVAL : Eval = MakeEval (struct
   let remove_meta () = ()
   let register_todo_proc _ _ _ _ = ()
 
-  let recalculate_internal (p : _ prog) (n : meta node) (m : metric) eval_stmts : unit =
+  let recalculate_internal (p : prog) (n : meta node) (m : metric) eval_stmts : unit =
     List.iter p.order ~f:(fun pass_name -> eval_stmts n (stmts_of_processed_proc p pass_name))
 end)

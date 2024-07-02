@@ -47,7 +47,7 @@ module EVAL : Eval = MakeEval (struct
     Hashtbl.add_exn n.m.recursive_proc_dirtied ~key:proc_name ~data:false;
     f ()
 
-  let rec recalculate_internal_aux (p : _ prog) (n : meta node) (proc_name : string) (down_name : string option)
+  let rec recalculate_internal_aux (p : prog) (n : meta node) (proc_name : string) (down_name : string option)
       (up_name : string option) (m : metric) eval_stmts =
     (*print_endline "enter";*)
     meta_read m n.id;
@@ -70,7 +70,7 @@ module EVAL : Eval = MakeEval (struct
     (*print_endline "exit";*)
     ()
 
-  let rec check (p : _ prog) (n : meta node) : unit =
+  let rec check (p : prog) (n : meta node) : unit =
     Hashtbl.iter p.procs ~f:(fun (ProcessedProc (proc, _)) ->
         Hashtbl.find_exn n.m.proc_inited proc;
         assert (not (Hashtbl.find_exn n.m.recursive_proc_dirtied proc)));
@@ -78,7 +78,7 @@ module EVAL : Eval = MakeEval (struct
     List.iter p.vars ~f:(fun (VarDecl (p, _)) -> ignore (Hashtbl.find_exn n.var p));
     List.iter n.children ~f:(check p)
 
-  let recalculate_internal (p : _ prog) (n : meta node) (m : metric) eval_stmts : unit =
+  let recalculate_internal (p : prog) (n : meta node) (m : metric) eval_stmts : unit =
     List.iter p.order ~f:(fun proc_name ->
         let down, up = get_bb_from_proc p proc_name in
         recalculate_internal_aux p n proc_name down up m eval_stmts);

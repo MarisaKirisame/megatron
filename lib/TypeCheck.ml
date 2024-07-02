@@ -159,7 +159,7 @@ let tyck_stmt (env : tyck_env) (x : stmt) : unit =
   | Write (var, expr) -> unify (var_from_tyck_env env var) (tyck_expr env expr)
   | _ -> panic ("tyck_stmt: " ^ show_stmt x)
 
-let tyck (p : _ prog) : tyck_env =
+let tyck (p : prog) : tyck_env =
   let env = new_tyck_env () in
   List.iter p.vars ~f:(fun (VarDecl (name, type_expr)) -> unify (var_from_tyck_env env name) type_expr);
   Hashtbl.iter p.bbs ~f:(fun (BasicBlock (_, stmts)) -> List.iter ~f:(tyck_stmt env) stmts);

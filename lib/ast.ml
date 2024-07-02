@@ -90,28 +90,28 @@ type prog_def = {
   order_decls : string list; (*the order to execute the procs*)
 }
 
-type 'rest prog = {
+type prog = {
   vars : var_decl list;
   bbs : (string, basic_block) Hashtbl.t;
   procs : (string, processed_proc) Hashtbl.t;
   order : string list;
 }
 
-let show_prog (p : unit prog) : string =
+let show_prog (p : prog) : string =
   Hashtbl.fold p.procs ~init:"" ~f:(fun ~key ~data:(ProcessedProc (_, stmts)) acc ->
       acc ^ key ^ " -> " ^ show_stmts stmts ^ "\n")
   ^ Hashtbl.fold p.bbs ~init:"" ~f:(fun ~key ~data:(BasicBlock (_, stmts)) acc ->
         acc ^ key ^ " -> " ^ show_stmts stmts ^ "\n")
 
-let stmts_of_processed_proc (p : _ prog) (s : string) : stmts =
+let stmts_of_processed_proc (p : prog) (s : string) : stmts =
   let (ProcessedProc (_, stmts)) = Hashtbl.find_exn p.procs s in
   stmts
 
-let stmts_of_basic_block (p : _ prog) (s : string) : stmts =
+let stmts_of_basic_block (p : prog) (s : string) : stmts =
   let (BasicBlock (_, stmts)) = Hashtbl.find_exn p.bbs s in
   stmts
 
-let prog_of_prog_def (p : prog_def) : unit prog =
+let prog_of_prog_def (p : prog_def) : prog =
   let bb = Hashtbl.create (module String) in
   let rec split seen_children_call stmts acc =
     match stmts with
@@ -168,7 +168,7 @@ let exprs_of_stmt (s : stmt) : expr list =
 let reads_of_stmt (s : stmt) : read list = List.( >>= ) (exprs_of_stmt s) (fun e -> reads_of_expr e)
 let reads_of_stmts (s : stmts) : read list = List.( >>= ) s reads_of_stmt
 
-let get_bb_from_proc (p : _ prog) (n : string) : string option * string option =
+let get_bb_from_proc (p : prog) (n : string) : string option * string option =
   match stmts_of_processed_proc p n with
   | [ BBCall x; ChildrenCall _; BBCall y ] -> (Some x, Some y)
   | [ BBCall x; ChildrenCall _ ] -> (Some x, None)

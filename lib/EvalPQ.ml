@@ -85,7 +85,7 @@ module EVAL : Eval = MakeEval (struct
     f ();
     Hashtbl.add_exn n.m.proc_time_table ~key:proc_name ~data:(Close (open_time, !current_time))
 
-  let rec recalculate_internal_aux (p : _ prog) (m : metric) eval_stmts =
+  let rec recalculate_internal_aux (p : prog) (m : metric) eval_stmts =
     if queue_isempty () then ()
     else
       let x, y, z = queue_peek () in
@@ -113,12 +113,12 @@ module EVAL : Eval = MakeEval (struct
       assert (phys_equal (TotalOrder.compare x x') 0);
       recalculate_internal_aux p m eval_stmts
 
-  let rec check (p : _ prog) (n : meta node) : unit =
+  let rec check (p : prog) (n : meta node) : unit =
     Hashtbl.iter p.bbs ~f:(fun (BasicBlock (bb, _)) -> ignore (Hashtbl.find_exn n.m.bb_time_table bb));
     List.iter p.vars ~f:(fun (VarDecl (p, _)) -> ignore (Hashtbl.find_exn n.var p));
     List.iter n.children ~f:(check p)
 
-  let recalculate_internal (p : _ prog) (n : meta node) (m : metric) eval_stmts =
+  let recalculate_internal (p : prog) (n : meta node) (m : metric) eval_stmts =
     recalculate_internal_aux p m eval_stmts;
     check p n
 end)
