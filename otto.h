@@ -1,15 +1,15 @@
 // Inspired by https://github.com/matthewhammer/ceal/blob/master/src/lib/runtime/totalorder.c
 // Replaced the 2nd level singly linked list with doubly linked list
 // Also made it more cpp native
-// Requires C++20
+// Requires C++23
 
 #pragma once
 
 #include <cstdint>
 #include <type_traits>
 #include <list>
+#include <optional>
 
-#include <cstdio>
 #include <cassert>
 
 // Expected size: Tau^(-_label_bits) * 2^(_label_bits)
@@ -124,27 +124,11 @@ private:
     // possibly overflowing check
     assert(incr != 0);
 
-    // if (incr == 0)
-    // {
-      // printf("!!!! Total order overflowing\n");
-      // printf("!!!! inited from %u\n", n->label);
-      // printf("!!!! relabel range from %u to %u\n", lo->label, hi->label);
-      // printf("!!!! relabel starting %u step %u\n", label, incr);
-      // printf("!!!! label_mask: %u, range_count: %u\n", label_mask, range_count);
-      // for (auto it1 = _l1_nodes.begin(); it1 != _l1_nodes.end(); it1++)
-      // {
-      //   printf("!!!! L1 %u:\n", it1->label);
-      //   for (auto it2 = it1->children.begin(); it2 != it1->children.end(); it2++)
-      //   {
-      //     printf("!!!!     L2 %u\n", it2->label);
-      //   }
-      // }
-    // }
-
     while (true)
     {
       cur->label = label;
-      if (cur == hi) {
+      if (cur == hi)
+      {
         break;
       }
       ++cur;
@@ -213,11 +197,11 @@ private:
     return new_node;
   }
 
-  inline void succ(_l2_iter n)
+  inline std::optional<_l2_iter> succ(_l2_iter n)
   {
     if (next_of(n) != n->parent->children.end())
     {
-      return next_of(n);
+      return std::optional<_l2_iter>(next_of(n));
     }
     else
     {
@@ -226,26 +210,66 @@ private:
         _l2_iter m = next_of(n->parent)->children.begin();
         if (*n < *m)
         {
-          return m;
+          return std::optional<_l2_iter>(m);
         }
         else
         {
-          return n->parent->children.end();
+          return std::optional<_l2_iter>();
         }
       }
       else
       {
-        return n->parent->children.end();
+        return std::optional<_l2_iter>();
+      }
+    }
+  }
+
+  inline std::optional<_l2_iter> prev(_l2_iter n)
+  {
+    if (n != n->parent->children.begin())
+    {
+      return std::optional<_l2_iter>(prev_of(n));
+    }
+    else
+    {
+      if (n->parent != _l1_nodes.begin())
+      {
+        _l2_iter m = prev_of(prev_of(n->parent)->children.end());
+        if (*m < *n)
+        {
+          return std::optional<_l2_iter>(m);
+        }
+        else
+        {
+          return std::optional<_l2_iter>();
+        }
+      }
+      else
+      {
+        return std::optional<_l2_iter>();
       }
     }
   }
 
   inline void remove(_l2_iter n)
   {
-    n->parent->children.erase(n);
-    if (n->parent->children.empty())
+    if (n->parent->children.size() == 1)
     {
       _l1_nodes.erase(n->parent);
+    }
+    else
+    {
+      n->parent->children.erase(n);
+    }
+  }
+
+  inline void remove(_l2_iter lo, _l2_iter hi)
+  {
+    for (auto it = lo; it != hi; )
+    {
+      auto old = it;
+      it = succ(it).value();
+      remove(old);
     }
   }
 
@@ -256,7 +280,7 @@ public:
 
     friend inline bool operator<(const _l2_iter_wrapper &l, const _l2_iter_wrapper &r)
     {
-     return *l.inner < *r.inner;
+      return *l.inner < *r.inner;
     }
   };
 
@@ -273,9 +297,16 @@ public:
     return node{_l1_nodes.begin()->children.begin()};
   }
 
-  inline node succ(node n)
+  inline std::optional<node> prev(node n)
   {
-    return node{succ(n.inner)};
+    return prev(n.inner).transform([](_l2_iter c)
+                                   { return node{c}; });
+  }
+
+  inline std::optional<node> succ(node n)
+  {
+    return succ(n.inner).transform([](_l2_iter c)
+                                   { return node{c}; });
   }
 
   inline node insert(node n)
@@ -286,5 +317,10 @@ public:
   inline void remove(node n)
   {
     remove(n.inner);
+  }
+
+  inline void remove(node lo, node hi)
+  {
+    remove(lo.inner, hi.inner);
   }
 };
