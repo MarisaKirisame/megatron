@@ -185,8 +185,8 @@ let compile_bb env (BasicBlock (name, stmts)) = "void " ^ name ^ "(Content& self
 let compile_proc env (ProcessedProc (name, stmts)) =
   "void " ^ name ^ "(Content& self)" ^ "{" ^ compile_stmts env stmts ^ "}"
 
-let compile (p : prog) (env : tyck_env) : string =
-  header ^ compile_typedef env ^ forward
-  ^ String.concat (List.map (Hashtbl.to_alist p.bbs) ~f:(fun (_, x) -> compile_bb env x))
-  ^ String.concat (List.map (Hashtbl.to_alist p.procs) ~f:(fun (_, x) -> compile_proc env x))
+let compile (p : prog) : string =
+  header ^ compile_typedef p.tyck_env ^ forward
+  ^ String.concat (List.map (Hashtbl.to_alist p.bbs) ~f:(fun (_, x) -> compile_bb p.tyck_env x))
+  ^ String.concat (List.map (Hashtbl.to_alist p.procs) ~f:(fun (_, x) -> compile_proc p.tyck_env x))
   ^ "Node root;\n  int main() {}"

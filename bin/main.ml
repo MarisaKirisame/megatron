@@ -41,7 +41,6 @@ Out_channel.newline stdout
 (*print_endline (show_prog_def prog_def)*)
 
 let prog = prog_of_prog_def prog_def
-let env = tyck prog
 
 let shell cmd =
   let in_channel = Core_unix.open_process_in cmd in
@@ -50,7 +49,7 @@ let shell cmd =
   match res with Ok () -> () | _ -> panic "shell failed"
 ;;
 
-Out_channel.write_all "layout.cpp" ~data:(compile prog env);;
+Out_channel.write_all "layout.cpp" ~data:(compile prog);;
 shell "clang-format --style=file -i layout.cpp";;
 shell "cat layout.cpp";;
 shell "clang++ -std=c++23 layout.cpp"

@@ -90,11 +90,18 @@ type prog_def = {
   order_decls : string list; (*the order to execute the procs*)
 }
 
+type tyck_env = {
+  var_type : (string, type_expr) Hashtbl.t;
+  attr_type : (string, type_expr) Hashtbl.t;
+  prop_type : (string, type_expr) Hashtbl.t;
+}
+
 type prog = {
   vars : var_decl list;
   bbs : (string, basic_block) Hashtbl.t;
   procs : (string, processed_proc) Hashtbl.t;
   order : string list;
+  tyck_env : tyck_env;
 }
 
 let show_prog (p : prog) : string =
@@ -111,34 +118,11 @@ let stmts_of_basic_block (p : prog) (s : string) : stmts =
   let (BasicBlock (_, stmts)) = Hashtbl.find_exn p.bbs s in
   stmts
 
-let prog_of_prog_def (p : prog_def) : prog =
-  let bb = Hashtbl.create (module String) in
-  let rec split seen_children_call stmts acc =
-    match stmts with
-    | [] -> [ List.rev acc ]
-    | ChildrenCall n :: rest ->
-        assert (not seen_children_call);
-        List.rev acc :: [ ChildrenCall n ] :: split true rest []
-    | x :: rest -> split seen_children_call rest (x :: acc)
-  in
-  let transform (ProcDef (name, stmts)) =
-    let transformed_stmts =
-      List.fold_right (split false stmts []) ~init:[] ~f:(fun stmts acc ->
-          match stmts with
-          | [] -> acc
-          | [ ChildrenCall n ] -> ChildrenCall n :: acc
-          | _ ->
-              let bb_name = "bb_" ^ string_of_int (Hashtbl.length bb) in
-              Hashtbl.add_exn bb ~key:bb_name ~data:(BasicBlock (bb_name, stmts));
-              BBCall bb_name :: acc)
-    in
-    (name, ProcessedProc (name, transformed_stmts))
-  in
+let new_tyck_env () =
   {
-    vars = p.var_decls;
-    bbs = bb;
-    procs = Hashtbl.of_alist_exn (module String) (List.map p.proc_defs ~f:transform);
-    order = p.order_decls;
+    var_type = Hashtbl.create (module String);
+    attr_type = Hashtbl.create (module String);
+    prop_type = Hashtbl.create (module String);
   }
 
 type read = ReadVar of path * string | ReadHasPath of path | ReadAttr of string | ReadProp of string [@@deriving show]

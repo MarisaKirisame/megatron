@@ -2,19 +2,6 @@ open Ast
 open Core
 open EXN
 
-type tyck_env = {
-  var_type : (string, type_expr) Hashtbl.t;
-  attr_type : (string, type_expr) Hashtbl.t;
-  prop_type : (string, type_expr) Hashtbl.t;
-}
-
-let new_tyck_env () =
-  {
-    var_type = Hashtbl.create (module String);
-    attr_type = Hashtbl.create (module String);
-    prop_type = Hashtbl.create (module String);
-  }
-
 let new_tvar_or_get htbl name =
   match Hashtbl.find htbl name with
   | Some x -> x
@@ -159,10 +146,43 @@ let tyck_stmt (env : tyck_env) (x : stmt) : unit =
   | Write (var, expr) -> unify (var_from_tyck_env env var) (tyck_expr env expr)
   | _ -> panic ("tyck_stmt: " ^ show_stmt x)
 
-let tyck (p : prog) : tyck_env =
-  let env = new_tyck_env () in
-  List.iter p.vars ~f:(fun (VarDecl (name, type_expr)) -> unify (var_from_tyck_env env name) type_expr);
-  Hashtbl.iter p.bbs ~f:(fun (BasicBlock (_, stmts)) -> List.iter ~f:(tyck_stmt env) stmts);
-  Hashtbl.iteri env.var_type ~f:(fun ~key ~data ->
-      match resolve data with TVar _ -> panic ("cannot deduct type for: " ^ key) | _ -> ());
-  env
+let tyck (p : prog) : unit =
+  List.iter p.vars ~f:(fun (VarDecl (name, type_expr)) -> unify (var_from_tyck_env p.tyck_env name) type_expr);
+  Hashtbl.iter p.bbs ~f:(fun (BasicBlock (_, stmts)) -> List.iter ~f:(tyck_stmt p.tyck_env) stmts);
+  Hashtbl.iteri p.tyck_env.var_type ~f:(fun ~key ~data ->
+      match resolve data with TVar _ -> panic ("cannot deduct type for: " ^ key) | _ -> ())
+
+let prog_of_prog_def (p : prog_def) : prog =
+  let bb = Hashtbl.create (module String) in
+  let rec split seen_children_call stmts acc =
+    match stmts with
+    | [] -> [ List.rev acc ]
+    | ChildrenCall n :: rest ->
+        assert (not seen_children_call);
+        List.rev acc :: [ ChildrenCall n ] :: split true rest []
+    | x :: rest -> split seen_children_call rest (x :: acc)
+  in
+  let transform (ProcDef (name, stmts)) =
+    let transformed_stmts =
+      List.fold_right (split false stmts []) ~init:[] ~f:(fun stmts acc ->
+          match stmts with
+          | [] -> acc
+          | [ ChildrenCall n ] -> ChildrenCall n :: acc
+          | _ ->
+              let bb_name = "bb_" ^ string_of_int (Hashtbl.length bb) in
+              Hashtbl.add_exn bb ~key:bb_name ~data:(BasicBlock (bb_name, stmts));
+              BBCall bb_name :: acc)
+    in
+    (name, ProcessedProc (name, transformed_stmts))
+  in
+  let ret =
+    {
+      vars = p.var_decls;
+      bbs = bb;
+      procs = Hashtbl.of_alist_exn (module String) (List.map p.proc_defs ~f:transform);
+      order = p.order_decls;
+      tyck_env = new_tyck_env ();
+    }
+  in
+  tyck ret;
+  ret

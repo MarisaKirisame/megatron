@@ -192,18 +192,34 @@ let rec recursive_print_id_up (n : _ node) : unit =
   print_endline (string_of_int n.id ^ List.to_string n.children ~f:(fun n -> string_of_int n.id));
   match n.parent with None -> () | Some p -> recursive_print_id_up p
 
+type _ code = string
+
 module type EvalIn = sig
   val name : string
 
   type meta
+  val meta_staged : string
 
   val fresh_meta : unit -> meta
+  val fresh_meta_staged : unit code -> meta code
+
   val remove_meta : meta -> unit
+  val remove_meta_staged : meta code -> unit code
+
   val register_todo_proc : prog -> meta node -> string -> metric -> unit
+  val register_todo_proc_staged : prog -> meta node code -> string -> metric code -> unit code
+
   val bracket_call_bb : meta node -> string -> (unit -> unit) -> unit
+  val bracket_call_bb_staged : meta node code -> string -> (unit -> unit code) -> unit code
+
   val bracket_call_proc : meta node -> string -> (unit -> unit) -> unit
+  val bracket_call_proc_staged : meta node code -> string -> (unit -> unit code) -> unit code
+
   val bb_dirtied : meta node -> proc_name:string -> bb_name:string -> metric -> unit
+  val bb_dirtied_staged : meta node code -> proc_name:string -> bb_name:string -> metric -> unit
+
   val recalculate_internal : prog -> meta node -> metric -> (meta node -> stmt list -> unit) -> unit
+  val recalculate_internal_staged : prog -> meta node code -> metric code -> (meta node code -> stmt list -> unit code) -> unit code
 end
 
 module type Eval = sig
@@ -218,13 +234,28 @@ module type Eval = sig
     meta node
 
   val eval : prog -> meta node -> metric -> unit
+  val eval_staged : prog -> meta node code -> metric code -> unit code
+
   val add_children : prog -> meta node -> meta node -> int -> metric -> unit
+  val add_children_staged : prog -> meta node code -> meta node code -> int code -> metric code -> unit code
+
   val remove_children : prog -> meta node -> int -> metric -> unit
+  val remove_children_staged : prog -> meta node code -> int code -> metric code -> unit code
+
   val add_prop : prog -> meta node -> string -> value -> metric -> unit
+  val add_prop_staged : prog -> meta node code -> string code -> value code -> metric code -> unit code
+
   val remove_prop : prog -> meta node -> string -> metric -> unit
+  val remove_prop_staged : prog -> meta node code -> string code -> metric code -> unit code
+
   val add_attr : prog -> meta node -> string -> value -> metric -> unit
+  val add_attr_staged : prog -> meta node code -> string code -> value code -> metric code -> unit code
+
   val remove_attr : prog -> meta node -> string -> metric -> unit
+  val remove_attr_staged : prog -> meta node code -> string code -> metric code -> unit code
+
   val recalculate : prog -> meta node -> metric -> unit
+  val recalculate_staged : prog -> meta node code -> metric code -> unit code
 end
 
 module MakeEval (EI : EvalIn) : Eval = struct
