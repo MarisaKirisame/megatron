@@ -6,15 +6,28 @@
 
 #include <unordered_map>
 
+#include <stdexcept>
+
+#include <ranges>
+
+#include <iterator>
+
+#include <vector>
+
+#include <cmath>
+
+#include <memory>
 struct Value {
   std::variant<int, double, bool, std::string> v;
 };
 struct Content;
+using Node = std::shared_ptr<Content>;
 struct Content {
   Content *parent = nullptr;
   Content *prev = nullptr;
   Content *first = nullptr;
   Content *last = nullptr;
+  std::vector<Node> children;
   std::string name;
   std::unordered_map<std::string, Value> attr;
   std::unordered_map<std::string, Value> prop;
@@ -82,18 +95,38 @@ template <typename T> T mult(T x, T y) { return x * y; }
 template <typename T> T divide(T x, T y) { return x * y; }
 template <typename T> bool gt(T x, T y) { return x > y; }
 bool eq(int x, int y) { return x == y; }
-bool eq(double x, double y) { assert(false); }
+bool eq(double x, double y) { return (std::isnan(x) && std::isnan(y)) || (x == y); }
 bool eq(const std::string &x, const std::string &y) { return x == y; }
 bool neq(int x, int y) { return x != y; }
 bool neq(double x, double y) { return !eq(x, y); }
 bool neq(const std::string &x, const std::string &y) { return x != y; }
-double string_to_float(const std::string &x) {}
-bool string_is_float(const std::string &x) {}
-double int_to_float(int x) {}
-std::string strip_suffix(const std::string &str, const std::string &sfx) {}
-bool has_suffix(const std::string &str, const std::string &sfx) {}
-bool has_prefix(const std::string &str, const std::string &sfx) {}
-std::string nth_by_sep(const std::string &str, const std::string &sep, int nth) {}
+double string_to_float(const std::string &x) { return std::stod(x); }
+bool string_is_float(const std::string &x) {
+  try {
+    std::stod(x);
+    return true;
+  } catch (const std::invalid_argument &) {
+    return false;
+  }
+}
+double int_to_float(int x) { return static_cast<double>(x); }
+std::string strip_suffix(const std::string &str, const std::string &sfx) {
+  return str.substr(0, str.size() - sfx.size());
+}
+bool has_suffix(const std::string &str, const std::string &sfx) {
+  return str.substr(str.size() - sfx.size(), sfx.size()) == sfx;
+}
+bool has_prefix(const std::string &str, const std::string &pfx) { return str.substr(0, pfx.size()) == pfx; }
+std::string nth_by_sep(const std::string &str, const std::string &sep, int nth) {
+  auto to_string = [](auto &&r) -> std::string {
+    const auto data = &*r.begin();
+    const auto size = static_cast<std::size_t>(std::ranges::distance(r));
+    return std::string{data, size};
+  };
+  assert(sep.size() == 1);
+  auto range = str | std::ranges::views::split(sep.at(0)) | std::ranges::views::transform(to_string);
+  return *std::next(range.begin(), nth);
+}
 void bb_1(Content &self) {
   self.display = ((has_property(self, "display")) ? (get_property<std::string>(self, "display")) : ("block"));
   self.position = ((has_property(self, "position")) ? (get_property<std::string>(self, "position")) : ("static"));
@@ -556,4 +589,18 @@ void bb_2(Content &self) {
                           ? (max(((&self)->height_external), (self.prev->line_height)))
                           : ((&self)->height_external));
 }
+void pass_0(Content &self) {
+  bb_1(self);
+  for (const Node &n : self.children) {
+    pass_0(*n);
+  }
+  bb_0(self);
+}
+void pass_1(Content &self) {
+  bb_2(self);
+  for (const Node &n : self.children) {
+    pass_1(*n);
+  }
+}
+Node root;
 int main() {}

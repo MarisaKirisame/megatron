@@ -1,7 +1,6 @@
 open Ast
 open Core
 open EXN
-open Eval
 
 type tyck_env = {
   var_type : (string, type_expr) Hashtbl.t;
@@ -157,7 +156,7 @@ let rec tyck_expr (env : tyck_env) (x : expr) : type_expr =
 
 let tyck_stmt (env : tyck_env) (x : stmt) : unit =
   match x with
-  | Write (_, var, expr) -> unify (var_from_tyck_env env var) (tyck_expr env expr)
+  | Write (var, expr) -> unify (var_from_tyck_env env var) (tyck_expr env expr)
   | _ -> panic ("tyck_stmt: " ^ show_stmt x)
 
 let tyck (p : _ prog) : tyck_env =

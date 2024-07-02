@@ -53,7 +53,7 @@ let shell cmd =
 Out_channel.write_all "layout.cpp" ~data:(compile prog env);;
 shell "clang-format --style=file -i layout.cpp";;
 shell "cat layout.cpp";;
-shell "clang++ layout.cpp"
+shell "clang++ -std=c++23 layout.cpp"
 
 (*print_endline (show_prog prog)*)
 
@@ -194,9 +194,16 @@ let node_to_html (n : _ node) : string =
   Buffer.contents b
 
 module Main (EVAL : Eval) = struct
+  let counter : int ref = ref 0
+
+  let count () =
+    let ret = !counter in
+    counter := !counter + 1;
+    ret
+
   let rec json_to_node_aux j : _ node =
     let open Yojson.Basic.Util in
-    EVAL.make_node prog
+    EVAL.make_node
       (List.map (j |> member "children" |> to_list) ~f:json_to_node_aux)
       ~name:(j |> member "name" |> json_to_string)
       ~attr:(j |> member "attributes" |> json_to_dict)
@@ -209,7 +216,7 @@ module Main (EVAL : Eval) = struct
     v
 
   let rec node_to_fs_node_aux n : Megatron.EvalFS.EVAL.meta node =
-    Megatron.EvalFS.EVAL.make_node prog
+    Megatron.EvalFS.EVAL.make_node
       (List.map n.children ~f:node_to_fs_node_aux)
       ~name:n.name ~attr:n.attr ~prop:n.prop ~extern_id:n.extern_id
 

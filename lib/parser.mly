@@ -125,7 +125,7 @@ path:
 	;
 
 stmt:
-	| SELF; DOT; y = ID; LARROW; z = expr { Write(Self, y, z) }
+	| SELF; DOT; y = ID; LARROW; z = expr { Write(y, z) }
 	| CHILDREN; DOT; x = ID; LPAREN; RPAREN { ChildrenCall(x) }
 	;
 

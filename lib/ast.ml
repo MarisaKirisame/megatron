@@ -48,11 +48,12 @@ type expr =
   | Panic of type_expr * expr list
   | Call of func * expr list
 [@@deriving show]
+
 and type_expr = TInt | TString | TFloat | TBool | TVar of type_expr option ref
 
 let new_tvar () = TVar (ref None)
 
-type stmt = BBCall of string | ChildrenCall of string | Write of path * string * expr [@@deriving show]
+type stmt = BBCall of string | ChildrenCall of string | Write of string * expr [@@deriving show]
 type stmts = stmt list [@@deriving show]
 
 let rec resolve (x : type_expr) : type_expr =
@@ -162,7 +163,7 @@ let rec reads_of_expr (e : expr) : read list =
   | _ -> raise (EXN (show_expr e))
 
 let exprs_of_stmt (s : stmt) : expr list =
-  match s with ChildrenCall _ -> [] | Write (_, _, x) -> [ x ] | _ -> panic "todo"
+  match s with ChildrenCall _ -> [] | Write (_, x) -> [ x ] | _ -> panic "todo"
 
 let reads_of_stmt (s : stmt) : read list = List.( >>= ) (exprs_of_stmt s) (fun e -> reads_of_expr e)
 let reads_of_stmts (s : stmts) : read list = List.( >>= ) s reads_of_stmt
