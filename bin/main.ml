@@ -212,7 +212,7 @@ struct
       ~prop:(j |> member "properties" |> json_to_dict |> static)
       ~extern_id:(j |> member "id" |> json_to_int |> static)
 
-  let json_to_node j : _ node sd = let_ (json_to_node_aux j) (fun v -> seq_ (set_relation v) v)
+  let json_to_node j : _ node sd = let_ (json_to_node_aux j) (fun v -> seq_ (set_relation v) (const v))
 
   let rec node_to_fs_node_aux n : Megatron.EvalFS.EVAL.meta node =
     unstatic
@@ -220,7 +220,7 @@ struct
          (static (List.map n.children ~f:node_to_fs_node_aux))
          ~name:(static n.name) ~attr:(static n.attr) ~prop:(static n.prop) ~extern_id:(static n.extern_id))
 
-  let node_to_fs_node n = let_ (static (node_to_fs_node_aux n)) (fun v -> seq_ (set_relation v) v)
+  let node_to_fs_node n = let_ (static (node_to_fs_node_aux n)) (fun v -> seq_ (set_relation v) (const v))
 
   let rec json_to_layout_node j : layout_node =
     let open Yojson.Basic.Util in
@@ -243,88 +243,88 @@ struct
   let get_node j : _ node = json_to_node (j |> Yojson.Basic.Util.member "node") |> unstatic
   let get_layout_node j : layout_node = json_to_layout_node (j |> Yojson.Basic.Util.member "node")
 
-  let rec add_node (path : int list) (x : _ node) (y : _ node) : unit =
+  let rec add_node (path : int list) (x : _ node) (y : _ node) : unit sd =
     match path with
     | [] -> panic "bad path!"
     | [ i ] ->
         m.input_change_count <- m.input_change_count + node_size y;
-        EVAL.add_children prog x y i m
+        EVAL.add_children prog x y i m |> static
     | p_hd :: p_tl -> add_node p_tl (List.nth_exn x.children p_hd) y
 
-  let rec add_layout_node (path : int list) (x : layout_node) (y : layout_node) : unit =
+  let rec add_layout_node (path : int list) (x : layout_node) (y : layout_node) : unit sd =
     match path with
     | [] -> panic "bad path!"
     | [ i ] ->
         m.output_change_count <- m.output_change_count + layout_size y;
         let lhs, rhs = List.split_n x.children i in
-        x.children <- List.append lhs (y :: rhs)
+        (x.children <- List.append lhs (y :: rhs)) |> static
     | p_hd :: p_tl -> add_layout_node p_tl (List.nth_exn x.children p_hd) y
 
-  let rec remove_node (path : int list) (x : _ node) : unit =
+  let rec remove_node (path : int list) (x : _ node) : unit sd =
     match path with
     | [] -> panic "bad path!"
     | [ i ] ->
         m.input_change_count <- m.input_change_count + node_size (List.nth_exn x.children i);
-        EVAL.remove_children prog x i m
+        EVAL.remove_children prog x i m |> static
     | p_hd :: p_tl -> remove_node p_tl (List.nth_exn x.children p_hd)
 
-  let rec remove_layout_node (path : int list) (x : layout_node) : unit =
+  let rec remove_layout_node (path : int list) (x : layout_node) : unit sd =
     match path with
     | [] -> panic "bad path!"
     | [ i ] ->
         let lhs, removed :: rhs = List.split_n x.children i in
         m.output_change_count <- m.output_change_count + layout_size (List.nth_exn x.children i);
-        x.children <- List.append lhs rhs
+        (x.children <- List.append lhs rhs) |> static
     | p_hd :: p_tl -> remove_layout_node p_tl (List.nth_exn x.children p_hd)
 
-  let rec replace_node (path : int list) (x : _ node) (y : _ node) : unit =
+  let rec replace_node (path : int list) (x : _ node) (y : _ node) : unit sd =
     match path with
     | [] -> panic "bad path!"
     | [ i ] ->
         EVAL.remove_children prog x i m;
-        EVAL.add_children prog x y i m
+        EVAL.add_children prog x y i m |> static
     | p_hd :: p_tl -> replace_node p_tl (List.nth_exn x.children p_hd) y
 
-  let rec replace_layout_node (path : int list) (x : layout_node) (y : layout_node) : unit =
+  let rec replace_layout_node (path : int list) (x : layout_node) (y : layout_node) : unit sd =
     match path with
     | [] -> panic "bad path!"
     | [ i ] ->
         let lhs, removed :: rhs = List.split_n x.children i in
         m.output_change_count <- m.output_change_count + layout_size removed + layout_size y;
-        x.children <- List.append lhs (y :: rhs)
+        (x.children <- List.append lhs (y :: rhs)) |> static
     | p_hd :: p_tl -> replace_layout_node p_tl (List.nth_exn x.children p_hd) y
 
-  let rec replace_value (path : int list) (x : _ node) (type_ : string) (key : string) (value : value) : unit =
+  let rec replace_value (path : int list) (x : _ node) (type_ : string) (key : string) (value : value) : unit sd =
     match path with
     | [] -> (
         m.input_change_count <- m.input_change_count + 1;
         match type_ with
         | "attributes" ->
             EVAL.remove_attr prog x key m;
-            EVAL.add_attr prog x key value m
+            EVAL.add_attr prog x key value m |> static
         | "properties" ->
             EVAL.remove_prop prog x key m;
-            EVAL.add_prop prog x key value m
+            EVAL.add_prop prog x key value m |> static
         | _ -> panic type_)
     | p_hd :: p_tl -> replace_value p_tl (List.nth_exn x.children p_hd) type_ key value
 
-  let rec delete_value (path : int list) (x : _ node) (type_ : string) (key : string) : unit =
+  let rec delete_value (path : int list) (x : _ node) (type_ : string) (key : string) : unit sd =
     match path with
     | [] -> (
         m.input_change_count <- m.input_change_count + 1;
         match type_ with
-        | "attributes" -> EVAL.remove_attr prog x key m
-        | "properties" -> EVAL.remove_prop prog x key m
+        | "attributes" -> EVAL.remove_attr prog x key m |> static
+        | "properties" -> EVAL.remove_prop prog x key m |> static
         | _ -> panic type_)
     | p_hd :: p_tl -> delete_value p_tl (List.nth_exn x.children p_hd) type_ key
 
-  let rec insert_value (path : int list) (x : _ node) (type_ : string) (key : string) (value : value) : unit =
+  let rec insert_value (path : int list) (x : _ node) (type_ : string) (key : string) (value : value) : unit sd =
     match path with
     | [] -> (
         m.input_change_count <- m.input_change_count + 1;
         match type_ with
-        | "attributes" -> EVAL.add_attr prog x key value m
-        | "properties" -> EVAL.add_prop prog x key value m
+        | "attributes" -> EVAL.add_attr prog x key value m |> static
+        | "properties" -> EVAL.add_prop prog x key value m |> static
         | _ -> panic type_)
     | p_hd :: p_tl -> insert_value p_tl (List.nth_exn x.children p_hd) type_ key value
 
@@ -340,7 +340,7 @@ struct
   let n = get_node (json_init |> unstatic)
   let layout_n = get_layout_node (json_layout_init |> unstatic)
 
-  let diff_evaluated () : unit =
+  let diff_evaluated () : unit sd =
     let open Yojson.Basic in
     to_channel out_file
       (`Assoc
@@ -363,14 +363,14 @@ struct
     diff_num := !diff_num + 1;
     let fsn = node_to_fs_node n |> unstatic in
     Megatron.EvalFS.EVAL.eval prog fsn (fresh_metric ());
-    assert_node_value_equal n fsn
+    assert_node_value_equal n fsn |> static
 
   let work () : unit sd =
     list_iter_ line_rest ~f:(fun line_ ->
         let line = unstatic line_ in
         let j = Yojson.Basic.from_string line in
         command := List.append !command [ j ];
-        (match get_command j with
+        match get_command j with
         | "add" ->
             (*print_endline ("add_node: " ^ List.to_string string_of_int (get_path j));*)
             add_node (get_path j) n (get_node j)
@@ -388,20 +388,22 @@ struct
         | "layout_remove" -> remove_layout_node (get_path j) layout_n
         | "layout_add" -> add_layout_node (get_path j) layout_n (get_layout_node j)
         | "layout_replace" -> replace_layout_node (get_path j) layout_n (get_layout_node j)
-        | "layout_info_changed" -> m.output_change_count <- m.output_change_count + 1
-        | x -> panic x);
-        static ())
+        | "layout_info_changed" -> (m.output_change_count <- m.output_change_count + 1) |> static
+        | x -> panic x)
   ;;
 
   m.input_change_count <- m.input_change_count + node_size n;
   m.output_change_count <- m.output_change_count + layout_size layout_n;
 
   EVAL.eval prog n m;
-  diff_evaluated ();
-  print_endline "EVAL OK!";
-  ()
 
-  let main = seq_ (work ()) ("INCREMENTAL EVAL OK!" |> static |> print_endline_)
+  let main =
+    seq_ (diff_evaluated ()) (fun _ ->
+        seq_
+          ("EVAL OK!" |> static |> print_endline_)
+          (fun _ -> seq_ (work ()) (fun _ -> "INCREMENTAL EVAL OK!" |> static |> print_endline_)))
+  in
+  ()
 end
 
 module LINES_STATIC = struct

@@ -38,16 +38,16 @@ let fresh =
 exception EXN of string
 
 let panic msg = raise (EXN msg)
-let seq_staged (lhs : unit code) (rhs : 'a code) : 'a code = Stmt (unstmt lhs ^ unstmt rhs)
+let seq_staged (lhs : unit code) (rhs : unit -> 'a code) : 'a code = Stmt (unstmt lhs ^ unstmt (rhs ()))
 
-let seq_ (lhs : unit sd) (rhs : 'a sd) : 'a sd =
-  match (lhs, rhs) with Static lhs, Static rhs -> Static rhs | Dyn lhs, Dyn rhs -> Dyn (seq_staged lhs rhs)
+let seq_ (lhs : unit sd) (rhs : unit -> 'a sd) : 'a sd =
+  match lhs with Static lhs -> rhs () | Dyn lhs -> Dyn (seq_staged lhs (fun _ -> rhs () |> undyn))
 
 let member_staged record field : _ code = Expr (unexpr record ^ "." ^ field)
 
 let let_staged (x : 'a code) (f : 'a code -> 'b code) : 'b code =
   let v = fresh () in
-  seq_staged (Stmt ("auto " ^ v ^ "= " ^ bracket (unexpr x) ^ ";")) (f (Expr v))
+  seq_staged (Stmt ("auto " ^ v ^ "= " ^ bracket (unexpr x) ^ ";")) (fun _ -> f (Expr v))
 
 let let_ (x : 'a sd) (f : 'a sd -> 'b sd) : 'b sd =
   match x with Static x -> f (Static x) | Dyn x -> Dyn (let_staged x (fun x -> x |> dyn |> f |> undyn))
@@ -73,7 +73,7 @@ let drop_head_ (x : 'a list sd) : 'a sd * 'a list sd =
   | Static x ->
       let (hd :: tl) = x in
       (static hd, static tl)
-  | Dyn x -> panic "todo"
+  | Dyn x -> panic "drop_head_"
 
 let json_of_string_ x = match x with Static x -> x |> Yojson.Basic.from_string |> static | Dyn x -> panic "todo"
 
