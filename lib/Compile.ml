@@ -1,6 +1,5 @@
 open Ast
 open Core
-open EXN
 open Eval
 
 let header =
