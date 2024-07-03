@@ -3,6 +3,7 @@ open Core
 open Eval
 open Metric
 open Common
+open SD
 
 module EVAL : Eval = MakeEval (struct
   let name = "DB"
@@ -16,17 +17,13 @@ module EVAL : Eval = MakeEval (struct
   let meta_staged = "???"
 
   let fresh_meta u =
-    match u with
-    | Static () ->
-        Static
-          {
-            bb_dirtied = Hashtbl.create (module String);
-            proc_inited = Hashtbl.create (module String);
-            recursive_proc_dirtied = Hashtbl.create (module String);
-          }
-    | Dyn _ -> panic "todo"
+    {
+      bb_dirtied = Hashtbl.create (module String);
+      proc_inited = Hashtbl.create (module String);
+      recursive_proc_dirtied = Hashtbl.create (module String);
+    }
 
-  let remove_meta x = ignore_ x
+  let remove_meta _ = ()
 
   let rec set_recursive_proc_dirtied (n : meta node) (proc_name : string) (m : metric) : unit =
     meta_write m;

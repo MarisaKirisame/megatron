@@ -3,6 +3,7 @@ open Core
 open Eval
 open Metric
 open Common
+open SD
 
 module EVAL : Eval = MakeEval (struct
   let name = "PQ"
@@ -20,17 +21,9 @@ module EVAL : Eval = MakeEval (struct
   let meta_staged = "???"
 
   let fresh_meta u =
-    match u with
-    | Static () ->
-        Static
-          {
-            bb_time_table = Hashtbl.create (module String);
-            proc_time_table = Hashtbl.create (module String);
-            alive = true;
-          }
-    | Dyn _ -> panic ""
+    { bb_time_table = Hashtbl.create (module String); proc_time_table = Hashtbl.create (module String); alive = true }
 
-  let remove_meta m = match m with Static m -> Static (m.alive <- false) | Dyn _ -> panic "todo"
+  let remove_meta m = m.alive <- false
 
   type recompute_func = RecomputeBB of string | RecomputeProc of string
 
