@@ -188,8 +188,14 @@ let node_to_html (n : _ node) : string =
   node_to_html_buffer b 0 0 n;
   Buffer.contents b
 
-module Main (EVAL : Eval) (LINES : sig val lines: string list sd end) = struct
+module Main
+    (EVAL : Eval)
+    (LINES : sig
+      val lines : string list sd
+    end) =
+struct
   include LINES
+
   let counter : int ref = ref 0
 
   let count () =
@@ -221,12 +227,7 @@ module Main (EVAL : Eval) (LINES : sig val lines: string list sd end) = struct
     { children = List.map (j |> member "children" |> to_list) ~f:json_to_layout_node }
 
   let diff_num = ref 0
-  let m = fresh_metric ()
-  let line_init, line_temp = drop_head_ lines
-  let line_layout_init, line_rest = drop_head_ line_temp
-  let json_init = json_of_string_ line_init
-  let json_layout_init = json_of_string_ line_layout_init
-  let command = ref [ json_init |> unstatic; json_layout_init |> unstatic ];;
+  let m = fresh_metric ();;
 
   print_endline ("RUNNING " ^ EVAL.name);
   ()
@@ -240,47 +241,7 @@ module Main (EVAL : Eval) (LINES : sig val lines: string list sd end) = struct
   let get_key j : string = j |> Yojson.Basic.Util.member "key" |> Yojson.Basic.Util.to_string
   let get_value j : value = j |> Yojson.Basic.Util.member "value" |> json_to_value
   let get_node j : _ node = json_to_node (j |> Yojson.Basic.Util.member "node") |> unstatic
-  let get_layout_node j : layout_node = json_to_layout_node (j |> Yojson.Basic.Util.member "node");;
-
-  assert (String.equal (get_command (json_init |> unstatic)) "init");
-  assert (String.equal (get_command (json_layout_init |> unstatic)) "layout_init")
-
-  let n = get_node (json_init |> unstatic)
-  let layout_n = get_layout_node (json_layout_init |> unstatic)
-
-  let diff_evaluated () : unit =
-    let open Yojson.Basic in
-    to_channel out_file
-      (`Assoc
-        [
-          ("name", `String EVAL.name);
-          ("diff_num", `Int !diff_num);
-          ("read_count", `Int m.read_count);
-          ("meta_read_count", `Int m.meta_read_count);
-          ("write_count", `Int m.write_count);
-          ("meta_write_count", `Int m.meta_write_count);
-          ("queue_size_acc", `Int m.queue_size_acc);
-          ("input_change_count", `Int m.input_change_count);
-          ("output_change_count", `Int m.output_change_count);
-          ("html", `String (node_to_html n));
-          ("command", `List !command);
-        ]);
-    output_string out_file "\n";
-    reset_metric m;
-    command := [];
-    diff_num := !diff_num + 1;
-    let fsn = node_to_fs_node n |> unstatic in
-    Megatron.EvalFS.EVAL.eval prog fsn (fresh_metric ());
-    assert_node_value_equal n fsn
-  ;;
-
-  m.input_change_count <- m.input_change_count + node_size n;
-  m.output_change_count <- m.output_change_count + layout_size layout_n;
-
-  EVAL.eval prog n m;
-  diff_evaluated ();
-  print_endline "EVAL OK!";
-  ()
+  let get_layout_node j : layout_node = json_to_layout_node (j |> Yojson.Basic.Util.member "node")
 
   let rec add_node (path : int list) (x : _ node) (y : _ node) : unit =
     match path with
@@ -367,6 +328,43 @@ module Main (EVAL : Eval) (LINES : sig val lines: string list sd end) = struct
         | _ -> panic type_)
     | p_hd :: p_tl -> insert_value p_tl (List.nth_exn x.children p_hd) type_ key value
 
+  let line_init, line_temp = drop_head_ lines
+  let line_layout_init, line_rest = drop_head_ line_temp
+  let json_init = json_of_string_ line_init
+  let json_layout_init = json_of_string_ line_layout_init
+  let command = ref [ json_init |> unstatic; json_layout_init |> unstatic ];;
+
+  assert (String.equal (get_command (json_init |> unstatic)) "init");
+  assert (String.equal (get_command (json_layout_init |> unstatic)) "layout_init")
+
+  let n = get_node (json_init |> unstatic)
+  let layout_n = get_layout_node (json_layout_init |> unstatic)
+
+  let diff_evaluated () : unit =
+    let open Yojson.Basic in
+    to_channel out_file
+      (`Assoc
+        [
+          ("name", `String EVAL.name);
+          ("diff_num", `Int !diff_num);
+          ("read_count", `Int m.read_count);
+          ("meta_read_count", `Int m.meta_read_count);
+          ("write_count", `Int m.write_count);
+          ("meta_write_count", `Int m.meta_write_count);
+          ("queue_size_acc", `Int m.queue_size_acc);
+          ("input_change_count", `Int m.input_change_count);
+          ("output_change_count", `Int m.output_change_count);
+          ("html", `String (node_to_html n));
+          ("command", `List !command);
+        ]);
+    output_string out_file "\n";
+    reset_metric m;
+    command := [];
+    diff_num := !diff_num + 1;
+    let fsn = node_to_fs_node n |> unstatic in
+    Megatron.EvalFS.EVAL.eval prog fsn (fresh_metric ());
+    assert_node_value_equal n fsn
+
   let work () : unit sd =
     list_iter_ line_rest ~f:(fun line_ ->
         let line = unstatic line_ in
@@ -393,15 +391,30 @@ module Main (EVAL : Eval) (LINES : sig val lines: string list sd end) = struct
         | "layout_info_changed" -> m.output_change_count <- m.output_change_count + 1
         | x -> panic x);
         static ())
+  ;;
+
+  m.input_change_count <- m.input_change_count + node_size n;
+  m.output_change_count <- m.output_change_count + layout_size layout_n;
+
+  EVAL.eval prog n m;
+  diff_evaluated ();
+  print_endline "EVAL OK!";
+  ()
 
   let main = seq_ (work ()) ("INCREMENTAL EVAL OK!" |> static |> print_endline_)
 end
 
-let lines_static : string list sd = Stdio.In_channel.read_lines "command.json" |> static
-let lines_dyn : string list sd = Expr "lines" |> dyn
-module MainFSI = Main (Megatron.EvalFS.EVAL) (struct let lines = lines_static end)
-module MainFSC = Main (Megatron.EvalFS.EVAL) (struct let lines = lines_dyn end)
-module MainDBI = Main (Megatron.EvalDB.EVAL) (struct let lines = lines_static end)
-module MainDBC = Main (Megatron.EvalDB.EVAL) (struct let lines = lines_dyn end)
-module MainPQI = Main (Megatron.EvalPQ.EVAL) (struct let lines = lines_static end)
-module MainPQC = Main (Megatron.EvalPQ.EVAL) (struct let lines = lines_dyn end)
+module LINES_STATIC = struct
+  let lines : string list sd = Stdio.In_channel.read_lines "command.json" |> static
+end
+
+module LINES_DYN = struct
+  let lines : string list sd = Expr "lines" |> dyn
+end
+
+module MainFSI = Main (Megatron.EvalFS.EVAL) (LINES_STATIC)
+module MainFSC = Main (Megatron.EvalFS.EVAL) (LINES_DYN)
+module MainDBI = Main (Megatron.EvalDB.EVAL) (LINES_STATIC)
+module MainDBC = Main (Megatron.EvalDB.EVAL) (LINES_DYN)
+module MainPQI = Main (Megatron.EvalPQ.EVAL) (LINES_STATIC)
+module MainPQC = Main (Megatron.EvalPQ.EVAL) (LINES_DYN)

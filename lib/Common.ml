@@ -80,7 +80,4 @@ let json_of_string_ x = match x with Static x -> x |> Yojson.Basic.from_string |
 let list_iter_ (l : 'a list sd) ~(f : 'a sd -> unit sd) : unit sd =
   match l with Static l -> List.iter l ~f:(fun a -> static a |> f |> unstatic) |> static
 
-let print_endline_ str = 
-  match str with
-  | Static str -> static (print_endline str)
-  | Dyn _ -> panic "todo"
+let print_endline_ str = match str with Static str -> static (print_endline str) | Dyn _ -> panic "todo"
