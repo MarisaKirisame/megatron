@@ -1,14 +1,7 @@
 open Ast
 open Core
-open EXN
 open Metric
-
-let counter : int ref = ref 0
-
-let count () =
-  let ret = !counter in
-  counter := !counter + 1;
-  ret
+open Common
 
 type 'meta node = {
   name : string;
@@ -125,6 +118,26 @@ let eval_func (f : func) (xs : value list) =
       VString (List.nth_exn (String.split s ~on:(String.get sep 0)) nth)
   | _ -> panic (show_func f ^ List.to_string ~f:show_value xs)
 
+let func_name_compiled f =
+  match f with
+  | StringToFloat -> "string_to_float"
+  | Plus -> "plus"
+  | Eq -> "eq"
+  | HasSuffix -> "has_suffix"
+  | StripSuffix -> "strip_suffix"
+  | StringIsFloat -> "string_is_float"
+  | Not -> "not"
+  | Neq -> "neq"
+  | HasPrefix -> "has_prefix"
+  | IntToFloat -> "int_to_float"
+  | Div -> "divide"
+  | Mult -> "mult"
+  | NthBySep -> "nth_by_sep"
+  | Max -> "max"
+  | Minus -> "minus"
+  | Gt -> "gt"
+  | _ -> panic (show_func f)
+
 let eval_path_opt (n : 'meta node) (p : path) =
   match p with
   | Self -> Some n
@@ -175,7 +188,62 @@ let rec eval_expr (n : 'meta node) (e : expr) (m : metric) : value =
       print_endline (show_expr e);
       raise (ReRaise (Exn.to_string exn))
 
+let compile_type_expr ty =
+  match resolve ty with
+  | TInt -> "int"
+  | TBool -> "bool"
+  | TString -> "std::string"
+  | TFloat -> "double"
+  | _ -> panic (show_type_expr ty)
+
+let eval_path_staged path : 'meta node code =
+  Expr
+    (match path with
+    | Prev -> "self.prev"
+    | Self -> "(&self)"
+    | Parent -> "self.parent"
+    | Last -> "self.last"
+    | First -> "self.first"
+    | _ -> panic (show_path path))
+
+let rec eval_expr_staged env (n : 'meta node code) expr (m : metric code) : value code =
+  let recurse expr = unexpr (eval_expr_staged env n expr m) in
+  Expr
+    (bracket
+       (match expr with
+       | IfExpr (i, t, e) -> recurse i ^ "?" ^ recurse t ^ ":" ^ recurse e
+       | String b -> quoted b
+       | GetProperty p ->
+           "get_property<" ^ compile_type_expr (Hashtbl.find_exn env.prop_type p) ^ ">(self, " ^ quoted p ^ ")"
+       | HasProperty p -> "has_property(self, " ^ quoted p ^ ")"
+       | GetAttribute p ->
+           "get_attribute<" ^ compile_type_expr (Hashtbl.find_exn env.attr_type p) ^ ">(self, " ^ quoted p ^ ")"
+       | HasAttribute p -> "has_attribute(self, " ^ quoted p ^ ")"
+       | Float f -> "double" ^ bracket (string_of_float f)
+       | Call (f, xs) -> func_name_compiled f ^ bracket (String.concat (List.map xs ~f:recurse) ~sep:",")
+       | Read (path, p) -> unexpr (eval_path_staged path) ^ "->" ^ p
+       | HasPath path -> unexpr (eval_path_staged path) ^ "!= nullptr"
+       | Bool b -> string_of_bool b
+       | Panic (t, _) -> "panic<" ^ compile_type_expr t ^ ">()"
+       | Or (x, y) -> recurse x ^ "||" ^ recurse y
+       | And (x, y) -> recurse x ^ "&&" ^ recurse y
+       | GetName -> "self.name"
+       | Int x -> "int" ^ bracket (string_of_int x) (*| _ -> panic (show_expr expr)*)))
+
 let reversed_path (p : path) (n : 'a node) : 'a node list =
+  match p with
+  | Parent -> n.children
+  | Self -> [ n ]
+  | Prev -> Option.to_list n.next
+  | Next -> Option.to_list n.prev
+  | First -> (
+      match n.parent with None -> [] | Some np -> if phys_equal (List.hd_exn np.children).id n.id then [ np ] else [])
+  | Last -> (
+      match n.parent with
+      | None -> []
+      | Some np -> if phys_equal (List.last_exn np.children).id n.id then [ np ] else [])
+
+let reversed_path_staged (p : path) (n : 'a node code) : ('a node list) code =
   match p with
   | Parent -> n.children
   | Self -> [ n ]
@@ -192,34 +260,28 @@ let rec recursive_print_id_up (n : _ node) : unit =
   print_endline (string_of_int n.id ^ List.to_string n.children ~f:(fun n -> string_of_int n.id));
   match n.parent with None -> () | Some p -> recursive_print_id_up p
 
-type _ code = string
-
 module type EvalIn = sig
   val name : string
 
   type meta
-  val meta_staged : string
 
+  val meta_staged : string
   val fresh_meta : unit -> meta
   val fresh_meta_staged : unit code -> meta code
-
   val remove_meta : meta -> unit
   val remove_meta_staged : meta code -> unit code
-
   val register_todo_proc : prog -> meta node -> string -> metric -> unit
   val register_todo_proc_staged : prog -> meta node code -> string -> metric code -> unit code
-
   val bracket_call_bb : meta node -> string -> (unit -> unit) -> unit
   val bracket_call_bb_staged : meta node code -> string -> (unit -> unit code) -> unit code
-
   val bracket_call_proc : meta node -> string -> (unit -> unit) -> unit
   val bracket_call_proc_staged : meta node code -> string -> (unit -> unit code) -> unit code
-
   val bb_dirtied : meta node -> proc_name:string -> bb_name:string -> metric -> unit
   val bb_dirtied_staged : meta node code -> proc_name:string -> bb_name:string -> metric -> unit
-
   val recalculate_internal : prog -> meta node -> metric -> (meta node -> stmt list -> unit) -> unit
-  val recalculate_internal_staged : prog -> meta node code -> metric code -> (meta node code -> stmt list -> unit code) -> unit code
+
+  val recalculate_internal_staged :
+    prog -> meta node code -> metric code -> (meta node code -> stmt list -> unit code) -> unit code
 end
 
 module type Eval = sig
@@ -235,25 +297,18 @@ module type Eval = sig
 
   val eval : prog -> meta node -> metric -> unit
   val eval_staged : prog -> meta node code -> metric code -> unit code
-
   val add_children : prog -> meta node -> meta node -> int -> metric -> unit
   val add_children_staged : prog -> meta node code -> meta node code -> int code -> metric code -> unit code
-
   val remove_children : prog -> meta node -> int -> metric -> unit
   val remove_children_staged : prog -> meta node code -> int code -> metric code -> unit code
-
   val add_prop : prog -> meta node -> string -> value -> metric -> unit
   val add_prop_staged : prog -> meta node code -> string code -> value code -> metric code -> unit code
-
   val remove_prop : prog -> meta node -> string -> metric -> unit
   val remove_prop_staged : prog -> meta node code -> string code -> metric code -> unit code
-
   val add_attr : prog -> meta node -> string -> value -> metric -> unit
   val add_attr_staged : prog -> meta node code -> string code -> value code -> metric code -> unit code
-
   val remove_attr : prog -> meta node -> string -> metric -> unit
   val remove_attr_staged : prog -> meta node code -> string code -> metric code -> unit code
-
   val recalculate : prog -> meta node -> metric -> unit
   val recalculate_staged : prog -> meta node code -> metric code -> unit code
 end
@@ -298,6 +353,27 @@ module MakeEval (EI : EvalIn) : Eval = struct
         Option.iter down ~f:work;
         Option.iter up ~f:work)
 
+  let var_modified_staged (p : prog) (n : meta node code) (var_name : string) (m : metric code) : unit code =
+    Hashtbl.iter p.procs ~f:(fun (ProcessedProc (proc_name, _)) ->
+        let down, up = get_bb_from_proc p proc_name in
+        let work bb_name =
+          let (BasicBlock (_, stmts)) = Hashtbl.find_exn p.bbs bb_name in
+          let reads = reads_of_stmts stmts in
+          let dirty read =
+            match read with
+            | ReadVar (path, read_var_name) ->
+                if String.equal var_name read_var_name then
+                  List.iter (reversed_path path n) ~f:(fun dirtied_node ->
+                      bb_dirtied dirtied_node ~proc_name ~bb_name m)
+                else ()
+            | ReadHasPath _ -> () (*property being changed cannot change haspath status*)
+            | ReadProp _ | ReadAttr _ -> ()
+          in
+          List.iter reads ~f:dirty
+        in
+        Option.iter down ~f:work;
+        Option.iter up ~f:work)
+
   let rec eval_stmt (p : prog) (n : meta node) (s : stmt) (m : metric) : unit =
     match s with
     | Write (prop_name, expr) ->
@@ -319,6 +395,34 @@ module MakeEval (EI : EvalIn) : Eval = struct
   let eval (p : prog) (n : meta node) (m : metric) : unit =
     List.iter p.order ~f:(fun proc_name ->
         bracket_call_proc n proc_name (fun _ -> eval_stmts p n (stmts_of_processed_proc p proc_name) m))
+
+  let rec eval_stmt_staged (p : prog) (n : meta node code) (s : stmt) (m : metric code) : unit code =
+    match s with
+    | Write (var_name, expr) ->
+        seq_staged
+          (write_staged m (member_staged n "id"))
+          (let_ (eval_expr_staged p.tyck_env n expr m) (fun new_value ->
+               hashtbl_find_staged (member_staged n "var")
+                 (Expr (quoted var_name))
+                 (fun old_value ->
+                   ite_
+                     (call_ (Expr "equal_value") [ old_value; new_value ])
+                     (fun () -> null_stmt_)
+                     (fun () -> var_modified_staged))
+               (*(match Hashtbl.find   with
+                 | None -> ()
+                 | Some value -> if equal_value value new_value then () else var_modified p n var_name m)*);
+               Hashtbl.set n.var ~key:prop_name ~data:new_value))
+    | BBCall bb_name -> bracket_call_bb n bb_name (fun _ -> eval_stmts p n (stmts_of_basic_block p bb_name) m)
+    | ChildrenCall proc_name ->
+        List.iter n.children ~f:(fun new_node ->
+            bracket_call_proc new_node proc_name (fun _ ->
+                eval_stmts p new_node (stmts_of_processed_proc p proc_name) m))
+
+  and eval_stmts_staged (p : prog) (n : meta node code) (s : stmts) (m : metric code) : unit =
+    String.concat (List.map s ~f:(fun stmt -> eval_stmt_staged p n s m))
+
+  let eval_staged (p : prog) (n : meta node code) (m : metric code) : unit code = ""
 
   let remove_children (p : prog) (x : meta node) (n : int) (m : metric) : unit =
     match List.split_n x.children n with

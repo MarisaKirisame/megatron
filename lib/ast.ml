@@ -1,5 +1,5 @@
 open Core
-open EXN
+open Common
 
 type func =
   | HasPrefix
@@ -72,7 +72,7 @@ let show_type_expr x : string =
 
 type var_decl = VarDecl of string * type_expr
 
-let var_decl_name (VarDecl (n, expr)) = n
+let var_decl_name (VarDecl (n, _)) = n
 
 type proc_def = ProcDef of string * stmts [@@deriving show]
 
@@ -140,11 +140,10 @@ let rec reads_of_expr (e : expr) : read list =
   | GetProperty x | HasProperty x -> [ ReadProp x ]
   | GetAttribute x | HasAttribute x -> [ ReadAttr x ]
   | Call (_, xs) -> List.concat (List.map ~f:recurse xs)
-  | Panic _ ->
-      []
-      (*on zeroth glance it look like we should recurse into the children,
-        but semantic of panic technically does not depend on the child - it is just bottom.*)
-  | _ -> raise (EXN (show_expr e))
+  | Panic _ -> []
+(*on zeroth glance it look like we should recurse into the children,
+  but semantic of panic technically does not depend on the child - it is just bottom.*)
+(*| _ -> raise (EXN (show_expr e))*)
 
 let exprs_of_stmt (s : stmt) : expr list =
   match s with ChildrenCall _ -> [] | Write (_, x) -> [ x ] | _ -> panic "todo"

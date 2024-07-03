@@ -1,13 +1,13 @@
 open Ast
 open Core
-open EXN
+open Common
 
 let new_tvar_or_get htbl name =
   match Hashtbl.find htbl name with
   | Some x -> x
   | None ->
       let x = new_tvar () in
-      Hashtbl.add_exn htbl name x;
+      Hashtbl.add_exn htbl ~key:name ~data:x;
       x
 
 let var_from_tyck_env env var = new_tvar_or_get env.var_type var
@@ -131,7 +131,7 @@ let rec tyck_expr (env : tyck_env) (x : expr) : type_expr =
   | Float _ -> TFloat
   | Bool _ -> TBool
   | Int _ -> TInt
-  | GetName _ -> TString
+  | GetName -> TString
   | Panic (t, xs) ->
       ignore (List.map xs ~f:recurse);
       t
@@ -139,7 +139,7 @@ let rec tyck_expr (env : tyck_env) (x : expr) : type_expr =
   | Call (f, xs) ->
       (*print_endline (show_expr x);*)
       tyck_func f (List.map xs ~f:recurse)
-  | _ -> panic ("tyck_expr: " ^ show_expr x)
+(*| _ -> panic ("tyck_expr: " ^ show_expr x)*)
 
 let tyck_stmt (env : tyck_env) (x : stmt) : unit =
   match x with

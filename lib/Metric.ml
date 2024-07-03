@@ -1,3 +1,5 @@
+open Common
+
 type metric = {
   mutable read_count : int;
   mutable meta_read_count : int;
@@ -10,9 +12,13 @@ type metric = {
 [@@deriving show]
 
 let read (m : metric) (id : int) : unit = m.read_count <- m.read_count + 1
+let read_staged (m : metric code) (id : int code) : unit code = Stmt (unexpr m ^ ".read();")
 let meta_read (m : metric) (id : int) : unit = m.meta_read_count <- m.meta_read_count + 1
+let meta_read_staged (m : metric code) (id : int code) : unit code = Stmt (unexpr m ^ ".meta_read();")
 let write (m : metric) (id : int) : unit = m.write_count <- m.write_count + 1
+let write_staged (m : metric code) (id : int code) : unit code = Stmt (unexpr m ^ ".write();")
 let meta_write (m : metric) (id : int) : unit = m.meta_write_count <- m.meta_write_count + 1
+let meta_write_staged (m : metric code) (id : int code) : unit code = Stmt (unexpr m ^ ".meta_write();")
 
 let fresh_metric () =
   {
