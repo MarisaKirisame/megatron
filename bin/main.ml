@@ -389,14 +389,14 @@ module Main (EVAL : Eval) = struct
         in
         input_change m (node_size n);
         output_change m (layout_size layout_n);
-        EVAL.eval prog (static n) (static m) |> unstatic;
+        seq (EVAL.eval prog (static n) (static m)) (fun _ -> 
 
         seq
           (diff_evaluated () |> static)
           (fun _ ->
             seq
               ("EVAL OK!" |> print_endline |> static)
-              (fun _ -> seq (work ()) (fun _ -> "INCREMENTAL EVAL OK!" |> print_endline |> static))))
+              (fun _ -> seq (work ()) (fun _ -> "INCREMENTAL EVAL OK!" |> print_endline |> static)))))
 end
 
 module MainFSI = Main (Megatron.EvalFS.EVAL (S))
