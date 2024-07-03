@@ -3,7 +3,7 @@ open Megatron.Ast
 open Megatron.Eval
 open Megatron.TypeCheck
 open Megatron.Compile
-open Megatron.EXN
+open Megatron.Common
 open Sys
 open Core
 open Yojson

@@ -1,22 +1,13 @@
-#include <string>
-
 #include <cassert>
-
-#include <variant>
-
-#include <unordered_map>
-
-#include <stdexcept>
-
-#include <ranges>
-
-#include <iterator>
-
-#include <vector>
-
 #include <cmath>
-
+#include <iterator>
 #include <memory>
+#include <ranges>
+#include <stdexcept>
+#include <string>
+#include <unordered_map>
+#include <variant>
+#include <vector>
 struct Value {
   std::variant<int, double, bool, std::string> v;
 };
@@ -136,26 +127,26 @@ void bb_1(Content &self) {
       ((has_property(self, "flex-shrink")) ? (string_to_float(get_property<std::string>(self, "flex-shrink")))
                                            : (double(0.)));
   self.flex_grow_sum =
-      (plus(((self.prev != nullptr) ? (self.prev->flex_grow_sum) : (double(0.))), ((&self)->flex_grow)));
+      (plus((((self.prev) != nullptr) ? ((self.prev)->flex_grow_sum) : (double(0.))), ((&self)->flex_grow)));
   self.flex_shrink_sum =
-      (plus(((self.prev != nullptr) ? (self.prev->flex_shrink_sum) : (double(0.))), ((&self)->flex_shrink)));
+      (plus((((self.prev) != nullptr) ? ((self.prev)->flex_shrink_sum) : (double(0.))), ((&self)->flex_shrink)));
   self.flex_direction =
       ((has_property(self, "flex-direction")) ? (get_property<std::string>(self, "flex-direction")) : (""));
-  self.is_flex_row =
-      (((self.parent != nullptr) &&
-        ((eq((self.parent->display), ("flex"))) || (eq((self.parent->display), ("inline-flex")))))
-           ? ((eq((self.parent->flex_direction), ("row"))) ? (true)
-                                                           : (((eq((self.parent->flex_direction), ("column"))) ||
-                                                               (eq((self.parent->flex_direction), ("column-reverse"))))
-                                                                  ? (false)
-                                                                  : (panic<bool>())))
-           : (false));
-  self.is_flex_column = (((self.parent != nullptr) &&
-                          ((eq((self.parent->display), ("flex"))) || (eq((self.parent->display), ("inline-flex")))))
-                             ? (((eq((self.parent->flex_direction), ("column"))) ||
-                                 (eq((self.parent->flex_direction), ("column-reverse"))))
+  self.is_flex_row = ((((self.parent) != nullptr) &&
+                       ((eq(((self.parent)->display), ("flex"))) || (eq(((self.parent)->display), ("inline-flex")))))
+                          ? ((eq(((self.parent)->flex_direction), ("row")))
+                                 ? (true)
+                                 : (((eq(((self.parent)->flex_direction), ("column"))) ||
+                                     (eq(((self.parent)->flex_direction), ("column-reverse"))))
+                                        ? (false)
+                                        : (panic<bool>())))
+                          : (false));
+  self.is_flex_column = ((((self.parent) != nullptr) &&
+                          ((eq(((self.parent)->display), ("flex"))) || (eq(((self.parent)->display), ("inline-flex")))))
+                             ? (((eq(((self.parent)->flex_direction), ("column"))) ||
+                                 (eq(((self.parent)->flex_direction), ("column-reverse"))))
                                     ? (true)
-                                    : ((eq((self.parent->flex_direction), ("row"))) ? (false) : (panic<bool>())))
+                                    : ((eq(((self.parent)->flex_direction), ("row"))) ? (false) : (panic<bool>())))
                              : (false));
   self.width_attr_expr =
       ((not(has_attribute(self, "width")))
@@ -175,17 +166,18 @@ void bb_1(Content &self) {
                                                                                   : (panic<std::string>()))));
   self.has_height_attr = (neq(((&self)->height_attr_expr), ("auto")));
   self.is_svg_block = (eq((self.name), ("svg")));
-  self.inside_svg = ((self.parent != nullptr) && ((self.parent->is_svg_block) || (self.parent->inside_svg)));
-  self.disabled = ((eq((self.name), ("NOSCRIPT"))) ? (true) : ((self.parent != nullptr) && (self.parent->disabled)));
-  self.visible = (((not(self.parent != nullptr)) || (self.parent->visible)) &&
+  self.inside_svg = (((self.parent) != nullptr) && (((self.parent)->is_svg_block) || ((self.parent)->inside_svg)));
+  self.disabled =
+      ((eq((self.name), ("NOSCRIPT"))) ? (true) : (((self.parent) != nullptr) && ((self.parent)->disabled)));
+  self.visible = (((not((self.parent) != nullptr)) || ((self.parent)->visible)) &&
                   ((neq(((&self)->display), ("none"))) && ((not((&self)->inside_svg)) && (not((&self)->disabled)))));
   self.line_break =
       ((eq(((&self)->display), ("none")))
            ? (false)
            : ((eq(((&self)->position), ("absolute")))
                   ? (false)
-                  : (((self.parent != nullptr) &&
-                      ((eq((self.parent->display), ("flex"))) || (eq((self.parent->display), ("inline-flex")))))
+                  : ((((self.parent) != nullptr) &&
+                      ((eq(((self.parent)->display), ("flex"))) || (eq(((self.parent)->display), ("inline-flex")))))
                          ? (true)
                          : ((eq(((&self)->display), ("block")))
                                 ? (true)
@@ -233,11 +225,11 @@ void bb_1(Content &self) {
 }
 void bb_0(Content &self) {
   self.width_expr = ((has_property(self, "width")) ? (get_property<std::string>(self, "width")) : ("auto"));
-self.is_default_case=((eq(((&self)->display),("none")))?(true):(((&self)->inside_svg)?(true):(((&self)->disabled)?(true):(((eq((self.name),("#document")))||((eq((self.name),("#shadow-root")))||((eq((self.name),("DIV")))||((eq((self.name),("HTML")))||((eq((self.name),("BODY")))||((eq((self.name),("BUTTON")))||((eq((self.name),("FOOTER")))||((eq((self.name),("SELECT")))||((eq((self.name),("SECTION")))||((eq((self.name),("FORM")))||((eq((self.name),("CENTER")))||((eq((self.name),("TD")))||((eq((self.name),("TR")))||((eq((self.name),("TBODY")))||((eq((self.name),("TABLE")))||((eq((self.name),("SPAN")))||((eq((self.name),("FONT")))||((eq((self.name),("A")))||((eq((self.name),("ARTICLE")))||((eq((self.name),("P")))||((eq((self.name),("U")))||((eq((self.name),("UL")))||((eq((self.name),("B")))||((eq((self.name),("H1")))||((eq((self.name),("H2")))||((eq((self.name),("H3")))||((eq((self.name),("H4")))||((eq((self.name),("DT")))||((eq((self.name),("DD")))||((eq((self.name),("DL")))||((eq((self.name),("LI")))||((eq((self.name),("LABEL")))||((eq((self.name),("OL")))||((eq((self.name),("NAV")))||((eq((self.name),("HEADER")))||((eq((self.name),("HEAD")))||((eq((self.name),("SOURCE")))||((eq((self.name),("PICTURE")))||((eq((self.name),("FIGURE")))||((eq((self.name),("FIGCAPTION")))||((eq((self.name),("MAIN")))||((eq((self.name),("REACT-PARTIAL")))||((eq((self.name),("QUERY-BUILDER")))||((eq((self.name),("MODAL-DIALOG")))||((eq((self.name),("SCROLLABLE-REGION")))||((eq((self.name),("DIALOG-HELPER")))||((eq((self.name),("AUTO-CHECK")))||((eq((self.name),("TOOL-TIP")))||((eq((self.name),("CUSTOM-SCOPES")))||((eq((self.name),("QBSEARCH-INPUT")))||((eq((self.name),("INCLUDE-FRAGMENT")))||((eq((self.name),("COOKIE-CONSENT-LINK")))||((eq((self.name),("FULLSTORY-CAPTURE")))||((eq((self.name),("GHCC-CONSENT")))||((eq((self.name),("GLOBAL-BANNER")))||((eq((self.name),("ACTIVE-GLOBAL-BANNERS")))||((eq((self.name),("CARD-SKEW")))||((eq((self.name),("EM")))||((eq((self.name),("ASIDE")))||((eq((self.name),("AUDIO")))||((eq((self.name),("SUP")))||((eq((self.name),("TIME")))||((eq((self.name),("ABBR")))||((eq((self.name),("SMALL")))||((eq((self.name),("SLOT")))||(eq((self.name),("I"))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))?(true):(((eq((self.name),("#text")))||((eq((self.name),("svg")))||((eq((self.name),("IFRAME")))||((eq((self.name),("INPUT")))||((eq((self.name),("VIDEO")))||((eq((self.name),("BR")))||((eq((self.name),("IMG")))||(eq((self.name),("TEXTAREA"))))))))))?(false):(panic<bool>()))))));
+self.is_default_case=((eq((( &self )->display),("none")))?(true):((( &self )->inside_svg)?(true):((( &self )->disabled)?(true):(((eq((self.name),("#document")))||((eq((self.name),("#shadow-root")))||((eq((self.name),("DIV")))||((eq((self.name),("HTML")))||((eq((self.name),("BODY")))||((eq((self.name),("BUTTON")))||((eq((self.name),("FOOTER")))||((eq((self.name),("SELECT")))||((eq((self.name),("SECTION")))||((eq((self.name),("FORM")))||((eq((self.name),("CENTER")))||((eq((self.name),("TD")))||((eq((self.name),("TR")))||((eq((self.name),("TBODY")))||((eq((self.name),("TABLE")))||((eq((self.name),("SPAN")))||((eq((self.name),("FONT")))||((eq((self.name),("A")))||((eq((self.name),("ARTICLE")))||((eq((self.name),("P")))||((eq((self.name),("U")))||((eq((self.name),("UL")))||((eq((self.name),("B")))||((eq((self.name),("H1")))||((eq((self.name),("H2")))||((eq((self.name),("H3")))||((eq((self.name),("H4")))||((eq((self.name),("DT")))||((eq((self.name),("DD")))||((eq((self.name),("DL")))||((eq((self.name),("LI")))||((eq((self.name),("LABEL")))||((eq((self.name),("OL")))||((eq((self.name),("NAV")))||((eq((self.name),("HEADER")))||((eq((self.name),("HEAD")))||((eq((self.name),("SOURCE")))||((eq((self.name),("PICTURE")))||((eq((self.name),("FIGURE")))||((eq((self.name),("FIGCAPTION")))||((eq((self.name),("MAIN")))||((eq((self.name),("REACT-PARTIAL")))||((eq((self.name),("QUERY-BUILDER")))||((eq((self.name),("MODAL-DIALOG")))||((eq((self.name),("SCROLLABLE-REGION")))||((eq((self.name),("DIALOG-HELPER")))||((eq((self.name),("AUTO-CHECK")))||((eq((self.name),("TOOL-TIP")))||((eq((self.name),("CUSTOM-SCOPES")))||((eq((self.name),("QBSEARCH-INPUT")))||((eq((self.name),("INCLUDE-FRAGMENT")))||((eq((self.name),("COOKIE-CONSENT-LINK")))||((eq((self.name),("FULLSTORY-CAPTURE")))||((eq((self.name),("GHCC-CONSENT")))||((eq((self.name),("GLOBAL-BANNER")))||((eq((self.name),("ACTIVE-GLOBAL-BANNERS")))||((eq((self.name),("CARD-SKEW")))||((eq((self.name),("EM")))||((eq((self.name),("ASIDE")))||((eq((self.name),("AUDIO")))||((eq((self.name),("SUP")))||((eq((self.name),("TIME")))||((eq((self.name),("ABBR")))||((eq((self.name),("SMALL")))||((eq((self.name),("SLOT")))||(eq((self.name),("I"))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))?(true):(((eq((self.name),("#text")))||((eq((self.name),("svg")))||((eq((self.name),("IFRAME")))||((eq((self.name),("INPUT")))||((eq((self.name),("VIDEO")))||((eq((self.name),("BR")))||((eq((self.name),("IMG")))||(eq((self.name),("TEXTAREA"))))))))))?(false):(panic<bool>()))))));
 self.intrinsic_width_is_width =
     (((eq(((&self)->display), ("none"))) || (((&self)->inside_svg) || ((&self)->disabled)))
          ? (true)
-         : (((self.parent != nullptr) && (self.parent->is_flex_row))
+         : ((((self.parent) != nullptr) && ((self.parent)->is_flex_row))
                 ? (false)
                 : (((eq(((&self)->width_expr), ("auto"))) ||
                     ((has_suffix(((&self)->width_expr), ("px"))) ||
@@ -248,7 +240,7 @@ self.intrinsic_width_is_width =
                        : (((has_suffix(((&self)->width_expr), ("%"))) || (eq(((&self)->width_expr), ("fit-content"))))
                               ? (false)
                               : (panic<bool>())))));
-self.children_intrinsic_width = ((self.last != nullptr) ? (self.last->intrinsic_width_max) : (double(0.)));
+self.children_intrinsic_width = (((self.last) != nullptr) ? ((self.last)->intrinsic_width_max) : (double(0.)));
 self.intrinsic_width_internal =
     ((eq(((&self)->display), ("none")))
          ? (double(0.))
@@ -269,11 +261,11 @@ self.intrinsic_width_internal =
                               : (plus(
                                     ((&self)->children_intrinsic_width),
                                     ((eq((self.name), ("#text")))
-                                         ? ((self.first != nullptr) ? (panic<double>()) : (double(100.)))
+                                         ? (((self.first) != nullptr) ? (panic<double>()) : (double(100.)))
                                          : (((&self)->is_default_case)
                                                 ? (double(0.))
                                                 : ((eq((self.name), ("BR")))
-                                                       ? ((self.first != nullptr) ? (panic<double>()) : (double(0.)))
+                                                       ? (((self.first) != nullptr) ? (panic<double>()) : (double(0.)))
                                                        : ((eq((self.name), ("INPUT")))
                                                               ? (double(100.))
                                                               : ((eq((self.name), ("svg")))
@@ -374,21 +366,21 @@ self.intrinsic_width_external =
     ((eq(((&self)->position), ("absolute"))) ? (double(0.)) : ((&self)->intrinsic_width_internal));
 self.intrinsic_current_line_width =
     (plus(((&self)->intrinsic_width_external),
-          (((self.prev != nullptr) && (not(self.prev->line_break))) ? (self.prev->intrinsic_current_line_width)
-                                                                    : (double(0.)))));
+          ((((self.prev) != nullptr) && (not((self.prev)->line_break))) ? ((self.prev)->intrinsic_current_line_width)
+                                                                        : (double(0.)))));
 self.intrinsic_width_max = (max(((&self)->intrinsic_current_line_width),
-                                ((self.prev != nullptr) ? (self.prev->intrinsic_width_max) : (double(0.)))));
-self.intrinsic_width_sum = (plus(((self.prev != nullptr) ? (self.prev->intrinsic_width_sum) : (double(0.))),
+                                (((self.prev) != nullptr) ? ((self.prev)->intrinsic_width_max) : (double(0.)))));
+self.intrinsic_width_sum = (plus((((self.prev) != nullptr) ? ((self.prev)->intrinsic_width_sum) : (double(0.))),
                                  ((&self)->intrinsic_width_external)));
 self.children_intrinsic_height =
-    ((self.last != nullptr)
-         ? (plus((self.last->finished_intrinsic_height_sum), (self.last->intrinsic_current_line_height)))
+    (((self.last) != nullptr)
+         ? (plus(((self.last)->finished_intrinsic_height_sum), ((self.last)->intrinsic_current_line_height)))
          : (double(0.)));
 self.height_expr = ((has_property(self, "height")) ? (get_property<std::string>(self, "height")) : ("auto"));
 self.intrinsic_height_is_height =
     (((eq(((&self)->display), ("none"))) || (((&self)->inside_svg) || ((&self)->disabled)))
          ? (true)
-         : (((self.parent != nullptr) && (self.parent->is_flex_column))
+         : ((((self.parent) != nullptr) && ((self.parent)->is_flex_column))
                 ? (false)
                 : (((eq(((&self)->height_expr), ("auto"))) ||
                     ((has_suffix(((&self)->height_expr), ("px"))) ||
@@ -418,11 +410,11 @@ self.intrinsic_height_internal =
                               : (plus(
                                     ((&self)->children_intrinsic_height),
                                     ((eq((self.name), ("#text")))
-                                         ? ((self.first != nullptr) ? (panic<double>()) : (double(10.)))
+                                         ? (((self.first) != nullptr) ? (panic<double>()) : (double(10.)))
                                          : (((&self)->is_default_case)
                                                 ? (double(0.))
                                                 : ((eq((self.name), ("BR")))
-                                                       ? ((self.first != nullptr) ? (panic<double>()) : (double(0.)))
+                                                       ? (((self.first) != nullptr) ? (panic<double>()) : (double(0.)))
                                                        : ((eq((self.name), ("INPUT")))
                                                               ? (double(10.))
                                                               : ((eq((self.name), ("svg")))
@@ -520,45 +512,45 @@ self.intrinsic_height_internal =
                                                                                                 double>()))))))))))))))));
 self.intrinsic_height_external =
     ((eq(((&self)->position), ("absolute"))) ? (double(0.)) : ((&self)->intrinsic_height_internal));
-self.intrinsic_height_sum = (plus(((self.prev != nullptr) ? (self.prev->intrinsic_height_sum) : (double(0.))),
+self.intrinsic_height_sum = (plus((((self.prev) != nullptr) ? ((self.prev)->intrinsic_height_sum) : (double(0.))),
                                   ((&self)->intrinsic_height_external)));
 self.intrinsic_current_line_height =
     (((&self)->line_break)
          ? (double(0.))
          : (max(((&self)->intrinsic_height_external),
-                ((self.prev != nullptr) ? (self.prev->intrinsic_current_line_height) : (double(0.))))));
+                (((self.prev) != nullptr) ? ((self.prev)->intrinsic_current_line_height) : (double(0.))))));
 self.finished_intrinsic_height_sum =
-    ((self.prev != nullptr)
+    (((self.prev) != nullptr)
          ? (((&self)->line_break)
-                ? (plus((self.prev->finished_intrinsic_height_sum),
-                        (plus((self.prev->intrinsic_current_line_height), ((&self)->intrinsic_height_external)))))
-                : (self.prev->finished_intrinsic_height_sum))
+                ? (plus(((self.prev)->finished_intrinsic_height_sum),
+                        (plus(((self.prev)->intrinsic_current_line_height), ((&self)->intrinsic_height_external)))))
+                : ((self.prev)->finished_intrinsic_height_sum))
          : (((&self)->line_break) ? ((&self)->intrinsic_height_external) : (double(0.))));
 }
 void bb_2(Content &self) {
-  self.box_width = ((self.parent != nullptr) ? (self.parent->width_internal) : (double(1920.)));
-  self.box_height = ((self.parent != nullptr) ? (self.parent->height_internal) : (double(1080.)));
-  self.left_over =
-      (((&self)->is_flex_row)
-           ? (minus(((&self)->box_width), ((self.last != nullptr) ? (self.last->intrinsic_width_sum) : (double(0.)))))
-           : (minus(((&self)->box_height),
-                    ((self.last != nullptr) ? (self.last->intrinsic_height_sum) : (double(0.))))));
+  self.box_width = (((self.parent) != nullptr) ? ((self.parent)->width_internal) : (double(1920.)));
+  self.box_height = (((self.parent) != nullptr) ? ((self.parent)->height_internal) : (double(1080.)));
+  self.left_over = (((&self)->is_flex_row)
+                        ? (minus(((&self)->box_width),
+                                 (((self.last) != nullptr) ? ((self.last)->intrinsic_width_sum) : (double(0.)))))
+                        : (minus(((&self)->box_height),
+                                 (((self.last) != nullptr) ? ((self.last)->intrinsic_height_sum) : (double(0.))))));
   self.flex_amount =
-      (((self.parent != nullptr) && (gt((self.parent->left_over), (double(0.))))) ? ((&self)->flex_grow)
-                                                                                  : ((&self)->flex_shrink));
+      ((((self.parent) != nullptr) && (gt(((self.parent)->left_over), (double(0.))))) ? ((&self)->flex_grow)
+                                                                                      : ((&self)->flex_shrink));
   self.flex_unit =
       ((gt(((&self)->left_over), (double(0.)))) ? (divide(((&self)->left_over), ((&self)->flex_grow_sum)))
                                                 : (divide(((&self)->left_over), ((&self)->flex_shrink_sum))));
-  self.x = ((self.prev != nullptr) ? ((((&self)->line_break) || (self.prev->line_break))
-                                          ? (double(0.))
-                                          : (plus((self.prev->x), (self.prev->width_external))))
-                                   : ((self.parent != nullptr) ? (self.parent->x) : (double(0.))));
+  self.x = (((self.prev) != nullptr) ? ((((&self)->line_break) || ((self.prev)->line_break))
+                                            ? (double(0.))
+                                            : (plus(((self.prev)->x), ((self.prev)->width_external))))
+                                     : (((self.parent) != nullptr) ? ((self.parent)->x) : (double(0.))));
   self.width_internal =
       (((&self)->intrinsic_width_is_width)
            ? ((&self)->intrinsic_width_internal)
-           : (((self.parent != nullptr) && (self.parent->is_flex_row))
+           : ((((self.parent) != nullptr) && ((self.parent)->is_flex_row))
                   ? (plus(((&self)->intrinsic_width_internal),
-                          (mult(((&self)->flex_amount), (self.parent->flex_unit)))))
+                          (mult(((&self)->flex_amount), ((self.parent)->flex_unit)))))
                   : ((has_suffix(((&self)->width_expr), ("%")))
                          ? (mult(
                                ((&self)->box_width),
@@ -567,16 +559,16 @@ void bb_2(Content &self) {
                                 ? (max(((&self)->box_width), ((&self)->intrinsic_width_internal)))
                                 : (panic<double>())))));
   self.width_external = ((eq(((&self)->position), ("absolute"))) ? (double(0.)) : ((&self)->width_internal));
-  self.y = ((self.prev != nullptr)
-                ? ((((&self)->line_break) || (self.prev->line_break)) ? (plus((self.prev->y), (self.prev->line_height)))
-                                                                      : (self.prev->y))
-                : ((self.parent != nullptr) ? (self.parent->y) : (double(0.))));
+  self.y = (((self.prev) != nullptr) ? ((((&self)->line_break) || ((self.prev)->line_break))
+                                            ? (plus(((self.prev)->y), ((self.prev)->line_height)))
+                                            : ((self.prev)->y))
+                                     : (((self.parent) != nullptr) ? ((self.parent)->y) : (double(0.))));
   self.height_internal =
       (((&self)->intrinsic_height_is_height)
            ? ((&self)->intrinsic_height_internal)
-           : (((self.parent != nullptr) && (self.parent->is_flex_column))
+           : ((((self.parent) != nullptr) && ((self.parent)->is_flex_column))
                   ? (plus(((&self)->intrinsic_height_internal),
-                          (mult(((&self)->flex_amount), (self.parent->flex_unit)))))
+                          (mult(((&self)->flex_amount), ((self.parent)->flex_unit)))))
                   : ((has_suffix(((&self)->height_expr), ("%")))
                          ? (mult(((&self)->box_height),
                                  (divide((string_to_float(strip_suffix(((&self)->height_expr), ("%")))),
@@ -585,8 +577,8 @@ void bb_2(Content &self) {
                                 ? (max(((&self)->box_height), ((&self)->intrinsic_height_internal)))
                                 : (panic<double>())))));
   self.height_external = ((eq(((&self)->position), ("absolute"))) ? (double(0.)) : ((&self)->height_internal));
-  self.line_height = (((self.prev != nullptr) && (not(self.prev->line_break)))
-                          ? (max(((&self)->height_external), (self.prev->line_height)))
+  self.line_height = ((((self.prev) != nullptr) && (not((self.prev)->line_break)))
+                          ? (max(((&self)->height_external), ((self.prev)->line_height)))
                           : ((&self)->height_external));
 }
 void pass_0(Content &self) {

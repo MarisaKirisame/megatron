@@ -320,7 +320,6 @@ module MakeEval (EI : EvalIn) : Eval = struct
     List.iter p.order ~f:(fun proc_name ->
         bracket_call_proc n proc_name (fun _ -> eval_stmts p n (stmts_of_processed_proc p proc_name) m))
 
-
   let remove_children (p : prog) (x : meta node) (n : int) (m : metric) : unit =
     match List.split_n x.children n with
     | lhs, removed :: rhs ->

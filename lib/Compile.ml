@@ -1,17 +1,19 @@
 open Ast
 open Core
 open Eval
+open Common
+open Metric
 
 let header =
-  "#include <string>\n\n\
-  \  #include <cassert>\n\n\
-  \  #include <variant>\n\n\
-  \  #include <unordered_map>\n\n\
-  \  #include <stdexcept>\n\n\
-  \  #include <ranges>\n\n\
-  \  #include <iterator>\n\n\
-  \  #include <vector>\n\n\
-  \  #include <cmath>\n\n\
+  "  #include <string>\n\
+  \  #include <cassert>\n\
+  \  #include <variant>\n\
+  \  #include <unordered_map>\n\
+  \  #include <stdexcept>\n\
+  \  #include <ranges>\n\
+  \  #include <iterator>\n\
+  \  #include <vector>\n\
+  \  #include <cmath>\n\
   \  #include <memory>\n\
   \  struct Value {\n\
   \    std::variant<int, double, bool, std::string> v;\n\
@@ -104,8 +106,32 @@ let compile_typedef (env : tyck_env) : string =
   \    std::string name;\n\
   \    std::unordered_map<std::string, Value> attr;\n\
   \    std::unordered_map<std::string, Value> prop;"
-  (*^ String.concat (List.map (Hashtbl.to_alist env.var_type) ~f:(fun (x, y) -> compile_field x y))*)
+  ^ String.concat (List.map (Hashtbl.to_alist env.var_type) ~f:(fun (x, y) -> compile_field x y))
   ^ "};"
+
+let rec compile_expr env expr : string =
+  let recurse expr = compile_expr env expr in
+
+  bracket
+    (match expr with
+    | IfExpr (i, t, e) -> recurse i ^ "?" ^ recurse t ^ ":" ^ recurse e
+    | String b -> quoted b
+    | GetProperty p ->
+        "get_property<" ^ compile_type_expr (Hashtbl.find_exn env.prop_type p) ^ ">(self, " ^ quoted p ^ ")"
+    | HasProperty p -> "has_property(self, " ^ quoted p ^ ")"
+    | GetAttribute p ->
+        "get_attribute<" ^ compile_type_expr (Hashtbl.find_exn env.attr_type p) ^ ">(self, " ^ quoted p ^ ")"
+    | HasAttribute p -> "has_attribute(self, " ^ quoted p ^ ")"
+    | Float f -> "double" ^ bracket (string_of_float f)
+    | Call (f, xs) -> func_name_compiled f ^ bracket (String.concat (List.map xs ~f:recurse) ~sep:",")
+    | Read (path, p) -> unexpr (eval_path_staged path) ^ "->" ^ p
+    | HasPath path -> unexpr (eval_path_staged path) ^ "!= nullptr"
+    | Bool b -> string_of_bool b
+    | Panic (t, _) -> "panic<" ^ compile_type_expr t ^ ">()"
+    | Or (x, y) -> recurse x ^ "||" ^ recurse y
+    | And (x, y) -> recurse x ^ "&&" ^ recurse y
+    | GetName -> "self.name"
+    | Int x -> "int" ^ bracket (string_of_int x) (*| _ -> panic (show_expr expr)*))
 
 let compile_stmt env stmt =
   match stmt with
