@@ -55,8 +55,6 @@ shell "clang-format --style=file -i layout.cpp";;
 shell "cat layout.cpp";;
 shell "clang++ -std=c++23 layout.cpp"
 
-(*print_endline (show_prog prog)*)
-
 let tag t str = "<" ^ t ^ ">" ^ str ^ "</" ^ t ^ ">"
 
 let default_tag : (string, unit) Hashtbl.t =
@@ -189,22 +187,8 @@ let node_to_html (n : _ node) : string =
   node_to_html_buffer b 0 0 n;
   Buffer.contents b
 
-module Main
-    (SD : SD)
-    (EVAL : Eval)
-    (LINES : sig
-      val lines : string list SD.sd
-    end) =
-struct
+module Main (SD : SD) (EVAL : Eval) = struct
   include SD
-  include LINES
-
-  let counter : int ref = ref 0
-
-  let count () =
-    let ret = !counter in
-    counter := !counter + 1;
-    ret
 
   let rec json_to_node_aux j : _ node =
     let open Yojson.Basic.Util in
@@ -239,11 +223,7 @@ struct
     { children = List.map (j |> member "children" |> to_list) ~f:json_to_layout_node }
 
   let diff_num = ref 0
-  let m = fresh_metric ();;
-
-  print_endline ("RUNNING " ^ EVAL.name);
-  ()
-
+  let m = fresh_metric ()
   let get_command j : string = j |> Yojson.Basic.Util.member "name" |> Yojson.Basic.Util.to_string
 
   let get_path j : int list =
@@ -259,7 +239,7 @@ struct
     match path with
     | [] -> panic "bad path!"
     | [ i ] ->
-        m.input_change_count <- m.input_change_count + node_size y;
+        input_change m (node_size y);
         EVAL.add_children prog x y i m
     | p_hd :: p_tl -> add_node p_tl (List.nth_exn x.children p_hd) y
 
@@ -267,7 +247,7 @@ struct
     match path with
     | [] -> panic "bad path!"
     | [ i ] ->
-        m.output_change_count <- m.output_change_count + layout_size y;
+        output_change m (layout_size y);
         let lhs, rhs = List.split_n x.children i in
         x.children <- List.append lhs (y :: rhs)
     | p_hd :: p_tl -> add_layout_node p_tl (List.nth_exn x.children p_hd) y
@@ -276,7 +256,7 @@ struct
     match path with
     | [] -> panic "bad path!"
     | [ i ] ->
-        m.input_change_count <- m.input_change_count + node_size (List.nth_exn x.children i);
+        input_change m (node_size (List.nth_exn x.children i));
         EVAL.remove_children prog x i m
     | p_hd :: p_tl -> remove_node p_tl (List.nth_exn x.children p_hd)
 
@@ -285,7 +265,7 @@ struct
     | [] -> panic "bad path!"
     | [ i ] ->
         let lhs, removed :: rhs = List.split_n x.children i in
-        m.output_change_count <- m.output_change_count + layout_size (List.nth_exn x.children i);
+        output_change m (layout_size (List.nth_exn x.children i));
         x.children <- List.append lhs rhs
     | p_hd :: p_tl -> remove_layout_node p_tl (List.nth_exn x.children p_hd)
 
@@ -302,14 +282,14 @@ struct
     | [] -> panic "bad path!"
     | [ i ] ->
         let lhs, removed :: rhs = List.split_n x.children i in
-        m.output_change_count <- m.output_change_count + layout_size removed + layout_size y;
+        output_change m (layout_size removed + layout_size y);
         x.children <- List.append lhs (y :: rhs)
     | p_hd :: p_tl -> replace_layout_node p_tl (List.nth_exn x.children p_hd) y
 
   let rec replace_value (path : int list) (x : _ node) (type_ : string) (key : string) (value : value) : unit =
     match path with
     | [] -> (
-        m.input_change_count <- m.input_change_count + 1;
+        input_change m 1;
         match type_ with
         | "attributes" ->
             EVAL.remove_attr prog x key m;
@@ -323,7 +303,7 @@ struct
   let rec delete_value (path : int list) (x : _ node) (type_ : string) (key : string) : unit =
     match path with
     | [] -> (
-        m.input_change_count <- m.input_change_count + 1;
+        input_change m 1;
         match type_ with
         | "attributes" -> EVAL.remove_attr prog x key m
         | "properties" -> EVAL.remove_prop prog x key m
@@ -333,101 +313,94 @@ struct
   let rec insert_value (path : int list) (x : _ node) (type_ : string) (key : string) (value : value) : unit =
     match path with
     | [] -> (
-        m.input_change_count <- m.input_change_count + 1;
+        input_change m 1;
         match type_ with
         | "attributes" -> EVAL.add_attr prog x key value m
         | "properties" -> EVAL.add_prop prog x key value m
         | _ -> panic type_)
-    | p_hd :: p_tl -> insert_value p_tl (List.nth_exn x.children p_hd) type_ key value
+    | p_hd :: p_tl ->
+        insert_value p_tl (List.nth_exn x.children p_hd) type_ key value;
 
-  let line_init, line_temp = drop_head lines
-  let line_layout_init, line_rest = drop_head line_temp
-  let json_init = json_of_string line_init
-  let json_layout_init = json_of_string line_layout_init
-  let command = ref [ unstatic json_init; unstatic json_layout_init ];;
+        print_endline ("RUNNING " ^ EVAL.name);
+        ()
 
-  assert (String.equal (get_command (unstatic json_init)) "init");
-  assert (String.equal (get_command (unstatic json_layout_init)) "layout_init")
+  let main : unit sd =
+    with_file "command.json" (fun chan ->
+        let line_init = input_line chan in
+        let line_layout_init = input_line chan in
+        let json_init = json_of_string line_init in
+        let json_layout_init = json_of_string line_layout_init in
+        let command = ref [ unstatic json_init; unstatic json_layout_init ] in
+        assert (String.equal (get_command (unstatic json_init)) "init");
+        assert (String.equal (get_command (unstatic json_layout_init)) "layout_init");
+        let n = get_node (unstatic json_init) in
+        let layout_n = get_layout_node (unstatic json_layout_init) in
+        let diff_evaluated () : unit =
+          (let open Yojson.Basic in
+          to_channel out_file
+            (`Assoc
+              [
+                ("name", `String EVAL.name);
+                ("diff_num", `Int !diff_num);
+                ("read_count", `Int m.read_count);
+                ("meta_read_count", `Int m.meta_read_count);
+                ("write_count", `Int m.write_count);
+                ("meta_write_count", `Int m.meta_write_count);
+                ("queue_size_acc", `Int m.queue_size_acc);
+                ("input_change_count", `Int m.input_change_count);
+                ("output_change_count", `Int m.output_change_count);
+                ("html", `String (node_to_html n));
+                ("command", `List !command);
+              ]);
+        output_string out_file "\n";
+        reset_metric m;
+        command := [];
+        diff_num := !diff_num + 1;
+        let fsn = node_to_fs_node n in
+        Megatron.EvalFS.EVAL.eval prog fsn (fresh_metric ());
+        assert_node_value_equal n fsn; ()) in
+        let work () : unit sd =
+          iter_lines chan (fun line_ ->
+              let line = line_ in
+              let j = Yojson.Basic.from_string (unstatic line) in
+              command := List.append !command [ j ];
+              static
+                (match get_command j with
+                | "add" ->
+                    (*print_endline ("add_node: " ^ List.to_string string_of_int (get_path j));*)
+                    add_node (get_path j) n (get_node j)
+                | "recalculate" ->
+                    (*print_endline "recalculate!";*)
+                    EVAL.recalculate prog n m;
+                    diff_evaluated ()
+                | "remove" ->
+                    (*print_endline ("remove_node:");*)
+                    remove_node (get_path j) n
+                | "replace" -> replace_node (get_path j) n (get_node j)
+                | "replace_value" -> replace_value (get_path j) n (get_type j) (get_key j) (get_value j)
+                | "delete_value" -> delete_value (get_path j) n (get_type j) (get_key j)
+                | "insert_value" -> insert_value (get_path j) n (get_type j) (get_key j) (get_value j)
+                | "layout_remove" -> remove_layout_node (get_path j) layout_n
+                | "layout_add" -> add_layout_node (get_path j) layout_n (get_layout_node j)
+                | "layout_replace" -> replace_layout_node (get_path j) layout_n (get_layout_node j)
+                | "layout_info_changed" -> output_change m 1
+                | x -> panic x))
+        in
+        input_change m (node_size n);
+        output_change m (layout_size layout_n);
+        EVAL.eval prog n m;
 
-  let n = get_node (unstatic json_init)
-  let layout_n = get_layout_node (unstatic json_layout_init)
-
-  let diff_evaluated () : unit =
-    let open Yojson.Basic in
-    to_channel out_file
-      (`Assoc
-        [
-          ("name", `String EVAL.name);
-          ("diff_num", `Int !diff_num);
-          ("read_count", `Int m.read_count);
-          ("meta_read_count", `Int m.meta_read_count);
-          ("write_count", `Int m.write_count);
-          ("meta_write_count", `Int m.meta_write_count);
-          ("queue_size_acc", `Int m.queue_size_acc);
-          ("input_change_count", `Int m.input_change_count);
-          ("output_change_count", `Int m.output_change_count);
-          ("html", `String (node_to_html n));
-          ("command", `List !command);
-        ]);
-    output_string out_file "\n";
-    reset_metric m;
-    command := [];
-    diff_num := !diff_num + 1;
-    let fsn = node_to_fs_node n in
-    Megatron.EvalFS.EVAL.eval prog fsn (fresh_metric ());
-    assert_node_value_equal n fsn
-
-  let work () : unit =
-    List.iter (unstatic line_rest) ~f:(fun line_ ->
-        let line = line_ in
-        let j = Yojson.Basic.from_string line in
-        command := List.append !command [ j ];
-        match get_command j with
-        | "add" ->
-            (*print_endline ("add_node: " ^ List.to_string string_of_int (get_path j));*)
-            add_node (get_path j) n (get_node j)
-        | "recalculate" ->
-            (*print_endline "recalculate!";*)
-            EVAL.recalculate prog n m;
-            diff_evaluated ()
-        | "remove" ->
-            (*print_endline ("remove_node:");*)
-            remove_node (get_path j) n
-        | "replace" -> replace_node (get_path j) n (get_node j)
-        | "replace_value" -> replace_value (get_path j) n (get_type j) (get_key j) (get_value j)
-        | "delete_value" -> delete_value (get_path j) n (get_type j) (get_key j)
-        | "insert_value" -> insert_value (get_path j) n (get_type j) (get_key j) (get_value j)
-        | "layout_remove" -> remove_layout_node (get_path j) layout_n
-        | "layout_add" -> add_layout_node (get_path j) layout_n (get_layout_node j)
-        | "layout_replace" -> replace_layout_node (get_path j) layout_n (get_layout_node j)
-        | "layout_info_changed" -> m.output_change_count <- m.output_change_count + 1
-        | x -> panic x)
-  ;;
-
-  m.input_change_count <- m.input_change_count + node_size n;
-  m.output_change_count <- m.output_change_count + layout_size layout_n;
-
-  EVAL.eval prog n m;
-
-  let main =
-    seq (diff_evaluated () |> static) (fun _ ->
-        seq ("EVAL OK!" |> print_endline |> static) (fun _ ->
-            seq (work () |> static) (fun _ -> "INCREMENTAL EVAL OK!" |> print_endline |> static)))
-  in
-  ()
+        seq
+          (diff_evaluated () |> static)
+          (fun _ ->
+            seq
+              ("EVAL OK!" |> print_endline |> static)
+              (fun _ -> seq (work ()) (fun _ -> "INCREMENTAL EVAL OK!" |> print_endline |> static))))
 end
 
-module LINES_STATIC = struct
-  let lines : string list S.sd = Stdio.In_channel.read_lines "command.json"
-end
-
-module LINES_DYN = struct
-  let lines : string list D.sd = Expr "lines"
-end
-
-module MainFSI = Main (S) (Megatron.EvalFS.EVAL) (LINES_STATIC)
-module MainFSC = Main (D) (Megatron.EvalFS.EVAL) (LINES_DYN)
-module MainDBI = Main (S) (Megatron.EvalDB.EVAL) (LINES_STATIC)
-module MainDBC = Main (D) (Megatron.EvalDB.EVAL) (LINES_DYN)
-module MainPQI = Main (S) (Megatron.EvalPQ.EVAL) (LINES_STATIC)
-module MainPQC = Main (D) (Megatron.EvalPQ.EVAL) (LINES_DYN)
+module MainFSI = Main (S) (Megatron.EvalFS.EVAL)
+module MainFSC = Main (D) (Megatron.EvalFS.EVAL)
+module MainDBI = Main (S) (Megatron.EvalDB.EVAL)
+module MainDBC = Main (D) (Megatron.EvalDB.EVAL)
+module MainPQI = Main (S) (Megatron.EvalPQ.EVAL)
+module MainPQC = Main (D) (Megatron.EvalPQ.EVAL)

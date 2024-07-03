@@ -36,3 +36,5 @@ let read (m : metric) : unit = m.read_count <- m.read_count + 1
 let meta_read (m : metric) : unit = m.meta_read_count <- m.meta_read_count + 1
 let write (m : metric) : unit = m.write_count <- m.write_count + 1
 let meta_write (m : metric) : unit = m.meta_write_count <- m.meta_write_count + 1
+let input_change (m : metric) (c : int) = m.input_change_count <- m.input_change_count + c
+let output_change (m : metric) (c : int) = m.output_change_count <- m.output_change_count + c
