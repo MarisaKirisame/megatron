@@ -111,8 +111,8 @@ module EVAL (SD : SD) = MakeEval (struct
       let x', y', z' = queue_pop () in
       ignore (y', z');
       if not (phys_equal (TotalOrder.compare x x') 0) then (
-        print_endline ("peek " ^ string_of_int y.id ^ "." ^ recompute_to_string z);
-        print_endline ("pop  " ^ string_of_int y'.id ^ "." ^ recompute_to_string z');
+        print_endline ("peek " ^ string_of_int y.id ^ "." ^ recompute_to_string z) |> unstatic;
+        print_endline ("pop  " ^ string_of_int y'.id ^ "." ^ recompute_to_string z') |> unstatic;
         recursive_print_id_up y;
         recursive_print_id_up y')
       else ();

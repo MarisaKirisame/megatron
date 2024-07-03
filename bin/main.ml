@@ -223,8 +223,6 @@ module Main (EVAL : Eval) = struct
     let open Yojson.Basic.Util in
     { children = List.map (j |> member "children" |> to_list) ~f:json_to_layout_node }
 
-  let diff_num = ref 0
-  let m = fresh_metric ()
   let get_command j : string = j |> Yojson.Basic.Util.member "name" |> Yojson.Basic.Util.to_string
 
   let get_path j : int list =
@@ -236,58 +234,58 @@ module Main (EVAL : Eval) = struct
   let get_node j : _ node = json_to_node (j |> Yojson.Basic.Util.member "node")
   let get_layout_node j : layout_node = json_to_layout_node (j |> Yojson.Basic.Util.member "node")
 
-  let rec add_node (path : int list) (x : _ node) (y : _ node) : unit =
+  let rec add_node (path : int list) (x : _ node) (y : _ node) m : unit =
     match path with
     | [] -> panic "bad path!"
     | [ i ] ->
         input_change m (node_size y);
         EVAL.add_children prog x y i m
-    | p_hd :: p_tl -> add_node p_tl (List.nth_exn x.children p_hd) y
+    | p_hd :: p_tl -> add_node p_tl (List.nth_exn x.children p_hd) y m
 
-  let rec add_layout_node (path : int list) (x : layout_node) (y : layout_node) : unit =
+  let rec add_layout_node (path : int list) (x : layout_node) (y : layout_node) m : unit =
     match path with
     | [] -> panic "bad path!"
     | [ i ] ->
         output_change m (layout_size y);
         let lhs, rhs = List.split_n x.children i in
         x.children <- List.append lhs (y :: rhs)
-    | p_hd :: p_tl -> add_layout_node p_tl (List.nth_exn x.children p_hd) y
+    | p_hd :: p_tl -> add_layout_node p_tl (List.nth_exn x.children p_hd) y m
 
-  let rec remove_node (path : int list) (x : _ node) : unit =
+  let rec remove_node (path : int list) (x : _ node) m : unit =
     match path with
     | [] -> panic "bad path!"
     | [ i ] ->
         input_change m (node_size (List.nth_exn x.children i));
         EVAL.remove_children prog x i m
-    | p_hd :: p_tl -> remove_node p_tl (List.nth_exn x.children p_hd)
+    | p_hd :: p_tl -> remove_node p_tl (List.nth_exn x.children p_hd) m
 
-  let rec remove_layout_node (path : int list) (x : layout_node) : unit =
+  let rec remove_layout_node (path : int list) (x : layout_node) m : unit =
     match path with
     | [] -> panic "bad path!"
     | [ i ] ->
         let lhs, removed :: rhs = List.split_n x.children i in
         output_change m (layout_size (List.nth_exn x.children i));
         x.children <- List.append lhs rhs
-    | p_hd :: p_tl -> remove_layout_node p_tl (List.nth_exn x.children p_hd)
+    | p_hd :: p_tl -> remove_layout_node p_tl (List.nth_exn x.children p_hd) m
 
-  let rec replace_node (path : int list) (x : _ node) (y : _ node) : unit =
+  let rec replace_node (path : int list) (x : _ node) (y : _ node) m : unit =
     match path with
     | [] -> panic "bad path!"
     | [ i ] ->
         EVAL.remove_children prog x i m;
         EVAL.add_children prog x y i m
-    | p_hd :: p_tl -> replace_node p_tl (List.nth_exn x.children p_hd) y
+    | p_hd :: p_tl -> replace_node p_tl (List.nth_exn x.children p_hd) y m
 
-  let rec replace_layout_node (path : int list) (x : layout_node) (y : layout_node) : unit =
+  let rec replace_layout_node (path : int list) (x : layout_node) (y : layout_node) m : unit =
     match path with
     | [] -> panic "bad path!"
     | [ i ] ->
         let lhs, removed :: rhs = List.split_n x.children i in
         output_change m (layout_size removed + layout_size y);
         x.children <- List.append lhs (y :: rhs)
-    | p_hd :: p_tl -> replace_layout_node p_tl (List.nth_exn x.children p_hd) y
+    | p_hd :: p_tl -> replace_layout_node p_tl (List.nth_exn x.children p_hd) y m
 
-  let rec replace_value (path : int list) (x : _ node) (type_ : string) (key : string) (value : value) : unit =
+  let rec replace_value (path : int list) (x : _ node) (type_ : string) (key : string) (value : value) m : unit =
     match path with
     | [] -> (
         input_change m 1;
@@ -299,9 +297,9 @@ module Main (EVAL : Eval) = struct
             EVAL.remove_prop prog x key m;
             EVAL.add_prop prog x key value m
         | _ -> panic ("type: " ^ type_))
-    | p_hd :: p_tl -> replace_value p_tl (List.nth_exn x.children p_hd) type_ key value
+    | p_hd :: p_tl -> replace_value p_tl (List.nth_exn x.children p_hd) type_ key value m
 
-  let rec delete_value (path : int list) (x : _ node) (type_ : string) (key : string) : unit =
+  let rec delete_value (path : int list) (x : _ node) (type_ : string) (key : string) m : unit =
     match path with
     | [] -> (
         input_change m 1;
@@ -309,9 +307,9 @@ module Main (EVAL : Eval) = struct
         | "attributes" -> EVAL.remove_attr prog x key m
         | "properties" -> EVAL.remove_prop prog x key m
         | _ -> panic ("type: " ^ type_))
-    | p_hd :: p_tl -> delete_value p_tl (List.nth_exn x.children p_hd) type_ key
+    | p_hd :: p_tl -> delete_value p_tl (List.nth_exn x.children p_hd) type_ key m
 
-  let rec insert_value (path : int list) (x : _ node) (type_ : string) (key : string) (value : value) : unit =
+  let rec insert_value (path : int list) (x : _ node) (type_ : string) (key : string) (value : value) m : unit =
     match path with
     | [] -> (
         input_change m 1;
@@ -319,91 +317,127 @@ module Main (EVAL : Eval) = struct
         | "attributes" -> EVAL.add_attr prog x key value m
         | "properties" -> EVAL.add_prop prog x key value m
         | _ -> panic ("type: " ^ type_))
-    | p_hd :: p_tl ->
-        insert_value p_tl (List.nth_exn x.children p_hd) type_ key value;
-
-        print_endline ("RUNNING " ^ EVAL.name);
-        ()
+    | p_hd :: p_tl -> insert_value p_tl (List.nth_exn x.children p_hd) type_ key value m
 
   let main : unit sd =
-    with_file "command.json" (fun chan ->
-        let line_init = input_line chan in
-        let line_layout_init = input_line chan in
-        let json_init = json_of_string line_init in
-        let json_layout_init = json_of_string line_layout_init in
-        let command = ref [ unstatic json_init; unstatic json_layout_init ] in
-        assert (String.equal (get_command (unstatic json_init)) "init");
-        assert (String.equal (get_command (unstatic json_layout_init)) "layout_init");
-        let n = get_node (unstatic json_init) in
-        let layout_n = get_layout_node (unstatic json_layout_init) in
-        let diff_evaluated () : unit sd =
-          let open Yojson.Basic in
-          seqs
-            [
-              (fun _ ->
-                to_channel out_file
-                  (`Assoc
-                    [
-                      ("name", `String EVAL.name);
-                      ("diff_num", `Int !diff_num);
-                      ("read_count", `Int m.read_count);
-                      ("meta_read_count", `Int m.meta_read_count);
-                      ("write_count", `Int m.write_count);
-                      ("meta_write_count", `Int m.meta_write_count);
-                      ("queue_size_acc", `Int m.queue_size_acc);
-                      ("input_change_count", `Int m.input_change_count);
-                      ("output_change_count", `Int m.output_change_count);
-                      ("html", `String (node_to_html n));
-                      ("command", `List !command);
-                    ])
-                |> static);
-              (fun _ -> output_string out_file "\n" |> static);
-              (fun _ -> reset_metric m |> static);
-              (fun _ -> (command := []) |> static);
-              (fun _ -> (diff_num := !diff_num + 1) |> static);
-              (fun _ ->
-                let fsn = node_to_fs_node n in
-                seq
-                  (FS.eval prog (static fsn) (static (fresh_metric ())))
-                  (fun _ -> assert_node_value_equal n fsn |> static));
-            ]
-        in
-        let work () : unit sd =
-          iter_lines chan (fun line_ ->
-              let line = line_ in
-              let j = Yojson.Basic.from_string (unstatic line) in
-              command := List.append !command [ j ];
-              match get_command j with
-              | "add" ->
-                  (*print_endline ("add_node: " ^ List.to_string string_of_int (get_path j));*)
-                  add_node (get_path j) n (get_node j) |> static
-              | "recalculate" ->
-                  (*print_endline "recalculate!";*)
-                  EVAL.recalculate prog n m;
-                  diff_evaluated ()
-              | "remove" ->
-                  (*print_endline ("remove_node:");*)
-                  remove_node (get_path j) n |> static
-              | "replace" -> replace_node (get_path j) n (get_node j) |> static
-              | "replace_value" -> replace_value (get_path j) n (get_type j) (get_key j) (get_value j) |> static
-              | "delete_value" -> delete_value (get_path j) n (get_type j) (get_key j) |> static
-              | "insert_value" -> insert_value (get_path j) n (get_type j) (get_key j) (get_value j) |> static
-              | "layout_remove" -> remove_layout_node (get_path j) layout_n |> static
-              | "layout_add" -> add_layout_node (get_path j) layout_n (get_layout_node j) |> static
-              | "layout_replace" -> replace_layout_node (get_path j) layout_n (get_layout_node j) |> static
-              | "layout_info_changed" -> output_change m 1 |> static
-              | x -> panic x)
-        in
-        seqs
-          [
-            (fun _ -> output_change m (layout_size layout_n) |> static);
-            (fun _ -> input_change m (node_size n) |> static);
-            (fun _ -> EVAL.eval prog (static n) (static m));
-            (fun _ -> diff_evaluated ());
-            (fun _ -> "EVAL OK!" |> print_endline |> static);
-            (fun _ -> work ());
-            (fun _ -> "INCREMENTAL EVAL OK!" |> print_endline |> static);
-          ])
+    seq
+      (print_endline ("RUNNING " ^ EVAL.name))
+      (fun _ ->
+        with_file "command.json" (fun chan ->
+            let_
+              (ref 0 |> static)
+              (fun diff_num ->
+                let_
+                  (fresh_metric () |> static)
+                  (fun m ->
+                    let_
+                      (json_of_string (input_line chan))
+                      (fun json_init ->
+                        let_
+                          (json_of_string (input_line chan))
+                          (fun json_layout_init ->
+                            let_
+                              (ref [ unstatic json_init; unstatic json_layout_init ] |> static)
+                              (fun command ->
+                                assert (String.equal (get_command (unstatic json_init)) "init");
+                                assert (String.equal (get_command (unstatic json_layout_init)) "layout_init");
+                                let_
+                                  (get_node (unstatic json_init) |> static)
+                                  (fun n ->
+                                    let_
+                                      (get_layout_node (unstatic json_layout_init) |> static)
+                                      (fun layout_n ->
+                                        let diff_evaluated () : unit sd =
+                                          let open Yojson.Basic in
+                                          seqs
+                                            [
+                                              (fun _ ->
+                                                to_channel out_file
+                                                  (`Assoc
+                                                    [
+                                                      ("name", `String EVAL.name);
+                                                      ("diff_num", `Int !(diff_num |> unstatic));
+                                                      ("read_count", `Int (m |> unstatic).read_count);
+                                                      ("meta_read_count", `Int (m |> unstatic).meta_read_count);
+                                                      ("write_count", `Int (m |> unstatic).write_count);
+                                                      ("meta_write_count", `Int (m |> unstatic).meta_write_count);
+                                                      ("queue_size_acc", `Int (m |> unstatic).queue_size_acc);
+                                                      ("input_change_count", `Int (m |> unstatic).input_change_count);
+                                                      ("output_change_count", `Int (m |> unstatic).output_change_count);
+                                                      ("html", `String (node_to_html (n |> unstatic)));
+                                                      ("command", `List !(command |> unstatic));
+                                                    ])
+                                                |> static);
+                                              (fun _ -> output_string out_file "\n" |> static);
+                                              (fun _ -> reset_metric (m |> unstatic) |> static);
+                                              (fun _ -> (command |> unstatic := []) |> static);
+                                              (fun _ -> (diff_num |> unstatic := !(diff_num |> unstatic) + 1) |> static);
+                                              (fun _ ->
+                                                let fsn = node_to_fs_node (n |> unstatic) in
+                                                seq
+                                                  (FS.eval prog (static fsn) (static (fresh_metric ())))
+                                                  (fun _ -> assert_node_value_equal (n |> unstatic) fsn |> static));
+                                            ]
+                                        in
+                                        let work () : unit sd =
+                                          iter_lines chan (fun line_ ->
+                                              let line = line_ in
+                                              let j = Yojson.Basic.from_string (unstatic line) in
+                                              command |> unstatic := List.append !(command |> unstatic) [ j ];
+                                              match get_command j with
+                                              | "add" ->
+                                                  (*print_endline ("add_node: " ^ List.to_string string_of_int (get_path j));*)
+                                                  add_node (get_path j) (n |> unstatic) (get_node j) (m |> unstatic)
+                                                  |> static
+                                              | "recalculate" ->
+                                                  (*print_endline "recalculate!";*)
+                                                  EVAL.recalculate prog (n |> unstatic) (m |> unstatic);
+                                                  diff_evaluated ()
+                                              | "remove" ->
+                                                  (*print_endline ("remove_node:");*)
+                                                  remove_node (get_path j) (n |> unstatic) (m |> unstatic) |> static
+                                              | "replace" ->
+                                                  replace_node (get_path j) (n |> unstatic) (get_node j) (m |> unstatic)
+                                                  |> static
+                                              | "replace_value" ->
+                                                  replace_value (get_path j) (n |> unstatic) (get_type j) (get_key j)
+                                                    (get_value j) (m |> unstatic)
+                                                  |> static
+                                              | "delete_value" ->
+                                                  delete_value (get_path j) (n |> unstatic) (get_type j) (get_key j)
+                                                    (m |> unstatic)
+                                                  |> static
+                                              | "insert_value" ->
+                                                  insert_value (get_path j) (n |> unstatic) (get_type j) (get_key j)
+                                                    (get_value j) (m |> unstatic)
+                                                  |> static
+                                              | "layout_remove" ->
+                                                  remove_layout_node (get_path j) (layout_n |> unstatic) (m |> unstatic)
+                                                  |> static
+                                              | "layout_add" ->
+                                                  add_layout_node (get_path j) (layout_n |> unstatic)
+                                                    (get_layout_node j) (m |> unstatic)
+                                                  |> static
+                                              | "layout_replace" ->
+                                                  replace_layout_node (get_path j) (layout_n |> unstatic)
+                                                    (get_layout_node j) (m |> unstatic)
+                                                  |> static
+                                              | "layout_info_changed" -> output_change (m |> unstatic) 1 |> static
+                                              | x -> panic x)
+                                        in
+                                        seqs
+                                          [
+                                            (fun _ ->
+                                              output_change (m |> unstatic) (layout_size (layout_n |> unstatic))
+                                              |> static);
+                                            (fun _ ->
+                                              input_change (m |> unstatic) (node_size (n |> unstatic)) |> static);
+                                            (fun _ -> EVAL.eval prog n m);
+                                            (fun _ -> diff_evaluated ());
+                                            (fun _ -> "EVAL OK!" |> print_endline);
+                                            (fun _ -> work ());
+                                            (fun _ -> "INCREMENTAL EVAL OK!" |> print_endline);
+                                          ])))))))))
 end
 
 module MainFSI = Main (Megatron.EvalFS.EVAL (S))
