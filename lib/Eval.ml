@@ -483,7 +483,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
   let recalculate (p : prog) (n : meta node) (m : metric) : unit =
     recalculate_internal p n m (fun n stmts -> eval_stmts p n stmts m)
 
-  let rec seqs x = match x with [] -> panic "" | hd :: tl -> seq (hd ()) (fun _ -> seqs tl)
+  let rec seqs x = match x with [] -> tt | hd :: tl -> seq (hd ()) (fun _ -> seqs tl)
 end
 
 let rec assert_node_value_equal l r =
