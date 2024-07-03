@@ -68,12 +68,19 @@ let ignore_ (x : 'a sd) : unit sd =
   match x with Static _ -> () |> static | Dyn x -> let_staged x (fun _ -> unit_staged) |> dyn
 
 (*signature wrong but easier to migrate*)
-let drop_head_ (x : 'a list sd) : ('a sd * 'a list sd) =
+let drop_head_ (x : 'a list sd) : 'a sd * 'a list sd =
   match x with
-  | Static x -> let (hd :: tl) = x in (static hd, static tl)
+  | Static x ->
+      let (hd :: tl) = x in
+      (static hd, static tl)
   | Dyn x -> panic "todo"
 
-let json_of_string_ x =
-  match x with
-  | Static x -> x |> Yojson.Basic.from_string |> static
-  | Dyn x -> panic "todo"
+let json_of_string_ x = match x with Static x -> x |> Yojson.Basic.from_string |> static | Dyn x -> panic "todo"
+
+let list_iter_ (l : 'a list sd) ~(f : 'a sd -> unit sd) : unit sd =
+  match l with Static l -> List.iter l ~f:(fun a -> static a |> f |> unstatic) |> static
+
+let print_endline_ str = 
+  match str with
+  | Static str -> static (print_endline str)
+  | Dyn _ -> panic "todo"

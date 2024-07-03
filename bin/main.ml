@@ -188,7 +188,8 @@ let node_to_html (n : _ node) : string =
   node_to_html_buffer b 0 0 n;
   Buffer.contents b
 
-module Main (EVAL : Eval) = struct
+module Main (EVAL : Eval) (LINES : sig val lines: string list sd end) = struct
+  include LINES
   let counter : int ref = ref 0
 
   let count () =
@@ -221,9 +222,8 @@ module Main (EVAL : Eval) = struct
 
   let diff_num = ref 0
   let m = fresh_metric ()
-  let lines : string list sd = Stdio.In_channel.read_lines "command.json" |> static
-  let (line_init, line_temp) = drop_head_ lines
-  let (line_layout_init, line_rest) = drop_head_ line_temp
+  let line_init, line_temp = drop_head_ lines
+  let line_layout_init, line_rest = drop_head_ line_temp
   let json_init = json_of_string_ line_init
   let json_layout_init = json_of_string_ line_layout_init
   let command = ref [ json_init |> unstatic; json_layout_init |> unstatic ];;
@@ -367,11 +367,12 @@ module Main (EVAL : Eval) = struct
         | _ -> panic type_)
     | p_hd :: p_tl -> insert_value p_tl (List.nth_exn x.children p_hd) type_ key value
 
-  let work () =
-    List.iter (line_rest |> unstatic) ~f:(fun line ->
+  let work () : unit sd =
+    list_iter_ line_rest ~f:(fun line_ ->
+        let line = unstatic line_ in
         let j = Yojson.Basic.from_string line in
         command := List.append !command [ j ];
-        match get_command j with
+        (match get_command j with
         | "add" ->
             (*print_endline ("add_node: " ^ List.to_string string_of_int (get_path j));*)
             add_node (get_path j) n (get_node j)
@@ -390,13 +391,17 @@ module Main (EVAL : Eval) = struct
         | "layout_add" -> add_layout_node (get_path j) layout_n (get_layout_node j)
         | "layout_replace" -> replace_layout_node (get_path j) layout_n (get_layout_node j)
         | "layout_info_changed" -> m.output_change_count <- m.output_change_count + 1
-        | x -> panic x)
-  ;;
+        | x -> panic x);
+        static ())
 
-  work ();;
-  print_endline "INCREMENTAL EVAL OK!"
+  let main = seq_ (work ()) ("INCREMENTAL EVAL OK!" |> static |> print_endline_)
 end
 
-module MainFS = Main (Megatron.EvalFS.EVAL)
-module MainDB = Main (Megatron.EvalDB.EVAL)
-module MainPQ = Main (Megatron.EvalPQ.EVAL)
+let lines_static : string list sd = Stdio.In_channel.read_lines "command.json" |> static
+let lines_dyn : string list sd = Expr "lines" |> dyn
+module MainFSI = Main (Megatron.EvalFS.EVAL) (struct let lines = lines_static end)
+module MainFSC = Main (Megatron.EvalFS.EVAL) (struct let lines = lines_dyn end)
+module MainDBI = Main (Megatron.EvalDB.EVAL) (struct let lines = lines_static end)
+module MainDBC = Main (Megatron.EvalDB.EVAL) (struct let lines = lines_dyn end)
+module MainPQI = Main (Megatron.EvalPQ.EVAL) (struct let lines = lines_static end)
+module MainPQC = Main (Megatron.EvalPQ.EVAL) (struct let lines = lines_dyn end)
