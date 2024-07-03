@@ -2,6 +2,7 @@ open Ast
 open Core
 open Eval
 open Metric
+open Common
 
 module EVAL : Eval = MakeEval (struct
   let name = "DB"
@@ -12,12 +13,16 @@ module EVAL : Eval = MakeEval (struct
     recursive_proc_dirtied : (string, bool) Hashtbl.t;
   }
 
-  let fresh_meta () =
-    {
-      bb_dirtied = Hashtbl.create (module String);
-      proc_inited = Hashtbl.create (module String);
-      recursive_proc_dirtied = Hashtbl.create (module String);
-    }
+  let fresh_meta u =
+    match u with
+    | Static () ->
+        Static
+          {
+            bb_dirtied = Hashtbl.create (module String);
+            proc_inited = Hashtbl.create (module String);
+            recursive_proc_dirtied = Hashtbl.create (module String);
+          }
+    | Dyn _ -> panic "todo"
 
   let remove_meta _ = ()
 

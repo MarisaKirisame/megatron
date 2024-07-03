@@ -37,11 +37,15 @@ let rec set_children_relation (n : 'meta node) : unit =
       set_children_relation x
   | None -> ()
 
-let set_relation (n : 'meta node) =
-  n.parent <- None;
-  n.prev <- None;
-  n.next <- None;
-  set_children_relation n
+let set_relation (n : 'meta node sd) : unit sd =
+  match n with
+  | Static n ->
+      Static
+        (n.parent <- None;
+         n.prev <- None;
+         n.next <- None;
+         set_children_relation n)
+  | Dyn _ -> panic "todo"
 
 let rec rightmost (x : _ node) : _ node = match List.last x.children with Some x -> rightmost x | None -> x
 
@@ -228,7 +232,7 @@ module type EvalIn = sig
 
   type meta
 
-  val fresh_meta : unit -> meta
+  val fresh_meta : unit sd -> meta sd
   val remove_meta : meta -> unit
   val register_todo_proc : prog -> meta node -> string -> metric -> unit
   val bracket_call_bb : meta node -> string -> (unit -> unit) -> unit
@@ -241,12 +245,12 @@ module type Eval = sig
   include EvalIn
 
   val make_node :
-    name:string ->
-    attr:(string, value) Hashtbl.t ->
-    prop:(string, value) Hashtbl.t ->
-    extern_id:int ->
-    meta node list ->
-    meta node
+    name:string sd ->
+    attr:(string, value) Hashtbl.t sd ->
+    prop:(string, value) Hashtbl.t sd ->
+    extern_id:int sd ->
+    meta node list sd ->
+    meta node sd
 
   val eval : prog -> meta node -> metric -> unit
   val add_children : prog -> meta node -> meta node -> int -> metric -> unit
@@ -261,21 +265,25 @@ end
 module MakeEval (EI : EvalIn) : Eval = struct
   include EI
 
-  let make_node ~(name : string) ~(attr : (string, value) Hashtbl.t) ~(prop : (string, value) Hashtbl.t)
-      ~(extern_id : int) (children : EI.meta node list) : EI.meta node =
-    {
-      id = count ();
-      name;
-      attr;
-      prop;
-      extern_id;
-      children;
-      var = Hashtbl.create (module String);
-      parent = None;
-      next = None;
-      prev = None;
-      m = EI.fresh_meta ();
-    }
+  let make_node ~(name : string sd) ~(attr : (string, value) Hashtbl.t sd) ~(prop : (string, value) Hashtbl.t sd)
+      ~(extern_id : int sd) (children : EI.meta node list sd) : EI.meta node sd =
+    match (name, attr, prop, extern_id, children) with
+    | Static name, Static attr, Static prop, Static extern_id, Static children ->
+        Static
+          {
+            id = count ();
+            name;
+            attr;
+            prop;
+            extern_id;
+            children;
+            var = Hashtbl.create (module String);
+            parent = None;
+            next = None;
+            prev = None;
+            m = unstatic (EI.fresh_meta (Static ()));
+          }
+    | _ -> panic "make_node todo"
 
   let var_modified (p : prog) (n : meta node) (var_name : string) (m : metric) : unit =
     Hashtbl.iter p.procs ~f:(fun (ProcessedProc (proc_name, _)) ->

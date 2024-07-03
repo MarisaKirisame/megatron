@@ -200,29 +200,24 @@ module Main (EVAL : Eval) = struct
     counter := !counter + 1;
     ret
 
-  let rec json_to_node_aux j : _ node =
+  let rec json_to_node_aux j : _ node sd =
     let open Yojson.Basic.Util in
     EVAL.make_node
-      (List.map (j |> member "children" |> to_list) ~f:json_to_node_aux)
-      ~name:(j |> member "name" |> json_to_string)
-      ~attr:(j |> member "attributes" |> json_to_dict)
-      ~prop:(j |> member "properties" |> json_to_dict)
-      ~extern_id:(j |> member "id" |> json_to_int)
+      (Static (List.map (j |> member "children" |> to_list) ~f:(fun x -> unstatic (json_to_node_aux x))))
+      ~name:(j |> member "name" |> json_to_string |> static)
+      ~attr:(j |> member "attributes" |> json_to_dict |> static)
+      ~prop:(j |> member "properties" |> json_to_dict |> static)
+      ~extern_id:(j |> member "id" |> json_to_int |> static)
 
-  let json_to_node j : _ node =
-    let v = json_to_node_aux j in
-    set_relation v;
-    v
+  let json_to_node j : _ node sd = let_ (json_to_node_aux j) (fun v -> seq_ (set_relation v) v)
 
   let rec node_to_fs_node_aux n : Megatron.EvalFS.EVAL.meta node =
-    Megatron.EvalFS.EVAL.make_node
-      (List.map n.children ~f:node_to_fs_node_aux)
-      ~name:n.name ~attr:n.attr ~prop:n.prop ~extern_id:n.extern_id
+    unstatic
+      (Megatron.EvalFS.EVAL.make_node
+         (static (List.map n.children ~f:node_to_fs_node_aux))
+         ~name:(static n.name) ~attr:(static n.attr) ~prop:(static n.prop) ~extern_id:(static n.extern_id))
 
-  let node_to_fs_node n =
-    let v = node_to_fs_node_aux n in
-    set_relation v;
-    v
+  let node_to_fs_node n = let_ (static (node_to_fs_node_aux n)) (fun v -> seq_ (set_relation v) v)
 
   let rec json_to_layout_node j : layout_node =
     let open Yojson.Basic.Util in
@@ -243,7 +238,7 @@ module Main (EVAL : Eval) = struct
   let get_type j : string = j |> Yojson.Basic.Util.member "type" |> Yojson.Basic.Util.to_string
   let get_key j : string = j |> Yojson.Basic.Util.member "key" |> Yojson.Basic.Util.to_string
   let get_value j : value = j |> Yojson.Basic.Util.member "value" |> json_to_value
-  let get_node j : _ node = json_to_node (j |> Yojson.Basic.Util.member "node")
+  let get_node j : _ node = json_to_node (j |> Yojson.Basic.Util.member "node") |> unstatic
   let get_layout_node j : layout_node = json_to_layout_node (j |> Yojson.Basic.Util.member "node");;
 
   assert (String.equal (get_command json_init) "init");
@@ -273,7 +268,7 @@ module Main (EVAL : Eval) = struct
     reset_metric m;
     command := [];
     diff_num := !diff_num + 1;
-    let fsn = node_to_fs_node n in
+    let fsn = node_to_fs_node n |> unstatic in
     Megatron.EvalFS.EVAL.eval prog fsn (fresh_metric ());
     assert_node_value_equal n fsn
   ;;

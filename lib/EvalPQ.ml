@@ -17,8 +17,16 @@ module EVAL : Eval = MakeEval (struct
     mutable alive : bool;
   }
 
-  let fresh_meta () =
-    { bb_time_table = Hashtbl.create (module String); proc_time_table = Hashtbl.create (module String); alive = true }
+  let fresh_meta u =
+    match u with
+    | Static () ->
+        Static
+          {
+            bb_time_table = Hashtbl.create (module String);
+            proc_time_table = Hashtbl.create (module String);
+            alive = true;
+          }
+    | Dyn _ -> panic ""
 
   let remove_meta m = m.alive <- false
 
