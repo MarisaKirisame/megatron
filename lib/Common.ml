@@ -1,4 +1,7 @@
 open Core
+open Yojson
+
+let debug = true
 
 type _ code =
   | Expr of string (*anything passed around must be atomic; return of a function, however, can be non-atomic*)
@@ -59,3 +62,18 @@ let hashtbl_find_staged (h : ('a, 'b) Hashtbl.t code) (k : 'a code) (found : 'b 
   ite_ if_expr then_stmt missing
 
 let null_proc = Proc ""
+let unit_staged = Expr "make_unit()"
+
+let ignore_ (x : 'a sd) : unit sd =
+  match x with Static _ -> () |> static | Dyn x -> let_staged x (fun _ -> unit_staged) |> dyn
+
+(*signature wrong but easier to migrate*)
+let drop_head_ (x : 'a list sd) : ('a sd * 'a list sd) =
+  match x with
+  | Static x -> let (hd :: tl) = x in (static hd, static tl)
+  | Dyn x -> panic "todo"
+
+let json_of_string_ x =
+  match x with
+  | Static x -> x |> Yojson.Basic.from_string |> static
+  | Dyn x -> panic "todo"

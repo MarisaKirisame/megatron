@@ -17,6 +17,8 @@ module EVAL : Eval = MakeEval (struct
     mutable alive : bool;
   }
 
+  let meta_staged = "???"
+
   let fresh_meta u =
     match u with
     | Static () ->
@@ -28,7 +30,7 @@ module EVAL : Eval = MakeEval (struct
           }
     | Dyn _ -> panic ""
 
-  let remove_meta m = m.alive <- false
+  let remove_meta m = match m with Static m -> Static (m.alive <- false) | Dyn _ -> panic "todo"
 
   type recompute_func = RecomputeBB of string | RecomputeProc of string
 

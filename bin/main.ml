@@ -56,10 +56,6 @@ shell "clang++ -std=c++23 layout.cpp"
 
 (*print_endline (show_prog prog)*)
 
-let lines : string list = Stdio.In_channel.read_lines "command.json"
-let (line_init :: line_layout_init :: line_rest) = lines
-let json_init = Yojson.Basic.from_string line_init
-let json_layout_init = Yojson.Basic.from_string line_layout_init
 let tag t str = "<" ^ t ^ ">" ^ str ^ "</" ^ t ^ ">"
 
 let default_tag : (string, unit) Hashtbl.t =
@@ -225,7 +221,12 @@ module Main (EVAL : Eval) = struct
 
   let diff_num = ref 0
   let m = fresh_metric ()
-  let command = ref [ json_init; json_layout_init ];;
+  let lines : string list sd = Stdio.In_channel.read_lines "command.json" |> static
+  let (line_init, line_temp) = drop_head_ lines
+  let (line_layout_init, line_rest) = drop_head_ line_temp
+  let json_init = json_of_string_ line_init
+  let json_layout_init = json_of_string_ line_layout_init
+  let command = ref [ json_init |> unstatic; json_layout_init |> unstatic ];;
 
   print_endline ("RUNNING " ^ EVAL.name);
   ()
@@ -241,11 +242,11 @@ module Main (EVAL : Eval) = struct
   let get_node j : _ node = json_to_node (j |> Yojson.Basic.Util.member "node") |> unstatic
   let get_layout_node j : layout_node = json_to_layout_node (j |> Yojson.Basic.Util.member "node");;
 
-  assert (String.equal (get_command json_init) "init");
-  assert (String.equal (get_command json_layout_init) "layout_init")
+  assert (String.equal (get_command (json_init |> unstatic)) "init");
+  assert (String.equal (get_command (json_layout_init |> unstatic)) "layout_init")
 
-  let n = get_node json_init
-  let layout_n = get_layout_node json_layout_init
+  let n = get_node (json_init |> unstatic)
+  let layout_n = get_layout_node (json_layout_init |> unstatic)
 
   let diff_evaluated () : unit =
     let open Yojson.Basic in
@@ -367,7 +368,7 @@ module Main (EVAL : Eval) = struct
     | p_hd :: p_tl -> insert_value p_tl (List.nth_exn x.children p_hd) type_ key value
 
   let work () =
-    List.iter line_rest ~f:(fun line ->
+    List.iter (line_rest |> unstatic) ~f:(fun line ->
         let j = Yojson.Basic.from_string line in
         command := List.append !command [ j ];
         match get_command j with

@@ -13,6 +13,8 @@ module EVAL : Eval = MakeEval (struct
     recursive_proc_dirtied : (string, bool) Hashtbl.t;
   }
 
+  let meta_staged = "???"
+
   let fresh_meta u =
     match u with
     | Static () ->
@@ -24,7 +26,7 @@ module EVAL : Eval = MakeEval (struct
           }
     | Dyn _ -> panic "todo"
 
-  let remove_meta _ = ()
+  let remove_meta x = ignore_ x
 
   let rec set_recursive_proc_dirtied (n : meta node) (proc_name : string) (m : metric) : unit =
     meta_write m;

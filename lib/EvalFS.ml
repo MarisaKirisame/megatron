@@ -9,8 +9,9 @@ module EVAL : Eval = MakeEval (struct
 
   type meta = unit
 
+  let meta_staged = "unit"
   let fresh_meta u = match u with Static () -> Static () | Dyn _ -> Dyn null_proc
-  let remove_meta () = ()
+  let remove_meta x = x
   let bracket_call_bb _ _ f = f ()
   let bracket_call_proc _ _ f = f ()
   let bb_dirtied _ ~proc_name ~bb_name _ = ()

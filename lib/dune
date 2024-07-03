@@ -1,6 +1,6 @@
 (library
  (name megatron)
- (libraries core)
+ (libraries core yojson)
  (preprocess
   (pps ppx_deriving.show ppx_deriving.ord)))
 

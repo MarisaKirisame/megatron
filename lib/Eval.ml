@@ -232,8 +232,9 @@ module type EvalIn = sig
 
   type meta
 
+  val meta_staged : string
   val fresh_meta : unit sd -> meta sd
-  val remove_meta : meta -> unit
+  val remove_meta : meta sd -> unit sd
   val register_todo_proc : prog -> meta node -> string -> metric -> unit
   val bracket_call_bb : meta node -> string -> (unit -> unit) -> unit
   val bracket_call_proc : meta node -> string -> (unit -> unit) -> unit
@@ -333,7 +334,7 @@ module MakeEval (EI : EvalIn) : Eval = struct
     | lhs, removed :: rhs ->
         (match removed.prev with Some prev -> prev.next <- removed.next | None -> ());
         (match removed.next with Some next -> next.prev <- removed.prev | None -> ());
-        remove_meta removed.m;
+        unstatic (remove_meta (static removed.m));
         x.children <- List.append lhs rhs;
         Hashtbl.iter p.procs ~f:(fun (ProcessedProc (proc_name, _)) ->
             let work bb_name =
