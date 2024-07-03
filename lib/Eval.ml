@@ -229,7 +229,9 @@ module type EvalIn = sig
   module SD : SD with type 'a sd = 'a sd
 
   val name : string
+
   type meta
+
   val meta_staged : string
   val fresh_meta : unit -> meta
   val remove_meta : meta -> unit
@@ -321,8 +323,10 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
     List.iter s ~f:(fun stmt -> eval_stmt p n stmt m)
 
   let eval (p : prog) (n : meta node sd) (m : metric sd) : unit sd =
-    static (List.iter p.order ~f:(fun proc_name ->
-        bracket_call_proc (unstatic n) proc_name (fun _ -> eval_stmts p (unstatic n) (stmts_of_processed_proc p proc_name) (unstatic m))))
+    static
+      (List.iter p.order ~f:(fun proc_name ->
+           bracket_call_proc (unstatic n) proc_name (fun _ ->
+               eval_stmts p (unstatic n) (stmts_of_processed_proc p proc_name) (unstatic m))))
 
   let remove_children (p : prog) (x : meta node) (n : int) (m : metric) : unit =
     match List.split_n x.children n with
@@ -479,11 +483,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
   let recalculate (p : prog) (n : meta node) (m : metric) : unit =
     recalculate_internal p n m (fun n stmts -> eval_stmts p n stmts m)
 
-    let rec seqs x =
-      match x with
-      | [] -> panic ""
-      | hd :: tl -> seq (hd ()) (fun _ -> seqs tl)
-
+  let rec seqs x = match x with [] -> panic "" | hd :: tl -> seq (hd ()) (fun _ -> seqs tl)
 end
 
 let rec assert_node_value_equal l r =
