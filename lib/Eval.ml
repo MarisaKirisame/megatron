@@ -158,13 +158,13 @@ let rec eval_expr (n : 'meta node) (e : expr) (m : metric) : value =
     | Panic (_, x) -> panic ("External: " ^ String.concat ~sep:" " (List.map x ~f:(fun x -> show_value (recurse x))))
     | HasProperty p -> VBool (Option.is_some (Hashtbl.find n.prop p))
     | GetProperty p -> (
-        read m n.id;
+        read m;
         match Hashtbl.find n.prop p with
         | Some x -> x
         | None -> panic ("cannot find property " ^ p ^ " in " ^ string_of_int n.extern_id))
     | HasAttribute p -> VBool (Option.is_some (Hashtbl.find n.attr p))
     | GetAttribute p -> (
-        read m n.id;
+        read m;
         match Hashtbl.find n.attr p with
         | Some x -> x
         | None -> panic ("cannot find attribute " ^ p ^ " in " ^ string_of_int n.extern_id))
@@ -173,9 +173,9 @@ let rec eval_expr (n : 'meta node) (e : expr) (m : metric) : value =
     | Float f -> VFloat f
     | IfExpr (c, t, e) -> if bool_of_value (recurse c) then recurse t else recurse e
     | HasPath p -> VBool (Option.is_some (eval_path_opt n p))
-    | Read (p, prop_name) ->
-        read m n.id;
-        Hashtbl.find_exn (eval_path n p).var prop_name
+    | Read (p, var_name) ->
+        read m;
+        Hashtbl.find_exn (eval_path n p).var var_name
     | And (x, y) -> if bool_of_value (recurse x) then recurse y else VBool false
     | Or (x, y) -> if bool_of_value (recurse x) then VBool true else recurse y
     | GetName -> VString n.name
@@ -301,7 +301,7 @@ module MakeEval (EI : EvalIn) : Eval = struct
   let rec eval_stmt (p : prog) (n : meta node) (s : stmt) (m : metric) : unit =
     match s with
     | Write (prop_name, expr) ->
-        write m n.id;
+        write m;
         let new_value = eval_expr n expr m in
         (match Hashtbl.find n.var prop_name with
         | None -> ()
@@ -393,7 +393,7 @@ module MakeEval (EI : EvalIn) : Eval = struct
   (*print_endline ("add: " ^ string_of_int y.id);*)
 
   let add_prop (p : prog) (n : meta node) (name : string) (v : value) (m : metric) : unit =
-    write m n.id;
+    write m;
     Hashtbl.add_exn n.prop ~key:name ~data:v;
     Hashtbl.iter p.procs ~f:(fun (ProcessedProc (proc_name, _)) ->
         let work bb_name =
@@ -413,7 +413,7 @@ module MakeEval (EI : EvalIn) : Eval = struct
         Option.iter up ~f:work)
 
   let remove_prop (p : prog) (n : meta node) (name : string) (m : metric) : unit =
-    write m n.id;
+    write m;
     ignore (Hashtbl.find_exn n.prop name);
     Hashtbl.remove n.prop name;
     Hashtbl.iter p.procs ~f:(fun (ProcessedProc (proc_name, _)) ->
@@ -434,7 +434,7 @@ module MakeEval (EI : EvalIn) : Eval = struct
         Option.iter up ~f:work)
 
   let add_attr (p : prog) (n : meta node) (name : string) (v : value) (m : metric) : unit =
-    write m n.id;
+    write m;
     Hashtbl.add_exn n.attr ~key:name ~data:v;
     Hashtbl.iter p.procs ~f:(fun (ProcessedProc (proc_name, _)) ->
         let work bb_name =
@@ -453,7 +453,7 @@ module MakeEval (EI : EvalIn) : Eval = struct
         Option.iter up ~f:work)
 
   let remove_attr (p : prog) (n : meta node) (name : string) (m : metric) : unit =
-    write m n.id;
+    write m;
     ignore (Hashtbl.find_exn n.attr name);
     Hashtbl.remove n.attr name;
     Hashtbl.iter p.procs ~f:(fun (ProcessedProc (proc_name, _)) ->

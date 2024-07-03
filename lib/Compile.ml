@@ -2,7 +2,6 @@ open Ast
 open Core
 open Eval
 open Common
-open Metric
 
 let header =
   "  #include <string>\n\

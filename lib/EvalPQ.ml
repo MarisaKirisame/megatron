@@ -42,10 +42,10 @@ module EVAL : Eval = MakeEval (struct
     let result = PriorityQueue.add queue (x, y, z) in
     ignore result;
     (*print_endline ("pushed " ^ (string_of_int y.id) ^ " " ^ string_of_bool result);*)
-    meta_write m y.id
+    meta_write m
 
   let queue_force_push x y z m : unit =
-    meta_write m y.id;
+    meta_write m;
     if PriorityQueue.add queue (x, y, z) then () else panic "push false"
 
   let register_todo_proc p y proc_name m =
@@ -89,7 +89,7 @@ module EVAL : Eval = MakeEval (struct
     if queue_isempty () then ()
     else
       let x, y, z = queue_peek () in
-      meta_read m y.id;
+      meta_read m;
       m.queue_size_acc <- m.queue_size_acc + queue_size ();
       (*(match z with RecomputeProc z | RecomputeBB z -> print_endline ("popped " ^ string_of_int y.id ^ "." ^ z); recursive_print_id_up y);*)
       if y.m.alive then (

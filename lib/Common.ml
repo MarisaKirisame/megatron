@@ -2,6 +2,7 @@ open Core
 
 (*anything passed around must be atomic; return of a function, however, can be non-atomic*)
 type _ code = Expr of string | Stmt of string [@@deriving show]
+type 'x sd = Static of 'x | Dyn of 'x code
 
 let bracket str = "(" ^ str ^ ")"
 let curly_bracket str = "{" ^ str ^ "}"
@@ -26,7 +27,12 @@ let fresh =
 exception EXN of string
 
 let panic msg = raise (EXN msg)
-let seq_staged (lhs : 'a code) (rhs : 'b code) : 'b code = panic "todo"
+let seq_staged (lhs : unit code) (rhs : 'a code) : 'a code = Stmt (unstmt lhs ^ unstmt rhs)
+let seq_ (lhs : unit sd) (rhs : 'a sd) : 'a sd =
+match (lhs, rhs) with
+| Static lhs, Static rhs -> Static rhs
+| Dyn lhs, Dyn rhs -> Dyn (seq_staged lhs rhs)
+
 let member_staged record field : _ code = Expr (unexpr record ^ "." ^ field)
 
 let let_ (x : 'a code) (f : 'a code -> 'b code) =
@@ -41,6 +47,3 @@ let hashtbl_find_staged (h : ('a, 'b) Hashtbl.t code) (k : 'a code) (found : 'b 
   let if_expr = Expr (unexpr h ^ ".count(" ^ unexpr k ^ ") > 0") in
   let then_stmt _ = let_ (Expr (unexpr h ^ square_bracket (unexpr k))) found in
   ite_ if_expr then_stmt missing
-
-let call_ (f : _ code) (xs : _ code list) : _ code = Expr (unexpr f ^ String.concat (List.map xs ~f:unexpr))
-let null_stmt_ = Stmt ""

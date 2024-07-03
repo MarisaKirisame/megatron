@@ -22,7 +22,7 @@ module EVAL : Eval = MakeEval (struct
   let remove_meta _ = ()
 
   let rec set_recursive_proc_dirtied (n : meta node) (proc_name : string) (m : metric) : unit =
-    meta_write m n.id;
+    meta_write m;
     if Hashtbl.find_exn n.m.recursive_proc_dirtied proc_name then ()
     else (
       Hashtbl.set n.m.recursive_proc_dirtied ~key:proc_name ~data:true;
@@ -32,7 +32,7 @@ module EVAL : Eval = MakeEval (struct
     if Option.is_some (Hashtbl.find n.m.proc_inited proc_name) then (
       Hashtbl.set n.m.bb_dirtied ~key:bb_name ~data:true;
       set_recursive_proc_dirtied n proc_name m)
-    else meta_write m n.id
+    else meta_write m
 
   let register_todo_proc _ y proc_name m =
     Hashtbl.add_exn y.m.recursive_proc_dirtied ~key:proc_name ~data:false;
@@ -50,7 +50,7 @@ module EVAL : Eval = MakeEval (struct
   let rec recalculate_internal_aux (p : prog) (n : meta node) (proc_name : string) (down_name : string option)
       (up_name : string option) (m : metric) eval_stmts =
     (*print_endline "enter";*)
-    meta_read m n.id;
+    meta_read m;
     let rerun_if_dirty name =
       if Hashtbl.find_exn n.m.bb_dirtied name then (
         eval_stmts n (stmts_of_basic_block p name);
