@@ -5,7 +5,9 @@ open Metric
 open Common
 open SD
 
-module EVAL : Eval = MakeEval (struct
+module EVAL (SD : SD) = MakeEval (struct
+  include SD
+  module SD = SD
   let name = "DB"
 
   type meta = {

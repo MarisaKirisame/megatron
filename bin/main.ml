@@ -187,8 +187,9 @@ let node_to_html (n : _ node) : string =
   node_to_html_buffer b 0 0 n;
   Buffer.contents b
 
-module Main (SD : SD) (EVAL : Eval) = struct
-  include SD
+module Main (EVAL : Eval) = struct
+  include EVAL
+  module FS = Megatron.EvalFS.EVAL(EVAL.SD)
 
   let rec json_to_node_aux j : _ node =
     let open Yojson.Basic.Util in
@@ -206,8 +207,8 @@ module Main (SD : SD) (EVAL : Eval) = struct
       v)
       v
 
-  let rec node_to_fs_node_aux n : Megatron.EvalFS.EVAL.meta node =
-    Megatron.EvalFS.EVAL.make_node
+  let rec node_to_fs_node_aux n : FS.meta node =
+    FS.make_node
       (List.map n.children ~f:node_to_fs_node_aux)
       ~name:n.name ~attr:n.attr ~prop:n.prop ~extern_id:n.extern_id
 
@@ -357,7 +358,7 @@ module Main (SD : SD) (EVAL : Eval) = struct
         command := [];
         diff_num := !diff_num + 1;
         let fsn = node_to_fs_node n in
-        Megatron.EvalFS.EVAL.eval prog fsn (fresh_metric ());
+        unstatic (FS.eval prog (static fsn) (static (fresh_metric ())));
         assert_node_value_equal n fsn; ()) in
         let work () : unit sd =
           iter_lines chan (fun line_ ->
@@ -388,7 +389,7 @@ module Main (SD : SD) (EVAL : Eval) = struct
         in
         input_change m (node_size n);
         output_change m (layout_size layout_n);
-        EVAL.eval prog n m;
+        EVAL.eval prog (static n) (static m) |> unstatic;
 
         seq
           (diff_evaluated () |> static)
@@ -398,9 +399,9 @@ module Main (SD : SD) (EVAL : Eval) = struct
               (fun _ -> seq (work ()) (fun _ -> "INCREMENTAL EVAL OK!" |> print_endline |> static))))
 end
 
-module MainFSI = Main (S) (Megatron.EvalFS.EVAL)
-module MainFSC = Main (D) (Megatron.EvalFS.EVAL)
-module MainDBI = Main (S) (Megatron.EvalDB.EVAL)
-module MainDBC = Main (D) (Megatron.EvalDB.EVAL)
-module MainPQI = Main (S) (Megatron.EvalPQ.EVAL)
-module MainPQC = Main (D) (Megatron.EvalPQ.EVAL)
+module MainFSI = Main (Megatron.EvalFS.EVAL (S))
+module MainFSC = Main (Megatron.EvalFS.EVAL (D))
+module MainDBI = Main (Megatron.EvalDB.EVAL (S))
+module MainDBC = Main (Megatron.EvalDB.EVAL (D))
+module MainPQI = Main (Megatron.EvalPQ.EVAL (S))
+module MainPQC = Main (Megatron.EvalPQ.EVAL (D))

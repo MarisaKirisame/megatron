@@ -225,10 +225,11 @@ let rec recursive_print_id_up (n : _ node) : unit =
   match n.parent with None -> () | Some p -> recursive_print_id_up p
 
 module type EvalIn = sig
+  include SD
+  module SD : SD with type 'a sd = 'a sd
+
   val name : string
-
   type meta
-
   val meta_staged : string
   val fresh_meta : unit -> meta
   val remove_meta : meta -> unit
@@ -250,7 +251,7 @@ module type Eval = sig
     meta node list ->
     meta node
 
-  val eval : prog -> meta node -> metric -> unit
+  val eval : prog -> meta node SD.sd -> metric SD.sd -> unit SD.sd
   val add_children : prog -> meta node -> meta node -> int -> metric -> unit
   val remove_children : prog -> meta node -> int -> metric -> unit
   val add_prop : prog -> meta node -> string -> value -> metric -> unit
@@ -260,7 +261,7 @@ module type Eval = sig
   val recalculate : prog -> meta node -> metric -> unit
 end
 
-module MakeEval (EI : EvalIn) : Eval = struct
+module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
   include EI
 
   let make_node ~(name : string) ~(attr : (string, value) Hashtbl.t) ~(prop : (string, value) Hashtbl.t)
@@ -318,9 +319,9 @@ module MakeEval (EI : EvalIn) : Eval = struct
   and eval_stmts (p : prog) (n : meta node) (s : stmts) (m : metric) : unit =
     List.iter s ~f:(fun stmt -> eval_stmt p n stmt m)
 
-  let eval (p : prog) (n : meta node) (m : metric) : unit =
-    List.iter p.order ~f:(fun proc_name ->
-        bracket_call_proc n proc_name (fun _ -> eval_stmts p n (stmts_of_processed_proc p proc_name) m))
+  let eval (p : prog) (n : meta node sd) (m : metric sd) : unit sd =
+    static (List.iter p.order ~f:(fun proc_name ->
+        bracket_call_proc (unstatic n) proc_name (fun _ -> eval_stmts p (unstatic n) (stmts_of_processed_proc p proc_name) (unstatic m))))
 
   let remove_children (p : prog) (x : meta node) (n : int) (m : metric) : unit =
     match List.split_n x.children n with
