@@ -1,5 +1,4 @@
 open Common
-open SD
 
 type metric = {
   mutable read_count : int;
@@ -11,17 +10,6 @@ type metric = {
   mutable output_change_count : int;
 }
 [@@deriving show]
-
-let fresh_metric () =
-  {
-    read_count = 0;
-    meta_read_count = 0;
-    write_count = 0;
-    meta_write_count = 0;
-    queue_size_acc = 0;
-    input_change_count = 0;
-    output_change_count = 0;
-  }
 
 let reset_metric m =
   m.read_count <- 0;
