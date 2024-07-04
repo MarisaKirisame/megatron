@@ -194,11 +194,11 @@ module Main (EVAL : Eval) = struct
   let rec json_to_node_aux j : _ node =
     let open Yojson.Basic.Util in
     EVAL.make_node
-      (List.map (j |> member "children" |> to_list) ~f:(fun x -> json_to_node_aux x))
-      ~name:(j |> member "name" |> json_to_string)
-      ~attr:(j |> member "attributes" |> json_to_dict)
-      ~prop:(j |> member "properties" |> json_to_dict)
-      ~extern_id:(j |> member "id" |> json_to_int)
+      (List.map (j |> member "children" |> to_list) ~f:(fun x -> json_to_node_aux x) |> static)
+      ~name:(j |> member "name" |> json_to_string |> static)
+      ~attr:(j |> member "attributes" |> json_to_dict |> static)
+      ~prop:(j |> member "properties" |> json_to_dict |> static)
+      ~extern_id:(j |> member "id" |> json_to_int |> static) |> unstatic
 
   let json_to_node j : _ node =
     let v = json_to_node_aux j in
@@ -209,8 +209,8 @@ module Main (EVAL : Eval) = struct
 
   let rec node_to_fs_node_aux n : FS.meta node =
     FS.make_node
-      (List.map n.children ~f:node_to_fs_node_aux)
-      ~name:n.name ~attr:n.attr ~prop:n.prop ~extern_id:n.extern_id
+      (List.map n.children ~f:node_to_fs_node_aux |> static)
+      ~name:(n.name |> static) ~attr:(n.attr |> static) ~prop:(n.prop |> static) ~extern_id:(n.extern_id |> static) |> unstatic
 
   let node_to_fs_node n =
     let v = node_to_fs_node_aux n in
@@ -239,7 +239,7 @@ module Main (EVAL : Eval) = struct
     | [] -> panic "bad path!"
     | [ i ] ->
         input_change m (node_size y);
-        EVAL.add_children prog x y i m
+        EVAL.add_children prog (x |> static) (y |> static) (i |> static) (m |> static) |> unstatic
     | p_hd :: p_tl -> add_node p_tl (List.nth_exn x.children p_hd) y m
 
   let rec add_layout_node (path : int list) (x : layout_node) (y : layout_node) m : unit =
@@ -256,7 +256,7 @@ module Main (EVAL : Eval) = struct
     | [] -> panic "bad path!"
     | [ i ] ->
         input_change m (node_size (List.nth_exn x.children i));
-        EVAL.remove_children prog x i m
+        EVAL.remove_children prog (x |> static) (i |> static) (m |> static) |> unstatic
     | p_hd :: p_tl -> remove_node p_tl (List.nth_exn x.children p_hd) m
 
   let rec remove_layout_node (path : int list) (x : layout_node) m : unit =
@@ -272,50 +272,50 @@ module Main (EVAL : Eval) = struct
     match path with
     | [] -> panic "bad path!"
     | [ i ] ->
-        EVAL.remove_children prog x i m;
-        EVAL.add_children prog x y i m
+        EVAL.remove_children prog (x |> static) (i |> static) m |> unstatic;
+        EVAL.add_children prog (x |> static) (y |> static) (i |> static) m |> unstatic
     | p_hd :: p_tl -> replace_node p_tl (List.nth_exn x.children p_hd) y m
 
-  let rec replace_layout_node (path : int list) (x : layout_node) (y : layout_node) m : unit =
+  let rec replace_layout_node (path : int list) (x : layout_node) (y : layout_node) (m : metric sd) : unit =
     match path with
     | [] -> panic "bad path!"
     | [ i ] ->
         let lhs, removed :: rhs = List.split_n x.children i in
-        output_change m (layout_size removed + layout_size y);
+        output_change (m |> unstatic) (layout_size removed + layout_size y);
         x.children <- List.append lhs (y :: rhs)
     | p_hd :: p_tl -> replace_layout_node p_tl (List.nth_exn x.children p_hd) y m
 
-  let rec replace_value (path : int list) (x : _ node) (type_ : string) (key : string) (value : value) m : unit =
+  let rec replace_value (path : int list) (x : _ node) (type_ : string) (key : string) (value : value) (m : metric sd) : unit =
     match path with
     | [] -> (
-        input_change m 1;
+        input_change (m |> unstatic) 1;
         match type_ with
         | "attributes" ->
-            EVAL.remove_attr prog x key m;
-            EVAL.add_attr prog x key value m
+            EVAL.remove_attr prog (x |> static) key m |> unstatic;
+            EVAL.add_attr prog (x |> static) key (value |> static) m |> unstatic
         | "properties" ->
-            EVAL.remove_prop prog x key m;
-            EVAL.add_prop prog x key value m
+            EVAL.remove_prop prog (x |> static) key m |> unstatic;
+            EVAL.add_prop prog (x |> static) key (value |> static) m |> unstatic
         | _ -> panic ("type: " ^ type_))
     | p_hd :: p_tl -> replace_value p_tl (List.nth_exn x.children p_hd) type_ key value m
 
-  let rec delete_value (path : int list) (x : _ node) (type_ : string) (key : string) m : unit =
+  let rec delete_value (path : int list) (x : _ node) (type_ : string) (key : string) (m : metric sd) : unit =
     match path with
     | [] -> (
-        input_change m 1;
+        input_change (m |> unstatic) 1;
         match type_ with
-        | "attributes" -> EVAL.remove_attr prog x key m
-        | "properties" -> EVAL.remove_prop prog x key m
+        | "attributes" -> EVAL.remove_attr prog (x |> static) key m |> unstatic
+        | "properties" -> EVAL.remove_prop prog (x |> static) key m |> unstatic
         | _ -> panic ("type: " ^ type_))
     | p_hd :: p_tl -> delete_value p_tl (List.nth_exn x.children p_hd) type_ key m
 
-  let rec insert_value (path : int list) (x : _ node) (type_ : string) (key : string) (value : value) m : unit =
+  let rec insert_value (path : int list) (x : _ node) (type_ : string) (key : string) (value : value) (m : metric sd) : unit =
     match path with
     | [] -> (
-        input_change m 1;
+        input_change (m |> unstatic) 1;
         match type_ with
-        | "attributes" -> EVAL.add_attr prog x key value m
-        | "properties" -> EVAL.add_prop prog x key value m
+        | "attributes" -> EVAL.add_attr prog (x |> static) key (value |> static) m |> unstatic
+        | "properties" -> EVAL.add_prop prog (x |> static) key (value |> static) m |> unstatic
         | _ -> panic ("type: " ^ type_))
     | p_hd :: p_tl -> insert_value p_tl (List.nth_exn x.children p_hd) type_ key value m
 
@@ -368,7 +368,7 @@ module Main (EVAL : Eval) = struct
                                                       ("command", `List !(command |> unstatic));
                                                     ])
                                                 |> static);
-                                              (fun _ -> output_string out_file "\n" |> static);
+                                              (fun _ -> Out_channel.output_string out_file "\n" |> static);
                                               (fun _ -> reset_metric (m |> unstatic) |> static);
                                               (fun _ -> (command |> unstatic := []) |> static);
                                               (fun _ -> (diff_num |> unstatic := !(diff_num |> unstatic) + 1) |> static);
@@ -391,25 +391,25 @@ module Main (EVAL : Eval) = struct
                                                   |> static
                                               | "recalculate" ->
                                                   (*print_endline "recalculate!";*)
-                                                  EVAL.recalculate prog (n |> unstatic) (m |> unstatic);
+                                                  EVAL.recalculate prog n m |> unstatic;
                                                   diff_evaluated ()
                                               | "remove" ->
                                                   (*print_endline ("remove_node:");*)
                                                   remove_node (get_path j) (n |> unstatic) (m |> unstatic) |> static
                                               | "replace" ->
-                                                  replace_node (get_path j) (n |> unstatic) (get_node j) (m |> unstatic)
+                                                  replace_node (get_path j) (n |> unstatic) (get_node j) m
                                                   |> static
                                               | "replace_value" ->
                                                   replace_value (get_path j) (n |> unstatic) (get_type j) (get_key j)
-                                                    (get_value j) (m |> unstatic)
+                                                    (get_value j) m
                                                   |> static
                                               | "delete_value" ->
                                                   delete_value (get_path j) (n |> unstatic) (get_type j) (get_key j)
-                                                    (m |> unstatic)
+                                                    m
                                                   |> static
                                               | "insert_value" ->
                                                   insert_value (get_path j) (n |> unstatic) (get_type j) (get_key j)
-                                                    (get_value j) (m |> unstatic)
+                                                    (get_value j) m
                                                   |> static
                                               | "layout_remove" ->
                                                   remove_layout_node (get_path j) (layout_n |> unstatic) (m |> unstatic)
@@ -420,7 +420,7 @@ module Main (EVAL : Eval) = struct
                                                   |> static
                                               | "layout_replace" ->
                                                   replace_layout_node (get_path j) (layout_n |> unstatic)
-                                                    (get_layout_node j) (m |> unstatic)
+                                                    (get_layout_node j) m
                                                   |> static
                                               | "layout_info_changed" -> output_change (m |> unstatic) 1 |> static
                                               | x -> panic x)
