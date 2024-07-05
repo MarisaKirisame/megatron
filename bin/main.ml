@@ -205,10 +205,8 @@ module Main (EVAL : Eval) = struct
                (Option.value (List.drop_last (n |> unstatic).children) ~default:[])
                (Option.value (List.tl (n |> unstatic).children) ~default:[]))
             ~f:(fun (x, y) ->
-              x.parent <- Some (n |> unstatic);
-              x.next <- Some y;
-              y.prev <- Some x;
-              recurse (x |> static) |> unstatic);
+              seqs [(fun _ -> node_set_parent x n); (fun _ -> node_set_next x y); (fun _ -> node_set_prev y x); (fun _ -> recurse (x |> static))]
+               |> unstatic);
           match List.last (n |> unstatic).children with
           | Some x ->
               x.parent <- Some (n |> unstatic);
