@@ -5,29 +5,6 @@ open Common
 open SD
 
 let rec node_size (n : _ node) : int = 1 + List.sum (module Int) n.children ~f:node_size
-
-let rec set_children_relation (n : 'meta node) : unit =
-  List.iter
-    (List.zip_exn
-       (Option.value (List.drop_last n.children) ~default:[])
-       (Option.value (List.tl n.children) ~default:[]))
-    ~f:(fun (x, y) ->
-      x.parent <- Some n;
-      x.next <- Some y;
-      y.prev <- Some x;
-      set_children_relation x);
-  match List.last n.children with
-  | Some x ->
-      x.parent <- Some n;
-      set_children_relation x
-  | None -> ()
-
-let set_relation (n : 'meta node) : unit =
-  n.parent <- None;
-  n.prev <- None;
-  n.next <- None;
-  set_children_relation n
-
 let rec rightmost (x : _ node) : _ node = match List.last x.children with Some x -> rightmost x | None -> x
 
 let rec show_node (n : 'meta node) : string =
@@ -203,20 +180,22 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
 
   let make_node ~(name : string sd) ~(attr : (string, value) Hashtbl.t sd) ~(prop : (string, value) Hashtbl.t sd)
       ~(extern_id : int sd) (children : EI.meta node list sd) : EI.meta node sd =
-    {
-      id = count ();
-      name = name |> unstatic;
-      attr = attr |> unstatic;
-      prop = prop |> unstatic;
-      extern_id = extern_id |> unstatic;
-      children = children |> unstatic;
-      var = Hashtbl.create (module String);
-      parent = None;
-      next = None;
-      prev = None;
-      m = unstatic (EI.fresh_meta tt);
-    }
-    |> static
+    if is_static then
+      {
+        id = count ();
+        name = name |> unstatic;
+        attr = attr |> unstatic;
+        prop = prop |> unstatic;
+        extern_id = extern_id |> unstatic;
+        children = children |> unstatic;
+        var = Hashtbl.create (module String);
+        parent = None;
+        next = None;
+        prev = None;
+        m = unstatic (EI.fresh_meta tt);
+      }
+      |> static
+    else Expr "node" |> dyn
 
   let reversed_path (p : path) (n : 'a node sd) : 'a node list sd =
     match p with

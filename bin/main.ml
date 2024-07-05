@@ -171,20 +171,39 @@ module Main (EVAL : Eval) = struct
   include EVAL
   module FS = Megatron.EvalFS.EVAL (EVAL.SD)
 
-  let rec json_to_node_aux j : meta node sd =
-    EVAL.make_node
-      (list_map (j |> json_member (string "children") |> json_to_list) ~f:(fun x -> json_to_node_aux x))
-      ~name:(j |> json_member (string "name") |> json_to_string)
-      ~attr:(j |> json_member (string "attributes") |> json_to_dict)
-      ~prop:(j |> json_member (string "properties") |> json_to_dict)
-      ~extern_id:(j |> json_member (string "id") |> json_to_int)
-    
+  let json_to_node_aux : Yojson.Basic.t sd -> meta node sd =
+    fix (fun recurse j ->
+        EVAL.make_node
+          (list_map (j |> json_member (string "children") |> json_to_list) ~f:(fun x -> recurse x))
+          ~name:(j |> json_member (string "name") |> json_to_string)
+          ~attr:(j |> json_member (string "attributes") |> json_to_dict)
+          ~prop:(j |> json_member (string "properties") |> json_to_dict)
+          ~extern_id:(j |> json_member (string "id") |> json_to_int))
+
+  let rec set_children_relation (n : 'meta node) : unit =
+    List.iter
+      (List.zip_exn
+         (Option.value (List.drop_last n.children) ~default:[])
+         (Option.value (List.tl n.children) ~default:[]))
+      ~f:(fun (x, y) ->
+        x.parent <- Some n;
+        x.next <- Some y;
+        y.prev <- Some x;
+        set_children_relation x);
+    match List.last n.children with
+    | Some x ->
+        x.parent <- Some n;
+        set_children_relation x
+    | None -> ()
+
+  let set_relation (n : _ node sd) : unit sd =
+    (n |> unstatic).parent <- None;
+    (n |> unstatic).prev <- None;
+    (n |> unstatic).next <- None;
+    set_children_relation (n |> unstatic) |> static
 
   let json_to_node j : _ node sd =
-    let v = json_to_node_aux j in
-    
-      set_relation (v |> unstatic);
-      v
+    let_ (json_to_node_aux j) (fun v -> seq (set_relation v) (fun _ -> v))    
 
   let rec node_to_fs_node_aux n : FS.meta node =
     FS.make_node
@@ -193,15 +212,21 @@ module Main (EVAL : Eval) = struct
     |> unstatic
 
   let node_to_fs_node n =
+    if is_static then
     let v = node_to_fs_node_aux n in
-    (fun v ->
-      set_relation v;
-      v)
+      set_relation (v |> FS.static) |> unstatic;
       v
+    else todo "convert"
 
   let rec json_to_layout_node (j : Yojson.Basic.t sd) : layout_node sd =
     let open Yojson.Basic.Util in
-    { children = List.map (j |> unstatic |> member "children" |> to_list) ~f:(fun n -> n |> static |> json_to_layout_node |> unstatic) } |> static
+    {
+      children =
+        List.map
+          (j |> unstatic |> member "children" |> to_list)
+          ~f:(fun n -> n |> static |> json_to_layout_node |> unstatic);
+    }
+    |> static
 
   let get_command (j : Basic.t sd) : string sd = j |> json_member (string "name") |> json_to_string
 
@@ -325,12 +350,8 @@ module Main (EVAL : Eval) = struct
                                     (fun _ ->
                                       assert_ (string_equal (get_command json_layout_init) (string "layout_init")));
                                     (fun _ ->
-                                      let_
-                                        (get_node json_init)
-                                        (fun n ->
-                                          let_
-                                            (get_layout_node json_layout_init)
-                                            (fun layout_n ->
+                                      let_ (get_node json_init) (fun n ->
+                                          let_ (get_layout_node json_layout_init) (fun layout_n ->
                                               let diff_evaluated () : unit sd =
                                                 let open Yojson.Basic in
                                                 seqs
@@ -383,25 +404,37 @@ module Main (EVAL : Eval) = struct
                                                         (*print_endline ("remove_node:");*)
                                                         remove_node (get_path j) (n |> unstatic) m
                                                     | "replace" ->
-                                                        replace_node (get_path j) (n |> unstatic) (get_node j |> unstatic) m
+                                                        replace_node (get_path j) (n |> unstatic)
+                                                          (get_node j |> unstatic)
+                                                          m
                                                     | "replace_value" ->
-                                                        replace_value (get_path j) (n |> unstatic) (get_type j |> unstatic)
-                                                          (get_key j |> unstatic) (get_value j |> unstatic) m
+                                                        replace_value (get_path j) (n |> unstatic)
+                                                          (get_type j |> unstatic)
+                                                          (get_key j |> unstatic)
+                                                          (get_value j |> unstatic)
+                                                          m
                                                     | "delete_value" ->
-                                                        delete_value (get_path j) (n |> unstatic) (get_type j |> unstatic)
-                                                          (get_key j |> unstatic) m
+                                                        delete_value (get_path j) (n |> unstatic)
+                                                          (get_type j |> unstatic)
+                                                          (get_key j |> unstatic)
+                                                          m
                                                     | "insert_value" ->
-                                                        insert_value (get_path j) (n |> unstatic) (get_type j |> unstatic)
-                                                          (get_key j |> unstatic) (get_value j |> unstatic) m
+                                                        insert_value (get_path j) (n |> unstatic)
+                                                          (get_type j |> unstatic)
+                                                          (get_key j |> unstatic)
+                                                          (get_value j |> unstatic)
+                                                          m
                                                     | "layout_remove" ->
                                                         remove_layout_node (get_path j) (layout_n |> unstatic)
                                                           (m |> unstatic)
                                                     | "layout_add" ->
                                                         add_layout_node (get_path j) (layout_n |> unstatic)
-                                                          (get_layout_node j |> unstatic) m
+                                                          (get_layout_node j |> unstatic)
+                                                          m
                                                     | "layout_replace" ->
                                                         replace_layout_node (get_path j) (layout_n |> unstatic)
-                                                          (get_layout_node j |> unstatic) m
+                                                          (get_layout_node j |> unstatic)
+                                                          m
                                                     | "layout_info_changed" -> output_change (m |> unstatic) 1 |> static
                                                     | x -> panic x)
                                               in

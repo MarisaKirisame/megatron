@@ -9,7 +9,7 @@ type _ code =
 (*statement that does not return*) [@@deriving show]
 
 let unexpr = function Expr s -> bracket s
-let unstmt = function Stmt s -> s
+let unstmt = function Stmt s -> s | Expr x -> x ^ ";" | x -> panic (show_code x)
 
 module type SD = sig
   type _ sd
@@ -19,6 +19,8 @@ module type SD = sig
   (*escape hatch*)
   val static : 'a -> 'a sd
   val unstatic : 'a sd -> 'a
+  val dyn : 'a code -> 'a sd
+  val undyn : 'a sd -> 'a code
   val tt : unit sd
   val make_ref : 'a sd -> 'a ref sd
   val read_ref : 'a ref sd -> 'a sd
@@ -46,8 +48,8 @@ module type SD = sig
   val json_to_dict : Yojson.Basic.t sd -> (string, value) Hashtbl.t sd
   val json_to_int : Yojson.Basic.t sd -> int sd
   val json_to_list : Yojson.Basic.t sd -> Yojson.Basic.t list sd
-
   val list_map : 'a list sd -> f:('a sd -> 'b sd) -> 'b list sd
+  val fix : (('a sd -> 'b sd) -> 'a sd -> 'b sd) -> 'a sd -> 'b sd
 end
 
 module S : SD with type 'x sd = 'x = struct
@@ -56,6 +58,8 @@ module S : SD with type 'x sd = 'x = struct
   let is_static = true
   let static x = x
   let unstatic x = x
+  let dyn x = panic "dyn"
+  let undyn x = panic "undyn"
   let tt = ()
 
   let seq lhs rhs =
@@ -112,6 +116,7 @@ module S : SD with type 'x sd = 'x = struct
 
   let json_to_list = Yojson.Basic.Util.to_list
   let list_map = List.map
+  let rec fix (f : ('a -> 'b) -> 'a -> 'b) (x : 'a) : 'b = f (fun x -> fix f x) x
 end
 
 module D : SD with type 'x sd = 'x code = struct
@@ -120,16 +125,19 @@ module D : SD with type 'x sd = 'x code = struct
   let is_static = false
   let static x = panic "static"
   let unstatic x = panic "unstatic"
+  let dyn x = x
+  let undyn x = x
   let seq lhs rhs = Stmt (unstmt lhs ^ unstmt (rhs ()))
 
   let let_ (x : 'a code) (f : 'a code -> 'b code) : 'b code =
     let v = fresh () in
     seq (Stmt ("auto " ^ v ^ "= " ^ bracket (unexpr x) ^ ";")) (fun _ -> f (Expr v))
 
-  let lam f =
+  let lam (f : 'a code -> 'b code) : ('a -> 'b) code =
     let v = fresh () in
     Expr ("[&](const auto &" ^ v ^ ") { " ^ unstmt (f (Expr v)) ^ " }")
 
+  let lam2 (f : 'a code -> 'b code -> 'c code) : ('a -> 'b -> 'c) code = lam (fun a -> lam (fun b -> f a b))
   let tt = Expr "make_unit()"
   let app f x = Expr (unexpr f ^ bracket (unexpr x))
   let json_of_string x = Expr ("json_of_string" ^ bracket (unexpr x))
@@ -154,7 +162,15 @@ module D : SD with type 'x sd = 'x code = struct
   let json_to_dict j = Expr ("json_to_dict" ^ bracket (unexpr j))
   let json_to_int j = Expr ("json_to_int" ^ bracket (unexpr j))
   let json_to_list j = Expr ("json_to_list" ^ bracket (unexpr j))
-  let list_map _ ~f = todo "map"
+  let list_map l ~f = Expr ("list_map" ^ bracket (unexpr l ^ ", " ^ unexpr (lam f)))
+
+  let fix (f : ('a code -> 'b code) -> 'a code -> 'b code) (x : 'a code) : 'b code =
+    let fname = fresh () in
+    let xname = fresh () in
+    Expr
+      ("fix " ^ fname ^ ", " ^ xname
+      ^ bracket (unexpr (f (fun x -> Expr (fname ^ bracket xname)) (Expr xname)))
+      ^ unexpr x)
 end
 
 (*
