@@ -180,44 +180,37 @@ module Main (EVAL : Eval) = struct
           ~prop:(j |> json_member (string "properties") |> json_to_dict)
           ~extern_id:(j |> json_member (string "id") |> json_to_int))
 
-  let set_children_relation : 'a node sd -> unit sd =
-    fix (fun recurse (n : 'a node sd) ->
-        List.iter
-          (List.zip_exn
-             (Option.value (List.drop_last (n |> unstatic).children) ~default:[])
-             (Option.value (List.tl (n |> unstatic).children) ~default:[]))
-          ~f:(fun (x, y) ->
-            x.parent <- Some (n |> unstatic);
-            x.next <- Some y;
-            y.prev <- Some x;
-            recurse (x |> static) |> unstatic);
-        match List.last (n |> unstatic).children with
-        | Some x ->
-            x.parent <- Some (n |> unstatic);
-            recurse (x |> static)
-        | None -> tt)
-
   let set_relation (n : 'a node sd) : unit sd =
     let set_children_relation =
       fix (fun recurse (n : 'a node sd) ->
-          List.iter
-            (List.zip_exn
-               (Option.value (List.drop_last (n |> unstatic).children) ~default:[])
-               (Option.value (List.tl (n |> unstatic).children) ~default:[]))
-            ~f:(fun (x, y) ->
-              seqs [(fun _ -> node_set_parent x n); (fun _ -> node_set_next x y); (fun _ -> node_set_prev y x); (fun _ -> recurse (x |> static))]
-               |> unstatic);
-          match List.last (n |> unstatic).children with
-          | Some x ->
-              x.parent <- Some (n |> unstatic);
-              recurse (x |> static)
-          | None -> tt)
+          seq
+            (list_iter
+               (List.zip_exn
+                  (Option.value (List.drop_last (n |> unstatic).children) ~default:[])
+                  (Option.value (List.tl (n |> unstatic).children) ~default:[])
+               |> static)
+               ~f:(fun p ->
+                 let_ (zro p) (fun x ->
+                     let_ (fst p) (fun y ->
+                         seqs
+                           [
+                             (fun _ -> node_set_parent x (n |> some));
+                             (fun _ -> node_set_next x (y |> some));
+                             (fun _ -> node_set_prev y (x |> some));
+                             (fun _ -> recurse x);
+                           ]))))
+            (fun _ ->
+              match List.last (n |> unstatic).children with
+              | Some x ->
+                  x.parent <- Some (n |> unstatic);
+                  recurse (x |> static)
+              | None -> tt))
     in
     seqs
       [
-        (fun _ -> node_set_parent n none);
-        (fun _ -> node_set_prev n none);
-        (fun _ -> node_set_next n none);
+        (fun _ -> node_set_parent n (none ()));
+        (fun _ -> node_set_prev n (none ()));
+        (fun _ -> node_set_next n (none ()));
         (fun _ -> set_children_relation n);
       ]
 

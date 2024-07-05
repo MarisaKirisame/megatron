@@ -10,6 +10,7 @@ type _ code =
 
 let unexpr = function Expr s -> bracket s
 let unstmt = function Stmt s -> s | Expr x -> x ^ ";" | x -> panic (show_code x)
+let unproc = function Proc p -> p | x -> panic (show_code x)
 
 module type SD = sig
   type _ sd
@@ -56,7 +57,11 @@ module type SD = sig
   val node_set_prev : 'a node sd -> 'a node option sd -> unit sd
   val node_get_next : 'a node sd -> 'a node option sd
   val node_set_next : 'a node sd -> 'a node option sd -> unit sd
-  val none : 'a option sd
+  val none : unit -> 'a option sd
+  val some : 'a sd -> 'a option sd
+  val list_iter : 'a list sd -> f:('a sd -> unit sd) -> unit sd
+  val zro : ('a * 'b) sd -> 'a sd
+  val fst : ('a * 'b) sd -> 'b sd
 end
 
 module S : SD with type 'x sd = 'x = struct
@@ -130,7 +135,11 @@ module S : SD with type 'x sd = 'x = struct
   let node_set_prev n v = n.prev <- v
   let node_get_next n = n.next
   let node_set_next n v = n.next <- v
-  let none = None
+  let none () = None
+  let some x = Some x
+  let list_iter (l : 'a list) ~(f : 'a -> unit) = List.iter l ~f
+  let zro (a, b) = a
+  let fst (a, b) = b
 end
 
 module D : SD with type 'x sd = 'x code = struct
@@ -192,7 +201,15 @@ module D : SD with type 'x sd = 'x code = struct
   let node_set_prev n v = Stmt (unexpr n ^ ".prev" ^ "=" ^ unexpr v)
   let node_get_next n = Expr (unexpr n ^ ".next")
   let node_set_next n v = Stmt (unexpr n ^ ".next" ^ "=" ^ unexpr v)
-  let none = Expr "none"
+  let none () = Expr "none"
+  let some x = Expr ("some" ^ bracket (unexpr x))
+
+  let list_iter (l : 'a list code) ~(f : 'a code -> unit code) : unit code =
+    let v = fresh () in
+    Stmt ("for (auto& " ^ v ^ ":" ^ unexpr l ^ ")" ^ square_bracket (unproc (f (Expr v))))
+
+  let zro p = Expr ("zro" ^ bracket (unexpr p))
+  let fst p = Expr ("fst" ^ bracket (unexpr p))
 end
 
 (*
@@ -208,7 +225,7 @@ let hashtbl_find_staged (h : ('a, 'b) Hashtbl.t code) (k : 'a code) (found : 'b 
 let ignore_ (x : 'a sd) : unit sd =
   match x with Static _ -> () |> static | Dyn x -> let_staged x (fun _ -> unit_staged) |> dyn
 
-let list_iter_ (l : 'a list sd) ~(f : 'a sd -> unit sd) : unit sd =
+let list_iter (l : 'a list sd) ~(f : 'a sd -> unit sd) : unit sd =
   match l with Static l -> List.iter l ~f:(fun a -> static a |> f |> unstatic) |> static
 *)
 
