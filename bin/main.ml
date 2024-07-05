@@ -180,30 +180,50 @@ module Main (EVAL : Eval) = struct
           ~prop:(j |> json_member (string "properties") |> json_to_dict)
           ~extern_id:(j |> json_member (string "id") |> json_to_int))
 
-  let rec set_children_relation (n : 'meta node) : unit =
-    List.iter
-      (List.zip_exn
-         (Option.value (List.drop_last n.children) ~default:[])
-         (Option.value (List.tl n.children) ~default:[]))
-      ~f:(fun (x, y) ->
-        x.parent <- Some n;
-        x.next <- Some y;
-        y.prev <- Some x;
-        set_children_relation x);
-    match List.last n.children with
-    | Some x ->
-        x.parent <- Some n;
-        set_children_relation x
-    | None -> ()
+  let set_children_relation : 'a node sd -> unit sd =
+    fix (fun recurse (n : 'a node sd) ->
+        List.iter
+          (List.zip_exn
+             (Option.value (List.drop_last (n |> unstatic).children) ~default:[])
+             (Option.value (List.tl (n |> unstatic).children) ~default:[]))
+          ~f:(fun (x, y) ->
+            x.parent <- Some (n |> unstatic);
+            x.next <- Some y;
+            y.prev <- Some x;
+            recurse (x |> static) |> unstatic);
+        match List.last (n |> unstatic).children with
+        | Some x ->
+            x.parent <- Some (n |> unstatic);
+            recurse (x |> static)
+        | None -> tt)
 
-  let set_relation (n : _ node sd) : unit sd =
-    (n |> unstatic).parent <- None;
-    (n |> unstatic).prev <- None;
-    (n |> unstatic).next <- None;
-    set_children_relation (n |> unstatic) |> static
+  let set_relation (n : 'a node sd) : unit sd =
+    let set_children_relation =
+      fix (fun recurse (n : 'a node sd) ->
+          List.iter
+            (List.zip_exn
+               (Option.value (List.drop_last (n |> unstatic).children) ~default:[])
+               (Option.value (List.tl (n |> unstatic).children) ~default:[]))
+            ~f:(fun (x, y) ->
+              x.parent <- Some (n |> unstatic);
+              x.next <- Some y;
+              y.prev <- Some x;
+              recurse (x |> static) |> unstatic);
+          match List.last (n |> unstatic).children with
+          | Some x ->
+              x.parent <- Some (n |> unstatic);
+              recurse (x |> static)
+          | None -> tt)
+    in
+    seqs
+      [
+        (fun _ -> node_set_parent n none);
+        (fun _ -> node_set_prev n none);
+        (fun _ -> node_set_next n none);
+        (fun _ -> set_children_relation n);
+      ]
 
-  let json_to_node j : _ node sd =
-    let_ (json_to_node_aux j) (fun v -> seq (set_relation v) (fun _ -> v))    
+  let json_to_node j : _ node sd = let_ (json_to_node_aux j) (fun v -> seq (set_relation v) (fun _ -> v))
 
   let rec node_to_fs_node_aux n : FS.meta node =
     FS.make_node
@@ -212,10 +232,10 @@ module Main (EVAL : Eval) = struct
     |> unstatic
 
   let node_to_fs_node n =
-    if is_static then
-    let v = node_to_fs_node_aux n in
-      set_relation (v |> FS.static) |> unstatic;
-      v
+    if is_static then (
+      let v = node_to_fs_node_aux n in
+      set_relation (v |> static) |> unstatic;
+      v)
     else todo "convert"
 
   let rec json_to_layout_node (j : Yojson.Basic.t sd) : layout_node sd =

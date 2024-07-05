@@ -50,6 +50,13 @@ module type SD = sig
   val json_to_list : Yojson.Basic.t sd -> Yojson.Basic.t list sd
   val list_map : 'a list sd -> f:('a sd -> 'b sd) -> 'b list sd
   val fix : (('a sd -> 'b sd) -> 'a sd -> 'b sd) -> 'a sd -> 'b sd
+  val node_get_parent : 'a node sd -> 'a node option sd
+  val node_set_parent : 'a node sd -> 'a node option sd -> unit sd
+  val node_get_prev : 'a node sd -> 'a node option sd
+  val node_set_prev : 'a node sd -> 'a node option sd -> unit sd
+  val node_get_next : 'a node sd -> 'a node option sd
+  val node_set_next : 'a node sd -> 'a node option sd -> unit sd
+  val none : 'a option sd
 end
 
 module S : SD with type 'x sd = 'x = struct
@@ -117,6 +124,13 @@ module S : SD with type 'x sd = 'x = struct
   let json_to_list = Yojson.Basic.Util.to_list
   let list_map = List.map
   let rec fix (f : ('a -> 'b) -> 'a -> 'b) (x : 'a) : 'b = f (fun x -> fix f x) x
+  let node_get_parent n = n.parent
+  let node_set_parent n v = n.parent <- v
+  let node_get_prev n = n.prev
+  let node_set_prev n v = n.prev <- v
+  let node_get_next n = n.next
+  let node_set_next n v = n.next <- v
+  let none = None
 end
 
 module D : SD with type 'x sd = 'x code = struct
@@ -171,6 +185,14 @@ module D : SD with type 'x sd = 'x code = struct
       ("fix " ^ fname ^ ", " ^ xname
       ^ bracket (unexpr (f (fun x -> Expr (fname ^ bracket xname)) (Expr xname)))
       ^ unexpr x)
+
+  let node_get_parent n = Expr (unexpr n ^ ".parent")
+  let node_set_parent n v = Stmt (unexpr n ^ ".parent" ^ "=" ^ unexpr v)
+  let node_get_prev n = Expr (unexpr n ^ ".prev")
+  let node_set_prev n v = Stmt (unexpr n ^ ".prev" ^ "=" ^ unexpr v)
+  let node_get_next n = Expr (unexpr n ^ ".next")
+  let node_set_next n v = Stmt (unexpr n ^ ".next" ^ "=" ^ unexpr v)
+  let none = Expr "none"
 end
 
 (*
