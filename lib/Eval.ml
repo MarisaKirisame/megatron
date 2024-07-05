@@ -4,7 +4,6 @@ open Metric
 open Common
 open SD
 
-let rec node_size (n : _ node) : int = 1 + List.sum (module Int) n.children ~f:node_size
 let rec rightmost (x : _ node) : _ node = match List.last x.children with Some x -> rightmost x | None -> x
 
 let rec show_node (n : 'meta node) : string =
@@ -239,52 +238,47 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
 
   let rec eval_expr (n : 'meta node sd) (e : expr) (m : metric sd) : value sd =
     let recurse e = eval_expr n e m in
-    try
-      match e with
-      | Panic (_, x) ->
-          panic ("External: " ^ String.concat ~sep:" " (List.map x ~f:(fun x -> show_value (recurse x |> unstatic))))
-      | HasProperty p -> VBool (Option.is_some (Hashtbl.find (n |> unstatic).prop p)) |> static
-      | GetProperty p -> (
-          read_metric m |> unstatic;
-          match Hashtbl.find (n |> unstatic).prop p with
-          | Some x -> x |> static
-          | None -> panic ("cannot find property " ^ p ^ " in " ^ string_of_int (n |> unstatic).extern_id))
-      | HasAttribute p -> VBool (Option.is_some (Hashtbl.find (n |> unstatic).attr p)) |> static
-      | GetAttribute p -> (
-          read_metric m |> unstatic;
-          match Hashtbl.find (n |> unstatic).attr p with
-          | Some x -> x |> static
-          | None -> panic ("cannot find attribute " ^ p ^ " in " ^ string_of_int (n |> unstatic).extern_id))
-      | String s -> VString s |> static
-      | Int i -> VInt i |> static
-      | Float f -> VFloat f |> static
-      | IfExpr (c, t, e) -> if bool_of_value (recurse c |> unstatic) then recurse t else recurse e
-      | HasPath p -> VBool (Option.is_some (eval_path_opt (n |> unstatic) p)) |> static
-      | Read (p, var_name) ->
-          read_metric m |> unstatic;
-          Hashtbl.find_exn (eval_path (n |> unstatic) p).var var_name |> static
-      | And (x, y) -> if bool_of_value (recurse x |> unstatic) then recurse y else VBool false |> static
-      | Or (x, y) -> if bool_of_value (recurse x |> unstatic) then VBool true |> static else recurse y
-      | GetName -> VString (n |> unstatic).name |> static
-      | Bool x -> VBool x |> static
-      | Call (f, xs) -> eval_func f (List.map ~f:(fun v -> recurse v |> unstatic) xs) |> static
-      (*| _ -> panic ("unhandled case in eval_expr:" ^ show_expr e)*)
-    with
-    | ReRaise exn -> raise (ReRaise exn)
-    | exn ->
-        print_endline (show_expr e) |> unstatic;
-        raise (ReRaise (Exn.to_string exn))
+
+    match e with
+    | Panic (_, x) ->
+        panic ("External: " ^ String.concat ~sep:" " (List.map x ~f:(fun x -> show_value (recurse x |> unstatic))))
+    | HasProperty p -> VBool (Option.is_some (Hashtbl.find (n |> unstatic).prop p)) |> static
+    | GetProperty p -> (
+        read_metric m |> unstatic;
+        match Hashtbl.find (n |> unstatic).prop p with
+        | Some x -> x |> static
+        | None -> panic ("cannot find property " ^ p ^ " in " ^ string_of_int (n |> unstatic).extern_id))
+    | HasAttribute p -> VBool (Option.is_some (Hashtbl.find (n |> unstatic).attr p)) |> static
+    | GetAttribute p -> (
+        read_metric m |> unstatic;
+        match Hashtbl.find (n |> unstatic).attr p with
+        | Some x -> x |> static
+        | None -> panic ("cannot find attribute " ^ p ^ " in " ^ string_of_int (n |> unstatic).extern_id))
+    | String s -> VString s |> static
+    | Int i -> VInt i |> static
+    | Float f -> VFloat f |> static
+    | IfExpr (c, t, e) -> if bool_of_value (recurse c |> unstatic) then recurse t else recurse e
+    | HasPath p -> VBool (Option.is_some (eval_path_opt (n |> unstatic) p)) |> static
+    | Read (p, var_name) ->
+        read_metric m |> unstatic;
+        Hashtbl.find_exn (eval_path (n |> unstatic) p).var var_name |> static
+    | And (x, y) -> if bool_of_value (recurse x |> unstatic) then recurse y else VBool false |> static
+    | Or (x, y) -> if bool_of_value (recurse x |> unstatic) then VBool true |> static else recurse y
+    | GetName -> VString (n |> unstatic).name |> static
+    | Bool x -> VBool x |> static
+    | Call (f, xs) -> eval_func f (List.map ~f:(fun v -> recurse v |> unstatic) xs) |> static
+  (*| _ -> panic ("unhandled case in eval_expr:" ^ show_expr e)*)
 
   let rec eval_stmt (p : prog) (n : meta node sd) (s : stmt) (m : metric sd) : unit sd =
     match s with
     | Write (prop_name, expr) ->
-        write_metric m |> unstatic;
-        let new_value = eval_expr n expr m in
-        (match Hashtbl.find (n |> unstatic).var prop_name with
-        | None -> ()
-        | Some value ->
-            if equal_value value (new_value |> unstatic) then () else var_modified p n prop_name m |> unstatic);
-        Hashtbl.set (n |> unstatic).var ~key:prop_name ~data:(new_value |> unstatic) |> static
+        seq (write_metric m) (fun _ ->
+            let new_value = eval_expr n expr m in
+            (match Hashtbl.find (n |> unstatic).var prop_name with
+            | None -> ()
+            | Some value ->
+                if equal_value value (new_value |> unstatic) then () else var_modified p n prop_name m |> unstatic);
+            Hashtbl.set (n |> unstatic).var ~key:prop_name ~data:(new_value |> unstatic) |> static)
     | BBCall bb_name -> bracket_call_bb n bb_name (fun _ -> eval_stmts p n (stmts_of_basic_block p bb_name) m)
     | ChildrenCall proc_name ->
         List.iter (n |> unstatic).children ~f:(fun new_node ->

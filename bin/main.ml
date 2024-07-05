@@ -238,11 +238,14 @@ module Main (EVAL : Eval) = struct
   let layout_size : layout_node sd -> int sd =
     fix (fun recurse n -> int_add (int 1) (list_int_sum (layout_node_get_children n) recurse))
 
+  let rec node_size : _ node sd -> int sd =
+    fix (fun recurse n -> int_add (int 1) (list_int_sum (node_get_children n) recurse))
+
   let rec add_node (path : int list) (x : _ node) (y : _ node) (m : metric sd) : unit sd =
     match path with
     | [] -> panic "bad path!"
     | [ i ] ->
-        input_change_metric m (node_size y |> static) |> unstatic;
+        input_change_metric m (node_size (y |> static)) |> unstatic;
         EVAL.add_children prog (x |> static) (y |> static) (i |> static) m
     | p_hd :: p_tl -> add_node p_tl (List.nth_exn x.children p_hd) y m
 
@@ -259,7 +262,7 @@ module Main (EVAL : Eval) = struct
     match path with
     | [] -> panic "bad path!"
     | [ i ] ->
-        input_change_metric m (node_size (List.nth_exn x.children i) |> static) |> unstatic;
+        input_change_metric m (node_size (List.nth_exn x.children i |> static)) |> unstatic;
         EVAL.remove_children prog (x |> static) (i |> static) m
     | p_hd :: p_tl -> remove_node p_tl (List.nth_exn x.children p_hd) m
 
@@ -438,7 +441,7 @@ module Main (EVAL : Eval) = struct
                                               seqs
                                                 [
                                                   (fun _ -> output_change_metric m (layout_size layout_n));
-                                                  (fun _ -> input_change_metric m (node_size (n |> unstatic) |> static));
+                                                  (fun _ -> input_change_metric m (node_size n));
                                                   (fun _ -> EVAL.eval prog n m);
                                                   (fun _ -> diff_evaluated ());
                                                   (fun _ -> "EVAL OK!" |> print_endline);
