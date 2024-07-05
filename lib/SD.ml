@@ -90,9 +90,9 @@ module S : SD with type 'x sd = 'x = struct
   let push_stack = Stack.push
   let clear_stack = Stack.clear
   let assert_ b = assert b
-  let string_equal = String.equal
+  let string_equal x y = String.equal x y
   let string x = x
-  let json_to_string (j : Yojson.Basic.t sd) = Yojson.Basic.to_string j
+  let json_to_string (j : Yojson.Basic.t sd) = Yojson.Basic.Util.to_string j
   let json_member = Yojson.Basic.Util.member
 
   let json_to_value (j : Yojson.Basic.t) : value =
