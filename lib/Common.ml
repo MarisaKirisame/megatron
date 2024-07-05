@@ -49,3 +49,5 @@ type 'meta node = {
 }
 
 and value = VInt of int | VBool of bool | VString of string | VFloat of float
+
+type layout_node = { mutable children : layout_node list }

@@ -2,15 +2,23 @@ open Core
 open Common
 open Metric
 
+(*to avoid code duplication, can only be used once. whoever that need reuse need to duplicate.*)
 type _ code =
-  | Expr of string (*anything passed around must be atomic; return of a function, however, can be non-atomic*)
-  | Stmt of string (*statement that return*)
+  | Expr of string
+  (*statement that return*)
+  | Stmt of string
+  (*statement that does not return*)
   | Proc of string
-(*statement that does not return*) [@@deriving show]
+[@@deriving show]
 
-let unexpr = function Expr s -> bracket s
-let unstmt = function Stmt s -> s | Expr x -> x ^ ";" | x -> panic (show_code x)
-let unproc = function Proc p -> p | x -> panic (show_code x)
+let unexpr = function
+  | Expr s -> bracket s
+  | Proc x | Stmt x -> "[&]()" ^ square_bracket x ^ "()"
+  | x -> panic ("unexpr: " ^ show_code x)
+
+let unstmt = function Stmt s -> s | Expr x -> "return " ^ x ^ ";" | x -> panic ("unstmt: " ^ show_code x)
+let unproc = function Proc p -> p | Expr x -> x ^ ";" | x -> panic ("unproc:" ^ show_code x)
+let canonicalize (x : _ code) : _ code = x
 
 module type SD = sig
   type _ sd
@@ -49,7 +57,6 @@ module type SD = sig
   val json_to_dict : Yojson.Basic.t sd -> (string, value) Hashtbl.t sd
   val json_to_int : Yojson.Basic.t sd -> int sd
   val json_to_list : Yojson.Basic.t sd -> Yojson.Basic.t list sd
-  val list_map : 'a list sd -> f:('a sd -> 'b sd) -> 'b list sd
   val fix : (('a sd -> 'b sd) -> 'a sd -> 'b sd) -> 'a sd -> 'b sd
   val node_get_parent : 'a node sd -> 'a node option sd
   val node_set_parent : 'a node sd -> 'a node option sd -> unit sd
@@ -57,11 +64,23 @@ module type SD = sig
   val node_set_prev : 'a node sd -> 'a node option sd -> unit sd
   val node_get_next : 'a node sd -> 'a node option sd
   val node_set_next : 'a node sd -> 'a node option sd -> unit sd
+  val node_get_children : 'a node sd -> 'a node list sd
+  val node_set_children : 'a node sd -> 'a node list sd -> unit sd
   val none : unit -> 'a option sd
   val some : 'a sd -> 'a option sd
+  val option_iter : 'a option sd -> f:('a sd -> unit sd) -> unit sd
   val list_iter : 'a list sd -> f:('a sd -> unit sd) -> unit sd
+  val list_tl : 'a list sd -> 'a list sd
+  val list_drop_last : 'a list sd -> 'a list sd
+  val list_last : 'a list sd -> 'a option sd
+  val list_zip : 'a list sd -> 'b list sd -> ('a * 'b) list sd
+  val list_map : 'a list sd -> f:('a sd -> 'b sd) -> 'b list sd
   val zro : ('a * 'b) sd -> 'a sd
   val fst : ('a * 'b) sd -> 'b sd
+  val make_layout_node : layout_node list sd -> layout_node sd
+  val layout_node_get_children : layout_node sd -> layout_node list sd
+  val int_add : int sd -> int sd -> int sd
+  val list_int_sum : 'a list sd -> ('a sd -> int sd) -> int sd
 end
 
 module S : SD with type 'x sd = 'x = struct
@@ -135,11 +154,22 @@ module S : SD with type 'x sd = 'x = struct
   let node_set_prev n v = n.prev <- v
   let node_get_next n = n.next
   let node_set_next n v = n.next <- v
+  let node_get_children (n : _ node) = n.children
+  let node_set_children (n : _ node) v = n.children <- v
   let none () = None
   let some x = Some x
+  let option_iter o ~f = Option.iter o ~f
   let list_iter (l : 'a list) ~(f : 'a -> unit) = List.iter l ~f
+  let list_tl l = Option.value (List.tl l) ~default:[]
+  let list_drop_last l = Option.value (List.drop_last l) ~default:[]
+  let list_zip x y = List.zip_exn x y
+  let list_last l = List.last l
+  let list_int_sum l f = List.sum (module Int) l ~f
   let zro (a, b) = a
   let fst (a, b) = b
+  let make_layout_node l = { children = l }
+  let layout_node_get_children (l : layout_node) = l.children
+  let int_add x y = x + y
 end
 
 module D : SD with type 'x sd = 'x code = struct
@@ -150,11 +180,16 @@ module D : SD with type 'x sd = 'x code = struct
   let unstatic x = panic "unstatic"
   let dyn x = x
   let undyn x = x
-  let seq lhs rhs = Stmt (unstmt lhs ^ unstmt (rhs ()))
+
+  let seq lhs rhs =
+    match canonicalize (rhs ()) with
+    | Stmt rhs -> Stmt (unproc lhs ^ rhs)
+    | Proc rhs | Expr rhs -> Proc (unproc lhs ^ rhs)
+    | rhs -> panic ("canonicalize: " ^ show_code rhs)
 
   let let_ (x : 'a code) (f : 'a code -> 'b code) : 'b code =
     let v = fresh () in
-    seq (Stmt ("auto " ^ v ^ "= " ^ bracket (unexpr x) ^ ";")) (fun _ -> f (Expr v))
+    seq (Proc ("auto " ^ v ^ "= " ^ bracket (unexpr x) ^ ";")) (fun _ -> f (Expr v))
 
   let lam (f : 'a code -> 'b code) : ('a -> 'b) code =
     let v = fresh () in
@@ -167,7 +202,7 @@ module D : SD with type 'x sd = 'x code = struct
   let with_file name f = Expr (("with_file" ^ bracket name) ^ bracket (unexpr (lam f)))
   let input_line c = Expr ("input_line" ^ bracket (unexpr c))
   let iter_lines c f = todo "iter_lines"
-  let print_endline str = Stmt ("std::cout << " ^ quoted str ^ " << std::endl;")
+  let print_endline str = Proc ("std::cout << " ^ quoted str ^ " << std::endl;")
   let int x = Expr ("static_cast<int>" ^ bracket (string_of_int x))
   let make_ref x = Expr ("make_ref" ^ unexpr x)
   let read_ref x = Expr (unexpr x ^ ".read_ref()")
@@ -185,7 +220,6 @@ module D : SD with type 'x sd = 'x code = struct
   let json_to_dict j = Expr ("json_to_dict" ^ bracket (unexpr j))
   let json_to_int j = Expr ("json_to_int" ^ bracket (unexpr j))
   let json_to_list j = Expr ("json_to_list" ^ bracket (unexpr j))
-  let list_map l ~f = Expr ("list_map" ^ bracket (unexpr l ^ ", " ^ unexpr (lam f)))
 
   let fix (f : ('a code -> 'b code) -> 'a code -> 'b code) (x : 'a code) : 'b code =
     let fname = fresh () in
@@ -196,20 +230,42 @@ module D : SD with type 'x sd = 'x code = struct
       ^ unexpr x)
 
   let node_get_parent n = Expr (unexpr n ^ ".parent")
-  let node_set_parent n v = Stmt (unexpr n ^ ".parent" ^ "=" ^ unexpr v)
+  let node_set_parent n v = Proc (unexpr n ^ ".parent" ^ "=" ^ unexpr v)
   let node_get_prev n = Expr (unexpr n ^ ".prev")
-  let node_set_prev n v = Stmt (unexpr n ^ ".prev" ^ "=" ^ unexpr v)
+  let node_set_prev n v = Proc (unexpr n ^ ".prev" ^ "=" ^ unexpr v)
   let node_get_next n = Expr (unexpr n ^ ".next")
-  let node_set_next n v = Stmt (unexpr n ^ ".next" ^ "=" ^ unexpr v)
+  let node_set_next n v = Proc (unexpr n ^ ".next" ^ "=" ^ unexpr v)
+  let node_get_children n = Expr (unexpr n ^ ".children")
+  let node_set_children n v = Proc (unexpr n ^ ".children" ^ "=" ^ unexpr v)
   let none () = Expr "none"
   let some x = Expr ("some" ^ bracket (unexpr x))
 
+  let option_iter (l : 'a option code) ~(f : 'a code -> unit code) : unit code =
+    let_ l (fun l ->
+        Proc ("if (is_some " ^ unexpr l ^ ")" ^ square_bracket (unproc (f (Expr ("from_some" ^ bracket (unexpr l)))))))
+
+  let list_map l ~f = Expr ("list_map" ^ bracket (unexpr l ^ ", " ^ unexpr (lam f)))
+
   let list_iter (l : 'a list code) ~(f : 'a code -> unit code) : unit code =
     let v = fresh () in
-    Stmt ("for (auto& " ^ v ^ ":" ^ unexpr l ^ ")" ^ square_bracket (unproc (f (Expr v))))
+    Proc ("for (auto& " ^ v ^ ":" ^ unexpr l ^ ")" ^ square_bracket (unproc (f (Expr v))))
 
+  let list_tl l = Expr ("list_tl" ^ bracket (unexpr l))
+  let list_last l = Expr ("list_last" ^ bracket (unexpr l))
+  let list_drop_last l = Expr ("list_drop_last" ^ bracket (unexpr l))
+  let list_zip x y = Expr ("list_zip" ^ bracket (unexpr x ^ unexpr y))
   let zro p = Expr ("zro" ^ bracket (unexpr p))
   let fst p = Expr ("fst" ^ bracket (unexpr p))
+  let make_layout_node l = Expr ("make_layout_node" ^ bracket (unexpr l))
+  let layout_node_get_children l = Expr (unexpr l ^ ".children")
+  let int_add x y = Expr (unexpr x ^ "+" ^ unexpr y)
+
+  let list_int_sum x f =
+    let v = fresh () in
+    let_ (int 0) (fun i ->
+        Stmt
+          ("for (auto& " ^ v ^ ":" ^ unexpr x ^ ")"
+          ^ square_bracket (unexpr i ^ "+=" ^ unexpr (f (Expr v)) ^ "; return" ^ unexpr i ^ ";")))
 end
 
 (*
@@ -228,15 +284,3 @@ let ignore_ (x : 'a sd) : unit sd =
 let list_iter (l : 'a list sd) ~(f : 'a sd -> unit sd) : unit sd =
   match l with Static l -> List.iter l ~f:(fun a -> static a |> f |> unstatic) |> static
 *)
-
-(*let read_staged (m : metric code) : unit code = Stmt (unexpr m ^ ".read();")
-  let read_ (m : metric sd) : unit sd = match m with Static m -> Static (read m) | Dyn m -> Dyn (read_staged m)
-  let meta_read_staged (m : metric code) : unit code = Stmt (unexpr m ^ ".meta_read();")
-  let meta_read_ (m : metric sd) : unit sd =
-    match m with Static m -> Static (meta_read m) | Dyn m -> Dyn (meta_read_staged m)
-  let write_staged (m : metric code) : unit code = Stmt (unexpr m ^ ".write();")
-  let write_ (m : metric sd) : unit sd = match m with Static m -> Static (write m) | Dyn m -> Dyn (write_staged m)
-  let meta_write_staged (m : metric code) : unit code = Stmt (unexpr m ^ ".meta_write();")
-
-  let meta_write_ (m : metric sd) : unit sd =
-    match m with Static m -> Static (meta_write m) | Dyn m -> Dyn (meta_write_staged m)*)

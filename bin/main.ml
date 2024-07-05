@@ -10,9 +10,6 @@ open Yojson
 open Megatron.Metric
 open Megatron.SD
 
-type layout_node = { mutable children : layout_node list }
-
-let rec layout_size n = 1 + List.sum (module Int) n.children ~f:layout_size
 let out_file_path = Sys.argv.(1)
 let out_file = Stdio.Out_channel.create out_file_path
 let prog_def = parse "./layout.mt";;
@@ -185,10 +182,7 @@ module Main (EVAL : Eval) = struct
       fix (fun recurse (n : 'a node sd) ->
           seq
             (list_iter
-               (List.zip_exn
-                  (Option.value (List.drop_last (n |> unstatic).children) ~default:[])
-                  (Option.value (List.tl (n |> unstatic).children) ~default:[])
-               |> static)
+               (list_zip (list_drop_last (node_get_children n)) (list_tl (node_get_children n)))
                ~f:(fun p ->
                  let_ (zro p) (fun x ->
                      let_ (fst p) (fun y ->
@@ -200,11 +194,9 @@ module Main (EVAL : Eval) = struct
                              (fun _ -> recurse x);
                            ]))))
             (fun _ ->
-              match List.last (n |> unstatic).children with
-              | Some x ->
-                  x.parent <- Some (n |> unstatic);
-                  recurse (x |> static)
-              | None -> tt))
+              option_iter
+                (n |> node_get_children |> list_last)
+                ~f:(fun x -> seq (node_set_parent x (some n)) (fun _ -> recurse x))))
     in
     seqs
       [
@@ -229,15 +221,8 @@ module Main (EVAL : Eval) = struct
       v)
     else todo "convert"
 
-  let rec json_to_layout_node (j : Yojson.Basic.t sd) : layout_node sd =
-    let open Yojson.Basic.Util in
-    {
-      children =
-        List.map
-          (j |> unstatic |> member "children" |> to_list)
-          ~f:(fun n -> n |> static |> json_to_layout_node |> unstatic);
-    }
-    |> static
+  let json_to_layout_node : Yojson.Basic.t sd -> layout_node sd =
+    fix (fun recurse j -> make_layout_node (list_map (j |> json_member (string "children") |> json_to_list) ~f:recurse))
 
   let get_command (j : Basic.t sd) : string sd = j |> json_member (string "name") |> json_to_string
 
@@ -250,6 +235,9 @@ module Main (EVAL : Eval) = struct
   let get_node j : _ node sd = json_to_node (j |> json_member (string "node"))
   let get_layout_node j : layout_node sd = json_to_layout_node (j |> json_member (string "node"))
 
+  let layout_size : layout_node sd -> int sd =
+    fix (fun recurse n -> int_add (int 1) (list_int_sum (layout_node_get_children n) recurse))
+
   let rec add_node (path : int list) (x : _ node) (y : _ node) (m : metric sd) : unit sd =
     match path with
     | [] -> panic "bad path!"
@@ -258,13 +246,13 @@ module Main (EVAL : Eval) = struct
         EVAL.add_children prog (x |> static) (y |> static) (i |> static) m
     | p_hd :: p_tl -> add_node p_tl (List.nth_exn x.children p_hd) y m
 
-  let rec add_layout_node (path : int list) (x : layout_node) (y : layout_node) (m : metric sd) : unit sd =
+  let rec add_layout_node (path : int list) (x : layout_node) (y : layout_node sd) (m : metric sd) : unit sd =
     match path with
     | [] -> panic "bad path!"
     | [ i ] ->
-        output_change (m |> unstatic) (layout_size y);
+        output_change (m |> unstatic) (layout_size y |> unstatic);
         let lhs, rhs = List.split_n x.children i in
-        (x.children <- List.append lhs (y :: rhs)) |> static
+        (x.children <- List.append lhs ((y |> unstatic) :: rhs)) |> static
     | p_hd :: p_tl -> add_layout_node p_tl (List.nth_exn x.children p_hd) y m
 
   let rec remove_node (path : int list) (x : _ node) (m : metric sd) : unit sd =
@@ -280,7 +268,7 @@ module Main (EVAL : Eval) = struct
     | [] -> panic "bad path!"
     | [ i ] ->
         let lhs, removed :: rhs = List.split_n x.children i in
-        output_change m (layout_size (List.nth_exn x.children i));
+        output_change m (layout_size (List.nth_exn x.children i |> static) |> unstatic);
         (x.children <- List.append lhs rhs) |> static
     | p_hd :: p_tl -> remove_layout_node p_tl (List.nth_exn x.children p_hd) m
 
@@ -297,7 +285,7 @@ module Main (EVAL : Eval) = struct
     | [] -> panic "bad path!"
     | [ i ] ->
         let lhs, removed :: rhs = List.split_n x.children i in
-        output_change (m |> unstatic) (layout_size removed + layout_size y);
+        output_change (m |> unstatic) (int_add (layout_size (removed |> static)) (layout_size (y |> static)) |> unstatic);
         (x.children <- List.append lhs (y :: rhs)) |> static
     | p_hd :: p_tl -> replace_layout_node p_tl (List.nth_exn x.children p_hd) y m
 
@@ -440,8 +428,7 @@ module Main (EVAL : Eval) = struct
                                                           (m |> unstatic)
                                                     | "layout_add" ->
                                                         add_layout_node (get_path j) (layout_n |> unstatic)
-                                                          (get_layout_node j |> unstatic)
-                                                          m
+                                                          (get_layout_node j) m
                                                     | "layout_replace" ->
                                                         replace_layout_node (get_path j) (layout_n |> unstatic)
                                                           (get_layout_node j |> unstatic)
@@ -452,7 +439,7 @@ module Main (EVAL : Eval) = struct
                                               seqs
                                                 [
                                                   (fun _ ->
-                                                    output_change (m |> unstatic) (layout_size (layout_n |> unstatic))
+                                                    output_change (m |> unstatic) (layout_size layout_n |> unstatic)
                                                     |> static);
                                                   (fun _ ->
                                                     input_change (m |> unstatic) (node_size (n |> unstatic)) |> static);
