@@ -9,6 +9,7 @@ open Core
 open Yojson
 open Megatron.Metric
 open Megatron.SD
+module EvalFSS = Megatron.EvalFS.EVAL (S)
 
 let out_file_path = Sys.argv.(1)
 let out_file = Stdio.Out_channel.create out_file_path
@@ -133,7 +134,7 @@ let default_tag : (string, unit) Hashtbl.t =
        ])
 
 let rec node_to_html_buffer (b : Buffer.t) (parent_x : int) (parent_y : int) (n : _ node) : unit =
-  if not (bool_of_value (Hashtbl.find_exn n.var "visible")) then ()
+  if not (EvalFSS.bool_of_value (Hashtbl.find_exn n.var "visible")) then ()
   else
     let content =
       match n.name with
@@ -141,7 +142,7 @@ let rec node_to_html_buffer (b : Buffer.t) (parent_x : int) (parent_y : int) (n 
       | "#text" -> "some text"
       | _ -> panic ("content: " ^ n.name)
     in
-    let float_to_int v = int_of_float (Float.round ~dir:`Nearest (float_of_value v)) in
+    let float_to_int v = int_of_float (Float.round ~dir:`Nearest (EvalFSS.float_of_value v)) in
     let x = float_to_int (Hashtbl.find_exn n.var "x") in
     let y = float_to_int (Hashtbl.find_exn n.var "y") in
     let width = float_to_int (Hashtbl.find_exn n.var "width_internal") in
@@ -386,7 +387,7 @@ module Main (EVAL : Eval) = struct
                                                       let fsn = node_to_fs_node (n |> unstatic) in
                                                       seq
                                                         (FS.eval prog (static fsn) (fresh_metric ()))
-                                                        (fun _ -> assert_node_value_equal (n |> unstatic) fsn |> static));
+                                                        (fun _ -> assert_node_value_equal n (fsn |> static)));
                                                   ]
                                               in
                                               let work () : unit sd =

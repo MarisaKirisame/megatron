@@ -51,3 +51,20 @@ type 'meta node = {
 and value = VInt of int | VBool of bool | VString of string | VFloat of float
 
 type layout_node = { mutable children : layout_node list }
+
+let rec show_node (n : 'meta node) : string =
+  let htbl_str =
+    "{"
+    ^ List.fold_left (Hashtbl.to_alist n.var)
+        ~init:("id = " ^ string_of_int n.id ^ ", ")
+        ~f:(fun lhs (name, value) -> lhs ^ name ^ " = " ^ show_value value ^ ", ")
+    ^ "}"
+  in
+  List.fold_left n.children ~init:(htbl_str ^ "[") ~f:(fun lhs n -> lhs ^ show_node n ^ ", ") ^ "]"
+
+and show_value (x : value) : string =
+  match x with
+  | VInt i -> string_of_int i
+  | VBool b -> string_of_bool b
+  | VString s -> String.escaped s
+  | VFloat f -> string_of_float f

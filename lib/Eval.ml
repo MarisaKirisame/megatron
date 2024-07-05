@@ -6,28 +6,6 @@ open SD
 
 let rec rightmost (x : _ node) : _ node = match List.last x.children with Some x -> rightmost x | None -> x
 
-let rec show_node (n : 'meta node) : string =
-  let htbl_str =
-    "{"
-    ^ List.fold_left (Hashtbl.to_alist n.var)
-        ~init:("id = " ^ string_of_int n.id ^ ", ")
-        ~f:(fun lhs (name, value) -> lhs ^ name ^ " = " ^ show_value value ^ ", ")
-    ^ "}"
-  in
-  List.fold_left n.children ~init:(htbl_str ^ "[") ~f:(fun lhs n -> lhs ^ show_node n ^ ", ") ^ "]"
-
-and show_value (x : value) : string =
-  match x with
-  | VInt i -> string_of_int i
-  | VBool b -> string_of_bool b
-  | VString s -> String.escaped s
-  | VFloat f -> string_of_float f
-
-let int_of_value x = match x with VInt i -> i | _ -> panic (show_value x)
-let bool_of_value x = match x with VBool b -> b | _ -> panic (show_value x)
-let string_of_value x = match x with VString x -> x | _ -> panic (show_value x)
-let float_of_value x = match x with VFloat x -> x | _ -> panic (show_value x)
-
 let equal_value x y : bool =
   match (x, y) with
   | VString x, VString y -> String.equal x y
@@ -172,6 +150,7 @@ module type Eval = sig
   val add_attr : prog -> meta node sd -> string -> value sd -> metric sd -> unit sd
   val remove_attr : prog -> meta node sd -> string -> metric sd -> unit sd
   val recalculate : prog -> meta node sd -> metric sd -> unit sd
+  val assert_node_value_equal : _ node sd -> _ node sd -> unit sd
 end
 
 module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
@@ -238,34 +217,33 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
 
   let rec eval_expr (n : 'meta node sd) (e : expr) (m : metric sd) : value sd =
     let recurse e = eval_expr n e m in
-
     match e with
     | Panic (_, x) ->
         panic ("External: " ^ String.concat ~sep:" " (List.map x ~f:(fun x -> show_value (recurse x |> unstatic))))
-    | HasProperty p -> VBool (Option.is_some (Hashtbl.find (n |> unstatic).prop p)) |> static
-    | GetProperty p -> (
-        read_metric m |> unstatic;
-        match Hashtbl.find (n |> unstatic).prop p with
-        | Some x -> x |> static
-        | None -> panic ("cannot find property " ^ p ^ " in " ^ string_of_int (n |> unstatic).extern_id))
-    | HasAttribute p -> VBool (Option.is_some (Hashtbl.find (n |> unstatic).attr p)) |> static
+    | HasProperty p -> is_some (hashtbl_find (node_get_prop n) (string p)) |> vbool
+    | GetProperty p ->
+        seq (read_metric m) (fun _ ->
+            match hashtbl_find (node_get_prop n) (string p) |> unstatic with
+            | Some x -> x |> static
+            | None -> panic ("cannot find property " ^ p ^ " in " ^ string_of_int (n |> unstatic).extern_id))
+    | HasAttribute p -> VBool (Option.is_some (hashtbl_find (node_get_attr n) (string p) |> unstatic)) |> static
     | GetAttribute p -> (
         read_metric m |> unstatic;
-        match Hashtbl.find (n |> unstatic).attr p with
+        match hashtbl_find (node_get_attr n) (string p) |> unstatic with
         | Some x -> x |> static
         | None -> panic ("cannot find attribute " ^ p ^ " in " ^ string_of_int (n |> unstatic).extern_id))
-    | String s -> VString s |> static
-    | Int i -> VInt i |> static
-    | Float f -> VFloat f |> static
-    | IfExpr (c, t, e) -> if bool_of_value (recurse c |> unstatic) then recurse t else recurse e
+    | String s -> vstring (string s)
+    | Int i -> vint (int i)
+    | Float f -> vfloat (float f)
+    | IfExpr (c, t, e) -> ite (bool_of_value (recurse c)) (fun _ -> recurse t) (fun _ -> recurse e)
     | HasPath p -> VBool (Option.is_some (eval_path_opt (n |> unstatic) p)) |> static
     | Read (p, var_name) ->
         read_metric m |> unstatic;
-        Hashtbl.find_exn (eval_path (n |> unstatic) p).var var_name |> static
-    | And (x, y) -> if bool_of_value (recurse x |> unstatic) then recurse y else VBool false |> static
-    | Or (x, y) -> if bool_of_value (recurse x |> unstatic) then VBool true |> static else recurse y
+        Hashtbl.find_exn (eval_path (n |> unstatic) p |> static |> node_get_var |> unstatic) var_name |> static
+    | And (x, y) -> if bool_of_value (recurse x) |> unstatic then recurse y else VBool false |> static
+    | Or (x, y) -> if bool_of_value (recurse x) |> unstatic then VBool true |> static else recurse y
     | GetName -> VString (n |> unstatic).name |> static
-    | Bool x -> VBool x |> static
+    | Bool x -> vbool (bool x)
     | Call (f, xs) -> eval_func f (List.map ~f:(fun v -> recurse v |> unstatic) xs) |> static
   (*| _ -> panic ("unhandled case in eval_expr:" ^ show_expr e)*)
 
@@ -274,7 +252,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
     | Write (prop_name, expr) ->
         seq (write_metric m) (fun _ ->
             let new_value = eval_expr n expr m in
-            (match Hashtbl.find (n |> unstatic).var prop_name with
+            (match hashtbl_find (node_get_var n) (string prop_name) |> unstatic with
             | None -> ()
             | Some value ->
                 if equal_value value (new_value |> unstatic) then () else var_modified p n prop_name m |> unstatic);
@@ -472,18 +450,24 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
     recalculate_internal p n m (fun n stmts -> eval_stmts p n stmts m)
 
   let rec seqs x = match x with [] -> tt | hd :: tl -> seq (hd ()) (fun _ -> seqs tl)
-end
 
-let rec assert_node_value_equal l r =
-  assert (Int.equal (Hashtbl.length l.var) (Hashtbl.length r.var));
-  assert (Int.equal (List.length l.children) (List.length r.children));
-  List.iter2_exn l.children r.children ~f:(fun l r -> assert_node_value_equal l r);
-  if Hashtbl.equal equal_value l.var r.var then ()
-  else (
-    Hashtbl.iter_keys l.var ~f:(fun name ->
-        let lv = Hashtbl.find_exn l.var name in
-        let rv = Hashtbl.find_exn r.var name in
-        if equal_value lv rv then () else print_endline (name ^ string_of_value lv ^ string_of_value rv));
-    print_endline (string_of_int l.id ^ " bad!");
-    recursive_print_id_up l);
-  assert (Hashtbl.equal equal_value l.var r.var)
+  let rec assert_node_value_equal (l : _ node sd) (r : _ node sd) : unit sd =
+    assert (Int.equal (Hashtbl.length (node_get_var l |> unstatic)) (Hashtbl.length (node_get_var r |> unstatic)));
+    assert (Int.equal (List.length (node_get_children l |> unstatic)) (List.length (node_get_children l |> unstatic)));
+    List.iter2_exn
+      (node_get_children l |> unstatic)
+      (node_get_children r |> unstatic)
+      ~f:(fun l r -> assert_node_value_equal (l |> static) (r |> static) |> unstatic);
+    if Hashtbl.equal equal_value (node_get_var l |> unstatic) (node_get_var r |> unstatic) then ()
+    else (
+      Hashtbl.iter_keys
+        (node_get_var l |> unstatic)
+        ~f:(fun name ->
+          let lv = Hashtbl.find_exn (node_get_var l |> unstatic) name |> static in
+          let rv = Hashtbl.find_exn (node_get_var r |> unstatic) name |> static in
+          if equal_value (lv |> unstatic) (rv |> unstatic) then ()
+          else print_endline (name ^ unstatic (string_of_value lv) ^ unstatic (string_of_value rv)) |> unstatic);
+      print_endline (string_of_int (l |> unstatic).id ^ " bad!") |> unstatic;
+      recursive_print_id_up (l |> unstatic));
+    assert (Hashtbl.equal equal_value (node_get_var l |> unstatic) (node_get_var r |> unstatic)) |> static
+end

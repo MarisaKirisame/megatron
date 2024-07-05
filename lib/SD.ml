@@ -11,6 +11,8 @@ type _ code =
   | Proc of string
 [@@deriving show]
 
+let code_cast (x : 'a code) : 'b code = match x with Expr x -> Expr x | Stmt x -> Stmt x | Proc x -> Proc x
+
 let unexpr = function
   | Expr s -> bracket s
   | Proc x | Stmt x -> "[&]()" ^ square_bracket x ^ "()"
@@ -35,10 +37,13 @@ module type SD = sig
   val read_ref : 'a ref sd -> 'a sd
   val write_ref : 'a ref sd -> 'a sd -> unit sd
   val int : int -> int sd
+  val bool : bool -> bool sd
+  val float : float -> float sd
   val seq : unit sd -> (unit -> 'a sd) -> 'a sd
   val let_ : 'a sd -> ('a sd -> 'b sd) -> 'b sd
   val lam : ('a sd -> 'b sd) -> ('a -> 'b) sd
   val app : ('a -> 'b) sd -> 'a sd -> 'b sd
+  val ite : bool sd -> (unit -> 'a sd) -> (unit -> 'a sd) -> 'a sd
   val json_of_string : string sd -> Yojson.Basic.t sd
   val with_file : string -> (Stdio.In_channel.t sd -> 'a sd) -> 'a sd
   val input_line : Stdio.In_channel.t sd -> string sd
@@ -65,8 +70,14 @@ module type SD = sig
   val node_set_next : 'a node sd -> 'a node option sd -> unit sd
   val node_get_children : 'a node sd -> 'a node list sd
   val node_set_children : 'a node sd -> 'a node list sd -> unit sd
+  val node_get_prop : 'a node sd -> (string, value) Hashtbl.t sd
+  val node_get_var : 'a node sd -> (string, value) Hashtbl.t sd
+  val node_get_attr : 'a node sd -> (string, value) Hashtbl.t sd
+  val hashtbl_find : (string, 'a) Hashtbl.t sd -> string sd -> 'a option sd
   val none : unit -> 'a option sd
   val some : 'a sd -> 'a option sd
+  val is_none : 'a option sd -> bool sd
+  val is_some : 'a option sd -> bool sd
   val option_iter : 'a option sd -> f:('a sd -> unit sd) -> unit sd
   val list_iter : 'a list sd -> f:('a sd -> unit sd) -> unit sd
   val list_tl : 'a list sd -> 'a list sd
@@ -88,6 +99,14 @@ module type SD = sig
   val meta_write_metric : metric sd -> unit sd
   val input_change_metric : metric sd -> int sd -> unit sd
   val output_change_metric : metric sd -> int sd -> unit sd
+  val vbool : bool sd -> value sd
+  val vint : int sd -> value sd
+  val vfloat : float sd -> value sd
+  val vstring : string sd -> value sd
+  val bool_of_value : value sd -> bool sd
+  val int_of_value : value sd -> int sd
+  val float_of_value : value sd -> float sd
+  val string_of_value : value sd -> string sd
 end
 
 module S : SD with type 'x sd = 'x = struct
@@ -104,10 +123,11 @@ module S : SD with type 'x sd = 'x = struct
     lhs;
     rhs ()
 
-  let json_of_string x = Yojson.Basic.from_string x
   let let_ x f = f x
   let lam f = f
   let app f x = f x
+  let ite i t e = if i then t () else e ()
+  let json_of_string x = Yojson.Basic.from_string x
   let with_file name f = Stdio.In_channel.with_file name ~f
   let input_line c = Stdio.In_channel.input_line_exn c
   let iter_lines c f = Stdio.In_channel.iter_lines c ~f
@@ -134,6 +154,8 @@ module S : SD with type 'x sd = 'x = struct
   let assert_ b = assert b
   let string_equal x y = String.equal x y
   let string x = x
+  let bool x = x
+  let float x = x
   let json_to_string (j : Yojson.Basic.t sd) = Yojson.Basic.Util.to_string j
   let json_member = Yojson.Basic.Util.member
 
@@ -161,10 +183,16 @@ module S : SD with type 'x sd = 'x = struct
   let node_set_prev n v = n.prev <- v
   let node_get_next n = n.next
   let node_set_next n v = n.next <- v
+  let node_get_prop n = n.prop
+  let node_get_var n = n.var
+  let node_get_attr n = n.attr
   let node_get_children (n : _ node) = n.children
   let node_set_children (n : _ node) v = n.children <- v
+  let hashtbl_find h k = Hashtbl.find h k
   let none () = None
   let some x = Some x
+  let is_none o = Option.is_none o
+  let is_some o = Option.is_some o
   let option_iter o ~f = Option.iter o ~f
   let list_iter (l : 'a list) ~(f : 'a -> unit) = List.iter l ~f
   let list_tl l = Option.value (List.tl l) ~default:[]
@@ -193,6 +221,14 @@ module S : SD with type 'x sd = 'x = struct
   let meta_write_metric (m : metric) : unit = m.meta_write_count <- m.meta_write_count + 1
   let input_change_metric (m : metric) (c : int) = m.input_change_count <- m.input_change_count + c
   let output_change_metric (m : metric) (c : int) = m.output_change_count <- m.output_change_count + c
+  let vbool b = VBool b
+  let vint i = VInt i
+  let vstring x = VString x
+  let vfloat x = VFloat x
+  let bool_of_value x = match x with VBool b -> b | _ -> panic (show_value x)
+  let int_of_value x = match x with VInt i -> i | _ -> panic (show_value x)
+  let string_of_value x = match x with VString x -> x | _ -> panic (show_value x)
+  let float_of_value x = match x with VFloat x -> x | _ -> panic (show_value x)
 end
 
 module D : SD with type 'x sd = 'x code = struct
@@ -221,12 +257,18 @@ module D : SD with type 'x sd = 'x code = struct
   let lam2 (f : 'a code -> 'b code -> 'c code) : ('a -> 'b -> 'c) code = lam (fun a -> lam (fun b -> f a b))
   let tt = Expr "make_unit()"
   let app f x = Expr (unexpr f ^ bracket (unexpr x))
+
+  let ite (i : bool code) (t : unit -> 'a code) (e : unit -> 'a code) : 'a code =
+    Expr (unexpr i ^ "?" ^ unexpr (t ()) ^ ":" ^ unexpr (e ()))
+
   let json_of_string x = Expr ("json_of_string" ^ bracket (unexpr x))
   let with_file name f = Expr (("with_file" ^ bracket name) ^ bracket (unexpr (lam f)))
   let input_line c = Expr ("input_line" ^ bracket (unexpr c))
   let iter_lines c f = todo "iter_lines"
   let print_endline str = Proc ("std::cout << " ^ quoted str ^ " << std::endl;")
   let int x = Expr ("static_cast<int>" ^ bracket (string_of_int x))
+  let bool x = Expr ("static_cast<bool>" ^ bracket (string_of_bool x))
+  let float x = Expr ("static_cast<double>" ^ bracket (string_of_float x))
   let make_ref x = Expr ("make_ref" ^ unexpr x)
   let read_ref x = Expr (unexpr x ^ ".read_ref()")
   let write_ref r x = Expr (unexpr r ^ ".write_ref" ^ bracket (unexpr x))
@@ -248,7 +290,7 @@ module D : SD with type 'x sd = 'x code = struct
     let xname = fresh () in
     Expr
       ("fix " ^ fname ^ ", " ^ xname
-      ^ bracket (unexpr (f (fun x -> Expr (fname ^ bracket xname)) (Expr xname)))
+      ^ bracket (unexpr (f (fun x -> Expr (fname ^ bracket (unexpr x))) (Expr xname)))
       ^ unexpr x)
 
   let node_get_parent n = Expr (unexpr n ^ ".parent")
@@ -259,8 +301,14 @@ module D : SD with type 'x sd = 'x code = struct
   let node_set_next n v = Proc (unexpr n ^ ".next" ^ "=" ^ unexpr v)
   let node_get_children n = Expr (unexpr n ^ ".children")
   let node_set_children n v = Proc (unexpr n ^ ".children" ^ "=" ^ unexpr v)
+  let node_get_prop n = Expr (unexpr n ^ ".prop")
+  let node_get_var n = Expr (unexpr n ^ ".var")
+  let node_get_attr n = Expr (unexpr n ^ ".attr")
+  let hashtbl_find h k = Expr ("hashtbl_find" ^ bracket (unexpr h ^ "," ^ unexpr k))
   let none () = Expr "none"
   let some x = Expr ("some" ^ bracket (unexpr x))
+  let is_none x = Expr ("is_none" ^ bracket (unexpr x))
+  let is_some x = Expr ("is_some" ^ bracket (unexpr x))
 
   let option_iter (l : 'a option code) ~(f : 'a code -> unit code) : unit code =
     let_ l (fun l ->
@@ -297,12 +345,17 @@ module D : SD with type 'x sd = 'x code = struct
   let meta_write_metric m = Proc (unexpr m ^ ".meta_write();")
   let input_change_metric m i = Proc (unexpr m ^ ".input_change" ^ bracket (unexpr i) ^ ";")
   let output_change_metric m i = Proc (unexpr m ^ ".output_change" ^ bracket (unexpr i) ^ ";")
+  let vbool b = code_cast b
+  let vint i = code_cast i
+  let vstring s = code_cast s
+  let vfloat f = code_cast f
+  let bool_of_value x = code_cast x
+  let int_of_value x = code_cast x
+  let string_of_value x = code_cast x
+  let float_of_value x = code_cast x
 end
 
 (*
-let ite_ (i : bool code) (t : unit -> 'a code) (e : unit -> 'a code) : 'a code =
-  Expr (unexpr i ^ "?" ^ unexpr (t ()) ^ ":" ^ unexpr (e ()))
-
 let hashtbl_find_staged (h : ('a, 'b) Hashtbl.t code) (k : 'a code) (found : 'b code -> 'c code)
     (missing : unit -> 'c code) : 'c code =
   let if_expr = Expr (unexpr h ^ ".count(" ^ unexpr k ^ ") > 0") in
