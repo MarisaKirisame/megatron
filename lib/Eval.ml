@@ -4,22 +4,6 @@ open Metric
 open Common
 open SD
 
-type 'meta node = {
-  name : string;
-  attr : (string, value) Hashtbl.t;
-  prop : (string, value) Hashtbl.t;
-  var : (string, value) Hashtbl.t;
-  id : int;
-  extern_id : int;
-  mutable children : 'meta node list;
-  mutable parent : 'meta node option;
-  mutable next : 'meta node option;
-  mutable prev : 'meta node option;
-  m : 'meta;
-}
-
-and value = VInt of int | VBool of bool | VString of string | VFloat of float
-
 let rec node_size (n : _ node) : int = 1 + List.sum (module Int) n.children ~f:node_size
 
 let rec set_children_relation (n : 'meta node) : unit =
@@ -278,7 +262,8 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
     let recurse e = eval_expr n e m in
     try
       match e with
-      | Panic (_, x) -> panic ("External: " ^ String.concat ~sep:" " (List.map x ~f:(fun x -> show_value (recurse x |> unstatic))))
+      | Panic (_, x) ->
+          panic ("External: " ^ String.concat ~sep:" " (List.map x ~f:(fun x -> show_value (recurse x |> unstatic))))
       | HasProperty p -> VBool (Option.is_some (Hashtbl.find (n |> unstatic).prop p)) |> static
       | GetProperty p -> (
           read (m |> unstatic);
@@ -318,15 +303,16 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
         let new_value = eval_expr n expr m in
         (match Hashtbl.find (n |> unstatic).var prop_name with
         | None -> ()
-        | Some value -> if equal_value value (new_value |> unstatic) then () else var_modified p n prop_name m |> unstatic);
+        | Some value ->
+            if equal_value value (new_value |> unstatic) then () else var_modified p n prop_name m |> unstatic);
         Hashtbl.set (n |> unstatic).var ~key:prop_name ~data:(new_value |> unstatic) |> static
-    | BBCall bb_name ->
-        bracket_call_bb n bb_name (fun _ -> eval_stmts p n (stmts_of_basic_block p bb_name) m)
+    | BBCall bb_name -> bracket_call_bb n bb_name (fun _ -> eval_stmts p n (stmts_of_basic_block p bb_name) m)
     | ChildrenCall proc_name ->
         List.iter (n |> unstatic).children ~f:(fun new_node ->
             bracket_call_proc (new_node |> static) proc_name (fun _ ->
-                eval_stmts p (new_node |> static) (stmts_of_processed_proc p proc_name) m) |> unstatic
-            ) |> static
+                eval_stmts p (new_node |> static) (stmts_of_processed_proc p proc_name) m)
+            |> unstatic)
+        |> static
 
   and eval_stmts (p : prog) (n : meta node sd) (s : stmts) (m : metric sd) : unit sd =
     List.iter s ~f:(fun stmt -> eval_stmt p n stmt m |> unstatic) |> static
@@ -334,9 +320,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
   let eval (p : prog) (n : meta node sd) (m : metric sd) : unit sd =
     static
       (List.iter p.order ~f:(fun proc_name ->
-           bracket_call_proc n proc_name (fun _ ->
-               eval_stmts p n (stmts_of_processed_proc p proc_name) m)
-           |> unstatic))
+           bracket_call_proc n proc_name (fun _ -> eval_stmts p n (stmts_of_processed_proc p proc_name) m) |> unstatic))
 
   let remove_children (p : prog) (x : meta node sd) (n : int sd) (m : metric sd) : unit sd =
     match List.split_n (x |> unstatic).children (n |> unstatic) with
@@ -358,9 +342,13 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                 | ReadVar (First, _) -> if List.is_empty lhs then bb_dirtied x ~proc_name ~bb_name m |> unstatic else ()
                 | ReadVar (Last, _) -> if List.is_empty rhs then bb_dirtied x ~proc_name ~bb_name m |> unstatic else ()
                 | ReadHasPath Prev | ReadVar (Prev, _) -> (
-                    match removed.next with Some x -> bb_dirtied (x |> static) ~proc_name ~bb_name m |> unstatic | None -> ())
+                    match removed.next with
+                    | Some x -> bb_dirtied (x |> static) ~proc_name ~bb_name m |> unstatic
+                    | None -> ())
                 | ReadHasPath Next | ReadVar (Next, _) -> (
-                    match removed.prev with Some x -> bb_dirtied (x |> static) ~proc_name ~bb_name m |> unstatic | None -> ())
+                    match removed.prev with
+                    | Some x -> bb_dirtied (x |> static) ~proc_name ~bb_name m |> unstatic
+                    | None -> ())
                 | ReadProp _ | ReadAttr _ -> ()
                 | _ -> raise (EXN (show_read read))
               in
@@ -368,7 +356,8 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
             in
             let down, up = get_bb_from_proc p proc_name in
             Option.iter down ~f:work;
-            Option.iter up ~f:work); tt
+            Option.iter up ~f:work);
+        tt
     | _ -> panic "bad argument"
 
   let add_children (p : prog) (x : meta node sd) (y : meta node sd) (n : int sd) (m : metric sd) : unit sd =
@@ -399,9 +388,13 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
             | ReadVar (First, _) -> if List.is_empty lhs then bb_dirtied x ~proc_name ~bb_name m |> unstatic else ()
             | ReadVar (Last, _) -> if List.is_empty rhs then bb_dirtied x ~proc_name ~bb_name m |> unstatic else ()
             | ReadHasPath Prev | ReadVar (Prev, _) -> (
-                match (y |> unstatic).next with Some x -> bb_dirtied (x |> static) ~proc_name ~bb_name m |> unstatic | None -> ())
+                match (y |> unstatic).next with
+                | Some x -> bb_dirtied (x |> static) ~proc_name ~bb_name m |> unstatic
+                | None -> ())
             | ReadHasPath Next | ReadVar (Next, _) -> (
-                match (y |> unstatic).prev with Some x -> bb_dirtied (x |> static) ~proc_name ~bb_name m |> unstatic | None -> ())
+                match (y |> unstatic).prev with
+                | Some x -> bb_dirtied (x |> static) ~proc_name ~bb_name m |> unstatic
+                | None -> ())
             | ReadVar (Self, _) | ReadProp _ | ReadAttr _ -> ()
             | _ -> panic (show_read read)
           in
@@ -410,7 +403,8 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
         let down, up = get_bb_from_proc p proc_name in
         register_todo_proc p y proc_name m |> unstatic;
         Option.iter down ~f:work;
-        Option.iter up ~f:work) |> static
+        Option.iter up ~f:work)
+    |> static
   (*print_endline ("add: " ^ string_of_int y.id);*)
 
   let add_prop (p : prog) (n : meta node sd) (name : string) (v : value sd) (m : metric sd) : unit sd =
@@ -432,7 +426,8 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
         in
         let down, up = get_bb_from_proc p proc_name in
         Option.iter down ~f:work;
-        Option.iter up ~f:work) |> static
+        Option.iter up ~f:work)
+    |> static
 
   let remove_prop (p : prog) (n : meta node sd) (name : string) (m : metric sd) : unit sd =
     write (m |> unstatic);
@@ -454,7 +449,8 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
         in
         let down, up = get_bb_from_proc p proc_name in
         Option.iter down ~f:work;
-        Option.iter up ~f:work) |> static
+        Option.iter up ~f:work)
+    |> static
 
   let add_attr (p : prog) (n : meta node sd) (name : string) (v : value sd) (m : metric sd) : unit sd =
     write (m |> unstatic);
@@ -474,7 +470,8 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
         in
         let down, up = get_bb_from_proc p proc_name in
         Option.iter down ~f:work;
-        Option.iter up ~f:work) |> static
+        Option.iter up ~f:work)
+    |> static
 
   let remove_attr (p : prog) (n : meta node sd) (name : string) (m : metric sd) : unit sd =
     write (m |> unstatic);
@@ -495,7 +492,8 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
         in
         let down, up = get_bb_from_proc p proc_name in
         Option.iter down ~f:work;
-        Option.iter up ~f:work) |> static
+        Option.iter up ~f:work)
+    |> static
 
   let recalculate (p : prog) (n : meta node sd) (m : metric sd) : unit sd =
     recalculate_internal p n m (fun n stmts -> eval_stmts p n stmts m)

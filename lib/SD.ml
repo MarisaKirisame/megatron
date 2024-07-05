@@ -23,9 +23,7 @@ module type SD = sig
   val make_ref : 'a sd -> 'a ref sd
   val read_ref : 'a ref sd -> 'a sd
   val write_ref : 'a ref sd -> 'a sd -> unit sd
-
   val int : int -> int sd
-
   val seq : unit sd -> (unit -> 'a sd) -> 'a sd
   val let_ : 'a sd -> ('a sd -> 'b sd) -> 'b sd
   val lam : ('a sd -> 'b sd) -> ('a -> 'b) sd
@@ -36,6 +34,20 @@ module type SD = sig
   val iter_lines : Stdio.In_channel.t sd -> (string sd -> unit sd) -> unit sd
   val print_endline : string -> unit sd
   val fresh_metric : unit -> metric sd
+  val make_stack : unit -> 'a Stack.t sd
+  val push_stack : 'a Stack.t sd -> 'a sd -> unit sd
+  val clear_stack : 'a Stack.t sd -> unit sd
+  val assert_ : bool sd -> unit sd
+  val string_equal : string sd -> string sd -> bool sd
+  val string : string -> string sd
+  val json_to_string : Yojson.Basic.t sd -> string sd
+  val json_member : string sd -> Yojson.Basic.t sd -> Yojson.Basic.t sd
+  val json_to_value : Yojson.Basic.t sd -> value sd
+  val json_to_dict : Yojson.Basic.t sd -> (string, value) Hashtbl.t sd
+  val json_to_int : Yojson.Basic.t sd -> int sd
+  val json_to_list : Yojson.Basic.t sd -> Yojson.Basic.t list sd
+
+  val list_map : 'a list sd -> f:('a sd -> 'b sd) -> 'b list sd
 end
 
 module S : SD with type 'x sd = 'x = struct
@@ -58,11 +70,9 @@ module S : SD with type 'x sd = 'x = struct
   let input_line c = Stdio.In_channel.input_line_exn c
   let iter_lines c f = Stdio.In_channel.iter_lines c ~f
   let print_endline str = Stdio.print_endline str
-
   let make_ref a = ref a
   let read_ref a = !a
   let write_ref a v = a := v
-
   let int x = x
 
   let fresh_metric () =
@@ -75,6 +85,33 @@ module S : SD with type 'x sd = 'x = struct
       input_change_count = 0;
       output_change_count = 0;
     }
+
+  let make_stack = Stack.make
+  let push_stack = Stack.push
+  let clear_stack = Stack.clear
+  let assert_ b = assert b
+  let string_equal = String.equal
+  let string x = x
+  let json_to_string (j : Yojson.Basic.t sd) = Yojson.Basic.to_string j
+  let json_member = Yojson.Basic.Util.member
+
+  let json_to_value (j : Yojson.Basic.t) : value =
+    let open Yojson.Basic.Util in
+    match j with
+    | `String s -> VString s
+    | `Int i -> VInt i
+    | _ -> panic ("unknown value in json_to_value: " ^ Yojson.Basic.pretty_to_string j)
+
+  let json_to_dict (j : Yojson.Basic.t) : (string, value) Hashtbl.t =
+    let open Yojson.Basic.Util in
+    Hashtbl.map (Hashtbl.of_alist_exn (module String) (to_assoc j)) ~f:json_to_value
+
+  let json_to_int j : int =
+    let open Yojson.Basic.Util in
+    to_int j
+
+  let json_to_list = Yojson.Basic.Util.to_list
+  let list_map = List.map
 end
 
 module D : SD with type 'x sd = 'x code = struct
@@ -95,18 +132,29 @@ module D : SD with type 'x sd = 'x code = struct
 
   let tt = Expr "make_unit()"
   let app f x = Expr (unexpr f ^ bracket (unexpr x))
-  let json_of_string _ = todo "json_of_string"
-  let with_file name f = Expr (("with_file" ^ bracket name) ^ (unexpr (lam f)))
-  let input_line c = todo "input_line"
+  let json_of_string x = Expr ("json_of_string" ^ bracket (unexpr x))
+  let with_file name f = Expr (("with_file" ^ bracket name) ^ bracket (unexpr (lam f)))
+  let input_line c = Expr ("input_line" ^ bracket (unexpr c))
   let iter_lines c f = todo "iter_lines"
   let print_endline str = Stmt ("std::cout << " ^ quoted str ^ " << std::endl;")
-
   let int x = Expr ("static_cast<int>" ^ bracket (string_of_int x))
   let make_ref x = Expr ("make_ref" ^ unexpr x)
   let read_ref x = Expr (unexpr x ^ ".read_ref()")
   let write_ref r x = Expr (unexpr r ^ ".write_ref" ^ bracket (unexpr x))
-
-  let fresh_metric () = Expr ("metric()")
+  let fresh_metric () = Expr "metric()"
+  let make_stack () = Expr "make_stack()"
+  let push_stack s v = Expr ("push_stack" ^ bracket (unexpr s ^ "," ^ unexpr v))
+  let clear_stack s = Expr ("clear_stack" ^ bracket (unexpr s))
+  let assert_ b = Expr ("assert" ^ bracket (unexpr b))
+  let string_equal x y = Expr (unexpr x ^ "==" ^ unexpr y)
+  let string x = Expr (quoted x)
+  let json_to_string x = Expr ("json_to_string" ^ bracket (unexpr x))
+  let json_member str j = Expr ("json_member" ^ bracket (unexpr j ^ ", " ^ unexpr str))
+  let json_to_value j = Expr ("json_to_value" ^ bracket (unexpr j))
+  let json_to_dict j = Expr ("json_to_dict" ^ bracket (unexpr j))
+  let json_to_int j = Expr ("json_to_int" ^ bracket (unexpr j))
+  let json_to_list j = Expr ("json_to_list" ^ bracket (unexpr j))
+  let list_map _ ~f = todo "map"
 end
 
 (*

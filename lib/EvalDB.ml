@@ -24,7 +24,8 @@ module EVAL (SD : SD) = MakeEval (struct
       bb_dirtied = Hashtbl.create (module String);
       proc_inited = Hashtbl.create (module String);
       recursive_proc_dirtied = Hashtbl.create (module String);
-    } |> static
+    }
+    |> static
 
   let remove_meta _ = tt
 
@@ -36,9 +37,10 @@ module EVAL (SD : SD) = MakeEval (struct
       match n.parent with Some p -> set_recursive_proc_dirtied p proc_name m | None -> ())
 
   let bb_dirtied (n : meta node sd) ~(proc_name : string) ~(bb_name : string) (m : metric sd) : unit sd =
-    if Option.is_some (Hashtbl.find (n |> unstatic).m.proc_inited proc_name) then (
-      Hashtbl.set (n |> unstatic).m.bb_dirtied ~key:bb_name ~data:true;
-      set_recursive_proc_dirtied (n |> unstatic) proc_name (m |> unstatic)) |> static
+    if Option.is_some (Hashtbl.find (n |> unstatic).m.proc_inited proc_name) then
+      (Hashtbl.set (n |> unstatic).m.bb_dirtied ~key:bb_name ~data:true;
+       set_recursive_proc_dirtied (n |> unstatic) proc_name (m |> unstatic))
+      |> static
     else meta_write (m |> unstatic) |> static
 
   let register_todo_proc (p : prog) (y : meta node sd) (proc_name : string) (m : metric sd) : unit sd =
@@ -70,7 +72,8 @@ module EVAL (SD : SD) = MakeEval (struct
         eval_stmts n (stmts_of_processed_proc p proc_name) |> unstatic)
       else (
         (match down_name with None -> () | Some dn -> rerun_if_dirty dn);
-        List.iter (n |> unstatic).children ~f:(fun n -> recalculate_internal_aux p (n |> static) proc_name down_name up_name m eval_stmts |> unstatic);
+        List.iter (n |> unstatic).children ~f:(fun n ->
+            recalculate_internal_aux p (n |> static) proc_name down_name up_name m eval_stmts |> unstatic);
         match up_name with None -> () | Some un -> rerun_if_dirty un)
     else ();
     Hashtbl.set (n |> unstatic).m.recursive_proc_dirtied ~key:proc_name ~data:false;
@@ -84,7 +87,8 @@ module EVAL (SD : SD) = MakeEval (struct
     List.iter p.vars ~f:(fun (VarDecl (p, _)) -> ignore (Hashtbl.find_exn n.var p));
     List.iter n.children ~f:(check p)
 
-  let recalculate_internal (p : prog) (n : meta node sd) (m : metric sd) (eval_stmts : meta node sd -> stmts -> unit sd) : unit sd =
+  let recalculate_internal (p : prog) (n : meta node sd) (m : metric sd) (eval_stmts : meta node sd -> stmts -> unit sd)
+      : unit sd =
     List.iter p.order ~f:(fun proc_name ->
         let down, up = get_bb_from_proc p proc_name in
         recalculate_internal_aux p n proc_name down up m eval_stmts |> unstatic);

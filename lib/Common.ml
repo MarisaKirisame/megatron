@@ -24,3 +24,28 @@ exception EXN of string
 
 let panic msg = raise (EXN msg)
 let todo msg = panic ("todo: " ^ msg)
+
+module Stack = struct
+  (*reversed list*)
+  type 'a t = 'a list ref
+
+  let make () : _ t = ref []
+  let push (s : 'a t) (v : 'a) : unit = s := v :: !s
+  let clear (s : 'a t) : unit = s := []
+end
+
+type 'meta node = {
+  name : string;
+  attr : (string, value) Hashtbl.t;
+  prop : (string, value) Hashtbl.t;
+  var : (string, value) Hashtbl.t;
+  id : int;
+  extern_id : int;
+  mutable children : 'meta node list;
+  mutable parent : 'meta node option;
+  mutable next : 'meta node option;
+  mutable prev : 'meta node option;
+  m : 'meta;
+}
+
+and value = VInt of int | VBool of bool | VString of string | VFloat of float
