@@ -242,7 +242,7 @@ module Main (EVAL : Eval) = struct
     match path with
     | [] -> panic "bad path!"
     | [ i ] ->
-        input_change (m |> unstatic) (node_size y);
+        input_change_metric m (node_size y |> static) |> unstatic;
         EVAL.add_children prog (x |> static) (y |> static) (i |> static) m
     | p_hd :: p_tl -> add_node p_tl (List.nth_exn x.children p_hd) y m
 
@@ -250,7 +250,7 @@ module Main (EVAL : Eval) = struct
     match path with
     | [] -> panic "bad path!"
     | [ i ] ->
-        output_change (m |> unstatic) (layout_size y |> unstatic);
+        output_change_metric m (layout_size y) |> unstatic;
         let lhs, rhs = List.split_n x.children i in
         (x.children <- List.append lhs ((y |> unstatic) :: rhs)) |> static
     | p_hd :: p_tl -> add_layout_node p_tl (List.nth_exn x.children p_hd) y m
@@ -259,7 +259,7 @@ module Main (EVAL : Eval) = struct
     match path with
     | [] -> panic "bad path!"
     | [ i ] ->
-        input_change (m |> unstatic) (node_size (List.nth_exn x.children i));
+        input_change_metric m (node_size (List.nth_exn x.children i) |> static) |> unstatic;
         EVAL.remove_children prog (x |> static) (i |> static) m
     | p_hd :: p_tl -> remove_node p_tl (List.nth_exn x.children p_hd) m
 
@@ -268,7 +268,7 @@ module Main (EVAL : Eval) = struct
     | [] -> panic "bad path!"
     | [ i ] ->
         let lhs, removed :: rhs = List.split_n x.children i in
-        output_change m (layout_size (List.nth_exn x.children i |> static) |> unstatic);
+        output_change_metric m (layout_size (List.nth_exn x.children i |> static)) |> unstatic;
         (x.children <- List.append lhs rhs) |> static
     | p_hd :: p_tl -> remove_layout_node p_tl (List.nth_exn x.children p_hd) m
 
@@ -285,7 +285,7 @@ module Main (EVAL : Eval) = struct
     | [] -> panic "bad path!"
     | [ i ] ->
         let lhs, removed :: rhs = List.split_n x.children i in
-        output_change (m |> unstatic) (int_add (layout_size (removed |> static)) (layout_size (y |> static)) |> unstatic);
+        output_change_metric m (int_add (layout_size (removed |> static)) (layout_size (y |> static))) |> unstatic;
         (x.children <- List.append lhs (y :: rhs)) |> static
     | p_hd :: p_tl -> replace_layout_node p_tl (List.nth_exn x.children p_hd) y m
 
@@ -293,7 +293,7 @@ module Main (EVAL : Eval) = struct
       unit sd =
     match path with
     | [] -> (
-        input_change (m |> unstatic) 1;
+        input_change_metric m (int 1) |> unstatic;
         match type_ with
         | "attributes" ->
             EVAL.remove_attr prog (x |> static) key m |> unstatic;
@@ -307,7 +307,7 @@ module Main (EVAL : Eval) = struct
   let rec delete_value (path : int list) (x : _ node) (type_ : string) (key : string) (m : metric sd) : unit sd =
     match path with
     | [] -> (
-        input_change (m |> unstatic) 1;
+        input_change_metric m (int 1) |> unstatic;
         match type_ with
         | "attributes" -> EVAL.remove_attr prog (x |> static) key m
         | "properties" -> EVAL.remove_prop prog (x |> static) key m
@@ -318,7 +318,7 @@ module Main (EVAL : Eval) = struct
       unit sd =
     match path with
     | [] -> (
-        input_change (m |> unstatic) 1;
+        input_change_metric m (int 1) |> unstatic;
         match type_ with
         | "attributes" -> EVAL.add_attr prog (x |> static) key (value |> static) m
         | "properties" -> EVAL.add_prop prog (x |> static) key (value |> static) m
@@ -375,7 +375,7 @@ module Main (EVAL : Eval) = struct
                                                           ])
                                                       |> static);
                                                     (fun _ -> Out_channel.output_string out_file "\n" |> static);
-                                                    (fun _ -> reset_metric (m |> unstatic) |> static);
+                                                    (fun _ -> reset_metric m);
                                                     (fun _ -> (command |> unstatic := []) |> static);
                                                     (fun _ ->
                                                       (diff_num |> unstatic := !(diff_num |> unstatic) + 1) |> static);
@@ -424,8 +424,7 @@ module Main (EVAL : Eval) = struct
                                                           (get_value j |> unstatic)
                                                           m
                                                     | "layout_remove" ->
-                                                        remove_layout_node (get_path j) (layout_n |> unstatic)
-                                                          (m |> unstatic)
+                                                        remove_layout_node (get_path j) (layout_n |> unstatic) m
                                                     | "layout_add" ->
                                                         add_layout_node (get_path j) (layout_n |> unstatic)
                                                           (get_layout_node j) m
@@ -433,16 +432,13 @@ module Main (EVAL : Eval) = struct
                                                         replace_layout_node (get_path j) (layout_n |> unstatic)
                                                           (get_layout_node j |> unstatic)
                                                           m
-                                                    | "layout_info_changed" -> output_change (m |> unstatic) 1 |> static
+                                                    | "layout_info_changed" -> output_change_metric m (int 1)
                                                     | x -> panic x)
                                               in
                                               seqs
                                                 [
-                                                  (fun _ ->
-                                                    output_change (m |> unstatic) (layout_size layout_n |> unstatic)
-                                                    |> static);
-                                                  (fun _ ->
-                                                    input_change (m |> unstatic) (node_size (n |> unstatic)) |> static);
+                                                  (fun _ -> output_change_metric m (layout_size layout_n));
+                                                  (fun _ -> input_change_metric m (node_size (n |> unstatic) |> static));
                                                   (fun _ -> EVAL.eval prog n m);
                                                   (fun _ -> diff_evaluated ());
                                                   (fun _ -> "EVAL OK!" |> print_endline);

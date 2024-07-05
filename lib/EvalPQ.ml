@@ -49,10 +49,10 @@ module EVAL (SD : SD) = MakeEval (struct
     let result = PriorityQueue.add queue (x, y, z) in
     ignore result;
     (*print_endline ("pushed " ^ (string_of_int y.id) ^ " " ^ string_of_bool result);*)
-    meta_write m
+    meta_write_metric m |> unstatic
 
   let queue_force_push x y z m : unit =
-    meta_write m;
+    meta_write_metric (m |> static) |> unstatic;
     if PriorityQueue.add queue (x, y, z) then () else panic "push false"
 
   let register_todo_proc p (y : meta node sd) proc_name (m : metric sd) : unit sd =
@@ -78,7 +78,7 @@ module EVAL (SD : SD) = MakeEval (struct
   let bb_dirtied (n : meta node sd) ~(proc_name : string) ~(bb_name : string) (m : metric sd) : unit sd =
     ignore proc_name;
     match Hashtbl.find (n |> unstatic).m.bb_time_table bb_name with
-    | Some order -> queue_push order (n |> unstatic) (RecomputeBB bb_name) (m |> unstatic) |> static
+    | Some order -> queue_push order (n |> unstatic) (RecomputeBB bb_name) m |> static
     | None -> tt
 
   let bracket_call_bb (n : meta node sd) bb_name (f : unit -> unit sd) : unit sd =
@@ -98,7 +98,7 @@ module EVAL (SD : SD) = MakeEval (struct
     if queue_isempty () then tt
     else
       let x, y, z = queue_peek () in
-      meta_read (m |> unstatic);
+      meta_read_metric m |> unstatic;
       (m |> unstatic).queue_size_acc <- (m |> unstatic).queue_size_acc + queue_size ();
       (*(match z with RecomputeProc z | RecomputeBB z -> print_endline ("popped " ^ string_of_int y.id ^ "." ^ z); recursive_print_id_up y);*)
       (if y.m.alive then (

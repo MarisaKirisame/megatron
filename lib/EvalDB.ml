@@ -29,8 +29,8 @@ module EVAL (SD : SD) = MakeEval (struct
 
   let remove_meta _ = tt
 
-  let rec set_recursive_proc_dirtied (n : meta node) (proc_name : string) (m : metric) : unit =
-    meta_write m;
+  let rec set_recursive_proc_dirtied (n : meta node) (proc_name : string) (m : metric sd) : unit =
+    meta_write_metric m |> unstatic;
     if Hashtbl.find_exn n.m.recursive_proc_dirtied proc_name then ()
     else (
       Hashtbl.set n.m.recursive_proc_dirtied ~key:proc_name ~data:true;
@@ -39,13 +39,13 @@ module EVAL (SD : SD) = MakeEval (struct
   let bb_dirtied (n : meta node sd) ~(proc_name : string) ~(bb_name : string) (m : metric sd) : unit sd =
     if Option.is_some (Hashtbl.find (n |> unstatic).m.proc_inited proc_name) then
       (Hashtbl.set (n |> unstatic).m.bb_dirtied ~key:bb_name ~data:true;
-       set_recursive_proc_dirtied (n |> unstatic) proc_name (m |> unstatic))
+       set_recursive_proc_dirtied (n |> unstatic) proc_name m)
       |> static
-    else meta_write (m |> unstatic) |> static
+    else meta_write_metric m
 
   let register_todo_proc (p : prog) (y : meta node sd) (proc_name : string) (m : metric sd) : unit sd =
     Hashtbl.add_exn (y |> unstatic).m.recursive_proc_dirtied ~key:proc_name ~data:false;
-    set_recursive_proc_dirtied (y |> unstatic) proc_name (m |> unstatic) |> static
+    set_recursive_proc_dirtied (y |> unstatic) proc_name m |> static
 
   let bracket_call_bb (n : meta node sd) bb_name f =
     Hashtbl.add_exn (n |> unstatic).m.bb_dirtied ~key:bb_name ~data:false;
@@ -59,7 +59,7 @@ module EVAL (SD : SD) = MakeEval (struct
   let rec recalculate_internal_aux (p : prog) (n : meta node sd) (proc_name : string) (down_name : string option)
       (up_name : string option) (m : metric sd) (eval_stmts : meta node sd -> stmts -> unit sd) : unit sd =
     (*print_endline "enter";*)
-    meta_read (m |> unstatic);
+    meta_read_metric m |> unstatic;
     let rerun_if_dirty name =
       if Hashtbl.find_exn (n |> unstatic).m.bb_dirtied name then (
         eval_stmts n (stmts_of_basic_block p name) |> unstatic;

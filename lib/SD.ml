@@ -44,7 +44,6 @@ module type SD = sig
   val input_line : Stdio.In_channel.t sd -> string sd
   val iter_lines : Stdio.In_channel.t sd -> (string sd -> unit sd) -> unit sd
   val print_endline : string -> unit sd
-  val fresh_metric : unit -> metric sd
   val make_stack : unit -> 'a Stack.t sd
   val push_stack : 'a Stack.t sd -> 'a sd -> unit sd
   val clear_stack : 'a Stack.t sd -> unit sd
@@ -81,6 +80,14 @@ module type SD = sig
   val layout_node_get_children : layout_node sd -> layout_node list sd
   val int_add : int sd -> int sd -> int sd
   val list_int_sum : 'a list sd -> ('a sd -> int sd) -> int sd
+  val fresh_metric : unit -> metric sd
+  val reset_metric : metric sd -> unit sd
+  val read_metric : metric sd -> unit sd
+  val meta_read_metric : metric sd -> unit sd
+  val write_metric : metric sd -> unit sd
+  val meta_write_metric : metric sd -> unit sd
+  val input_change_metric : metric sd -> int sd -> unit sd
+  val output_change_metric : metric sd -> int sd -> unit sd
 end
 
 module S : SD with type 'x sd = 'x = struct
@@ -170,6 +177,22 @@ module S : SD with type 'x sd = 'x = struct
   let make_layout_node l = { children = l }
   let layout_node_get_children (l : layout_node) = l.children
   let int_add x y = x + y
+
+  let reset_metric m =
+    m.read_count <- 0;
+    m.meta_read_count <- 0;
+    m.write_count <- 0;
+    m.meta_write_count <- 0;
+    m.queue_size_acc <- 0;
+    m.input_change_count <- 0;
+    m.output_change_count <- 0
+
+  let read_metric (m : metric) : unit = m.read_count <- m.read_count + 1
+  let meta_read_metric (m : metric) : unit = m.meta_read_count <- m.meta_read_count + 1
+  let write_metric (m : metric) : unit = m.write_count <- m.write_count + 1
+  let meta_write_metric (m : metric) : unit = m.meta_write_count <- m.meta_write_count + 1
+  let input_change_metric (m : metric) (c : int) = m.input_change_count <- m.input_change_count + c
+  let output_change_metric (m : metric) (c : int) = m.output_change_count <- m.output_change_count + c
 end
 
 module D : SD with type 'x sd = 'x code = struct
@@ -207,7 +230,6 @@ module D : SD with type 'x sd = 'x code = struct
   let make_ref x = Expr ("make_ref" ^ unexpr x)
   let read_ref x = Expr (unexpr x ^ ".read_ref()")
   let write_ref r x = Expr (unexpr r ^ ".write_ref" ^ bracket (unexpr x))
-  let fresh_metric () = Expr "metric()"
   let make_stack () = Expr "make_stack()"
   let push_stack s v = Expr ("push_stack" ^ bracket (unexpr s ^ "," ^ unexpr v))
   let clear_stack s = Expr ("clear_stack" ^ bracket (unexpr s))
@@ -266,6 +288,15 @@ module D : SD with type 'x sd = 'x code = struct
         Stmt
           ("for (auto& " ^ v ^ ":" ^ unexpr x ^ ")"
           ^ square_bracket (unexpr i ^ "+=" ^ unexpr (f (Expr v)) ^ "; return" ^ unexpr i ^ ";")))
+
+  let fresh_metric () = Expr "metric()"
+  let reset_metric m = Proc (unexpr m ^ ".reset();")
+  let read_metric m = Proc (unexpr m ^ ".read();")
+  let meta_read_metric m = Proc (unexpr m ^ ".meta_read();")
+  let write_metric m = Proc (unexpr m ^ ".write();")
+  let meta_write_metric m = Proc (unexpr m ^ ".meta_write();")
+  let input_change_metric m i = Proc (unexpr m ^ ".input_change" ^ bracket (unexpr i) ^ ";")
+  let output_change_metric m i = Proc (unexpr m ^ ".output_change" ^ bracket (unexpr i) ^ ";")
 end
 
 (*

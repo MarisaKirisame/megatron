@@ -245,13 +245,13 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
           panic ("External: " ^ String.concat ~sep:" " (List.map x ~f:(fun x -> show_value (recurse x |> unstatic))))
       | HasProperty p -> VBool (Option.is_some (Hashtbl.find (n |> unstatic).prop p)) |> static
       | GetProperty p -> (
-          read (m |> unstatic);
+          read_metric m |> unstatic;
           match Hashtbl.find (n |> unstatic).prop p with
           | Some x -> x |> static
           | None -> panic ("cannot find property " ^ p ^ " in " ^ string_of_int (n |> unstatic).extern_id))
       | HasAttribute p -> VBool (Option.is_some (Hashtbl.find (n |> unstatic).attr p)) |> static
       | GetAttribute p -> (
-          read (m |> unstatic);
+          read_metric m |> unstatic;
           match Hashtbl.find (n |> unstatic).attr p with
           | Some x -> x |> static
           | None -> panic ("cannot find attribute " ^ p ^ " in " ^ string_of_int (n |> unstatic).extern_id))
@@ -261,7 +261,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
       | IfExpr (c, t, e) -> if bool_of_value (recurse c |> unstatic) then recurse t else recurse e
       | HasPath p -> VBool (Option.is_some (eval_path_opt (n |> unstatic) p)) |> static
       | Read (p, var_name) ->
-          read (m |> unstatic);
+          read_metric m |> unstatic;
           Hashtbl.find_exn (eval_path (n |> unstatic) p).var var_name |> static
       | And (x, y) -> if bool_of_value (recurse x |> unstatic) then recurse y else VBool false |> static
       | Or (x, y) -> if bool_of_value (recurse x |> unstatic) then VBool true |> static else recurse y
@@ -278,7 +278,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
   let rec eval_stmt (p : prog) (n : meta node sd) (s : stmt) (m : metric sd) : unit sd =
     match s with
     | Write (prop_name, expr) ->
-        write (m |> unstatic);
+        write_metric m |> unstatic;
         let new_value = eval_expr n expr m in
         (match Hashtbl.find (n |> unstatic).var prop_name with
         | None -> ()
@@ -387,7 +387,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
   (*print_endline ("add: " ^ string_of_int y.id);*)
 
   let add_prop (p : prog) (n : meta node sd) (name : string) (v : value sd) (m : metric sd) : unit sd =
-    write (m |> unstatic);
+    write_metric m |> unstatic;
     Hashtbl.add_exn (n |> unstatic).prop ~key:name ~data:(v |> unstatic);
     Hashtbl.iter p.procs ~f:(fun (ProcessedProc (proc_name, _)) ->
         let work bb_name =
@@ -409,7 +409,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
     |> static
 
   let remove_prop (p : prog) (n : meta node sd) (name : string) (m : metric sd) : unit sd =
-    write (m |> unstatic);
+    write_metric m |> unstatic;
     ignore (Hashtbl.find_exn (n |> unstatic).prop name);
     Hashtbl.remove (n |> unstatic).prop name;
     Hashtbl.iter p.procs ~f:(fun (ProcessedProc (proc_name, _)) ->
@@ -432,7 +432,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
     |> static
 
   let add_attr (p : prog) (n : meta node sd) (name : string) (v : value sd) (m : metric sd) : unit sd =
-    write (m |> unstatic);
+    write_metric m |> unstatic;
     Hashtbl.add_exn (n |> unstatic).attr ~key:name ~data:(v |> unstatic);
     Hashtbl.iter p.procs ~f:(fun (ProcessedProc (proc_name, _)) ->
         let work bb_name =
@@ -453,7 +453,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
     |> static
 
   let remove_attr (p : prog) (n : meta node sd) (name : string) (m : metric sd) : unit sd =
-    write (m |> unstatic);
+    write_metric m |> unstatic;
     ignore (Hashtbl.find_exn (n |> unstatic).attr name);
     Hashtbl.remove (n |> unstatic).attr name;
     Hashtbl.iter p.procs ~f:(fun (ProcessedProc (proc_name, _)) ->
