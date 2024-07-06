@@ -27,6 +27,26 @@ type func =
   | Max
 [@@deriving show]
 
+let func_name_compiled f =
+  match f with
+  | StringToFloat -> "string_to_float"
+  | Plus -> "plus"
+  | Eq -> "eq"
+  | HasSuffix -> "has_suffix"
+  | StripSuffix -> "strip_suffix"
+  | StringIsFloat -> "string_is_float"
+  | Not -> "not"
+  | Neq -> "neq"
+  | HasPrefix -> "has_prefix"
+  | IntToFloat -> "int_to_float"
+  | Div -> "divide"
+  | Mult -> "mult"
+  | NthBySep -> "nth_by_sep"
+  | Max -> "max"
+  | Minus -> "minus"
+  | Gt -> "gt"
+  | _ -> panic (show_func f)
+
 type path = Self | Parent | First | Next | Last | Prev [@@deriving show]
 
 (** The type of the abstract syntax tree (AST). *)

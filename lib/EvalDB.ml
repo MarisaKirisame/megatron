@@ -19,7 +19,7 @@ module EVAL (SD : SD) = MakeEval (struct
 
   let meta_staged = "???"
 
-  let fresh_meta u =
+  let fresh_meta _ =
     {
       bb_dirtied = Hashtbl.create (module String);
       proc_inited = Hashtbl.create (module String);

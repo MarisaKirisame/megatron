@@ -6,77 +6,6 @@ open SD
 
 let rec rightmost (x : _ node) : _ node = match List.last x.children with Some x -> rightmost x | None -> x
 
-let equal_value x y : bool =
-  match (x, y) with
-  | VString x, VString y -> String.equal x y
-  | VInt x, VInt y -> Int.equal x y
-  | VBool x, VBool y -> Bool.equal x y
-  | VFloat x, VFloat y -> (Float.is_nan x && Float.is_nan y) || Float.equal x y
-  | _ -> panic ("unhandled case in equal_value: " ^ show_value x ^ " " ^ show_value y)
-
-let has_suffix s sfx =
-  String.length s >= String.length sfx
-  && String.equal sfx (String.sub s ~pos:(String.length s - String.length sfx) ~len:(String.length sfx))
-
-let has_prefix s pfx =
-  String.length s >= String.length pfx && String.equal pfx (String.sub s ~pos:0 ~len:(String.length pfx))
-
-let strip_prefix s pfx =
-  if has_prefix s pfx then String.sub s ~pos:(String.length pfx) ~len:(String.length s - String.length pfx) else panic s
-
-let strip_suffix s sfx =
-  assert (has_suffix s sfx);
-  String.sub s ~pos:0 ~len:(String.length s - String.length sfx)
-
-let eval_func (f : func) (xs : value list) =
-  match (f, xs) with
-  | Lt, [ VInt lhs; VInt rhs ] -> VBool (lhs < rhs)
-  | Gt, [ VInt lhs; VInt rhs ] -> VBool (lhs > rhs)
-  | Eq, [ lhs; rhs ] -> VBool (equal_value lhs rhs)
-  | Neq, [ lhs; rhs ] -> VBool (not (equal_value lhs rhs))
-  | Plus, [ VInt lhs; VInt rhs ] -> VInt (lhs + rhs)
-  | Plus, [ VFloat lhs; VFloat rhs ] -> VFloat (lhs +. rhs)
-  | Mult, [ VFloat lhs; VFloat rhs ] -> VFloat (lhs *. rhs)
-  | Minus, [ VFloat lhs; VFloat rhs ] -> VFloat (lhs -. rhs)
-  | Gt, [ VFloat lhs; VFloat rhs ] -> VBool (Float.( >. ) lhs rhs)
-  | Div, [ VFloat lhs; VFloat rhs ] -> VFloat (lhs /. rhs)
-  | Max, [ VFloat lhs; VFloat rhs ] -> VFloat (Float.max lhs rhs)
-  | HasSuffix, [ VString s; VString sfx ] -> VBool (has_suffix s sfx)
-  | HasPrefix, [ VString s; VString sfx ] -> VBool (has_prefix s sfx)
-  | StripSuffix, [ VString s; VString sfx ] -> VString (strip_suffix s sfx)
-  | StripPrefix, [ VString s; VString sfx ] -> VString (strip_prefix s sfx)
-  | Not, [ VBool x ] -> VBool (not x)
-  | StringToFloat, [ VString str ] -> (
-      match float_of_string_opt str with Some x -> VFloat x | None -> panic ("StringToFloat failed: " ^ str))
-  | StringToInt, [ VString str ] -> (
-      match int_of_string_opt str with Some x -> VInt x | None -> panic ("StringToInt failed: " ^ str))
-  | StringIsFloat, [ VString str ] -> VBool (Option.is_some (float_of_string_opt str))
-  | IntToFloat, [ VInt x ] -> VFloat (float_of_int x)
-  | NthBySep, [ VString s; VString sep; VInt nth ] ->
-      assert (Int.equal (String.length sep) 1);
-      VString (List.nth_exn (String.split s ~on:(String.get sep 0)) nth)
-  | _ -> panic (show_func f ^ List.to_string ~f:show_value xs)
-
-let func_name_compiled f =
-  match f with
-  | StringToFloat -> "string_to_float"
-  | Plus -> "plus"
-  | Eq -> "eq"
-  | HasSuffix -> "has_suffix"
-  | StripSuffix -> "strip_suffix"
-  | StringIsFloat -> "string_is_float"
-  | Not -> "not"
-  | Neq -> "neq"
-  | HasPrefix -> "has_prefix"
-  | IntToFloat -> "int_to_float"
-  | Div -> "divide"
-  | Mult -> "mult"
-  | NthBySep -> "nth_by_sep"
-  | Max -> "max"
-  | Minus -> "minus"
-  | Gt -> "gt"
-  | _ -> panic (show_func f)
-
 let eval_path_opt (n : 'meta node) (p : path) =
   match p with
   | Self -> Some n
@@ -177,10 +106,10 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
 
   let reversed_path (p : path) (n : 'a node sd) : 'a node list sd =
     match p with
-    | Parent -> (n |> unstatic).children |> static
-    | Self -> [ n |> unstatic ] |> static
-    | Prev -> Option.to_list (n |> unstatic).next |> static
-    | Next -> Option.to_list (n |> unstatic).prev |> static
+    | Parent -> node_get_children n
+    | Self -> list [ n ]
+    | Prev -> node_get_next n |> option_to_list
+    | Next -> node_get_prev n |> option_to_list
     | First -> (
         match (n |> unstatic).parent with
         | None -> [] |> static
@@ -193,45 +122,52 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
             if phys_equal (List.last_exn np.children).id (n |> unstatic).id then [ np ] |> static else [] |> static)
 
   let var_modified (p : prog) (n : meta node sd) (var_name : string) (m : metric sd) : unit sd =
-    Hashtbl.iter p.procs ~f:(fun (ProcessedProc (proc_name, _)) ->
-        let down, up = get_bb_from_proc p proc_name in
-        let work bb_name =
-          let (BasicBlock (_, stmts)) = Hashtbl.find_exn p.bbs bb_name in
-          let reads = reads_of_stmts stmts in
-          let dirty read =
-            match read with
-            | ReadVar (path, read_var_name) ->
-                if String.equal var_name read_var_name then
-                  List.iter
-                    (reversed_path path n |> unstatic)
-                    ~f:(fun dirtied_node -> bb_dirtied (dirtied_node |> static) ~proc_name ~bb_name m |> unstatic)
-                else ()
-            | ReadHasPath _ -> () (*property being changed cannot change haspath status*)
-            | ReadProp _ | ReadAttr _ -> ()
-          in
-          List.iter reads ~f:dirty
-        in
-        Option.iter down ~f:work;
-        Option.iter up ~f:work);
-    tt
+    seqs
+      (List.map (Hashtbl.to_alist p.procs) ~f:(fun (proc_name, _) _ ->
+           let down, up = get_bb_from_proc p proc_name in
+           let work bb_name : unit sd =
+             let (BasicBlock (_, stmts)) = Hashtbl.find_exn p.bbs bb_name in
+             let reads = reads_of_stmts stmts in
+             let dirty read =
+               match read with
+               | ReadVar (path, read_var_name) ->
+                   if String.equal var_name read_var_name then
+                     list_iter (reversed_path path n) ~f:(fun dirtied_node ->
+                         bb_dirtied dirtied_node ~proc_name ~bb_name m)
+                   else tt
+               | ReadHasPath _ -> tt (*property being changed cannot change haspath status*)
+               | ReadProp _ | ReadAttr _ -> tt
+             in
+             seqs (List.map reads ~f:(fun r () -> dirty r))
+           in
+           seqs (List.map (List.append (Option.to_list down) (Option.to_list up)) ~f:(fun n () -> work n))))
 
   let rec eval_expr (n : 'meta node sd) (e : expr) (m : metric sd) : value sd =
     let recurse e = eval_expr n e m in
     match e with
     | Panic (_, x) ->
-        panic ("External: " ^ String.concat ~sep:" " (List.map x ~f:(fun x -> show_value (recurse x |> unstatic))))
+        panic
+          ("External: " ^ String.concat ~sep:" " (List.map x ~f:(fun x -> show_value (recurse x |> unstatic))) |> static)
     | HasProperty p -> is_some (hashtbl_find (node_get_prop n) (string p)) |> vbool
     | GetProperty p ->
         seq (read_metric m) (fun _ ->
-            match hashtbl_find (node_get_prop n) (string p) |> unstatic with
-            | Some x -> x |> static
-            | None -> panic ("cannot find property " ^ p ^ " in " ^ string_of_int (n |> unstatic).extern_id))
+            option_match
+              (hashtbl_find (node_get_prop n) (string p))
+              (fun x -> x)
+              (fun _ ->
+                panic
+                  (string_append (string "cannot find property ")
+                     (string_append (string p) (string_append (string " in ") (string_of_int (node_get_extern_id n)))))))
     | HasAttribute p -> VBool (Option.is_some (hashtbl_find (node_get_attr n) (string p) |> unstatic)) |> static
-    | GetAttribute p -> (
+    | GetAttribute p ->
         read_metric m |> unstatic;
-        match hashtbl_find (node_get_attr n) (string p) |> unstatic with
-        | Some x -> x |> static
-        | None -> panic ("cannot find attribute " ^ p ^ " in " ^ string_of_int (n |> unstatic).extern_id))
+        option_match
+          (hashtbl_find (node_get_attr n) (string p))
+          (fun x -> x)
+          (fun _ ->
+            panic
+              (string_append (string "cannot find property ")
+                 (string_append (string p) (string_append (string " in ") (string_of_int (node_get_extern_id n))))))
     | String s -> vstring (string s)
     | Int i -> vint (int i)
     | Float f -> vfloat (float f)
@@ -244,19 +180,21 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
     | Or (x, y) -> if bool_of_value (recurse x) |> unstatic then VBool true |> static else recurse y
     | GetName -> VString (n |> unstatic).name |> static
     | Bool x -> vbool (bool x)
-    | Call (f, xs) -> eval_func f (List.map ~f:(fun v -> recurse v |> unstatic) xs) |> static
+    | Call (f, xs) -> eval_func f (List.map ~f:(fun v -> recurse v) xs)
   (*| _ -> panic ("unhandled case in eval_expr:" ^ show_expr e)*)
 
   let rec eval_stmt (p : prog) (n : meta node sd) (s : stmt) (m : metric sd) : unit sd =
     match s with
     | Write (prop_name, expr) ->
         seq (write_metric m) (fun _ ->
-            let new_value = eval_expr n expr m in
-            (match hashtbl_find (node_get_var n) (string prop_name) |> unstatic with
-            | None -> ()
-            | Some value ->
-                if equal_value value (new_value |> unstatic) then () else var_modified p n prop_name m |> unstatic);
-            Hashtbl.set (n |> unstatic).var ~key:prop_name ~data:(new_value |> unstatic) |> static)
+            let_ (eval_expr n expr m) (fun new_value ->
+                seq
+                  (option_match
+                     (hashtbl_find (node_get_var n) (string prop_name))
+                     (fun value ->
+                       ite (equal_value value new_value) (fun _ -> tt) (fun _ -> var_modified p n prop_name m))
+                     (fun () -> tt))
+                  (fun _ -> hashtbl_set (node_get_var n) (string prop_name) new_value)))
     | BBCall bb_name -> bracket_call_bb n bb_name (fun _ -> eval_stmts p n (stmts_of_basic_block p bb_name) m)
     | ChildrenCall proc_name ->
         List.iter (n |> unstatic).children ~f:(fun new_node ->
@@ -266,7 +204,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
         |> static
 
   and eval_stmts (p : prog) (n : meta node sd) (s : stmts) (m : metric sd) : unit sd =
-    List.iter s ~f:(fun stmt -> eval_stmt p n stmt m |> unstatic) |> static
+    seqs (List.map s ~f:(fun stmt _ -> eval_stmt p n stmt m))
 
   let eval (p : prog) (n : meta node sd) (m : metric sd) : unit sd =
     static
@@ -309,7 +247,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
             Option.iter down ~f:work;
             Option.iter up ~f:work);
         tt
-    | _ -> panic "bad argument"
+    | _ -> panic (string "bad argument")
 
   let add_children (p : prog) (x : meta node sd) (y : meta node sd) (n : int sd) (m : metric sd) : unit sd =
     let lhs, rhs = List.split_n (x |> unstatic).children (n |> unstatic) in
@@ -347,7 +285,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                 | Some x -> bb_dirtied (x |> static) ~proc_name ~bb_name m |> unstatic
                 | None -> ())
             | ReadVar (Self, _) | ReadProp _ | ReadAttr _ -> ()
-            | _ -> panic (show_read read)
+            | _ -> panic (string (show_read read)) |> unstatic
           in
           List.iter reads ~f:dirty
         in
@@ -449,8 +387,6 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
   let recalculate (p : prog) (n : meta node sd) (m : metric sd) : unit sd =
     recalculate_internal p n m (fun n stmts -> eval_stmts p n stmts m)
 
-  let rec seqs x = match x with [] -> tt | hd :: tl -> seq (hd ()) (fun _ -> seqs tl)
-
   let rec assert_node_value_equal (l : _ node sd) (r : _ node sd) : unit sd =
     assert (Int.equal (Hashtbl.length (node_get_var l |> unstatic)) (Hashtbl.length (node_get_var r |> unstatic)));
     assert (Int.equal (List.length (node_get_children l |> unstatic)) (List.length (node_get_children l |> unstatic)));
@@ -458,16 +394,28 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
       (node_get_children l |> unstatic)
       (node_get_children r |> unstatic)
       ~f:(fun l r -> assert_node_value_equal (l |> static) (r |> static) |> unstatic);
-    if Hashtbl.equal equal_value (node_get_var l |> unstatic) (node_get_var r |> unstatic) then ()
+    if
+      Hashtbl.equal
+        (fun x y -> equal_value (x |> static) (y |> static) |> unstatic)
+        (node_get_var l |> unstatic)
+        (node_get_var r |> unstatic)
+    then ()
     else (
       Hashtbl.iter_keys
         (node_get_var l |> unstatic)
         ~f:(fun name ->
           let lv = Hashtbl.find_exn (node_get_var l |> unstatic) name |> static in
           let rv = Hashtbl.find_exn (node_get_var r |> unstatic) name |> static in
-          if equal_value (lv |> unstatic) (rv |> unstatic) then ()
-          else print_endline (name ^ unstatic (string_of_value lv) ^ unstatic (string_of_value rv)) |> unstatic);
-      print_endline (string_of_int (l |> unstatic).id ^ " bad!") |> unstatic;
+          ite (equal_value lv rv)
+            (fun _ -> tt)
+            (fun _ -> print_endline (name ^ unstatic (string_of_value lv) ^ unstatic (string_of_value rv)))
+          |> unstatic);
+      print_endline (Core.string_of_int (l |> unstatic).id ^ " bad!") |> unstatic;
       recursive_print_id_up (l |> unstatic));
-    assert (Hashtbl.equal equal_value (node_get_var l |> unstatic) (node_get_var r |> unstatic)) |> static
+    assert (
+      Hashtbl.equal
+        (fun x y -> equal_value (x |> static) (y |> static) |> unstatic)
+        (node_get_var l |> unstatic)
+        (node_get_var r |> unstatic))
+    |> static
 end

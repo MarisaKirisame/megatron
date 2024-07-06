@@ -51,9 +51,9 @@ module EVAL (SD : SD) = MakeEval (struct
     (*print_endline ("pushed " ^ (string_of_int y.id) ^ " " ^ string_of_bool result);*)
     meta_write_metric m |> unstatic
 
-  let queue_force_push x y z m : unit =
+  let queue_force_push x y z m : unit sd =
     meta_write_metric (m |> static) |> unstatic;
-    if PriorityQueue.add queue (x, y, z) then () else panic "push false"
+    if PriorityQueue.add queue (x, y, z) then tt else panic (string "push false")
 
   let register_todo_proc p (y : meta node sd) proc_name (m : metric sd) : unit sd =
     match (y |> unstatic).parent with
@@ -71,9 +71,9 @@ module EVAL (SD : SD) = MakeEval (struct
           in
           (*print_endline ("pushed " ^ string_of_int y.id ^ "." ^ proc);*)
           Hashtbl.add_exn (y |> unstatic).m.proc_time_table ~key:proc_name ~data:(Open time);
-          queue_force_push time (y |> unstatic) (RecomputeProc proc_name) (m |> unstatic) |> static)
+          queue_force_push time (y |> unstatic) (RecomputeProc proc_name) (m |> unstatic))
         else tt (*otherwise this proc is already in the queue with y's ancestor.*)
-    | None -> panic "dangling node"
+    | None -> panic (string "dangling node")
 
   let bb_dirtied (n : meta node sd) ~(proc_name : string) ~(bb_name : string) (m : metric sd) : unit sd =
     ignore proc_name;
@@ -115,8 +115,8 @@ module EVAL (SD : SD) = MakeEval (struct
       let x', y', z' = queue_pop () in
       ignore (y', z');
       if not (phys_equal (TotalOrder.compare x x') 0) then (
-        print_endline ("peek " ^ string_of_int y.id ^ "." ^ recompute_to_string z) |> unstatic;
-        print_endline ("pop  " ^ string_of_int y'.id ^ "." ^ recompute_to_string z') |> unstatic;
+        print_endline ("peek " ^ Core.string_of_int y.id ^ "." ^ recompute_to_string z) |> unstatic;
+        print_endline ("pop  " ^ Core.string_of_int y'.id ^ "." ^ recompute_to_string z') |> unstatic;
         recursive_print_id_up y;
         recursive_print_id_up y')
       else ();

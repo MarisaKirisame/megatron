@@ -1,6 +1,7 @@
 open Core
 open Common
 open Metric
+open Ast
 
 (*to avoid code duplication, can only be used once. whoever that need reuse need to duplicate.*)
 type _ code =
@@ -12,17 +13,12 @@ type _ code =
 [@@deriving show]
 
 let code_cast (x : 'a code) : 'b code = match x with Expr x -> Expr x | Stmt x -> Stmt x | Proc x -> Proc x
-
-let unexpr = function
-  | Expr s -> bracket s
-  | Proc x | Stmt x -> "[&]()" ^ square_bracket x ^ "()"
-  | x -> panic ("unexpr: " ^ show_code x)
-
+let unexpr = function Expr s -> bracket s | Proc x | Stmt x -> "[&]()" ^ square_bracket x ^ "()"
 let unstmt = function Stmt s -> s | Expr x -> "return " ^ x ^ ";" | x -> panic ("unstmt: " ^ show_code x)
-let unproc = function Proc p -> p | Expr x -> x ^ ";" | x -> panic ("unproc:" ^ show_code x)
+let unproc = function Proc p -> p | Expr x -> x ^ ";" | Stmt x -> "[&]()" ^ square_bracket x ^ "();"
 let canonicalize (x : _ code) : _ code = x
 
-module type SD = sig
+module type SDIN = sig
   type _ sd
 
   val is_static : bool
@@ -74,11 +70,13 @@ module type SD = sig
   val node_get_var : 'a node sd -> (string, value) Hashtbl.t sd
   val node_get_attr : 'a node sd -> (string, value) Hashtbl.t sd
   val hashtbl_find : (string, 'a) Hashtbl.t sd -> string sd -> 'a option sd
+  val hashtbl_set : (string, 'a) Hashtbl.t sd -> string sd -> 'a sd -> unit sd
   val none : unit -> 'a option sd
   val some : 'a sd -> 'a option sd
   val is_none : 'a option sd -> bool sd
   val is_some : 'a option sd -> bool sd
   val option_iter : 'a option sd -> f:('a sd -> unit sd) -> unit sd
+  val option_match : 'a option sd -> ('a sd -> 'b sd) -> (unit -> 'b sd) -> 'b sd
   val list_iter : 'a list sd -> f:('a sd -> unit sd) -> unit sd
   val list_tl : 'a list sd -> 'a list sd
   val list_drop_last : 'a list sd -> 'a list sd
@@ -107,9 +105,33 @@ module type SD = sig
   val int_of_value : value sd -> int sd
   val float_of_value : value sd -> float sd
   val string_of_value : value sd -> string sd
+  val equal_value : value sd -> value sd -> bool sd
+  val panic : string sd -> 'a sd
+  val node_get_extern_id : _ node sd -> int sd
+  val string_of_int : int sd -> string sd
+  val string_append : string sd -> string sd -> string sd
+  val eval_func : func -> value sd list -> value sd
+  val nil : unit -> 'a list sd
+  val cons : 'a sd -> 'a list sd -> 'a list sd
 end
 
-module S : SD with type 'x sd = 'x = struct
+module type SD = sig
+  include SDIN
+
+  val seqs : (unit -> unit sd) list -> unit sd
+  val list : 'a sd list -> 'a list sd
+  val option_to_list : 'a option sd -> 'a list sd
+end
+
+module MakeSD (SDIN : SDIN) : SD with type 'a sd = 'a SDIN.sd = struct
+  include SDIN
+
+  let rec seqs x = match x with [] -> tt | hd :: tl -> seq (hd ()) (fun _ -> seqs tl)
+  let rec list x = match x with [] -> nil () | hd :: tl -> cons hd (list tl)
+  let option_to_list o = option_match o (fun x -> list [ x ]) (fun _ -> nil ())
+end
+
+module S : SD with type 'x sd = 'x = MakeSD (struct
   type 'x sd = 'x
 
   let is_static = true
@@ -189,11 +211,13 @@ module S : SD with type 'x sd = 'x = struct
   let node_get_children (n : _ node) = n.children
   let node_set_children (n : _ node) v = n.children <- v
   let hashtbl_find h k = Hashtbl.find h k
+  let hashtbl_set h key data = Hashtbl.set h ~key ~data
   let none () = None
   let some x = Some x
   let is_none o = Option.is_none o
   let is_some o = Option.is_some o
   let option_iter o ~f = Option.iter o ~f
+  let option_match o s n = match o with Some x -> s x | None -> n ()
   let list_iter (l : 'a list) ~(f : 'a -> unit) = List.iter l ~f
   let list_tl l = Option.value (List.tl l) ~default:[]
   let list_drop_last l = Option.value (List.drop_last l) ~default:[]
@@ -229,9 +253,53 @@ module S : SD with type 'x sd = 'x = struct
   let int_of_value x = match x with VInt i -> i | _ -> panic (show_value x)
   let string_of_value x = match x with VString x -> x | _ -> panic (show_value x)
   let float_of_value x = match x with VFloat x -> x | _ -> panic (show_value x)
-end
+  let panic x = Common.panic x
+  let node_get_extern_id x = x.extern_id
+  let string_of_int i = Core.string_of_int i
+  let string_append l r = l ^ r
 
-module D : SD with type 'x sd = 'x code = struct
+  let equal_value x y : bool =
+    match (x, y) with
+    | VString x, VString y -> String.equal x y
+    | VInt x, VInt y -> Int.equal x y
+    | VBool x, VBool y -> Bool.equal x y
+    | VFloat x, VFloat y -> (Float.is_nan x && Float.is_nan y) || Float.equal x y
+    | _ -> panic ("unhandled case in equal_value: " ^ show_value x ^ " " ^ show_value y)
+
+  let eval_func (f : func) (xs : value list) =
+    match (f, xs) with
+    | Lt, [ VInt lhs; VInt rhs ] -> VBool (lhs < rhs)
+    | Gt, [ VInt lhs; VInt rhs ] -> VBool (lhs > rhs)
+    | Eq, [ lhs; rhs ] -> VBool (equal_value lhs rhs)
+    | Neq, [ lhs; rhs ] -> VBool (not (equal_value lhs rhs))
+    | Plus, [ VInt lhs; VInt rhs ] -> VInt (lhs + rhs)
+    | Plus, [ VFloat lhs; VFloat rhs ] -> VFloat (lhs +. rhs)
+    | Mult, [ VFloat lhs; VFloat rhs ] -> VFloat (lhs *. rhs)
+    | Minus, [ VFloat lhs; VFloat rhs ] -> VFloat (lhs -. rhs)
+    | Gt, [ VFloat lhs; VFloat rhs ] -> VBool (Float.( >. ) lhs rhs)
+    | Div, [ VFloat lhs; VFloat rhs ] -> VFloat (lhs /. rhs)
+    | Max, [ VFloat lhs; VFloat rhs ] -> VFloat (Float.max lhs rhs)
+    | HasSuffix, [ VString s; VString sfx ] -> VBool (has_suffix s sfx)
+    | HasPrefix, [ VString s; VString sfx ] -> VBool (has_prefix s sfx)
+    | StripSuffix, [ VString s; VString sfx ] -> VString (strip_suffix s sfx)
+    | StripPrefix, [ VString s; VString sfx ] -> VString (strip_prefix s sfx)
+    | Not, [ VBool x ] -> VBool (not x)
+    | StringToFloat, [ VString str ] -> (
+        match float_of_string_opt str with Some x -> VFloat x | None -> panic ("StringToFloat failed: " ^ str))
+    | StringToInt, [ VString str ] -> (
+        match int_of_string_opt str with Some x -> VInt x | None -> panic ("StringToInt failed: " ^ str))
+    | StringIsFloat, [ VString str ] -> VBool (Option.is_some (float_of_string_opt str))
+    | IntToFloat, [ VInt x ] -> VFloat (float_of_int x)
+    | NthBySep, [ VString s; VString sep; VInt nth ] ->
+        assert (Int.equal (String.length sep) 1);
+        VString (List.nth_exn (String.split s ~on:(String.get sep 0)) nth)
+    | _ -> panic (show_func f ^ List.to_string ~f:show_value xs)
+
+  let nil () = []
+  let cons hd tl = hd :: tl
+end)
+
+module D : SD with type 'x sd = 'x code = MakeSD (struct
   type 'x sd = 'x code
 
   let is_static = false
@@ -304,15 +372,29 @@ module D : SD with type 'x sd = 'x code = struct
   let node_get_prop n = Expr (unexpr n ^ ".prop")
   let node_get_var n = Expr (unexpr n ^ ".var")
   let node_get_attr n = Expr (unexpr n ^ ".attr")
-  let hashtbl_find h k = Expr ("hashtbl_find" ^ bracket (unexpr h ^ "," ^ unexpr k))
+  let hashtbl_find h k = Expr ("hashtbl_find" ^ bracket (unexpr h ^ ", " ^ unexpr k))
+  let hashtbl_set h k v = Expr ("hashtbl_set" ^ bracket (unexpr h ^ ", " ^ unexpr k ^ ", " ^ unexpr v))
   let none () = Expr "none"
   let some x = Expr ("some" ^ bracket (unexpr x))
   let is_none x = Expr ("is_none" ^ bracket (unexpr x))
   let is_some x = Expr ("is_some" ^ bracket (unexpr x))
 
-  let option_iter (l : 'a option code) ~(f : 'a code -> unit code) : unit code =
-    let_ l (fun l ->
-        Proc ("if (is_some " ^ unexpr l ^ ")" ^ square_bracket (unproc (f (Expr ("from_some" ^ bracket (unexpr l)))))))
+  let option_match (o : 'a option code) (s : 'a code -> 'b code) (n : unit -> 'b code) =
+    let_ o (fun o ->
+        Stmt
+          ("if (is_some "
+          ^ bracket (unexpr o)
+          ^ ")"
+          ^ square_bracket (s (Expr ("from_some" ^ bracket (unexpr o))) |> unstmt)
+          ^ square_bracket (n () |> unstmt)))
+
+  let option_iter (o : 'a option code) ~(f : 'a code -> unit code) : unit code =
+    let_ o (fun o ->
+        Proc
+          ("if (is_some "
+          ^ bracket (unexpr o)
+          ^ ")"
+          ^ square_bracket (unproc (f (Expr ("from_some" ^ bracket (unexpr o)))))))
 
   let list_map l ~f = Expr ("list_map" ^ bracket (unexpr l ^ ", " ^ unexpr (lam f)))
 
@@ -329,6 +411,10 @@ module D : SD with type 'x sd = 'x code = struct
   let make_layout_node l = Expr ("make_layout_node" ^ bracket (unexpr l))
   let layout_node_get_children l = Expr (unexpr l ^ ".children")
   let int_add x y = Expr (unexpr x ^ "+" ^ unexpr y)
+  let panic x = Stmt ("panic" ^ bracket (unexpr x))
+  let node_get_extern_id x = Expr (unexpr x ^ ".extern_id")
+  let string_of_int i = Expr ("string_of_int" ^ bracket (unexpr i))
+  let string_append x y = Expr (unexpr x ^ "+" ^ unexpr y)
 
   let list_int_sum x f =
     let v = fresh () in
@@ -353,18 +439,8 @@ module D : SD with type 'x sd = 'x code = struct
   let int_of_value x = code_cast x
   let string_of_value x = code_cast x
   let float_of_value x = code_cast x
-end
-
-(*
-let hashtbl_find_staged (h : ('a, 'b) Hashtbl.t code) (k : 'a code) (found : 'b code -> 'c code)
-    (missing : unit -> 'c code) : 'c code =
-  let if_expr = Expr (unexpr h ^ ".count(" ^ unexpr k ^ ") > 0") in
-  let then_stmt _ = let_staged (Expr (unexpr h ^ square_bracket (unexpr k))) found in
-  ite_ if_expr then_stmt missing
-
-let ignore_ (x : 'a sd) : unit sd =
-  match x with Static _ -> () |> static | Dyn x -> let_staged x (fun _ -> unit_staged) |> dyn
-
-let list_iter (l : 'a list sd) ~(f : 'a sd -> unit sd) : unit sd =
-  match l with Static l -> List.iter l ~f:(fun a -> static a |> f |> unstatic) |> static
-*)
+  let equal_value x y : bool sd = Expr ("equal_value" ^ bracket (unexpr x ^ ", " ^ unexpr y))
+  let eval_func f xs = Expr (func_name_compiled f ^ bracket (String.concat (List.map xs ~f:unexpr) ~sep:","))
+  let nil () = Expr "nil()"
+  let cons hd tl = Expr ("cons" ^ bracket (unexpr hd ^ ", " ^ unexpr tl))
+end)

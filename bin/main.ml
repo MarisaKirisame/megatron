@@ -244,7 +244,7 @@ module Main (EVAL : Eval) = struct
 
   let rec add_node (path : int list) (x : _ node) (y : _ node) (m : metric sd) : unit sd =
     match path with
-    | [] -> panic "bad path!"
+    | [] -> panic (string "bad path!")
     | [ i ] ->
         input_change_metric m (node_size (y |> static)) |> unstatic;
         EVAL.add_children prog (x |> static) (y |> static) (i |> static) m
@@ -252,7 +252,7 @@ module Main (EVAL : Eval) = struct
 
   let rec add_layout_node (path : int list) (x : layout_node) (y : layout_node sd) (m : metric sd) : unit sd =
     match path with
-    | [] -> panic "bad path!"
+    | [] -> panic (string "bad path!")
     | [ i ] ->
         output_change_metric m (layout_size y) |> unstatic;
         let lhs, rhs = List.split_n x.children i in
@@ -261,7 +261,7 @@ module Main (EVAL : Eval) = struct
 
   let rec remove_node (path : int list) (x : _ node) (m : metric sd) : unit sd =
     match path with
-    | [] -> panic "bad path!"
+    | [] -> panic (string "bad path!")
     | [ i ] ->
         input_change_metric m (node_size (List.nth_exn x.children i |> static)) |> unstatic;
         EVAL.remove_children prog (x |> static) (i |> static) m
@@ -269,7 +269,7 @@ module Main (EVAL : Eval) = struct
 
   let rec remove_layout_node (path : int list) (x : layout_node) m : unit sd =
     match path with
-    | [] -> panic "bad path!"
+    | [] -> panic (string "bad path!")
     | [ i ] ->
         let lhs, removed :: rhs = List.split_n x.children i in
         output_change_metric m (layout_size (List.nth_exn x.children i |> static)) |> unstatic;
@@ -278,7 +278,7 @@ module Main (EVAL : Eval) = struct
 
   let rec replace_node (path : int list) (x : _ node) (y : _ node) (m : metric sd) : unit sd =
     match path with
-    | [] -> panic "bad path!"
+    | [] -> panic (string "bad path!")
     | [ i ] ->
         EVAL.remove_children prog (x |> static) (i |> static) m |> unstatic;
         EVAL.add_children prog (x |> static) (y |> static) (i |> static) m
@@ -286,7 +286,7 @@ module Main (EVAL : Eval) = struct
 
   let rec replace_layout_node (path : int list) (x : layout_node) (y : layout_node) (m : metric sd) : unit sd =
     match path with
-    | [] -> panic "bad path!"
+    | [] -> panic (string "bad path!")
     | [ i ] ->
         let lhs, removed :: rhs = List.split_n x.children i in
         output_change_metric m (int_add (layout_size (removed |> static)) (layout_size (y |> static))) |> unstatic;
@@ -305,7 +305,7 @@ module Main (EVAL : Eval) = struct
         | "properties" ->
             EVAL.remove_prop prog (x |> static) key m |> unstatic;
             EVAL.add_prop prog (x |> static) key (value |> static) m
-        | _ -> panic ("type: " ^ type_))
+        | _ -> panic ("type: " ^ type_ |> string))
     | p_hd :: p_tl -> replace_value p_tl (List.nth_exn x.children p_hd) type_ key value m
 
   let rec delete_value (path : int list) (x : _ node) (type_ : string) (key : string) (m : metric sd) : unit sd =
@@ -315,7 +315,7 @@ module Main (EVAL : Eval) = struct
         match type_ with
         | "attributes" -> EVAL.remove_attr prog (x |> static) key m
         | "properties" -> EVAL.remove_prop prog (x |> static) key m
-        | _ -> panic ("type: " ^ type_))
+        | _ -> panic ("type: " ^ type_ |> string))
     | p_hd :: p_tl -> delete_value p_tl (List.nth_exn x.children p_hd) type_ key m
 
   let rec insert_value (path : int list) (x : _ node) (type_ : string) (key : string) (value : value) (m : metric sd) :
@@ -326,7 +326,7 @@ module Main (EVAL : Eval) = struct
         match type_ with
         | "attributes" -> EVAL.add_attr prog (x |> static) key (value |> static) m
         | "properties" -> EVAL.add_prop prog (x |> static) key (value |> static) m
-        | _ -> panic ("type: " ^ type_))
+        | _ -> panic ("type: " ^ type_ |> string))
     | p_hd :: p_tl -> insert_value p_tl (List.nth_exn x.children p_hd) type_ key value m
 
   let main : unit sd =
@@ -437,7 +437,7 @@ module Main (EVAL : Eval) = struct
                                                           (get_layout_node j |> unstatic)
                                                           m
                                                     | "layout_info_changed" -> output_change_metric m (int 1)
-                                                    | x -> panic x)
+                                                    | x -> panic (x |> string))
                                               in
                                               seqs
                                                 [

@@ -68,3 +68,17 @@ and show_value (x : value) : string =
   | VBool b -> string_of_bool b
   | VString s -> String.escaped s
   | VFloat f -> string_of_float f
+
+let has_suffix s sfx =
+  String.length s >= String.length sfx
+  && String.equal sfx (String.sub s ~pos:(String.length s - String.length sfx) ~len:(String.length sfx))
+
+let has_prefix s pfx =
+  String.length s >= String.length pfx && String.equal pfx (String.sub s ~pos:0 ~len:(String.length pfx))
+
+let strip_prefix s pfx =
+  if has_prefix s pfx then String.sub s ~pos:(String.length pfx) ~len:(String.length s - String.length pfx) else panic s
+
+let strip_suffix s sfx =
+  assert (has_suffix s sfx);
+  String.sub s ~pos:0 ~len:(String.length s - String.length sfx)
