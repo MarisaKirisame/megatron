@@ -4,19 +4,24 @@ open Metric
 open Ast
 
 (*to avoid code duplication, can only be used once. whoever that need reuse need to duplicate.*)
-type _ code =
-  | Expr of string
-  (*statement that return*)
-  | Stmt of string
-  (*statement that does not return*)
-  | Proc of string
+type code =
+| CInt of int
+| CBool of bool
+| CFloat of float
+| CString of string
+| CSeq of code * code
+| CLet of string * code * code
+| CVar of string
+| CFun of string * code
+| CUnit
+| CApp of code * code list
+| CIf of code * code * code
+| CPF of string
+| CFix of string * string * code
+| CGetMember of code * string
+| CSetMember of code * string * code
+| CPanic of code
 [@@deriving show]
-
-let code_cast (x : 'a code) : 'b code = match x with Expr x -> Expr x | Stmt x -> Stmt x | Proc x -> Proc x
-let unexpr = function Expr s -> bracket s | Proc x | Stmt x -> "[&]()" ^ square_bracket x ^ "()"
-let unstmt = function Stmt s -> s | Expr x -> "return " ^ x ^ ";" | x -> panic ("unstmt: " ^ show_code x)
-let unproc = function Proc p -> p | Expr x -> x ^ ";" | Stmt x -> "[&]()" ^ square_bracket x ^ "();"
-let canonicalize (x : _ code) : _ code = x
 
 module type SDIN = sig
   type _ sd
@@ -26,8 +31,8 @@ module type SDIN = sig
   (*escape hatch*)
   val static : 'a -> 'a sd
   val unstatic : 'a sd -> 'a
-  val dyn : 'a code -> 'a sd
-  val undyn : 'a sd -> 'a code
+  val dyn : code -> 'a sd
+  val undyn : 'a sd -> code
   val tt : unit sd
   val make_ref : 'a sd -> 'a ref sd
   val read_ref : 'a ref sd -> 'a sd
@@ -44,7 +49,7 @@ module type SDIN = sig
   val with_file : string -> (Stdio.In_channel.t sd -> 'a sd) -> 'a sd
   val input_line : Stdio.In_channel.t sd -> string sd
   val iter_lines : Stdio.In_channel.t sd -> (string sd -> unit sd) -> unit sd
-  val print_endline : string -> unit sd
+  val print_endline : string sd -> unit sd
   val make_stack : unit -> 'a Stack.t sd
   val push_stack : 'a Stack.t sd -> 'a sd -> unit sd
   val clear_stack : 'a Stack.t sd -> unit sd
@@ -57,7 +62,7 @@ module type SDIN = sig
   val json_to_dict : Yojson.Basic.t sd -> (string, value) Hashtbl.t sd
   val json_to_int : Yojson.Basic.t sd -> int sd
   val json_to_list : Yojson.Basic.t sd -> Yojson.Basic.t list sd
-  val fix : (('a sd -> 'b sd) -> 'a sd -> 'b sd) -> 'a sd -> 'b sd
+  val fix : (('a sd -> 'b sd) -> 'a sd -> 'b sd) -> ('a -> 'b) sd
   val node_get_parent : 'a node sd -> 'a node option sd
   val node_set_parent : 'a node sd -> 'a node option sd -> unit sd
   val node_get_prev : 'a node sd -> 'a node option sd
@@ -69,20 +74,22 @@ module type SDIN = sig
   val node_get_prop : 'a node sd -> (string, value) Hashtbl.t sd
   val node_get_var : 'a node sd -> (string, value) Hashtbl.t sd
   val node_get_attr : 'a node sd -> (string, value) Hashtbl.t sd
+  val node_get_extern_id : 'a node sd -> int sd
+  val node_get_name : 'a node sd -> string sd
   val hashtbl_find : (string, 'a) Hashtbl.t sd -> string sd -> 'a option sd
   val hashtbl_set : (string, 'a) Hashtbl.t sd -> string sd -> 'a sd -> unit sd
   val none : unit -> 'a option sd
   val some : 'a sd -> 'a option sd
   val is_none : 'a option sd -> bool sd
   val is_some : 'a option sd -> bool sd
-  val option_iter : 'a option sd -> f:('a sd -> unit sd) -> unit sd
+  val option_iter : 'a option sd -> ('a sd -> unit sd) -> unit sd
   val option_match : 'a option sd -> ('a sd -> 'b sd) -> (unit -> 'b sd) -> 'b sd
-  val list_iter : 'a list sd -> f:('a sd -> unit sd) -> unit sd
+  val list_iter : 'a list sd -> ('a sd -> unit sd) -> unit sd
   val list_tl : 'a list sd -> 'a list sd
   val list_drop_last : 'a list sd -> 'a list sd
   val list_last : 'a list sd -> 'a option sd
   val list_zip : 'a list sd -> 'b list sd -> ('a * 'b) list sd
-  val list_map : 'a list sd -> f:('a sd -> 'b sd) -> 'b list sd
+  val list_map : 'a list sd -> ('a sd -> 'b sd) -> 'b list sd
   val zro : ('a * 'b) sd -> 'a sd
   val fst : ('a * 'b) sd -> 'b sd
   val make_layout_node : layout_node list sd -> layout_node sd
@@ -107,12 +114,14 @@ module type SDIN = sig
   val string_of_value : value sd -> string sd
   val equal_value : value sd -> value sd -> bool sd
   val panic : string sd -> 'a sd
-  val node_get_extern_id : _ node sd -> int sd
   val string_of_int : int sd -> string sd
   val string_append : string sd -> string sd -> string sd
+  val string_concat : string sd -> string list sd -> string sd
   val eval_func : func -> value sd list -> value sd
   val nil : unit -> 'a list sd
   val cons : 'a sd -> 'a list sd -> 'a list sd
+  val show_node : 'a node sd -> string sd
+  val show_value : value sd -> string sd
 end
 
 module type SD = sig
@@ -121,6 +130,9 @@ module type SD = sig
   val seqs : (unit -> unit sd) list -> unit sd
   val list : 'a sd list -> 'a list sd
   val option_to_list : 'a option sd -> 'a list sd
+  val eval_path_opt : 'a node sd -> path -> 'a node option sd
+  val eval_path : 'a node sd -> path -> 'a node sd
+  val unsome : 'a option sd -> 'a sd
 end
 
 module MakeSD (SDIN : SDIN) : SD with type 'a sd = 'a SDIN.sd = struct
@@ -129,6 +141,18 @@ module MakeSD (SDIN : SDIN) : SD with type 'a sd = 'a SDIN.sd = struct
   let rec seqs x = match x with [] -> tt | hd :: tl -> seq (hd ()) (fun _ -> seqs tl)
   let rec list x = match x with [] -> nil () | hd :: tl -> cons hd (list tl)
   let option_to_list o = option_match o (fun x -> list [ x ]) (fun _ -> nil ())
+  let unsome o = option_match o (fun x -> x) (fun _ -> panic (string "none"))
+
+  let eval_path_opt (n : 'a node sd) (p : path) : 'a node option sd =
+    match p with
+    | Self -> some n
+    | Parent -> node_get_parent n
+    | First -> List.hd (node_get_children n |> unstatic) |> static
+    | Next -> node_get_next n
+    | Prev -> node_get_prev n
+    | Last -> List.last (node_get_children n |> unstatic) |> static
+
+  let eval_path n p = unsome (eval_path_opt n p)
 end
 
 module S : SD with type 'x sd = 'x = MakeSD (struct
@@ -197,7 +221,7 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
     to_int j
 
   let json_to_list = Yojson.Basic.Util.to_list
-  let list_map = List.map
+  let list_map l f = List.map l ~f
   let rec fix (f : ('a -> 'b) -> 'a -> 'b) (x : 'a) : 'b = f (fun x -> fix f x) x
   let node_get_parent n = n.parent
   let node_set_parent n v = n.parent <- v
@@ -210,15 +234,17 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
   let node_get_attr n = n.attr
   let node_get_children (n : _ node) = n.children
   let node_set_children (n : _ node) v = n.children <- v
+  let node_get_extern_id x = x.extern_id
+  let node_get_name x = x.name
   let hashtbl_find h k = Hashtbl.find h k
   let hashtbl_set h key data = Hashtbl.set h ~key ~data
   let none () = None
   let some x = Some x
   let is_none o = Option.is_none o
   let is_some o = Option.is_some o
-  let option_iter o ~f = Option.iter o ~f
+  let option_iter o f = Option.iter o ~f
   let option_match o s n = match o with Some x -> s x | None -> n ()
-  let list_iter (l : 'a list) ~(f : 'a -> unit) = List.iter l ~f
+  let list_iter (l : 'a list) (f : 'a -> unit) = List.iter l ~f
   let list_tl l = Option.value (List.tl l) ~default:[]
   let list_drop_last l = Option.value (List.drop_last l) ~default:[]
   let list_zip x y = List.zip_exn x y
@@ -249,14 +275,32 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
   let vint i = VInt i
   let vstring x = VString x
   let vfloat x = VFloat x
+
+  let rec show_node (n : 'meta node) : string =
+    let htbl_str =
+      "{"
+      ^ List.fold_left (Hashtbl.to_alist n.var)
+          ~init:("id = " ^ string_of_int n.id ^ ", ")
+          ~f:(fun lhs (name, value) -> lhs ^ name ^ " = " ^ show_value value ^ ", ")
+      ^ "}"
+    in
+    List.fold_left n.children ~init:(htbl_str ^ "[") ~f:(fun lhs n -> lhs ^ show_node n ^ ", ") ^ "]"
+
+  and show_value (x : value) : string =
+    match x with
+    | VInt i -> string_of_int i
+    | VBool b -> string_of_bool b
+    | VString s -> String.escaped s
+    | VFloat f -> string_of_float f
+
   let bool_of_value x = match x with VBool b -> b | _ -> panic (show_value x)
   let int_of_value x = match x with VInt i -> i | _ -> panic (show_value x)
   let string_of_value x = match x with VString x -> x | _ -> panic (show_value x)
   let float_of_value x = match x with VFloat x -> x | _ -> panic (show_value x)
   let panic x = Common.panic x
-  let node_get_extern_id x = x.extern_id
   let string_of_int i = Core.string_of_int i
   let string_append l r = l ^ r
+  let string_concat sep list = String.concat ~sep list
 
   let equal_value x y : bool =
     match (x, y) with
@@ -299,8 +343,8 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
   let cons hd tl = hd :: tl
 end)
 
-module D : SD with type 'x sd = 'x code = MakeSD (struct
-  type 'x sd = 'x code
+module D : SD with type 'x sd = code = MakeSD (struct
+  type 'x sd = code
 
   let is_static = false
   let static x = panic "static"
@@ -308,139 +352,119 @@ module D : SD with type 'x sd = 'x code = MakeSD (struct
   let dyn x = x
   let undyn x = x
 
-  let seq lhs rhs =
-    match canonicalize (rhs ()) with
-    | Stmt rhs -> Stmt (unproc lhs ^ rhs)
-    | Proc rhs | Expr rhs -> Proc (unproc lhs ^ rhs)
-    | rhs -> panic ("canonicalize: " ^ show_code rhs)
+  let seq lhs rhs = CSeq (lhs, rhs ())
 
-  let let_ (x : 'a code) (f : 'a code -> 'b code) : 'b code =
+  let let_ (x : code) (f : code -> code) : code =
     let v = fresh () in
-    seq (Proc ("auto " ^ v ^ "= " ^ bracket (unexpr x) ^ ";")) (fun _ -> f (Expr v))
+    CLet (v, x, f (CVar v))
 
-  let lam (f : 'a code -> 'b code) : ('a -> 'b) code =
+  let lam (f : code -> code) : code =
     let v = fresh () in
-    Expr ("[&](const auto &" ^ v ^ ") { " ^ unstmt (f (Expr v)) ^ " }")
+    CFun (v, f (CVar v))
 
-  let lam2 (f : 'a code -> 'b code -> 'c code) : ('a -> 'b -> 'c) code = lam (fun a -> lam (fun b -> f a b))
-  let tt = Expr "make_unit()"
-  let app f x = Expr (unexpr f ^ bracket (unexpr x))
+  let tt = CUnit
 
-  let ite (i : bool code) (t : unit -> 'a code) (e : unit -> 'a code) : 'a code =
-    Expr (unexpr i ^ "?" ^ unexpr (t ()) ^ ":" ^ unexpr (e ()))
+  let app f x = CApp (f, [x])
 
-  let json_of_string x = Expr ("json_of_string" ^ bracket (unexpr x))
-  let with_file name f = Expr (("with_file" ^ bracket name) ^ bracket (unexpr (lam f)))
-  let input_line c = Expr ("input_line" ^ bracket (unexpr c))
-  let iter_lines c f = todo "iter_lines"
-  let print_endline str = Proc ("std::cout << " ^ quoted str ^ " << std::endl;")
-  let int x = Expr ("static_cast<int>" ^ bracket (string_of_int x))
-  let bool x = Expr ("static_cast<bool>" ^ bracket (string_of_bool x))
-  let float x = Expr ("static_cast<double>" ^ bracket (string_of_float x))
-  let make_ref x = Expr ("make_ref" ^ unexpr x)
-  let read_ref x = Expr (unexpr x ^ ".read_ref()")
-  let write_ref r x = Expr (unexpr r ^ ".write_ref" ^ bracket (unexpr x))
-  let make_stack () = Expr "make_stack()"
-  let push_stack s v = Expr ("push_stack" ^ bracket (unexpr s ^ "," ^ unexpr v))
-  let clear_stack s = Expr ("clear_stack" ^ bracket (unexpr s))
-  let assert_ b = Expr ("assert" ^ bracket (unexpr b))
-  let string_equal x y = Expr (unexpr x ^ "==" ^ unexpr y)
-  let string x = Expr (quoted x)
-  let json_to_string x = Expr ("json_to_string" ^ bracket (unexpr x))
-  let json_member str j = Expr ("json_member" ^ bracket (unexpr j ^ ", " ^ unexpr str))
-  let json_to_value j = Expr ("json_to_value" ^ bracket (unexpr j))
-  let json_to_dict j = Expr ("json_to_dict" ^ bracket (unexpr j))
-  let json_to_int j = Expr ("json_to_int" ^ bracket (unexpr j))
-  let json_to_list j = Expr ("json_to_list" ^ bracket (unexpr j))
+  let ite (i : code) (t : unit -> code) (e : unit -> code) : code =
+    CIf (i, t (), e ())
 
-  let fix (f : ('a code -> 'b code) -> 'a code -> 'b code) (x : 'a code) : 'b code =
+  let json_of_string x =  CApp (CPF "JsonOfString", [x])
+  let with_file name f = CApp (CPF "WithFile", [lam f])
+  let input_line c = CApp (CPF "InputLine", [c])
+  let iter_lines c f = CApp (CPF "IterLines", [c])
+  let print_endline str = CApp (CPF "PrintEndline", [str])
+  let int x = CInt x
+  let bool x = CBool x
+  let float x = CFloat x
+  let string x = CString x
+  let make_ref x = CApp (CPF "MakeRef", [x])
+  let read_ref r = CApp (CPF "ReadRef", [r])
+  let write_ref r x = CApp (CPF "WriteRef", [r; x])
+  let make_stack () = CApp (CPF "MakeStack", [])
+  let push_stack s v = CApp (CPF "PushStack", [s; v])
+  let clear_stack s = CApp (CPF "ClearStack", [s])
+  let assert_ b = CApp (CPF "Assert", [b])
+  let string_equal x y = CApp (CPF "StringEqual", [x; y])
+  let json_member str j = CApp (CPF "JsonMember", [str; j])
+  let json_to_string j = CApp (CPF "JsonToString", [j])
+  let json_to_value j = CApp (CPF "JsonToValue", [j])
+  let json_to_dict j = CApp (CPF "JsonToDict", [j])
+  let json_to_int j = CApp (CPF "JsonToInt", [j])
+  let json_to_list j = CApp (CPF "JsonToList", [j])
+
+  let fix (f : ('a sd -> 'b sd) -> 'a sd -> 'b sd) : ('a -> 'b) sd =
     let fname = fresh () in
     let xname = fresh () in
-    Expr
-      ("fix " ^ fname ^ ", " ^ xname
-      ^ bracket (unexpr (f (fun x -> Expr (fname ^ bracket (unexpr x))) (Expr xname)))
-      ^ unexpr x)
+    CFix(fname, xname, f (fun x -> CApp (CVar fname, [CVar xname])) (CVar xname))
 
-  let node_get_parent n = Expr (unexpr n ^ ".parent")
-  let node_set_parent n v = Proc (unexpr n ^ ".parent" ^ "=" ^ unexpr v)
-  let node_get_prev n = Expr (unexpr n ^ ".prev")
-  let node_set_prev n v = Proc (unexpr n ^ ".prev" ^ "=" ^ unexpr v)
-  let node_get_next n = Expr (unexpr n ^ ".next")
-  let node_set_next n v = Proc (unexpr n ^ ".next" ^ "=" ^ unexpr v)
-  let node_get_children n = Expr (unexpr n ^ ".children")
-  let node_set_children n v = Proc (unexpr n ^ ".children" ^ "=" ^ unexpr v)
-  let node_get_prop n = Expr (unexpr n ^ ".prop")
-  let node_get_var n = Expr (unexpr n ^ ".var")
-  let node_get_attr n = Expr (unexpr n ^ ".attr")
-  let hashtbl_find h k = Expr ("hashtbl_find" ^ bracket (unexpr h ^ ", " ^ unexpr k))
-  let hashtbl_set h k v = Expr ("hashtbl_set" ^ bracket (unexpr h ^ ", " ^ unexpr k ^ ", " ^ unexpr v))
-  let none () = Expr "none"
-  let some x = Expr ("some" ^ bracket (unexpr x))
-  let is_none x = Expr ("is_none" ^ bracket (unexpr x))
-  let is_some x = Expr ("is_some" ^ bracket (unexpr x))
+  let node_get_parent n = CGetMember (n, "parent")
+  let node_set_parent n v = CSetMember (n, "parent", v)
+  let node_get_prev n = CGetMember (n, "prev")
+  let node_set_prev n v = CSetMember (n, "prev", v)
+  let node_get_next n = CGetMember (n, "next")
+  let node_set_next n v = CSetMember (n, "next", v)
+  let node_get_children n = CGetMember (n, "children")
+  let node_set_children n v = CSetMember (n, "children", v)
+  let node_get_prop n = CGetMember (n, "prop")
+  let node_get_var n = CGetMember (n, "var")
+  let node_get_attr n = CGetMember (n, "attr")
+  let node_get_name n = CGetMember (n, "name")
+  let hashtbl_find h k = CApp (CPF "HashtblFind", [h; k])
+  let hashtbl_set h k v = CApp (CPF "HashtblSet", [h; k; v])
+  let none () = CApp (CPF "None", [])
+  let some x = CApp (CPF "Some", [x])
+  let is_none x = CApp (CPF "IsNone", [x])
+  let is_some x = CApp (CPF "IsSome", [x])
 
-  let option_match (o : 'a option code) (s : 'a code -> 'b code) (n : unit -> 'b code) =
-    let_ o (fun o ->
-        Stmt
-          ("if (is_some "
-          ^ bracket (unexpr o)
-          ^ ")"
-          ^ square_bracket (s (Expr ("from_some" ^ bracket (unexpr o))) |> unstmt)
-          ^ square_bracket (n () |> unstmt)))
+  let option_match (o : 'a option sd) (s : 'a sd -> 'b sd) (n : unit -> 'b sd) =
+    CApp (CPF "OptionMatch", [o; lam s; lam (fun _ -> n ())])
 
-  let option_iter (o : 'a option code) ~(f : 'a code -> unit code) : unit code =
-    let_ o (fun o ->
-        Proc
-          ("if (is_some "
-          ^ bracket (unexpr o)
-          ^ ")"
-          ^ square_bracket (unproc (f (Expr ("from_some" ^ bracket (unexpr o)))))))
+  let option_iter (o : 'a option sd) (f : 'a sd -> unit sd) : unit sd =
+    CApp (CPF "OptionIter", [o; lam f])
 
-  let list_map l ~f = Expr ("list_map" ^ bracket (unexpr l ^ ", " ^ unexpr (lam f)))
+  let list_map l f = CApp (CPF "ListMap", [l; lam f])
 
-  let list_iter (l : 'a list code) ~(f : 'a code -> unit code) : unit code =
-    let v = fresh () in
-    Proc ("for (auto& " ^ v ^ ":" ^ unexpr l ^ ")" ^ square_bracket (unproc (f (Expr v))))
+  let list_iter (l : 'a list sd) (f : 'a sd -> unit sd) : unit sd =
+    CApp (CPF "ListIter", [l; lam f])
 
-  let list_tl l = Expr ("list_tl" ^ bracket (unexpr l))
-  let list_last l = Expr ("list_last" ^ bracket (unexpr l))
-  let list_drop_last l = Expr ("list_drop_last" ^ bracket (unexpr l))
-  let list_zip x y = Expr ("list_zip" ^ bracket (unexpr x ^ unexpr y))
-  let zro p = Expr ("zro" ^ bracket (unexpr p))
-  let fst p = Expr ("fst" ^ bracket (unexpr p))
-  let make_layout_node l = Expr ("make_layout_node" ^ bracket (unexpr l))
-  let layout_node_get_children l = Expr (unexpr l ^ ".children")
-  let int_add x y = Expr (unexpr x ^ "+" ^ unexpr y)
-  let panic x = Stmt ("panic" ^ bracket (unexpr x))
-  let node_get_extern_id x = Expr (unexpr x ^ ".extern_id")
-  let string_of_int i = Expr ("string_of_int" ^ bracket (unexpr i))
-  let string_append x y = Expr (unexpr x ^ "+" ^ unexpr y)
+  let list_tl l = CApp (CPF "ListTl", [l])
+  let list_last l = CApp (CPF "ListLast", [l])
+  let list_drop_last l = CApp (CPF "ListDropLast", [l])
+  let list_zip x y = CApp (CPF "ListZip", [x; y])
+  let zro p = CApp (CPF "Zro", [p])
+  let fst p = CApp (CPF "Fst", [p])
+  let make_layout_node l = CApp (CPF "MakeLayoutNode", [l])
+  let layout_node_get_children l = CGetMember (l, "children")
+  let int_add x y = CApp (CPF "add", [x; y])
+  let panic x = CPanic x
+  let node_get_extern_id x = CGetMember (x, "extern_id")
+  let string_of_int i = CApp (CPF "StringOfInt", [i])
+  let string_append x y = CApp (CPF "StringAppend", [x; y])
+  let show_node n = CApp (CPF "ShowNode", [n])
+  let show_value v = CApp (CPF "ShowValue", [v])
 
-  let list_int_sum x f =
-    let v = fresh () in
-    let_ (int 0) (fun i ->
-        Stmt
-          ("for (auto& " ^ v ^ ":" ^ unexpr x ^ ")"
-          ^ square_bracket (unexpr i ^ "+=" ^ unexpr (f (Expr v)) ^ "; return" ^ unexpr i ^ ";")))
+  let list_int_sum x f = CApp (CPF "ListIntSum", [x; lam f])
 
-  let fresh_metric () = Expr "metric()"
-  let reset_metric m = Proc (unexpr m ^ ".reset();")
-  let read_metric m = Proc (unexpr m ^ ".read();")
-  let meta_read_metric m = Proc (unexpr m ^ ".meta_read();")
-  let write_metric m = Proc (unexpr m ^ ".write();")
-  let meta_write_metric m = Proc (unexpr m ^ ".meta_write();")
-  let input_change_metric m i = Proc (unexpr m ^ ".input_change" ^ bracket (unexpr i) ^ ";")
-  let output_change_metric m i = Proc (unexpr m ^ ".output_change" ^ bracket (unexpr i) ^ ";")
-  let vbool b = code_cast b
-  let vint i = code_cast i
-  let vstring s = code_cast s
-  let vfloat f = code_cast f
-  let bool_of_value x = code_cast x
-  let int_of_value x = code_cast x
-  let string_of_value x = code_cast x
-  let float_of_value x = code_cast x
-  let equal_value x y : bool sd = Expr ("equal_value" ^ bracket (unexpr x ^ ", " ^ unexpr y))
-  let eval_func f xs = Expr (func_name_compiled f ^ bracket (String.concat (List.map xs ~f:unexpr) ~sep:","))
-  let nil () = Expr "nil()"
-  let cons hd tl = Expr ("cons" ^ bracket (unexpr hd ^ ", " ^ unexpr tl))
+  let fresh_metric () = CApp (CPF "FreshMetric", [])
+  let reset_metric m = CApp (CPF "ResetMetric", [m])
+  let read_metric m = CApp (CPF "ReadMetric", [m])
+  let meta_read_metric m = CApp (CPF "MetaReadMetric", [m])
+  let write_metric m = CApp (CPF "WriteMetric", [m])
+  let meta_write_metric m = CApp (CPF "MetaWriteMetric", [m])
+  let input_change_metric m i = CApp (CPF "InputChangeMetric", [m; i])
+  let output_change_metric m i = CApp (CPF "OutputChangeMetric", [m; i])
+  let vbool b = CApp (CPF "VBool", [b])
+  let vint i = CApp (CPF "VInt", [i])
+  let vstring s = CApp (CPF "VString", [s])
+  let vfloat f = CApp (CPF "VFloat", [f])
+  let bool_of_value x = CApp (CPF "BoolOfValue", [x])
+  let int_of_value x = CApp (CPF "IntOfValue", [x])
+  let string_of_value x = CApp (CPF "StringOfValue", [x])
+  let float_of_value x = CApp (CPF "FloatOfValue", [x])
+  let equal_value x y : bool sd = CApp (CPF "EqualValue", [x; y])
+  let eval_func f xs = CApp (CPF (func_name_compiled f), xs)
+  let nil () = CApp (CPF "Nil", [])
+  let cons hd tl = CApp (CPF "Cons", [hd; tl])
+  let string_concat sep list = CApp (CPF "StringConcat", [sep; list])
 end)

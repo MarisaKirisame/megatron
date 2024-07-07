@@ -170,21 +170,21 @@ module Main (EVAL : Eval) = struct
   module FS = Megatron.EvalFS.EVAL (EVAL.SD)
 
   let json_to_node_aux : Yojson.Basic.t sd -> meta node sd =
-    fix (fun recurse j ->
+    app (fix (fun recurse j ->
         EVAL.make_node
-          (list_map (j |> json_member (string "children") |> json_to_list) ~f:(fun x -> recurse x))
+          (list_map (j |> json_member (string "children") |> json_to_list) (fun x -> recurse x))
           ~name:(j |> json_member (string "name") |> json_to_string)
           ~attr:(j |> json_member (string "attributes") |> json_to_dict)
           ~prop:(j |> json_member (string "properties") |> json_to_dict)
-          ~extern_id:(j |> json_member (string "id") |> json_to_int))
+          ~extern_id:(j |> json_member (string "id") |> json_to_int)))
 
   let set_relation (n : 'a node sd) : unit sd =
     let set_children_relation =
-      fix (fun recurse (n : 'a node sd) ->
+      app (fix (fun recurse (n : 'a node sd) ->
           seq
             (list_iter
                (list_zip (list_drop_last (node_get_children n)) (list_tl (node_get_children n)))
-               ~f:(fun p ->
+               (fun p ->
                  let_ (zro p) (fun x ->
                      let_ (fst p) (fun y ->
                          seqs
@@ -197,7 +197,7 @@ module Main (EVAL : Eval) = struct
             (fun _ ->
               option_iter
                 (n |> node_get_children |> list_last)
-                ~f:(fun x -> seq (node_set_parent x (some n)) (fun _ -> recurse x))))
+                (fun x -> seq (node_set_parent x (some n)) (fun _ -> recurse x)))))
     in
     seqs
       [
@@ -223,7 +223,7 @@ module Main (EVAL : Eval) = struct
     else todo "convert"
 
   let json_to_layout_node : Yojson.Basic.t sd -> layout_node sd =
-    fix (fun recurse j -> make_layout_node (list_map (j |> json_member (string "children") |> json_to_list) ~f:recurse))
+    app (fix (fun recurse j -> make_layout_node (list_map (j |> json_member (string "children") |> json_to_list) recurse)))
 
   let get_command (j : Basic.t sd) : string sd = j |> json_member (string "name") |> json_to_string
 
@@ -237,10 +237,10 @@ module Main (EVAL : Eval) = struct
   let get_layout_node j : layout_node sd = json_to_layout_node (j |> json_member (string "node"))
 
   let layout_size : layout_node sd -> int sd =
-    fix (fun recurse n -> int_add (int 1) (list_int_sum (layout_node_get_children n) recurse))
+    app (fix (fun recurse n -> int_add (int 1) (list_int_sum (layout_node_get_children n) recurse)))
 
   let rec node_size : _ node sd -> int sd =
-    fix (fun recurse n -> int_add (int 1) (list_int_sum (node_get_children n) recurse))
+    app (fix (fun recurse n -> int_add (int 1) (list_int_sum (node_get_children n) recurse)))
 
   let rec add_node (path : int list) (x : _ node) (y : _ node) (m : metric sd) : unit sd =
     match path with
@@ -331,7 +331,7 @@ module Main (EVAL : Eval) = struct
 
   let main : unit sd =
     seq
-      (print_endline ("RUNNING " ^ EVAL.name))
+      (print_endline (string ("RUNNING " ^ EVAL.name)))
       (fun _ ->
         with_file "command.json" (fun chan ->
             let_
@@ -445,9 +445,9 @@ module Main (EVAL : Eval) = struct
                                                   (fun _ -> input_change_metric m (node_size n));
                                                   (fun _ -> EVAL.eval prog n m);
                                                   (fun _ -> diff_evaluated ());
-                                                  (fun _ -> "EVAL OK!" |> print_endline);
+                                                  (fun _ -> print_endline (string "EVAL OK!"));
                                                   (fun _ -> work ());
-                                                  (fun _ -> "INCREMENTAL EVAL OK!" |> print_endline);
+                                                  (fun _ -> print_endline (string "INCREMENTAL EVAL OK!"));
                                                 ])));
                                   ])))))))
 end

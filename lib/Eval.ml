@@ -6,17 +6,6 @@ open SD
 
 let rec rightmost (x : _ node) : _ node = match List.last x.children with Some x -> rightmost x | None -> x
 
-let eval_path_opt (n : 'meta node) (p : path) =
-  match p with
-  | Self -> Some n
-  | Parent -> n.parent
-  | First -> List.hd n.children
-  | Next -> n.next
-  | Prev -> n.prev
-  | Last -> List.last n.children
-
-let eval_path n p = Option.value_exn (eval_path_opt n p)
-
 exception ReRaise of string
 
 let compile_type_expr ty =
@@ -26,16 +15,6 @@ let compile_type_expr ty =
   | TString -> "std::string"
   | TFloat -> "double"
   | _ -> panic (show_type_expr ty)
-
-let eval_path_staged path : 'meta node code =
-  Expr
-    (match path with
-    | Prev -> "self.prev"
-    | Self -> "(&self)"
-    | Parent -> "self.parent"
-    | Last -> "self.last"
-    | First -> "self.first"
-    | _ -> panic (show_path path))
 
 let rec recursive_print_id_up (n : _ node) : unit =
   print_endline (string_of_int n.id ^ List.to_string n.children ~f:(fun n -> string_of_int n.id));
@@ -102,7 +81,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
         m = unstatic (EI.fresh_meta tt);
       }
       |> static
-    else Expr "node" |> dyn
+    else CApp (CPF "MakeNode", [undyn name; undyn attr; undyn prop; undyn extern_id; undyn children]) |> dyn
 
   let reversed_path (p : path) (n : 'a node sd) : 'a node list sd =
     match p with
@@ -132,7 +111,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                match read with
                | ReadVar (path, read_var_name) ->
                    if String.equal var_name read_var_name then
-                     list_iter (reversed_path path n) ~f:(fun dirtied_node ->
+                     list_iter (reversed_path path n) (fun dirtied_node ->
                          bb_dirtied dirtied_node ~proc_name ~bb_name m)
                    else tt
                | ReadHasPath _ -> tt (*property being changed cannot change haspath status*)
@@ -147,7 +126,8 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
     match e with
     | Panic (_, x) ->
         panic
-          ("External: " ^ String.concat ~sep:" " (List.map x ~f:(fun x -> show_value (recurse x |> unstatic))) |> static)
+          (string_append (string "External: ")
+             (string_concat (string " ") (List.map x ~f:(fun x -> show_value (recurse x)) |> list)))
     | HasProperty p -> is_some (hashtbl_find (node_get_prop n) (string p)) |> vbool
     | GetProperty p ->
         seq (read_metric m) (fun _ ->
@@ -158,27 +138,26 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                 panic
                   (string_append (string "cannot find property ")
                      (string_append (string p) (string_append (string " in ") (string_of_int (node_get_extern_id n)))))))
-    | HasAttribute p -> VBool (Option.is_some (hashtbl_find (node_get_attr n) (string p) |> unstatic)) |> static
+    | HasAttribute p -> vbool (is_some (hashtbl_find (node_get_attr n) (string p)))
     | GetAttribute p ->
-        read_metric m |> unstatic;
-        option_match
-          (hashtbl_find (node_get_attr n) (string p))
-          (fun x -> x)
-          (fun _ ->
-            panic
-              (string_append (string "cannot find property ")
-                 (string_append (string p) (string_append (string " in ") (string_of_int (node_get_extern_id n))))))
+        seq (read_metric m) (fun _ ->
+            option_match
+              (hashtbl_find (node_get_attr n) (string p))
+              (fun x -> x)
+              (fun _ ->
+                panic
+                  (string_append (string "cannot find property ")
+                     (string_append (string p) (string_append (string " in ") (string_of_int (node_get_extern_id n)))))))
     | String s -> vstring (string s)
     | Int i -> vint (int i)
     | Float f -> vfloat (float f)
     | IfExpr (c, t, e) -> ite (bool_of_value (recurse c)) (fun _ -> recurse t) (fun _ -> recurse e)
-    | HasPath p -> VBool (Option.is_some (eval_path_opt (n |> unstatic) p)) |> static
+    | HasPath p -> vbool (is_some (eval_path_opt n p))
     | Read (p, var_name) ->
-        read_metric m |> unstatic;
-        Hashtbl.find_exn (eval_path (n |> unstatic) p |> static |> node_get_var |> unstatic) var_name |> static
-    | And (x, y) -> if bool_of_value (recurse x) |> unstatic then recurse y else VBool false |> static
-    | Or (x, y) -> if bool_of_value (recurse x) |> unstatic then VBool true |> static else recurse y
-    | GetName -> VString (n |> unstatic).name |> static
+        seq (read_metric m) (fun _ -> hashtbl_find (eval_path n p |> node_get_var) (string var_name) |> unsome)
+    | And (x, y) -> ite (bool_of_value (recurse x)) (fun _ -> recurse y) (fun _ -> vbool (bool false))
+    | Or (x, y) -> ite (bool_of_value (recurse x)) (fun _ -> vbool (bool true)) (fun _ -> recurse y)
+    | GetName -> vstring (node_get_name n)
     | Bool x -> vbool (bool x)
     | Call (f, xs) -> eval_func f (List.map ~f:(fun v -> recurse v) xs)
   (*| _ -> panic ("unhandled case in eval_expr:" ^ show_expr e)*)
@@ -197,11 +176,9 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                   (fun _ -> hashtbl_set (node_get_var n) (string prop_name) new_value)))
     | BBCall bb_name -> bracket_call_bb n bb_name (fun _ -> eval_stmts p n (stmts_of_basic_block p bb_name) m)
     | ChildrenCall proc_name ->
-        List.iter (n |> unstatic).children ~f:(fun new_node ->
-            bracket_call_proc (new_node |> static) proc_name (fun _ ->
-                eval_stmts p (new_node |> static) (stmts_of_processed_proc p proc_name) m)
-            |> unstatic)
-        |> static
+        list_iter (node_get_children n) (fun new_node ->
+            bracket_call_proc new_node proc_name (fun _ ->
+                eval_stmts p new_node (stmts_of_processed_proc p proc_name) m))
 
   and eval_stmts (p : prog) (n : meta node sd) (s : stmts) (m : metric sd) : unit sd =
     seqs (List.map s ~f:(fun stmt _ -> eval_stmt p n stmt m))
@@ -408,9 +385,9 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
           let rv = Hashtbl.find_exn (node_get_var r |> unstatic) name |> static in
           ite (equal_value lv rv)
             (fun _ -> tt)
-            (fun _ -> print_endline (name ^ unstatic (string_of_value lv) ^ unstatic (string_of_value rv)))
+            (fun _ -> print_endline (string_append (string name) (string_append (string_of_value lv) (string_of_value rv))))
           |> unstatic);
-      print_endline (Core.string_of_int (l |> unstatic).id ^ " bad!") |> unstatic;
+      print_endline (string_append (string_of_int (node_get_extern_id l)) (string " bad!")) |> unstatic;
       recursive_print_id_up (l |> unstatic));
     assert (
       Hashtbl.equal

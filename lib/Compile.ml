@@ -124,8 +124,8 @@ let rec compile_expr env expr : string =
     | HasAttribute p -> "has_attribute(self, " ^ quoted p ^ ")"
     | Float f -> "double" ^ bracket (string_of_float f)
     | Call (f, xs) -> func_name_compiled f ^ bracket (String.concat (List.map xs ~f:recurse) ~sep:",")
-    | Read (path, p) -> unexpr (eval_path_staged path) ^ "->" ^ p
-    | HasPath path -> unexpr (eval_path_staged path) ^ "!= nullptr"
+    | Read (path, p) -> (*unexpr (eval_path_staged path) ^*) "->" ^ p
+    | HasPath path -> (*unexpr (eval_path_staged path) ^*) "!= nullptr"
     | Bool b -> string_of_bool b
     | Panic (t, _) -> "panic<" ^ compile_type_expr t ^ ">()"
     | Or (x, y) -> recurse x ^ "||" ^ recurse y
