@@ -25,7 +25,7 @@ type func =
   | Iff
   | Neq
   | Max
-[@@deriving show]
+[@@deriving show, hash, compare, sexp]
 
 let func_name_compiled f =
   match f with
@@ -47,7 +47,8 @@ let func_name_compiled f =
   | Gt -> "gt"
   | _ -> panic (show_func f)
 
-type path = Self | Parent | First | Next | Last | Prev [@@deriving show]
+type path = Self | Parent | First | Next | Last | Prev [@@deriving show, hash, compare, sexp]
+type type_expr = TInt | TString | TFloat | TBool | TVar of type_expr option ref [@@deriving show]
 
 (** The type of the abstract syntax tree (AST). *)
 type expr =
@@ -65,16 +66,16 @@ type expr =
   | GetName
   | And of expr * expr
   | Or of expr * expr
-  | Panic of type_expr * expr list
+  | Panic of (type_expr[@hash.ignore] [@compare.ignore] [@sexp.opaque]) * expr list
   | Call of func * expr list
-[@@deriving show]
-
-and type_expr = TInt | TString | TFloat | TBool | TVar of type_expr option ref
+[@@deriving show, hash, compare, sexp_of]
 
 let new_tvar () = TVar (ref None)
 
-type stmt = BBCall of string | ChildrenCall of string | Write of string * expr [@@deriving show]
-type stmts = stmt list [@@deriving show]
+type stmt = BBCall of string | ChildrenCall of string | Write of string * expr
+[@@deriving show, hash, compare, sexp_of]
+
+type stmts = stmt list [@@deriving show, hash, compare, sexp_of]
 
 let rec resolve (x : type_expr) : type_expr =
   match x with

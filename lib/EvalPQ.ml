@@ -102,15 +102,15 @@ module EVAL (SD : SD) = MakeEval (struct
       (m |> unstatic).queue_size_acc <- (m |> unstatic).queue_size_acc + queue_size ();
       (*(match z with RecomputeProc z | RecomputeBB z -> print_endline ("popped " ^ string_of_int y.id ^ "." ^ z); recursive_print_id_up y);*)
       (if y.m.alive then (
-         match z with
-         | RecomputeBB z -> eval_stmts (y |> static) (stmts_of_basic_block p z)
-         | RecomputeProc z ->
-             let old_time = !current_time in
-             current_time := x;
-             eval_stmts (y |> static) (stmts_of_processed_proc p z) |> unstatic;
-             Hashtbl.set y.m.proc_time_table ~key:z ~data:(Close (x, !current_time));
-             (current_time := old_time) |> static)
-       else tt)
+       match z with
+       | RecomputeBB z -> eval_stmts (y |> static) (stmts_of_basic_block p z)
+       | RecomputeProc z ->
+           let old_time = !current_time in
+           current_time := x;
+           eval_stmts (y |> static) (stmts_of_processed_proc p z) |> unstatic;
+           Hashtbl.set y.m.proc_time_table ~key:z ~data:(Close (x, !current_time));
+           (current_time := old_time) |> static)
+      else tt)
       |> unstatic;
       let x', y', z' = queue_pop () in
       ignore (y', z');

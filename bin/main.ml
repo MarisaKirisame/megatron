@@ -26,12 +26,11 @@ let shell cmd =
   In_channel.iter_lines in_channel ~f:(fun str -> print_endline str);
   let res = Core_unix.close_process_in in_channel in
   match res with Ok () -> () | _ -> panic "shell failed"
-;;
 
-Out_channel.write_all "layout.cpp" ~data:(compile prog);;
-shell "clang-format --style=file -i layout.cpp";;
-shell "cat layout.cpp";;
-shell "clang++ -std=c++23 layout.cpp"
+(*Out_channel.write_all "layout.cpp" ~data:(compile prog);;
+  shell "clang-format --style=file -i layout.cpp";;
+  shell "cat layout.cpp";;
+  shell "clang++ -std=c++23 layout.cpp"*)
 
 let tag t str = "<" ^ t ^ ">" ^ str ^ "</" ^ t ^ ">"
 
@@ -169,35 +168,43 @@ module Main (EVAL : Eval) = struct
   include EVAL
   module FS = Megatron.EvalFS.EVAL (EVAL.SD)
 
+  let mapp (f : ('a -> 'b) sd) : 'a sd -> 'b sd =
+    if is_static then fun a -> static ((unstatic f) (unstatic a))
+    else
+      let v = fresh () in
+      fun a -> dyn (CApp (CVar v, [ undyn a ]))
+
   let json_to_node_aux : Yojson.Basic.t sd -> meta node sd =
-    app (fix (fun recurse j ->
-        EVAL.make_node
-          (list_map (j |> json_member (string "children") |> json_to_list) (fun x -> recurse x))
-          ~name:(j |> json_member (string "name") |> json_to_string)
-          ~attr:(j |> json_member (string "attributes") |> json_to_dict)
-          ~prop:(j |> json_member (string "properties") |> json_to_dict)
-          ~extern_id:(j |> json_member (string "id") |> json_to_int)))
+    app
+      (fix (fun recurse j ->
+           EVAL.make_node
+             (list_map (j |> json_member (string "children") |> json_to_list) (fun x -> recurse x))
+             ~name:(j |> json_member (string "name") |> json_to_string)
+             ~attr:(j |> json_member (string "attributes") |> json_to_dict)
+             ~prop:(j |> json_member (string "properties") |> json_to_dict)
+             ~extern_id:(j |> json_member (string "id") |> json_to_int)))
 
   let set_relation (n : 'a node sd) : unit sd =
     let set_children_relation =
-      app (fix (fun recurse (n : 'a node sd) ->
-          seq
-            (list_iter
-               (list_zip (list_drop_last (node_get_children n)) (list_tl (node_get_children n)))
-               (fun p ->
-                 let_ (zro p) (fun x ->
-                     let_ (fst p) (fun y ->
-                         seqs
-                           [
-                             (fun _ -> node_set_parent x (n |> some));
-                             (fun _ -> node_set_next x (y |> some));
-                             (fun _ -> node_set_prev y (x |> some));
-                             (fun _ -> recurse x);
-                           ]))))
-            (fun _ ->
-              option_iter
-                (n |> node_get_children |> list_last)
-                (fun x -> seq (node_set_parent x (some n)) (fun _ -> recurse x)))))
+      app
+        (fix (fun recurse (n : 'a node sd) ->
+             seq
+               (list_iter
+                  (list_zip (list_drop_last (node_get_children n)) (list_tl (node_get_children n)))
+                  (fun p ->
+                    let_ (zro p) (fun x ->
+                        let_ (fst p) (fun y ->
+                            seqs
+                              [
+                                (fun _ -> node_set_parent x (n |> some));
+                                (fun _ -> node_set_next x (y |> some));
+                                (fun _ -> node_set_prev y (x |> some));
+                                (fun _ -> recurse x);
+                              ]))))
+               (fun _ ->
+                 option_iter
+                   (n |> node_get_children |> list_last)
+                   (fun x -> seq (node_set_parent x (some n)) (fun _ -> recurse x)))))
     in
     seqs
       [
@@ -223,7 +230,8 @@ module Main (EVAL : Eval) = struct
     else todo "convert"
 
   let json_to_layout_node : Yojson.Basic.t sd -> layout_node sd =
-    app (fix (fun recurse j -> make_layout_node (list_map (j |> json_member (string "children") |> json_to_list) recurse)))
+    app
+      (fix (fun recurse j -> make_layout_node (list_map (j |> json_member (string "children") |> json_to_list) recurse)))
 
   let get_command (j : Basic.t sd) : string sd = j |> json_member (string "name") |> json_to_string
 
@@ -239,7 +247,7 @@ module Main (EVAL : Eval) = struct
   let layout_size : layout_node sd -> int sd =
     app (fix (fun recurse n -> int_add (int 1) (list_int_sum (layout_node_get_children n) recurse)))
 
-  let rec node_size : _ node sd -> int sd =
+  let node_size : _ node sd -> int sd =
     app (fix (fun recurse n -> int_add (int 1) (list_int_sum (node_get_children n) recurse)))
 
   let rec add_node (path : int list) (x : _ node) (y : _ node) (m : metric sd) : unit sd =

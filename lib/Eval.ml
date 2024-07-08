@@ -81,7 +81,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
         m = unstatic (EI.fresh_meta tt);
       }
       |> static
-    else CApp (CPF "MakeNode", [undyn name; undyn attr; undyn prop; undyn extern_id; undyn children]) |> dyn
+    else CApp (CPF "MakeNode", [ undyn name; undyn attr; undyn prop; undyn extern_id; undyn children ]) |> dyn
 
   let reversed_path (p : path) (n : 'a node sd) : 'a node list sd =
     match p with
@@ -100,29 +100,38 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
         | Some np ->
             if phys_equal (List.last_exn np.children).id (n |> unstatic).id then [ np ] |> static else [] |> static)
 
-  let var_modified (p : prog) (n : meta node sd) (var_name : string) (m : metric sd) : unit sd =
-    seqs
-      (List.map (Hashtbl.to_alist p.procs) ~f:(fun (proc_name, _) _ ->
-           let down, up = get_bb_from_proc p proc_name in
-           let work bb_name : unit sd =
-             let (BasicBlock (_, stmts)) = Hashtbl.find_exn p.bbs bb_name in
-             let reads = reads_of_stmts stmts in
-             let dirty read =
-               match read with
-               | ReadVar (path, read_var_name) ->
-                   if String.equal var_name read_var_name then
-                     list_iter (reversed_path path n) (fun dirtied_node ->
-                         bb_dirtied dirtied_node ~proc_name ~bb_name m)
-                   else tt
-               | ReadHasPath _ -> tt (*property being changed cannot change haspath status*)
-               | ReadProp _ | ReadAttr _ -> tt
-             in
-             seqs (List.map reads ~f:(fun r () -> dirty r))
-           in
-           seqs (List.map (List.append (Option.to_list down) (Option.to_list up)) ~f:(fun n () -> work n))))
+  let var_modified_hash : (string, (meta node -> metric -> unit) sd) Hashtbl.t = Hashtbl.create (module String)
 
-  let rec eval_expr (n : 'meta node sd) (e : expr) (m : metric sd) : value sd =
-    let recurse e = eval_expr n e m in
+  let var_modified_aux (p : prog) (var_name : string) : (meta node -> metric -> unit) sd =
+    lam (fun n ->
+        lam (fun m ->
+            seqs
+              (List.map (Hashtbl.to_alist p.procs) ~f:(fun (proc_name, _) _ ->
+                   let down, up = get_bb_from_proc p proc_name in
+                   let work bb_name : unit sd =
+                     let (BasicBlock (_, stmts)) = Hashtbl.find_exn p.bbs bb_name in
+                     let reads = reads_of_stmts stmts in
+                     let dirty read =
+                       match read with
+                       | ReadVar (path, read_var_name) ->
+                           if String.equal var_name read_var_name then
+                             list_iter (reversed_path path n) (fun dirtied_node ->
+                                 bb_dirtied dirtied_node ~proc_name ~bb_name m)
+                           else tt
+                       | ReadHasPath _ -> tt (*property being changed cannot change haspath status*)
+                       | ReadProp _ | ReadAttr _ -> tt
+                     in
+                     seqs (List.map reads ~f:(fun r () -> dirty r))
+                   in
+                   seqs (List.map (List.append (Option.to_list down) (Option.to_list up)) ~f:(fun n () -> work n))))))
+
+  let var_modified (p : prog) (n : meta node sd) (var_name : string) (m : metric sd) : unit sd =
+    if Option.is_none (Hashtbl.find var_modified_hash var_name) then
+      Hashtbl.add_exn var_modified_hash ~key:var_name ~data:(lift (lazy (var_modified_aux p var_name)));
+    app (app (Hashtbl.find_exn var_modified_hash var_name) n) m
+
+  let rec eval_expr_aux (n : 'meta node sd) (e : expr) (m : metric sd) : value sd =
+    let recurse e = eval_expr_aux n e m in
     match e with
     | Panic (_, x) ->
         panic
@@ -162,7 +171,22 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
     | Call (f, xs) -> eval_func f (List.map ~f:(fun v -> recurse v) xs)
   (*| _ -> panic ("unhandled case in eval_expr:" ^ show_expr e)*)
 
-  let rec eval_stmt (p : prog) (n : meta node sd) (s : stmt) (m : metric sd) : unit sd =
+  module EXPR = struct
+    type t = expr [@@deriving hash, compare, sexp_of]
+  end
+
+  let eval_expr_hash : (expr, (meta node -> metric -> value) sd) Hashtbl.t = Hashtbl.create (module EXPR)
+
+  let eval_expr (n : meta node sd) (e : expr) (m : metric sd) : value sd =
+    if Option.is_none (Hashtbl.find eval_expr_hash e) then
+      Hashtbl.add_exn eval_expr_hash ~key:e ~data:(lift (lazy (lam (fun n -> lam (fun m -> eval_expr_aux n e m)))));
+    app (app (Hashtbl.find_exn eval_expr_hash e) n) m
+
+  module STMTS = struct
+    type t = stmts [@@deriving hash, compare, sexp_of]
+  end
+
+  let rec eval_stmt_aux (p : prog) (n : meta node sd) (s : stmt) (m : metric sd) : unit sd =
     match s with
     | Write (prop_name, expr) ->
         seq (write_metric m) (fun _ ->
@@ -174,19 +198,26 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                        ite (equal_value value new_value) (fun _ -> tt) (fun _ -> var_modified p n prop_name m))
                      (fun () -> tt))
                   (fun _ -> hashtbl_set (node_get_var n) (string prop_name) new_value)))
-    | BBCall bb_name -> bracket_call_bb n bb_name (fun _ -> eval_stmts p n (stmts_of_basic_block p bb_name) m)
+    | BBCall bb_name -> bracket_call_bb n bb_name (fun _ -> eval_stmts_aux p n (stmts_of_basic_block p bb_name) m)
     | ChildrenCall proc_name ->
         list_iter (node_get_children n) (fun new_node ->
             bracket_call_proc new_node proc_name (fun _ ->
-                eval_stmts p new_node (stmts_of_processed_proc p proc_name) m))
+                eval_stmts_aux p new_node (stmts_of_processed_proc p proc_name) m))
 
-  and eval_stmts (p : prog) (n : meta node sd) (s : stmts) (m : metric sd) : unit sd =
-    seqs (List.map s ~f:(fun stmt _ -> eval_stmt p n stmt m))
+  and eval_stmts_aux (p : prog) (n : meta node sd) (s : stmts) (m : metric sd) : unit sd =
+    seqs (List.map s ~f:(fun stmt _ -> eval_stmt_aux p n stmt m))
+
+  let eval_stmts_hash : (stmts, (meta node -> metric -> unit) sd) Hashtbl.t = Hashtbl.create (module STMTS)
+
+  let eval_stmts (p : prog) (n : meta node sd) (s : stmts) (m : metric sd) : unit sd =
+    if Option.is_none (Hashtbl.find eval_stmts_hash s) then
+      Hashtbl.add_exn eval_stmts_hash ~key:s ~data:(lift (lazy (lam (fun n -> lam (fun m -> eval_stmts_aux p n s m)))));
+    app (app (Hashtbl.find_exn eval_stmts_hash s) n) m
 
   let eval (p : prog) (n : meta node sd) (m : metric sd) : unit sd =
-    static
-      (List.iter p.order ~f:(fun proc_name ->
-           bracket_call_proc n proc_name (fun _ -> eval_stmts p n (stmts_of_processed_proc p proc_name) m) |> unstatic))
+    seqs
+      (List.map p.order (fun proc_name _ ->
+           bracket_call_proc n proc_name (fun _ -> eval_stmts p n (stmts_of_processed_proc p proc_name) m)))
 
   let remove_children (p : prog) (x : meta node sd) (n : int sd) (m : metric sd) : unit sd =
     match List.split_n (x |> unstatic).children (n |> unstatic) with
@@ -385,7 +416,8 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
           let rv = Hashtbl.find_exn (node_get_var r |> unstatic) name |> static in
           ite (equal_value lv rv)
             (fun _ -> tt)
-            (fun _ -> print_endline (string_append (string name) (string_append (string_of_value lv) (string_of_value rv))))
+            (fun _ ->
+              print_endline (string_append (string name) (string_append (string_of_value lv) (string_of_value rv))))
           |> unstatic);
       print_endline (string_append (string_of_int (node_get_extern_id l)) (string " bad!")) |> unstatic;
       recursive_print_id_up (l |> unstatic));

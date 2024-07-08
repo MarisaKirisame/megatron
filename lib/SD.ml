@@ -5,22 +5,22 @@ open Ast
 
 (*to avoid code duplication, can only be used once. whoever that need reuse need to duplicate.*)
 type code =
-| CInt of int
-| CBool of bool
-| CFloat of float
-| CString of string
-| CSeq of code * code
-| CLet of string * code * code
-| CVar of string
-| CFun of string * code
-| CUnit
-| CApp of code * code list
-| CIf of code * code * code
-| CPF of string
-| CFix of string * string * code
-| CGetMember of code * string
-| CSetMember of code * string * code
-| CPanic of code
+  | CInt of int
+  | CBool of bool
+  | CFloat of float
+  | CString of string
+  | CSeq of code * code
+  | CLet of string * code * code
+  | CVar of string
+  | CFun of string * code
+  | CUnit
+  | CApp of code * code list
+  | CIf of code * code * code
+  | CPF of string
+  | CFix of string * string * code
+  | CGetMember of code * string
+  | CSetMember of code * string * code
+  | CPanic of code
 [@@deriving show]
 
 module type SDIN = sig
@@ -33,6 +33,10 @@ module type SDIN = sig
   val unstatic : 'a sd -> 'a
   val dyn : code -> 'a sd
   val undyn : 'a sd -> code
+
+  (*for dynamic value, lift a definition to global definition, returning the var that represent it.
+    accept a lazy value so meta-recursiveness is allowed.*)
+  val lift : 'a sd Lazy.t -> 'a sd
   val tt : unit sd
   val make_ref : 'a sd -> 'a ref sd
   val read_ref : 'a ref sd -> 'a sd
@@ -161,8 +165,9 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
   let is_static = true
   let static x = x
   let unstatic x = x
-  let dyn x = panic "dyn"
-  let undyn x = panic "undyn"
+  let dyn _ = panic "dyn"
+  let undyn _ = panic "undyn"
+  let lift x = Lazy.force x
   let tt = ()
 
   let seq lhs rhs =
@@ -351,6 +356,12 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let unstatic x = panic "unstatic"
   let dyn x = x
   let undyn x = x
+  let global_defs : (string * code Lazy.t) list ref = ref []
+
+  let lift x : code =
+    let v = fresh () in
+    global_defs := List.append !global_defs [ (v, x) ];
+    CVar v
 
   let seq lhs rhs = CSeq (lhs, rhs ())
 
@@ -362,41 +373,37 @@ module D : SD with type 'x sd = code = MakeSD (struct
     let v = fresh () in
     CFun (v, f (CVar v))
 
-  let tt = CUnit
-
-  let app f x = CApp (f, [x])
-
-  let ite (i : code) (t : unit -> code) (e : unit -> code) : code =
-    CIf (i, t (), e ())
-
-  let json_of_string x =  CApp (CPF "JsonOfString", [x])
-  let with_file name f = CApp (CPF "WithFile", [lam f])
-  let input_line c = CApp (CPF "InputLine", [c])
-  let iter_lines c f = CApp (CPF "IterLines", [c])
-  let print_endline str = CApp (CPF "PrintEndline", [str])
   let int x = CInt x
   let bool x = CBool x
   let float x = CFloat x
   let string x = CString x
-  let make_ref x = CApp (CPF "MakeRef", [x])
-  let read_ref r = CApp (CPF "ReadRef", [r])
-  let write_ref r x = CApp (CPF "WriteRef", [r; x])
+  let tt = CUnit
+  let app f x = CApp (f, [ x ])
+  let ite (i : code) (t : unit -> code) (e : unit -> code) : code = CIf (i, t (), e ())
+  let json_of_string x = CApp (CPF "JsonOfString", [ x ])
+  let with_file name f = CApp (CPF "WithFile", [ string name; lam f ])
+  let input_line c = CApp (CPF "InputLine", [ c ])
+  let iter_lines c f = CApp (CPF "IterLines", [ c; lam f ])
+  let print_endline str = CApp (CPF "PrintEndline", [ str ])
+  let make_ref x = CApp (CPF "MakeRef", [ x ])
+  let read_ref r = CApp (CPF "ReadRef", [ r ])
+  let write_ref r x = CApp (CPF "WriteRef", [ r; x ])
   let make_stack () = CApp (CPF "MakeStack", [])
-  let push_stack s v = CApp (CPF "PushStack", [s; v])
-  let clear_stack s = CApp (CPF "ClearStack", [s])
-  let assert_ b = CApp (CPF "Assert", [b])
-  let string_equal x y = CApp (CPF "StringEqual", [x; y])
-  let json_member str j = CApp (CPF "JsonMember", [str; j])
-  let json_to_string j = CApp (CPF "JsonToString", [j])
-  let json_to_value j = CApp (CPF "JsonToValue", [j])
-  let json_to_dict j = CApp (CPF "JsonToDict", [j])
-  let json_to_int j = CApp (CPF "JsonToInt", [j])
-  let json_to_list j = CApp (CPF "JsonToList", [j])
+  let push_stack s v = CApp (CPF "PushStack", [ s; v ])
+  let clear_stack s = CApp (CPF "ClearStack", [ s ])
+  let assert_ b = CApp (CPF "Assert", [ b ])
+  let string_equal x y = CApp (CPF "StringEqual", [ x; y ])
+  let json_member str j = CApp (CPF "JsonMember", [ str; j ])
+  let json_to_string j = CApp (CPF "JsonToString", [ j ])
+  let json_to_value j = CApp (CPF "JsonToValue", [ j ])
+  let json_to_dict j = CApp (CPF "JsonToDict", [ j ])
+  let json_to_int j = CApp (CPF "JsonToInt", [ j ])
+  let json_to_list j = CApp (CPF "JsonToList", [ j ])
 
   let fix (f : ('a sd -> 'b sd) -> 'a sd -> 'b sd) : ('a -> 'b) sd =
     let fname = fresh () in
     let xname = fresh () in
-    CFix(fname, xname, f (fun x -> CApp (CVar fname, [CVar xname])) (CVar xname))
+    CFix (fname, xname, f (fun x -> CApp (CVar fname, [ x ])) (CVar xname))
 
   let node_get_parent n = CGetMember (n, "parent")
   let node_set_parent n v = CSetMember (n, "parent", v)
@@ -410,61 +417,54 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let node_get_var n = CGetMember (n, "var")
   let node_get_attr n = CGetMember (n, "attr")
   let node_get_name n = CGetMember (n, "name")
-  let hashtbl_find h k = CApp (CPF "HashtblFind", [h; k])
-  let hashtbl_set h k v = CApp (CPF "HashtblSet", [h; k; v])
+  let hashtbl_find h k = CApp (CPF "HashtblFind", [ h; k ])
+  let hashtbl_set h k v = CApp (CPF "HashtblSet", [ h; k; v ])
   let none () = CApp (CPF "None", [])
-  let some x = CApp (CPF "Some", [x])
-  let is_none x = CApp (CPF "IsNone", [x])
-  let is_some x = CApp (CPF "IsSome", [x])
+  let some x = CApp (CPF "Some", [ x ])
+  let is_none x = CApp (CPF "IsNone", [ x ])
+  let is_some x = CApp (CPF "IsSome", [ x ])
 
   let option_match (o : 'a option sd) (s : 'a sd -> 'b sd) (n : unit -> 'b sd) =
-    CApp (CPF "OptionMatch", [o; lam s; lam (fun _ -> n ())])
+    CApp (CPF "OptionMatch", [ o; lam s; lam (fun _ -> n ()) ])
 
-  let option_iter (o : 'a option sd) (f : 'a sd -> unit sd) : unit sd =
-    CApp (CPF "OptionIter", [o; lam f])
-
-  let list_map l f = CApp (CPF "ListMap", [l; lam f])
-
-  let list_iter (l : 'a list sd) (f : 'a sd -> unit sd) : unit sd =
-    CApp (CPF "ListIter", [l; lam f])
-
-  let list_tl l = CApp (CPF "ListTl", [l])
-  let list_last l = CApp (CPF "ListLast", [l])
-  let list_drop_last l = CApp (CPF "ListDropLast", [l])
-  let list_zip x y = CApp (CPF "ListZip", [x; y])
-  let zro p = CApp (CPF "Zro", [p])
-  let fst p = CApp (CPF "Fst", [p])
-  let make_layout_node l = CApp (CPF "MakeLayoutNode", [l])
+  let option_iter (o : 'a option sd) (f : 'a sd -> unit sd) : unit sd = CApp (CPF "OptionIter", [ o; lam f ])
+  let list_map l f = CApp (CPF "ListMap", [ l; lam f ])
+  let list_iter (l : 'a list sd) (f : 'a sd -> unit sd) : unit sd = CApp (CPF "ListIter", [ l; lam f ])
+  let list_tl l = CApp (CPF "ListTl", [ l ])
+  let list_last l = CApp (CPF "ListLast", [ l ])
+  let list_drop_last l = CApp (CPF "ListDropLast", [ l ])
+  let list_zip x y = CApp (CPF "ListZip", [ x; y ])
+  let zro p = CApp (CPF "Zro", [ p ])
+  let fst p = CApp (CPF "Fst", [ p ])
+  let make_layout_node l = CApp (CPF "MakeLayoutNode", [ l ])
   let layout_node_get_children l = CGetMember (l, "children")
-  let int_add x y = CApp (CPF "add", [x; y])
+  let int_add x y = CApp (CPF "add", [ x; y ])
   let panic x = CPanic x
   let node_get_extern_id x = CGetMember (x, "extern_id")
-  let string_of_int i = CApp (CPF "StringOfInt", [i])
-  let string_append x y = CApp (CPF "StringAppend", [x; y])
-  let show_node n = CApp (CPF "ShowNode", [n])
-  let show_value v = CApp (CPF "ShowValue", [v])
-
-  let list_int_sum x f = CApp (CPF "ListIntSum", [x; lam f])
-
+  let string_of_int i = CApp (CPF "StringOfInt", [ i ])
+  let string_append x y = CApp (CPF "StringAppend", [ x; y ])
+  let show_node n = CApp (CPF "ShowNode", [ n ])
+  let show_value v = CApp (CPF "ShowValue", [ v ])
+  let list_int_sum x f = CApp (CPF "ListIntSum", [ x; lam f ])
   let fresh_metric () = CApp (CPF "FreshMetric", [])
-  let reset_metric m = CApp (CPF "ResetMetric", [m])
-  let read_metric m = CApp (CPF "ReadMetric", [m])
-  let meta_read_metric m = CApp (CPF "MetaReadMetric", [m])
-  let write_metric m = CApp (CPF "WriteMetric", [m])
-  let meta_write_metric m = CApp (CPF "MetaWriteMetric", [m])
-  let input_change_metric m i = CApp (CPF "InputChangeMetric", [m; i])
-  let output_change_metric m i = CApp (CPF "OutputChangeMetric", [m; i])
-  let vbool b = CApp (CPF "VBool", [b])
-  let vint i = CApp (CPF "VInt", [i])
-  let vstring s = CApp (CPF "VString", [s])
-  let vfloat f = CApp (CPF "VFloat", [f])
-  let bool_of_value x = CApp (CPF "BoolOfValue", [x])
-  let int_of_value x = CApp (CPF "IntOfValue", [x])
-  let string_of_value x = CApp (CPF "StringOfValue", [x])
-  let float_of_value x = CApp (CPF "FloatOfValue", [x])
-  let equal_value x y : bool sd = CApp (CPF "EqualValue", [x; y])
+  let reset_metric m = CApp (CPF "ResetMetric", [ m ])
+  let read_metric m = CApp (CPF "ReadMetric", [ m ])
+  let meta_read_metric m = CApp (CPF "MetaReadMetric", [ m ])
+  let write_metric m = CApp (CPF "WriteMetric", [ m ])
+  let meta_write_metric m = CApp (CPF "MetaWriteMetric", [ m ])
+  let input_change_metric m i = CApp (CPF "InputChangeMetric", [ m; i ])
+  let output_change_metric m i = CApp (CPF "OutputChangeMetric", [ m; i ])
+  let vbool b = CApp (CPF "VBool", [ b ])
+  let vint i = CApp (CPF "VInt", [ i ])
+  let vstring s = CApp (CPF "VString", [ s ])
+  let vfloat f = CApp (CPF "VFloat", [ f ])
+  let bool_of_value x = CApp (CPF "BoolOfValue", [ x ])
+  let int_of_value x = CApp (CPF "IntOfValue", [ x ])
+  let string_of_value x = CApp (CPF "StringOfValue", [ x ])
+  let float_of_value x = CApp (CPF "FloatOfValue", [ x ])
+  let equal_value x y : bool sd = CApp (CPF "EqualValue", [ x; y ])
   let eval_func f xs = CApp (CPF (func_name_compiled f), xs)
   let nil () = CApp (CPF "Nil", [])
-  let cons hd tl = CApp (CPF "Cons", [hd; tl])
-  let string_concat sep list = CApp (CPF "StringConcat", [sep; list])
+  let cons hd tl = CApp (CPF "Cons", [ hd; tl ])
+  let string_concat sep list = CApp (CPF "StringConcat", [ sep; list ])
 end)

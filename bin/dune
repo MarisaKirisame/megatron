@@ -1,6 +1,7 @@
 (executable
  (public_name megatron)
  (name main)
+ (modes byte exe)
  (libraries megatron core yojson core_unix.sys_unix unix core_unix))
 
 (menhir

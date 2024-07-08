@@ -2,7 +2,7 @@
  (name megatron)
  (libraries core yojson)
  (preprocess
-  (pps ppx_deriving.show ppx_deriving.ord)))
+  (pps ppx_deriving.show ppx_deriving.ord ppx_hash ppx_compare ppx_sexp_conv)))
 
 (menhir
  (modules parser))
