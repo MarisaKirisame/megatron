@@ -37,6 +37,10 @@ module type SDIN = sig
   (*for dynamic value, lift a definition to global definition, returning the var that represent it.
     accept a lazy value so meta-recursiveness is allowed.*)
   val lift : 'a sd Lazy.t -> 'a sd
+  val fix : (('a sd -> 'b sd) -> 'a sd -> 'b sd) -> ('a -> 'b) sd
+  val let_ : 'a sd -> ('a sd -> 'b sd) -> 'b sd
+  val lam : ('a sd -> 'b sd) -> ('a -> 'b) sd
+  val app : ('a -> 'b) sd -> 'a sd -> 'b sd
   val tt : unit sd
   val make_ref : 'a sd -> 'a ref sd
   val read_ref : 'a ref sd -> 'a sd
@@ -45,28 +49,32 @@ module type SDIN = sig
   val bool : bool -> bool sd
   val float : float -> float sd
   val seq : unit sd -> (unit -> 'a sd) -> 'a sd
-  val let_ : 'a sd -> ('a sd -> 'b sd) -> 'b sd
-  val lam : ('a sd -> 'b sd) -> ('a -> 'b) sd
-  val app : ('a -> 'b) sd -> 'a sd -> 'b sd
   val ite : bool sd -> (unit -> 'a sd) -> (unit -> 'a sd) -> 'a sd
-  val json_of_string : string sd -> Yojson.Basic.t sd
-  val with_file : string -> (Stdio.In_channel.t sd -> 'a sd) -> 'a sd
+  val with_in_file : string sd -> (Stdio.In_channel.t sd -> 'a sd) -> 'a sd
+  val with_out_file : string sd -> (Stdio.Out_channel.t sd -> 'a sd) -> 'a sd
+  val output_string : Stdio.Out_channel.t sd -> string sd -> unit sd
   val input_line : Stdio.In_channel.t sd -> string sd
   val iter_lines : Stdio.In_channel.t sd -> (string sd -> unit sd) -> unit sd
   val print_endline : string sd -> unit sd
   val make_stack : unit -> 'a Stack.t sd
   val push_stack : 'a Stack.t sd -> 'a sd -> unit sd
   val clear_stack : 'a Stack.t sd -> unit sd
+  val stack_to_list : 'a Stack.t sd -> 'a list sd
   val assert_ : bool sd -> unit sd
   val string_equal : string sd -> string sd -> bool sd
   val string : string -> string sd
+  val assoc_to_json : (string * Yojson.Basic.t) list sd -> Yojson.Basic.t sd
+  val string_to_json : string sd -> Yojson.Basic.t sd
+  val int_to_json : int sd -> Yojson.Basic.t sd
+  val list_to_json : Yojson.Basic.t list sd -> Yojson.Basic.t sd
+  val json_of_string : string sd -> Yojson.Basic.t sd
   val json_to_string : Yojson.Basic.t sd -> string sd
   val json_member : string sd -> Yojson.Basic.t sd -> Yojson.Basic.t sd
   val json_to_value : Yojson.Basic.t sd -> value sd
   val json_to_dict : Yojson.Basic.t sd -> (string, value) Hashtbl.t sd
   val json_to_int : Yojson.Basic.t sd -> int sd
   val json_to_list : Yojson.Basic.t sd -> Yojson.Basic.t list sd
-  val fix : (('a sd -> 'b sd) -> 'a sd -> 'b sd) -> ('a -> 'b) sd
+  val json_to_channel : Stdio.Out_channel.t sd -> Yojson.Basic.t sd -> unit sd
   val node_get_parent : 'a node sd -> 'a node option sd
   val node_set_parent : 'a node sd -> 'a node option sd -> unit sd
   val node_get_prev : 'a node sd -> 'a node option sd
@@ -94,6 +102,7 @@ module type SDIN = sig
   val list_last : 'a list sd -> 'a option sd
   val list_zip : 'a list sd -> 'b list sd -> ('a * 'b) list sd
   val list_map : 'a list sd -> ('a sd -> 'b sd) -> 'b list sd
+  val make_pair : 'a sd -> 'b sd -> ('a * 'b) sd
   val zro : ('a * 'b) sd -> 'a sd
   val fst : ('a * 'b) sd -> 'b sd
   val make_layout_node : layout_node list sd -> layout_node sd
@@ -108,6 +117,13 @@ module type SDIN = sig
   val meta_write_metric : metric sd -> unit sd
   val input_change_metric : metric sd -> int sd -> unit sd
   val output_change_metric : metric sd -> int sd -> unit sd
+  val metric_read_count : metric sd -> int sd
+  val metric_meta_read_count : metric sd -> int sd
+  val metric_write_count : metric sd -> int sd
+  val metric_meta_write_count : metric sd -> int sd
+  val metric_input_change_count : metric sd -> int sd
+  val metric_output_change_count : metric sd -> int sd
+  val metric_queue_size_acc : metric sd -> int sd
   val vbool : bool sd -> value sd
   val vint : int sd -> value sd
   val vfloat : float sd -> value sd
@@ -179,7 +195,9 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
   let app f x = f x
   let ite i t e = if i then t () else e ()
   let json_of_string x = Yojson.Basic.from_string x
-  let with_file name f = Stdio.In_channel.with_file name ~f
+  let with_in_file name f = Stdio.In_channel.with_file name ~f
+  let with_out_file name f = Stdio.Out_channel.with_file name ~f
+  let output_string c s = Stdio.Out_channel.output_string c s
   let input_line c = Stdio.In_channel.input_line_exn c
   let iter_lines c f = Stdio.In_channel.iter_lines c ~f
   let print_endline str = Stdio.print_endline str
@@ -202,11 +220,29 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
   let make_stack = Stack.make
   let push_stack = Stack.push
   let clear_stack = Stack.clear
+  let stack_to_list = Stack.to_list
   let assert_ b = assert b
   let string_equal x y = String.equal x y
   let string x = x
   let bool x = x
   let float x = x
+
+  let assoc_to_json x : Yojson.Basic.t =
+    let open Yojson.Basic in
+    `Assoc x
+
+  let string_to_json x : Yojson.Basic.t =
+    let open Yojson.Basic in
+    `String x
+
+  let int_to_json x : Yojson.Basic.t =
+    let open Yojson.Basic in
+    `Int x
+
+  let list_to_json x : Yojson.Basic.t =
+    let open Yojson.Basic in
+    `List x
+
   let json_to_string (j : Yojson.Basic.t sd) = Yojson.Basic.Util.to_string j
   let json_member = Yojson.Basic.Util.member
 
@@ -226,6 +262,7 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
     to_int j
 
   let json_to_list = Yojson.Basic.Util.to_list
+  let json_to_channel c j = Yojson.Basic.to_channel c j
   let list_map l f = List.map l ~f
   let rec fix (f : ('a -> 'b) -> 'a -> 'b) (x : 'a) : 'b = f (fun x -> fix f x) x
   let node_get_parent n = n.parent
@@ -255,6 +292,7 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
   let list_zip x y = List.zip_exn x y
   let list_last l = List.last l
   let list_int_sum l f = List.sum (module Int) l ~f
+  let make_pair a b = (a, b)
   let zro (a, b) = a
   let fst (a, b) = b
   let make_layout_node l = { children = l }
@@ -276,6 +314,13 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
   let meta_write_metric (m : metric) : unit = m.meta_write_count <- m.meta_write_count + 1
   let input_change_metric (m : metric) (c : int) = m.input_change_count <- m.input_change_count + c
   let output_change_metric (m : metric) (c : int) = m.output_change_count <- m.output_change_count + c
+  let metric_read_count m = m.read_count
+  let metric_meta_read_count m = m.meta_read_count
+  let metric_write_count m = m.write_count
+  let metric_meta_write_count m = m.meta_write_count
+  let metric_input_change_count m = m.input_change_count
+  let metric_output_change_count m = m.output_change_count
+  let metric_queue_size_acc m = m.queue_size_acc
   let vbool b = VBool b
   let vint i = VInt i
   let vstring x = VString x
@@ -380,8 +425,9 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let tt = CUnit
   let app f x = CApp (f, [ x ])
   let ite (i : code) (t : unit -> code) (e : unit -> code) : code = CIf (i, t (), e ())
-  let json_of_string x = CApp (CPF "JsonOfString", [ x ])
-  let with_file name f = CApp (CPF "WithFile", [ string name; lam f ])
+  let with_in_file name f = CApp (CPF "WithInFile", [ name; lam f ])
+  let with_out_file name f = CApp (CPF "WithOutFile", [ name; lam f ])
+  let output_string c s = CApp (CPF "OutputString", [ c; s ])
   let input_line c = CApp (CPF "InputLine", [ c ])
   let iter_lines c f = CApp (CPF "IterLines", [ c; lam f ])
   let print_endline str = CApp (CPF "PrintEndline", [ str ])
@@ -391,14 +437,21 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let make_stack () = CApp (CPF "MakeStack", [])
   let push_stack s v = CApp (CPF "PushStack", [ s; v ])
   let clear_stack s = CApp (CPF "ClearStack", [ s ])
+  let stack_to_list s = CApp (CPF "StackToList", [ s ])
   let assert_ b = CApp (CPF "Assert", [ b ])
   let string_equal x y = CApp (CPF "StringEqual", [ x; y ])
+  let assoc_to_json x = CApp (CPF "AssocToJson", [ x ])
+  let int_to_json x = CApp (CPF "IntToJson", [ x ])
+  let string_to_json x = CApp (CPF "StringToJson", [ x ])
+  let list_to_json x = CApp (CPF "ListToJson", [ x ])
+  let json_of_string x = CApp (CPF "JsonOfString", [ x ])
   let json_member str j = CApp (CPF "JsonMember", [ str; j ])
   let json_to_string j = CApp (CPF "JsonToString", [ j ])
   let json_to_value j = CApp (CPF "JsonToValue", [ j ])
   let json_to_dict j = CApp (CPF "JsonToDict", [ j ])
   let json_to_int j = CApp (CPF "JsonToInt", [ j ])
   let json_to_list j = CApp (CPF "JsonToList", [ j ])
+  let json_to_channel c j = CApp (CPF "JsonToChannel", [ c; j ])
 
   let fix (f : ('a sd -> 'b sd) -> 'a sd -> 'b sd) : ('a -> 'b) sd =
     let fname = fresh () in
@@ -434,11 +487,12 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let list_last l = CApp (CPF "ListLast", [ l ])
   let list_drop_last l = CApp (CPF "ListDropLast", [ l ])
   let list_zip x y = CApp (CPF "ListZip", [ x; y ])
+  let make_pair a b = CApp (CPF "MakePair", [ a; b ])
   let zro p = CApp (CPF "Zro", [ p ])
   let fst p = CApp (CPF "Fst", [ p ])
   let make_layout_node l = CApp (CPF "MakeLayoutNode", [ l ])
   let layout_node_get_children l = CGetMember (l, "children")
-  let int_add x y = CApp (CPF "add", [ x; y ])
+  let int_add x y = CApp (CPF "IntAdd", [ x; y ])
   let panic x = CPanic x
   let node_get_extern_id x = CGetMember (x, "extern_id")
   let string_of_int i = CApp (CPF "StringOfInt", [ i ])
@@ -454,6 +508,13 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let meta_write_metric m = CApp (CPF "MetaWriteMetric", [ m ])
   let input_change_metric m i = CApp (CPF "InputChangeMetric", [ m; i ])
   let output_change_metric m i = CApp (CPF "OutputChangeMetric", [ m; i ])
+  let metric_read_count m = CApp (CPF "MetricReadCount", [ m ])
+  let metric_meta_read_count m = CApp (CPF "MetricMetaReadCount", [ m ])
+  let metric_write_count m = CApp (CPF "MetricWriteCount", [ m ])
+  let metric_meta_write_count m = CApp (CPF "MetricMetaWriteCount", [ m ])
+  let metric_input_change_count m = CApp (CPF "MetricInputChangeCount", [ m ])
+  let metric_output_change_count m = CApp (CPF "MetricOutputChangeCount", [ m ])
+  let metric_queue_size_acc m = CApp (CPF "MetricQueueSizeAcc", [ m ])
   let vbool b = CApp (CPF "VBool", [ b ])
   let vint i = CApp (CPF "VInt", [ i ])
   let vstring s = CApp (CPF "VString", [ s ])

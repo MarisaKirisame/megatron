@@ -396,35 +396,37 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
     recalculate_internal p n m (fun n stmts -> eval_stmts p n stmts m)
 
   let rec assert_node_value_equal (l : _ node sd) (r : _ node sd) : unit sd =
-    assert (Int.equal (Hashtbl.length (node_get_var l |> unstatic)) (Hashtbl.length (node_get_var r |> unstatic)));
-    assert (Int.equal (List.length (node_get_children l |> unstatic)) (List.length (node_get_children l |> unstatic)));
-    List.iter2_exn
-      (node_get_children l |> unstatic)
-      (node_get_children r |> unstatic)
-      ~f:(fun l r -> assert_node_value_equal (l |> static) (r |> static) |> unstatic);
-    if
-      Hashtbl.equal
-        (fun x y -> equal_value (x |> static) (y |> static) |> unstatic)
-        (node_get_var l |> unstatic)
-        (node_get_var r |> unstatic)
-    then ()
-    else (
-      Hashtbl.iter_keys
-        (node_get_var l |> unstatic)
-        ~f:(fun name ->
-          let lv = Hashtbl.find_exn (node_get_var l |> unstatic) name |> static in
-          let rv = Hashtbl.find_exn (node_get_var r |> unstatic) name |> static in
-          ite (equal_value lv rv)
-            (fun _ -> tt)
-            (fun _ ->
-              print_endline (string_append (string name) (string_append (string_of_value lv) (string_of_value rv))))
-          |> unstatic);
-      print_endline (string_append (string_of_int (node_get_extern_id l)) (string " bad!")) |> unstatic;
-      recursive_print_id_up (l |> unstatic));
-    assert (
-      Hashtbl.equal
-        (fun x y -> equal_value (x |> static) (y |> static) |> unstatic)
-        (node_get_var l |> unstatic)
-        (node_get_var r |> unstatic))
-    |> static
+    if is_static then (
+      assert (Int.equal (Hashtbl.length (node_get_var l |> unstatic)) (Hashtbl.length (node_get_var r |> unstatic)));
+      assert (Int.equal (List.length (node_get_children l |> unstatic)) (List.length (node_get_children l |> unstatic)));
+      List.iter2_exn
+        (node_get_children l |> unstatic)
+        (node_get_children r |> unstatic)
+        ~f:(fun l r -> assert_node_value_equal (l |> static) (r |> static) |> unstatic);
+      if
+        Hashtbl.equal
+          (fun x y -> equal_value (x |> static) (y |> static) |> unstatic)
+          (node_get_var l |> unstatic)
+          (node_get_var r |> unstatic)
+      then ()
+      else (
+        Hashtbl.iter_keys
+          (node_get_var l |> unstatic)
+          ~f:(fun name ->
+            let lv = Hashtbl.find_exn (node_get_var l |> unstatic) name |> static in
+            let rv = Hashtbl.find_exn (node_get_var r |> unstatic) name |> static in
+            ite (equal_value lv rv)
+              (fun _ -> tt)
+              (fun _ ->
+                print_endline (string_append (string name) (string_append (string_of_value lv) (string_of_value rv))))
+            |> unstatic);
+        print_endline (string_append (string_of_int (node_get_extern_id l)) (string " bad!")) |> unstatic;
+        recursive_print_id_up (l |> unstatic));
+      assert (
+        Hashtbl.equal
+          (fun x y -> equal_value (x |> static) (y |> static) |> unstatic)
+          (node_get_var l |> unstatic)
+          (node_get_var r |> unstatic))
+      |> static)
+    else dyn (CApp (CPF "AssertNodeValueEqual", [ undyn l; undyn r ]))
 end

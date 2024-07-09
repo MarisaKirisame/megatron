@@ -32,6 +32,7 @@ module Stack = struct
   let make () : _ t = ref []
   let push (s : 'a t) (v : 'a) : unit = s := v :: !s
   let clear (s : 'a t) : unit = s := []
+  let to_list (s : 'a t) : 'a list = List.rev !s
 end
 
 type 'meta node = {
