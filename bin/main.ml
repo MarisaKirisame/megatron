@@ -233,9 +233,8 @@ module Main (EVAL : Eval) = struct
 
   let get_command (j : Basic.t sd) : string sd = j |> json_member (string "name") |> json_to_string
 
-  let get_path j : int list sd =
-    List.map (j |> unstatic |> Yojson.Basic.Util.member "path" |> Yojson.Basic.Util.to_list) ~f:Yojson.Basic.Util.to_int
-    |> static
+  let get_path (j : Yojson.Basic.t sd) : int list sd =
+    list_map (j |> json_member (string "path") |> json_to_list) json_to_int
 
   let get_type j : string sd = j |> json_member (string "type") |> json_to_string
   let get_key j : string sd = j |> json_member (string "key") |> json_to_string
@@ -371,41 +370,96 @@ module Main (EVAL : Eval) = struct
                                (fun _ -> f x r)
                                (fun h t -> recurse (make_pair (make_pair t (list_nth_exn (node_get_children x) h)) r)))))))))
 
-  let rec replace_value (path : int list) (x : _ node) (type_ : string) (key : string) (value : value) (m : metric sd) :
-      unit sd =
-    match path with
-    | [] -> (
-        input_change_metric m (int 1) |> unstatic;
-        match type_ with
-        | "attributes" ->
-            EVAL.remove_attr prog (x |> static) key m |> unstatic;
-            EVAL.add_attr prog (x |> static) key (value |> static) m
-        | "properties" ->
-            EVAL.remove_prop prog (x |> static) key m |> unstatic;
-            EVAL.add_prop prog (x |> static) key (value |> static) m
-        | _ -> panic ("type: " ^ type_ |> string))
-    | p_hd :: p_tl -> replace_value p_tl (List.nth_exn x.children p_hd) type_ key value m
+  let replace_value_aux : ((int list * _ node) * ((string * string) * (value * metric)) -> unit) sd =
+    follow_path (fun x v ->
+        let_ (zro v) (fun l ->
+            let_ (zro l) (fun type_ ->
+                let_ (fst l) (fun key ->
+                    let_ (fst v) (fun r ->
+                        let_ (zro r) (fun value ->
+                            let_ (fst r) (fun m ->
+                                seq
+                                  (input_change_metric m (int 1))
+                                  (fun _ ->
+                                    string_match type_
+                                      [
+                                        ( "attributes",
+                                          fun _ ->
+                                            string_match key
+                                              (List.map (Hashtbl.to_alist prog.tyck_env.attr_type) ~f:(fun (s, _) ->
+                                                   ( s,
+                                                     fun _ ->
+                                                       seq (EVAL.remove_attr prog x s m) (fun _ ->
+                                                           EVAL.add_attr prog x s value m) ))) );
+                                        ( "properties",
+                                          fun _ ->
+                                            string_match key
+                                              (List.map (Hashtbl.to_alist prog.tyck_env.prop_type) ~f:(fun (s, _) ->
+                                                   ( s,
+                                                     fun _ ->
+                                                       seq (EVAL.remove_prop prog x s m) (fun _ ->
+                                                           EVAL.add_prop prog x s value m) ))) );
+                                      ]))))))))
 
-  let rec delete_value (path : int list) (x : _ node) (type_ : string) (key : string) (m : metric sd) : unit sd =
-    match path with
-    | [] -> (
-        input_change_metric m (int 1) |> unstatic;
-        match type_ with
-        | "attributes" -> EVAL.remove_attr prog (x |> static) key m
-        | "properties" -> EVAL.remove_prop prog (x |> static) key m
-        | _ -> panic ("type: " ^ type_ |> string))
-    | p_hd :: p_tl -> delete_value p_tl (List.nth_exn x.children p_hd) type_ key m
+  let rec replace_value (path : int list sd) (x : _ node sd) (type_ : string sd) (key : string sd) (value : value sd)
+      (m : metric sd) : unit sd =
+    app replace_value_aux (make_pair (make_pair path x) (make_pair (make_pair type_ key) (make_pair value m)))
 
-  let rec insert_value (path : int list) (x : _ node) (type_ : string) (key : string) (value : value) (m : metric sd) :
-      unit sd =
-    match path with
-    | [] -> (
-        input_change_metric m (int 1) |> unstatic;
-        match type_ with
-        | "attributes" -> EVAL.add_attr prog (x |> static) key (value |> static) m
-        | "properties" -> EVAL.add_prop prog (x |> static) key (value |> static) m
-        | _ -> panic ("type: " ^ type_ |> string))
-    | p_hd :: p_tl -> insert_value p_tl (List.nth_exn x.children p_hd) type_ key value m
+  let delete_value_aux : ((int list * _ node) * ((string * string) * metric) -> unit) sd =
+    follow_path (fun x v ->
+        let_ (zro v) (fun l ->
+            let_ (zro l) (fun type_ ->
+                let_ (fst l) (fun key ->
+                    let_ (fst v) (fun m ->
+                        seq
+                          (input_change_metric m (int 1))
+                          (fun _ ->
+                            string_match type_
+                              [
+                                ( "attributes",
+                                  fun _ ->
+                                    string_match key
+                                      (List.map (Hashtbl.to_alist prog.tyck_env.attr_type) ~f:(fun (s, _) ->
+                                           (s, fun _ -> EVAL.remove_attr prog x s m))) );
+                                ( "properties",
+                                  fun _ ->
+                                    string_match key
+                                      (List.map (Hashtbl.to_alist prog.tyck_env.prop_type) ~f:(fun (s, _) ->
+                                           (s, fun _ -> EVAL.remove_prop prog x s m))) );
+                              ]))))))
+
+  let delete_value (path : int list sd) (x : _ node sd) (type_ : string sd) (key : string sd) (m : metric sd) : unit sd
+      =
+    app delete_value_aux (make_pair (make_pair path x) (make_pair (make_pair type_ key) m))
+
+  let insert_value_aux : ((int list * _ node) * ((string * string) * (value * metric)) -> unit) sd =
+    follow_path (fun x v ->
+        let_ (zro v) (fun l ->
+            let_ (zro l) (fun type_ ->
+                let_ (fst l) (fun key ->
+                    let_ (fst v) (fun r ->
+                        let_ (zro r) (fun value ->
+                            let_ (fst r) (fun m ->
+                                seq
+                                  (input_change_metric m (int 1))
+                                  (fun _ ->
+                                    string_match type_
+                                      [
+                                        ( "attributes",
+                                          fun _ ->
+                                            string_match key
+                                              (List.map (Hashtbl.to_alist prog.tyck_env.attr_type) ~f:(fun (s, _) ->
+                                                   (s, fun _ -> EVAL.add_attr prog x s value m))) );
+                                        ( "properties",
+                                          fun _ ->
+                                            string_match key
+                                              (List.map (Hashtbl.to_alist prog.tyck_env.prop_type) ~f:(fun (s, _) ->
+                                                   (s, fun _ -> EVAL.add_prop prog x s value m))) );
+                                      ]))))))))
+
+  let rec insert_value (path : int list sd) (x : _ node sd) (type_ : string sd) (key : string sd) (value : value sd)
+      (m : metric sd) : unit sd =
+    app insert_value_aux (make_pair (make_pair path x) (make_pair (make_pair type_ key) (make_pair value m)))
 
   let main : unit sd =
     with_out_file (string out_file_path) (fun out_file ->
@@ -435,7 +489,6 @@ module Main (EVAL : Eval) = struct
                                           let_ (get_node json_init) (fun n ->
                                               let_ (get_layout_node json_layout_init) (fun layout_n ->
                                                   let diff_evaluated () : unit sd =
-                                                    let open Yojson.Basic in
                                                     seqs
                                                       [
                                                         (fun _ ->
@@ -480,7 +533,7 @@ module Main (EVAL : Eval) = struct
                                                   in
                                                   let work () : unit sd =
                                                     iter_lines chan (fun line ->
-                                                        let_ (string_to_json line) (fun j ->
+                                                        let_ (json_of_string line) (fun j ->
                                                             seq (push_stack command j) (fun _ ->
                                                                 string_match (get_command j)
                                                                   [
@@ -488,38 +541,24 @@ module Main (EVAL : Eval) = struct
                                                                       fun _ -> add_node (get_path j) n (get_node j) m );
                                                                     ( "recalculate",
                                                                       fun _ ->
-                                                                        EVAL.recalculate prog n m |> unstatic;
-                                                                        diff_evaluated () );
+                                                                        seq (EVAL.recalculate prog n m) (fun _ ->
+                                                                            diff_evaluated ()) );
                                                                     ("remove", fun _ -> remove_node (get_path j) n m);
                                                                     ( "replace",
                                                                       fun _ ->
                                                                         replace_node (get_path j) n (get_node j) m );
                                                                     ( "replace_value",
                                                                       fun _ ->
-                                                                        replace_value
-                                                                          (get_path j |> unstatic)
-                                                                          (n |> unstatic)
-                                                                          (get_type j |> unstatic)
-                                                                          (get_key j |> unstatic)
-                                                                          (get_value j |> unstatic)
-                                                                          m );
+                                                                        replace_value (get_path j) n (get_type j)
+                                                                          (get_key j) (get_value j) m );
                                                                     ( "delete_value",
                                                                       fun _ ->
-                                                                        delete_value
-                                                                          (get_path j |> unstatic)
-                                                                          (n |> unstatic)
-                                                                          (get_type j |> unstatic)
-                                                                          (get_key j |> unstatic)
-                                                                          m );
+                                                                        delete_value (get_path j) n (get_type j)
+                                                                          (get_key j) m );
                                                                     ( "insert_value",
                                                                       fun _ ->
-                                                                        insert_value
-                                                                          (get_path j |> unstatic)
-                                                                          (n |> unstatic)
-                                                                          (get_type j |> unstatic)
-                                                                          (get_key j |> unstatic)
-                                                                          (get_value j |> unstatic)
-                                                                          m );
+                                                                        insert_value (get_path j) n (get_type j)
+                                                                          (get_key j) (get_value j) m );
                                                                     ( "layout_remove",
                                                                       fun _ ->
                                                                         remove_layout_node (get_path j) layout_n m );
@@ -549,7 +588,7 @@ module Main (EVAL : Eval) = struct
                                       ]))))))))
 end
 
-(*module MainFSI = Main (Megatron.EvalFS.EVAL (S))*)
+module MainFSI = Main (Megatron.EvalFS.EVAL (S))
 module MainFSC = Main (Megatron.EvalFS.EVAL (D))
 module MainDBI = Main (Megatron.EvalDB.EVAL (S))
 module MainDBC = Main (Megatron.EvalDB.EVAL (D))

@@ -22,5 +22,5 @@ module EVAL (SD : SD) = MakeEval (struct
   let register_todo_proc _ _ _ _ = tt
 
   let recalculate_internal (p : prog) (n : meta node sd) (m : metric sd) eval_stmts : unit sd =
-    List.iter p.order ~f:(fun pass_name -> eval_stmts n (stmts_of_processed_proc p pass_name) |> unstatic) |> static
+    seqs (List.map p.order ~f:(fun pass_name _ -> eval_stmts n (stmts_of_processed_proc p pass_name)))
 end)

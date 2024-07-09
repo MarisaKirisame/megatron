@@ -418,7 +418,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
             ite (equal_value lv rv)
               (fun _ -> tt)
               (fun _ ->
-                print_endline (string_append (string name) (string_append (string_of_value lv) (string_of_value rv))))
+                print_endline (string_append (string name) (string_append (show_value lv) (show_value rv))))
             |> unstatic);
         print_endline (string_append (string_of_int (node_get_extern_id l)) (string " bad!")) |> unstatic;
         recursive_print_id_up (l |> unstatic));
