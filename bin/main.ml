@@ -225,7 +225,8 @@ module Main (EVAL : Eval) = struct
                (list_map (node_get_children n) recurse)
                ~name:(node_get_name n) ~attr:(node_get_attr n) ~prop:(node_get_prop n) ~extern_id:(node_get_extern_id n))))
 
-  let node_to_fs_node n : FS.meta node sd = app node_to_fs_node_aux n
+  let node_to_fs_node n : FS.meta node sd =
+    let_ (app node_to_fs_node_aux n) (fun v -> seq (set_relation v) (fun _ -> v))
 
   let json_to_layout_node : Yojson.Basic.t sd -> layout_node sd =
     app
@@ -390,7 +391,8 @@ module Main (EVAL : Eval) = struct
                                                    ( s,
                                                      fun _ ->
                                                        seq (EVAL.remove_attr prog x s m) (fun _ ->
-                                                           EVAL.add_attr prog x s value m) ))) );
+                                                           EVAL.add_attr prog x s value m) )))
+                                              (fun _ -> tt) );
                                         ( "properties",
                                           fun _ ->
                                             string_match key
@@ -398,8 +400,10 @@ module Main (EVAL : Eval) = struct
                                                    ( s,
                                                      fun _ ->
                                                        seq (EVAL.remove_prop prog x s m) (fun _ ->
-                                                           EVAL.add_prop prog x s value m) ))) );
-                                      ]))))))))
+                                                           EVAL.add_prop prog x s value m) )))
+                                              (fun _ -> tt) );
+                                      ]
+                                      (fun _ -> panic (string_append (string "bad type:") type_))))))))))
 
   let rec replace_value (path : int list sd) (x : _ node sd) (type_ : string sd) (key : string sd) (value : value sd)
       (m : metric sd) : unit sd =
@@ -420,13 +424,16 @@ module Main (EVAL : Eval) = struct
                                   fun _ ->
                                     string_match key
                                       (List.map (Hashtbl.to_alist prog.tyck_env.attr_type) ~f:(fun (s, _) ->
-                                           (s, fun _ -> EVAL.remove_attr prog x s m))) );
+                                           (s, fun _ -> EVAL.remove_attr prog x s m)))
+                                      (fun _ -> tt) );
                                 ( "properties",
                                   fun _ ->
                                     string_match key
                                       (List.map (Hashtbl.to_alist prog.tyck_env.prop_type) ~f:(fun (s, _) ->
-                                           (s, fun _ -> EVAL.remove_prop prog x s m))) );
-                              ]))))))
+                                           (s, fun _ -> EVAL.remove_prop prog x s m)))
+                                      (fun _ -> tt) );
+                              ]
+                              (fun _ -> panic (string_append (string "bad type:") type_))))))))
 
   let delete_value (path : int list sd) (x : _ node sd) (type_ : string sd) (key : string sd) (m : metric sd) : unit sd
       =
@@ -449,13 +456,16 @@ module Main (EVAL : Eval) = struct
                                           fun _ ->
                                             string_match key
                                               (List.map (Hashtbl.to_alist prog.tyck_env.attr_type) ~f:(fun (s, _) ->
-                                                   (s, fun _ -> EVAL.add_attr prog x s value m))) );
+                                                   (s, fun _ -> EVAL.add_attr prog x s value m)))
+                                              (fun _ -> tt) );
                                         ( "properties",
                                           fun _ ->
                                             string_match key
                                               (List.map (Hashtbl.to_alist prog.tyck_env.prop_type) ~f:(fun (s, _) ->
-                                                   (s, fun _ -> EVAL.add_prop prog x s value m))) );
-                                      ]))))))))
+                                                   (s, fun _ -> EVAL.add_prop prog x s value m)))
+                                              (fun _ -> tt) );
+                                      ]
+                                      (fun _ -> panic (string_append (string "bad type:") type_))))))))))
 
   let rec insert_value (path : int list sd) (x : _ node sd) (type_ : string sd) (key : string sd) (value : value sd)
       (m : metric sd) : unit sd =
@@ -572,7 +582,8 @@ module Main (EVAL : Eval) = struct
                                                                           (get_layout_node j) m );
                                                                     ( "layout_info_changed",
                                                                       fun _ -> output_change_metric m (int 1) );
-                                                                  ])))
+                                                                  ]
+                                                                  (fun _ -> panic (string "unknown command")))))
                                                   in
 
                                                   seqs

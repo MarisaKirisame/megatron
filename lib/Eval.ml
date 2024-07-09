@@ -188,16 +188,16 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
 
   let rec eval_stmt_aux (p : prog) (n : meta node sd) (s : stmt) (m : metric sd) : unit sd =
     match s with
-    | Write (prop_name, expr) ->
+    | Write (var_name, expr) ->
         seq (write_metric m) (fun _ ->
             let_ (eval_expr n expr m) (fun new_value ->
                 seq
                   (option_match
-                     (hashtbl_find (node_get_var n) (string prop_name))
+                     (hashtbl_find (node_get_var n) (string var_name))
                      (fun () -> tt)
                      (fun value ->
-                       ite (equal_value value new_value) (fun _ -> tt) (fun _ -> var_modified p n prop_name m)))
-                  (fun _ -> hashtbl_set (node_get_var n) (string prop_name) new_value)))
+                       ite (equal_value value new_value) (fun _ -> tt) (fun _ -> var_modified p n var_name m)))
+                  (fun _ -> hashtbl_set (node_get_var n) (string var_name) new_value)))
     | BBCall bb_name -> bracket_call_bb n bb_name (fun _ -> eval_stmts_aux p n (stmts_of_basic_block p bb_name) m)
     | ChildrenCall proc_name ->
         list_iter (node_get_children n) (fun new_node ->
@@ -415,10 +415,13 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
           ~f:(fun name ->
             let lv = Hashtbl.find_exn (node_get_var l |> unstatic) name |> static in
             let rv = Hashtbl.find_exn (node_get_var r |> unstatic) name |> static in
-            ite (equal_value lv rv)
+            ite (bool false (*equal_value lv rv*))
               (fun _ -> tt)
               (fun _ ->
-                print_endline (string_append (string name) (string_append (show_value lv) (show_value rv))))
+                print_endline
+                  (string_append
+                     (string (name ^ " "))
+                     (string_append (show_value lv) (string_append (string " ") (show_value rv)))))
             |> unstatic);
         print_endline (string_append (string_of_int (node_get_extern_id l)) (string " bad!")) |> unstatic;
         recursive_print_id_up (l |> unstatic));

@@ -21,7 +21,7 @@ type code =
   | CGetMember of code * string
   | CSetMember of code * string * code
   | CPanic of code
-  | CStringMatch of code * (string * code) list
+  | CStringMatch of code * (string * code) list * code
 [@@deriving show]
 
 module type SDIN = sig
@@ -144,7 +144,7 @@ module type SDIN = sig
   val cons : 'a sd -> 'a list sd -> 'a list sd
   val show_node : 'a node sd -> string sd
   val show_value : value sd -> string sd
-  val string_match : string sd -> (string * (unit -> 'a sd)) list -> 'a sd
+  val string_match : string sd -> (string * (unit -> 'a sd)) list -> (unit -> 'a sd) -> 'a sd
   val list_match : 'a list sd -> (unit -> 'b sd) -> ('a sd -> 'a list sd -> 'b sd) -> 'b sd
   val list_split_n : 'a list sd -> int sd -> ('a list * 'a list) sd
   val list_int_sum : 'a list sd -> ('a sd -> int sd) -> int sd
@@ -204,7 +204,9 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
   let ite i t e = if i then t () else e ()
   let json_of_string x = Yojson.Basic.from_string x
   let with_in_file name f = f (Stdio.In_channel.create name) (*Stdio.In_channel.with_file name ~f*)
+
   let with_out_file name f = f (Stdio.Out_channel.create name) (*Stdio.Out_channel.with_file name ~f*)
+
   let output_string c s = Stdio.Out_channel.output_string c s
   let input_line c = Stdio.In_channel.input_line_exn c
   let iter_lines c f = Stdio.In_channel.iter_lines c ~f
@@ -404,10 +406,10 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
   let cons hd tl = hd :: tl
   let list_match l n c = match l with [] -> n () | h :: t -> c h t
 
-  let rec string_match s cases =
+  let rec string_match s cases default =
     match cases with
-    | [] -> panic "match failed"
-    | (chs, chc) :: ct -> if String.equal chs s then chc () else string_match s ct
+    | (chs, chc) :: ct -> if String.equal chs s then chc () else string_match s ct default
+    | [] -> default ()
 
   let list_split_n l i = List.split_n l i
   let list_tail l = match l with _ :: t -> t
@@ -500,8 +502,8 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let option_match (o : 'a option sd) (n : unit -> 'b sd) (s : 'a sd -> 'b sd) =
     CApp (CPF "OptionMatch", [ o; lam (fun _ -> n ()); lam s ])
 
-  let string_match (s : string sd) (cases : (string * (unit -> 'a sd)) list) : 'a sd =
-    CStringMatch (s, List.map cases ~f:(fun (l, r) -> (l, r ())))
+  let string_match (s : string sd) (cases : (string * (unit -> 'a sd)) list) (default : unit -> 'a sd) : 'a sd =
+    CStringMatch (s, List.map cases ~f:(fun (l, r) -> (l, r ())), default ())
 
   let list_match (l : 'a list sd) (n : unit -> 'b sd) (c : 'a sd -> 'a list sd -> 'b sd) : 'b sd =
     CApp (CPF "ListMatch", [ l; lam (fun _ -> n ()); lam (fun h -> lam (fun t -> c h t)) ])
