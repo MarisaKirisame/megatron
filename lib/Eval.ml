@@ -142,21 +142,21 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
         seq (read_metric m) (fun _ ->
             option_match
               (hashtbl_find (node_get_prop n) (string p))
-              (fun x -> x)
               (fun _ ->
                 panic
                   (string_append (string "cannot find property ")
-                     (string_append (string p) (string_append (string " in ") (string_of_int (node_get_extern_id n)))))))
+                     (string_append (string p) (string_append (string " in ") (string_of_int (node_get_extern_id n))))))
+              (fun x -> x))
     | HasAttribute p -> vbool (is_some (hashtbl_find (node_get_attr n) (string p)))
     | GetAttribute p ->
         seq (read_metric m) (fun _ ->
             option_match
               (hashtbl_find (node_get_attr n) (string p))
-              (fun x -> x)
               (fun _ ->
                 panic
                   (string_append (string "cannot find property ")
-                     (string_append (string p) (string_append (string " in ") (string_of_int (node_get_extern_id n)))))))
+                     (string_append (string p) (string_append (string " in ") (string_of_int (node_get_extern_id n))))))
+              (fun x -> x))
     | String s -> vstring (string s)
     | Int i -> vint (int i)
     | Float f -> vfloat (float f)
@@ -194,9 +194,9 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                 seq
                   (option_match
                      (hashtbl_find (node_get_var n) (string prop_name))
+                     (fun () -> tt)
                      (fun value ->
-                       ite (equal_value value new_value) (fun _ -> tt) (fun _ -> var_modified p n prop_name m))
-                     (fun () -> tt))
+                       ite (equal_value value new_value) (fun _ -> tt) (fun _ -> var_modified p n prop_name m)))
                   (fun _ -> hashtbl_set (node_get_var n) (string prop_name) new_value)))
     | BBCall bb_name -> bracket_call_bb n bb_name (fun _ -> eval_stmts_aux p n (stmts_of_basic_block p bb_name) m)
     | ChildrenCall proc_name ->

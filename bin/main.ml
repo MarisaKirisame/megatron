@@ -233,8 +233,9 @@ module Main (EVAL : Eval) = struct
 
   let get_command (j : Basic.t sd) : string sd = j |> json_member (string "name") |> json_to_string
 
-  let get_path j : int list =
+  let get_path j : int list sd =
     List.map (j |> unstatic |> Yojson.Basic.Util.member "path" |> Yojson.Basic.Util.to_list) ~f:Yojson.Basic.Util.to_int
+    |> static
 
   let get_type j : string sd = j |> json_member (string "type") |> json_to_string
   let get_key j : string sd = j |> json_member (string "key") |> json_to_string
@@ -248,56 +249,127 @@ module Main (EVAL : Eval) = struct
   let node_size : _ node sd -> int sd =
     app (fix (fun recurse n -> int_add (int 1) (list_int_sum (node_get_children n) recurse)))
 
-  let rec add_node (path : int list) (x : _ node) (y : _ node) (m : metric sd) : unit sd =
-    match path with
-    | [] -> panic (string "bad path!")
-    | [ i ] ->
-        input_change_metric m (node_size (y |> static)) |> unstatic;
-        EVAL.add_children prog (x |> static) (y |> static) (i |> static) m
-    | p_hd :: p_tl -> add_node p_tl (List.nth_exn x.children p_hd) y m
+  let follow_layout_path_last (f : int sd -> layout_node sd -> 'a sd -> unit sd) :
+      ((int list * layout_node) * 'a -> unit) sd =
+    lift
+      (lazy
+        (fix (fun recurse v ->
+             let_ (zro v) (fun l ->
+                 let_ (fst v) (fun r ->
+                     let_ (zro l) (fun path ->
+                         let_ (fst l) (fun x ->
+                             list_match path
+                               (fun _ -> panic (string "bad path!"))
+                               (fun h t ->
+                                 list_match t
+                                   (fun _ -> f h x r)
+                                   (fun _ _ ->
+                                     recurse (make_pair (make_pair t (list_nth_exn (layout_node_get_children x) h)) r))))))))))
 
-  let rec add_layout_node (path : int list) (x : layout_node) (y : layout_node sd) (m : metric sd) : unit sd =
-    match path with
-    | [] -> panic (string "bad path!")
-    | [ i ] ->
-        output_change_metric m (layout_size y) |> unstatic;
-        let lhs, rhs = List.split_n x.children i in
-        (x.children <- List.append lhs ((y |> unstatic) :: rhs)) |> static
-    | p_hd :: p_tl -> add_layout_node p_tl (List.nth_exn x.children p_hd) y m
+  let follow_path_last (f : int sd -> 'a node sd -> 'b sd -> unit sd) : ((int list * 'a node) * 'b -> unit) sd =
+    lift
+      (lazy
+        (fix (fun recurse v ->
+             let_ (zro v) (fun l ->
+                 let_ (fst v) (fun r ->
+                     let_ (zro l) (fun path ->
+                         let_ (fst l) (fun x ->
+                             list_match path
+                               (fun _ -> panic (string "bad path!"))
+                               (fun h t ->
+                                 list_match t
+                                   (fun _ -> f h x r)
+                                   (fun _ _ ->
+                                     recurse (make_pair (make_pair t (list_nth_exn (node_get_children x) h)) r))))))))))
 
-  let rec remove_node (path : int list) (x : _ node) (m : metric sd) : unit sd =
-    match path with
-    | [] -> panic (string "bad path!")
-    | [ i ] ->
-        input_change_metric m (node_size (List.nth_exn x.children i |> static)) |> unstatic;
-        EVAL.remove_children prog (x |> static) (i |> static) m
-    | p_hd :: p_tl -> remove_node p_tl (List.nth_exn x.children p_hd) m
+  let add_node_aux =
+    follow_path_last (fun i x r ->
+        let_ (zro r) (fun y ->
+            let_ (fst r) (fun m -> seq (input_change_metric m (node_size y)) (fun _ -> EVAL.add_children prog x y i m))))
 
-  let rec remove_layout_node (path : int list) (x : layout_node) m : unit sd =
-    match path with
-    | [] -> panic (string "bad path!")
-    | [ i ] ->
-        let lhs, removed :: rhs = List.split_n x.children i in
-        output_change_metric m (layout_size (List.nth_exn x.children i |> static)) |> unstatic;
-        (x.children <- List.append lhs rhs) |> static
-    | p_hd :: p_tl -> remove_layout_node p_tl (List.nth_exn x.children p_hd) m
+  let add_node (path : int list sd) (x : _ node sd) (y : _ node sd) (m : metric sd) : unit sd =
+    app add_node_aux (make_pair (make_pair path x) (make_pair y m))
 
-  let rec replace_node (path : int list) (x : _ node) (y : _ node) (m : metric sd) : unit sd =
-    match path with
-    | [] -> panic (string "bad path!")
-    | [ i ] ->
-        EVAL.remove_children prog (x |> static) (i |> static) m |> unstatic;
-        EVAL.add_children prog (x |> static) (y |> static) (i |> static) m
-    | p_hd :: p_tl -> replace_node p_tl (List.nth_exn x.children p_hd) y m
+  let add_layout_node_aux =
+    follow_layout_path_last (fun i x r ->
+        let_ (zro r) (fun y ->
+            let_ (fst r) (fun m ->
+                seq
+                  (output_change_metric m (layout_size y))
+                  (fun _ ->
+                    let_
+                      (list_split_n (layout_node_get_children x) i)
+                      (fun splitted -> layout_node_set_children x (list_append (zro splitted) (cons y (fst splitted))))))))
 
-  let rec replace_layout_node (path : int list) (x : layout_node) (y : layout_node) (m : metric sd) : unit sd =
-    match path with
-    | [] -> panic (string "bad path!")
-    | [ i ] ->
-        let lhs, removed :: rhs = List.split_n x.children i in
-        output_change_metric m (int_add (layout_size (removed |> static)) (layout_size (y |> static))) |> unstatic;
-        (x.children <- List.append lhs (y :: rhs)) |> static
-    | p_hd :: p_tl -> replace_layout_node p_tl (List.nth_exn x.children p_hd) y m
+  let add_layout_node (path : int list sd) (x : layout_node sd) (y : layout_node sd) (m : metric sd) : unit sd =
+    app add_layout_node_aux (make_pair (make_pair path x) (make_pair y m))
+
+  let remove_node_aux =
+    follow_path_last (fun i x m ->
+        seq
+          (input_change_metric m (node_size (list_nth_exn (node_get_children x) i)))
+          (fun _ -> EVAL.remove_children prog x i m))
+
+  let remove_node (path : int list sd) (x : _ node sd) (m : metric sd) : unit sd =
+    app remove_node_aux (make_pair (make_pair path x) m)
+
+  let remove_layout_node_aux =
+    follow_layout_path_last (fun i x m ->
+        seq
+          (output_change_metric m (layout_size (list_nth_exn (layout_node_get_children x) i)))
+          (fun _ ->
+            let_
+              (list_split_n (layout_node_get_children x) i)
+              (fun splitted -> layout_node_set_children x (list_append (zro splitted) (list_tail (fst splitted))))))
+
+  let remove_layout_node (path : int list sd) (x : layout_node sd) (m : metric sd) : unit sd =
+    app remove_layout_node_aux (make_pair (make_pair path x) m)
+
+  let replace_node_aux =
+    follow_path_last (fun i x r ->
+        let_ (zro r) (fun y ->
+            let_ (fst r) (fun m ->
+                seqs
+                  [
+                    (fun _ ->
+                      input_change_metric m (int_add (node_size (list_nth_exn (node_get_children x) i)) (node_size y)));
+                    (fun _ -> EVAL.remove_children prog x i m);
+                    (fun _ -> EVAL.add_children prog x y i m);
+                  ])))
+
+  let replace_node (path : int list sd) (x : _ node sd) (y : _ node sd) (m : metric sd) : unit sd =
+    app replace_node_aux (make_pair (make_pair path x) (make_pair y m))
+
+  let replace_layout_node_aux =
+    follow_layout_path_last (fun i x r ->
+        let_ (zro r) (fun y ->
+            let_ (fst r) (fun m ->
+                let_
+                  (list_split_n (layout_node_get_children x) i)
+                  (fun splitted ->
+                    seqs
+                      [
+                        (fun _ ->
+                          output_change_metric m
+                            (int_add (layout_size (list_nth_exn (layout_node_get_children x) i)) (layout_size y)));
+                        (fun _ ->
+                          layout_node_set_children x (list_append (zro splitted) (cons y (fst splitted |> list_tail))));
+                      ]))))
+
+  let replace_layout_node (path : int list sd) (x : layout_node sd) (y : layout_node sd) (m : metric sd) : unit sd =
+    app replace_layout_node_aux (make_pair (make_pair path x) (make_pair y m))
+
+  let follow_path (f : 'a node sd -> 'b sd -> unit sd) : ((int list * 'a node) * 'b -> unit) sd =
+    lift
+      (lazy
+        (fix (fun recurse v ->
+             let_ (zro v) (fun l ->
+                 let_ (fst v) (fun r ->
+                     let_ (zro l) (fun path ->
+                         let_ (fst l) (fun x ->
+                             list_match path
+                               (fun _ -> f x r)
+                               (fun h t -> recurse (make_pair (make_pair t (list_nth_exn (node_get_children x) h)) r)))))))))
 
   let rec replace_value (path : int list) (x : _ node) (type_ : string) (key : string) (value : value) (m : metric sd) :
       unit sd =
@@ -410,50 +482,58 @@ module Main (EVAL : Eval) = struct
                                                     iter_lines chan (fun line ->
                                                         let_ (string_to_json line) (fun j ->
                                                             seq (push_stack command j) (fun _ ->
-                                                                match unstatic (get_command j) with
-                                                                | "add" ->
-                                                                    add_node (get_path j) (n |> unstatic)
-                                                                      (get_node j |> unstatic)
-                                                                      m
-                                                                | "recalculate" ->
-                                                                    EVAL.recalculate prog n m |> unstatic;
-                                                                    diff_evaluated ()
-                                                                | "remove" -> remove_node (get_path j) (n |> unstatic) m
-                                                                | "replace" ->
-                                                                    replace_node (get_path j) (n |> unstatic)
-                                                                      (get_node j |> unstatic)
-                                                                      m
-                                                                | "replace_value" ->
-                                                                    replace_value (get_path j) (n |> unstatic)
-                                                                      (get_type j |> unstatic)
-                                                                      (get_key j |> unstatic)
-                                                                      (get_value j |> unstatic)
-                                                                      m
-                                                                | "delete_value" ->
-                                                                    delete_value (get_path j) (n |> unstatic)
-                                                                      (get_type j |> unstatic)
-                                                                      (get_key j |> unstatic)
-                                                                      m
-                                                                | "insert_value" ->
-                                                                    insert_value (get_path j) (n |> unstatic)
-                                                                      (get_type j |> unstatic)
-                                                                      (get_key j |> unstatic)
-                                                                      (get_value j |> unstatic)
-                                                                      m
-                                                                | "layout_remove" ->
-                                                                    remove_layout_node (get_path j)
-                                                                      (layout_n |> unstatic) m
-                                                                | "layout_add" ->
-                                                                    add_layout_node (get_path j) (layout_n |> unstatic)
-                                                                      (get_layout_node j) m
-                                                                | "layout_replace" ->
-                                                                    replace_layout_node (get_path j)
-                                                                      (layout_n |> unstatic)
-                                                                      (get_layout_node j |> unstatic)
-                                                                      m
-                                                                | "layout_info_changed" ->
-                                                                    output_change_metric m (int 1)
-                                                                | x -> panic (x |> string))))
+                                                                string_match (get_command j)
+                                                                  [
+                                                                    ( "add",
+                                                                      fun _ -> add_node (get_path j) n (get_node j) m );
+                                                                    ( "recalculate",
+                                                                      fun _ ->
+                                                                        EVAL.recalculate prog n m |> unstatic;
+                                                                        diff_evaluated () );
+                                                                    ("remove", fun _ -> remove_node (get_path j) n m);
+                                                                    ( "replace",
+                                                                      fun _ ->
+                                                                        replace_node (get_path j) n (get_node j) m );
+                                                                    ( "replace_value",
+                                                                      fun _ ->
+                                                                        replace_value
+                                                                          (get_path j |> unstatic)
+                                                                          (n |> unstatic)
+                                                                          (get_type j |> unstatic)
+                                                                          (get_key j |> unstatic)
+                                                                          (get_value j |> unstatic)
+                                                                          m );
+                                                                    ( "delete_value",
+                                                                      fun _ ->
+                                                                        delete_value
+                                                                          (get_path j |> unstatic)
+                                                                          (n |> unstatic)
+                                                                          (get_type j |> unstatic)
+                                                                          (get_key j |> unstatic)
+                                                                          m );
+                                                                    ( "insert_value",
+                                                                      fun _ ->
+                                                                        insert_value
+                                                                          (get_path j |> unstatic)
+                                                                          (n |> unstatic)
+                                                                          (get_type j |> unstatic)
+                                                                          (get_key j |> unstatic)
+                                                                          (get_value j |> unstatic)
+                                                                          m );
+                                                                    ( "layout_remove",
+                                                                      fun _ ->
+                                                                        remove_layout_node (get_path j) layout_n m );
+                                                                    ( "layout_add",
+                                                                      fun _ ->
+                                                                        add_layout_node (get_path j) layout_n
+                                                                          (get_layout_node j) m );
+                                                                    ( "layout_replace",
+                                                                      fun _ ->
+                                                                        replace_layout_node (get_path j) layout_n
+                                                                          (get_layout_node j) m );
+                                                                    ( "layout_info_changed",
+                                                                      fun _ -> output_change_metric m (int 1) );
+                                                                  ])))
                                                   in
 
                                                   seqs

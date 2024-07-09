@@ -21,6 +21,7 @@ type code =
   | CGetMember of code * string
   | CSetMember of code * string * code
   | CPanic of code
+  | CStringMatch of code * (string * code) list
 [@@deriving show]
 
 module type SDIN = sig
@@ -95,20 +96,21 @@ module type SDIN = sig
   val is_none : 'a option sd -> bool sd
   val is_some : 'a option sd -> bool sd
   val option_iter : 'a option sd -> ('a sd -> unit sd) -> unit sd
-  val option_match : 'a option sd -> ('a sd -> 'b sd) -> (unit -> 'b sd) -> 'b sd
+  val option_match : 'a option sd -> (unit -> 'b sd) -> ('a sd -> 'b sd) -> 'b sd
   val list_iter : 'a list sd -> ('a sd -> unit sd) -> unit sd
   val list_tl : 'a list sd -> 'a list sd
   val list_drop_last : 'a list sd -> 'a list sd
   val list_last : 'a list sd -> 'a option sd
   val list_zip : 'a list sd -> 'b list sd -> ('a * 'b) list sd
   val list_map : 'a list sd -> ('a sd -> 'b sd) -> 'b list sd
+  val list_nth_exn : 'a list sd -> int sd -> 'a sd
   val make_pair : 'a sd -> 'b sd -> ('a * 'b) sd
   val zro : ('a * 'b) sd -> 'a sd
   val fst : ('a * 'b) sd -> 'b sd
   val make_layout_node : layout_node list sd -> layout_node sd
   val layout_node_get_children : layout_node sd -> layout_node list sd
+  val layout_node_set_children : layout_node sd -> layout_node list sd -> unit sd
   val int_add : int sd -> int sd -> int sd
-  val list_int_sum : 'a list sd -> ('a sd -> int sd) -> int sd
   val fresh_metric : unit -> metric sd
   val reset_metric : metric sd -> unit sd
   val read_metric : metric sd -> unit sd
@@ -142,6 +144,12 @@ module type SDIN = sig
   val cons : 'a sd -> 'a list sd -> 'a list sd
   val show_node : 'a node sd -> string sd
   val show_value : value sd -> string sd
+  val string_match : string sd -> (string * (unit -> 'a sd)) list -> 'a sd
+  val list_match : 'a list sd -> (unit -> 'b sd) -> ('a sd -> 'a list sd -> 'b sd) -> 'b sd
+  val list_split_n : 'a list sd -> int sd -> ('a list * 'a list) sd
+  val list_int_sum : 'a list sd -> ('a sd -> int sd) -> int sd
+  val list_append : 'a list sd -> 'a list sd -> 'a list sd
+  val list_tail : 'a list sd -> 'a list sd
 end
 
 module type SD = sig
@@ -160,8 +168,8 @@ module MakeSD (SDIN : SDIN) : SD with type 'a sd = 'a SDIN.sd = struct
 
   let rec seqs x = match x with [] -> tt | hd :: tl -> seq (hd ()) (fun _ -> seqs tl)
   let rec list x = match x with [] -> nil () | hd :: tl -> cons hd (list tl)
-  let option_to_list o = option_match o (fun x -> list [ x ]) (fun _ -> nil ())
-  let unsome o = option_match o (fun x -> x) (fun _ -> panic (string "none"))
+  let option_to_list o = option_match o (fun _ -> nil ()) (fun x -> list [ x ])
+  let unsome o = option_match o (fun _ -> panic (string "none")) (fun x -> x)
 
   let eval_path_opt (n : 'a node sd) (p : path) : 'a node option sd =
     match p with
@@ -285,18 +293,21 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
   let is_none o = Option.is_none o
   let is_some o = Option.is_some o
   let option_iter o f = Option.iter o ~f
-  let option_match o s n = match o with Some x -> s x | None -> n ()
+  let option_match o n s = match o with Some x -> s x | None -> n ()
+  let list_nth_exn l i = List.nth_exn l i
   let list_iter (l : 'a list) (f : 'a -> unit) = List.iter l ~f
   let list_tl l = Option.value (List.tl l) ~default:[]
   let list_drop_last l = Option.value (List.drop_last l) ~default:[]
   let list_zip x y = List.zip_exn x y
   let list_last l = List.last l
   let list_int_sum l f = List.sum (module Int) l ~f
+  let list_append l r = List.append l r
   let make_pair a b = (a, b)
   let zro (a, b) = a
   let fst (a, b) = b
   let make_layout_node l = { children = l }
   let layout_node_get_children (l : layout_node) = l.children
+  let layout_node_set_children (l : layout_node) c = l.children <- c
   let int_add x y = x + y
 
   let reset_metric m =
@@ -391,6 +402,15 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
 
   let nil () = []
   let cons hd tl = hd :: tl
+  let list_match l n c = match l with [] -> n () | h :: t -> c h t
+
+  let rec string_match s cases =
+    match cases with
+    | [] -> panic "match failed"
+    | (chs, chc) :: ct -> if String.equal chs s then chc () else string_match s ct
+
+  let list_split_n l i = List.split_n l i
+  let list_tail l = match l with _ :: t -> t
 end)
 
 module D : SD with type 'x sd = code = MakeSD (struct
@@ -477,10 +497,17 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let is_none x = CApp (CPF "IsNone", [ x ])
   let is_some x = CApp (CPF "IsSome", [ x ])
 
-  let option_match (o : 'a option sd) (s : 'a sd -> 'b sd) (n : unit -> 'b sd) =
-    CApp (CPF "OptionMatch", [ o; lam s; lam (fun _ -> n ()) ])
+  let option_match (o : 'a option sd) (n : unit -> 'b sd) (s : 'a sd -> 'b sd) =
+    CApp (CPF "OptionMatch", [ o; lam (fun _ -> n ()); lam s ])
+
+  let string_match (s : string sd) (cases : (string * (unit -> 'a sd)) list) : 'a sd =
+    CStringMatch (s, List.map cases ~f:(fun (l, r) -> (l, r ())))
+
+  let list_match (l : 'a list sd) (n : unit -> 'b sd) (c : 'a sd -> 'a list sd -> 'b sd) : 'b sd =
+    CApp (CPF "ListMatch", [ l; lam (fun _ -> n ()); lam (fun h -> lam (fun t -> c h t)) ])
 
   let option_iter (o : 'a option sd) (f : 'a sd -> unit sd) : unit sd = CApp (CPF "OptionIter", [ o; lam f ])
+  let list_nth_exn l i = CApp (CPF "ListNthExn", [ l; i ])
   let list_map l f = CApp (CPF "ListMap", [ l; lam f ])
   let list_iter (l : 'a list sd) (f : 'a sd -> unit sd) : unit sd = CApp (CPF "ListIter", [ l; lam f ])
   let list_tl l = CApp (CPF "ListTl", [ l ])
@@ -492,6 +519,7 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let fst p = CApp (CPF "Fst", [ p ])
   let make_layout_node l = CApp (CPF "MakeLayoutNode", [ l ])
   let layout_node_get_children l = CGetMember (l, "children")
+  let layout_node_set_children l c = CSetMember (l, "children", c)
   let int_add x y = CApp (CPF "IntAdd", [ x; y ])
   let panic x = CPanic x
   let node_get_extern_id x = CGetMember (x, "extern_id")
@@ -528,4 +556,7 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let nil () = CApp (CPF "Nil", [])
   let cons hd tl = CApp (CPF "Cons", [ hd; tl ])
   let string_concat sep list = CApp (CPF "StringConcat", [ sep; list ])
+  let list_split_n l i = CApp (CPF "ListSplitN", [ l; i ])
+  let list_append l r = CApp (CPF "ListAppend", [ l; r ])
+  let list_tail l = CApp (CPF "ListTail", [ l ])
 end)
