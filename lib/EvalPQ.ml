@@ -47,7 +47,7 @@ module EVAL (SD : SD) = MakeEval (struct
 
   let queue_push x y z m : unit =
     let result = PriorityQueue.add queue (x, y, z) in
-    ignore result;
+    Core.ignore result;
     (*print_endline ("pushed " ^ (string_of_int y.id) ^ " " ^ string_of_bool result);*)
     meta_write_metric m |> unstatic
 
@@ -60,7 +60,7 @@ module EVAL (SD : SD) = MakeEval (struct
     | Some x ->
         if Option.is_some (Hashtbl.find x.m.proc_time_table proc_name) then (
           let down, up = get_bb_from_proc p proc_name in
-          ignore up;
+          Core.ignore up;
           let time : TotalOrder.t =
             match (y |> unstatic).prev with
             | None -> TotalOrder.add_next (Hashtbl.find_exn x.m.bb_time_table (Option.value_exn down))
@@ -76,7 +76,7 @@ module EVAL (SD : SD) = MakeEval (struct
     | None -> panic (string "dangling node")
 
   let bb_dirtied (n : meta node sd) ~(proc_name : string) ~(bb_name : string) (m : metric sd) : unit sd =
-    ignore proc_name;
+    Core.ignore proc_name;
     match Hashtbl.find (n |> unstatic).m.bb_time_table bb_name with
     | Some order -> queue_push order (n |> unstatic) (RecomputeBB bb_name) m |> static
     | None -> tt
@@ -113,7 +113,7 @@ module EVAL (SD : SD) = MakeEval (struct
       else tt)
       |> unstatic;
       let x', y', z' = queue_pop () in
-      ignore (y', z');
+      Core.ignore (y', z');
       if not (phys_equal (TotalOrder.compare x x') 0) then (
         print_endline (static ("peek " ^ Core.string_of_int y.id ^ "." ^ recompute_to_string z)) |> unstatic;
         print_endline (static ("pop  " ^ Core.string_of_int y'.id ^ "." ^ recompute_to_string z')) |> unstatic;
@@ -124,8 +124,8 @@ module EVAL (SD : SD) = MakeEval (struct
       recalculate_internal_aux p m eval_stmts
 
   let rec check (p : prog) (n : meta node) : unit =
-    Hashtbl.iter p.bbs ~f:(fun (BasicBlock (bb, _)) -> ignore (Hashtbl.find_exn n.m.bb_time_table bb));
-    List.iter p.vars ~f:(fun (VarDecl (p, _)) -> ignore (Hashtbl.find_exn n.var p));
+    Hashtbl.iter p.bbs ~f:(fun (BasicBlock (bb, _)) -> Core.ignore (Hashtbl.find_exn n.m.bb_time_table bb));
+    List.iter p.vars ~f:(fun (VarDecl (p, _)) -> Core.ignore (Hashtbl.find_exn n.var p));
     List.iter n.children ~f:(check p)
 
   let recalculate_internal (p : prog) (n : meta node sd) (m : metric sd) (eval_stmts : meta node sd -> stmts -> unit sd)

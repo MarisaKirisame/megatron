@@ -169,12 +169,6 @@ module Main (EVAL : Eval) = struct
       Buffer.contents b |> static)
     else string ""
 
-  let mapp (f : ('a -> 'b) sd) : 'a sd -> 'b sd =
-    if is_static then fun a -> static ((unstatic f) (unstatic a))
-    else
-      let v = fresh () in
-      fun a -> dyn (CApp (CVar v, [ undyn a ]))
-
   let json_to_node_aux : Yojson.Basic.t sd -> meta node sd =
     app
       (fix (fun recurse j ->
@@ -218,7 +212,7 @@ module Main (EVAL : Eval) = struct
   let json_to_node j : _ node sd = let_ (json_to_node_aux j) (fun v -> seq (set_relation v) (fun _ -> v))
 
   let node_to_fs_node_aux : (meta node -> FS.meta node) sd =
-    lift
+    lift "node_to_fs_node"
       (lazy
         (fix (fun recurse n ->
              FS.make_node
@@ -249,9 +243,9 @@ module Main (EVAL : Eval) = struct
   let node_size : _ node sd -> int sd =
     app (fix (fun recurse n -> int_add (int 1) (list_int_sum (node_get_children n) recurse)))
 
-  let follow_layout_path_last (f : int sd -> layout_node sd -> 'a sd -> unit sd) :
+  let follow_layout_path_last str (f : int sd -> layout_node sd -> 'a sd -> unit sd) :
       ((int list * layout_node) * 'a -> unit) sd =
-    lift
+    lift str
       (lazy
         (fix (fun recurse v ->
              let_ (zro v) (fun l ->
@@ -266,8 +260,8 @@ module Main (EVAL : Eval) = struct
                                    (fun _ _ ->
                                      recurse (make_pair (make_pair t (list_nth_exn (layout_node_get_children x) h)) r))))))))))
 
-  let follow_path_last (f : int sd -> 'a node sd -> 'b sd -> unit sd) : ((int list * 'a node) * 'b -> unit) sd =
-    lift
+  let follow_path_last str (f : int sd -> 'a node sd -> 'b sd -> unit sd) : ((int list * 'a node) * 'b -> unit) sd =
+    lift str
       (lazy
         (fix (fun recurse v ->
              let_ (zro v) (fun l ->
@@ -283,7 +277,7 @@ module Main (EVAL : Eval) = struct
                                      recurse (make_pair (make_pair t (list_nth_exn (node_get_children x) h)) r))))))))))
 
   let add_node_aux =
-    follow_path_last (fun i x r ->
+    follow_path_last "add_node" (fun i x r ->
         let_ (zro r) (fun y ->
             let_ (fst r) (fun m -> seq (input_change_metric m (node_size y)) (fun _ -> EVAL.add_children prog x y i m))))
 
@@ -291,7 +285,7 @@ module Main (EVAL : Eval) = struct
     app add_node_aux (make_pair (make_pair path x) (make_pair y m))
 
   let add_layout_node_aux =
-    follow_layout_path_last (fun i x r ->
+    follow_layout_path_last "add_layout_node" (fun i x r ->
         let_ (zro r) (fun y ->
             let_ (fst r) (fun m ->
                 seq
@@ -305,7 +299,7 @@ module Main (EVAL : Eval) = struct
     app add_layout_node_aux (make_pair (make_pair path x) (make_pair y m))
 
   let remove_node_aux =
-    follow_path_last (fun i x m ->
+    follow_path_last "remove_node" (fun i x m ->
         seq
           (input_change_metric m (node_size (list_nth_exn (node_get_children x) i)))
           (fun _ -> EVAL.remove_children prog x i m))
@@ -314,19 +308,19 @@ module Main (EVAL : Eval) = struct
     app remove_node_aux (make_pair (make_pair path x) m)
 
   let remove_layout_node_aux =
-    follow_layout_path_last (fun i x m ->
+    follow_layout_path_last "remove_layout_node" (fun i x m ->
         seq
           (output_change_metric m (layout_size (list_nth_exn (layout_node_get_children x) i)))
           (fun _ ->
             let_
               (list_split_n (layout_node_get_children x) i)
-              (fun splitted -> layout_node_set_children x (list_append (zro splitted) (list_tail (fst splitted))))))
+              (fun splitted -> layout_node_set_children x (list_append (zro splitted) (list_tail_exn (fst splitted))))))
 
   let remove_layout_node (path : int list sd) (x : layout_node sd) (m : metric sd) : unit sd =
     app remove_layout_node_aux (make_pair (make_pair path x) m)
 
   let replace_node_aux =
-    follow_path_last (fun i x r ->
+    follow_path_last "replace_node" (fun i x r ->
         let_ (zro r) (fun y ->
             let_ (fst r) (fun m ->
                 seqs
@@ -341,7 +335,7 @@ module Main (EVAL : Eval) = struct
     app replace_node_aux (make_pair (make_pair path x) (make_pair y m))
 
   let replace_layout_node_aux =
-    follow_layout_path_last (fun i x r ->
+    follow_layout_path_last "replace_layout_node" (fun i x r ->
         let_ (zro r) (fun y ->
             let_ (fst r) (fun m ->
                 let_
@@ -353,14 +347,15 @@ module Main (EVAL : Eval) = struct
                           output_change_metric m
                             (int_add (layout_size (list_nth_exn (layout_node_get_children x) i)) (layout_size y)));
                         (fun _ ->
-                          layout_node_set_children x (list_append (zro splitted) (cons y (fst splitted |> list_tail))));
+                          layout_node_set_children x
+                            (list_append (zro splitted) (cons y (fst splitted |> list_tail_exn))));
                       ]))))
 
   let replace_layout_node (path : int list sd) (x : layout_node sd) (y : layout_node sd) (m : metric sd) : unit sd =
     app replace_layout_node_aux (make_pair (make_pair path x) (make_pair y m))
 
-  let follow_path (f : 'a node sd -> 'b sd -> unit sd) : ((int list * 'a node) * 'b -> unit) sd =
-    lift
+  let follow_path str (f : 'a node sd -> 'b sd -> unit sd) : ((int list * 'a node) * 'b -> unit) sd =
+    lift str
       (lazy
         (fix (fun recurse v ->
              let_ (zro v) (fun l ->
@@ -372,7 +367,7 @@ module Main (EVAL : Eval) = struct
                                (fun h t -> recurse (make_pair (make_pair t (list_nth_exn (node_get_children x) h)) r)))))))))
 
   let replace_value_aux : ((int list * _ node) * ((string * string) * (value * metric)) -> unit) sd =
-    follow_path (fun x v ->
+    follow_path "replace_value" (fun x v ->
         let_ (zro v) (fun l ->
             let_ (zro l) (fun type_ ->
                 let_ (fst l) (fun key ->
@@ -405,12 +400,12 @@ module Main (EVAL : Eval) = struct
                                       ]
                                       (fun _ -> panic (string_append (string "bad type:") type_))))))))))
 
-  let rec replace_value (path : int list sd) (x : _ node sd) (type_ : string sd) (key : string sd) (value : value sd)
+  let replace_value (path : int list sd) (x : _ node sd) (type_ : string sd) (key : string sd) (value : value sd)
       (m : metric sd) : unit sd =
     app replace_value_aux (make_pair (make_pair path x) (make_pair (make_pair type_ key) (make_pair value m)))
 
   let delete_value_aux : ((int list * _ node) * ((string * string) * metric) -> unit) sd =
-    follow_path (fun x v ->
+    follow_path "delete_value" (fun x v ->
         let_ (zro v) (fun l ->
             let_ (zro l) (fun type_ ->
                 let_ (fst l) (fun key ->
@@ -440,7 +435,7 @@ module Main (EVAL : Eval) = struct
     app delete_value_aux (make_pair (make_pair path x) (make_pair (make_pair type_ key) m))
 
   let insert_value_aux : ((int list * _ node) * ((string * string) * (value * metric)) -> unit) sd =
-    follow_path (fun x v ->
+    follow_path "insert_value" (fun x v ->
         let_ (zro v) (fun l ->
             let_ (zro l) (fun type_ ->
                 let_ (fst l) (fun key ->
@@ -467,7 +462,7 @@ module Main (EVAL : Eval) = struct
                                       ]
                                       (fun _ -> panic (string_append (string "bad type:") type_))))))))))
 
-  let rec insert_value (path : int list sd) (x : _ node sd) (type_ : string sd) (key : string sd) (value : value sd)
+  let insert_value (path : int list sd) (x : _ node sd) (type_ : string sd) (key : string sd) (value : value sd)
       (m : metric sd) : unit sd =
     app insert_value_aux (make_pair (make_pair path x) (make_pair (make_pair type_ key) (make_pair value m)))
 
@@ -597,11 +592,15 @@ module Main (EVAL : Eval) = struct
                                                       (fun _ -> print_endline (string "INCREMENTAL EVAL OK!"));
                                                     ])));
                                       ]))))))))
+
+  let _ = defs ()
 end
 
-module MainFSI = Main (Megatron.EvalFS.EVAL (S))
+(*module MainFSI = Main (Megatron.EvalFS.EVAL (S))*)
 module MainFSC = Main (Megatron.EvalFS.EVAL (D))
-module MainDBI = Main (Megatron.EvalDB.EVAL (S))
+
+(*module MainDBI = Main (Megatron.EvalDB.EVAL (S))*)
 module MainDBC = Main (Megatron.EvalDB.EVAL (D))
-module MainPQI = Main (Megatron.EvalPQ.EVAL (S))
+
+(*module MainPQI = Main (Megatron.EvalPQ.EVAL (S))*)
 module MainPQC = Main (Megatron.EvalPQ.EVAL (D))

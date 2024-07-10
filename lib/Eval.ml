@@ -4,8 +4,6 @@ open Metric
 open Common
 open SD
 
-let rec rightmost (x : _ node) : _ node = match List.last x.children with Some x -> rightmost x | None -> x
-
 exception ReRaise of string
 
 let compile_type_expr ty =
@@ -127,7 +125,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
 
   let var_modified (p : prog) (n : meta node sd) (var_name : string) (m : metric sd) : unit sd =
     if Option.is_none (Hashtbl.find var_modified_hash var_name) then
-      Hashtbl.add_exn var_modified_hash ~key:var_name ~data:(lift (lazy (var_modified_aux p var_name)));
+      Hashtbl.add_exn var_modified_hash ~key:var_name ~data:(lift "var_modified" (lazy (var_modified_aux p var_name)));
     app (app (Hashtbl.find_exn var_modified_hash var_name) n) m
 
   let rec eval_expr_aux (n : 'meta node sd) (e : expr) (m : metric sd) : value sd =
@@ -179,7 +177,8 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
 
   let eval_expr (n : meta node sd) (e : expr) (m : metric sd) : value sd =
     if Option.is_none (Hashtbl.find eval_expr_hash e) then
-      Hashtbl.add_exn eval_expr_hash ~key:e ~data:(lift (lazy (lam (fun n -> lam (fun m -> eval_expr_aux n e m)))));
+      Hashtbl.add_exn eval_expr_hash ~key:e
+        ~data:(lift "eval_expr" (lazy (lam (fun n -> lam (fun m -> eval_expr_aux n e m)))));
     app (app (Hashtbl.find_exn eval_expr_hash e) n) m
 
   module STMTS = struct
@@ -198,20 +197,21 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                      (fun value ->
                        ite (equal_value value new_value) (fun _ -> tt) (fun _ -> var_modified p n var_name m)))
                   (fun _ -> hashtbl_set (node_get_var n) (string var_name) new_value)))
-    | BBCall bb_name -> bracket_call_bb n bb_name (fun _ -> eval_stmts_aux p n (stmts_of_basic_block p bb_name) m)
+    | BBCall bb_name -> bracket_call_bb n bb_name (fun _ -> eval_stmts p n (stmts_of_basic_block p bb_name) m)
     | ChildrenCall proc_name ->
         list_iter (node_get_children n) (fun new_node ->
             bracket_call_proc new_node proc_name (fun _ ->
-                eval_stmts_aux p new_node (stmts_of_processed_proc p proc_name) m))
+                eval_stmts p new_node (stmts_of_processed_proc p proc_name) m))
 
   and eval_stmts_aux (p : prog) (n : meta node sd) (s : stmts) (m : metric sd) : unit sd =
     seqs (List.map s ~f:(fun stmt _ -> eval_stmt_aux p n stmt m))
 
-  let eval_stmts_hash : (stmts, (meta node -> metric -> unit) sd) Hashtbl.t = Hashtbl.create (module STMTS)
+  and eval_stmts_hash : (stmts, (meta node -> metric -> unit) sd) Hashtbl.t = Hashtbl.create (module STMTS)
 
-  let eval_stmts (p : prog) (n : meta node sd) (s : stmts) (m : metric sd) : unit sd =
+  and eval_stmts (p : prog) (n : meta node sd) (s : stmts) (m : metric sd) : unit sd =
     if Option.is_none (Hashtbl.find eval_stmts_hash s) then
-      Hashtbl.add_exn eval_stmts_hash ~key:s ~data:(lift (lazy (lam (fun n -> lam (fun m -> eval_stmts_aux p n s m)))));
+      Hashtbl.add_exn eval_stmts_hash ~key:s
+        ~data:(lift "eval_stmts" (lazy (lam (fun n -> lam (fun m -> eval_stmts_aux p n s m)))));
     app (app (Hashtbl.find_exn eval_stmts_hash s) n) m
 
   let eval (p : prog) (n : meta node sd) (m : metric sd) : unit sd =
@@ -220,177 +220,238 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
            bracket_call_proc n proc_name (fun _ -> eval_stmts p n (stmts_of_processed_proc p proc_name) m)))
 
   let remove_children (p : prog) (x : meta node sd) (n : int sd) (m : metric sd) : unit sd =
-    match List.split_n (x |> unstatic).children (n |> unstatic) with
-    | lhs, removed :: rhs ->
-        (match removed.prev with Some prev -> prev.next <- removed.next | None -> ());
-        (match removed.next with Some next -> next.prev <- removed.prev | None -> ());
-        remove_meta (removed.m |> static) |> unstatic;
-        (x |> unstatic).children <- List.append lhs rhs;
-        Hashtbl.iter p.procs ~f:(fun (ProcessedProc (proc_name, _)) ->
-            let work bb_name =
-              let (BasicBlock (_, stmts)) = Hashtbl.find_exn p.bbs bb_name in
-              let reads = reads_of_stmts stmts in
-              let dirty read =
-                match read with
-                | ReadVar (Self, _) | ReadHasPath Parent | ReadVar (Parent, _) -> ()
-                | ReadHasPath First | ReadHasPath Last ->
-                    if List.is_empty (x |> unstatic).children then bb_dirtied x ~proc_name ~bb_name m |> unstatic
-                    else ()
-                | ReadVar (First, _) -> if List.is_empty lhs then bb_dirtied x ~proc_name ~bb_name m |> unstatic else ()
-                | ReadVar (Last, _) -> if List.is_empty rhs then bb_dirtied x ~proc_name ~bb_name m |> unstatic else ()
-                | ReadHasPath Prev | ReadVar (Prev, _) -> (
-                    match removed.next with
-                    | Some x -> bb_dirtied (x |> static) ~proc_name ~bb_name m |> unstatic
-                    | None -> ())
-                | ReadHasPath Next | ReadVar (Next, _) -> (
-                    match removed.prev with
-                    | Some x -> bb_dirtied (x |> static) ~proc_name ~bb_name m |> unstatic
-                    | None -> ())
-                | ReadProp _ | ReadAttr _ -> ()
-                | _ -> raise (EXN (show_read read))
-              in
-              List.iter reads ~f:dirty
-            in
-            let down, up = get_bb_from_proc p proc_name in
-            Option.iter down ~f:work;
-            Option.iter up ~f:work);
-        tt
-    | _ -> panic (string "bad argument")
+    let_
+      (list_split_n (node_get_children x) n)
+      (fun v ->
+        let_ (zro v) (fun lhs ->
+            let_ (fst v) (fun rhs_ ->
+                list_match rhs_
+                  (fun _ -> panic (string "bad argument"))
+                  (fun removed rhs ->
+                    seqs
+                      [
+                        (fun _ ->
+                          option_match (node_get_prev removed)
+                            (fun _ -> tt)
+                            (fun prev -> node_set_next prev (node_get_next removed)));
+                        (fun _ ->
+                          option_match (node_get_next removed)
+                            (fun _ -> tt)
+                            (fun next -> node_set_prev next (node_get_prev removed)));
+                        (fun _ -> remove_meta (node_get_meta removed));
+                        (fun _ -> node_set_children x (list_append lhs rhs));
+                        (fun _ ->
+                          seqs
+                            (List.map (Hashtbl.to_alist p.procs) ~f:(fun (proc_name, _) _ ->
+                                 let work bb_name =
+                                   let (BasicBlock (_, stmts)) = Hashtbl.find_exn p.bbs bb_name in
+                                   let reads = reads_of_stmts stmts in
+                                   let dirty read : unit sd =
+                                     match read with
+                                     | ReadVar (Self, _) | ReadHasPath Parent | ReadVar (Parent, _) -> tt
+                                     | ReadHasPath First | ReadHasPath Last ->
+                                         ite
+                                           (list_is_empty (node_get_children x))
+                                           (fun _ -> bb_dirtied x ~proc_name ~bb_name m)
+                                           (fun _ -> tt)
+                                     | ReadVar (First, _) ->
+                                         ite (list_is_empty lhs)
+                                           (fun _ -> bb_dirtied x ~proc_name ~bb_name m)
+                                           (fun _ -> tt)
+                                     | ReadVar (Last, _) ->
+                                         ite (list_is_empty rhs)
+                                           (fun _ -> bb_dirtied x ~proc_name ~bb_name m)
+                                           (fun _ -> tt)
+                                     | ReadHasPath Prev | ReadVar (Prev, _) ->
+                                         option_match (node_get_next removed)
+                                           (fun _ -> tt)
+                                           (fun x -> bb_dirtied x ~proc_name ~bb_name m)
+                                     | ReadHasPath Next | ReadVar (Next, _) ->
+                                         option_match (node_get_prev removed)
+                                           (fun _ -> tt)
+                                           (fun x -> bb_dirtied x ~proc_name ~bb_name m)
+                                     | ReadProp _ | ReadAttr _ -> tt
+                                     | _ -> Common.panic (show_read read)
+                                   in
+                                   seqs (List.map reads ~f:(fun r () -> dirty r))
+                                 in
+                                 let down, up = get_bb_from_proc p proc_name in
+                                 seqs
+                                   [
+                                     (fun _ -> match down with Some down -> work down | None -> tt);
+                                     (fun _ -> match up with Some up -> work up | None -> tt);
+                                   ])));
+                      ]))))
 
   let add_children (p : prog) (x : meta node sd) (y : meta node sd) (n : int sd) (m : metric sd) : unit sd =
-    let lhs, rhs = List.split_n (x |> unstatic).children (n |> unstatic) in
-    (x |> unstatic).children <- List.append lhs (unstatic y :: rhs);
-    (match List.last lhs with
-    | Some tl ->
-        (y |> unstatic).prev <- Some tl;
-        tl.next <- Some (y |> unstatic)
-    | None -> (y |> unstatic).prev <- None);
-    (match List.hd rhs with
-    | Some hd ->
-        (y |> unstatic).next <- Some hd;
-        hd.prev <- Some (y |> unstatic)
-    | None -> (y |> unstatic).next <- None);
-    (y |> unstatic).parent <- Some (x |> unstatic);
-    Hashtbl.iter p.procs ~f:(fun (ProcessedProc (proc_name, _)) ->
-        let work bb_name =
-          let (BasicBlock (_, stmts)) = Hashtbl.find_exn p.bbs bb_name in
-          let reads = reads_of_stmts stmts in
-          let dirty read =
-            match read with
-            | ReadHasPath Parent | ReadVar (Parent, _) -> ()
-            | ReadHasPath First | ReadHasPath Last ->
-                if phys_equal (List.length (x |> unstatic).children) 1 then
-                  bb_dirtied x ~proc_name ~bb_name m |> unstatic
-                else ()
-            | ReadVar (First, _) -> if List.is_empty lhs then bb_dirtied x ~proc_name ~bb_name m |> unstatic else ()
-            | ReadVar (Last, _) -> if List.is_empty rhs then bb_dirtied x ~proc_name ~bb_name m |> unstatic else ()
-            | ReadHasPath Prev | ReadVar (Prev, _) -> (
-                match (y |> unstatic).next with
-                | Some x -> bb_dirtied (x |> static) ~proc_name ~bb_name m |> unstatic
-                | None -> ())
-            | ReadHasPath Next | ReadVar (Next, _) -> (
-                match (y |> unstatic).prev with
-                | Some x -> bb_dirtied (x |> static) ~proc_name ~bb_name m |> unstatic
-                | None -> ())
-            | ReadVar (Self, _) | ReadProp _ | ReadAttr _ -> ()
-            | _ -> panic (string (show_read read)) |> unstatic
-          in
-          List.iter reads ~f:dirty
-        in
-        let down, up = get_bb_from_proc p proc_name in
-        register_todo_proc p y proc_name m |> unstatic;
-        Option.iter down ~f:work;
-        Option.iter up ~f:work)
-    |> static
-  (*print_endline ("add: " ^ string_of_int y.id);*)
+    let_
+      (list_split_n (node_get_children x) n)
+      (fun v ->
+        let_ (zro v) (fun lhs ->
+            let_ (fst v) (fun rhs ->
+                seqs
+                  [
+                    (fun _ -> node_set_children x (list_append lhs (cons y rhs)));
+                    (fun _ ->
+                      option_match (list_last lhs)
+                        (fun _ -> node_set_prev y (none ()))
+                        (fun tl -> seq (node_set_prev y (some tl)) (fun _ -> node_set_next tl (some y))));
+                    (fun _ ->
+                      option_match (list_hd rhs)
+                        (fun _ -> node_set_next y (none ()))
+                        (fun hd -> seq (node_set_next y (some hd)) (fun _ -> node_set_prev hd (some y))));
+                    (fun _ -> node_set_parent y (some x));
+                    (fun _ ->
+                      seqs
+                        (List.map (Hashtbl.to_alist p.procs) ~f:(fun (proc_name, _) _ ->
+                             let work bb_name =
+                               let (BasicBlock (_, stmts)) = Hashtbl.find_exn p.bbs bb_name in
+                               let reads = reads_of_stmts stmts in
+                               let dirty read : unit sd =
+                                 match read with
+                                 | ReadHasPath Parent | ReadVar (Parent, _) -> tt
+                                 | ReadHasPath First | ReadHasPath Last ->
+                                     ite
+                                       (int_equal (list_length (node_get_children x)) (int 1))
+                                       (fun _ -> bb_dirtied x ~proc_name ~bb_name m)
+                                       (fun _ -> tt)
+                                 | ReadVar (First, _) ->
+                                     ite (list_is_empty lhs) (fun _ -> bb_dirtied x ~proc_name ~bb_name m) (fun _ -> tt)
+                                 | ReadVar (Last, _) ->
+                                     ite (list_is_empty rhs) (fun _ -> bb_dirtied x ~proc_name ~bb_name m) (fun _ -> tt)
+                                 | ReadHasPath Prev | ReadVar (Prev, _) ->
+                                     option_match (node_get_next y)
+                                       (fun _ -> tt)
+                                       (fun x -> bb_dirtied x ~proc_name ~bb_name m)
+                                 | ReadHasPath Next | ReadVar (Next, _) -> (
+                                     match (y |> unstatic).prev with
+                                     | Some x -> bb_dirtied (x |> static) ~proc_name ~bb_name m
+                                     | None -> tt)
+                                 | ReadVar (Self, _) | ReadProp _ | ReadAttr _ -> tt
+                                 | _ -> Common.panic (show_read read)
+                               in
+                               seqs (List.map reads ~f:(fun r _ -> dirty r))
+                             in
+                             let down, up = get_bb_from_proc p proc_name in
+                             seqs
+                               [
+                                 (fun _ -> register_todo_proc p y proc_name m);
+                                 (fun _ -> match down with Some down -> work down | None -> tt);
+                                 (fun _ -> match up with Some up -> work up | None -> tt);
+                               ])));
+                  ])))
 
   let add_prop (p : prog) (n : meta node sd) (name : string) (v : value sd) (m : metric sd) : unit sd =
-    write_metric m |> unstatic;
-    Hashtbl.add_exn (n |> unstatic).prop ~key:name ~data:(v |> unstatic);
-    Hashtbl.iter p.procs ~f:(fun (ProcessedProc (proc_name, _)) ->
-        let work bb_name =
-          let (BasicBlock (_, stmts)) = Hashtbl.find_exn p.bbs bb_name in
-
-          let reads = reads_of_stmts stmts in
-          let dirty read =
-            match read with
-            | ReadHasPath _ | ReadVar _ | ReadAttr _ -> ()
-            | ReadProp read_name ->
-                if String.equal name read_name then bb_dirtied n ~proc_name ~bb_name m |> unstatic else ()
-            (*| _ -> panic (show_read read)*)
-          in
-          List.iter reads ~f:dirty
-        in
-        let down, up = get_bb_from_proc p proc_name in
-        Option.iter down ~f:work;
-        Option.iter up ~f:work)
-    |> static
+    seqs
+      [
+        (fun _ -> write_metric m);
+        (fun _ -> hashtbl_add_exn (node_get_prop n) (string name) v);
+        (fun _ ->
+          seqs
+            (List.map (Hashtbl.to_alist p.procs) ~f:(fun (proc_name, _) _ ->
+                 let work bb_name : unit sd =
+                   let (BasicBlock (_, stmts)) = Hashtbl.find_exn p.bbs bb_name in
+                   let reads = reads_of_stmts stmts in
+                   let dirty read : unit sd =
+                     match read with
+                     | ReadHasPath _ | ReadVar _ | ReadAttr _ -> tt
+                     | ReadProp read_name ->
+                         if String.equal name read_name then bb_dirtied n ~proc_name ~bb_name m else tt
+                     (*| _ -> panic (show_read read)*)
+                   in
+                   seqs (List.map reads ~f:(fun r _ -> dirty r))
+                 in
+                 let down, up = get_bb_from_proc p proc_name in
+                 seqs
+                   [
+                     (fun _ -> match down with Some down -> work down | None -> tt);
+                     (fun _ -> match up with Some up -> work up | None -> tt);
+                   ])));
+      ]
 
   let remove_prop (p : prog) (n : meta node sd) (name : string) (m : metric sd) : unit sd =
-    write_metric m |> unstatic;
-    ignore (Hashtbl.find_exn (n |> unstatic).prop name);
-    Hashtbl.remove (n |> unstatic).prop name;
-    Hashtbl.iter p.procs ~f:(fun (ProcessedProc (proc_name, _)) ->
-        let work bb_name =
-          let (BasicBlock (_, stmts)) = Hashtbl.find_exn p.bbs bb_name in
-
-          let reads = reads_of_stmts stmts in
-          let dirty read =
-            match read with
-            | ReadHasPath _ | ReadVar _ | ReadAttr _ -> ()
-            | ReadProp read_name ->
-                if String.equal name read_name then bb_dirtied n ~proc_name ~bb_name m |> unstatic else ()
-            (*| _ -> panic (show_read read)*)
-          in
-          List.iter reads ~f:dirty
-        in
-        let down, up = get_bb_from_proc p proc_name in
-        Option.iter down ~f:work;
-        Option.iter up ~f:work)
-    |> static
+    seqs
+      [
+        (fun _ -> write_metric m);
+        (fun _ -> hashtbl_force_remove (node_get_prop n) (string name));
+        (fun _ ->
+          seqs
+            (List.map (Hashtbl.to_alist p.procs) ~f:(fun (proc_name, _) _ ->
+                 let work bb_name : unit sd =
+                   let (BasicBlock (_, stmts)) = Hashtbl.find_exn p.bbs bb_name in
+                   let reads = reads_of_stmts stmts in
+                   let dirty read : unit sd =
+                     match read with
+                     | ReadHasPath _ | ReadVar _ | ReadAttr _ -> tt
+                     | ReadProp read_name ->
+                         if String.equal name read_name then bb_dirtied n ~proc_name ~bb_name m else tt
+                     (*| _ -> panic (show_read read)*)
+                   in
+                   seqs (List.map reads ~f:(fun r _ -> dirty r))
+                 in
+                 let down, up = get_bb_from_proc p proc_name in
+                 seqs
+                   [
+                     (fun _ -> match down with Some down -> work down | None -> tt);
+                     (fun _ -> match up with Some up -> work up | None -> tt);
+                   ])));
+      ]
 
   let add_attr (p : prog) (n : meta node sd) (name : string) (v : value sd) (m : metric sd) : unit sd =
-    write_metric m |> unstatic;
-    Hashtbl.add_exn (n |> unstatic).attr ~key:name ~data:(v |> unstatic);
-    Hashtbl.iter p.procs ~f:(fun (ProcessedProc (proc_name, _)) ->
-        let work bb_name =
-          let (BasicBlock (_, stmts)) = Hashtbl.find_exn p.bbs bb_name in
-          let reads = reads_of_stmts stmts in
-          let dirty read =
-            match read with
-            | ReadHasPath _ | ReadVar _ | ReadProp _ -> ()
-            | ReadAttr read_name ->
-                if String.equal name read_name then bb_dirtied n ~proc_name ~bb_name m |> unstatic else ()
-            (*| _ -> panic (show_read read)*)
-          in
-          List.iter reads ~f:dirty
-        in
-        let down, up = get_bb_from_proc p proc_name in
-        Option.iter down ~f:work;
-        Option.iter up ~f:work)
-    |> static
+    seqs
+      [
+        (fun _ -> write_metric m);
+        (fun _ -> hashtbl_add_exn (node_get_attr n) (string name) v);
+        (fun _ ->
+          seqs
+            (List.map (Hashtbl.to_alist p.procs) ~f:(fun (proc_name, _) _ ->
+                 let work bb_name : unit sd =
+                   let (BasicBlock (_, stmts)) = Hashtbl.find_exn p.bbs bb_name in
+                   let reads = reads_of_stmts stmts in
+                   let dirty read : unit sd =
+                     match read with
+                     | ReadHasPath _ | ReadVar _ | ReadProp _ -> tt
+                     | ReadAttr read_name ->
+                         if String.equal name read_name then bb_dirtied n ~proc_name ~bb_name m else tt
+                     (*| _ -> panic (show_read read)*)
+                   in
+                   seqs (List.map reads ~f:(fun r _ -> dirty r))
+                 in
+                 let down, up = get_bb_from_proc p proc_name in
+                 seqs
+                   [
+                     (fun _ -> match down with Some down -> work down | None -> tt);
+                     (fun _ -> match up with Some up -> work up | None -> tt);
+                   ])));
+      ]
 
   let remove_attr (p : prog) (n : meta node sd) (name : string) (m : metric sd) : unit sd =
-    write_metric m |> unstatic;
-    ignore (Hashtbl.find_exn (n |> unstatic).attr name);
-    Hashtbl.remove (n |> unstatic).attr name;
-    Hashtbl.iter p.procs ~f:(fun (ProcessedProc (proc_name, _)) ->
-        let work bb_name =
-          let (BasicBlock (_, stmts)) = Hashtbl.find_exn p.bbs bb_name in
-          let reads = reads_of_stmts stmts in
-          let dirty read =
-            match read with
-            | ReadHasPath _ | ReadVar _ | ReadProp _ -> ()
-            | ReadAttr read_name ->
-                if String.equal name read_name then bb_dirtied n ~proc_name ~bb_name m |> unstatic else ()
-            (*| _ -> panic (show_read read)*)
-          in
-          List.iter reads ~f:dirty
-        in
-        let down, up = get_bb_from_proc p proc_name in
-        Option.iter down ~f:work;
-        Option.iter up ~f:work)
-    |> static
+    seqs
+      [
+        (fun _ -> write_metric m);
+        (fun _ -> hashtbl_force_remove (node_get_attr n) (string name));
+        (fun _ ->
+          seqs
+            (List.map (Hashtbl.to_alist p.procs) ~f:(fun (proc_name, _) _ ->
+                 let work bb_name : unit sd =
+                   let (BasicBlock (_, stmts)) = Hashtbl.find_exn p.bbs bb_name in
+                   let reads = reads_of_stmts stmts in
+                   let dirty read : unit sd =
+                     match read with
+                     | ReadHasPath _ | ReadVar _ | ReadProp _ -> tt
+                     | ReadAttr read_name ->
+                         if String.equal name read_name then bb_dirtied n ~proc_name ~bb_name m else tt
+                     (*| _ -> panic (show_read read)*)
+                   in
+                   seqs (List.map reads ~f:(fun r _ -> dirty r))
+                 in
+                 let down, up = get_bb_from_proc p proc_name in
+                 seqs
+                   [
+                     (fun _ -> match down with Some down -> work down | None -> tt);
+                     (fun _ -> match up with Some up -> work up | None -> tt);
+                   ])));
+      ]
 
   let recalculate (p : prog) (n : meta node sd) (m : metric sd) : unit sd =
     recalculate_internal p n m (fun n stmts -> eval_stmts p n stmts m)

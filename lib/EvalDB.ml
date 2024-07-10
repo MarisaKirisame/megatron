@@ -17,6 +17,16 @@ module EVAL (SD : SD) = MakeEval (struct
     recursive_proc_dirtied : (string, bool) Hashtbl.t;
   }
 
+  let meta_get_bb_dirtied (n : meta sd) =
+    if is_static then (n |> unstatic).bb_dirtied |> static else CGetMember (n |> undyn, "BBDirtied") |> dyn
+
+  let meta_get_proc_inited (n : meta sd) =
+    if is_static then (n |> unstatic).proc_inited |> static else CGetMember (n |> undyn, "ProcInited") |> dyn
+
+  let meta_get_recursive_proc_dirtied (n : meta sd) =
+    if is_static then (n |> unstatic).recursive_proc_dirtied |> static
+    else CGetMember (n |> undyn, "RecursiveProcDirtied") |> dyn
+
   let meta_staged = "???"
 
   let fresh_meta _ =
@@ -29,68 +39,115 @@ module EVAL (SD : SD) = MakeEval (struct
 
   let remove_meta _ = tt
 
-  let rec set_recursive_proc_dirtied (n : meta node) (proc_name : string) (m : metric sd) : unit =
-    meta_write_metric m |> unstatic;
-    if Hashtbl.find_exn n.m.recursive_proc_dirtied proc_name then ()
-    else (
-      Hashtbl.set n.m.recursive_proc_dirtied ~key:proc_name ~data:true;
-      match n.parent with Some p -> set_recursive_proc_dirtied p proc_name m | None -> ())
+  let set_recursive_proc_dirtied_inner (proc_name : string) (m : metric sd) : (meta node -> unit) sd =
+    fix (fun recurse n ->
+        seq (meta_write_metric m) (fun _ ->
+            ite
+              (hashtbl_find_exn (meta_get_recursive_proc_dirtied (node_get_meta n)) (string proc_name))
+              (fun _ -> tt)
+              (fun _ ->
+                seq
+                  (hashtbl_set (meta_get_recursive_proc_dirtied (node_get_meta n)) (string proc_name) (bool true))
+                  (fun _ -> option_match (node_get_parent n) (fun _ -> tt) (fun p -> recurse p)))))
+
+  let set_recursive_proc_dirtied_hash : (string, (meta node -> unit) sd) Hashtbl.t = Hashtbl.create (module String)
+
+  let set_recursive_proc_dirtied (n : meta node sd) (proc_name : string) (m : metric sd) : unit sd =
+    if Option.is_none (Hashtbl.find set_recursive_proc_dirtied_hash proc_name) then
+      Hashtbl.add_exn set_recursive_proc_dirtied_hash ~key:proc_name
+        ~data:(lift "set_recursive_proc_dirtied" (lazy (set_recursive_proc_dirtied_inner proc_name m)));
+    app (Hashtbl.find_exn set_recursive_proc_dirtied_hash proc_name) n
 
   let bb_dirtied (n : meta node sd) ~(proc_name : string) ~(bb_name : string) (m : metric sd) : unit sd =
-    if Option.is_some (Hashtbl.find (n |> unstatic).m.proc_inited proc_name) then
-      (Hashtbl.set (n |> unstatic).m.bb_dirtied ~key:bb_name ~data:true;
-       set_recursive_proc_dirtied (n |> unstatic) proc_name m)
-      |> static
-    else meta_write_metric m
+    ite
+      (is_some (hashtbl_find (meta_get_proc_inited (node_get_meta n)) (string proc_name)))
+      (fun _ ->
+        seq
+          (hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool true))
+          (fun _ -> set_recursive_proc_dirtied n proc_name m))
+      (fun _ -> meta_write_metric m)
 
   let register_todo_proc (p : prog) (y : meta node sd) (proc_name : string) (m : metric sd) : unit sd =
-    Hashtbl.add_exn (y |> unstatic).m.recursive_proc_dirtied ~key:proc_name ~data:false;
-    set_recursive_proc_dirtied (y |> unstatic) proc_name m |> static
+    seq
+      (hashtbl_add_exn (meta_get_recursive_proc_dirtied (node_get_meta y)) (string proc_name) (bool false))
+      (fun _ -> set_recursive_proc_dirtied y proc_name m)
 
   let bracket_call_bb (n : meta node sd) bb_name f =
-    Hashtbl.add_exn (n |> unstatic).m.bb_dirtied ~key:bb_name ~data:false;
-    f ()
+    seq (hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool false)) (fun _ -> f ())
 
   let bracket_call_proc (n : meta node sd) proc_name f =
-    Hashtbl.add_exn (n |> unstatic).m.proc_inited ~key:proc_name ~data:();
-    Hashtbl.add_exn (n |> unstatic).m.recursive_proc_dirtied ~key:proc_name ~data:false;
-    f ()
+    seqs
+      [
+        (fun _ -> hashtbl_add_exn (meta_get_proc_inited (node_get_meta n)) (string proc_name) tt);
+        (fun _ -> hashtbl_add_exn (meta_get_recursive_proc_dirtied (node_get_meta n)) (string proc_name) (bool false));
+        (fun _ -> f ());
+      ]
 
-  let rec recalculate_internal_aux (p : prog) (n : meta node sd) (proc_name : string) (down_name : string option)
+  (*assuming a global metric to avoid passing around*)
+  let recalculate_internal_aux_code (p : prog) (proc_name : string) (down_name : string option)
+      (up_name : string option) (eval_stmts : meta node sd -> stmts -> unit sd) (m : metric sd) : (meta node -> unit) sd
+      =
+    lift "recalculate_internal"
+      (lazy
+        (fix (fun recurse n ->
+             (*inlined*)
+             let rerun_if_dirty name : unit sd =
+               ite
+                 (hashtbl_find_exn (meta_get_bb_dirtied (node_get_meta n)) (string name))
+                 (fun _ ->
+                   seq
+                     (eval_stmts n (stmts_of_basic_block p name))
+                     (fun _ -> hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string name) (bool false)))
+                 (fun _ -> tt)
+             in
+             seqs
+               [
+                 (fun _ -> meta_read_metric m);
+                 (fun _ ->
+                   ite
+                     (hashtbl_find_exn (meta_get_recursive_proc_dirtied (node_get_meta n)) (string proc_name))
+                     (fun _ ->
+                       ite
+                         (is_some (hashtbl_find (meta_get_proc_inited (node_get_meta n)) (string proc_name)))
+                         (fun _ ->
+                           seqs
+                             [
+                               (fun _ -> match down_name with None -> tt | Some dn -> rerun_if_dirty dn);
+                               (fun _ -> list_iter (node_get_children n) recurse);
+                               (fun _ -> match up_name with None -> tt | Some un -> rerun_if_dirty un);
+                             ])
+                         (fun _ ->
+                           seq
+                             (hashtbl_add_exn (meta_get_proc_inited (node_get_meta n)) (string proc_name) tt)
+                             (fun _ -> eval_stmts n (stmts_of_processed_proc p proc_name))))
+                     (fun _ -> tt));
+                 (fun _ ->
+                   hashtbl_set (meta_get_recursive_proc_dirtied (node_get_meta n)) (string proc_name) (bool false));
+               ])))
+
+  let recalculate_internal_aux_hash : (string, (meta node -> unit) sd) Hashtbl.t = Hashtbl.create (module String)
+
+  let recalculate_internal_aux (p : prog) (n : meta node sd) (proc_name : string) (down_name : string option)
       (up_name : string option) (m : metric sd) (eval_stmts : meta node sd -> stmts -> unit sd) : unit sd =
-    (*print_endline "enter";*)
-    meta_read_metric m |> unstatic;
-    let rerun_if_dirty name =
-      if Hashtbl.find_exn (n |> unstatic).m.bb_dirtied name then (
-        eval_stmts n (stmts_of_basic_block p name) |> unstatic;
-        Hashtbl.set (n |> unstatic).m.bb_dirtied ~key:name ~data:false)
-      else ()
-    in
-    if Hashtbl.find_exn (n |> unstatic).m.recursive_proc_dirtied proc_name then
-      if Option.is_none (Hashtbl.find (n |> unstatic).m.proc_inited proc_name) then (
-        Hashtbl.add_exn (n |> unstatic).m.proc_inited ~key:proc_name ~data:();
-        eval_stmts n (stmts_of_processed_proc p proc_name) |> unstatic)
-      else (
-        (match down_name with None -> () | Some dn -> rerun_if_dirty dn);
-        List.iter (n |> unstatic).children ~f:(fun n ->
-            recalculate_internal_aux p (n |> static) proc_name down_name up_name m eval_stmts |> unstatic);
-        match up_name with None -> () | Some un -> rerun_if_dirty un)
-    else ();
-    Hashtbl.set (n |> unstatic).m.recursive_proc_dirtied ~key:proc_name ~data:false;
-    tt
+    if Option.is_none (Hashtbl.find recalculate_internal_aux_hash proc_name) then
+      Hashtbl.add_exn recalculate_internal_aux_hash ~key:proc_name
+        ~data:(recalculate_internal_aux_code p proc_name down_name up_name eval_stmts m);
+    app (Hashtbl.find_exn recalculate_internal_aux_hash proc_name) n
 
   let rec check (p : prog) (n : meta node) : unit =
     Hashtbl.iter p.procs ~f:(fun (ProcessedProc (proc, _)) ->
         Hashtbl.find_exn n.m.proc_inited proc;
         assert (not (Hashtbl.find_exn n.m.recursive_proc_dirtied proc)));
     Hashtbl.iter p.bbs ~f:(fun (BasicBlock (bb, _)) -> assert (not (Hashtbl.find_exn n.m.bb_dirtied bb)));
-    List.iter p.vars ~f:(fun (VarDecl (p, _)) -> ignore (Hashtbl.find_exn n.var p));
+    List.iter p.vars ~f:(fun (VarDecl (p, _)) -> Core.ignore (Hashtbl.find_exn n.var p));
     List.iter n.children ~f:(check p)
 
   let recalculate_internal (p : prog) (n : meta node sd) (m : metric sd) (eval_stmts : meta node sd -> stmts -> unit sd)
       : unit sd =
-    List.iter p.order ~f:(fun proc_name ->
-        let down, up = get_bb_from_proc p proc_name in
-        recalculate_internal_aux p n proc_name down up m eval_stmts |> unstatic);
-    check p (n |> unstatic) |> static
+    seq
+      (seqs
+         (List.map p.order ~f:(fun proc_name _ ->
+              let down, up = get_bb_from_proc p proc_name in
+              recalculate_internal_aux p n proc_name down up m eval_stmts)))
+      (fun _ -> if is_static then check p (n |> unstatic) |> static else tt)
 end)

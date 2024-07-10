@@ -34,14 +34,16 @@ module type SDIN = sig
   val unstatic : 'a sd -> 'a
   val dyn : code -> 'a sd
   val undyn : 'a sd -> code
+  val defs : unit -> (string * code) list
 
   (*for dynamic value, lift a definition to global definition, returning the var that represent it.
     accept a lazy value so meta-recursiveness is allowed.*)
-  val lift : 'a sd Lazy.t -> 'a sd
+  val lift : string -> 'a sd Lazy.t -> 'a sd
   val fix : (('a sd -> 'b sd) -> 'a sd -> 'b sd) -> ('a -> 'b) sd
   val let_ : 'a sd -> ('a sd -> 'b sd) -> 'b sd
   val lam : ('a sd -> 'b sd) -> ('a -> 'b) sd
   val app : ('a -> 'b) sd -> 'a sd -> 'b sd
+  val ignore : 'a sd -> unit sd
   val tt : unit sd
   val make_ref : 'a sd -> 'a ref sd
   val read_ref : 'a ref sd -> 'a sd
@@ -89,8 +91,12 @@ module type SDIN = sig
   val node_get_attr : 'a node sd -> (string, value) Hashtbl.t sd
   val node_get_extern_id : 'a node sd -> int sd
   val node_get_name : 'a node sd -> string sd
+  val node_get_meta : 'a node sd -> 'a sd
+  val hashtbl_force_remove : (string, 'a) Hashtbl.t sd -> string sd -> unit sd
   val hashtbl_find : (string, 'a) Hashtbl.t sd -> string sd -> 'a option sd
+  val hashtbl_find_exn : (string, 'a) Hashtbl.t sd -> string sd -> 'a sd
   val hashtbl_set : (string, 'a) Hashtbl.t sd -> string sd -> 'a sd -> unit sd
+  val hashtbl_add_exn : (string, 'a) Hashtbl.t sd -> string sd -> 'a sd -> unit sd
   val none : unit -> 'a option sd
   val some : 'a sd -> 'a option sd
   val is_none : 'a option sd -> bool sd
@@ -111,6 +117,7 @@ module type SDIN = sig
   val layout_node_get_children : layout_node sd -> layout_node list sd
   val layout_node_set_children : layout_node sd -> layout_node list sd -> unit sd
   val int_add : int sd -> int sd -> int sd
+  val int_equal : int sd -> int sd -> bool sd
   val fresh_metric : unit -> metric sd
   val reset_metric : metric sd -> unit sd
   val read_metric : metric sd -> unit sd
@@ -149,7 +156,10 @@ module type SDIN = sig
   val list_split_n : 'a list sd -> int sd -> ('a list * 'a list) sd
   val list_int_sum : 'a list sd -> ('a sd -> int sd) -> int sd
   val list_append : 'a list sd -> 'a list sd -> 'a list sd
-  val list_tail : 'a list sd -> 'a list sd
+  val list_tail_exn : 'a list sd -> 'a list sd
+  val list_hd : 'a list sd -> 'a option sd
+  val list_is_empty : 'a list sd -> bool sd
+  val list_length : 'a list sd -> int sd
 end
 
 module type SD = sig
@@ -189,9 +199,10 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
   let is_static = true
   let static x = x
   let unstatic x = x
+  let defs _ = []
   let dyn _ = panic "dyn"
   let undyn _ = panic "undyn"
-  let lift x = Lazy.force x
+  let lift _ x = Lazy.force x
   let tt = ()
 
   let seq lhs rhs =
@@ -207,6 +218,7 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
 
   let with_out_file name f = f (Stdio.Out_channel.create name) (*Stdio.Out_channel.with_file name ~f*)
 
+  let ignore x = Core.ignore x
   let output_string c s = Stdio.Out_channel.output_string c s
   let input_line c = Stdio.In_channel.input_line_exn c
   let iter_lines c f = Stdio.In_channel.iter_lines c ~f
@@ -288,8 +300,16 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
   let node_set_children (n : _ node) v = n.children <- v
   let node_get_extern_id x = x.extern_id
   let node_get_name x = x.name
+  let node_get_meta x = x.m
   let hashtbl_find h k = Hashtbl.find h k
+  let hashtbl_find_exn h k = Hashtbl.find_exn h k
   let hashtbl_set h key data = Hashtbl.set h ~key ~data
+  let hashtbl_add_exn h key data = Hashtbl.add_exn h ~key ~data
+
+  let hashtbl_force_remove h key =
+    ignore (Hashtbl.find_exn h key);
+    Hashtbl.remove h key
+
   let none () = None
   let some x = Some x
   let is_none o = Option.is_none o
@@ -303,6 +323,7 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
   let list_zip x y = List.zip_exn x y
   let list_last l = List.last l
   let list_int_sum l f = List.sum (module Int) l ~f
+  let list_length l = List.length l
   let list_append l r = List.append l r
   let make_pair a b = (a, b)
   let zro (a, b) = a
@@ -311,6 +332,7 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
   let layout_node_get_children (l : layout_node) = l.children
   let layout_node_set_children (l : layout_node) c = l.children <- c
   let int_add x y = x + y
+  let int_equal x y = Int.equal x y
 
   let reset_metric m =
     m.read_count <- 0;
@@ -412,7 +434,9 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
     | [] -> default ()
 
   let list_split_n l i = List.split_n l i
-  let list_tail l = match l with _ :: t -> t
+  let list_tail_exn l = match l with _ :: t -> t
+  let list_hd x = match x with [] -> None | x :: _ -> Some x
+  let list_is_empty l = List.is_empty l
 end)
 
 module D : SD with type 'x sd = code = MakeSD (struct
@@ -425,8 +449,13 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let undyn x = x
   let global_defs : (string * code Lazy.t) list ref = ref []
 
-  let lift x : code =
-    let v = fresh () in
+  let defs _ =
+    List.map !global_defs (fun (s, cl) ->
+        Stdio.print_endline s;
+        (s, Lazy.force cl))
+
+  let lift name x : code =
+    let v = name ^ "_" ^ fresh () in
     global_defs := List.append !global_defs [ (v, x) ];
     CVar v
 
@@ -440,6 +469,7 @@ module D : SD with type 'x sd = code = MakeSD (struct
     let v = fresh () in
     CFun (v, f (CVar v))
 
+  let ignore x = x
   let int x = CInt x
   let bool x = CBool x
   let float x = CFloat x
@@ -492,8 +522,12 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let node_get_var n = CGetMember (n, "var")
   let node_get_attr n = CGetMember (n, "attr")
   let node_get_name n = CGetMember (n, "name")
+  let node_get_meta n = CGetMember (n, "meta")
   let hashtbl_find h k = CApp (CPF "HashtblFind", [ h; k ])
+  let hashtbl_find_exn h k = CApp (CPF "HashtblFindExn", [ h; k ])
   let hashtbl_set h k v = CApp (CPF "HashtblSet", [ h; k; v ])
+  let hashtbl_add_exn h k v = CApp (CPF "HashtblAddExn", [ h; k; v ])
+  let hashtbl_force_remove h k = CApp (CPF "HashtblForceRemove", [ h; k ])
   let none () = CApp (CPF "None", [])
   let some x = CApp (CPF "Some", [ x ])
   let is_none x = CApp (CPF "IsNone", [ x ])
@@ -516,6 +550,8 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let list_last l = CApp (CPF "ListLast", [ l ])
   let list_drop_last l = CApp (CPF "ListDropLast", [ l ])
   let list_zip x y = CApp (CPF "ListZip", [ x; y ])
+  let list_int_sum x f = CApp (CPF "ListIntSum", [ x; lam f ])
+  let list_length l = CApp (CPF "ListLength", [ l ])
   let make_pair a b = CApp (CPF "MakePair", [ a; b ])
   let zro p = CApp (CPF "Zro", [ p ])
   let fst p = CApp (CPF "Fst", [ p ])
@@ -523,13 +559,13 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let layout_node_get_children l = CGetMember (l, "children")
   let layout_node_set_children l c = CSetMember (l, "children", c)
   let int_add x y = CApp (CPF "IntAdd", [ x; y ])
+  let int_equal x y = CApp (CPF "IntEqual", [ x; y ])
   let panic x = CPanic x
   let node_get_extern_id x = CGetMember (x, "extern_id")
   let string_of_int i = CApp (CPF "StringOfInt", [ i ])
   let string_append x y = CApp (CPF "StringAppend", [ x; y ])
   let show_node n = CApp (CPF "ShowNode", [ n ])
   let show_value v = CApp (CPF "ShowValue", [ v ])
-  let list_int_sum x f = CApp (CPF "ListIntSum", [ x; lam f ])
   let fresh_metric () = CApp (CPF "FreshMetric", [])
   let reset_metric m = CApp (CPF "ResetMetric", [ m ])
   let read_metric m = CApp (CPF "ReadMetric", [ m ])
@@ -560,5 +596,7 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let string_concat sep list = CApp (CPF "StringConcat", [ sep; list ])
   let list_split_n l i = CApp (CPF "ListSplitN", [ l; i ])
   let list_append l r = CApp (CPF "ListAppend", [ l; r ])
-  let list_tail l = CApp (CPF "ListTail", [ l ])
+  let list_tail_exn l = CApp (CPF "ListTailExn", [ l ])
+  let list_hd l = CApp (CPF "ListHead", [ l ])
+  let list_is_empty l = CApp (CPF "ListIsEmpty", [ l ])
 end)
