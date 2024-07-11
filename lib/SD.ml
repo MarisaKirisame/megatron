@@ -159,6 +159,7 @@ module type SDIN = sig
   val list_hd : 'a list sd -> 'a option sd
   val list_is_empty : 'a list sd -> bool sd
   val list_length : 'a list sd -> int sd
+  val unsome : 'a option sd -> 'a sd
 end
 
 module type SD = sig
@@ -169,7 +170,6 @@ module type SD = sig
   val option_to_list : 'a option sd -> 'a list sd
   val eval_path_opt : 'a node sd -> path -> 'a node option sd
   val eval_path : 'a node sd -> path -> 'a node sd
-  val unsome : 'a option sd -> 'a sd
 end
 
 module MakeSD (SDIN : SDIN) : SD with type 'a sd = 'a SDIN.sd = struct
@@ -264,6 +264,7 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
     let open Yojson.Basic in
     `List x
 
+  let unsome o = Option.value_exn o
   let json_to_string (j : Yojson.Basic.t sd) = Yojson.Basic.Util.to_string j
   let json_member = Yojson.Basic.Util.member
 
@@ -506,6 +507,7 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let json_to_int j = CApp (CPF "JsonToInt", [ j ])
   let json_to_list j = CApp (CPF "JsonToList", [ j ])
   let json_to_channel c j = CApp (CPF "JsonToChannel", [ c; j ])
+  let unsome o = CApp (CPF "UnSome", [ o ])
 
   let fix (f : ('a sd -> 'b sd) -> 'a sd -> 'b sd) : ('a -> 'b) sd =
     let fname = fresh () in

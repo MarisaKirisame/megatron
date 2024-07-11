@@ -162,13 +162,15 @@ let is_pure_function f =
   | "HashtblAddExn" | "HashtblForceRemove" | "PushStack" | "Assert" | "IterLines" | "JsonToChannel" | "OutputString"
   | "ResetMetric" | "ClearStack" | "WriteRef" | "ListMatch" | "JsonMember" | "ReadMetric" ->
       false
-  | "MakeUnit" | "ListIsEmpty" | "IntEqual" | "ListLength" | "ListSplitN" | "Zro" | "Fst" | "FreshMetric" | "Cons" | "Nil" | "IsNone" -> true
+  | "MakeUnit" | "ListIsEmpty" | "IntEqual" | "ListLength" | "ListSplitN" | "Zro" | "Fst" | "FreshMetric" | "Cons"
+  | "Nil" | "IsNone" ->
+      true
   | _ -> panic ("is_pure_function:" ^ f)
 
 let rec is_pure x =
   match x with
   | CSetMember _ -> false
-  | CVar _ | CInt _ -> true
+  | CVar _ | CInt _ | CFun _ -> true
   | CSeq (x, y) -> is_pure x && is_pure y
   | CApp (f, xs) -> is_pure f && List.for_all xs ~f:is_pure
   | CPF f -> is_pure_function f
@@ -186,10 +188,17 @@ let rec simplify x =
       else CSeq (recurse (CApp (CPF f, xs)), recurse y)
   | CSeq (x, y) -> if is_pure x then recurse y else CSeq (recurse x, recurse y)
   | CSeq (CVar _, y) -> recurse y
-  | CSeq (CGetMember (x, _), y) -> CSeq (recurse x, recurse y)
+  | CSeq (CGetMember (x, _), y) -> recurse (CSeq (x, y))
   | CApp (CPF "OptionMatch", [ x; CFun (_, CApp (CPF "MakeUnit", [])); CFun (_, CApp (CPF "MakeUnit", [])) ]) ->
       recurse x
+  | CApp (CPF "OptionMatch", [ x; CFun (_, CPanic _); y ]) -> recurse (CApp (y, [ CApp (CPF "UnSome", [ x ]) ]))
+  | CApp (CPF "OptionMatch", [ CApp (CPF "Some", [ x ]); y; z ]) -> recurse (CSeq (y, CApp (z, [ x ])))
+  | CApp (CPF "BoolOfValue", [ CApp (CPF "VBool", [ x ]) ]) -> recurse x
   | CApp (CPF "ListIter", [ x; CFun (_, CApp (CPF "MakeUnit", [])) ]) -> recurse x
+  | CApp (CPF "BoolOfValue", [ CApp (CPF "eq", [ CApp (CPF "VString", [ x ]); CApp (CPF "VString", [ y ]) ]) ]) ->
+      recurse (CApp (CPF "StringEqual", [ x; y ]))
+  | CApp (CPF "UnSome", [ CApp (CPF "Some", [ x ]) ]) -> recurse x
+  | CApp (CPF "UnSome", [ CApp (CPF "HashtblFind", [ x; y ]) ]) -> recurse (CApp (CPF "HashtblForceFind", [ x; y ]))
   | CIf (i, CApp (CPF "MakeUnit", []), CApp (CPF "MakeUnit", [])) -> CSeq (i, CApp (CPF "MakeUnit", []))
   | CPanic xs -> CPanic (recurse xs)
   | CSeq (x, y) -> CSeq (recurse x, recurse y)
