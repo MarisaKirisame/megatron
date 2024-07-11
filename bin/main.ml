@@ -155,10 +155,8 @@ let rec node_to_html_buffer (b : Buffer.t) (parent_x : int) (parent_y : int) (n 
 
 let truncate_length = 120
 let truncate str = if String.length str <= truncate_length then str else String.sub str ~pos:0 ~len:truncate_length
+let rec optimize x = match x with _ -> Megatron.Common.panic ("optimize:" ^ truncate (show_code x))
 
-let rec optimize x =
-  match x with
-  | _ -> Megatron.Common.panic ("optimize:" ^ truncate (show_code x))
 let rec compile_stmt c x =
   match x with
   | CSeq (x, y) ->
@@ -244,7 +242,7 @@ and compile_expr c x =
   | _ -> Megatron.Common.panic ("compile_expr:" ^ truncate (show_code x))
 
 let compile_def c (name, x) =
-  match x with
+  match optimize x with
   | CFix (fname, xname, body) ->
       output_string c ("auto " ^ fname ^ bracket ("const auto&" ^ xname) ^ "{");
       compile_stmt c body;
@@ -706,7 +704,7 @@ module Main (EVAL : Eval) = struct
     Stdio.Out_channel.with_file compiled_file_name ~f:(fun c ->
         List.iter (defs ()) (compile_def c);
         Stdio.Out_channel.output_string c "int main(){";
-        compile_stmt c (main |> undyn);
+        compile_stmt c (main |> undyn |> optimize);
         Stdio.Out_channel.output_string c "}");
 
     shell ("clang-format --style=file -i " ^ compiled_file_name);
