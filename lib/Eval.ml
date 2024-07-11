@@ -87,16 +87,8 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
     | Self -> list [ n ]
     | Prev -> node_get_next n |> option_to_list
     | Next -> node_get_prev n |> option_to_list
-    | First -> (
-        match (n |> unstatic).parent with
-        | None -> [] |> static
-        | Some np ->
-            if phys_equal (List.hd_exn np.children).id (n |> unstatic).id then [ np ] |> static else [] |> static)
-    | Last -> (
-        match (n |> unstatic).parent with
-        | None -> [] |> static
-        | Some np ->
-            if phys_equal (List.last_exn np.children).id (n |> unstatic).id then [ np ] |> static else [] |> static)
+    | First -> ite (is_none (node_get_prev n)) (fun _ -> option_to_list (node_get_parent n)) (fun _ -> nil ())
+    | Last -> ite (is_none (node_get_next n)) (fun _ -> option_to_list (node_get_parent n)) (fun _ -> nil ())
 
   let var_modified_hash : (string, (meta node -> metric -> unit) sd) Hashtbl.t = Hashtbl.create (module String)
 

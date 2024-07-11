@@ -185,10 +185,10 @@ module MakeSD (SDIN : SDIN) : SD with type 'a sd = 'a SDIN.sd = struct
     match p with
     | Self -> some n
     | Parent -> node_get_parent n
-    | First -> List.hd (node_get_children n |> unstatic) |> static
+    | First -> list_hd (node_get_children n)
     | Next -> node_get_next n
     | Prev -> node_get_prev n
-    | Last -> List.last (node_get_children n |> unstatic) |> static
+    | Last -> list_last (node_get_children n)
 
   let eval_path n p = unsome (eval_path_opt n p)
 end
