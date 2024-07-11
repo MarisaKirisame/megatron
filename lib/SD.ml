@@ -448,14 +448,17 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let undyn x = x
   let global_defs : (string * code Lazy.t) list ref = ref []
 
-  let defs _ =
-    List.map !global_defs (fun (s, cl) ->
-        Stdio.print_endline s;
-        (s, Lazy.force cl))
+  let rec defs _ =
+    let ret =
+      List.map !global_defs (fun (s, cl) ->
+          Stdio.print_endline s;
+          (s, Lazy.force cl))
+    in
+    if Int.equal (List.length ret) (List.length !global_defs) then ret else defs ()
 
   let lift name x : code =
     let v = name ^ "_" ^ fresh () in
-    global_defs := List.append !global_defs [ (v, x) ];
+    global_defs := (v, x) :: !global_defs;
     CVar v
 
   let seq lhs rhs = CSeq (lhs, rhs ())

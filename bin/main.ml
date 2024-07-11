@@ -160,9 +160,9 @@ let is_pure_function f =
   match f with
   | "InputChangeMetric" | "OutputChangeMetric" | "ListIter" | "PrintEndline" | "OptionMatch" | "WriteMetric"
   | "HashtblAddExn" | "HashtblForceRemove" | "PushStack" | "Assert" | "IterLines" | "JsonToChannel" | "OutputString"
-  | "ResetMetric" | "ClearStack" | "WriteRef" | "ListMatch" | "JsonMember" ->
+  | "ResetMetric" | "ClearStack" | "WriteRef" | "ListMatch" | "JsonMember" | "ReadMetric" ->
       false
-  | "MakeUnit" | "ListIsEmpty" | "IntEqual" | "ListLength" | "ListSplitN" | "Zro" | "Fst" | "FreshMetric" -> true
+  | "MakeUnit" | "ListIsEmpty" | "IntEqual" | "ListLength" | "ListSplitN" | "Zro" | "Fst" | "FreshMetric" | "Cons" | "Nil" | "IsNone" -> true
   | _ -> panic ("is_pure_function:" ^ f)
 
 let rec is_pure x =
@@ -180,7 +180,7 @@ let rec is_pure x =
 let rec simplify x =
   let recurse x = simplify x in
   match x with
-  | CString _ | CVar _ | CPF _ | CInt _ -> x
+  | CString _ | CVar _ | CPF _ | CInt _ | CBool _ | CFloat _ -> x
   | CSeq (CApp (CPF f, xs), y) ->
       if is_pure_function f then List.fold_right xs ~f:(fun l r -> CSeq (recurse l, r)) ~init:(recurse y)
       else CSeq (recurse (CApp (CPF f, xs)), recurse y)
@@ -189,6 +189,7 @@ let rec simplify x =
   | CSeq (CGetMember (x, _), y) -> CSeq (recurse x, recurse y)
   | CApp (CPF "OptionMatch", [ x; CFun (_, CApp (CPF "MakeUnit", [])); CFun (_, CApp (CPF "MakeUnit", [])) ]) ->
       recurse x
+  | CApp (CPF "ListIter", [ x; CFun (_, CApp (CPF "MakeUnit", [])) ]) -> recurse x
   | CIf (i, CApp (CPF "MakeUnit", []), CApp (CPF "MakeUnit", [])) -> CSeq (i, CApp (CPF "MakeUnit", []))
   | CPanic xs -> CPanic (recurse xs)
   | CSeq (x, y) -> CSeq (recurse x, recurse y)
@@ -217,6 +218,13 @@ let rec compile_stmt c x =
       compile_expr c value;
       output_string c ";";
       compile_stmt c body
+  | CIf (i, t, e) ->
+      output_string c "if (";
+      compile_expr c i;
+      output_string c "){";
+      compile_stmt c t;
+      output_string c "}else{";
+      compile_stmt c e
   | CApp _ | CVar _ | CPanic _ | CFun _ | CGetMember _ ->
       output_string c "return ";
       compile_expr c x;
@@ -268,11 +276,21 @@ and compile_expr c x =
   | CPF str -> output_string c str
   | CInt i -> output_string c (string_of_int i)
   | CVar x -> output_string c x
+  | CBool b -> output_string c (string_of_bool b)
+  | CFloat f -> output_string c (string_of_float f)
   | CFun (var, body) ->
       output_string c ("[&](const auto&" ^ var ^ "){");
       compile_stmt c body;
       output_string c "}"
-  | CLet _ ->
+  | CIf (i, t, e) ->
+      output_string c "(";
+      compile_expr c i;
+      output_string c ")?(";
+      compile_expr c t;
+      output_string c "):(";
+      compile_expr c e;
+      output_string c ")"
+  | CLet _ | CSeq _ ->
       output_string c "[&](){";
       compile_stmt c x;
       output_string c "}()"
@@ -758,7 +776,7 @@ module Main (EVAL : Eval) = struct
         Stdio.Out_channel.output_string c "}");
 
     shell ("clang-format --style=file -i " ^ compiled_file_name);
-    shell ("clang++ -std=c++23 " ^ compiled_file_name)
+    (*shell ("clang++ -std=c++23 " ^ compiled_file_name)*) ()
 
   let () = if is_static then () else run_dynamic ()
 end
