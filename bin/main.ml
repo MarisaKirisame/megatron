@@ -158,20 +158,22 @@ let truncate str = if String.length str <= truncate_length then str else String.
 
 let is_pure_function f =
   match f with
-  | "InputChangeMetric" | "OutputChangeMetric" | "ListIter" | "PrintEndline" | "OptionMatch" | "WriteMetric"
-  | "HashtblAddExn" | "HashtblForceRemove" | "PushStack" | "Assert" | "IterLines" | "JsonToChannel" | "OutputString"
-  | "ResetMetric" | "ClearStack" | "WriteRef" | "ListMatch" | "JsonMember" | "ReadMetric" ->
+  | "InputChangeMetric" | "OutputChangeMetric" | "PrintEndline" | "WriteMetric" | "HashtblAddExn" | "HashtblForceRemove"
+  | "PushStack" | "Assert" | "IterLines" | "JsonToChannel" | "OutputString" | "ResetMetric" | "ClearStack" | "WriteRef"
+  | "ReadMetric" | "HashtblSet" ->
       false
   | "MakeUnit" | "ListIsEmpty" | "IntEqual" | "ListLength" | "ListSplitN" | "Zro" | "Fst" | "FreshMetric" | "Cons"
-  | "Nil" | "IsNone" ->
+  | "Nil" | "IsNone" | "HashtblForceFind" | "UnSome" | "ListLast" | "JsonMember" | "ListMatch" | "OptionIter"
+  | "OptionMatch" | "ListIter" | "HashtblFind" | "EqualValue" | "ListZip" | "ListDropLast" | "ListTl" | "ListHead" ->
       true
   | _ -> panic ("is_pure_function:" ^ f)
 
 let rec is_pure x =
   match x with
-  | CSetMember _ -> false
-  | CVar _ | CInt _ | CFun _ -> true
-  | CSeq (x, y) -> is_pure x && is_pure y
+  | CSetMember _ | CPanic _ -> false
+  | CVar _ | CInt _ | CString _ -> true
+  | CFun (name, body) -> is_pure body
+  | CSeq xs -> List.for_all xs ~f:is_pure
   | CApp (f, xs) -> is_pure f && List.for_all xs ~f:is_pure
   | CPF f -> is_pure_function f
   | CIf (i, t, e) -> is_pure i && is_pure t && is_pure e
@@ -183,26 +185,41 @@ let rec simplify x =
   let recurse x = simplify x in
   match x with
   | CString _ | CVar _ | CPF _ | CInt _ | CBool _ | CFloat _ -> x
-  | CSeq (CApp (CPF f, xs), y) ->
-      if is_pure_function f then List.fold_right xs ~f:(fun l r -> CSeq (recurse l, r)) ~init:(recurse y)
-      else CSeq (recurse (CApp (CPF f, xs)), recurse y)
-  | CSeq (x, y) -> if is_pure x then recurse y else CSeq (recurse x, recurse y)
-  | CSeq (CVar _, y) -> recurse y
-  | CSeq (CGetMember (x, _), y) -> recurse (CSeq (x, y))
+  | CApp (CPF "ReadMetric", [ x ]) ->
+      recurse x (* not correct, but we dont care about ReadMetric rn, and this simplify the generated code *)
   | CApp (CPF "OptionMatch", [ x; CFun (_, CApp (CPF "MakeUnit", [])); CFun (_, CApp (CPF "MakeUnit", [])) ]) ->
       recurse x
   | CApp (CPF "OptionMatch", [ x; CFun (_, CPanic _); y ]) -> recurse (CApp (y, [ CApp (CPF "UnSome", [ x ]) ]))
-  | CApp (CPF "OptionMatch", [ CApp (CPF "Some", [ x ]); y; z ]) -> recurse (CSeq (y, CApp (z, [ x ])))
+  | CApp (CPF "OptionMatch", [ CApp (CPF "Some", [ x ]); y; z ]) -> recurse (CSeq [ y; CApp (z, [ x ]) ])
   | CApp (CPF "BoolOfValue", [ CApp (CPF "VBool", [ x ]) ]) -> recurse x
   | CApp (CPF "ListIter", [ x; CFun (_, CApp (CPF "MakeUnit", [])) ]) -> recurse x
   | CApp (CPF "BoolOfValue", [ CApp (CPF "eq", [ CApp (CPF "VString", [ x ]); CApp (CPF "VString", [ y ]) ]) ]) ->
       recurse (CApp (CPF "StringEqual", [ x; y ]))
   | CApp (CPF "UnSome", [ CApp (CPF "Some", [ x ]) ]) -> recurse x
   | CApp (CPF "UnSome", [ CApp (CPF "HashtblFind", [ x; y ]) ]) -> recurse (CApp (CPF "HashtblForceFind", [ x; y ]))
+  | CApp (CPF "HashtblForceFind", [ CGetMember (x, "var"); CString f ]) -> CGetMember (x, "var_" ^ f)
   | CApp (CFun (xname, body), [ x ]) -> recurse (CLet (xname, x, body))
-  | CIf (i, CApp (CPF "MakeUnit", []), CApp (CPF "MakeUnit", [])) -> CSeq (i, CApp (CPF "MakeUnit", []))
+  | CIf (i, CApp (CPF "MakeUnit", []), CApp (CPF "MakeUnit", [])) -> CSeq [ i; CApp (CPF "MakeUnit", []) ]
   | CPanic xs -> CPanic (recurse xs)
-  | CSeq (x, y) -> CSeq (recurse x, recurse y)
+  | CSeq [ x ] -> x
+  | CSeq xs ->
+      let xs, last = unsnoc xs in
+      CSeq
+        (List.map
+           (List.append
+              (List.concat
+                 (List.map xs ~f:(fun x ->
+                      if is_pure x then []
+                      else
+                        match x with
+                        | CSeq xs -> xs
+                        | CApp (CPF f, xs) -> if is_pure_function f then xs else [ x ]
+                        | CIf _ | CLet _ | CSetMember _ -> [ x ]
+                        | CFun _ -> []
+                        | _ -> Megatron.Common.panic ("simplify_seq:" ^ truncate (show_code x)))))
+              [ last ])
+           ~f:recurse)
+  | CLet (lhs, rhs, CVar body) -> if String.equal lhs body then recurse rhs else CSeq [ rhs; CVar body ]
   | CIf (i, t, e) -> CIf (recurse i, recurse t, recurse e)
   | CApp (f, xs) -> CApp (recurse f, List.map xs ~f:recurse)
   | CLet (lhs, rhs, body) -> CLet (lhs, recurse rhs, recurse body)
@@ -220,9 +237,11 @@ let rec optimize x =
 
 let rec compile_stmt c x =
   match x with
-  | CSeq (x, y) ->
+  | CSeq [ x ] -> compile_stmt c x
+  | CSeq [] -> output_string c "return MakeUnit();"
+  | CSeq (x :: xs) ->
       compile_proc c x;
-      compile_stmt c y
+      compile_stmt c (CSeq xs)
   | CLet (var, value, body) ->
       output_string c ("auto " ^ var ^ " = ");
       compile_expr c value;
@@ -257,15 +276,16 @@ let rec compile_stmt c x =
 
 and compile_proc c x =
   match x with
-  | CSeq (x, y) ->
+  | CSeq (x :: xs) ->
       compile_proc c x;
-      compile_proc c y
+      compile_proc c (CSeq xs)
+  | CSeq [] -> ()
   | CLet (var, value, body) ->
       output_string c ("auto " ^ var ^ " = ");
       compile_expr c value;
       output_string c ";";
       compile_proc c body
-  | CApp _ | CGetMember _ | CVar _ | CInt _ ->
+  | CApp _ | CGetMember _ | CVar _ | CInt _ | CStringMatch _ ->
       compile_expr c x;
       output_string c ";"
   | CSetMember (x, f, v) ->
@@ -301,7 +321,7 @@ and compile_expr c x =
       output_string c "):(";
       compile_expr c e;
       output_string c ")"
-  | CLet _ | CSeq _ ->
+  | CLet _ | CSeq _ | CStringMatch _ ->
       output_string c "[&](){";
       compile_stmt c x;
       output_string c "}()"

@@ -66,3 +66,10 @@ let strip_prefix s pfx =
 let strip_suffix s sfx =
   assert (has_suffix s sfx);
   String.sub s ~pos:0 ~len:(String.length s - String.length sfx)
+
+let rec unsnoc x =
+  match x with
+  | [ x ] -> ([], x)
+  | x :: xs ->
+      let l, r = unsnoc xs in
+      (x :: l, r)

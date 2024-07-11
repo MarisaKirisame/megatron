@@ -9,7 +9,7 @@ type code =
   | CBool of bool
   | CFloat of float
   | CString of string
-  | CSeq of code * code
+  | CSeq of code list
   | CLet of string * code * code
   | CVar of string
   | CFun of string * code
@@ -462,7 +462,7 @@ module D : SD with type 'x sd = code = MakeSD (struct
     global_defs := (v, x) :: !global_defs;
     CVar v
 
-  let seq lhs rhs = CSeq (lhs, rhs ())
+  let seq lhs rhs = CSeq [ lhs; rhs () ]
 
   let let_ (x : code) (f : code -> code) : code =
     let v = fresh () in
