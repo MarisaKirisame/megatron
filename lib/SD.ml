@@ -21,7 +21,7 @@ type code =
   | CSetMember of code * string * code
   | CPanic of code
   | CStringMatch of code * (string * code) list * code
-[@@deriving show]
+[@@deriving show, equal]
 
 module type SDIN = sig
   type _ sd

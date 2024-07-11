@@ -156,19 +156,56 @@ let rec node_to_html_buffer (b : Buffer.t) (parent_x : int) (parent_y : int) (n 
 let truncate_length = 120
 let truncate str = if String.length str <= truncate_length then str else String.sub str ~pos:0 ~len:truncate_length
 
-let rec optimize x =
+let is_pure_function f =
+  match f with
+  | "InputChangeMetric" | "OutputChangeMetric" | "ListIter" | "PrintEndline" | "OptionMatch" | "WriteMetric"
+  | "HashtblAddExn" | "HashtblForceRemove" | "PushStack" | "Assert" | "IterLines" | "JsonToChannel" | "OutputString"
+  | "ResetMetric" | "ClearStack" | "WriteRef" | "ListMatch" | "JsonMember" ->
+      false
+  | "MakeUnit" | "ListIsEmpty" | "IntEqual" | "ListLength" | "ListSplitN" | "Zro" | "Fst" | "FreshMetric" -> true
+  | _ -> panic ("is_pure_function:" ^ f)
+
+let rec is_pure x =
+  match x with
+  | CSetMember _ -> false
+  | CVar _ | CInt _ -> true
+  | CSeq (x, y) -> is_pure x && is_pure y
+  | CApp (f, xs) -> is_pure f && List.for_all xs ~f:is_pure
+  | CPF f -> is_pure_function f
+  | CIf (i, t, e) -> is_pure i && is_pure t && is_pure e
+  | CGetMember (x, f) -> is_pure x
+  | CLet (lhs, rhs, body) -> is_pure rhs && is_pure body
+  | _ -> Megatron.Common.panic ("is_pure:" ^ truncate (show_code x))
+
+let rec simplify x =
+  let recurse x = simplify x in
   match x with
   | CString _ | CVar _ | CPF _ | CInt _ -> x
-  | CPanic xs -> CPanic (optimize xs)
-  | CSeq (x, y) -> CSeq (optimize x, optimize y)
-  | CIf (i, t, e) -> CIf (optimize i, optimize t, optimize e)
-  | CApp (f, xs) -> CApp (optimize f, List.map xs ~f:optimize)
-  | CLet (lhs, rhs, body) -> CLet (lhs, optimize rhs, optimize body)
-  | CFix (fname, xname, body) -> CFix (fname, xname, optimize body)
-  | CFun (xname, body) -> CFun (xname, optimize body)
-  | CGetMember (x, f) -> CGetMember (optimize x, f)
-  | CSetMember (x, f, v) -> CSetMember (optimize x, f, optimize v)
-  | _ -> Megatron.Common.panic ("optimize:" ^ truncate (show_code x))
+  | CSeq (CApp (CPF f, xs), y) ->
+      if is_pure_function f then List.fold_right xs ~f:(fun l r -> CSeq (recurse l, r)) ~init:(recurse y)
+      else CSeq (recurse (CApp (CPF f, xs)), recurse y)
+  | CSeq (x, y) -> if is_pure x then recurse y else CSeq (recurse x, recurse y)
+  | CSeq (CVar _, y) -> recurse y
+  | CSeq (CGetMember (x, _), y) -> CSeq (recurse x, recurse y)
+  | CApp (CPF "OptionMatch", [ x; CFun (_, CApp (CPF "MakeUnit", [])); CFun (_, CApp (CPF "MakeUnit", [])) ]) ->
+      recurse x
+  | CIf (i, CApp (CPF "MakeUnit", []), CApp (CPF "MakeUnit", [])) -> CSeq (i, CApp (CPF "MakeUnit", []))
+  | CPanic xs -> CPanic (recurse xs)
+  | CSeq (x, y) -> CSeq (recurse x, recurse y)
+  | CIf (i, t, e) -> CIf (recurse i, recurse t, recurse e)
+  | CApp (f, xs) -> CApp (recurse f, List.map xs ~f:recurse)
+  | CLet (lhs, rhs, body) -> CLet (lhs, recurse rhs, recurse body)
+  | CFix (fname, xname, body) -> CFix (fname, xname, recurse body)
+  | CFun (xname, body) -> CFun (xname, recurse body)
+  | CGetMember (x, f) -> CGetMember (recurse x, f)
+  | CSetMember (x, f, v) -> CSetMember (recurse x, f, recurse v)
+  | CStringMatch (str, cases, default) ->
+      CStringMatch (recurse str, List.map cases ~f:(fun (l, r) -> (l, recurse r)), recurse default)
+  | _ -> Megatron.Common.panic ("simplify:" ^ truncate (show_code x))
+
+let rec optimize x =
+  let new_x = simplify x in
+  if equal_code x new_x then x else optimize new_x
 
 let rec compile_stmt c x =
   match x with
@@ -180,7 +217,7 @@ let rec compile_stmt c x =
       compile_expr c value;
       output_string c ";";
       compile_stmt c body
-  | CApp _ | CVar _ | CPanic _ | CFun _ ->
+  | CApp _ | CVar _ | CPanic _ | CFun _ | CGetMember _ ->
       output_string c "return ";
       compile_expr c x;
       output_string c ";"
@@ -209,7 +246,7 @@ and compile_proc c x =
       compile_expr c value;
       output_string c ";";
       compile_proc c body
-  | CApp _ | CGetMember _ ->
+  | CApp _ | CGetMember _ | CVar _ | CInt _ ->
       compile_expr c x;
       output_string c ";"
   | CSetMember (x, f, v) ->
