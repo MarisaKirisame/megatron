@@ -13,7 +13,6 @@ type code =
   | CLet of string * code * code
   | CVar of string
   | CFun of string * code
-  | CUnit
   | CApp of code * code list
   | CIf of code * code * code
   | CPF of string
