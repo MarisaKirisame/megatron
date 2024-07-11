@@ -155,17 +155,19 @@ let rec node_to_html_buffer (b : Buffer.t) (parent_x : int) (parent_y : int) (n 
 
 let truncate_length = 120
 let truncate str = if String.length str <= truncate_length then str else String.sub str ~pos:0 ~len:truncate_length
-let rec optimize x = 
+
+let rec optimize x =
   match x with
   | CString _ | CVar _ | CPF _ | CInt _ -> x
   | CPanic xs -> CPanic (optimize xs)
   | CSeq (x, y) -> CSeq (optimize x, optimize y)
-  | CIf (i,t,e) -> CIf (optimize i, optimize t, optimize e)
+  | CIf (i, t, e) -> CIf (optimize i, optimize t, optimize e)
   | CApp (f, xs) -> CApp (optimize f, List.map xs ~f:optimize)
   | CLet (lhs, rhs, body) -> CLet (lhs, optimize rhs, optimize body)
   | CFix (fname, xname, body) -> CFix (fname, xname, optimize body)
   | CFun (xname, body) -> CFun (xname, optimize body)
   | CGetMember (x, f) -> CGetMember (optimize x, f)
+  | CSetMember (x, f, v) -> CSetMember (optimize x, f, optimize v)
   | _ -> Megatron.Common.panic ("optimize:" ^ truncate (show_code x))
 
 let rec compile_stmt c x =
