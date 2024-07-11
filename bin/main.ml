@@ -199,6 +199,7 @@ let rec simplify x =
       recurse (CApp (CPF "StringEqual", [ x; y ]))
   | CApp (CPF "UnSome", [ CApp (CPF "Some", [ x ]) ]) -> recurse x
   | CApp (CPF "UnSome", [ CApp (CPF "HashtblFind", [ x; y ]) ]) -> recurse (CApp (CPF "HashtblForceFind", [ x; y ]))
+  | CApp (CFun (xname, body), [ x ]) -> recurse (CLet (xname, x, body))
   | CIf (i, CApp (CPF "MakeUnit", []), CApp (CPF "MakeUnit", [])) -> CSeq (i, CApp (CPF "MakeUnit", []))
   | CPanic xs -> CPanic (recurse xs)
   | CSeq (x, y) -> CSeq (recurse x, recurse y)
@@ -233,7 +234,8 @@ let rec compile_stmt c x =
       output_string c "){";
       compile_stmt c t;
       output_string c "}else{";
-      compile_stmt c e
+      compile_stmt c e;
+      output_string c "}"
   | CApp _ | CVar _ | CPanic _ | CFun _ | CGetMember _ ->
       output_string c "return ";
       compile_expr c x;
@@ -778,11 +780,13 @@ module Main (EVAL : Eval) = struct
 
   let run_dynamic () : unit =
     let compiled_file_name = "Layout" ^ name ^ ".cpp" in
-    Stdio.Out_channel.with_file compiled_file_name ~f:(fun c ->
-        List.iter (defs ()) (compile_def c);
-        Stdio.Out_channel.output_string c "int main(){";
-        compile_stmt c (main |> undyn |> optimize);
-        Stdio.Out_channel.output_string c "}");
+
+    let c = Stdio.Out_channel.create compiled_file_name in
+    List.iter (defs ()) (compile_def c);
+    Stdio.Out_channel.output_string c "int main(){";
+    compile_stmt c (main |> undyn |> optimize);
+    Stdio.Out_channel.output_string c "}";
+    Stdio.Out_channel.close c;
 
     shell ("clang-format --style=file -i " ^ compiled_file_name);
     (*shell ("clang++ -std=c++23 " ^ compiled_file_name)*) ()
