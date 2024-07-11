@@ -26,11 +26,6 @@ let shell cmd =
   let res = Core_unix.close_process_in in_channel in
   match res with Ok () -> () | _ -> panic "shell failed"
 
-(*Out_channel.write_all "layout.cpp" ~data:(compile prog);;
-  shell "clang-format --style=file -i layout.cpp";;
-  shell "cat layout.cpp";;
-  shell "clang++ -std=c++23 layout.cpp"*)
-
 let tag t str = "<" ^ t ^ ">" ^ str ^ "</" ^ t ^ ">"
 
 let default_tag : (string, unit) Hashtbl.t =
@@ -158,6 +153,108 @@ let rec node_to_html_buffer (b : Buffer.t) (parent_x : int) (parent_y : int) (n 
       recurse ();
       Buffer.add_string b "</div>")
 
+let truncate_length = 120
+let truncate str = if String.length str <= truncate_length then str else String.sub str ~pos:0 ~len:truncate_length
+
+let rec compile_stmt c x =
+  match x with
+  | CSeq (x, y) ->
+      compile_proc c x;
+      compile_stmt c y
+  | CLet (var, value, body) ->
+      output_string c ("auto " ^ var ^ " = ");
+      compile_expr c value;
+      output_string c ";";
+      compile_stmt c body
+  | CApp _ | CVar _ | CUnit _ | CPanic _ | CFun _ ->
+      output_string c "return ";
+      compile_expr c x;
+      output_string c ";"
+  | CSetMember _ -> compile_proc c x
+  | CStringMatch (str, cases, default) ->
+      let v = fresh () in
+      output_string c ("std::string " ^ v ^ " = ");
+      compile_expr c str;
+      output_string c ";";
+      List.iter cases ~f:(fun (value, case) ->
+          output_string c ("if (" ^ v ^ "==" ^ quoted value ^ "){");
+          compile_stmt c case;
+          output_string c "}else ");
+      output_string c "{";
+      compile_stmt c default;
+      output_string c "}"
+  | _ -> Megatron.Common.panic ("compile_stmt:" ^ truncate (show_code x))
+
+and compile_proc c x =
+  match x with
+  | CSeq (x, y) ->
+      compile_proc c x;
+      compile_proc c y
+  | CLet (var, value, body) ->
+      output_string c ("auto " ^ var ^ " = ");
+      compile_expr c value;
+      output_string c ";";
+      compile_proc c body
+  | CApp _ | CGetMember _ ->
+      compile_expr c x;
+      output_string c ";"
+  | CUnit -> ()
+  | CSetMember (x, f, v) ->
+      compile_expr c x;
+      output_string c ("." ^ f ^ "=");
+      compile_expr c v;
+      output_string c ";"
+  | CIf (i, t, e) ->
+      output_string c "if (";
+      compile_expr c i;
+      output_string c "){";
+      compile_proc c t;
+      output_string c "}else{";
+      compile_proc c e
+  | _ -> Megatron.Common.panic ("compile_proc:" ^ truncate (show_code x))
+
+and compile_expr c x =
+  match x with
+  | CPF str -> output_string c str
+  | CInt i -> output_string c (string_of_int i)
+  | CVar x -> output_string c x
+  | CFun (var, body) ->
+      output_string c ("[&](const auto&" ^ var ^ "){");
+      compile_stmt c body;
+      output_string c "}"
+  | CLet _ ->
+      output_string c "[&](){";
+      compile_stmt c x;
+      output_string c "}()"
+  | CPanic xs -> output_string c "Panic()"
+  | CUnit -> output_string c "MakeUnit()"
+  | CString str -> output_string c (quoted str)
+  | CGetMember (x, f) ->
+      compile_expr c x;
+      output_string c ("." ^ f)
+  | CApp (f, xs) ->
+      compile_expr c f;
+      output_string c "(";
+      let init = ref true in
+      List.iter xs ~f:(fun x ->
+          if !init then init := false else Stdio.Out_channel.output_string c ",";
+          compile_expr c x);
+      output_string c ")"
+  | _ -> Megatron.Common.panic ("compile_expr:" ^ truncate (show_code x))
+
+let compile_def c (name, x) =
+  match x with
+  | CFix (fname, xname, body) ->
+      output_string c ("auto " ^ fname ^ bracket ("const auto&" ^ xname) ^ "{");
+      compile_stmt c body;
+      output_string c "}";
+      output_string c ("auto " ^ name ^ bracket ("const auto&" ^ xname) ^ "{return " ^ fname ^ bracket xname ^ ";}")
+  | CFun (xname, body) ->
+      output_string c ("auto " ^ name ^ bracket ("const auto&" ^ xname) ^ "{");
+      compile_stmt c body;
+      output_string c "}"
+  | _ -> Megatron.Common.panic ("compile_def:" ^ truncate (show_code x))
+
 module Main (EVAL : Eval) = struct
   include EVAL
   module FS = Megatron.EvalFS.EVAL (EVAL.SD)
@@ -169,37 +266,42 @@ module Main (EVAL : Eval) = struct
       Buffer.contents b |> static)
     else string ""
 
-  let json_to_node_aux : Yojson.Basic.t sd -> meta node sd =
-    app
-      (fix (fun recurse j ->
-           EVAL.make_node
-             (list_map (j |> json_member (string "children") |> json_to_list) (fun x -> recurse x))
-             ~name:(j |> json_member (string "name") |> json_to_string)
-             ~attr:(j |> json_member (string "attributes") |> json_to_dict)
-             ~prop:(j |> json_member (string "properties") |> json_to_dict)
-             ~extern_id:(j |> json_member (string "id") |> json_to_int)))
+  let json_to_node_aux_code : (Yojson.Basic.t -> meta node) sd =
+    lift "json_to_node_aux"
+      (lazy
+        (fix (fun recurse j ->
+             EVAL.make_node
+               (list_map (j |> json_member (string "children") |> json_to_list) (fun x -> recurse x))
+               ~name:(j |> json_member (string "name") |> json_to_string)
+               ~attr:(j |> json_member (string "attributes") |> json_to_dict)
+               ~prop:(j |> json_member (string "properties") |> json_to_dict)
+               ~extern_id:(j |> json_member (string "id") |> json_to_int))))
+
+  let json_to_node_aux : Yojson.Basic.t sd -> meta node sd = app json_to_node_aux_code
 
   let set_relation (n : 'a node sd) : unit sd =
     let set_children_relation =
       app
-        (fix (fun recurse (n : 'a node sd) ->
-             seq
-               (list_iter
-                  (list_zip (list_drop_last (node_get_children n)) (list_tl (node_get_children n)))
-                  (fun p ->
-                    let_ (zro p) (fun x ->
-                        let_ (fst p) (fun y ->
-                            seqs
-                              [
-                                (fun _ -> node_set_parent x (n |> some));
-                                (fun _ -> node_set_next x (y |> some));
-                                (fun _ -> node_set_prev y (x |> some));
-                                (fun _ -> recurse x);
-                              ]))))
-               (fun _ ->
-                 option_iter
-                   (n |> node_get_children |> list_last)
-                   (fun x -> seq (node_set_parent x (some n)) (fun _ -> recurse x)))))
+        (lift "set_children_relation"
+           (lazy
+             (fix (fun recurse (n : 'a node sd) ->
+                  seq
+                    (list_iter
+                       (list_zip (list_drop_last (node_get_children n)) (list_tl (node_get_children n)))
+                       (fun p ->
+                         let_ (zro p) (fun x ->
+                             let_ (fst p) (fun y ->
+                                 seqs
+                                   [
+                                     (fun _ -> node_set_parent x (n |> some));
+                                     (fun _ -> node_set_next x (y |> some));
+                                     (fun _ -> node_set_prev y (x |> some));
+                                     (fun _ -> recurse x);
+                                   ]))))
+                    (fun _ ->
+                      option_iter
+                        (n |> node_get_children |> list_last)
+                        (fun x -> seq (node_set_parent x (some n)) (fun _ -> recurse x)))))))
     in
     seqs
       [
@@ -224,7 +326,10 @@ module Main (EVAL : Eval) = struct
 
   let json_to_layout_node : Yojson.Basic.t sd -> layout_node sd =
     app
-      (fix (fun recurse j -> make_layout_node (list_map (j |> json_member (string "children") |> json_to_list) recurse)))
+      (lift "json_to_layout_node"
+         (lazy
+           (fix (fun recurse j ->
+                make_layout_node (list_map (j |> json_member (string "children") |> json_to_list) recurse)))))
 
   let get_command (j : Basic.t sd) : string sd = j |> json_member (string "name") |> json_to_string
 
@@ -238,10 +343,12 @@ module Main (EVAL : Eval) = struct
   let get_layout_node j : layout_node sd = json_to_layout_node (j |> json_member (string "node"))
 
   let layout_size : layout_node sd -> int sd =
-    app (fix (fun recurse n -> int_add (int 1) (list_int_sum (layout_node_get_children n) recurse)))
+    app
+      (lift "layout_size"
+         (lazy (fix (fun recurse n -> int_add (int 1) (list_int_sum (layout_node_get_children n) recurse)))))
 
   let node_size : _ node sd -> int sd =
-    app (fix (fun recurse n -> int_add (int 1) (list_int_sum (node_get_children n) recurse)))
+    app (lift "node_size" (lazy (fix (fun recurse n -> int_add (int 1) (list_int_sum (node_get_children n) recurse)))))
 
   let follow_layout_path_last str (f : int sd -> layout_node sd -> 'a sd -> unit sd) :
       ((int list * layout_node) * 'a -> unit) sd =
@@ -593,14 +700,25 @@ module Main (EVAL : Eval) = struct
                                                     ])));
                                       ]))))))))
 
-  let _ = defs ()
+  let run_dynamic () : unit =
+    let compiled_file_name = "Layout" ^ name ^ ".cpp" in
+    Stdio.Out_channel.with_file compiled_file_name ~f:(fun c ->
+        List.iter (defs ()) (compile_def c);
+        Stdio.Out_channel.output_string c "int main(){";
+        compile_stmt c (main |> undyn);
+        Stdio.Out_channel.output_string c "}");
+
+    shell ("clang-format --style=file -i " ^ compiled_file_name);
+    shell ("clang++ -std=c++23 " ^ compiled_file_name)
+
+  let () = if is_static then () else run_dynamic ()
 end
 
 (*module MainFSI = Main (Megatron.EvalFS.EVAL (S))*)
 module MainFSC = Main (Megatron.EvalFS.EVAL (D))
 
 (*module MainDBI = Main (Megatron.EvalDB.EVAL (S))*)
-module MainDBC = Main (Megatron.EvalDB.EVAL (D))
+(*module MainDBC = Main (Megatron.EvalDB.EVAL (D))*)
 
 (*module MainPQI = Main (Megatron.EvalPQ.EVAL (S))*)
-module MainPQC = Main (Megatron.EvalPQ.EVAL (D))
+(*module MainPQC = Main (Megatron.EvalPQ.EVAL (D))*)
