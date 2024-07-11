@@ -156,6 +156,9 @@ let rec node_to_html_buffer (b : Buffer.t) (parent_x : int) (parent_y : int) (n 
 let truncate_length = 120
 let truncate str = if String.length str <= truncate_length then str else String.sub str ~pos:0 ~len:truncate_length
 
+let rec optimize x =
+  match x with
+  | _ -> Megatron.Common.panic ("optimize:" ^ truncate (show_code x))
 let rec compile_stmt c x =
   match x with
   | CSeq (x, y) ->
@@ -166,7 +169,7 @@ let rec compile_stmt c x =
       compile_expr c value;
       output_string c ";";
       compile_stmt c body
-  | CApp _ | CVar _ | CUnit _ | CPanic _ | CFun _ ->
+  | CApp _ | CVar _ | CPanic _ | CFun _ ->
       output_string c "return ";
       compile_expr c x;
       output_string c ";"
@@ -198,7 +201,6 @@ and compile_proc c x =
   | CApp _ | CGetMember _ ->
       compile_expr c x;
       output_string c ";"
-  | CUnit -> ()
   | CSetMember (x, f, v) ->
       compile_expr c x;
       output_string c ("." ^ f ^ "=");
@@ -227,7 +229,6 @@ and compile_expr c x =
       compile_stmt c x;
       output_string c "}()"
   | CPanic xs -> output_string c "Panic()"
-  | CUnit -> output_string c "MakeUnit()"
   | CString str -> output_string c (quoted str)
   | CGetMember (x, f) ->
       compile_expr c x;

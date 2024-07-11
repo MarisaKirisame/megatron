@@ -473,7 +473,7 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let bool x = CBool x
   let float x = CFloat x
   let string x = CString x
-  let tt = CUnit
+  let tt = CApp (CPF "MakeUnit", [])
   let app f x = CApp (f, [ x ])
   let ite (i : code) (t : unit -> code) (e : unit -> code) : code = CIf (i, t (), e ())
   let with_in_file name f = CApp (CPF "WithInFile", [ name; lam f ])
