@@ -196,13 +196,12 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
   and eval_stmts_aux (p : prog) (n : meta node sd) (s : stmts) (m : metric sd) : unit sd =
     seqs (List.map s ~f:(fun stmt _ -> eval_stmt_aux p n stmt m))
 
-  and eval_stmts_hash : (stmts, (meta node -> metric -> unit) sd) Hashtbl.t = Hashtbl.create (module STMTS)
+  and eval_stmts_hash : (stmts, (meta node -> unit) sd) Hashtbl.t = Hashtbl.create (module STMTS)
 
   and eval_stmts (p : prog) (n : meta node sd) (s : stmts) (m : metric sd) : unit sd =
     if Option.is_none (Hashtbl.find eval_stmts_hash s) then
-      Hashtbl.add_exn eval_stmts_hash ~key:s
-        ~data:(lift "eval_stmts" (lazy (lam (fun n -> lam (fun m -> eval_stmts_aux p n s m)))));
-    app (app (Hashtbl.find_exn eval_stmts_hash s) n) m
+      Hashtbl.add_exn eval_stmts_hash ~key:s ~data:(lift "eval_stmts" (lazy (lam (fun n -> eval_stmts_aux p n s m))));
+    app (Hashtbl.find_exn eval_stmts_hash s) n
 
   let eval (p : prog) (n : meta node sd) (m : metric sd) : unit sd =
     seqs

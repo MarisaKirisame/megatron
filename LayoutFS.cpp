@@ -1,32 +1,32 @@
-auto var_modified_x_997(const auto &x_999) { return MakeUnit(); }
-auto eval_expr_x_994(const auto &x_1006) {
-  if ((x_1006.prev == nullptr) && not((*(x_1006.prev)).var_line_break)) {
-    return max(x_1006.var_height_external, (*(x_1006.prev)).var_line_height);
+auto var_modified_x_987(const auto &x_989) { return MakeUnit(); }
+auto eval_expr_x_984(const auto &x_996) {
+  if ((x_996.prev == nullptr) && not((*(x_996.prev)).var_line_break)) {
+    return max(x_996.var_height_external, (*(x_996.prev)).var_line_height);
   } else {
-    return x_1006.var_height_external;
+    return x_996.var_height_external;
   }
 }
-auto var_modified_x_992(const auto &x_1023) { return MakeUnit(); }
-auto eval_expr_x_989(const auto &x_1026) {
-  if (eq(x_1026.var_position, "absolute")) {
+auto var_modified_x_982(const auto &x_1013) { return MakeUnit(); }
+auto eval_expr_x_979(const auto &x_1016) {
+  if (eq(x_1016.var_position, "absolute")) {
     return 0.;
   } else {
-    return x_1026.var_height_internal;
+    return x_1016.var_height_internal;
   }
 }
-auto var_modified_x_987(const auto &x_1035) { return MakeUnit(); }
-auto eval_expr_x_984(const auto &x_1038) {
-  if (x_1038.var_intrinsic_height_is_height) {
-    return x_1038.var_intrinsic_height_internal;
+auto var_modified_x_977(const auto &x_1025) { return MakeUnit(); }
+auto eval_expr_x_974(const auto &x_1028) {
+  if (x_1028.var_intrinsic_height_is_height) {
+    return x_1028.var_intrinsic_height_internal;
   } else {
-    if ((x_1038.parent == nullptr) && (*(x_1038.parent)).var_is_flex_column) {
-      return plus(x_1038.var_intrinsic_height_internal, mult(x_1038.var_flex_amount, (*(x_1038.parent)).var_flex_unit));
+    if ((x_1028.parent == nullptr) && (*(x_1028.parent)).var_is_flex_column) {
+      return plus(x_1028.var_intrinsic_height_internal, mult(x_1028.var_flex_amount, (*(x_1028.parent)).var_flex_unit));
     } else {
-      if (has_suffix(x_1038.var_height_expr, "%")) {
-        return mult(x_1038.var_box_height, divide(string_to_float(strip_suffix(x_1038.var_height_expr, "%")), 100.));
+      if (has_suffix(x_1028.var_height_expr, "%")) {
+        return mult(x_1028.var_box_height, divide(string_to_float(strip_suffix(x_1028.var_height_expr, "%")), 100.));
       } else {
-        if (eq(x_1038.var_height_expr, "fit-content")) {
-          return max(x_1038.var_box_height, x_1038.var_intrinsic_height_internal);
+        if (eq(x_1028.var_height_expr, "fit-content")) {
+          return max(x_1028.var_box_height, x_1028.var_intrinsic_height_internal);
         } else {
           return Panic();
         }
@@ -34,43 +34,43 @@ auto eval_expr_x_984(const auto &x_1038) {
     }
   }
 }
-auto var_modified_x_982(const auto &x_1091) { return MakeUnit(); }
-auto eval_expr_x_979(const auto &x_1099) {
-  if (x_1099.prev == nullptr) {
-    if (x_1099.var_line_break || (*(x_1099.prev)).var_line_break) {
-      return plus((*(x_1099.prev)).var_y, (*(x_1099.prev)).var_line_height);
+auto var_modified_x_972(const auto &x_1081) { return MakeUnit(); }
+auto eval_expr_x_969(const auto &x_1089) {
+  if (x_1089.prev == nullptr) {
+    if (x_1089.var_line_break || (*(x_1089.prev)).var_line_break) {
+      return plus((*(x_1089.prev)).var_y, (*(x_1089.prev)).var_line_height);
     } else {
-      return (*(x_1099.prev)).var_y;
+      return (*(x_1089.prev)).var_y;
     }
   } else {
-    if (x_1099.parent == nullptr) {
-      return (*(x_1099.parent)).var_y;
+    if (x_1089.parent == nullptr) {
+      return (*(x_1089.parent)).var_y;
     } else {
       return 0.;
     }
   }
 }
-auto var_modified_x_977(const auto &x_1124) { return MakeUnit(); }
-auto eval_expr_x_974(const auto &x_1128) {
-  if (eq(x_1128.var_position, "absolute")) {
+auto var_modified_x_967(const auto &x_1114) { return MakeUnit(); }
+auto eval_expr_x_964(const auto &x_1118) {
+  if (eq(x_1118.var_position, "absolute")) {
     return 0.;
   } else {
-    return x_1128.var_width_internal;
+    return x_1118.var_width_internal;
   }
 }
-auto var_modified_x_972(const auto &x_1137) { return MakeUnit(); }
-auto eval_expr_x_969(const auto &x_1140) {
-  if (x_1140.var_intrinsic_width_is_width) {
-    return x_1140.var_intrinsic_width_internal;
+auto var_modified_x_962(const auto &x_1127) { return MakeUnit(); }
+auto eval_expr_x_959(const auto &x_1130) {
+  if (x_1130.var_intrinsic_width_is_width) {
+    return x_1130.var_intrinsic_width_internal;
   } else {
-    if ((x_1140.parent == nullptr) && (*(x_1140.parent)).var_is_flex_row) {
-      return plus(x_1140.var_intrinsic_width_internal, mult(x_1140.var_flex_amount, (*(x_1140.parent)).var_flex_unit));
+    if ((x_1130.parent == nullptr) && (*(x_1130.parent)).var_is_flex_row) {
+      return plus(x_1130.var_intrinsic_width_internal, mult(x_1130.var_flex_amount, (*(x_1130.parent)).var_flex_unit));
     } else {
-      if (has_suffix(x_1140.var_width_expr, "%")) {
-        return mult(x_1140.var_box_width, divide(string_to_float(strip_suffix(x_1140.var_width_expr, "%")), 100.));
+      if (has_suffix(x_1130.var_width_expr, "%")) {
+        return mult(x_1130.var_box_width, divide(string_to_float(strip_suffix(x_1130.var_width_expr, "%")), 100.));
       } else {
-        if (eq(x_1140.var_width_expr, "fit-content")) {
-          return max(x_1140.var_box_width, x_1140.var_intrinsic_width_internal);
+        if (eq(x_1130.var_width_expr, "fit-content")) {
+          return max(x_1130.var_box_width, x_1130.var_intrinsic_width_internal);
         } else {
           return Panic();
         }
@@ -78,95 +78,95 @@ auto eval_expr_x_969(const auto &x_1140) {
     }
   }
 }
-auto var_modified_x_967(const auto &x_1193) { return MakeUnit(); }
-auto eval_expr_x_964(const auto &x_1198) {
-  if (x_1198.prev == nullptr) {
-    if (x_1198.var_line_break || (*(x_1198.prev)).var_line_break) {
+auto var_modified_x_957(const auto &x_1183) { return MakeUnit(); }
+auto eval_expr_x_954(const auto &x_1188) {
+  if (x_1188.prev == nullptr) {
+    if (x_1188.var_line_break || (*(x_1188.prev)).var_line_break) {
       return 0.;
     } else {
-      return plus((*(x_1198.prev)).var_x, (*(x_1198.prev)).var_width_external);
+      return plus((*(x_1188.prev)).var_x, (*(x_1188.prev)).var_width_external);
     }
   } else {
-    if (x_1198.parent == nullptr) {
-      return (*(x_1198.parent)).var_x;
+    if (x_1188.parent == nullptr) {
+      return (*(x_1188.parent)).var_x;
     } else {
       return 0.;
     }
   }
 }
-auto var_modified_x_962(const auto &x_1219) { return MakeUnit(); }
-auto eval_expr_x_959(const auto &x_1222) {
-  if (gt(x_1222.var_left_over, 0.)) {
-    return divide(x_1222.var_left_over, x_1222.var_flex_grow_sum);
+auto var_modified_x_952(const auto &x_1209) { return MakeUnit(); }
+auto eval_expr_x_949(const auto &x_1212) {
+  if (gt(x_1212.var_left_over, 0.)) {
+    return divide(x_1212.var_left_over, x_1212.var_flex_grow_sum);
   } else {
-    return divide(x_1222.var_left_over, x_1222.var_flex_shrink_sum);
+    return divide(x_1212.var_left_over, x_1212.var_flex_shrink_sum);
   }
 }
-auto var_modified_x_957(const auto &x_1243) { return MakeUnit(); }
-auto eval_expr_x_954(const auto &x_1246) {
-  if ((x_1246.parent == nullptr) && gt((*(x_1246.parent)).var_left_over, 0.)) {
-    return x_1246.var_flex_grow;
+auto var_modified_x_947(const auto &x_1233) { return MakeUnit(); }
+auto eval_expr_x_944(const auto &x_1236) {
+  if ((x_1236.parent == nullptr) && gt((*(x_1236.parent)).var_left_over, 0.)) {
+    return x_1236.var_flex_grow;
   } else {
-    return x_1246.var_flex_shrink;
+    return x_1236.var_flex_shrink;
   }
 }
-auto var_modified_x_952(const auto &x_1259) { return MakeUnit(); }
-auto eval_expr_x_949(const auto &x_1264) {
-  if (x_1264.var_is_flex_row) {
-    return minus(x_1264.var_box_width,
-                 (IsSome(ListLast(x_1264.children))) ? (UnSome(ListLast(x_1264.children)).var_intrinsic_width_sum)
+auto var_modified_x_942(const auto &x_1249) { return MakeUnit(); }
+auto eval_expr_x_939(const auto &x_1254) {
+  if (x_1254.var_is_flex_row) {
+    return minus(x_1254.var_box_width,
+                 (IsSome(ListLast(x_1254.children))) ? (UnSome(ListLast(x_1254.children)).var_intrinsic_width_sum)
                                                      : (0.));
   } else {
-    return minus(x_1264.var_box_height,
-                 (IsSome(ListLast(x_1264.children))) ? (UnSome(ListLast(x_1264.children)).var_intrinsic_height_sum)
+    return minus(x_1254.var_box_height,
+                 (IsSome(ListLast(x_1254.children))) ? (UnSome(ListLast(x_1254.children)).var_intrinsic_height_sum)
                                                      : (0.));
   }
 }
-auto var_modified_x_947(const auto &x_1285) { return MakeUnit(); }
-auto eval_expr_x_944(const auto &x_1289) {
-  if (x_1289.parent == nullptr) {
-    return (*(x_1289.parent)).var_height_internal;
+auto var_modified_x_937(const auto &x_1275) { return MakeUnit(); }
+auto eval_expr_x_934(const auto &x_1279) {
+  if (x_1279.parent == nullptr) {
+    return (*(x_1279.parent)).var_height_internal;
   } else {
     return 1080.;
   }
 }
-auto var_modified_x_942(const auto &x_1294) { return MakeUnit(); }
-auto eval_expr_x_939(const auto &x_1298) {
-  if (x_1298.parent == nullptr) {
-    return (*(x_1298.parent)).var_width_internal;
+auto var_modified_x_932(const auto &x_1284) { return MakeUnit(); }
+auto eval_expr_x_929(const auto &x_1288) {
+  if (x_1288.parent == nullptr) {
+    return (*(x_1288.parent)).var_width_internal;
   } else {
     return 1920.;
   }
 }
-auto var_modified_x_935(const auto &x_1303) { return MakeUnit(); }
-auto eval_expr_x_932(const auto &x_1321) {
-  if (eq(x_1321.var_display, "none")) {
+auto var_modified_x_926(const auto &x_1293) { return MakeUnit(); }
+auto eval_expr_x_923(const auto &x_1311) {
+  if (eq(x_1311.var_display, "none")) {
     return false;
   } else {
-    if (eq(x_1321.var_position, "absolute")) {
+    if (eq(x_1311.var_position, "absolute")) {
       return false;
     } else {
-      if ((x_1321.parent == nullptr) &&
-          (eq((*(x_1321.parent)).var_display, "flex") || eq((*(x_1321.parent)).var_display, "inline-flex"))) {
+      if ((x_1311.parent == nullptr) &&
+          (eq((*(x_1311.parent)).var_display, "flex") || eq((*(x_1311.parent)).var_display, "inline-flex"))) {
         return true;
       } else {
-        if (eq(x_1321.var_display, "block")) {
+        if (eq(x_1311.var_display, "block")) {
           return true;
         } else {
-          if (eq(x_1321.var_display, "inline")) {
+          if (eq(x_1311.var_display, "inline")) {
             return false;
           } else {
-            if (eq(x_1321.var_display, "inline-block")) {
+            if (eq(x_1311.var_display, "inline-block")) {
               return false;
             } else {
-              if (eq(x_1321.var_display, "flex")) {
-                if (eq(HashtblForceFind(x_1321.prop, "flex-direction"), "row")) {
+              if (eq(x_1311.var_display, "flex")) {
+                if (eq(HashtblForceFind(x_1311.prop, "flex-direction"), "row")) {
                   return false;
                 } else {
-                  if (eq(HashtblForceFind(x_1321.prop, "flex-direction"), "column")) {
+                  if (eq(HashtblForceFind(x_1311.prop, "flex-direction"), "column")) {
                     return true;
                   } else {
-                    if (eq(HashtblForceFind(x_1321.prop, "flex-direction"), "column-reverse")) {
+                    if (eq(HashtblForceFind(x_1311.prop, "flex-direction"), "column-reverse")) {
                       return true;
                     } else {
                       return Panic();
@@ -174,28 +174,28 @@ auto eval_expr_x_932(const auto &x_1321) {
                   }
                 }
               } else {
-                if (eq(x_1321.var_display, "inline-flex")) {
+                if (eq(x_1311.var_display, "inline-flex")) {
                   return false;
                 } else {
-                  if (eq(x_1321.var_display, "contents")) {
+                  if (eq(x_1311.var_display, "contents")) {
                     return false;
                   } else {
-                    if (eq(x_1321.var_display, "table")) {
+                    if (eq(x_1311.var_display, "table")) {
                       return true;
                     } else {
-                      if (eq(x_1321.var_display, "table-row-group")) {
+                      if (eq(x_1311.var_display, "table-row-group")) {
                         return true;
                       } else {
-                        if (eq(x_1321.var_display, "table-row")) {
+                        if (eq(x_1311.var_display, "table-row")) {
                           return true;
                         } else {
-                          if (eq(x_1321.var_display, "table-cell")) {
+                          if (eq(x_1311.var_display, "table-cell")) {
                             return false;
                           } else {
-                            if (eq(x_1321.var_display, "list-item")) {
+                            if (eq(x_1311.var_display, "list-item")) {
                               return true;
                             } else {
-                              if (eq(x_1321.var_display, "grid")) {
+                              if (eq(x_1311.var_display, "grid")) {
                                 return true;
                               } else {
                                 return Panic();
@@ -215,37 +215,37 @@ auto eval_expr_x_932(const auto &x_1321) {
     }
   }
 }
-auto var_modified_x_930(const auto &x_1398) { return MakeUnit(); }
-auto eval_expr_x_927(const auto &x_1400) {
-  return ((not(x_1400.parent == nullptr) || (*(x_1400.parent)).var_visible) &&
-          (neq(x_1400.var_display, "none") && (not(x_1400.var_inside_svg) && not(x_1400.var_disabled))));
+auto var_modified_x_921(const auto &x_1388) { return MakeUnit(); }
+auto eval_expr_x_918(const auto &x_1390) {
+  return ((not(x_1390.parent == nullptr) || (*(x_1390.parent)).var_visible) &&
+          (neq(x_1390.var_display, "none") && (not(x_1390.var_inside_svg) && not(x_1390.var_disabled))));
 }
-auto var_modified_x_925(const auto &x_1417) { return MakeUnit(); }
-auto eval_expr_x_922(const auto &x_1425) {
-  if (eq(x_1425.name, "NOSCRIPT")) {
+auto var_modified_x_916(const auto &x_1407) { return MakeUnit(); }
+auto eval_expr_x_913(const auto &x_1415) {
+  if (eq(x_1415.name, "NOSCRIPT")) {
     return true;
   } else {
-    return ((x_1425.parent == nullptr) && (*(x_1425.parent)).var_disabled);
+    return ((x_1415.parent == nullptr) && (*(x_1415.parent)).var_disabled);
   }
 }
-auto var_modified_x_920(const auto &x_1430) { return MakeUnit(); }
-auto eval_expr_x_917(const auto &x_1438) {
-  return ((x_1438.parent == nullptr) && ((*(x_1438.parent)).var_is_svg_block || (*(x_1438.parent)).var_inside_svg));
+auto var_modified_x_911(const auto &x_1420) { return MakeUnit(); }
+auto eval_expr_x_908(const auto &x_1428) {
+  return ((x_1428.parent == nullptr) && ((*(x_1428.parent)).var_is_svg_block || (*(x_1428.parent)).var_inside_svg));
 }
-auto var_modified_x_915(const auto &x_1447) { return MakeUnit(); }
-auto eval_expr_x_912(const auto &x_1449) { return eq(x_1449.name, "svg"); }
-auto var_modified_x_910(const auto &x_1450) { return MakeUnit(); }
-auto eval_expr_x_907(const auto &x_1459) { return neq(x_1459.var_height_attr_expr, "auto"); }
-auto var_modified_x_905(const auto &x_1464) { return MakeUnit(); }
-auto eval_expr_x_902(const auto &x_1472) {
-  if (not(IsSome(HashtblFind(x_1472.attr, "height")))) {
+auto var_modified_x_906(const auto &x_1437) { return MakeUnit(); }
+auto eval_expr_x_903(const auto &x_1439) { return eq(x_1439.name, "svg"); }
+auto var_modified_x_901(const auto &x_1440) { return MakeUnit(); }
+auto eval_expr_x_898(const auto &x_1449) { return neq(x_1449.var_height_attr_expr, "auto"); }
+auto var_modified_x_896(const auto &x_1454) { return MakeUnit(); }
+auto eval_expr_x_893(const auto &x_1462) {
+  if (not(IsSome(HashtblFind(x_1462.attr, "height")))) {
     return "auto";
   } else {
-    if (string_is_float(HashtblForceFind(x_1472.attr, "height")) ||
-        has_suffix(HashtblForceFind(x_1472.attr, "height"), "%")) {
-      return HashtblForceFind(x_1472.attr, "height");
+    if (string_is_float(HashtblForceFind(x_1462.attr, "height")) ||
+        has_suffix(HashtblForceFind(x_1462.attr, "height"), "%")) {
+      return HashtblForceFind(x_1462.attr, "height");
     } else {
-      if (eq(HashtblForceFind(x_1472.attr, "height"), "Auto")) {
+      if (eq(HashtblForceFind(x_1462.attr, "height"), "Auto")) {
         return "auto";
       } else {
         return Panic();
@@ -253,18 +253,18 @@ auto eval_expr_x_902(const auto &x_1472) {
     }
   }
 }
-auto var_modified_x_900(const auto &x_1483) { return MakeUnit(); }
-auto eval_expr_x_897(const auto &x_1493) { return neq(x_1493.var_width_attr_expr, "auto"); }
-auto var_modified_x_895(const auto &x_1498) { return MakeUnit(); }
-auto eval_expr_x_892(const auto &x_1506) {
-  if (not(IsSome(HashtblFind(x_1506.attr, "width")))) {
+auto var_modified_x_891(const auto &x_1473) { return MakeUnit(); }
+auto eval_expr_x_888(const auto &x_1483) { return neq(x_1483.var_width_attr_expr, "auto"); }
+auto var_modified_x_886(const auto &x_1488) { return MakeUnit(); }
+auto eval_expr_x_883(const auto &x_1496) {
+  if (not(IsSome(HashtblFind(x_1496.attr, "width")))) {
     return "auto";
   } else {
-    if (string_is_float(HashtblForceFind(x_1506.attr, "width")) ||
-        has_suffix(HashtblForceFind(x_1506.attr, "width"), "%")) {
-      return HashtblForceFind(x_1506.attr, "width");
+    if (string_is_float(HashtblForceFind(x_1496.attr, "width")) ||
+        has_suffix(HashtblForceFind(x_1496.attr, "width"), "%")) {
+      return HashtblForceFind(x_1496.attr, "width");
     } else {
-      if (eq(HashtblForceFind(x_1506.attr, "width"), "Auto")) {
+      if (eq(HashtblForceFind(x_1496.attr, "width"), "Auto")) {
         return "auto";
       } else {
         return Panic();
@@ -272,15 +272,15 @@ auto eval_expr_x_892(const auto &x_1506) {
     }
   }
 }
-auto var_modified_x_890(const auto &x_1517) { return MakeUnit(); }
-auto eval_expr_x_887(const auto &x_1520) {
-  if ((x_1520.parent == nullptr) &&
-      (eq((*(x_1520.parent)).var_display, "flex") || eq((*(x_1520.parent)).var_display, "inline-flex"))) {
-    if (eq((*(x_1520.parent)).var_flex_direction, "column") ||
-        eq((*(x_1520.parent)).var_flex_direction, "column-reverse")) {
+auto var_modified_x_881(const auto &x_1507) { return MakeUnit(); }
+auto eval_expr_x_878(const auto &x_1510) {
+  if ((x_1510.parent == nullptr) &&
+      (eq((*(x_1510.parent)).var_display, "flex") || eq((*(x_1510.parent)).var_display, "inline-flex"))) {
+    if (eq((*(x_1510.parent)).var_flex_direction, "column") ||
+        eq((*(x_1510.parent)).var_flex_direction, "column-reverse")) {
       return true;
     } else {
-      if (eq((*(x_1520.parent)).var_flex_direction, "row")) {
+      if (eq((*(x_1510.parent)).var_flex_direction, "row")) {
         return false;
       } else {
         return Panic();
@@ -290,15 +290,15 @@ auto eval_expr_x_887(const auto &x_1520) {
     return false;
   }
 }
-auto var_modified_x_885(const auto &x_1545) { return MakeUnit(); }
-auto eval_expr_x_882(const auto &x_1549) {
-  if ((x_1549.parent == nullptr) &&
-      (eq((*(x_1549.parent)).var_display, "flex") || eq((*(x_1549.parent)).var_display, "inline-flex"))) {
-    if (eq((*(x_1549.parent)).var_flex_direction, "row")) {
+auto var_modified_x_876(const auto &x_1535) { return MakeUnit(); }
+auto eval_expr_x_873(const auto &x_1539) {
+  if ((x_1539.parent == nullptr) &&
+      (eq((*(x_1539.parent)).var_display, "flex") || eq((*(x_1539.parent)).var_display, "inline-flex"))) {
+    if (eq((*(x_1539.parent)).var_flex_direction, "row")) {
       return true;
     } else {
-      if (eq((*(x_1549.parent)).var_flex_direction, "column") ||
-          eq((*(x_1549.parent)).var_flex_direction, "column-reverse")) {
+      if (eq((*(x_1539.parent)).var_flex_direction, "column") ||
+          eq((*(x_1539.parent)).var_flex_direction, "column-reverse")) {
         return false;
       } else {
         return Panic();
@@ -308,114 +308,114 @@ auto eval_expr_x_882(const auto &x_1549) {
     return false;
   }
 }
-auto var_modified_x_880(const auto &x_1574) { return MakeUnit(); }
-auto eval_expr_x_877(const auto &x_1581) {
-  if (IsSome(HashtblFind(x_1581.prop, "flex-direction"))) {
-    return HashtblForceFind(x_1581.prop, "flex-direction");
+auto var_modified_x_871(const auto &x_1564) { return MakeUnit(); }
+auto eval_expr_x_868(const auto &x_1571) {
+  if (IsSome(HashtblFind(x_1571.prop, "flex-direction"))) {
+    return HashtblForceFind(x_1571.prop, "flex-direction");
   } else {
     return "";
   }
 }
-auto var_modified_x_875(const auto &x_1584) { return MakeUnit(); }
-auto eval_expr_x_872(const auto &x_1589) {
-  return plus((x_1589.prev == nullptr) ? ((*(x_1589.prev)).var_flex_shrink_sum) : (0.), x_1589.var_flex_shrink);
+auto var_modified_x_866(const auto &x_1574) { return MakeUnit(); }
+auto eval_expr_x_863(const auto &x_1579) {
+  return plus((x_1579.prev == nullptr) ? ((*(x_1579.prev)).var_flex_shrink_sum) : (0.), x_1579.var_flex_shrink);
 }
-auto var_modified_x_870(const auto &x_1598) { return MakeUnit(); }
-auto eval_expr_x_867(const auto &x_1603) {
-  return plus((x_1603.prev == nullptr) ? ((*(x_1603.prev)).var_flex_grow_sum) : (0.), x_1603.var_flex_grow);
+auto var_modified_x_861(const auto &x_1588) { return MakeUnit(); }
+auto eval_expr_x_858(const auto &x_1593) {
+  return plus((x_1593.prev == nullptr) ? ((*(x_1593.prev)).var_flex_grow_sum) : (0.), x_1593.var_flex_grow);
 }
-auto var_modified_x_865(const auto &x_1612) { return MakeUnit(); }
-auto eval_expr_x_862(const auto &x_1615) {
-  if (IsSome(HashtblFind(x_1615.prop, "flex-shrink"))) {
-    return string_to_float(HashtblForceFind(x_1615.prop, "flex-shrink"));
+auto var_modified_x_856(const auto &x_1602) { return MakeUnit(); }
+auto eval_expr_x_853(const auto &x_1605) {
+  if (IsSome(HashtblFind(x_1605.prop, "flex-shrink"))) {
+    return string_to_float(HashtblForceFind(x_1605.prop, "flex-shrink"));
   } else {
     return 0.;
   }
 }
-auto var_modified_x_860(const auto &x_1618) { return MakeUnit(); }
-auto eval_expr_x_857(const auto &x_1621) {
-  if (IsSome(HashtblFind(x_1621.prop, "flex-grow"))) {
-    return string_to_float(HashtblForceFind(x_1621.prop, "flex-grow"));
+auto var_modified_x_851(const auto &x_1608) { return MakeUnit(); }
+auto eval_expr_x_848(const auto &x_1611) {
+  if (IsSome(HashtblFind(x_1611.prop, "flex-grow"))) {
+    return string_to_float(HashtblForceFind(x_1611.prop, "flex-grow"));
   } else {
     return 0.;
   }
 }
-auto var_modified_x_855(const auto &x_1624) { return MakeUnit(); }
-auto eval_expr_x_852(const auto &x_1630) {
-  if (IsSome(HashtblFind(x_1630.prop, "position"))) {
-    return HashtblForceFind(x_1630.prop, "position");
+auto var_modified_x_846(const auto &x_1614) { return MakeUnit(); }
+auto eval_expr_x_843(const auto &x_1620) {
+  if (IsSome(HashtblFind(x_1620.prop, "position"))) {
+    return HashtblForceFind(x_1620.prop, "position");
   } else {
     return "static";
   }
 }
-auto var_modified_x_850(const auto &x_1633) { return MakeUnit(); }
-auto eval_expr_x_847(const auto &x_1659) {
-  if (IsSome(HashtblFind(x_1659.prop, "display"))) {
-    return HashtblForceFind(x_1659.prop, "display");
+auto var_modified_x_841(const auto &x_1623) { return MakeUnit(); }
+auto eval_expr_x_838(const auto &x_1649) {
+  if (IsSome(HashtblFind(x_1649.prop, "display"))) {
+    return HashtblForceFind(x_1649.prop, "display");
   } else {
     return "block";
   }
 }
-auto var_modified_x_843(const auto &x_1662) { return MakeUnit(); }
-auto eval_expr_x_840(const auto &x_1672) {
-  if (x_1672.prev == nullptr) {
-    if (x_1672.var_line_break) {
-      return plus((*(x_1672.prev)).var_finished_intrinsic_height_sum,
-                  plus((*(x_1672.prev)).var_intrinsic_current_line_height, x_1672.var_intrinsic_height_external));
+auto var_modified_x_835(const auto &x_1652) { return MakeUnit(); }
+auto eval_expr_x_832(const auto &x_1662) {
+  if (x_1662.prev == nullptr) {
+    if (x_1662.var_line_break) {
+      return plus((*(x_1662.prev)).var_finished_intrinsic_height_sum,
+                  plus((*(x_1662.prev)).var_intrinsic_current_line_height, x_1662.var_intrinsic_height_external));
     } else {
-      return (*(x_1672.prev)).var_finished_intrinsic_height_sum;
+      return (*(x_1662.prev)).var_finished_intrinsic_height_sum;
     }
   } else {
-    if (x_1672.var_line_break) {
-      return x_1672.var_intrinsic_height_external;
+    if (x_1662.var_line_break) {
+      return x_1662.var_intrinsic_height_external;
     } else {
       return 0.;
     }
   }
 }
-auto var_modified_x_838(const auto &x_1701) { return MakeUnit(); }
-auto eval_expr_x_835(const auto &x_1711) {
-  if (x_1711.var_line_break) {
+auto var_modified_x_830(const auto &x_1691) { return MakeUnit(); }
+auto eval_expr_x_827(const auto &x_1701) {
+  if (x_1701.var_line_break) {
     return 0.;
   } else {
-    return max(x_1711.var_intrinsic_height_external,
-               (x_1711.prev == nullptr) ? ((*(x_1711.prev)).var_intrinsic_current_line_height) : (0.));
+    return max(x_1701.var_intrinsic_height_external,
+               (x_1701.prev == nullptr) ? ((*(x_1701.prev)).var_intrinsic_current_line_height) : (0.));
   }
 }
-auto var_modified_x_833(const auto &x_1724) { return MakeUnit(); }
-auto eval_expr_x_830(const auto &x_1731) {
-  return plus((x_1731.prev == nullptr) ? ((*(x_1731.prev)).var_intrinsic_height_sum) : (0.),
-              x_1731.var_intrinsic_height_external);
+auto var_modified_x_825(const auto &x_1714) { return MakeUnit(); }
+auto eval_expr_x_822(const auto &x_1721) {
+  return plus((x_1721.prev == nullptr) ? ((*(x_1721.prev)).var_intrinsic_height_sum) : (0.),
+              x_1721.var_intrinsic_height_external);
 }
-auto var_modified_x_828(const auto &x_1740) { return MakeUnit(); }
-auto eval_expr_x_825(const auto &x_1745) {
-  if (eq(x_1745.var_position, "absolute")) {
+auto var_modified_x_820(const auto &x_1730) { return MakeUnit(); }
+auto eval_expr_x_817(const auto &x_1735) {
+  if (eq(x_1735.var_position, "absolute")) {
     return 0.;
   } else {
-    return x_1745.var_intrinsic_height_internal;
+    return x_1735.var_intrinsic_height_internal;
   }
 }
-auto var_modified_x_823(const auto &x_1754) { return MakeUnit(); }
-auto eval_expr_x_820(const auto &x_1759) {
-  if (eq(x_1759.var_display, "none")) {
+auto var_modified_x_815(const auto &x_1744) { return MakeUnit(); }
+auto eval_expr_x_812(const auto &x_1749) {
+  if (eq(x_1749.var_display, "none")) {
     return 0.;
   } else {
-    if (x_1759.var_inside_svg) {
+    if (x_1749.var_inside_svg) {
       return 0.;
     } else {
-      if (x_1759.var_disabled) {
+      if (x_1749.var_disabled) {
         return 0.;
       } else {
-        if (neq(x_1759.var_height_expr, "auto") &&
-            (not(has_suffix(x_1759.var_height_expr, "%")) && neq(x_1759.var_height_expr, "fit-content"))) {
-          if (has_suffix(x_1759.var_height_expr, "px")) {
-            return string_to_float(strip_suffix(x_1759.var_height_expr, "px"));
+        if (neq(x_1749.var_height_expr, "auto") &&
+            (not(has_suffix(x_1749.var_height_expr, "%")) && neq(x_1749.var_height_expr, "fit-content"))) {
+          if (has_suffix(x_1749.var_height_expr, "px")) {
+            return string_to_float(strip_suffix(x_1749.var_height_expr, "px"));
           } else {
-            if (has_suffix(x_1759.var_height_expr, "ch")) {
-              return string_to_float(strip_suffix(x_1759.var_height_expr, "ch"));
+            if (has_suffix(x_1749.var_height_expr, "ch")) {
+              return string_to_float(strip_suffix(x_1749.var_height_expr, "ch"));
             } else {
-              if (has_suffix(x_1759.var_height_expr, "lh")) {
-                return string_to_float(strip_suffix(x_1759.var_height_expr, "lh"));
+              if (has_suffix(x_1749.var_height_expr, "lh")) {
+                return string_to_float(strip_suffix(x_1749.var_height_expr, "lh"));
               } else {
                 return Panic();
               }
@@ -423,69 +423,68 @@ auto eval_expr_x_820(const auto &x_1759) {
           }
         } else {
           return plus(
-              x_1759.var_children_intrinsic_height,
-              (eq(x_1759.name, "#text"))
-                  ? ((IsSome(ListHead(x_1759.children))) ? (Panic()) : (10.))
-                  : ((x_1759.var_is_default_case)
+              x_1749.var_children_intrinsic_height,
+              (eq(x_1749.name, "#text"))
+                  ? ((IsSome(ListHead(x_1749.children))) ? (Panic()) : (10.))
+                  : ((x_1749.var_is_default_case)
                          ? (0.)
-                         : ((eq(x_1759.name, "BR"))
-                                ? ((IsSome(ListHead(x_1759.children))) ? (Panic()) : (0.))
-                                : ((eq(x_1759.name, "INPUT"))
+                         : ((eq(x_1749.name, "BR"))
+                                ? ((IsSome(ListHead(x_1749.children))) ? (Panic()) : (0.))
+                                : ((eq(x_1749.name, "INPUT"))
                                        ? (10.)
-                                       : ((eq(x_1759.name, "svg"))
-                                              ? ((x_1759.var_has_height_attr &&
-                                                  string_is_float(x_1759.var_height_attr_expr))
-                                                     ? (string_to_float(x_1759.var_height_attr_expr))
-                                                     : ((IsSome(HashtblFind(x_1759.attr, "viewBox")))
-                                                            ? (string_to_float(
-                                                                  nth_by_sep(HashtblForceFind(x_1759.attr, "viewBox"),
-                                                                             " ", VInt(3))))
-                                                            : ((x_1759.var_has_height_attr &&
-                                                                (has_suffix(x_1759.var_height_attr_expr, "%") &&
-                                                                 IsSome(HashtblFind(x_1759.attr, "viewBox"))))
+                                       : ((eq(x_1749.name, "svg"))
+                                              ? ((x_1749.var_has_height_attr &&
+                                                  string_is_float(x_1749.var_height_attr_expr))
+                                                     ? (string_to_float(x_1749.var_height_attr_expr))
+                                                     : ((IsSome(HashtblFind(x_1749.attr, "viewBox")))
+                                                            ? (string_to_float(nth_by_sep(
+                                                                  HashtblForceFind(x_1749.attr, "viewBox"), " ", 3)))
+                                                            : ((x_1749.var_has_height_attr &&
+                                                                (has_suffix(x_1749.var_height_attr_expr, "%") &&
+                                                                 IsSome(HashtblFind(x_1749.attr, "viewBox"))))
                                                                    ? (mult(
                                                                          string_to_float(nth_by_sep(
-                                                                             HashtblForceFind(x_1759.attr, "viewBox"),
-                                                                             " ", VInt(3))),
+                                                                             HashtblForceFind(x_1749.attr, "viewBox"),
+                                                                             " ", 3)),
                                                                          divide(string_to_float(strip_suffix(
-                                                                                    x_1759.var_height_attr_expr, "%")),
+                                                                                    x_1749.var_height_attr_expr, "%")),
                                                                                 100.)))
                                                                    : (Panic()))))
-                                              : ((eq(x_1759.name, "IMG"))
-                                                     ? ((x_1759.var_has_height_attr)
-                                                            ? (string_to_float(x_1759.var_height_attr_expr))
-                                                            : ((IsSome(HashtblFind(x_1759.attr, "image_height")) &&
-                                                                not(x_1759.var_has_width_attr))
+                                              : ((eq(x_1749.name, "IMG"))
+                                                     ? ((x_1749.var_has_height_attr)
+                                                            ? (string_to_float(x_1749.var_height_attr_expr))
+                                                            : ((IsSome(HashtblFind(x_1749.attr, "image_height")) &&
+                                                                not(x_1749.var_has_width_attr))
                                                                    ? (int_to_float(
-                                                                         HashtblForceFind(x_1759.attr, "image_height")))
-                                                                   : ((x_1759.var_has_width_attr &&
-                                                                       (not(x_1759.var_has_height_attr) &&
+                                                                         HashtblForceFind(x_1749.attr, "image_height")))
+                                                                   : ((x_1749.var_has_width_attr &&
+                                                                       (not(x_1749.var_has_height_attr) &&
                                                                         (IsSome(
-                                                                             HashtblFind(x_1759.attr, "image_width")) &&
-                                                                         IsSome(HashtblFind(x_1759.attr,
+                                                                             HashtblFind(x_1749.attr, "image_width")) &&
+                                                                         IsSome(HashtblFind(x_1749.attr,
                                                                                             "image_height")))))
-                                                                          ? ((neq(HashtblForceFind(x_1759.attr,
+                                                                          ? ((neq(HashtblForceFind(x_1749.attr,
                                                                                                    "image_width"),
-                                                                                  VInt(0)))
+                                                                                  0))
                                                                                  ? (mult(
                                                                                        string_to_float(
-                                                                                           x_1759.var_width_attr_expr),
+                                                                                           x_1749.var_width_attr_expr),
                                                                                        divide(int_to_float(
                                                                                                   HashtblForceFind(
-                                                                                                      x_1759.attr,
+                                                                                                      x_1749.attr,
                                                                                                       "image_height")),
                                                                                               int_to_float(
                                                                                                   HashtblForceFind(
-                                                                                                      x_1759.attr,
+                                                                                                      x_1749.attr,
                                                                                                       "image_width")))))
                                                                                  : (0.))
                                                                           : (Panic()))))
-                                                     : ((eq(x_1759.name, "IFRAME"))
-                                                            ? ((x_1759.var_has_height_attr) ? (Panic()) : (150.))
-                                                            : ((eq(x_1759.name, "TEXTAREA"))
+                                                     : ((eq(x_1749.name, "IFRAME"))
+                                                            ? ((x_1749.var_has_height_attr) ? (Panic()) : (150.))
+                                                            : ((eq(x_1749.name, "TEXTAREA"))
                                                                    ? (100.)
-                                                                   : ((eq(x_1759.name, "VIDEO"))
-                                                                          ? ((x_1759.var_has_height_attr) ? (Panic())
+                                                                   : ((eq(x_1749.name, "VIDEO"))
+                                                                          ? ((x_1749.var_has_height_attr) ? (Panic())
                                                                                                           : (150.))
                                                                           : (Panic()))))))))));
         }
@@ -493,21 +492,21 @@ auto eval_expr_x_820(const auto &x_1759) {
     }
   }
 }
-auto var_modified_x_818(const auto &x_1904) { return MakeUnit(); }
-auto eval_expr_x_815(const auto &x_1906) {
-  if (eq(x_1906.var_display, "none") || (x_1906.var_inside_svg || x_1906.var_disabled)) {
+auto var_modified_x_810(const auto &x_1894) { return MakeUnit(); }
+auto eval_expr_x_807(const auto &x_1896) {
+  if (eq(x_1896.var_display, "none") || (x_1896.var_inside_svg || x_1896.var_disabled)) {
     return true;
   } else {
-    if ((x_1906.parent == nullptr) && (*(x_1906.parent)).var_is_flex_column) {
+    if ((x_1896.parent == nullptr) && (*(x_1896.parent)).var_is_flex_column) {
       return false;
     } else {
-      if (eq(x_1906.var_height_expr, "auto") ||
-          (has_suffix(x_1906.var_height_expr, "px") ||
-           (has_suffix(x_1906.var_height_expr, "ch") ||
-            (has_suffix(x_1906.var_height_expr, "lh") || eq(x_1906.var_height_expr, "max-content"))))) {
+      if (eq(x_1896.var_height_expr, "auto") ||
+          (has_suffix(x_1896.var_height_expr, "px") ||
+           (has_suffix(x_1896.var_height_expr, "ch") ||
+            (has_suffix(x_1896.var_height_expr, "lh") || eq(x_1896.var_height_expr, "max-content"))))) {
         return true;
       } else {
-        if (has_suffix(x_1906.var_height_expr, "%") || eq(x_1906.var_height_expr, "fit-content")) {
+        if (has_suffix(x_1896.var_height_expr, "%") || eq(x_1896.var_height_expr, "fit-content")) {
           return false;
         } else {
           return Panic();
@@ -516,138 +515,137 @@ auto eval_expr_x_815(const auto &x_1906) {
     }
   }
 }
-auto var_modified_x_813(const auto &x_1955) { return MakeUnit(); }
-auto eval_expr_x_810(const auto &x_1975) {
-  if (IsSome(HashtblFind(x_1975.prop, "height"))) {
-    return HashtblForceFind(x_1975.prop, "height");
+auto var_modified_x_805(const auto &x_1945) { return MakeUnit(); }
+auto eval_expr_x_802(const auto &x_1965) {
+  if (IsSome(HashtblFind(x_1965.prop, "height"))) {
+    return HashtblForceFind(x_1965.prop, "height");
   } else {
     return "auto";
   }
 }
-auto var_modified_x_808(const auto &x_1978) { return MakeUnit(); }
-auto eval_expr_x_805(const auto &x_1980) {
-  if (IsSome(ListLast(x_1980.children))) {
-    return plus(UnSome(ListLast(x_1980.children)).var_finished_intrinsic_height_sum,
-                UnSome(ListLast(x_1980.children)).var_intrinsic_current_line_height);
+auto var_modified_x_800(const auto &x_1968) { return MakeUnit(); }
+auto eval_expr_x_797(const auto &x_1970) {
+  if (IsSome(ListLast(x_1970.children))) {
+    return plus(UnSome(ListLast(x_1970.children)).var_finished_intrinsic_height_sum,
+                UnSome(ListLast(x_1970.children)).var_intrinsic_current_line_height);
   } else {
     return 0.;
   }
 }
-auto var_modified_x_803(const auto &x_1989) { return MakeUnit(); }
-auto eval_expr_x_800(const auto &x_1996) {
-  return plus((x_1996.prev == nullptr) ? ((*(x_1996.prev)).var_intrinsic_width_sum) : (0.),
-              x_1996.var_intrinsic_width_external);
+auto var_modified_x_795(const auto &x_1979) { return MakeUnit(); }
+auto eval_expr_x_792(const auto &x_1986) {
+  return plus((x_1986.prev == nullptr) ? ((*(x_1986.prev)).var_intrinsic_width_sum) : (0.),
+              x_1986.var_intrinsic_width_external);
 }
-auto var_modified_x_798(const auto &x_2005) { return MakeUnit(); }
-auto eval_expr_x_795(const auto &x_2012) {
-  return max(x_2012.var_intrinsic_current_line_width,
-             (x_2012.prev == nullptr) ? ((*(x_2012.prev)).var_intrinsic_width_max) : (0.));
+auto var_modified_x_790(const auto &x_1995) { return MakeUnit(); }
+auto eval_expr_x_787(const auto &x_2002) {
+  return max(x_2002.var_intrinsic_current_line_width,
+             (x_2002.prev == nullptr) ? ((*(x_2002.prev)).var_intrinsic_width_max) : (0.));
 }
-auto var_modified_x_793(const auto &x_2021) { return MakeUnit(); }
-auto eval_expr_x_790(const auto &x_2026) {
-  return plus(x_2026.var_intrinsic_width_external,
-              ((x_2026.prev == nullptr) && not((*(x_2026.prev)).var_line_break))
-                  ? ((*(x_2026.prev)).var_intrinsic_current_line_width)
+auto var_modified_x_785(const auto &x_2011) { return MakeUnit(); }
+auto eval_expr_x_782(const auto &x_2016) {
+  return plus(x_2016.var_intrinsic_width_external,
+              ((x_2016.prev == nullptr) && not((*(x_2016.prev)).var_line_break))
+                  ? ((*(x_2016.prev)).var_intrinsic_current_line_width)
                   : (0.));
 }
-auto var_modified_x_788(const auto &x_2039) { return MakeUnit(); }
-auto eval_expr_x_785(const auto &x_2042) {
-  if (eq(x_2042.var_position, "absolute")) {
+auto var_modified_x_780(const auto &x_2029) { return MakeUnit(); }
+auto eval_expr_x_777(const auto &x_2032) {
+  if (eq(x_2032.var_position, "absolute")) {
     return 0.;
   } else {
-    return x_2042.var_intrinsic_width_internal;
+    return x_2032.var_intrinsic_width_internal;
   }
 }
-auto var_modified_x_783(const auto &x_2051) { return MakeUnit(); }
-auto eval_expr_x_780(const auto &x_2056) {
-  if (eq(x_2056.var_display, "none")) {
+auto var_modified_x_775(const auto &x_2041) { return MakeUnit(); }
+auto eval_expr_x_772(const auto &x_2046) {
+  if (eq(x_2046.var_display, "none")) {
     return 0.;
   } else {
-    if (x_2056.var_inside_svg) {
+    if (x_2046.var_inside_svg) {
       return 0.;
     } else {
-      if (x_2056.var_disabled) {
+      if (x_2046.var_disabled) {
         return 0.;
       } else {
-        if (neq(x_2056.var_width_expr, "auto") &&
-            (not(has_suffix(x_2056.var_width_expr, "%")) &&
-             (neq(x_2056.var_width_expr, "fit-content") &&
-              (neq(x_2056.var_width_expr, "max-content") && not(has_prefix(x_2056.var_width_expr, "calc")))))) {
-          if (has_suffix(x_2056.var_width_expr, "px")) {
-            return string_to_float(strip_suffix(x_2056.var_width_expr, "px"));
+        if (neq(x_2046.var_width_expr, "auto") &&
+            (not(has_suffix(x_2046.var_width_expr, "%")) &&
+             (neq(x_2046.var_width_expr, "fit-content") &&
+              (neq(x_2046.var_width_expr, "max-content") && not(has_prefix(x_2046.var_width_expr, "calc")))))) {
+          if (has_suffix(x_2046.var_width_expr, "px")) {
+            return string_to_float(strip_suffix(x_2046.var_width_expr, "px"));
           } else {
-            if (has_suffix(x_2056.var_width_expr, "ch")) {
-              return string_to_float(strip_suffix(x_2056.var_width_expr, "ch"));
+            if (has_suffix(x_2046.var_width_expr, "ch")) {
+              return string_to_float(strip_suffix(x_2046.var_width_expr, "ch"));
             } else {
               return Panic();
             }
           }
         } else {
           return plus(
-              x_2056.var_children_intrinsic_width,
-              (eq(x_2056.name, "#text"))
-                  ? ((IsSome(ListHead(x_2056.children))) ? (Panic()) : (100.))
-                  : ((x_2056.var_is_default_case)
+              x_2046.var_children_intrinsic_width,
+              (eq(x_2046.name, "#text"))
+                  ? ((IsSome(ListHead(x_2046.children))) ? (Panic()) : (100.))
+                  : ((x_2046.var_is_default_case)
                          ? (0.)
-                         : ((eq(x_2056.name, "BR"))
-                                ? ((IsSome(ListHead(x_2056.children))) ? (Panic()) : (0.))
-                                : ((eq(x_2056.name, "INPUT"))
+                         : ((eq(x_2046.name, "BR"))
+                                ? ((IsSome(ListHead(x_2046.children))) ? (Panic()) : (0.))
+                                : ((eq(x_2046.name, "INPUT"))
                                        ? (100.)
-                                       : ((eq(x_2056.name, "svg"))
-                                              ? ((x_2056.var_has_width_attr &&
-                                                  string_is_float(x_2056.var_width_attr_expr))
-                                                     ? (string_to_float(x_2056.var_width_attr_expr))
-                                                     : ((not(x_2056.var_has_width_attr) &&
-                                                         IsSome(HashtblFind(x_2056.attr, "viewBox")))
-                                                            ? (string_to_float(
-                                                                  nth_by_sep(HashtblForceFind(x_2056.attr, "viewBox"),
-                                                                             " ", VInt(2))))
-                                                            : ((x_2056.var_has_width_attr &&
-                                                                (has_suffix(x_2056.var_width_attr_expr, "%") &&
-                                                                 IsSome(HashtblFind(x_2056.attr, "viewBox"))))
+                                       : ((eq(x_2046.name, "svg"))
+                                              ? ((x_2046.var_has_width_attr &&
+                                                  string_is_float(x_2046.var_width_attr_expr))
+                                                     ? (string_to_float(x_2046.var_width_attr_expr))
+                                                     : ((not(x_2046.var_has_width_attr) &&
+                                                         IsSome(HashtblFind(x_2046.attr, "viewBox")))
+                                                            ? (string_to_float(nth_by_sep(
+                                                                  HashtblForceFind(x_2046.attr, "viewBox"), " ", 2)))
+                                                            : ((x_2046.var_has_width_attr &&
+                                                                (has_suffix(x_2046.var_width_attr_expr, "%") &&
+                                                                 IsSome(HashtblFind(x_2046.attr, "viewBox"))))
                                                                    ? (mult(string_to_float(nth_by_sep(
-                                                                               HashtblForceFind(x_2056.attr, "viewBox"),
-                                                                               " ", VInt(2))),
+                                                                               HashtblForceFind(x_2046.attr, "viewBox"),
+                                                                               " ", 2)),
                                                                            divide(string_to_float(strip_suffix(
-                                                                                      x_2056.var_width_attr_expr, "%")),
+                                                                                      x_2046.var_width_attr_expr, "%")),
                                                                                   100.)))
                                                                    : (Panic()))))
-                                              : ((eq(x_2056.name, "IMG"))
-                                                     ? ((x_2056.var_has_width_attr)
-                                                            ? (string_to_float(x_2056.var_width_attr_expr))
-                                                            : ((IsSome(HashtblFind(x_2056.attr, "image_width")) &&
-                                                                not(x_2056.var_has_height_attr))
+                                              : ((eq(x_2046.name, "IMG"))
+                                                     ? ((x_2046.var_has_width_attr)
+                                                            ? (string_to_float(x_2046.var_width_attr_expr))
+                                                            : ((IsSome(HashtblFind(x_2046.attr, "image_width")) &&
+                                                                not(x_2046.var_has_height_attr))
                                                                    ? (int_to_float(
-                                                                         HashtblForceFind(x_2056.attr, "image_width")))
-                                                                   : ((not(x_2056.var_has_width_attr) &&
-                                                                       (x_2056.var_has_height_attr &&
+                                                                         HashtblForceFind(x_2046.attr, "image_width")))
+                                                                   : ((not(x_2046.var_has_width_attr) &&
+                                                                       (x_2046.var_has_height_attr &&
                                                                         (IsSome(
-                                                                             HashtblFind(x_2056.attr, "image_width")) &&
-                                                                         IsSome(HashtblFind(x_2056.attr,
+                                                                             HashtblFind(x_2046.attr, "image_width")) &&
+                                                                         IsSome(HashtblFind(x_2046.attr,
                                                                                             "image_height")))))
-                                                                          ? ((neq(HashtblForceFind(x_2056.attr,
+                                                                          ? ((neq(HashtblForceFind(x_2046.attr,
                                                                                                    "image_height"),
-                                                                                  VInt(0)))
+                                                                                  0))
                                                                                  ? (mult(
                                                                                        string_to_float(
-                                                                                           x_2056.var_height_attr_expr),
+                                                                                           x_2046.var_height_attr_expr),
                                                                                        divide(
                                                                                            int_to_float(
                                                                                                HashtblForceFind(
-                                                                                                   x_2056.attr,
+                                                                                                   x_2046.attr,
                                                                                                    "image_width")),
                                                                                            int_to_float(
                                                                                                HashtblForceFind(
-                                                                                                   x_2056.attr,
+                                                                                                   x_2046.attr,
                                                                                                    "image_height")))))
                                                                                  : (0.))
                                                                           : (Panic()))))
-                                                     : ((eq(x_2056.name, "IFRAME"))
-                                                            ? ((x_2056.var_has_width_attr) ? (Panic()) : (300.))
-                                                            : ((eq(x_2056.name, "TEXTAREA"))
+                                                     : ((eq(x_2046.name, "IFRAME"))
+                                                            ? ((x_2046.var_has_width_attr) ? (Panic()) : (300.))
+                                                            : ((eq(x_2046.name, "TEXTAREA"))
                                                                    ? (100.)
-                                                                   : ((eq(x_2056.name, "VIDEO"))
-                                                                          ? ((x_2056.var_has_width_attr) ? (Panic())
+                                                                   : ((eq(x_2046.name, "VIDEO"))
+                                                                          ? ((x_2046.var_has_width_attr) ? (Panic())
                                                                                                          : (300.))
                                                                           : (Panic()))))))))));
         }
@@ -655,29 +653,29 @@ auto eval_expr_x_780(const auto &x_2056) {
     }
   }
 }
-auto var_modified_x_778(const auto &x_2209) { return MakeUnit(); }
-auto eval_expr_x_775(const auto &x_2211) {
-  if (IsSome(ListLast(x_2211.children))) {
-    return UnSome(ListLast(x_2211.children)).var_intrinsic_width_max;
+auto var_modified_x_770(const auto &x_2199) { return MakeUnit(); }
+auto eval_expr_x_767(const auto &x_2201) {
+  if (IsSome(ListLast(x_2201.children))) {
+    return UnSome(ListLast(x_2201.children)).var_intrinsic_width_max;
   } else {
     return 0.;
   }
 }
-auto var_modified_x_773(const auto &x_2216) { return MakeUnit(); }
-auto eval_expr_x_770(const auto &x_2218) {
-  if (eq(x_2218.var_display, "none") || (x_2218.var_inside_svg || x_2218.var_disabled)) {
+auto var_modified_x_765(const auto &x_2206) { return MakeUnit(); }
+auto eval_expr_x_762(const auto &x_2208) {
+  if (eq(x_2208.var_display, "none") || (x_2208.var_inside_svg || x_2208.var_disabled)) {
     return true;
   } else {
-    if ((x_2218.parent == nullptr) && (*(x_2218.parent)).var_is_flex_row) {
+    if ((x_2208.parent == nullptr) && (*(x_2208.parent)).var_is_flex_row) {
       return false;
     } else {
-      if (eq(x_2218.var_width_expr, "auto") ||
-          (has_suffix(x_2218.var_width_expr, "px") ||
-           (has_suffix(x_2218.var_width_expr, "ch") ||
-            (has_prefix(x_2218.var_width_expr, "calc(") || eq(x_2218.var_width_expr, "max-content"))))) {
+      if (eq(x_2208.var_width_expr, "auto") ||
+          (has_suffix(x_2208.var_width_expr, "px") ||
+           (has_suffix(x_2208.var_width_expr, "ch") ||
+            (has_prefix(x_2208.var_width_expr, "calc(") || eq(x_2208.var_width_expr, "max-content"))))) {
         return true;
       } else {
-        if (has_suffix(x_2218.var_width_expr, "%") || eq(x_2218.var_width_expr, "fit-content")) {
+        if (has_suffix(x_2208.var_width_expr, "%") || eq(x_2208.var_width_expr, "fit-content")) {
           return false;
         } else {
           return Panic();
@@ -686,25 +684,25 @@ auto eval_expr_x_770(const auto &x_2218) {
     }
   }
 }
-auto var_modified_x_768(const auto &x_2267) { return MakeUnit(); }
-auto eval_expr_x_765(const auto &x_2270) {
-  if (eq(x_2270.var_display, "none")) {
+auto var_modified_x_760(const auto &x_2257) { return MakeUnit(); }
+auto eval_expr_x_757(const auto &x_2260) {
+  if (eq(x_2260.var_display, "none")) {
     return true;
   } else {
-    if (x_2270.var_inside_svg) {
+    if (x_2260.var_inside_svg) {
       return true;
     } else {
-      if (x_2270.var_disabled) {
+      if (x_2260.var_disabled) {
         return true;
-      } else {if ( eq(x_2270.name,"#document") || (eq(x_2270.name,"#shadow-root") || (eq(x_2270.name,"DIV") || (eq(x_2270.name,"HTML") || (eq(x_2270.name,"BODY") || (eq(x_2270.name,"BUTTON") || (eq(x_2270.name,"FOOTER") || (eq(x_2270.name,"SELECT") || (eq(x_2270.name,"SECTION") || (eq(x_2270.name,"FORM") || (eq(x_2270.name,"CENTER") || (eq(x_2270.name,"TD") || (eq(x_2270.name,"TR") || (eq(x_2270.name,"TBODY") || (eq(x_2270.name,"TABLE") || (eq(x_2270.name,"SPAN") || (eq(x_2270.name,"FONT") || (eq(x_2270.name,"A") || (eq(x_2270.name,"ARTICLE") || (eq(x_2270.name,"P") || (eq(x_2270.name,"U") || (eq(x_2270.name,"UL") || (eq(x_2270.name,"B") || (eq(x_2270.name,"H1") || (eq(x_2270.name,"H2") || (eq(x_2270.name,"H3") || (eq(x_2270.name,"H4") || (eq(x_2270.name,"DT") || (eq(x_2270.name,"DD") || (eq(x_2270.name,"DL") || (eq(x_2270.name,"LI") || (eq(x_2270.name,"LABEL") || (eq(x_2270.name,"OL") || (eq(x_2270.name,"NAV") || (eq(x_2270.name,"HEADER") || (eq(x_2270.name,"HEAD") || (eq(x_2270.name,"SOURCE") || (eq(x_2270.name,"PICTURE") || (eq(x_2270.name,"FIGURE") || (eq(x_2270.name,"FIGCAPTION") || (eq(x_2270.name,"MAIN") || (eq(x_2270.name,"REACT-PARTIAL") || (eq(x_2270.name,"QUERY-BUILDER") || (eq(x_2270.name,"MODAL-DIALOG") || (eq(x_2270.name,"SCROLLABLE-REGION") || (eq(x_2270.name,"DIALOG-HELPER") || (eq(x_2270.name,"AUTO-CHECK") || (eq(x_2270.name,"TOOL-TIP") || (eq(x_2270.name,"CUSTOM-SCOPES") || (eq(x_2270.name,"QBSEARCH-INPUT") || (eq(x_2270.name,"INCLUDE-FRAGMENT") || (eq(x_2270.name,"COOKIE-CONSENT-LINK") || (eq(x_2270.name,"FULLSTORY-CAPTURE") || (eq(x_2270.name,"GHCC-CONSENT") || (eq(x_2270.name,"GLOBAL-BANNER") || (eq(x_2270.name,"ACTIVE-GLOBAL-BANNERS") || (eq(x_2270.name,"CARD-SKEW") || (eq(x_2270.name,"EM") || (eq(x_2270.name,"ASIDE") || (eq(x_2270.name,"AUDIO") || (eq(x_2270.name,"SUP") || (eq(x_2270.name,"TIME") || (eq(x_2270.name,"ABBR") || (eq(x_2270.name,"SMALL") || (eq(x_2270.name,"SLOT") || eq(x_2270.name,"I"))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))) ){
+      } else {if ( eq(x_2260.name,"#document") || (eq(x_2260.name,"#shadow-root") || (eq(x_2260.name,"DIV") || (eq(x_2260.name,"HTML") || (eq(x_2260.name,"BODY") || (eq(x_2260.name,"BUTTON") || (eq(x_2260.name,"FOOTER") || (eq(x_2260.name,"SELECT") || (eq(x_2260.name,"SECTION") || (eq(x_2260.name,"FORM") || (eq(x_2260.name,"CENTER") || (eq(x_2260.name,"TD") || (eq(x_2260.name,"TR") || (eq(x_2260.name,"TBODY") || (eq(x_2260.name,"TABLE") || (eq(x_2260.name,"SPAN") || (eq(x_2260.name,"FONT") || (eq(x_2260.name,"A") || (eq(x_2260.name,"ARTICLE") || (eq(x_2260.name,"P") || (eq(x_2260.name,"U") || (eq(x_2260.name,"UL") || (eq(x_2260.name,"B") || (eq(x_2260.name,"H1") || (eq(x_2260.name,"H2") || (eq(x_2260.name,"H3") || (eq(x_2260.name,"H4") || (eq(x_2260.name,"DT") || (eq(x_2260.name,"DD") || (eq(x_2260.name,"DL") || (eq(x_2260.name,"LI") || (eq(x_2260.name,"LABEL") || (eq(x_2260.name,"OL") || (eq(x_2260.name,"NAV") || (eq(x_2260.name,"HEADER") || (eq(x_2260.name,"HEAD") || (eq(x_2260.name,"SOURCE") || (eq(x_2260.name,"PICTURE") || (eq(x_2260.name,"FIGURE") || (eq(x_2260.name,"FIGCAPTION") || (eq(x_2260.name,"MAIN") || (eq(x_2260.name,"REACT-PARTIAL") || (eq(x_2260.name,"QUERY-BUILDER") || (eq(x_2260.name,"MODAL-DIALOG") || (eq(x_2260.name,"SCROLLABLE-REGION") || (eq(x_2260.name,"DIALOG-HELPER") || (eq(x_2260.name,"AUTO-CHECK") || (eq(x_2260.name,"TOOL-TIP") || (eq(x_2260.name,"CUSTOM-SCOPES") || (eq(x_2260.name,"QBSEARCH-INPUT") || (eq(x_2260.name,"INCLUDE-FRAGMENT") || (eq(x_2260.name,"COOKIE-CONSENT-LINK") || (eq(x_2260.name,"FULLSTORY-CAPTURE") || (eq(x_2260.name,"GHCC-CONSENT") || (eq(x_2260.name,"GLOBAL-BANNER") || (eq(x_2260.name,"ACTIVE-GLOBAL-BANNERS") || (eq(x_2260.name,"CARD-SKEW") || (eq(x_2260.name,"EM") || (eq(x_2260.name,"ASIDE") || (eq(x_2260.name,"AUDIO") || (eq(x_2260.name,"SUP") || (eq(x_2260.name,"TIME") || (eq(x_2260.name,"ABBR") || (eq(x_2260.name,"SMALL") || (eq(x_2260.name,"SLOT") || eq(x_2260.name,"I"))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))) ){
           return true;
         } else {
-          if (eq(x_2270.name, "#text") ||
-              (eq(x_2270.name, "svg") ||
-               (eq(x_2270.name, "IFRAME") ||
-                (eq(x_2270.name, "INPUT") ||
-                 (eq(x_2270.name, "VIDEO") ||
-                  (eq(x_2270.name, "BR") || (eq(x_2270.name, "IMG") || eq(x_2270.name, "TEXTAREA")))))))) {
+          if (eq(x_2260.name, "#text") ||
+              (eq(x_2260.name, "svg") ||
+               (eq(x_2260.name, "IFRAME") ||
+                (eq(x_2260.name, "INPUT") ||
+                 (eq(x_2260.name, "VIDEO") ||
+                  (eq(x_2260.name, "BR") || (eq(x_2260.name, "IMG") || eq(x_2260.name, "TEXTAREA")))))))) {
             return false;
           } else {
             return Panic();
@@ -714,43 +712,43 @@ auto eval_expr_x_765(const auto &x_2270) {
     }
   }
 }
-auto var_modified_x_763(const auto &x_2283) { return MakeUnit(); }
-auto eval_expr_x_760(const auto &x_2303) {
-  if (IsSome(HashtblFind(x_2303.prop, "width"))) {
-    return HashtblForceFind(x_2303.prop, "width");
+auto var_modified_x_755(const auto &x_2273) { return MakeUnit(); }
+auto eval_expr_x_752(const auto &x_2293) {
+  if (IsSome(HashtblFind(x_2293.prop, "width"))) {
+    return HashtblForceFind(x_2293.prop, "width");
   } else {
     return "auto";
   }
 }
-auto var_modified_x_756(const auto &x_2306) { return MakeUnit(); }
-auto eval_expr_x_753(const auto &x_2313) {
-  if ((x_2313.prev == nullptr) && not((*(x_2313.prev)).var_line_break)) {
-    return max(x_2313.var_height_external, (*(x_2313.prev)).var_line_height);
+auto var_modified_x_749(const auto &x_2296) { return MakeUnit(); }
+auto eval_expr_x_746(const auto &x_2303) {
+  if ((x_2303.prev == nullptr) && not((*(x_2303.prev)).var_line_break)) {
+    return max(x_2303.var_height_external, (*(x_2303.prev)).var_line_height);
   } else {
-    return x_2313.var_height_external;
+    return x_2303.var_height_external;
   }
 }
-auto var_modified_x_751(const auto &x_2330) { return MakeUnit(); }
-auto eval_expr_x_748(const auto &x_2333) {
-  if (eq(x_2333.var_position, "absolute")) {
+auto var_modified_x_744(const auto &x_2320) { return MakeUnit(); }
+auto eval_expr_x_741(const auto &x_2323) {
+  if (eq(x_2323.var_position, "absolute")) {
     return 0.;
   } else {
-    return x_2333.var_height_internal;
+    return x_2323.var_height_internal;
   }
 }
-auto var_modified_x_746(const auto &x_2342) { return MakeUnit(); }
-auto eval_expr_x_743(const auto &x_2345) {
-  if (x_2345.var_intrinsic_height_is_height) {
-    return x_2345.var_intrinsic_height_internal;
+auto var_modified_x_739(const auto &x_2332) { return MakeUnit(); }
+auto eval_expr_x_736(const auto &x_2335) {
+  if (x_2335.var_intrinsic_height_is_height) {
+    return x_2335.var_intrinsic_height_internal;
   } else {
-    if ((x_2345.parent == nullptr) && (*(x_2345.parent)).var_is_flex_column) {
-      return plus(x_2345.var_intrinsic_height_internal, mult(x_2345.var_flex_amount, (*(x_2345.parent)).var_flex_unit));
+    if ((x_2335.parent == nullptr) && (*(x_2335.parent)).var_is_flex_column) {
+      return plus(x_2335.var_intrinsic_height_internal, mult(x_2335.var_flex_amount, (*(x_2335.parent)).var_flex_unit));
     } else {
-      if (has_suffix(x_2345.var_height_expr, "%")) {
-        return mult(x_2345.var_box_height, divide(string_to_float(strip_suffix(x_2345.var_height_expr, "%")), 100.));
+      if (has_suffix(x_2335.var_height_expr, "%")) {
+        return mult(x_2335.var_box_height, divide(string_to_float(strip_suffix(x_2335.var_height_expr, "%")), 100.));
       } else {
-        if (eq(x_2345.var_height_expr, "fit-content")) {
-          return max(x_2345.var_box_height, x_2345.var_intrinsic_height_internal);
+        if (eq(x_2335.var_height_expr, "fit-content")) {
+          return max(x_2335.var_box_height, x_2335.var_intrinsic_height_internal);
         } else {
           return Panic();
         }
@@ -758,43 +756,43 @@ auto eval_expr_x_743(const auto &x_2345) {
     }
   }
 }
-auto var_modified_x_741(const auto &x_2398) { return MakeUnit(); }
-auto eval_expr_x_738(const auto &x_2406) {
-  if (x_2406.prev == nullptr) {
-    if (x_2406.var_line_break || (*(x_2406.prev)).var_line_break) {
-      return plus((*(x_2406.prev)).var_y, (*(x_2406.prev)).var_line_height);
+auto var_modified_x_734(const auto &x_2388) { return MakeUnit(); }
+auto eval_expr_x_731(const auto &x_2396) {
+  if (x_2396.prev == nullptr) {
+    if (x_2396.var_line_break || (*(x_2396.prev)).var_line_break) {
+      return plus((*(x_2396.prev)).var_y, (*(x_2396.prev)).var_line_height);
     } else {
-      return (*(x_2406.prev)).var_y;
+      return (*(x_2396.prev)).var_y;
     }
   } else {
-    if (x_2406.parent == nullptr) {
-      return (*(x_2406.parent)).var_y;
+    if (x_2396.parent == nullptr) {
+      return (*(x_2396.parent)).var_y;
     } else {
       return 0.;
     }
   }
 }
-auto var_modified_x_736(const auto &x_2431) { return MakeUnit(); }
-auto eval_expr_x_733(const auto &x_2435) {
-  if (eq(x_2435.var_position, "absolute")) {
+auto var_modified_x_729(const auto &x_2421) { return MakeUnit(); }
+auto eval_expr_x_726(const auto &x_2425) {
+  if (eq(x_2425.var_position, "absolute")) {
     return 0.;
   } else {
-    return x_2435.var_width_internal;
+    return x_2425.var_width_internal;
   }
 }
-auto var_modified_x_731(const auto &x_2444) { return MakeUnit(); }
-auto eval_expr_x_728(const auto &x_2447) {
-  if (x_2447.var_intrinsic_width_is_width) {
-    return x_2447.var_intrinsic_width_internal;
+auto var_modified_x_724(const auto &x_2434) { return MakeUnit(); }
+auto eval_expr_x_721(const auto &x_2437) {
+  if (x_2437.var_intrinsic_width_is_width) {
+    return x_2437.var_intrinsic_width_internal;
   } else {
-    if ((x_2447.parent == nullptr) && (*(x_2447.parent)).var_is_flex_row) {
-      return plus(x_2447.var_intrinsic_width_internal, mult(x_2447.var_flex_amount, (*(x_2447.parent)).var_flex_unit));
+    if ((x_2437.parent == nullptr) && (*(x_2437.parent)).var_is_flex_row) {
+      return plus(x_2437.var_intrinsic_width_internal, mult(x_2437.var_flex_amount, (*(x_2437.parent)).var_flex_unit));
     } else {
-      if (has_suffix(x_2447.var_width_expr, "%")) {
-        return mult(x_2447.var_box_width, divide(string_to_float(strip_suffix(x_2447.var_width_expr, "%")), 100.));
+      if (has_suffix(x_2437.var_width_expr, "%")) {
+        return mult(x_2437.var_box_width, divide(string_to_float(strip_suffix(x_2437.var_width_expr, "%")), 100.));
       } else {
-        if (eq(x_2447.var_width_expr, "fit-content")) {
-          return max(x_2447.var_box_width, x_2447.var_intrinsic_width_internal);
+        if (eq(x_2437.var_width_expr, "fit-content")) {
+          return max(x_2437.var_box_width, x_2437.var_intrinsic_width_internal);
         } else {
           return Panic();
         }
@@ -802,95 +800,95 @@ auto eval_expr_x_728(const auto &x_2447) {
     }
   }
 }
-auto var_modified_x_726(const auto &x_2500) { return MakeUnit(); }
-auto eval_expr_x_723(const auto &x_2505) {
-  if (x_2505.prev == nullptr) {
-    if (x_2505.var_line_break || (*(x_2505.prev)).var_line_break) {
+auto var_modified_x_719(const auto &x_2490) { return MakeUnit(); }
+auto eval_expr_x_716(const auto &x_2495) {
+  if (x_2495.prev == nullptr) {
+    if (x_2495.var_line_break || (*(x_2495.prev)).var_line_break) {
       return 0.;
     } else {
-      return plus((*(x_2505.prev)).var_x, (*(x_2505.prev)).var_width_external);
+      return plus((*(x_2495.prev)).var_x, (*(x_2495.prev)).var_width_external);
     }
   } else {
-    if (x_2505.parent == nullptr) {
-      return (*(x_2505.parent)).var_x;
+    if (x_2495.parent == nullptr) {
+      return (*(x_2495.parent)).var_x;
     } else {
       return 0.;
     }
   }
 }
-auto var_modified_x_721(const auto &x_2526) { return MakeUnit(); }
-auto eval_expr_x_718(const auto &x_2529) {
-  if (gt(x_2529.var_left_over, 0.)) {
-    return divide(x_2529.var_left_over, x_2529.var_flex_grow_sum);
+auto var_modified_x_714(const auto &x_2516) { return MakeUnit(); }
+auto eval_expr_x_711(const auto &x_2519) {
+  if (gt(x_2519.var_left_over, 0.)) {
+    return divide(x_2519.var_left_over, x_2519.var_flex_grow_sum);
   } else {
-    return divide(x_2529.var_left_over, x_2529.var_flex_shrink_sum);
+    return divide(x_2519.var_left_over, x_2519.var_flex_shrink_sum);
   }
 }
-auto var_modified_x_716(const auto &x_2550) { return MakeUnit(); }
-auto eval_expr_x_713(const auto &x_2553) {
-  if ((x_2553.parent == nullptr) && gt((*(x_2553.parent)).var_left_over, 0.)) {
-    return x_2553.var_flex_grow;
+auto var_modified_x_709(const auto &x_2540) { return MakeUnit(); }
+auto eval_expr_x_706(const auto &x_2543) {
+  if ((x_2543.parent == nullptr) && gt((*(x_2543.parent)).var_left_over, 0.)) {
+    return x_2543.var_flex_grow;
   } else {
-    return x_2553.var_flex_shrink;
+    return x_2543.var_flex_shrink;
   }
 }
-auto var_modified_x_711(const auto &x_2566) { return MakeUnit(); }
-auto eval_expr_x_708(const auto &x_2571) {
-  if (x_2571.var_is_flex_row) {
-    return minus(x_2571.var_box_width,
-                 (IsSome(ListLast(x_2571.children))) ? (UnSome(ListLast(x_2571.children)).var_intrinsic_width_sum)
+auto var_modified_x_704(const auto &x_2556) { return MakeUnit(); }
+auto eval_expr_x_701(const auto &x_2561) {
+  if (x_2561.var_is_flex_row) {
+    return minus(x_2561.var_box_width,
+                 (IsSome(ListLast(x_2561.children))) ? (UnSome(ListLast(x_2561.children)).var_intrinsic_width_sum)
                                                      : (0.));
   } else {
-    return minus(x_2571.var_box_height,
-                 (IsSome(ListLast(x_2571.children))) ? (UnSome(ListLast(x_2571.children)).var_intrinsic_height_sum)
+    return minus(x_2561.var_box_height,
+                 (IsSome(ListLast(x_2561.children))) ? (UnSome(ListLast(x_2561.children)).var_intrinsic_height_sum)
                                                      : (0.));
   }
 }
-auto var_modified_x_706(const auto &x_2592) { return MakeUnit(); }
-auto eval_expr_x_703(const auto &x_2596) {
-  if (x_2596.parent == nullptr) {
-    return (*(x_2596.parent)).var_height_internal;
+auto var_modified_x_699(const auto &x_2582) { return MakeUnit(); }
+auto eval_expr_x_696(const auto &x_2586) {
+  if (x_2586.parent == nullptr) {
+    return (*(x_2586.parent)).var_height_internal;
   } else {
     return 1080.;
   }
 }
-auto var_modified_x_701(const auto &x_2601) { return MakeUnit(); }
-auto eval_expr_x_698(const auto &x_2605) {
-  if (x_2605.parent == nullptr) {
-    return (*(x_2605.parent)).var_width_internal;
+auto var_modified_x_694(const auto &x_2591) { return MakeUnit(); }
+auto eval_expr_x_691(const auto &x_2595) {
+  if (x_2595.parent == nullptr) {
+    return (*(x_2595.parent)).var_width_internal;
   } else {
     return 1920.;
   }
 }
-auto var_modified_x_694(const auto &x_2610) { return MakeUnit(); }
-auto eval_expr_x_691(const auto &x_2628) {
-  if (eq(x_2628.var_display, "none")) {
+auto var_modified_x_688(const auto &x_2600) { return MakeUnit(); }
+auto eval_expr_x_685(const auto &x_2618) {
+  if (eq(x_2618.var_display, "none")) {
     return false;
   } else {
-    if (eq(x_2628.var_position, "absolute")) {
+    if (eq(x_2618.var_position, "absolute")) {
       return false;
     } else {
-      if ((x_2628.parent == nullptr) &&
-          (eq((*(x_2628.parent)).var_display, "flex") || eq((*(x_2628.parent)).var_display, "inline-flex"))) {
+      if ((x_2618.parent == nullptr) &&
+          (eq((*(x_2618.parent)).var_display, "flex") || eq((*(x_2618.parent)).var_display, "inline-flex"))) {
         return true;
       } else {
-        if (eq(x_2628.var_display, "block")) {
+        if (eq(x_2618.var_display, "block")) {
           return true;
         } else {
-          if (eq(x_2628.var_display, "inline")) {
+          if (eq(x_2618.var_display, "inline")) {
             return false;
           } else {
-            if (eq(x_2628.var_display, "inline-block")) {
+            if (eq(x_2618.var_display, "inline-block")) {
               return false;
             } else {
-              if (eq(x_2628.var_display, "flex")) {
-                if (eq(HashtblForceFind(x_2628.prop, "flex-direction"), "row")) {
+              if (eq(x_2618.var_display, "flex")) {
+                if (eq(HashtblForceFind(x_2618.prop, "flex-direction"), "row")) {
                   return false;
                 } else {
-                  if (eq(HashtblForceFind(x_2628.prop, "flex-direction"), "column")) {
+                  if (eq(HashtblForceFind(x_2618.prop, "flex-direction"), "column")) {
                     return true;
                   } else {
-                    if (eq(HashtblForceFind(x_2628.prop, "flex-direction"), "column-reverse")) {
+                    if (eq(HashtblForceFind(x_2618.prop, "flex-direction"), "column-reverse")) {
                       return true;
                     } else {
                       return Panic();
@@ -898,28 +896,28 @@ auto eval_expr_x_691(const auto &x_2628) {
                   }
                 }
               } else {
-                if (eq(x_2628.var_display, "inline-flex")) {
+                if (eq(x_2618.var_display, "inline-flex")) {
                   return false;
                 } else {
-                  if (eq(x_2628.var_display, "contents")) {
+                  if (eq(x_2618.var_display, "contents")) {
                     return false;
                   } else {
-                    if (eq(x_2628.var_display, "table")) {
+                    if (eq(x_2618.var_display, "table")) {
                       return true;
                     } else {
-                      if (eq(x_2628.var_display, "table-row-group")) {
+                      if (eq(x_2618.var_display, "table-row-group")) {
                         return true;
                       } else {
-                        if (eq(x_2628.var_display, "table-row")) {
+                        if (eq(x_2618.var_display, "table-row")) {
                           return true;
                         } else {
-                          if (eq(x_2628.var_display, "table-cell")) {
+                          if (eq(x_2618.var_display, "table-cell")) {
                             return false;
                           } else {
-                            if (eq(x_2628.var_display, "list-item")) {
+                            if (eq(x_2618.var_display, "list-item")) {
                               return true;
                             } else {
-                              if (eq(x_2628.var_display, "grid")) {
+                              if (eq(x_2618.var_display, "grid")) {
                                 return true;
                               } else {
                                 return Panic();
@@ -939,37 +937,37 @@ auto eval_expr_x_691(const auto &x_2628) {
     }
   }
 }
-auto var_modified_x_689(const auto &x_2705) { return MakeUnit(); }
-auto eval_expr_x_686(const auto &x_2707) {
-  return ((not(x_2707.parent == nullptr) || (*(x_2707.parent)).var_visible) &&
-          (neq(x_2707.var_display, "none") && (not(x_2707.var_inside_svg) && not(x_2707.var_disabled))));
+auto var_modified_x_683(const auto &x_2695) { return MakeUnit(); }
+auto eval_expr_x_680(const auto &x_2697) {
+  return ((not(x_2697.parent == nullptr) || (*(x_2697.parent)).var_visible) &&
+          (neq(x_2697.var_display, "none") && (not(x_2697.var_inside_svg) && not(x_2697.var_disabled))));
 }
-auto var_modified_x_684(const auto &x_2724) { return MakeUnit(); }
-auto eval_expr_x_681(const auto &x_2732) {
-  if (eq(x_2732.name, "NOSCRIPT")) {
+auto var_modified_x_678(const auto &x_2714) { return MakeUnit(); }
+auto eval_expr_x_675(const auto &x_2722) {
+  if (eq(x_2722.name, "NOSCRIPT")) {
     return true;
   } else {
-    return ((x_2732.parent == nullptr) && (*(x_2732.parent)).var_disabled);
+    return ((x_2722.parent == nullptr) && (*(x_2722.parent)).var_disabled);
   }
 }
-auto var_modified_x_679(const auto &x_2737) { return MakeUnit(); }
-auto eval_expr_x_676(const auto &x_2745) {
-  return ((x_2745.parent == nullptr) && ((*(x_2745.parent)).var_is_svg_block || (*(x_2745.parent)).var_inside_svg));
+auto var_modified_x_673(const auto &x_2727) { return MakeUnit(); }
+auto eval_expr_x_670(const auto &x_2735) {
+  return ((x_2735.parent == nullptr) && ((*(x_2735.parent)).var_is_svg_block || (*(x_2735.parent)).var_inside_svg));
 }
-auto var_modified_x_674(const auto &x_2754) { return MakeUnit(); }
-auto eval_expr_x_671(const auto &x_2756) { return eq(x_2756.name, "svg"); }
-auto var_modified_x_669(const auto &x_2757) { return MakeUnit(); }
-auto eval_expr_x_666(const auto &x_2766) { return neq(x_2766.var_height_attr_expr, "auto"); }
-auto var_modified_x_664(const auto &x_2771) { return MakeUnit(); }
-auto eval_expr_x_661(const auto &x_2779) {
-  if (not(IsSome(HashtblFind(x_2779.attr, "height")))) {
+auto var_modified_x_668(const auto &x_2744) { return MakeUnit(); }
+auto eval_expr_x_665(const auto &x_2746) { return eq(x_2746.name, "svg"); }
+auto var_modified_x_663(const auto &x_2747) { return MakeUnit(); }
+auto eval_expr_x_660(const auto &x_2756) { return neq(x_2756.var_height_attr_expr, "auto"); }
+auto var_modified_x_658(const auto &x_2761) { return MakeUnit(); }
+auto eval_expr_x_655(const auto &x_2769) {
+  if (not(IsSome(HashtblFind(x_2769.attr, "height")))) {
     return "auto";
   } else {
-    if (string_is_float(HashtblForceFind(x_2779.attr, "height")) ||
-        has_suffix(HashtblForceFind(x_2779.attr, "height"), "%")) {
-      return HashtblForceFind(x_2779.attr, "height");
+    if (string_is_float(HashtblForceFind(x_2769.attr, "height")) ||
+        has_suffix(HashtblForceFind(x_2769.attr, "height"), "%")) {
+      return HashtblForceFind(x_2769.attr, "height");
     } else {
-      if (eq(HashtblForceFind(x_2779.attr, "height"), "Auto")) {
+      if (eq(HashtblForceFind(x_2769.attr, "height"), "Auto")) {
         return "auto";
       } else {
         return Panic();
@@ -977,18 +975,18 @@ auto eval_expr_x_661(const auto &x_2779) {
     }
   }
 }
-auto var_modified_x_659(const auto &x_2790) { return MakeUnit(); }
-auto eval_expr_x_656(const auto &x_2800) { return neq(x_2800.var_width_attr_expr, "auto"); }
-auto var_modified_x_654(const auto &x_2805) { return MakeUnit(); }
-auto eval_expr_x_651(const auto &x_2813) {
-  if (not(IsSome(HashtblFind(x_2813.attr, "width")))) {
+auto var_modified_x_653(const auto &x_2780) { return MakeUnit(); }
+auto eval_expr_x_650(const auto &x_2790) { return neq(x_2790.var_width_attr_expr, "auto"); }
+auto var_modified_x_648(const auto &x_2795) { return MakeUnit(); }
+auto eval_expr_x_645(const auto &x_2803) {
+  if (not(IsSome(HashtblFind(x_2803.attr, "width")))) {
     return "auto";
   } else {
-    if (string_is_float(HashtblForceFind(x_2813.attr, "width")) ||
-        has_suffix(HashtblForceFind(x_2813.attr, "width"), "%")) {
-      return HashtblForceFind(x_2813.attr, "width");
+    if (string_is_float(HashtblForceFind(x_2803.attr, "width")) ||
+        has_suffix(HashtblForceFind(x_2803.attr, "width"), "%")) {
+      return HashtblForceFind(x_2803.attr, "width");
     } else {
-      if (eq(HashtblForceFind(x_2813.attr, "width"), "Auto")) {
+      if (eq(HashtblForceFind(x_2803.attr, "width"), "Auto")) {
         return "auto";
       } else {
         return Panic();
@@ -996,15 +994,15 @@ auto eval_expr_x_651(const auto &x_2813) {
     }
   }
 }
-auto var_modified_x_649(const auto &x_2824) { return MakeUnit(); }
-auto eval_expr_x_646(const auto &x_2827) {
-  if ((x_2827.parent == nullptr) &&
-      (eq((*(x_2827.parent)).var_display, "flex") || eq((*(x_2827.parent)).var_display, "inline-flex"))) {
-    if (eq((*(x_2827.parent)).var_flex_direction, "column") ||
-        eq((*(x_2827.parent)).var_flex_direction, "column-reverse")) {
+auto var_modified_x_643(const auto &x_2814) { return MakeUnit(); }
+auto eval_expr_x_640(const auto &x_2817) {
+  if ((x_2817.parent == nullptr) &&
+      (eq((*(x_2817.parent)).var_display, "flex") || eq((*(x_2817.parent)).var_display, "inline-flex"))) {
+    if (eq((*(x_2817.parent)).var_flex_direction, "column") ||
+        eq((*(x_2817.parent)).var_flex_direction, "column-reverse")) {
       return true;
     } else {
-      if (eq((*(x_2827.parent)).var_flex_direction, "row")) {
+      if (eq((*(x_2817.parent)).var_flex_direction, "row")) {
         return false;
       } else {
         return Panic();
@@ -1014,15 +1012,15 @@ auto eval_expr_x_646(const auto &x_2827) {
     return false;
   }
 }
-auto var_modified_x_644(const auto &x_2852) { return MakeUnit(); }
-auto eval_expr_x_641(const auto &x_2856) {
-  if ((x_2856.parent == nullptr) &&
-      (eq((*(x_2856.parent)).var_display, "flex") || eq((*(x_2856.parent)).var_display, "inline-flex"))) {
-    if (eq((*(x_2856.parent)).var_flex_direction, "row")) {
+auto var_modified_x_638(const auto &x_2842) { return MakeUnit(); }
+auto eval_expr_x_635(const auto &x_2846) {
+  if ((x_2846.parent == nullptr) &&
+      (eq((*(x_2846.parent)).var_display, "flex") || eq((*(x_2846.parent)).var_display, "inline-flex"))) {
+    if (eq((*(x_2846.parent)).var_flex_direction, "row")) {
       return true;
     } else {
-      if (eq((*(x_2856.parent)).var_flex_direction, "column") ||
-          eq((*(x_2856.parent)).var_flex_direction, "column-reverse")) {
+      if (eq((*(x_2846.parent)).var_flex_direction, "column") ||
+          eq((*(x_2846.parent)).var_flex_direction, "column-reverse")) {
         return false;
       } else {
         return Panic();
@@ -1032,114 +1030,114 @@ auto eval_expr_x_641(const auto &x_2856) {
     return false;
   }
 }
-auto var_modified_x_639(const auto &x_2881) { return MakeUnit(); }
-auto eval_expr_x_636(const auto &x_2888) {
-  if (IsSome(HashtblFind(x_2888.prop, "flex-direction"))) {
-    return HashtblForceFind(x_2888.prop, "flex-direction");
+auto var_modified_x_633(const auto &x_2871) { return MakeUnit(); }
+auto eval_expr_x_630(const auto &x_2878) {
+  if (IsSome(HashtblFind(x_2878.prop, "flex-direction"))) {
+    return HashtblForceFind(x_2878.prop, "flex-direction");
   } else {
     return "";
   }
 }
-auto var_modified_x_634(const auto &x_2891) { return MakeUnit(); }
-auto eval_expr_x_631(const auto &x_2896) {
-  return plus((x_2896.prev == nullptr) ? ((*(x_2896.prev)).var_flex_shrink_sum) : (0.), x_2896.var_flex_shrink);
+auto var_modified_x_628(const auto &x_2881) { return MakeUnit(); }
+auto eval_expr_x_625(const auto &x_2886) {
+  return plus((x_2886.prev == nullptr) ? ((*(x_2886.prev)).var_flex_shrink_sum) : (0.), x_2886.var_flex_shrink);
 }
-auto var_modified_x_629(const auto &x_2905) { return MakeUnit(); }
-auto eval_expr_x_626(const auto &x_2910) {
-  return plus((x_2910.prev == nullptr) ? ((*(x_2910.prev)).var_flex_grow_sum) : (0.), x_2910.var_flex_grow);
+auto var_modified_x_623(const auto &x_2895) { return MakeUnit(); }
+auto eval_expr_x_620(const auto &x_2900) {
+  return plus((x_2900.prev == nullptr) ? ((*(x_2900.prev)).var_flex_grow_sum) : (0.), x_2900.var_flex_grow);
 }
-auto var_modified_x_624(const auto &x_2919) { return MakeUnit(); }
-auto eval_expr_x_621(const auto &x_2922) {
-  if (IsSome(HashtblFind(x_2922.prop, "flex-shrink"))) {
-    return string_to_float(HashtblForceFind(x_2922.prop, "flex-shrink"));
+auto var_modified_x_618(const auto &x_2909) { return MakeUnit(); }
+auto eval_expr_x_615(const auto &x_2912) {
+  if (IsSome(HashtblFind(x_2912.prop, "flex-shrink"))) {
+    return string_to_float(HashtblForceFind(x_2912.prop, "flex-shrink"));
   } else {
     return 0.;
   }
 }
-auto var_modified_x_619(const auto &x_2925) { return MakeUnit(); }
-auto eval_expr_x_616(const auto &x_2928) {
-  if (IsSome(HashtblFind(x_2928.prop, "flex-grow"))) {
-    return string_to_float(HashtblForceFind(x_2928.prop, "flex-grow"));
+auto var_modified_x_613(const auto &x_2915) { return MakeUnit(); }
+auto eval_expr_x_610(const auto &x_2918) {
+  if (IsSome(HashtblFind(x_2918.prop, "flex-grow"))) {
+    return string_to_float(HashtblForceFind(x_2918.prop, "flex-grow"));
   } else {
     return 0.;
   }
 }
-auto var_modified_x_614(const auto &x_2931) { return MakeUnit(); }
-auto eval_expr_x_611(const auto &x_2937) {
-  if (IsSome(HashtblFind(x_2937.prop, "position"))) {
-    return HashtblForceFind(x_2937.prop, "position");
+auto var_modified_x_608(const auto &x_2921) { return MakeUnit(); }
+auto eval_expr_x_605(const auto &x_2927) {
+  if (IsSome(HashtblFind(x_2927.prop, "position"))) {
+    return HashtblForceFind(x_2927.prop, "position");
   } else {
     return "static";
   }
 }
-auto var_modified_x_609(const auto &x_2940) { return MakeUnit(); }
-auto eval_expr_x_606(const auto &x_2966) {
-  if (IsSome(HashtblFind(x_2966.prop, "display"))) {
-    return HashtblForceFind(x_2966.prop, "display");
+auto var_modified_x_603(const auto &x_2930) { return MakeUnit(); }
+auto eval_expr_x_600(const auto &x_2956) {
+  if (IsSome(HashtblFind(x_2956.prop, "display"))) {
+    return HashtblForceFind(x_2956.prop, "display");
   } else {
     return "block";
   }
 }
-auto var_modified_x_602(const auto &x_2969) { return MakeUnit(); }
-auto eval_expr_x_599(const auto &x_2979) {
-  if (x_2979.prev == nullptr) {
-    if (x_2979.var_line_break) {
-      return plus((*(x_2979.prev)).var_finished_intrinsic_height_sum,
-                  plus((*(x_2979.prev)).var_intrinsic_current_line_height, x_2979.var_intrinsic_height_external));
+auto var_modified_x_597(const auto &x_2959) { return MakeUnit(); }
+auto eval_expr_x_594(const auto &x_2969) {
+  if (x_2969.prev == nullptr) {
+    if (x_2969.var_line_break) {
+      return plus((*(x_2969.prev)).var_finished_intrinsic_height_sum,
+                  plus((*(x_2969.prev)).var_intrinsic_current_line_height, x_2969.var_intrinsic_height_external));
     } else {
-      return (*(x_2979.prev)).var_finished_intrinsic_height_sum;
+      return (*(x_2969.prev)).var_finished_intrinsic_height_sum;
     }
   } else {
-    if (x_2979.var_line_break) {
-      return x_2979.var_intrinsic_height_external;
+    if (x_2969.var_line_break) {
+      return x_2969.var_intrinsic_height_external;
     } else {
       return 0.;
     }
   }
 }
-auto var_modified_x_597(const auto &x_3008) { return MakeUnit(); }
-auto eval_expr_x_594(const auto &x_3018) {
-  if (x_3018.var_line_break) {
+auto var_modified_x_592(const auto &x_2998) { return MakeUnit(); }
+auto eval_expr_x_589(const auto &x_3008) {
+  if (x_3008.var_line_break) {
     return 0.;
   } else {
-    return max(x_3018.var_intrinsic_height_external,
-               (x_3018.prev == nullptr) ? ((*(x_3018.prev)).var_intrinsic_current_line_height) : (0.));
+    return max(x_3008.var_intrinsic_height_external,
+               (x_3008.prev == nullptr) ? ((*(x_3008.prev)).var_intrinsic_current_line_height) : (0.));
   }
 }
-auto var_modified_x_592(const auto &x_3031) { return MakeUnit(); }
-auto eval_expr_x_589(const auto &x_3038) {
-  return plus((x_3038.prev == nullptr) ? ((*(x_3038.prev)).var_intrinsic_height_sum) : (0.),
-              x_3038.var_intrinsic_height_external);
+auto var_modified_x_587(const auto &x_3021) { return MakeUnit(); }
+auto eval_expr_x_584(const auto &x_3028) {
+  return plus((x_3028.prev == nullptr) ? ((*(x_3028.prev)).var_intrinsic_height_sum) : (0.),
+              x_3028.var_intrinsic_height_external);
 }
-auto var_modified_x_587(const auto &x_3047) { return MakeUnit(); }
-auto eval_expr_x_584(const auto &x_3052) {
-  if (eq(x_3052.var_position, "absolute")) {
+auto var_modified_x_582(const auto &x_3037) { return MakeUnit(); }
+auto eval_expr_x_579(const auto &x_3042) {
+  if (eq(x_3042.var_position, "absolute")) {
     return 0.;
   } else {
-    return x_3052.var_intrinsic_height_internal;
+    return x_3042.var_intrinsic_height_internal;
   }
 }
-auto var_modified_x_582(const auto &x_3061) { return MakeUnit(); }
-auto eval_expr_x_579(const auto &x_3066) {
-  if (eq(x_3066.var_display, "none")) {
+auto var_modified_x_577(const auto &x_3051) { return MakeUnit(); }
+auto eval_expr_x_574(const auto &x_3056) {
+  if (eq(x_3056.var_display, "none")) {
     return 0.;
   } else {
-    if (x_3066.var_inside_svg) {
+    if (x_3056.var_inside_svg) {
       return 0.;
     } else {
-      if (x_3066.var_disabled) {
+      if (x_3056.var_disabled) {
         return 0.;
       } else {
-        if (neq(x_3066.var_height_expr, "auto") &&
-            (not(has_suffix(x_3066.var_height_expr, "%")) && neq(x_3066.var_height_expr, "fit-content"))) {
-          if (has_suffix(x_3066.var_height_expr, "px")) {
-            return string_to_float(strip_suffix(x_3066.var_height_expr, "px"));
+        if (neq(x_3056.var_height_expr, "auto") &&
+            (not(has_suffix(x_3056.var_height_expr, "%")) && neq(x_3056.var_height_expr, "fit-content"))) {
+          if (has_suffix(x_3056.var_height_expr, "px")) {
+            return string_to_float(strip_suffix(x_3056.var_height_expr, "px"));
           } else {
-            if (has_suffix(x_3066.var_height_expr, "ch")) {
-              return string_to_float(strip_suffix(x_3066.var_height_expr, "ch"));
+            if (has_suffix(x_3056.var_height_expr, "ch")) {
+              return string_to_float(strip_suffix(x_3056.var_height_expr, "ch"));
             } else {
-              if (has_suffix(x_3066.var_height_expr, "lh")) {
-                return string_to_float(strip_suffix(x_3066.var_height_expr, "lh"));
+              if (has_suffix(x_3056.var_height_expr, "lh")) {
+                return string_to_float(strip_suffix(x_3056.var_height_expr, "lh"));
               } else {
                 return Panic();
               }
@@ -1147,69 +1145,68 @@ auto eval_expr_x_579(const auto &x_3066) {
           }
         } else {
           return plus(
-              x_3066.var_children_intrinsic_height,
-              (eq(x_3066.name, "#text"))
-                  ? ((IsSome(ListHead(x_3066.children))) ? (Panic()) : (10.))
-                  : ((x_3066.var_is_default_case)
+              x_3056.var_children_intrinsic_height,
+              (eq(x_3056.name, "#text"))
+                  ? ((IsSome(ListHead(x_3056.children))) ? (Panic()) : (10.))
+                  : ((x_3056.var_is_default_case)
                          ? (0.)
-                         : ((eq(x_3066.name, "BR"))
-                                ? ((IsSome(ListHead(x_3066.children))) ? (Panic()) : (0.))
-                                : ((eq(x_3066.name, "INPUT"))
+                         : ((eq(x_3056.name, "BR"))
+                                ? ((IsSome(ListHead(x_3056.children))) ? (Panic()) : (0.))
+                                : ((eq(x_3056.name, "INPUT"))
                                        ? (10.)
-                                       : ((eq(x_3066.name, "svg"))
-                                              ? ((x_3066.var_has_height_attr &&
-                                                  string_is_float(x_3066.var_height_attr_expr))
-                                                     ? (string_to_float(x_3066.var_height_attr_expr))
-                                                     : ((IsSome(HashtblFind(x_3066.attr, "viewBox")))
-                                                            ? (string_to_float(
-                                                                  nth_by_sep(HashtblForceFind(x_3066.attr, "viewBox"),
-                                                                             " ", VInt(3))))
-                                                            : ((x_3066.var_has_height_attr &&
-                                                                (has_suffix(x_3066.var_height_attr_expr, "%") &&
-                                                                 IsSome(HashtblFind(x_3066.attr, "viewBox"))))
+                                       : ((eq(x_3056.name, "svg"))
+                                              ? ((x_3056.var_has_height_attr &&
+                                                  string_is_float(x_3056.var_height_attr_expr))
+                                                     ? (string_to_float(x_3056.var_height_attr_expr))
+                                                     : ((IsSome(HashtblFind(x_3056.attr, "viewBox")))
+                                                            ? (string_to_float(nth_by_sep(
+                                                                  HashtblForceFind(x_3056.attr, "viewBox"), " ", 3)))
+                                                            : ((x_3056.var_has_height_attr &&
+                                                                (has_suffix(x_3056.var_height_attr_expr, "%") &&
+                                                                 IsSome(HashtblFind(x_3056.attr, "viewBox"))))
                                                                    ? (mult(
                                                                          string_to_float(nth_by_sep(
-                                                                             HashtblForceFind(x_3066.attr, "viewBox"),
-                                                                             " ", VInt(3))),
+                                                                             HashtblForceFind(x_3056.attr, "viewBox"),
+                                                                             " ", 3)),
                                                                          divide(string_to_float(strip_suffix(
-                                                                                    x_3066.var_height_attr_expr, "%")),
+                                                                                    x_3056.var_height_attr_expr, "%")),
                                                                                 100.)))
                                                                    : (Panic()))))
-                                              : ((eq(x_3066.name, "IMG"))
-                                                     ? ((x_3066.var_has_height_attr)
-                                                            ? (string_to_float(x_3066.var_height_attr_expr))
-                                                            : ((IsSome(HashtblFind(x_3066.attr, "image_height")) &&
-                                                                not(x_3066.var_has_width_attr))
+                                              : ((eq(x_3056.name, "IMG"))
+                                                     ? ((x_3056.var_has_height_attr)
+                                                            ? (string_to_float(x_3056.var_height_attr_expr))
+                                                            : ((IsSome(HashtblFind(x_3056.attr, "image_height")) &&
+                                                                not(x_3056.var_has_width_attr))
                                                                    ? (int_to_float(
-                                                                         HashtblForceFind(x_3066.attr, "image_height")))
-                                                                   : ((x_3066.var_has_width_attr &&
-                                                                       (not(x_3066.var_has_height_attr) &&
+                                                                         HashtblForceFind(x_3056.attr, "image_height")))
+                                                                   : ((x_3056.var_has_width_attr &&
+                                                                       (not(x_3056.var_has_height_attr) &&
                                                                         (IsSome(
-                                                                             HashtblFind(x_3066.attr, "image_width")) &&
-                                                                         IsSome(HashtblFind(x_3066.attr,
+                                                                             HashtblFind(x_3056.attr, "image_width")) &&
+                                                                         IsSome(HashtblFind(x_3056.attr,
                                                                                             "image_height")))))
-                                                                          ? ((neq(HashtblForceFind(x_3066.attr,
+                                                                          ? ((neq(HashtblForceFind(x_3056.attr,
                                                                                                    "image_width"),
-                                                                                  VInt(0)))
+                                                                                  0))
                                                                                  ? (mult(
                                                                                        string_to_float(
-                                                                                           x_3066.var_width_attr_expr),
+                                                                                           x_3056.var_width_attr_expr),
                                                                                        divide(int_to_float(
                                                                                                   HashtblForceFind(
-                                                                                                      x_3066.attr,
+                                                                                                      x_3056.attr,
                                                                                                       "image_height")),
                                                                                               int_to_float(
                                                                                                   HashtblForceFind(
-                                                                                                      x_3066.attr,
+                                                                                                      x_3056.attr,
                                                                                                       "image_width")))))
                                                                                  : (0.))
                                                                           : (Panic()))))
-                                                     : ((eq(x_3066.name, "IFRAME"))
-                                                            ? ((x_3066.var_has_height_attr) ? (Panic()) : (150.))
-                                                            : ((eq(x_3066.name, "TEXTAREA"))
+                                                     : ((eq(x_3056.name, "IFRAME"))
+                                                            ? ((x_3056.var_has_height_attr) ? (Panic()) : (150.))
+                                                            : ((eq(x_3056.name, "TEXTAREA"))
                                                                    ? (100.)
-                                                                   : ((eq(x_3066.name, "VIDEO"))
-                                                                          ? ((x_3066.var_has_height_attr) ? (Panic())
+                                                                   : ((eq(x_3056.name, "VIDEO"))
+                                                                          ? ((x_3056.var_has_height_attr) ? (Panic())
                                                                                                           : (150.))
                                                                           : (Panic()))))))))));
         }
@@ -1217,21 +1214,21 @@ auto eval_expr_x_579(const auto &x_3066) {
     }
   }
 }
-auto var_modified_x_577(const auto &x_3211) { return MakeUnit(); }
-auto eval_expr_x_574(const auto &x_3213) {
-  if (eq(x_3213.var_display, "none") || (x_3213.var_inside_svg || x_3213.var_disabled)) {
+auto var_modified_x_572(const auto &x_3201) { return MakeUnit(); }
+auto eval_expr_x_569(const auto &x_3203) {
+  if (eq(x_3203.var_display, "none") || (x_3203.var_inside_svg || x_3203.var_disabled)) {
     return true;
   } else {
-    if ((x_3213.parent == nullptr) && (*(x_3213.parent)).var_is_flex_column) {
+    if ((x_3203.parent == nullptr) && (*(x_3203.parent)).var_is_flex_column) {
       return false;
     } else {
-      if (eq(x_3213.var_height_expr, "auto") ||
-          (has_suffix(x_3213.var_height_expr, "px") ||
-           (has_suffix(x_3213.var_height_expr, "ch") ||
-            (has_suffix(x_3213.var_height_expr, "lh") || eq(x_3213.var_height_expr, "max-content"))))) {
+      if (eq(x_3203.var_height_expr, "auto") ||
+          (has_suffix(x_3203.var_height_expr, "px") ||
+           (has_suffix(x_3203.var_height_expr, "ch") ||
+            (has_suffix(x_3203.var_height_expr, "lh") || eq(x_3203.var_height_expr, "max-content"))))) {
         return true;
       } else {
-        if (has_suffix(x_3213.var_height_expr, "%") || eq(x_3213.var_height_expr, "fit-content")) {
+        if (has_suffix(x_3203.var_height_expr, "%") || eq(x_3203.var_height_expr, "fit-content")) {
           return false;
         } else {
           return Panic();
@@ -1240,138 +1237,137 @@ auto eval_expr_x_574(const auto &x_3213) {
     }
   }
 }
-auto var_modified_x_572(const auto &x_3262) { return MakeUnit(); }
-auto eval_expr_x_569(const auto &x_3282) {
-  if (IsSome(HashtblFind(x_3282.prop, "height"))) {
-    return HashtblForceFind(x_3282.prop, "height");
+auto var_modified_x_567(const auto &x_3252) { return MakeUnit(); }
+auto eval_expr_x_564(const auto &x_3272) {
+  if (IsSome(HashtblFind(x_3272.prop, "height"))) {
+    return HashtblForceFind(x_3272.prop, "height");
   } else {
     return "auto";
   }
 }
-auto var_modified_x_567(const auto &x_3285) { return MakeUnit(); }
-auto eval_expr_x_564(const auto &x_3287) {
-  if (IsSome(ListLast(x_3287.children))) {
-    return plus(UnSome(ListLast(x_3287.children)).var_finished_intrinsic_height_sum,
-                UnSome(ListLast(x_3287.children)).var_intrinsic_current_line_height);
+auto var_modified_x_562(const auto &x_3275) { return MakeUnit(); }
+auto eval_expr_x_559(const auto &x_3277) {
+  if (IsSome(ListLast(x_3277.children))) {
+    return plus(UnSome(ListLast(x_3277.children)).var_finished_intrinsic_height_sum,
+                UnSome(ListLast(x_3277.children)).var_intrinsic_current_line_height);
   } else {
     return 0.;
   }
 }
-auto var_modified_x_562(const auto &x_3296) { return MakeUnit(); }
-auto eval_expr_x_559(const auto &x_3303) {
-  return plus((x_3303.prev == nullptr) ? ((*(x_3303.prev)).var_intrinsic_width_sum) : (0.),
-              x_3303.var_intrinsic_width_external);
+auto var_modified_x_557(const auto &x_3286) { return MakeUnit(); }
+auto eval_expr_x_554(const auto &x_3293) {
+  return plus((x_3293.prev == nullptr) ? ((*(x_3293.prev)).var_intrinsic_width_sum) : (0.),
+              x_3293.var_intrinsic_width_external);
 }
-auto var_modified_x_557(const auto &x_3312) { return MakeUnit(); }
-auto eval_expr_x_554(const auto &x_3319) {
-  return max(x_3319.var_intrinsic_current_line_width,
-             (x_3319.prev == nullptr) ? ((*(x_3319.prev)).var_intrinsic_width_max) : (0.));
+auto var_modified_x_552(const auto &x_3302) { return MakeUnit(); }
+auto eval_expr_x_549(const auto &x_3309) {
+  return max(x_3309.var_intrinsic_current_line_width,
+             (x_3309.prev == nullptr) ? ((*(x_3309.prev)).var_intrinsic_width_max) : (0.));
 }
-auto var_modified_x_552(const auto &x_3328) { return MakeUnit(); }
-auto eval_expr_x_549(const auto &x_3333) {
-  return plus(x_3333.var_intrinsic_width_external,
-              ((x_3333.prev == nullptr) && not((*(x_3333.prev)).var_line_break))
-                  ? ((*(x_3333.prev)).var_intrinsic_current_line_width)
+auto var_modified_x_547(const auto &x_3318) { return MakeUnit(); }
+auto eval_expr_x_544(const auto &x_3323) {
+  return plus(x_3323.var_intrinsic_width_external,
+              ((x_3323.prev == nullptr) && not((*(x_3323.prev)).var_line_break))
+                  ? ((*(x_3323.prev)).var_intrinsic_current_line_width)
                   : (0.));
 }
-auto var_modified_x_547(const auto &x_3346) { return MakeUnit(); }
-auto eval_expr_x_544(const auto &x_3349) {
-  if (eq(x_3349.var_position, "absolute")) {
+auto var_modified_x_542(const auto &x_3336) { return MakeUnit(); }
+auto eval_expr_x_539(const auto &x_3339) {
+  if (eq(x_3339.var_position, "absolute")) {
     return 0.;
   } else {
-    return x_3349.var_intrinsic_width_internal;
+    return x_3339.var_intrinsic_width_internal;
   }
 }
-auto var_modified_x_542(const auto &x_3358) { return MakeUnit(); }
-auto eval_expr_x_539(const auto &x_3363) {
-  if (eq(x_3363.var_display, "none")) {
+auto var_modified_x_537(const auto &x_3348) { return MakeUnit(); }
+auto eval_expr_x_534(const auto &x_3353) {
+  if (eq(x_3353.var_display, "none")) {
     return 0.;
   } else {
-    if (x_3363.var_inside_svg) {
+    if (x_3353.var_inside_svg) {
       return 0.;
     } else {
-      if (x_3363.var_disabled) {
+      if (x_3353.var_disabled) {
         return 0.;
       } else {
-        if (neq(x_3363.var_width_expr, "auto") &&
-            (not(has_suffix(x_3363.var_width_expr, "%")) &&
-             (neq(x_3363.var_width_expr, "fit-content") &&
-              (neq(x_3363.var_width_expr, "max-content") && not(has_prefix(x_3363.var_width_expr, "calc")))))) {
-          if (has_suffix(x_3363.var_width_expr, "px")) {
-            return string_to_float(strip_suffix(x_3363.var_width_expr, "px"));
+        if (neq(x_3353.var_width_expr, "auto") &&
+            (not(has_suffix(x_3353.var_width_expr, "%")) &&
+             (neq(x_3353.var_width_expr, "fit-content") &&
+              (neq(x_3353.var_width_expr, "max-content") && not(has_prefix(x_3353.var_width_expr, "calc")))))) {
+          if (has_suffix(x_3353.var_width_expr, "px")) {
+            return string_to_float(strip_suffix(x_3353.var_width_expr, "px"));
           } else {
-            if (has_suffix(x_3363.var_width_expr, "ch")) {
-              return string_to_float(strip_suffix(x_3363.var_width_expr, "ch"));
+            if (has_suffix(x_3353.var_width_expr, "ch")) {
+              return string_to_float(strip_suffix(x_3353.var_width_expr, "ch"));
             } else {
               return Panic();
             }
           }
         } else {
           return plus(
-              x_3363.var_children_intrinsic_width,
-              (eq(x_3363.name, "#text"))
-                  ? ((IsSome(ListHead(x_3363.children))) ? (Panic()) : (100.))
-                  : ((x_3363.var_is_default_case)
+              x_3353.var_children_intrinsic_width,
+              (eq(x_3353.name, "#text"))
+                  ? ((IsSome(ListHead(x_3353.children))) ? (Panic()) : (100.))
+                  : ((x_3353.var_is_default_case)
                          ? (0.)
-                         : ((eq(x_3363.name, "BR"))
-                                ? ((IsSome(ListHead(x_3363.children))) ? (Panic()) : (0.))
-                                : ((eq(x_3363.name, "INPUT"))
+                         : ((eq(x_3353.name, "BR"))
+                                ? ((IsSome(ListHead(x_3353.children))) ? (Panic()) : (0.))
+                                : ((eq(x_3353.name, "INPUT"))
                                        ? (100.)
-                                       : ((eq(x_3363.name, "svg"))
-                                              ? ((x_3363.var_has_width_attr &&
-                                                  string_is_float(x_3363.var_width_attr_expr))
-                                                     ? (string_to_float(x_3363.var_width_attr_expr))
-                                                     : ((not(x_3363.var_has_width_attr) &&
-                                                         IsSome(HashtblFind(x_3363.attr, "viewBox")))
-                                                            ? (string_to_float(
-                                                                  nth_by_sep(HashtblForceFind(x_3363.attr, "viewBox"),
-                                                                             " ", VInt(2))))
-                                                            : ((x_3363.var_has_width_attr &&
-                                                                (has_suffix(x_3363.var_width_attr_expr, "%") &&
-                                                                 IsSome(HashtblFind(x_3363.attr, "viewBox"))))
+                                       : ((eq(x_3353.name, "svg"))
+                                              ? ((x_3353.var_has_width_attr &&
+                                                  string_is_float(x_3353.var_width_attr_expr))
+                                                     ? (string_to_float(x_3353.var_width_attr_expr))
+                                                     : ((not(x_3353.var_has_width_attr) &&
+                                                         IsSome(HashtblFind(x_3353.attr, "viewBox")))
+                                                            ? (string_to_float(nth_by_sep(
+                                                                  HashtblForceFind(x_3353.attr, "viewBox"), " ", 2)))
+                                                            : ((x_3353.var_has_width_attr &&
+                                                                (has_suffix(x_3353.var_width_attr_expr, "%") &&
+                                                                 IsSome(HashtblFind(x_3353.attr, "viewBox"))))
                                                                    ? (mult(string_to_float(nth_by_sep(
-                                                                               HashtblForceFind(x_3363.attr, "viewBox"),
-                                                                               " ", VInt(2))),
+                                                                               HashtblForceFind(x_3353.attr, "viewBox"),
+                                                                               " ", 2)),
                                                                            divide(string_to_float(strip_suffix(
-                                                                                      x_3363.var_width_attr_expr, "%")),
+                                                                                      x_3353.var_width_attr_expr, "%")),
                                                                                   100.)))
                                                                    : (Panic()))))
-                                              : ((eq(x_3363.name, "IMG"))
-                                                     ? ((x_3363.var_has_width_attr)
-                                                            ? (string_to_float(x_3363.var_width_attr_expr))
-                                                            : ((IsSome(HashtblFind(x_3363.attr, "image_width")) &&
-                                                                not(x_3363.var_has_height_attr))
+                                              : ((eq(x_3353.name, "IMG"))
+                                                     ? ((x_3353.var_has_width_attr)
+                                                            ? (string_to_float(x_3353.var_width_attr_expr))
+                                                            : ((IsSome(HashtblFind(x_3353.attr, "image_width")) &&
+                                                                not(x_3353.var_has_height_attr))
                                                                    ? (int_to_float(
-                                                                         HashtblForceFind(x_3363.attr, "image_width")))
-                                                                   : ((not(x_3363.var_has_width_attr) &&
-                                                                       (x_3363.var_has_height_attr &&
+                                                                         HashtblForceFind(x_3353.attr, "image_width")))
+                                                                   : ((not(x_3353.var_has_width_attr) &&
+                                                                       (x_3353.var_has_height_attr &&
                                                                         (IsSome(
-                                                                             HashtblFind(x_3363.attr, "image_width")) &&
-                                                                         IsSome(HashtblFind(x_3363.attr,
+                                                                             HashtblFind(x_3353.attr, "image_width")) &&
+                                                                         IsSome(HashtblFind(x_3353.attr,
                                                                                             "image_height")))))
-                                                                          ? ((neq(HashtblForceFind(x_3363.attr,
+                                                                          ? ((neq(HashtblForceFind(x_3353.attr,
                                                                                                    "image_height"),
-                                                                                  VInt(0)))
+                                                                                  0))
                                                                                  ? (mult(
                                                                                        string_to_float(
-                                                                                           x_3363.var_height_attr_expr),
+                                                                                           x_3353.var_height_attr_expr),
                                                                                        divide(
                                                                                            int_to_float(
                                                                                                HashtblForceFind(
-                                                                                                   x_3363.attr,
+                                                                                                   x_3353.attr,
                                                                                                    "image_width")),
                                                                                            int_to_float(
                                                                                                HashtblForceFind(
-                                                                                                   x_3363.attr,
+                                                                                                   x_3353.attr,
                                                                                                    "image_height")))))
                                                                                  : (0.))
                                                                           : (Panic()))))
-                                                     : ((eq(x_3363.name, "IFRAME"))
-                                                            ? ((x_3363.var_has_width_attr) ? (Panic()) : (300.))
-                                                            : ((eq(x_3363.name, "TEXTAREA"))
+                                                     : ((eq(x_3353.name, "IFRAME"))
+                                                            ? ((x_3353.var_has_width_attr) ? (Panic()) : (300.))
+                                                            : ((eq(x_3353.name, "TEXTAREA"))
                                                                    ? (100.)
-                                                                   : ((eq(x_3363.name, "VIDEO"))
-                                                                          ? ((x_3363.var_has_width_attr) ? (Panic())
+                                                                   : ((eq(x_3353.name, "VIDEO"))
+                                                                          ? ((x_3353.var_has_width_attr) ? (Panic())
                                                                                                          : (300.))
                                                                           : (Panic()))))))))));
         }
@@ -1379,29 +1375,29 @@ auto eval_expr_x_539(const auto &x_3363) {
     }
   }
 }
-auto var_modified_x_537(const auto &x_3516) { return MakeUnit(); }
-auto eval_expr_x_534(const auto &x_3518) {
-  if (IsSome(ListLast(x_3518.children))) {
-    return UnSome(ListLast(x_3518.children)).var_intrinsic_width_max;
+auto var_modified_x_532(const auto &x_3506) { return MakeUnit(); }
+auto eval_expr_x_529(const auto &x_3508) {
+  if (IsSome(ListLast(x_3508.children))) {
+    return UnSome(ListLast(x_3508.children)).var_intrinsic_width_max;
   } else {
     return 0.;
   }
 }
-auto var_modified_x_532(const auto &x_3523) { return MakeUnit(); }
-auto eval_expr_x_529(const auto &x_3525) {
-  if (eq(x_3525.var_display, "none") || (x_3525.var_inside_svg || x_3525.var_disabled)) {
+auto var_modified_x_527(const auto &x_3513) { return MakeUnit(); }
+auto eval_expr_x_524(const auto &x_3515) {
+  if (eq(x_3515.var_display, "none") || (x_3515.var_inside_svg || x_3515.var_disabled)) {
     return true;
   } else {
-    if ((x_3525.parent == nullptr) && (*(x_3525.parent)).var_is_flex_row) {
+    if ((x_3515.parent == nullptr) && (*(x_3515.parent)).var_is_flex_row) {
       return false;
     } else {
-      if (eq(x_3525.var_width_expr, "auto") ||
-          (has_suffix(x_3525.var_width_expr, "px") ||
-           (has_suffix(x_3525.var_width_expr, "ch") ||
-            (has_prefix(x_3525.var_width_expr, "calc(") || eq(x_3525.var_width_expr, "max-content"))))) {
+      if (eq(x_3515.var_width_expr, "auto") ||
+          (has_suffix(x_3515.var_width_expr, "px") ||
+           (has_suffix(x_3515.var_width_expr, "ch") ||
+            (has_prefix(x_3515.var_width_expr, "calc(") || eq(x_3515.var_width_expr, "max-content"))))) {
         return true;
       } else {
-        if (has_suffix(x_3525.var_width_expr, "%") || eq(x_3525.var_width_expr, "fit-content")) {
+        if (has_suffix(x_3515.var_width_expr, "%") || eq(x_3515.var_width_expr, "fit-content")) {
           return false;
         } else {
           return Panic();
@@ -1410,25 +1406,25 @@ auto eval_expr_x_529(const auto &x_3525) {
     }
   }
 }
-auto var_modified_x_527(const auto &x_3574) { return MakeUnit(); }
-auto eval_expr_x_524(const auto &x_3577) {
-  if (eq(x_3577.var_display, "none")) {
+auto var_modified_x_522(const auto &x_3564) { return MakeUnit(); }
+auto eval_expr_x_519(const auto &x_3567) {
+  if (eq(x_3567.var_display, "none")) {
     return true;
   } else {
-    if (x_3577.var_inside_svg) {
+    if (x_3567.var_inside_svg) {
       return true;
     } else {
-      if (x_3577.var_disabled) {
+      if (x_3567.var_disabled) {
         return true;
-      } else {if ( eq(x_3577.name,"#document") || (eq(x_3577.name,"#shadow-root") || (eq(x_3577.name,"DIV") || (eq(x_3577.name,"HTML") || (eq(x_3577.name,"BODY") || (eq(x_3577.name,"BUTTON") || (eq(x_3577.name,"FOOTER") || (eq(x_3577.name,"SELECT") || (eq(x_3577.name,"SECTION") || (eq(x_3577.name,"FORM") || (eq(x_3577.name,"CENTER") || (eq(x_3577.name,"TD") || (eq(x_3577.name,"TR") || (eq(x_3577.name,"TBODY") || (eq(x_3577.name,"TABLE") || (eq(x_3577.name,"SPAN") || (eq(x_3577.name,"FONT") || (eq(x_3577.name,"A") || (eq(x_3577.name,"ARTICLE") || (eq(x_3577.name,"P") || (eq(x_3577.name,"U") || (eq(x_3577.name,"UL") || (eq(x_3577.name,"B") || (eq(x_3577.name,"H1") || (eq(x_3577.name,"H2") || (eq(x_3577.name,"H3") || (eq(x_3577.name,"H4") || (eq(x_3577.name,"DT") || (eq(x_3577.name,"DD") || (eq(x_3577.name,"DL") || (eq(x_3577.name,"LI") || (eq(x_3577.name,"LABEL") || (eq(x_3577.name,"OL") || (eq(x_3577.name,"NAV") || (eq(x_3577.name,"HEADER") || (eq(x_3577.name,"HEAD") || (eq(x_3577.name,"SOURCE") || (eq(x_3577.name,"PICTURE") || (eq(x_3577.name,"FIGURE") || (eq(x_3577.name,"FIGCAPTION") || (eq(x_3577.name,"MAIN") || (eq(x_3577.name,"REACT-PARTIAL") || (eq(x_3577.name,"QUERY-BUILDER") || (eq(x_3577.name,"MODAL-DIALOG") || (eq(x_3577.name,"SCROLLABLE-REGION") || (eq(x_3577.name,"DIALOG-HELPER") || (eq(x_3577.name,"AUTO-CHECK") || (eq(x_3577.name,"TOOL-TIP") || (eq(x_3577.name,"CUSTOM-SCOPES") || (eq(x_3577.name,"QBSEARCH-INPUT") || (eq(x_3577.name,"INCLUDE-FRAGMENT") || (eq(x_3577.name,"COOKIE-CONSENT-LINK") || (eq(x_3577.name,"FULLSTORY-CAPTURE") || (eq(x_3577.name,"GHCC-CONSENT") || (eq(x_3577.name,"GLOBAL-BANNER") || (eq(x_3577.name,"ACTIVE-GLOBAL-BANNERS") || (eq(x_3577.name,"CARD-SKEW") || (eq(x_3577.name,"EM") || (eq(x_3577.name,"ASIDE") || (eq(x_3577.name,"AUDIO") || (eq(x_3577.name,"SUP") || (eq(x_3577.name,"TIME") || (eq(x_3577.name,"ABBR") || (eq(x_3577.name,"SMALL") || (eq(x_3577.name,"SLOT") || eq(x_3577.name,"I"))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))) ){
+      } else {if ( eq(x_3567.name,"#document") || (eq(x_3567.name,"#shadow-root") || (eq(x_3567.name,"DIV") || (eq(x_3567.name,"HTML") || (eq(x_3567.name,"BODY") || (eq(x_3567.name,"BUTTON") || (eq(x_3567.name,"FOOTER") || (eq(x_3567.name,"SELECT") || (eq(x_3567.name,"SECTION") || (eq(x_3567.name,"FORM") || (eq(x_3567.name,"CENTER") || (eq(x_3567.name,"TD") || (eq(x_3567.name,"TR") || (eq(x_3567.name,"TBODY") || (eq(x_3567.name,"TABLE") || (eq(x_3567.name,"SPAN") || (eq(x_3567.name,"FONT") || (eq(x_3567.name,"A") || (eq(x_3567.name,"ARTICLE") || (eq(x_3567.name,"P") || (eq(x_3567.name,"U") || (eq(x_3567.name,"UL") || (eq(x_3567.name,"B") || (eq(x_3567.name,"H1") || (eq(x_3567.name,"H2") || (eq(x_3567.name,"H3") || (eq(x_3567.name,"H4") || (eq(x_3567.name,"DT") || (eq(x_3567.name,"DD") || (eq(x_3567.name,"DL") || (eq(x_3567.name,"LI") || (eq(x_3567.name,"LABEL") || (eq(x_3567.name,"OL") || (eq(x_3567.name,"NAV") || (eq(x_3567.name,"HEADER") || (eq(x_3567.name,"HEAD") || (eq(x_3567.name,"SOURCE") || (eq(x_3567.name,"PICTURE") || (eq(x_3567.name,"FIGURE") || (eq(x_3567.name,"FIGCAPTION") || (eq(x_3567.name,"MAIN") || (eq(x_3567.name,"REACT-PARTIAL") || (eq(x_3567.name,"QUERY-BUILDER") || (eq(x_3567.name,"MODAL-DIALOG") || (eq(x_3567.name,"SCROLLABLE-REGION") || (eq(x_3567.name,"DIALOG-HELPER") || (eq(x_3567.name,"AUTO-CHECK") || (eq(x_3567.name,"TOOL-TIP") || (eq(x_3567.name,"CUSTOM-SCOPES") || (eq(x_3567.name,"QBSEARCH-INPUT") || (eq(x_3567.name,"INCLUDE-FRAGMENT") || (eq(x_3567.name,"COOKIE-CONSENT-LINK") || (eq(x_3567.name,"FULLSTORY-CAPTURE") || (eq(x_3567.name,"GHCC-CONSENT") || (eq(x_3567.name,"GLOBAL-BANNER") || (eq(x_3567.name,"ACTIVE-GLOBAL-BANNERS") || (eq(x_3567.name,"CARD-SKEW") || (eq(x_3567.name,"EM") || (eq(x_3567.name,"ASIDE") || (eq(x_3567.name,"AUDIO") || (eq(x_3567.name,"SUP") || (eq(x_3567.name,"TIME") || (eq(x_3567.name,"ABBR") || (eq(x_3567.name,"SMALL") || (eq(x_3567.name,"SLOT") || eq(x_3567.name,"I"))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))) ){
           return true;
         } else {
-          if (eq(x_3577.name, "#text") ||
-              (eq(x_3577.name, "svg") ||
-               (eq(x_3577.name, "IFRAME") ||
-                (eq(x_3577.name, "INPUT") ||
-                 (eq(x_3577.name, "VIDEO") ||
-                  (eq(x_3577.name, "BR") || (eq(x_3577.name, "IMG") || eq(x_3577.name, "TEXTAREA")))))))) {
+          if (eq(x_3567.name, "#text") ||
+              (eq(x_3567.name, "svg") ||
+               (eq(x_3567.name, "IFRAME") ||
+                (eq(x_3567.name, "INPUT") ||
+                 (eq(x_3567.name, "VIDEO") ||
+                  (eq(x_3567.name, "BR") || (eq(x_3567.name, "IMG") || eq(x_3567.name, "TEXTAREA")))))))) {
             return false;
           } else {
             return Panic();
@@ -1438,325 +1434,313 @@ auto eval_expr_x_524(const auto &x_3577) {
     }
   }
 }
-auto var_modified_x_522(const auto &x_3590) { return MakeUnit(); }
-auto eval_expr_x_519(const auto &x_3610) {
-  if (IsSome(HashtblFind(x_3610.prop, "width"))) {
-    return HashtblForceFind(x_3610.prop, "width");
+auto var_modified_x_517(const auto &x_3580) { return MakeUnit(); }
+auto eval_expr_x_514(const auto &x_3600) {
+  if (IsSome(HashtblFind(x_3600.prop, "width"))) {
+    return HashtblForceFind(x_3600.prop, "width");
   } else {
     return "auto";
   }
 }
-auto eval_stmts_x_257(const auto &x_517) {
-  return [&](const auto &x_518) {
-    WriteMetric(x_518);
-    auto x_520 = eval_expr_x_519(x_517);
-    x_517.var_width_expr = x_520;
-    WriteMetric(x_518);
-    auto x_525 = eval_expr_x_524(x_517);
-    x_517.var_is_default_case = x_525;
-    WriteMetric(x_518);
-    auto x_530 = eval_expr_x_529(x_517);
-    x_517.var_intrinsic_width_is_width = x_530;
-    WriteMetric(x_518);
-    auto x_535 = eval_expr_x_534(x_517);
-    x_517.var_children_intrinsic_width = x_535;
-    WriteMetric(x_518);
-    auto x_540 = eval_expr_x_539(x_517);
-    x_517.var_intrinsic_width_internal = x_540;
-    WriteMetric(x_518);
-    auto x_545 = eval_expr_x_544(x_517);
-    x_517.var_intrinsic_width_external = x_545;
-    WriteMetric(x_518);
-    auto x_550 = eval_expr_x_549(x_517);
-    x_517.var_intrinsic_current_line_width = x_550;
-    WriteMetric(x_518);
-    auto x_555 = eval_expr_x_554(x_517);
-    x_517.var_intrinsic_width_max = x_555;
-    WriteMetric(x_518);
-    auto x_560 = eval_expr_x_559(x_517);
-    x_517.var_intrinsic_width_sum = x_560;
-    WriteMetric(x_518);
-    auto x_565 = eval_expr_x_564(x_517);
-    x_517.var_children_intrinsic_height = x_565;
-    WriteMetric(x_518);
-    auto x_570 = eval_expr_x_569(x_517);
-    x_517.var_height_expr = x_570;
-    WriteMetric(x_518);
-    auto x_575 = eval_expr_x_574(x_517);
-    x_517.var_intrinsic_height_is_height = x_575;
-    WriteMetric(x_518);
-    auto x_580 = eval_expr_x_579(x_517);
-    x_517.var_intrinsic_height_internal = x_580;
-    WriteMetric(x_518);
-    auto x_585 = eval_expr_x_584(x_517);
-    x_517.var_intrinsic_height_external = x_585;
-    WriteMetric(x_518);
-    auto x_590 = eval_expr_x_589(x_517);
-    x_517.var_intrinsic_height_sum = x_590;
-    WriteMetric(x_518);
-    auto x_595 = eval_expr_x_594(x_517);
-    x_517.var_intrinsic_current_line_height = x_595;
-    WriteMetric(x_518);
-    auto x_600 = eval_expr_x_599(x_517);
-    x_517.var_finished_intrinsic_height_sum = x_600;
-    return MakeUnit();
-  };
+auto eval_stmts_x_253(const auto &x_513) {
+  WriteMetric(x_15);
+  auto x_515 = eval_expr_x_514(x_513);
+  x_513.var_width_expr = x_515;
+  WriteMetric(x_15);
+  auto x_520 = eval_expr_x_519(x_513);
+  x_513.var_is_default_case = x_520;
+  WriteMetric(x_15);
+  auto x_525 = eval_expr_x_524(x_513);
+  x_513.var_intrinsic_width_is_width = x_525;
+  WriteMetric(x_15);
+  auto x_530 = eval_expr_x_529(x_513);
+  x_513.var_children_intrinsic_width = x_530;
+  WriteMetric(x_15);
+  auto x_535 = eval_expr_x_534(x_513);
+  x_513.var_intrinsic_width_internal = x_535;
+  WriteMetric(x_15);
+  auto x_540 = eval_expr_x_539(x_513);
+  x_513.var_intrinsic_width_external = x_540;
+  WriteMetric(x_15);
+  auto x_545 = eval_expr_x_544(x_513);
+  x_513.var_intrinsic_current_line_width = x_545;
+  WriteMetric(x_15);
+  auto x_550 = eval_expr_x_549(x_513);
+  x_513.var_intrinsic_width_max = x_550;
+  WriteMetric(x_15);
+  auto x_555 = eval_expr_x_554(x_513);
+  x_513.var_intrinsic_width_sum = x_555;
+  WriteMetric(x_15);
+  auto x_560 = eval_expr_x_559(x_513);
+  x_513.var_children_intrinsic_height = x_560;
+  WriteMetric(x_15);
+  auto x_565 = eval_expr_x_564(x_513);
+  x_513.var_height_expr = x_565;
+  WriteMetric(x_15);
+  auto x_570 = eval_expr_x_569(x_513);
+  x_513.var_intrinsic_height_is_height = x_570;
+  WriteMetric(x_15);
+  auto x_575 = eval_expr_x_574(x_513);
+  x_513.var_intrinsic_height_internal = x_575;
+  WriteMetric(x_15);
+  auto x_580 = eval_expr_x_579(x_513);
+  x_513.var_intrinsic_height_external = x_580;
+  WriteMetric(x_15);
+  auto x_585 = eval_expr_x_584(x_513);
+  x_513.var_intrinsic_height_sum = x_585;
+  WriteMetric(x_15);
+  auto x_590 = eval_expr_x_589(x_513);
+  x_513.var_intrinsic_current_line_height = x_590;
+  WriteMetric(x_15);
+  auto x_595 = eval_expr_x_594(x_513);
+  x_513.var_finished_intrinsic_height_sum = x_595;
+  return MakeUnit();
 }
-auto eval_stmts_x_255(const auto &x_604) {
-  return [&](const auto &x_605) {
-    WriteMetric(x_605);
-    auto x_607 = eval_expr_x_606(x_604);
-    x_604.var_display = x_607;
-    WriteMetric(x_605);
-    auto x_612 = eval_expr_x_611(x_604);
-    x_604.var_position = x_612;
-    WriteMetric(x_605);
-    auto x_617 = eval_expr_x_616(x_604);
-    x_604.var_flex_grow = x_617;
-    WriteMetric(x_605);
-    auto x_622 = eval_expr_x_621(x_604);
-    x_604.var_flex_shrink = x_622;
-    WriteMetric(x_605);
-    auto x_627 = eval_expr_x_626(x_604);
-    x_604.var_flex_grow_sum = x_627;
-    WriteMetric(x_605);
-    auto x_632 = eval_expr_x_631(x_604);
-    x_604.var_flex_shrink_sum = x_632;
-    WriteMetric(x_605);
-    auto x_637 = eval_expr_x_636(x_604);
-    x_604.var_flex_direction = x_637;
-    WriteMetric(x_605);
-    auto x_642 = eval_expr_x_641(x_604);
-    x_604.var_is_flex_row = x_642;
-    WriteMetric(x_605);
-    auto x_647 = eval_expr_x_646(x_604);
-    x_604.var_is_flex_column = x_647;
-    WriteMetric(x_605);
-    auto x_652 = eval_expr_x_651(x_604);
-    x_604.var_width_attr_expr = x_652;
-    WriteMetric(x_605);
-    auto x_657 = eval_expr_x_656(x_604);
-    x_604.var_has_width_attr = x_657;
-    WriteMetric(x_605);
-    auto x_662 = eval_expr_x_661(x_604);
-    x_604.var_height_attr_expr = x_662;
-    WriteMetric(x_605);
-    auto x_667 = eval_expr_x_666(x_604);
-    x_604.var_has_height_attr = x_667;
-    WriteMetric(x_605);
-    auto x_672 = eval_expr_x_671(x_604);
-    x_604.var_is_svg_block = x_672;
-    WriteMetric(x_605);
-    auto x_677 = eval_expr_x_676(x_604);
-    x_604.var_inside_svg = x_677;
-    WriteMetric(x_605);
-    auto x_682 = eval_expr_x_681(x_604);
-    x_604.var_disabled = x_682;
-    WriteMetric(x_605);
-    auto x_687 = eval_expr_x_686(x_604);
-    x_604.var_visible = x_687;
-    WriteMetric(x_605);
-    auto x_692 = eval_expr_x_691(x_604);
-    x_604.var_line_break = x_692;
-    return MakeUnit();
-  };
+auto eval_stmts_x_251(const auto &x_599) {
+  WriteMetric(x_15);
+  auto x_601 = eval_expr_x_600(x_599);
+  x_599.var_display = x_601;
+  WriteMetric(x_15);
+  auto x_606 = eval_expr_x_605(x_599);
+  x_599.var_position = x_606;
+  WriteMetric(x_15);
+  auto x_611 = eval_expr_x_610(x_599);
+  x_599.var_flex_grow = x_611;
+  WriteMetric(x_15);
+  auto x_616 = eval_expr_x_615(x_599);
+  x_599.var_flex_shrink = x_616;
+  WriteMetric(x_15);
+  auto x_621 = eval_expr_x_620(x_599);
+  x_599.var_flex_grow_sum = x_621;
+  WriteMetric(x_15);
+  auto x_626 = eval_expr_x_625(x_599);
+  x_599.var_flex_shrink_sum = x_626;
+  WriteMetric(x_15);
+  auto x_631 = eval_expr_x_630(x_599);
+  x_599.var_flex_direction = x_631;
+  WriteMetric(x_15);
+  auto x_636 = eval_expr_x_635(x_599);
+  x_599.var_is_flex_row = x_636;
+  WriteMetric(x_15);
+  auto x_641 = eval_expr_x_640(x_599);
+  x_599.var_is_flex_column = x_641;
+  WriteMetric(x_15);
+  auto x_646 = eval_expr_x_645(x_599);
+  x_599.var_width_attr_expr = x_646;
+  WriteMetric(x_15);
+  auto x_651 = eval_expr_x_650(x_599);
+  x_599.var_has_width_attr = x_651;
+  WriteMetric(x_15);
+  auto x_656 = eval_expr_x_655(x_599);
+  x_599.var_height_attr_expr = x_656;
+  WriteMetric(x_15);
+  auto x_661 = eval_expr_x_660(x_599);
+  x_599.var_has_height_attr = x_661;
+  WriteMetric(x_15);
+  auto x_666 = eval_expr_x_665(x_599);
+  x_599.var_is_svg_block = x_666;
+  WriteMetric(x_15);
+  auto x_671 = eval_expr_x_670(x_599);
+  x_599.var_inside_svg = x_671;
+  WriteMetric(x_15);
+  auto x_676 = eval_expr_x_675(x_599);
+  x_599.var_disabled = x_676;
+  WriteMetric(x_15);
+  auto x_681 = eval_expr_x_680(x_599);
+  x_599.var_visible = x_681;
+  WriteMetric(x_15);
+  auto x_686 = eval_expr_x_685(x_599);
+  x_599.var_line_break = x_686;
+  return MakeUnit();
 }
-auto eval_stmts_x_251(const auto &x_696) {
-  return [&](const auto &x_697) {
-    WriteMetric(x_697);
-    auto x_699 = eval_expr_x_698(x_696);
-    x_696.var_box_width = x_699;
-    WriteMetric(x_697);
-    auto x_704 = eval_expr_x_703(x_696);
-    x_696.var_box_height = x_704;
-    WriteMetric(x_697);
-    auto x_709 = eval_expr_x_708(x_696);
-    x_696.var_left_over = x_709;
-    WriteMetric(x_697);
-    auto x_714 = eval_expr_x_713(x_696);
-    x_696.var_flex_amount = x_714;
-    WriteMetric(x_697);
-    auto x_719 = eval_expr_x_718(x_696);
-    x_696.var_flex_unit = x_719;
-    WriteMetric(x_697);
-    auto x_724 = eval_expr_x_723(x_696);
-    x_696.var_x = x_724;
-    WriteMetric(x_697);
-    auto x_729 = eval_expr_x_728(x_696);
-    x_696.var_width_internal = x_729;
-    WriteMetric(x_697);
-    auto x_734 = eval_expr_x_733(x_696);
-    x_696.var_width_external = x_734;
-    WriteMetric(x_697);
-    auto x_739 = eval_expr_x_738(x_696);
-    x_696.var_y = x_739;
-    WriteMetric(x_697);
-    auto x_744 = eval_expr_x_743(x_696);
-    x_696.var_height_internal = x_744;
-    WriteMetric(x_697);
-    auto x_749 = eval_expr_x_748(x_696);
-    x_696.var_height_external = x_749;
-    WriteMetric(x_697);
-    auto x_754 = eval_expr_x_753(x_696);
-    x_696.var_line_height = x_754;
-    return MakeUnit();
-  };
+auto eval_stmts_x_248(const auto &x_690) {
+  WriteMetric(x_15);
+  auto x_692 = eval_expr_x_691(x_690);
+  x_690.var_box_width = x_692;
+  WriteMetric(x_15);
+  auto x_697 = eval_expr_x_696(x_690);
+  x_690.var_box_height = x_697;
+  WriteMetric(x_15);
+  auto x_702 = eval_expr_x_701(x_690);
+  x_690.var_left_over = x_702;
+  WriteMetric(x_15);
+  auto x_707 = eval_expr_x_706(x_690);
+  x_690.var_flex_amount = x_707;
+  WriteMetric(x_15);
+  auto x_712 = eval_expr_x_711(x_690);
+  x_690.var_flex_unit = x_712;
+  WriteMetric(x_15);
+  auto x_717 = eval_expr_x_716(x_690);
+  x_690.var_x = x_717;
+  WriteMetric(x_15);
+  auto x_722 = eval_expr_x_721(x_690);
+  x_690.var_width_internal = x_722;
+  WriteMetric(x_15);
+  auto x_727 = eval_expr_x_726(x_690);
+  x_690.var_width_external = x_727;
+  WriteMetric(x_15);
+  auto x_732 = eval_expr_x_731(x_690);
+  x_690.var_y = x_732;
+  WriteMetric(x_15);
+  auto x_737 = eval_expr_x_736(x_690);
+  x_690.var_height_internal = x_737;
+  WriteMetric(x_15);
+  auto x_742 = eval_expr_x_741(x_690);
+  x_690.var_height_external = x_742;
+  WriteMetric(x_15);
+  auto x_747 = eval_expr_x_746(x_690);
+  x_690.var_line_height = x_747;
+  return MakeUnit();
 }
-auto eval_stmts_x_242(const auto &x_758) {
-  return [&](const auto &x_759) {
-    WriteMetric(x_759);
-    auto x_761 = eval_expr_x_760(x_758);
-    x_758.var_width_expr = x_761;
-    WriteMetric(x_759);
-    auto x_766 = eval_expr_x_765(x_758);
-    x_758.var_is_default_case = x_766;
-    WriteMetric(x_759);
-    auto x_771 = eval_expr_x_770(x_758);
-    x_758.var_intrinsic_width_is_width = x_771;
-    WriteMetric(x_759);
-    auto x_776 = eval_expr_x_775(x_758);
-    x_758.var_children_intrinsic_width = x_776;
-    WriteMetric(x_759);
-    auto x_781 = eval_expr_x_780(x_758);
-    x_758.var_intrinsic_width_internal = x_781;
-    WriteMetric(x_759);
-    auto x_786 = eval_expr_x_785(x_758);
-    x_758.var_intrinsic_width_external = x_786;
-    WriteMetric(x_759);
-    auto x_791 = eval_expr_x_790(x_758);
-    x_758.var_intrinsic_current_line_width = x_791;
-    WriteMetric(x_759);
-    auto x_796 = eval_expr_x_795(x_758);
-    x_758.var_intrinsic_width_max = x_796;
-    WriteMetric(x_759);
-    auto x_801 = eval_expr_x_800(x_758);
-    x_758.var_intrinsic_width_sum = x_801;
-    WriteMetric(x_759);
-    auto x_806 = eval_expr_x_805(x_758);
-    x_758.var_children_intrinsic_height = x_806;
-    WriteMetric(x_759);
-    auto x_811 = eval_expr_x_810(x_758);
-    x_758.var_height_expr = x_811;
-    WriteMetric(x_759);
-    auto x_816 = eval_expr_x_815(x_758);
-    x_758.var_intrinsic_height_is_height = x_816;
-    WriteMetric(x_759);
-    auto x_821 = eval_expr_x_820(x_758);
-    x_758.var_intrinsic_height_internal = x_821;
-    WriteMetric(x_759);
-    auto x_826 = eval_expr_x_825(x_758);
-    x_758.var_intrinsic_height_external = x_826;
-    WriteMetric(x_759);
-    auto x_831 = eval_expr_x_830(x_758);
-    x_758.var_intrinsic_height_sum = x_831;
-    WriteMetric(x_759);
-    auto x_836 = eval_expr_x_835(x_758);
-    x_758.var_intrinsic_current_line_height = x_836;
-    WriteMetric(x_759);
-    auto x_841 = eval_expr_x_840(x_758);
-    x_758.var_finished_intrinsic_height_sum = x_841;
-    return MakeUnit();
-  };
+auto eval_stmts_x_240(const auto &x_751) {
+  WriteMetric(x_15);
+  auto x_753 = eval_expr_x_752(x_751);
+  x_751.var_width_expr = x_753;
+  WriteMetric(x_15);
+  auto x_758 = eval_expr_x_757(x_751);
+  x_751.var_is_default_case = x_758;
+  WriteMetric(x_15);
+  auto x_763 = eval_expr_x_762(x_751);
+  x_751.var_intrinsic_width_is_width = x_763;
+  WriteMetric(x_15);
+  auto x_768 = eval_expr_x_767(x_751);
+  x_751.var_children_intrinsic_width = x_768;
+  WriteMetric(x_15);
+  auto x_773 = eval_expr_x_772(x_751);
+  x_751.var_intrinsic_width_internal = x_773;
+  WriteMetric(x_15);
+  auto x_778 = eval_expr_x_777(x_751);
+  x_751.var_intrinsic_width_external = x_778;
+  WriteMetric(x_15);
+  auto x_783 = eval_expr_x_782(x_751);
+  x_751.var_intrinsic_current_line_width = x_783;
+  WriteMetric(x_15);
+  auto x_788 = eval_expr_x_787(x_751);
+  x_751.var_intrinsic_width_max = x_788;
+  WriteMetric(x_15);
+  auto x_793 = eval_expr_x_792(x_751);
+  x_751.var_intrinsic_width_sum = x_793;
+  WriteMetric(x_15);
+  auto x_798 = eval_expr_x_797(x_751);
+  x_751.var_children_intrinsic_height = x_798;
+  WriteMetric(x_15);
+  auto x_803 = eval_expr_x_802(x_751);
+  x_751.var_height_expr = x_803;
+  WriteMetric(x_15);
+  auto x_808 = eval_expr_x_807(x_751);
+  x_751.var_intrinsic_height_is_height = x_808;
+  WriteMetric(x_15);
+  auto x_813 = eval_expr_x_812(x_751);
+  x_751.var_intrinsic_height_internal = x_813;
+  WriteMetric(x_15);
+  auto x_818 = eval_expr_x_817(x_751);
+  x_751.var_intrinsic_height_external = x_818;
+  WriteMetric(x_15);
+  auto x_823 = eval_expr_x_822(x_751);
+  x_751.var_intrinsic_height_sum = x_823;
+  WriteMetric(x_15);
+  auto x_828 = eval_expr_x_827(x_751);
+  x_751.var_intrinsic_current_line_height = x_828;
+  WriteMetric(x_15);
+  auto x_833 = eval_expr_x_832(x_751);
+  x_751.var_finished_intrinsic_height_sum = x_833;
+  return MakeUnit();
 }
-auto eval_stmts_x_240(const auto &x_845) {
-  return [&](const auto &x_846) {
-    WriteMetric(x_846);
-    auto x_848 = eval_expr_x_847(x_845);
-    x_845.var_display = x_848;
-    WriteMetric(x_846);
-    auto x_853 = eval_expr_x_852(x_845);
-    x_845.var_position = x_853;
-    WriteMetric(x_846);
-    auto x_858 = eval_expr_x_857(x_845);
-    x_845.var_flex_grow = x_858;
-    WriteMetric(x_846);
-    auto x_863 = eval_expr_x_862(x_845);
-    x_845.var_flex_shrink = x_863;
-    WriteMetric(x_846);
-    auto x_868 = eval_expr_x_867(x_845);
-    x_845.var_flex_grow_sum = x_868;
-    WriteMetric(x_846);
-    auto x_873 = eval_expr_x_872(x_845);
-    x_845.var_flex_shrink_sum = x_873;
-    WriteMetric(x_846);
-    auto x_878 = eval_expr_x_877(x_845);
-    x_845.var_flex_direction = x_878;
-    WriteMetric(x_846);
-    auto x_883 = eval_expr_x_882(x_845);
-    x_845.var_is_flex_row = x_883;
-    WriteMetric(x_846);
-    auto x_888 = eval_expr_x_887(x_845);
-    x_845.var_is_flex_column = x_888;
-    WriteMetric(x_846);
-    auto x_893 = eval_expr_x_892(x_845);
-    x_845.var_width_attr_expr = x_893;
-    WriteMetric(x_846);
-    auto x_898 = eval_expr_x_897(x_845);
-    x_845.var_has_width_attr = x_898;
-    WriteMetric(x_846);
-    auto x_903 = eval_expr_x_902(x_845);
-    x_845.var_height_attr_expr = x_903;
-    WriteMetric(x_846);
-    auto x_908 = eval_expr_x_907(x_845);
-    x_845.var_has_height_attr = x_908;
-    WriteMetric(x_846);
-    auto x_913 = eval_expr_x_912(x_845);
-    x_845.var_is_svg_block = x_913;
-    WriteMetric(x_846);
-    auto x_918 = eval_expr_x_917(x_845);
-    x_845.var_inside_svg = x_918;
-    WriteMetric(x_846);
-    auto x_923 = eval_expr_x_922(x_845);
-    x_845.var_disabled = x_923;
-    WriteMetric(x_846);
-    auto x_928 = eval_expr_x_927(x_845);
-    x_845.var_visible = x_928;
-    WriteMetric(x_846);
-    auto x_933 = eval_expr_x_932(x_845);
-    x_845.var_line_break = x_933;
-    return MakeUnit();
-  };
+auto eval_stmts_x_238(const auto &x_837) {
+  WriteMetric(x_15);
+  auto x_839 = eval_expr_x_838(x_837);
+  x_837.var_display = x_839;
+  WriteMetric(x_15);
+  auto x_844 = eval_expr_x_843(x_837);
+  x_837.var_position = x_844;
+  WriteMetric(x_15);
+  auto x_849 = eval_expr_x_848(x_837);
+  x_837.var_flex_grow = x_849;
+  WriteMetric(x_15);
+  auto x_854 = eval_expr_x_853(x_837);
+  x_837.var_flex_shrink = x_854;
+  WriteMetric(x_15);
+  auto x_859 = eval_expr_x_858(x_837);
+  x_837.var_flex_grow_sum = x_859;
+  WriteMetric(x_15);
+  auto x_864 = eval_expr_x_863(x_837);
+  x_837.var_flex_shrink_sum = x_864;
+  WriteMetric(x_15);
+  auto x_869 = eval_expr_x_868(x_837);
+  x_837.var_flex_direction = x_869;
+  WriteMetric(x_15);
+  auto x_874 = eval_expr_x_873(x_837);
+  x_837.var_is_flex_row = x_874;
+  WriteMetric(x_15);
+  auto x_879 = eval_expr_x_878(x_837);
+  x_837.var_is_flex_column = x_879;
+  WriteMetric(x_15);
+  auto x_884 = eval_expr_x_883(x_837);
+  x_837.var_width_attr_expr = x_884;
+  WriteMetric(x_15);
+  auto x_889 = eval_expr_x_888(x_837);
+  x_837.var_has_width_attr = x_889;
+  WriteMetric(x_15);
+  auto x_894 = eval_expr_x_893(x_837);
+  x_837.var_height_attr_expr = x_894;
+  WriteMetric(x_15);
+  auto x_899 = eval_expr_x_898(x_837);
+  x_837.var_has_height_attr = x_899;
+  WriteMetric(x_15);
+  auto x_904 = eval_expr_x_903(x_837);
+  x_837.var_is_svg_block = x_904;
+  WriteMetric(x_15);
+  auto x_909 = eval_expr_x_908(x_837);
+  x_837.var_inside_svg = x_909;
+  WriteMetric(x_15);
+  auto x_914 = eval_expr_x_913(x_837);
+  x_837.var_disabled = x_914;
+  WriteMetric(x_15);
+  auto x_919 = eval_expr_x_918(x_837);
+  x_837.var_visible = x_919;
+  WriteMetric(x_15);
+  auto x_924 = eval_expr_x_923(x_837);
+  x_837.var_line_break = x_924;
+  return MakeUnit();
 }
-auto eval_stmts_x_236(const auto &x_937) {
-  return [&](const auto &x_938) {
-    WriteMetric(x_938);
-    auto x_940 = eval_expr_x_939(x_937);
-    x_937.var_box_width = x_940;
-    WriteMetric(x_938);
-    auto x_945 = eval_expr_x_944(x_937);
-    x_937.var_box_height = x_945;
-    WriteMetric(x_938);
-    auto x_950 = eval_expr_x_949(x_937);
-    x_937.var_left_over = x_950;
-    WriteMetric(x_938);
-    auto x_955 = eval_expr_x_954(x_937);
-    x_937.var_flex_amount = x_955;
-    WriteMetric(x_938);
-    auto x_960 = eval_expr_x_959(x_937);
-    x_937.var_flex_unit = x_960;
-    WriteMetric(x_938);
-    auto x_965 = eval_expr_x_964(x_937);
-    x_937.var_x = x_965;
-    WriteMetric(x_938);
-    auto x_970 = eval_expr_x_969(x_937);
-    x_937.var_width_internal = x_970;
-    WriteMetric(x_938);
-    auto x_975 = eval_expr_x_974(x_937);
-    x_937.var_width_external = x_975;
-    WriteMetric(x_938);
-    auto x_980 = eval_expr_x_979(x_937);
-    x_937.var_y = x_980;
-    WriteMetric(x_938);
-    auto x_985 = eval_expr_x_984(x_937);
-    x_937.var_height_internal = x_985;
-    WriteMetric(x_938);
-    auto x_990 = eval_expr_x_989(x_937);
-    x_937.var_height_external = x_990;
-    WriteMetric(x_938);
-    auto x_995 = eval_expr_x_994(x_937);
-    x_937.var_line_height = x_995;
-    return MakeUnit();
-  };
+auto eval_stmts_x_235(const auto &x_928) {
+  WriteMetric(x_15);
+  auto x_930 = eval_expr_x_929(x_928);
+  x_928.var_box_width = x_930;
+  WriteMetric(x_15);
+  auto x_935 = eval_expr_x_934(x_928);
+  x_928.var_box_height = x_935;
+  WriteMetric(x_15);
+  auto x_940 = eval_expr_x_939(x_928);
+  x_928.var_left_over = x_940;
+  WriteMetric(x_15);
+  auto x_945 = eval_expr_x_944(x_928);
+  x_928.var_flex_amount = x_945;
+  WriteMetric(x_15);
+  auto x_950 = eval_expr_x_949(x_928);
+  x_928.var_flex_unit = x_950;
+  WriteMetric(x_15);
+  auto x_955 = eval_expr_x_954(x_928);
+  x_928.var_x = x_955;
+  WriteMetric(x_15);
+  auto x_960 = eval_expr_x_959(x_928);
+  x_928.var_width_internal = x_960;
+  WriteMetric(x_15);
+  auto x_965 = eval_expr_x_964(x_928);
+  x_928.var_width_external = x_965;
+  WriteMetric(x_15);
+  auto x_970 = eval_expr_x_969(x_928);
+  x_928.var_y = x_970;
+  WriteMetric(x_15);
+  auto x_975 = eval_expr_x_974(x_928);
+  x_928.var_height_internal = x_975;
+  WriteMetric(x_15);
+  auto x_980 = eval_expr_x_979(x_928);
+  x_928.var_height_external = x_980;
+  WriteMetric(x_15);
+  auto x_985 = eval_expr_x_984(x_928);
+  x_928.var_line_height = x_985;
+  return MakeUnit();
 }
 auto x_50(const auto &x_51) {
   auto x_52 = Zro(x_51);
@@ -1847,102 +1831,94 @@ auto x_228(const auto &x_229) {
   });
 }
 auto set_children_relation_x_33(const auto &x_229) { return x_228(x_229); }
-auto eval_stmts_x_29(const auto &x_234) {
-  return [&](const auto &x_235) { return MakeUnit(); };
-}
-auto eval_stmts_x_28(const auto &x_238) {
-  return [&](const auto &x_239) { return MakeUnit(); };
-}
-auto x_243(const auto &x_244) {
-  return OptionIter(ListLast(x_244.children), [&](const auto &x_248) {
-    x_248.parent = Some(x_244);
-    return x_243(x_248);
+auto eval_stmts_x_29(const auto &x_234) { return MakeUnit(); }
+auto eval_stmts_x_28(const auto &x_237) { return MakeUnit(); }
+auto x_241(const auto &x_242) {
+  return OptionIter(ListLast(x_242.children), [&](const auto &x_246) {
+    x_246.parent = Some(x_242);
+    return x_241(x_246);
   });
 }
-auto set_children_relation_x_26(const auto &x_244) { return x_243(x_244); }
-auto eval_stmts_x_24(const auto &x_249) {
-  return [&](const auto &x_250) { return MakeUnit(); };
-}
-auto eval_stmts_x_23(const auto &x_253) {
-  return [&](const auto &x_254) { return MakeUnit(); };
-}
-auto x_258(const auto &x_259) {
-  return OptionIter(ListLast(x_259.children), [&](const auto &x_263) {
-    x_263.parent = Some(x_259);
-    return x_258(x_263);
+auto set_children_relation_x_26(const auto &x_242) { return x_241(x_242); }
+auto eval_stmts_x_24(const auto &x_247) { return MakeUnit(); }
+auto eval_stmts_x_23(const auto &x_250) { return MakeUnit(); }
+auto x_254(const auto &x_255) {
+  return OptionIter(ListLast(x_255.children), [&](const auto &x_259) {
+    x_259.parent = Some(x_255);
+    return x_254(x_259);
   });
 }
-auto set_children_relation_x_20(const auto &x_259) { return x_258(x_259); }
-auto x_264(const auto &x_265) {
-  auto x_266 = Zro(x_265);
-  auto x_267 = Fst(x_265);
-  auto x_268 = Zro(x_266);
-  auto x_269 = Fst(x_266);
+auto set_children_relation_x_20(const auto &x_255) { return x_254(x_255); }
+auto x_260(const auto &x_261) {
+  auto x_262 = Zro(x_261);
+  auto x_263 = Fst(x_261);
+  auto x_264 = Zro(x_262);
+  auto x_265 = Fst(x_262);
   return ListMatch(
-      x_268,
-      [&](const auto &x_272) {
-        auto x_273 = Zro(x_267);
-        auto x_274 = Zro(x_273);
-        auto x_275 = Fst(x_273);
-        auto x_276 = Fst(x_267);
-        auto x_277 = Zro(x_276);
-        auto x_278 = Fst(x_276);
-        InputChangeMetric(x_278, 1);
-        std::string x_3613 = x_274;
-        if (x_3613 == "attributes") {
-          std::string x_3614 = x_275;
-          if (x_3614 == "width") {
-            WriteMetric(x_278);
-            HashtblAddExn(x_269.attr, "width", x_277);
+      x_264,
+      [&](const auto &x_268) {
+        auto x_269 = Zro(x_263);
+        auto x_270 = Zro(x_269);
+        auto x_271 = Fst(x_269);
+        auto x_272 = Fst(x_263);
+        auto x_273 = Zro(x_272);
+        auto x_274 = Fst(x_272);
+        InputChangeMetric(x_274, 1);
+        std::string x_3603 = x_270;
+        if (x_3603 == "attributes") {
+          std::string x_3604 = x_271;
+          if (x_3604 == "width") {
+            WriteMetric(x_274);
+            HashtblAddExn(x_265.attr, "width", x_273);
             return MakeUnit();
-          } else if (x_3614 == "image_height") {
-            WriteMetric(x_278);
-            HashtblAddExn(x_269.attr, "image_height", x_277);
+          } else if (x_3604 == "image_height") {
+            WriteMetric(x_274);
+            HashtblAddExn(x_265.attr, "image_height", x_273);
             return MakeUnit();
-          } else if (x_3614 == "image_width") {
-            WriteMetric(x_278);
-            HashtblAddExn(x_269.attr, "image_width", x_277);
+          } else if (x_3604 == "image_width") {
+            WriteMetric(x_274);
+            HashtblAddExn(x_265.attr, "image_width", x_273);
             return MakeUnit();
-          } else if (x_3614 == "height") {
-            WriteMetric(x_278);
-            HashtblAddExn(x_269.attr, "height", x_277);
+          } else if (x_3604 == "height") {
+            WriteMetric(x_274);
+            HashtblAddExn(x_265.attr, "height", x_273);
             return MakeUnit();
-          } else if (x_3614 == "viewBox") {
-            WriteMetric(x_278);
-            HashtblAddExn(x_269.attr, "viewBox", x_277);
+          } else if (x_3604 == "viewBox") {
+            WriteMetric(x_274);
+            HashtblAddExn(x_265.attr, "viewBox", x_273);
             return MakeUnit();
           } else {
             return MakeUnit();
           }
-        } else if (x_3613 == "properties") {
-          std::string x_3615 = x_275;
-          if (x_3615 == "width") {
-            WriteMetric(x_278);
-            HashtblAddExn(x_269.prop, "width", x_277);
+        } else if (x_3603 == "properties") {
+          std::string x_3605 = x_271;
+          if (x_3605 == "width") {
+            WriteMetric(x_274);
+            HashtblAddExn(x_265.prop, "width", x_273);
             return MakeUnit();
-          } else if (x_3615 == "flex-grow") {
-            WriteMetric(x_278);
-            HashtblAddExn(x_269.prop, "flex-grow", x_277);
+          } else if (x_3605 == "flex-grow") {
+            WriteMetric(x_274);
+            HashtblAddExn(x_265.prop, "flex-grow", x_273);
             return MakeUnit();
-          } else if (x_3615 == "height") {
-            WriteMetric(x_278);
-            HashtblAddExn(x_269.prop, "height", x_277);
+          } else if (x_3605 == "height") {
+            WriteMetric(x_274);
+            HashtblAddExn(x_265.prop, "height", x_273);
             return MakeUnit();
-          } else if (x_3615 == "display") {
-            WriteMetric(x_278);
-            HashtblAddExn(x_269.prop, "display", x_277);
+          } else if (x_3605 == "display") {
+            WriteMetric(x_274);
+            HashtblAddExn(x_265.prop, "display", x_273);
             return MakeUnit();
-          } else if (x_3615 == "position") {
-            WriteMetric(x_278);
-            HashtblAddExn(x_269.prop, "position", x_277);
+          } else if (x_3605 == "position") {
+            WriteMetric(x_274);
+            HashtblAddExn(x_265.prop, "position", x_273);
             return MakeUnit();
-          } else if (x_3615 == "flex-shrink") {
-            WriteMetric(x_278);
-            HashtblAddExn(x_269.prop, "flex-shrink", x_277);
+          } else if (x_3605 == "flex-shrink") {
+            WriteMetric(x_274);
+            HashtblAddExn(x_265.prop, "flex-shrink", x_273);
             return MakeUnit();
-          } else if (x_3615 == "flex-direction") {
-            WriteMetric(x_278);
-            HashtblAddExn(x_269.prop, "flex-direction", x_277);
+          } else if (x_3605 == "flex-direction") {
+            WriteMetric(x_274);
+            HashtblAddExn(x_265.prop, "flex-direction", x_273);
             return MakeUnit();
           } else {
             return MakeUnit();
@@ -1951,81 +1927,81 @@ auto x_264(const auto &x_265) {
           return Panic();
         }
       },
-      [&](const auto &x_270) {
-        return [&](const auto &x_271) {
-          return x_264(MakePair(MakePair(x_271, ListNthExn(x_269.children, x_270)), x_267));
+      [&](const auto &x_266) {
+        return [&](const auto &x_267) {
+          return x_260(MakePair(MakePair(x_267, ListNthExn(x_265.children, x_266)), x_263));
         };
       });
 }
-auto insert_value_x_11(const auto &x_265) { return x_264(x_265); }
-auto x_279(const auto &x_280) {
-  auto x_281 = Zro(x_280);
-  auto x_282 = Fst(x_280);
-  auto x_283 = Zro(x_281);
-  auto x_284 = Fst(x_281);
+auto insert_value_x_11(const auto &x_261) { return x_260(x_261); }
+auto x_275(const auto &x_276) {
+  auto x_277 = Zro(x_276);
+  auto x_278 = Fst(x_276);
+  auto x_279 = Zro(x_277);
+  auto x_280 = Fst(x_277);
   return ListMatch(
-      x_283,
-      [&](const auto &x_287) {
-        auto x_288 = Zro(x_282);
-        auto x_289 = Zro(x_288);
-        auto x_290 = Fst(x_288);
-        auto x_291 = Fst(x_282);
-        InputChangeMetric(x_291, 1);
-        std::string x_3616 = x_289;
-        if (x_3616 == "attributes") {
-          std::string x_3617 = x_290;
-          if (x_3617 == "width") {
-            WriteMetric(x_291);
-            HashtblForceRemove(x_284.attr, "width");
+      x_279,
+      [&](const auto &x_283) {
+        auto x_284 = Zro(x_278);
+        auto x_285 = Zro(x_284);
+        auto x_286 = Fst(x_284);
+        auto x_287 = Fst(x_278);
+        InputChangeMetric(x_287, 1);
+        std::string x_3606 = x_285;
+        if (x_3606 == "attributes") {
+          std::string x_3607 = x_286;
+          if (x_3607 == "width") {
+            WriteMetric(x_287);
+            HashtblForceRemove(x_280.attr, "width");
             return MakeUnit();
-          } else if (x_3617 == "image_height") {
-            WriteMetric(x_291);
-            HashtblForceRemove(x_284.attr, "image_height");
+          } else if (x_3607 == "image_height") {
+            WriteMetric(x_287);
+            HashtblForceRemove(x_280.attr, "image_height");
             return MakeUnit();
-          } else if (x_3617 == "image_width") {
-            WriteMetric(x_291);
-            HashtblForceRemove(x_284.attr, "image_width");
+          } else if (x_3607 == "image_width") {
+            WriteMetric(x_287);
+            HashtblForceRemove(x_280.attr, "image_width");
             return MakeUnit();
-          } else if (x_3617 == "height") {
-            WriteMetric(x_291);
-            HashtblForceRemove(x_284.attr, "height");
+          } else if (x_3607 == "height") {
+            WriteMetric(x_287);
+            HashtblForceRemove(x_280.attr, "height");
             return MakeUnit();
-          } else if (x_3617 == "viewBox") {
-            WriteMetric(x_291);
-            HashtblForceRemove(x_284.attr, "viewBox");
+          } else if (x_3607 == "viewBox") {
+            WriteMetric(x_287);
+            HashtblForceRemove(x_280.attr, "viewBox");
             return MakeUnit();
           } else {
             return MakeUnit();
           }
-        } else if (x_3616 == "properties") {
-          std::string x_3618 = x_290;
-          if (x_3618 == "width") {
-            WriteMetric(x_291);
-            HashtblForceRemove(x_284.prop, "width");
+        } else if (x_3606 == "properties") {
+          std::string x_3608 = x_286;
+          if (x_3608 == "width") {
+            WriteMetric(x_287);
+            HashtblForceRemove(x_280.prop, "width");
             return MakeUnit();
-          } else if (x_3618 == "flex-grow") {
-            WriteMetric(x_291);
-            HashtblForceRemove(x_284.prop, "flex-grow");
+          } else if (x_3608 == "flex-grow") {
+            WriteMetric(x_287);
+            HashtblForceRemove(x_280.prop, "flex-grow");
             return MakeUnit();
-          } else if (x_3618 == "height") {
-            WriteMetric(x_291);
-            HashtblForceRemove(x_284.prop, "height");
+          } else if (x_3608 == "height") {
+            WriteMetric(x_287);
+            HashtblForceRemove(x_280.prop, "height");
             return MakeUnit();
-          } else if (x_3618 == "display") {
-            WriteMetric(x_291);
-            HashtblForceRemove(x_284.prop, "display");
+          } else if (x_3608 == "display") {
+            WriteMetric(x_287);
+            HashtblForceRemove(x_280.prop, "display");
             return MakeUnit();
-          } else if (x_3618 == "position") {
-            WriteMetric(x_291);
-            HashtblForceRemove(x_284.prop, "position");
+          } else if (x_3608 == "position") {
+            WriteMetric(x_287);
+            HashtblForceRemove(x_280.prop, "position");
             return MakeUnit();
-          } else if (x_3618 == "flex-shrink") {
-            WriteMetric(x_291);
-            HashtblForceRemove(x_284.prop, "flex-shrink");
+          } else if (x_3608 == "flex-shrink") {
+            WriteMetric(x_287);
+            HashtblForceRemove(x_280.prop, "flex-shrink");
             return MakeUnit();
-          } else if (x_3618 == "flex-direction") {
-            WriteMetric(x_291);
-            HashtblForceRemove(x_284.prop, "flex-direction");
+          } else if (x_3608 == "flex-direction") {
+            WriteMetric(x_287);
+            HashtblForceRemove(x_280.prop, "flex-direction");
             return MakeUnit();
           } else {
             return MakeUnit();
@@ -2034,107 +2010,107 @@ auto x_279(const auto &x_280) {
           return Panic();
         }
       },
-      [&](const auto &x_285) {
-        return [&](const auto &x_286) {
-          return x_279(MakePair(MakePair(x_286, ListNthExn(x_284.children, x_285)), x_282));
+      [&](const auto &x_281) {
+        return [&](const auto &x_282) {
+          return x_275(MakePair(MakePair(x_282, ListNthExn(x_280.children, x_281)), x_278));
         };
       });
 }
-auto delete_value_x_10(const auto &x_280) { return x_279(x_280); }
-auto x_292(const auto &x_293) {
-  auto x_294 = Zro(x_293);
-  auto x_295 = Fst(x_293);
-  auto x_296 = Zro(x_294);
-  auto x_297 = Fst(x_294);
+auto delete_value_x_10(const auto &x_276) { return x_275(x_276); }
+auto x_288(const auto &x_289) {
+  auto x_290 = Zro(x_289);
+  auto x_291 = Fst(x_289);
+  auto x_292 = Zro(x_290);
+  auto x_293 = Fst(x_290);
   return ListMatch(
-      x_296,
-      [&](const auto &x_300) {
-        auto x_301 = Zro(x_295);
-        auto x_302 = Zro(x_301);
-        auto x_303 = Fst(x_301);
-        auto x_304 = Fst(x_295);
-        auto x_305 = Zro(x_304);
-        auto x_306 = Fst(x_304);
-        InputChangeMetric(x_306, 1);
-        std::string x_3619 = x_302;
-        if (x_3619 == "attributes") {
-          std::string x_3620 = x_303;
-          if (x_3620 == "width") {
-            WriteMetric(x_306);
-            HashtblForceRemove(x_297.attr, "width");
-            WriteMetric(x_306);
-            HashtblAddExn(x_297.attr, "width", x_305);
+      x_292,
+      [&](const auto &x_296) {
+        auto x_297 = Zro(x_291);
+        auto x_298 = Zro(x_297);
+        auto x_299 = Fst(x_297);
+        auto x_300 = Fst(x_291);
+        auto x_301 = Zro(x_300);
+        auto x_302 = Fst(x_300);
+        InputChangeMetric(x_302, 1);
+        std::string x_3609 = x_298;
+        if (x_3609 == "attributes") {
+          std::string x_3610 = x_299;
+          if (x_3610 == "width") {
+            WriteMetric(x_302);
+            HashtblForceRemove(x_293.attr, "width");
+            WriteMetric(x_302);
+            HashtblAddExn(x_293.attr, "width", x_301);
             return MakeUnit();
-          } else if (x_3620 == "image_height") {
-            WriteMetric(x_306);
-            HashtblForceRemove(x_297.attr, "image_height");
-            WriteMetric(x_306);
-            HashtblAddExn(x_297.attr, "image_height", x_305);
+          } else if (x_3610 == "image_height") {
+            WriteMetric(x_302);
+            HashtblForceRemove(x_293.attr, "image_height");
+            WriteMetric(x_302);
+            HashtblAddExn(x_293.attr, "image_height", x_301);
             return MakeUnit();
-          } else if (x_3620 == "image_width") {
-            WriteMetric(x_306);
-            HashtblForceRemove(x_297.attr, "image_width");
-            WriteMetric(x_306);
-            HashtblAddExn(x_297.attr, "image_width", x_305);
+          } else if (x_3610 == "image_width") {
+            WriteMetric(x_302);
+            HashtblForceRemove(x_293.attr, "image_width");
+            WriteMetric(x_302);
+            HashtblAddExn(x_293.attr, "image_width", x_301);
             return MakeUnit();
-          } else if (x_3620 == "height") {
-            WriteMetric(x_306);
-            HashtblForceRemove(x_297.attr, "height");
-            WriteMetric(x_306);
-            HashtblAddExn(x_297.attr, "height", x_305);
+          } else if (x_3610 == "height") {
+            WriteMetric(x_302);
+            HashtblForceRemove(x_293.attr, "height");
+            WriteMetric(x_302);
+            HashtblAddExn(x_293.attr, "height", x_301);
             return MakeUnit();
-          } else if (x_3620 == "viewBox") {
-            WriteMetric(x_306);
-            HashtblForceRemove(x_297.attr, "viewBox");
-            WriteMetric(x_306);
-            HashtblAddExn(x_297.attr, "viewBox", x_305);
+          } else if (x_3610 == "viewBox") {
+            WriteMetric(x_302);
+            HashtblForceRemove(x_293.attr, "viewBox");
+            WriteMetric(x_302);
+            HashtblAddExn(x_293.attr, "viewBox", x_301);
             return MakeUnit();
           } else {
             return MakeUnit();
           }
-        } else if (x_3619 == "properties") {
-          std::string x_3621 = x_303;
-          if (x_3621 == "width") {
-            WriteMetric(x_306);
-            HashtblForceRemove(x_297.prop, "width");
-            WriteMetric(x_306);
-            HashtblAddExn(x_297.prop, "width", x_305);
+        } else if (x_3609 == "properties") {
+          std::string x_3611 = x_299;
+          if (x_3611 == "width") {
+            WriteMetric(x_302);
+            HashtblForceRemove(x_293.prop, "width");
+            WriteMetric(x_302);
+            HashtblAddExn(x_293.prop, "width", x_301);
             return MakeUnit();
-          } else if (x_3621 == "flex-grow") {
-            WriteMetric(x_306);
-            HashtblForceRemove(x_297.prop, "flex-grow");
-            WriteMetric(x_306);
-            HashtblAddExn(x_297.prop, "flex-grow", x_305);
+          } else if (x_3611 == "flex-grow") {
+            WriteMetric(x_302);
+            HashtblForceRemove(x_293.prop, "flex-grow");
+            WriteMetric(x_302);
+            HashtblAddExn(x_293.prop, "flex-grow", x_301);
             return MakeUnit();
-          } else if (x_3621 == "height") {
-            WriteMetric(x_306);
-            HashtblForceRemove(x_297.prop, "height");
-            WriteMetric(x_306);
-            HashtblAddExn(x_297.prop, "height", x_305);
+          } else if (x_3611 == "height") {
+            WriteMetric(x_302);
+            HashtblForceRemove(x_293.prop, "height");
+            WriteMetric(x_302);
+            HashtblAddExn(x_293.prop, "height", x_301);
             return MakeUnit();
-          } else if (x_3621 == "display") {
-            WriteMetric(x_306);
-            HashtblForceRemove(x_297.prop, "display");
-            WriteMetric(x_306);
-            HashtblAddExn(x_297.prop, "display", x_305);
+          } else if (x_3611 == "display") {
+            WriteMetric(x_302);
+            HashtblForceRemove(x_293.prop, "display");
+            WriteMetric(x_302);
+            HashtblAddExn(x_293.prop, "display", x_301);
             return MakeUnit();
-          } else if (x_3621 == "position") {
-            WriteMetric(x_306);
-            HashtblForceRemove(x_297.prop, "position");
-            WriteMetric(x_306);
-            HashtblAddExn(x_297.prop, "position", x_305);
+          } else if (x_3611 == "position") {
+            WriteMetric(x_302);
+            HashtblForceRemove(x_293.prop, "position");
+            WriteMetric(x_302);
+            HashtblAddExn(x_293.prop, "position", x_301);
             return MakeUnit();
-          } else if (x_3621 == "flex-shrink") {
-            WriteMetric(x_306);
-            HashtblForceRemove(x_297.prop, "flex-shrink");
-            WriteMetric(x_306);
-            HashtblAddExn(x_297.prop, "flex-shrink", x_305);
+          } else if (x_3611 == "flex-shrink") {
+            WriteMetric(x_302);
+            HashtblForceRemove(x_293.prop, "flex-shrink");
+            WriteMetric(x_302);
+            HashtblAddExn(x_293.prop, "flex-shrink", x_301);
             return MakeUnit();
-          } else if (x_3621 == "flex-direction") {
-            WriteMetric(x_306);
-            HashtblForceRemove(x_297.prop, "flex-direction");
-            WriteMetric(x_306);
-            HashtblAddExn(x_297.prop, "flex-direction", x_305);
+          } else if (x_3611 == "flex-direction") {
+            WriteMetric(x_302);
+            HashtblForceRemove(x_293.prop, "flex-direction");
+            WriteMetric(x_302);
+            HashtblAddExn(x_293.prop, "flex-direction", x_301);
             return MakeUnit();
           } else {
             return MakeUnit();
@@ -2143,154 +2119,154 @@ auto x_292(const auto &x_293) {
           return Panic();
         }
       },
-      [&](const auto &x_298) {
-        return [&](const auto &x_299) {
-          return x_292(MakePair(MakePair(x_299, ListNthExn(x_297.children, x_298)), x_295));
+      [&](const auto &x_294) {
+        return [&](const auto &x_295) {
+          return x_288(MakePair(MakePair(x_295, ListNthExn(x_293.children, x_294)), x_291));
         };
       });
 }
-auto replace_value_x_9(const auto &x_293) { return x_292(x_293); }
-auto x_307(const auto &x_308) {
-  auto x_309 = Zro(x_308);
-  auto x_310 = Fst(x_308);
-  auto x_311 = Zro(x_309);
-  auto x_312 = Fst(x_309);
+auto replace_value_x_9(const auto &x_289) { return x_288(x_289); }
+auto x_303(const auto &x_304) {
+  auto x_305 = Zro(x_304);
+  auto x_306 = Fst(x_304);
+  auto x_307 = Zro(x_305);
+  auto x_308 = Fst(x_305);
   return ListMatch(
-      x_311, [&](const auto &x_319) { return Panic(); },
-      [&](const auto &x_313) {
-        return [&](const auto &x_314) {
+      x_307, [&](const auto &x_315) { return Panic(); },
+      [&](const auto &x_309) {
+        return [&](const auto &x_310) {
           return ListMatch(
-              x_314,
-              [&](const auto &x_317) {
-                OutputChangeMetric(x_310, layout_size_x_3(ListNthExn(x_312.children, x_313)));
-                auto x_318 = ListSplitN(x_312.children, x_313);
-                x_312.children = ListAppend(Zro(x_318), ListTailExn(Fst(x_318)));
+              x_310,
+              [&](const auto &x_313) {
+                OutputChangeMetric(x_306, layout_size_x_3(ListNthExn(x_308.children, x_309)));
+                auto x_314 = ListSplitN(x_308.children, x_309);
+                x_308.children = ListAppend(Zro(x_314), ListTailExn(Fst(x_314)));
               },
-              [&](const auto &x_315) {
-                return [&](const auto &x_316) {
-                  return x_307(MakePair(MakePair(x_314, ListNthExn(x_312.children, x_313)), x_310));
+              [&](const auto &x_311) {
+                return [&](const auto &x_312) {
+                  return x_303(MakePair(MakePair(x_310, ListNthExn(x_308.children, x_309)), x_306));
                 };
               });
         };
       });
 }
-auto remove_layout_node_x_8(const auto &x_308) { return x_307(x_308); }
-auto x_320(const auto &x_321) {
-  auto x_322 = Zro(x_321);
-  auto x_323 = Fst(x_321);
-  auto x_324 = Zro(x_322);
-  auto x_325 = Fst(x_322);
+auto remove_layout_node_x_8(const auto &x_304) { return x_303(x_304); }
+auto x_316(const auto &x_317) {
+  auto x_318 = Zro(x_317);
+  auto x_319 = Fst(x_317);
+  auto x_320 = Zro(x_318);
+  auto x_321 = Fst(x_318);
   return ListMatch(
-      x_324, [&](const auto &x_403) { return Panic(); },
-      [&](const auto &x_326) {
-        return [&](const auto &x_327) {
+      x_320, [&](const auto &x_399) { return Panic(); },
+      [&](const auto &x_322) {
+        return [&](const auto &x_323) {
           return ListMatch(
-              x_327,
-              [&](const auto &x_330) {
-                InputChangeMetric(x_323, node_size_x_4(ListNthExn(x_325.children, x_326)));
-                auto x_331 = ListSplitN(x_325.children, x_326);
-                auto x_332 = Zro(x_331);
-                auto x_333 = Fst(x_331);
+              x_323,
+              [&](const auto &x_326) {
+                InputChangeMetric(x_319, node_size_x_4(ListNthExn(x_321.children, x_322)));
+                auto x_327 = ListSplitN(x_321.children, x_322);
+                auto x_328 = Zro(x_327);
+                auto x_329 = Fst(x_327);
                 return ListMatch(
-                    x_333, [&](const auto &x_402) { return Panic(); },
-                    [&](const auto &x_334) {
-                      return [&](const auto &x_335) {
-                        x_325.children = ListAppend(x_332, x_335);
+                    x_329, [&](const auto &x_398) { return Panic(); },
+                    [&](const auto &x_330) {
+                      return [&](const auto &x_331) {
+                        x_321.children = ListAppend(x_328, x_331);
                         return MakeUnit();
                       };
                     });
               },
-              [&](const auto &x_328) {
-                return [&](const auto &x_329) {
-                  return x_320(MakePair(MakePair(x_327, ListNthExn(x_325.children, x_326)), x_323));
+              [&](const auto &x_324) {
+                return [&](const auto &x_325) {
+                  return x_316(MakePair(MakePair(x_323, ListNthExn(x_321.children, x_322)), x_319));
                 };
               });
         };
       });
 }
-auto remove_node_x_7(const auto &x_321) { return x_320(x_321); }
-auto x_404(const auto &x_405) {
-  auto x_406 = Zro(x_405);
-  auto x_407 = Fst(x_405);
-  auto x_408 = Zro(x_406);
-  auto x_409 = Fst(x_406);
+auto remove_node_x_7(const auto &x_317) { return x_316(x_317); }
+auto x_400(const auto &x_401) {
+  auto x_402 = Zro(x_401);
+  auto x_403 = Fst(x_401);
+  auto x_404 = Zro(x_402);
+  auto x_405 = Fst(x_402);
   return ListMatch(
-      x_408, [&](const auto &x_418) { return Panic(); },
-      [&](const auto &x_410) {
-        return [&](const auto &x_411) {
+      x_404, [&](const auto &x_414) { return Panic(); },
+      [&](const auto &x_406) {
+        return [&](const auto &x_407) {
           return ListMatch(
-              x_411,
-              [&](const auto &x_414) {
-                auto x_415 = Zro(x_407);
-                auto x_416 = Fst(x_407);
-                OutputChangeMetric(x_416, layout_size_x_3(x_415));
-                auto x_417 = ListSplitN(x_409.children, x_410);
-                x_409.children = ListAppend(Zro(x_417), Cons(x_415, Fst(x_417)));
+              x_407,
+              [&](const auto &x_410) {
+                auto x_411 = Zro(x_403);
+                auto x_412 = Fst(x_403);
+                OutputChangeMetric(x_412, layout_size_x_3(x_411));
+                auto x_413 = ListSplitN(x_405.children, x_406);
+                x_405.children = ListAppend(Zro(x_413), Cons(x_411, Fst(x_413)));
               },
-              [&](const auto &x_412) {
-                return [&](const auto &x_413) {
-                  return x_404(MakePair(MakePair(x_411, ListNthExn(x_409.children, x_410)), x_407));
+              [&](const auto &x_408) {
+                return [&](const auto &x_409) {
+                  return x_400(MakePair(MakePair(x_407, ListNthExn(x_405.children, x_406)), x_403));
                 };
               });
         };
       });
 }
-auto add_layout_node_x_6(const auto &x_405) { return x_404(x_405); }
-auto x_419(const auto &x_420) {
-  auto x_421 = Zro(x_420);
-  auto x_422 = Fst(x_420);
-  auto x_423 = Zro(x_421);
-  auto x_424 = Fst(x_421);
+auto add_layout_node_x_6(const auto &x_401) { return x_400(x_401); }
+auto x_415(const auto &x_416) {
+  auto x_417 = Zro(x_416);
+  auto x_418 = Fst(x_416);
+  auto x_419 = Zro(x_417);
+  auto x_420 = Fst(x_417);
   return ListMatch(
-      x_423, [&](const auto &x_501) { return Panic(); },
-      [&](const auto &x_425) {
-        return [&](const auto &x_426) {
+      x_419, [&](const auto &x_497) { return Panic(); },
+      [&](const auto &x_421) {
+        return [&](const auto &x_422) {
           return ListMatch(
-              x_426,
-              [&](const auto &x_429) {
-                auto x_430 = Zro(x_422);
-                auto x_431 = Fst(x_422);
-                InputChangeMetric(x_431, node_size_x_4(x_430));
-                auto x_432 = ListSplitN(x_424.children, x_425);
-                auto x_433 = Zro(x_432);
-                auto x_434 = Fst(x_432);
-                x_424.children = ListAppend(x_433, Cons(x_430, x_434));
-                x_430.parent = Some(x_424);
+              x_422,
+              [&](const auto &x_425) {
+                auto x_426 = Zro(x_418);
+                auto x_427 = Fst(x_418);
+                InputChangeMetric(x_427, node_size_x_4(x_426));
+                auto x_428 = ListSplitN(x_420.children, x_421);
+                auto x_429 = Zro(x_428);
+                auto x_430 = Fst(x_428);
+                x_420.children = ListAppend(x_429, Cons(x_426, x_430));
+                x_426.parent = Some(x_420);
                 return MakeUnit();
               },
-              [&](const auto &x_427) {
-                return [&](const auto &x_428) {
-                  return x_419(MakePair(MakePair(x_426, ListNthExn(x_424.children, x_425)), x_422));
+              [&](const auto &x_423) {
+                return [&](const auto &x_424) {
+                  return x_415(MakePair(MakePair(x_422, ListNthExn(x_420.children, x_421)), x_418));
                 };
               });
         };
       });
 }
-auto add_node_x_5(const auto &x_420) { return x_419(x_420); }
-auto x_502(const auto &x_503) {
-  return IntAdd(1, ListIntSum(x_503.children, [&](const auto &x_504) { return x_502(x_504); }));
+auto add_node_x_5(const auto &x_416) { return x_415(x_416); }
+auto x_498(const auto &x_499) {
+  return IntAdd(1, ListIntSum(x_499.children, [&](const auto &x_500) { return x_498(x_500); }));
 }
-auto node_size_x_4(const auto &x_503) { return x_502(x_503); }
-auto x_505(const auto &x_506) {
-  return IntAdd(1, ListIntSum(x_506.children, [&](const auto &x_507) { return x_505(x_507); }));
+auto node_size_x_4(const auto &x_499) { return x_498(x_499); }
+auto x_501(const auto &x_502) {
+  return IntAdd(1, ListIntSum(x_502.children, [&](const auto &x_503) { return x_501(x_503); }));
 }
-auto layout_size_x_3(const auto &x_506) { return x_505(x_506); }
-auto x_508(const auto &x_509) {
+auto layout_size_x_3(const auto &x_502) { return x_501(x_502); }
+auto x_504(const auto &x_505) {
   return MakeLayoutNode(
-      ListMap(JsonToList(JsonMember("children", x_509)), [&](const auto &x_510) { return x_508(x_510); }));
+      ListMap(JsonToList(JsonMember("children", x_505)), [&](const auto &x_506) { return x_504(x_506); }));
 }
-auto json_to_layout_node_x_2(const auto &x_509) { return x_508(x_509); }
-auto x_511(const auto &x_512) {
-  return MakeNode(x_512.name, x_512.attr, x_512.prop, x_512.extern_id,
-                  ListMap(x_512.children, [&](const auto &x_513) { return x_511(x_513); }));
+auto json_to_layout_node_x_2(const auto &x_505) { return x_504(x_505); }
+auto x_507(const auto &x_508) {
+  return MakeNode(x_508.name, x_508.attr, x_508.prop, x_508.extern_id,
+                  ListMap(x_508.children, [&](const auto &x_509) { return x_507(x_509); }));
 }
-auto node_to_fs_node_x_1(const auto &x_512) { return x_511(x_512); }
-auto x_514(const auto &x_515) {
-  return MakeNode(JsonToString(JsonMember("name", x_515)), JsonToDict(JsonMember("attributes", x_515)),
-                  JsonToDict(JsonMember("properties", x_515)), JsonToInt(JsonMember("id", x_515)),
-                  ListMap(JsonToList(JsonMember("children", x_515)), [&](const auto &x_516) { return x_514(x_516); }));
+auto node_to_fs_node_x_1(const auto &x_508) { return x_507(x_508); }
+auto x_510(const auto &x_511) {
+  return MakeNode(JsonToString(JsonMember("name", x_511)), JsonToDict(JsonMember("attributes", x_511)),
+                  JsonToDict(JsonMember("properties", x_511)), JsonToInt(JsonMember("id", x_511)),
+                  ListMap(JsonToList(JsonMember("children", x_511)), [&](const auto &x_512) { return x_510(x_512); }));
 }
-auto json_to_node_aux_x_0(const auto &x_515) { return x_514(x_515); }
+auto json_to_node_aux_x_0(const auto &x_511) { return x_510(x_511); }
 int main() {
   return WithOutFile("hn_type.out", [&](const auto &x_12) {
     PrintEndline("RUNNING FS");
@@ -2347,8 +2323,8 @@ int main() {
       IterLines(x_13, [&](const auto &x_30) {
         auto x_31 = JsonOfString(x_30);
         PushStack(x_18, x_31);
-        std::string x_3622 = JsonToString(JsonMember("name", x_31));
-        if (x_3622 == "add") {
+        std::string x_3612 = JsonToString(JsonMember("name", x_31));
+        if (x_3612 == "add") {
           return add_node_x_5(MakePair(
               MakePair(ListMap(JsonToList(JsonMember("path", x_31)), [&](const auto &x_34) { return JsonToInt(x_34); }),
                        x_21),
@@ -2361,7 +2337,7 @@ int main() {
                     return x_32;
                   }(),
                   x_15)));
-        } else if (x_3622 == "recalculate") {
+        } else if (x_3612 == "recalculate") {
           JsonToChannel(
               x_12,
               AssocToJson(Cons(
@@ -2392,12 +2368,12 @@ int main() {
           AssertNodeValueEqual(x_21, x_37);
           ResetMetric(x_15);
           return MakeUnit();
-        } else if (x_3622 == "remove") {
+        } else if (x_3612 == "remove") {
           return remove_node_x_7(MakePair(
               MakePair(ListMap(JsonToList(JsonMember("path", x_31)), [&](const auto &x_38) { return JsonToInt(x_38); }),
                        x_21),
               x_15));
-        } else if (x_3622 == "replace") {
+        } else if (x_3612 == "replace") {
           return replace_node_x_42(MakePair(
               MakePair(ListMap(JsonToList(JsonMember("path", x_31)), [&](const auto &x_41) { return JsonToInt(x_41); }),
                        x_21),
@@ -2408,39 +2384,39 @@ int main() {
                 x_39.next = None();
                 return x_39;
               }()));
-        } else if (x_3622 == "replace_value") {
+        } else if (x_3612 == "replace_value") {
           return replace_value_x_9(MakePair(
               MakePair(ListMap(JsonToList(JsonMember("path", x_31)), [&](const auto &x_43) { return JsonToInt(x_43); }),
                        x_21),
               MakePair(MakePair(JsonToString(JsonMember("type", x_31)), JsonToString(JsonMember("key", x_31))),
                        MakePair(JsonToValue(JsonMember("value", x_31)), x_15))));
-        } else if (x_3622 == "delete_value") {
+        } else if (x_3612 == "delete_value") {
           return delete_value_x_10(MakePair(
               MakePair(ListMap(JsonToList(JsonMember("path", x_31)), [&](const auto &x_44) { return JsonToInt(x_44); }),
                        x_21),
               MakePair(MakePair(JsonToString(JsonMember("type", x_31)), JsonToString(JsonMember("key", x_31))), x_15)));
-        } else if (x_3622 == "insert_value") {
+        } else if (x_3612 == "insert_value") {
           return insert_value_x_11(MakePair(
               MakePair(ListMap(JsonToList(JsonMember("path", x_31)), [&](const auto &x_45) { return JsonToInt(x_45); }),
                        x_21),
               MakePair(MakePair(JsonToString(JsonMember("type", x_31)), JsonToString(JsonMember("key", x_31))),
                        MakePair(JsonToValue(JsonMember("value", x_31)), x_15))));
-        } else if (x_3622 == "layout_remove") {
+        } else if (x_3612 == "layout_remove") {
           return remove_layout_node_x_8(MakePair(
               MakePair(ListMap(JsonToList(JsonMember("path", x_31)), [&](const auto &x_46) { return JsonToInt(x_46); }),
                        x_22),
               x_15));
-        } else if (x_3622 == "layout_add") {
+        } else if (x_3612 == "layout_add") {
           return add_layout_node_x_6(MakePair(
               MakePair(ListMap(JsonToList(JsonMember("path", x_31)), [&](const auto &x_47) { return JsonToInt(x_47); }),
                        x_22),
               MakePair(json_to_layout_node_x_2(JsonMember("node", x_31)), x_15)));
-        } else if (x_3622 == "layout_replace") {
+        } else if (x_3612 == "layout_replace") {
           return replace_layout_node_x_49(MakePair(
               MakePair(ListMap(JsonToList(JsonMember("path", x_31)), [&](const auto &x_48) { return JsonToInt(x_48); }),
                        x_22),
               json_to_layout_node_x_2(JsonMember("node", x_31))));
-        } else if (x_3622 == "layout_info_changed") {
+        } else if (x_3612 == "layout_info_changed") {
           return OutputChangeMetric(x_15, 1);
         } else {
           return Panic();

@@ -200,6 +200,7 @@ let rec simplify x =
   | CApp (CPF "VBool", [ x ]) -> recurse x
   | CApp (CPF "VString", [ x ]) -> recurse x
   | CApp (CPF "VFloat", [ x ]) -> recurse x
+  | CApp (CPF "VInt", [ x ]) -> recurse x
   | CApp (CFun (xname, body), [ x ]) -> recurse (CLet (xname, x, body))
   | CIf (i, CApp (CPF "MakeUnit", []), CApp (CPF "MakeUnit", [])) -> recurse (CSeq [ i; CApp (CPF "MakeUnit", []) ])
   | CPanic xs -> CPanic (recurse xs)
@@ -835,7 +836,7 @@ module Main (EVAL : Eval) = struct
     Stdio.Out_channel.close c;
 
     shell ("clang-format --style=file -i " ^ compiled_file_name);
-    (*shell ("clang++ -std=c++23 " ^ compiled_file_name)*) ()
+    shell ("clang++ -std=c++23 " ^ compiled_file_name)
 
   let () = if is_static then () else run_dynamic ()
 end
