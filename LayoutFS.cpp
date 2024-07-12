@@ -1,263 +1,204 @@
-auto var_modified_x_1001(const auto &x_1003) {
-  return [&](const auto &x_1004) { return MakeUnit(); };
+auto var_modified_x_997(const auto &x_999) { return MakeUnit(); }
+auto eval_expr_x_994(const auto &x_1006) {
+  if ((x_1006.prev == nullptr) && not((*(x_1006.prev)).var_line_break)) {
+    return max(x_1006.var_height_external, (*(x_1006.prev)).var_line_height);
+  } else {
+    return x_1006.var_height_external;
+  }
 }
-auto eval_expr_x_998(const auto &x_1011) {
-  return [&](const auto &x_1012) {
-    if (BoolOfValue((IsSome(x_1011.prev)) ? (not(UnSome(x_1011.prev).var_line_break)) : (VBool(false)))) {
-      return max(x_1011.var_height_external, UnSome(x_1011.prev).var_line_height);
+auto var_modified_x_992(const auto &x_1023) { return MakeUnit(); }
+auto eval_expr_x_989(const auto &x_1026) {
+  if (eq(x_1026.var_position, "absolute")) {
+    return 0.;
+  } else {
+    return x_1026.var_height_internal;
+  }
+}
+auto var_modified_x_987(const auto &x_1035) { return MakeUnit(); }
+auto eval_expr_x_984(const auto &x_1038) {
+  if (x_1038.var_intrinsic_height_is_height) {
+    return x_1038.var_intrinsic_height_internal;
+  } else {
+    if ((x_1038.parent == nullptr) && (*(x_1038.parent)).var_is_flex_column) {
+      return plus(x_1038.var_intrinsic_height_internal, mult(x_1038.var_flex_amount, (*(x_1038.parent)).var_flex_unit));
     } else {
-      return x_1011.var_height_external;
-    }
-  };
-}
-auto var_modified_x_996(const auto &x_1029) {
-  return [&](const auto &x_1030) { return MakeUnit(); };
-}
-auto eval_expr_x_993(const auto &x_1033) {
-  return [&](const auto &x_1034) {
-    if (BoolOfValue(eq(x_1033.var_position, VString("absolute")))) {
-      return VFloat(0.);
-    } else {
-      return x_1033.var_height_internal;
-    }
-  };
-}
-auto var_modified_x_991(const auto &x_1043) {
-  return [&](const auto &x_1044) { return MakeUnit(); };
-}
-auto eval_expr_x_988(const auto &x_1047) {
-  return [&](const auto &x_1048) {
-    if (BoolOfValue(x_1047.var_intrinsic_height_is_height)) {
-      return x_1047.var_intrinsic_height_internal;
-    } else {
-      if (BoolOfValue((IsSome(x_1047.parent)) ? (UnSome(x_1047.parent).var_is_flex_column) : (VBool(false)))) {
-        return plus(x_1047.var_intrinsic_height_internal,
-                    mult(x_1047.var_flex_amount, UnSome(x_1047.parent).var_flex_unit));
+      if (has_suffix(x_1038.var_height_expr, "%")) {
+        return mult(x_1038.var_box_height, divide(string_to_float(strip_suffix(x_1038.var_height_expr, "%")), 100.));
       } else {
-        if (BoolOfValue(has_suffix(x_1047.var_height_expr, VString("%")))) {
-          return mult(x_1047.var_box_height,
-                      divide(string_to_float(strip_suffix(x_1047.var_height_expr, VString("%"))), VFloat(100.)));
+        if (eq(x_1038.var_height_expr, "fit-content")) {
+          return max(x_1038.var_box_height, x_1038.var_intrinsic_height_internal);
         } else {
-          if (BoolOfValue(eq(x_1047.var_height_expr, VString("fit-content")))) {
-            return max(x_1047.var_box_height, x_1047.var_intrinsic_height_internal);
-          } else {
-            return Panic();
-          }
+          return Panic();
         }
       }
     }
-  };
+  }
 }
-auto var_modified_x_986(const auto &x_1101) {
-  return [&](const auto &x_1102) { return MakeUnit(); };
-}
-auto eval_expr_x_983(const auto &x_1110) {
-  return [&](const auto &x_1111) {
-    if (IsSome(x_1110.prev)) {
-      if (BoolOfValue((BoolOfValue(x_1110.var_line_break)) ? (VBool(true)) : (UnSome(x_1110.prev).var_line_break))) {
-        return plus(UnSome(x_1110.prev).var_y, UnSome(x_1110.prev).var_line_height);
-      } else {
-        return UnSome(x_1110.prev).var_y;
-      }
+auto var_modified_x_982(const auto &x_1091) { return MakeUnit(); }
+auto eval_expr_x_979(const auto &x_1099) {
+  if (x_1099.prev == nullptr) {
+    if (x_1099.var_line_break || (*(x_1099.prev)).var_line_break) {
+      return plus((*(x_1099.prev)).var_y, (*(x_1099.prev)).var_line_height);
     } else {
-      if (IsSome(x_1110.parent)) {
-        return UnSome(x_1110.parent).var_y;
-      } else {
-        return VFloat(0.);
-      }
+      return (*(x_1099.prev)).var_y;
     }
-  };
-}
-auto var_modified_x_981(const auto &x_1136) {
-  return [&](const auto &x_1137) { return MakeUnit(); };
-}
-auto eval_expr_x_978(const auto &x_1141) {
-  return [&](const auto &x_1142) {
-    if (BoolOfValue(eq(x_1141.var_position, VString("absolute")))) {
-      return VFloat(0.);
+  } else {
+    if (x_1099.parent == nullptr) {
+      return (*(x_1099.parent)).var_y;
     } else {
-      return x_1141.var_width_internal;
+      return 0.;
     }
-  };
+  }
 }
-auto var_modified_x_976(const auto &x_1151) {
-  return [&](const auto &x_1152) { return MakeUnit(); };
+auto var_modified_x_977(const auto &x_1124) { return MakeUnit(); }
+auto eval_expr_x_974(const auto &x_1128) {
+  if (eq(x_1128.var_position, "absolute")) {
+    return 0.;
+  } else {
+    return x_1128.var_width_internal;
+  }
 }
-auto eval_expr_x_973(const auto &x_1155) {
-  return [&](const auto &x_1156) {
-    if (BoolOfValue(x_1155.var_intrinsic_width_is_width)) {
-      return x_1155.var_intrinsic_width_internal;
+auto var_modified_x_972(const auto &x_1137) { return MakeUnit(); }
+auto eval_expr_x_969(const auto &x_1140) {
+  if (x_1140.var_intrinsic_width_is_width) {
+    return x_1140.var_intrinsic_width_internal;
+  } else {
+    if ((x_1140.parent == nullptr) && (*(x_1140.parent)).var_is_flex_row) {
+      return plus(x_1140.var_intrinsic_width_internal, mult(x_1140.var_flex_amount, (*(x_1140.parent)).var_flex_unit));
     } else {
-      if (BoolOfValue((IsSome(x_1155.parent)) ? (UnSome(x_1155.parent).var_is_flex_row) : (VBool(false)))) {
-        return plus(x_1155.var_intrinsic_width_internal,
-                    mult(x_1155.var_flex_amount, UnSome(x_1155.parent).var_flex_unit));
+      if (has_suffix(x_1140.var_width_expr, "%")) {
+        return mult(x_1140.var_box_width, divide(string_to_float(strip_suffix(x_1140.var_width_expr, "%")), 100.));
       } else {
-        if (BoolOfValue(has_suffix(x_1155.var_width_expr, VString("%")))) {
-          return mult(x_1155.var_box_width,
-                      divide(string_to_float(strip_suffix(x_1155.var_width_expr, VString("%"))), VFloat(100.)));
+        if (eq(x_1140.var_width_expr, "fit-content")) {
+          return max(x_1140.var_box_width, x_1140.var_intrinsic_width_internal);
         } else {
-          if (BoolOfValue(eq(x_1155.var_width_expr, VString("fit-content")))) {
-            return max(x_1155.var_box_width, x_1155.var_intrinsic_width_internal);
-          } else {
-            return Panic();
-          }
+          return Panic();
         }
       }
     }
-  };
+  }
 }
-auto var_modified_x_971(const auto &x_1209) {
-  return [&](const auto &x_1210) { return MakeUnit(); };
+auto var_modified_x_967(const auto &x_1193) { return MakeUnit(); }
+auto eval_expr_x_964(const auto &x_1198) {
+  if (x_1198.prev == nullptr) {
+    if (x_1198.var_line_break || (*(x_1198.prev)).var_line_break) {
+      return 0.;
+    } else {
+      return plus((*(x_1198.prev)).var_x, (*(x_1198.prev)).var_width_external);
+    }
+  } else {
+    if (x_1198.parent == nullptr) {
+      return (*(x_1198.parent)).var_x;
+    } else {
+      return 0.;
+    }
+  }
 }
-auto eval_expr_x_968(const auto &x_1215) {
-  return [&](const auto &x_1216) {
-    if (IsSome(x_1215.prev)) {
-      if (BoolOfValue((BoolOfValue(x_1215.var_line_break)) ? (VBool(true)) : (UnSome(x_1215.prev).var_line_break))) {
-        return VFloat(0.);
+auto var_modified_x_962(const auto &x_1219) { return MakeUnit(); }
+auto eval_expr_x_959(const auto &x_1222) {
+  if (gt(x_1222.var_left_over, 0.)) {
+    return divide(x_1222.var_left_over, x_1222.var_flex_grow_sum);
+  } else {
+    return divide(x_1222.var_left_over, x_1222.var_flex_shrink_sum);
+  }
+}
+auto var_modified_x_957(const auto &x_1243) { return MakeUnit(); }
+auto eval_expr_x_954(const auto &x_1246) {
+  if ((x_1246.parent == nullptr) && gt((*(x_1246.parent)).var_left_over, 0.)) {
+    return x_1246.var_flex_grow;
+  } else {
+    return x_1246.var_flex_shrink;
+  }
+}
+auto var_modified_x_952(const auto &x_1259) { return MakeUnit(); }
+auto eval_expr_x_949(const auto &x_1264) {
+  if (x_1264.var_is_flex_row) {
+    return minus(x_1264.var_box_width,
+                 (IsSome(ListLast(x_1264.children))) ? (UnSome(ListLast(x_1264.children)).var_intrinsic_width_sum)
+                                                     : (0.));
+  } else {
+    return minus(x_1264.var_box_height,
+                 (IsSome(ListLast(x_1264.children))) ? (UnSome(ListLast(x_1264.children)).var_intrinsic_height_sum)
+                                                     : (0.));
+  }
+}
+auto var_modified_x_947(const auto &x_1285) { return MakeUnit(); }
+auto eval_expr_x_944(const auto &x_1289) {
+  if (x_1289.parent == nullptr) {
+    return (*(x_1289.parent)).var_height_internal;
+  } else {
+    return 1080.;
+  }
+}
+auto var_modified_x_942(const auto &x_1294) { return MakeUnit(); }
+auto eval_expr_x_939(const auto &x_1298) {
+  if (x_1298.parent == nullptr) {
+    return (*(x_1298.parent)).var_width_internal;
+  } else {
+    return 1920.;
+  }
+}
+auto var_modified_x_935(const auto &x_1303) { return MakeUnit(); }
+auto eval_expr_x_932(const auto &x_1321) {
+  if (eq(x_1321.var_display, "none")) {
+    return false;
+  } else {
+    if (eq(x_1321.var_position, "absolute")) {
+      return false;
+    } else {
+      if ((x_1321.parent == nullptr) &&
+          (eq((*(x_1321.parent)).var_display, "flex") || eq((*(x_1321.parent)).var_display, "inline-flex"))) {
+        return true;
       } else {
-        return plus(UnSome(x_1215.prev).var_x, UnSome(x_1215.prev).var_width_external);
-      }
-    } else {
-      if (IsSome(x_1215.parent)) {
-        return UnSome(x_1215.parent).var_x;
-      } else {
-        return VFloat(0.);
-      }
-    }
-  };
-}
-auto var_modified_x_966(const auto &x_1237) {
-  return [&](const auto &x_1238) { return MakeUnit(); };
-}
-auto eval_expr_x_963(const auto &x_1241) {
-  return [&](const auto &x_1242) {
-    if (BoolOfValue(gt(x_1241.var_left_over, VFloat(0.)))) {
-      return divide(x_1241.var_left_over, x_1241.var_flex_grow_sum);
-    } else {
-      return divide(x_1241.var_left_over, x_1241.var_flex_shrink_sum);
-    }
-  };
-}
-auto var_modified_x_961(const auto &x_1263) {
-  return [&](const auto &x_1264) { return MakeUnit(); };
-}
-auto eval_expr_x_958(const auto &x_1267) {
-  return [&](const auto &x_1268) {
-    if (BoolOfValue((IsSome(x_1267.parent)) ? (gt(UnSome(x_1267.parent).var_left_over, VFloat(0.))) : (VBool(false)))) {
-      return x_1267.var_flex_grow;
-    } else {
-      return x_1267.var_flex_shrink;
-    }
-  };
-}
-auto var_modified_x_956(const auto &x_1281) {
-  return [&](const auto &x_1282) { return MakeUnit(); };
-}
-auto eval_expr_x_953(const auto &x_1287) {
-  return [&](const auto &x_1288) {
-    if (BoolOfValue(x_1287.var_is_flex_row)) {
-      return minus(x_1287.var_box_width,
-                   (IsSome(ListLast(x_1287.children))) ? (UnSome(ListLast(x_1287.children)).var_intrinsic_width_sum)
-                                                       : (VFloat(0.)));
-    } else {
-      return minus(x_1287.var_box_height,
-                   (IsSome(ListLast(x_1287.children))) ? (UnSome(ListLast(x_1287.children)).var_intrinsic_height_sum)
-                                                       : (VFloat(0.)));
-    }
-  };
-}
-auto var_modified_x_951(const auto &x_1309) {
-  return [&](const auto &x_1310) { return MakeUnit(); };
-}
-auto eval_expr_x_948(const auto &x_1314) {
-  return [&](const auto &x_1315) {
-    if (IsSome(x_1314.parent)) {
-      return UnSome(x_1314.parent).var_height_internal;
-    } else {
-      return VFloat(1080.);
-    }
-  };
-}
-auto var_modified_x_946(const auto &x_1320) {
-  return [&](const auto &x_1321) { return MakeUnit(); };
-}
-auto eval_expr_x_943(const auto &x_1325) {
-  return [&](const auto &x_1326) {
-    if (IsSome(x_1325.parent)) {
-      return UnSome(x_1325.parent).var_width_internal;
-    } else {
-      return VFloat(1920.);
-    }
-  };
-}
-auto var_modified_x_939(const auto &x_1331) {
-  return [&](const auto &x_1332) { return MakeUnit(); };
-}
-auto eval_expr_x_936(const auto &x_1350) {
-  return [&](const auto &x_1351) {
-    if (BoolOfValue(eq(x_1350.var_display, VString("none")))) {
-      return VBool(false);
-    } else {
-      if (BoolOfValue(eq(x_1350.var_position, VString("absolute")))) {
-        return VBool(false);
-      } else {
-        if (BoolOfValue((IsSome(x_1350.parent))
-                            ? ((BoolOfValue(eq(UnSome(x_1350.parent).var_display, VString("flex"))))
-                                   ? (VBool(true))
-                                   : (eq(UnSome(x_1350.parent).var_display, VString("inline-flex"))))
-                            : (VBool(false)))) {
-          return VBool(true);
+        if (eq(x_1321.var_display, "block")) {
+          return true;
         } else {
-          if (BoolOfValue(eq(x_1350.var_display, VString("block")))) {
-            return VBool(true);
+          if (eq(x_1321.var_display, "inline")) {
+            return false;
           } else {
-            if (BoolOfValue(eq(x_1350.var_display, VString("inline")))) {
-              return VBool(false);
+            if (eq(x_1321.var_display, "inline-block")) {
+              return false;
             } else {
-              if (BoolOfValue(eq(x_1350.var_display, VString("inline-block")))) {
-                return VBool(false);
-              } else {
-                if (BoolOfValue(eq(x_1350.var_display, VString("flex")))) {
-                  if (BoolOfValue(eq(HashtblForceFind(x_1350.prop, "flex-direction"), VString("row")))) {
-                    return VBool(false);
+              if (eq(x_1321.var_display, "flex")) {
+                if (eq(HashtblForceFind(x_1321.prop, "flex-direction"), "row")) {
+                  return false;
+                } else {
+                  if (eq(HashtblForceFind(x_1321.prop, "flex-direction"), "column")) {
+                    return true;
                   } else {
-                    if (BoolOfValue(eq(HashtblForceFind(x_1350.prop, "flex-direction"), VString("column")))) {
-                      return VBool(true);
+                    if (eq(HashtblForceFind(x_1321.prop, "flex-direction"), "column-reverse")) {
+                      return true;
                     } else {
-                      if (BoolOfValue(eq(HashtblForceFind(x_1350.prop, "flex-direction"), VString("column-reverse")))) {
-                        return VBool(true);
-                      } else {
-                        return Panic();
-                      }
+                      return Panic();
                     }
                   }
+                }
+              } else {
+                if (eq(x_1321.var_display, "inline-flex")) {
+                  return false;
                 } else {
-                  if (BoolOfValue(eq(x_1350.var_display, VString("inline-flex")))) {
-                    return VBool(false);
+                  if (eq(x_1321.var_display, "contents")) {
+                    return false;
                   } else {
-                    if (BoolOfValue(eq(x_1350.var_display, VString("contents")))) {
-                      return VBool(false);
+                    if (eq(x_1321.var_display, "table")) {
+                      return true;
                     } else {
-                      if (BoolOfValue(eq(x_1350.var_display, VString("table")))) {
-                        return VBool(true);
+                      if (eq(x_1321.var_display, "table-row-group")) {
+                        return true;
                       } else {
-                        if (BoolOfValue(eq(x_1350.var_display, VString("table-row-group")))) {
-                          return VBool(true);
+                        if (eq(x_1321.var_display, "table-row")) {
+                          return true;
                         } else {
-                          if (BoolOfValue(eq(x_1350.var_display, VString("table-row")))) {
-                            return VBool(true);
+                          if (eq(x_1321.var_display, "table-cell")) {
+                            return false;
                           } else {
-                            if (BoolOfValue(eq(x_1350.var_display, VString("table-cell")))) {
-                              return VBool(false);
+                            if (eq(x_1321.var_display, "list-item")) {
+                              return true;
                             } else {
-                              if (BoolOfValue(eq(x_1350.var_display, VString("list-item")))) {
-                                return VBool(true);
+                              if (eq(x_1321.var_display, "grid")) {
+                                return true;
                               } else {
-                                if (BoolOfValue(eq(x_1350.var_display, VString("grid")))) {
-                                  return VBool(true);
-                                } else {
-                                  return Panic();
-                                }
+                                return Panic();
                               }
                             }
                           }
@@ -272,1033 +213,716 @@ auto eval_expr_x_936(const auto &x_1350) {
         }
       }
     }
-  };
+  }
 }
-auto var_modified_x_934(const auto &x_1428) {
-  return [&](const auto &x_1429) { return MakeUnit(); };
+auto var_modified_x_930(const auto &x_1398) { return MakeUnit(); }
+auto eval_expr_x_927(const auto &x_1400) {
+  return ((not(x_1400.parent == nullptr) || (*(x_1400.parent)).var_visible) &&
+          (neq(x_1400.var_display, "none") && (not(x_1400.var_inside_svg) && not(x_1400.var_disabled))));
 }
-auto eval_expr_x_931(const auto &x_1431) {
-  return [&](const auto &x_1432) {
-    if (BoolOfValue((BoolOfValue(not(VBool(IsSome(x_1431.parent))))) ? (VBool(true))
-                                                                     : (UnSome(x_1431.parent).var_visible))) {
-      if (BoolOfValue(neq(x_1431.var_display, VString("none")))) {
-        if (BoolOfValue(not(x_1431.var_inside_svg))) {
-          return not(x_1431.var_disabled);
-        } else {
-          return VBool(false);
-        }
-      } else {
-        return VBool(false);
-      }
+auto var_modified_x_925(const auto &x_1417) { return MakeUnit(); }
+auto eval_expr_x_922(const auto &x_1425) {
+  if (eq(x_1425.name, "NOSCRIPT")) {
+    return true;
+  } else {
+    return ((x_1425.parent == nullptr) && (*(x_1425.parent)).var_disabled);
+  }
+}
+auto var_modified_x_920(const auto &x_1430) { return MakeUnit(); }
+auto eval_expr_x_917(const auto &x_1438) {
+  return ((x_1438.parent == nullptr) && ((*(x_1438.parent)).var_is_svg_block || (*(x_1438.parent)).var_inside_svg));
+}
+auto var_modified_x_915(const auto &x_1447) { return MakeUnit(); }
+auto eval_expr_x_912(const auto &x_1449) { return eq(x_1449.name, "svg"); }
+auto var_modified_x_910(const auto &x_1450) { return MakeUnit(); }
+auto eval_expr_x_907(const auto &x_1459) { return neq(x_1459.var_height_attr_expr, "auto"); }
+auto var_modified_x_905(const auto &x_1464) { return MakeUnit(); }
+auto eval_expr_x_902(const auto &x_1472) {
+  if (not(IsSome(HashtblFind(x_1472.attr, "height")))) {
+    return "auto";
+  } else {
+    if (string_is_float(HashtblForceFind(x_1472.attr, "height")) ||
+        has_suffix(HashtblForceFind(x_1472.attr, "height"), "%")) {
+      return HashtblForceFind(x_1472.attr, "height");
     } else {
-      return VBool(false);
-    }
-  };
-}
-auto var_modified_x_929(const auto &x_1449) {
-  return [&](const auto &x_1450) { return MakeUnit(); };
-}
-auto eval_expr_x_926(const auto &x_1458) {
-  return [&](const auto &x_1459) {
-    if (StringEqual(x_1458.name, "NOSCRIPT")) {
-      return VBool(true);
-    } else {
-      if (IsSome(x_1458.parent)) {
-        return UnSome(x_1458.parent).var_disabled;
+      if (eq(HashtblForceFind(x_1472.attr, "height"), "Auto")) {
+        return "auto";
       } else {
-        return VBool(false);
-      }
-    }
-  };
-}
-auto var_modified_x_924(const auto &x_1464) {
-  return [&](const auto &x_1465) { return MakeUnit(); };
-}
-auto eval_expr_x_921(const auto &x_1473) {
-  return [&](const auto &x_1474) {
-    if (IsSome(x_1473.parent)) {
-      if (BoolOfValue(UnSome(x_1473.parent).var_is_svg_block)) {
-        return VBool(true);
-      } else {
-        return UnSome(x_1473.parent).var_inside_svg;
-      }
-    } else {
-      return VBool(false);
-    }
-  };
-}
-auto var_modified_x_919(const auto &x_1483) {
-  return [&](const auto &x_1484) { return MakeUnit(); };
-}
-auto eval_expr_x_916(const auto &x_1486) {
-  return [&](const auto &x_1487) { return eq(VString(x_1486.name), VString("svg")); };
-}
-auto var_modified_x_914(const auto &x_1488) {
-  return [&](const auto &x_1489) { return MakeUnit(); };
-}
-auto eval_expr_x_911(const auto &x_1498) {
-  return [&](const auto &x_1499) { return neq(x_1498.var_height_attr_expr, VString("auto")); };
-}
-auto var_modified_x_909(const auto &x_1504) {
-  return [&](const auto &x_1505) { return MakeUnit(); };
-}
-auto eval_expr_x_906(const auto &x_1513) {
-  return [&](const auto &x_1514) {
-    if (BoolOfValue(not(VBool(IsSome(HashtblFind(x_1513.attr, "height")))))) {
-      return VString("auto");
-    } else {
-      if (BoolOfValue((BoolOfValue(string_is_float(HashtblForceFind(x_1513.attr, "height"))))
-                          ? (VBool(true))
-                          : (has_suffix(HashtblForceFind(x_1513.attr, "height"), VString("%"))))) {
-        return HashtblForceFind(x_1513.attr, "height");
-      } else {
-        if (BoolOfValue(eq(HashtblForceFind(x_1513.attr, "height"), VString("Auto")))) {
-          return VString("auto");
-        } else {
-          return Panic();
-        }
+        return Panic();
       }
     }
-  };
+  }
 }
-auto var_modified_x_904(const auto &x_1525) {
-  return [&](const auto &x_1526) { return MakeUnit(); };
-}
-auto eval_expr_x_901(const auto &x_1536) {
-  return [&](const auto &x_1537) { return neq(x_1536.var_width_attr_expr, VString("auto")); };
-}
-auto var_modified_x_899(const auto &x_1542) {
-  return [&](const auto &x_1543) { return MakeUnit(); };
-}
-auto eval_expr_x_896(const auto &x_1551) {
-  return [&](const auto &x_1552) {
-    if (BoolOfValue(not(VBool(IsSome(HashtblFind(x_1551.attr, "width")))))) {
-      return VString("auto");
+auto var_modified_x_900(const auto &x_1483) { return MakeUnit(); }
+auto eval_expr_x_897(const auto &x_1493) { return neq(x_1493.var_width_attr_expr, "auto"); }
+auto var_modified_x_895(const auto &x_1498) { return MakeUnit(); }
+auto eval_expr_x_892(const auto &x_1506) {
+  if (not(IsSome(HashtblFind(x_1506.attr, "width")))) {
+    return "auto";
+  } else {
+    if (string_is_float(HashtblForceFind(x_1506.attr, "width")) ||
+        has_suffix(HashtblForceFind(x_1506.attr, "width"), "%")) {
+      return HashtblForceFind(x_1506.attr, "width");
     } else {
-      if (BoolOfValue((BoolOfValue(string_is_float(HashtblForceFind(x_1551.attr, "width"))))
-                          ? (VBool(true))
-                          : (has_suffix(HashtblForceFind(x_1551.attr, "width"), VString("%"))))) {
-        return HashtblForceFind(x_1551.attr, "width");
+      if (eq(HashtblForceFind(x_1506.attr, "width"), "Auto")) {
+        return "auto";
       } else {
-        if (BoolOfValue(eq(HashtblForceFind(x_1551.attr, "width"), VString("Auto")))) {
-          return VString("auto");
-        } else {
-          return Panic();
-        }
+        return Panic();
       }
     }
-  };
+  }
 }
-auto var_modified_x_894(const auto &x_1563) {
-  return [&](const auto &x_1564) { return MakeUnit(); };
-}
-auto eval_expr_x_891(const auto &x_1567) {
-  return [&](const auto &x_1568) {
-    if (BoolOfValue((IsSome(x_1567.parent)) ? ((BoolOfValue(eq(UnSome(x_1567.parent).var_display, VString("flex"))))
-                                                   ? (VBool(true))
-                                                   : (eq(UnSome(x_1567.parent).var_display, VString("inline-flex"))))
-                                            : (VBool(false)))) {
-      if (BoolOfValue((BoolOfValue(eq(UnSome(x_1567.parent).var_flex_direction, VString("column"))))
-                          ? (VBool(true))
-                          : (eq(UnSome(x_1567.parent).var_flex_direction, VString("column-reverse"))))) {
-        return VBool(true);
+auto var_modified_x_890(const auto &x_1517) { return MakeUnit(); }
+auto eval_expr_x_887(const auto &x_1520) {
+  if ((x_1520.parent == nullptr) &&
+      (eq((*(x_1520.parent)).var_display, "flex") || eq((*(x_1520.parent)).var_display, "inline-flex"))) {
+    if (eq((*(x_1520.parent)).var_flex_direction, "column") ||
+        eq((*(x_1520.parent)).var_flex_direction, "column-reverse")) {
+      return true;
+    } else {
+      if (eq((*(x_1520.parent)).var_flex_direction, "row")) {
+        return false;
       } else {
-        if (BoolOfValue(eq(UnSome(x_1567.parent).var_flex_direction, VString("row")))) {
-          return VBool(false);
-        } else {
-          return Panic();
-        }
-      }
-    } else {
-      return VBool(false);
-    }
-  };
-}
-auto var_modified_x_889(const auto &x_1593) {
-  return [&](const auto &x_1594) { return MakeUnit(); };
-}
-auto eval_expr_x_886(const auto &x_1598) {
-  return [&](const auto &x_1599) {
-    if (BoolOfValue((IsSome(x_1598.parent)) ? ((BoolOfValue(eq(UnSome(x_1598.parent).var_display, VString("flex"))))
-                                                   ? (VBool(true))
-                                                   : (eq(UnSome(x_1598.parent).var_display, VString("inline-flex"))))
-                                            : (VBool(false)))) {
-      if (BoolOfValue(eq(UnSome(x_1598.parent).var_flex_direction, VString("row")))) {
-        return VBool(true);
-      } else {
-        if (BoolOfValue((BoolOfValue(eq(UnSome(x_1598.parent).var_flex_direction, VString("column"))))
-                            ? (VBool(true))
-                            : (eq(UnSome(x_1598.parent).var_flex_direction, VString("column-reverse"))))) {
-          return VBool(false);
-        } else {
-          return Panic();
-        }
-      }
-    } else {
-      return VBool(false);
-    }
-  };
-}
-auto var_modified_x_884(const auto &x_1624) {
-  return [&](const auto &x_1625) { return MakeUnit(); };
-}
-auto eval_expr_x_881(const auto &x_1632) {
-  return [&](const auto &x_1633) {
-    if (IsSome(HashtblFind(x_1632.prop, "flex-direction"))) {
-      return HashtblForceFind(x_1632.prop, "flex-direction");
-    } else {
-      return VString("");
-    }
-  };
-}
-auto var_modified_x_879(const auto &x_1636) {
-  return [&](const auto &x_1637) { return MakeUnit(); };
-}
-auto eval_expr_x_876(const auto &x_1642) {
-  return [&](const auto &x_1643) {
-    return plus((IsSome(x_1642.prev)) ? (UnSome(x_1642.prev).var_flex_shrink_sum) : (VFloat(0.)),
-                x_1642.var_flex_shrink);
-  };
-}
-auto var_modified_x_874(const auto &x_1652) {
-  return [&](const auto &x_1653) { return MakeUnit(); };
-}
-auto eval_expr_x_871(const auto &x_1658) {
-  return [&](const auto &x_1659) {
-    return plus((IsSome(x_1658.prev)) ? (UnSome(x_1658.prev).var_flex_grow_sum) : (VFloat(0.)), x_1658.var_flex_grow);
-  };
-}
-auto var_modified_x_869(const auto &x_1668) {
-  return [&](const auto &x_1669) { return MakeUnit(); };
-}
-auto eval_expr_x_866(const auto &x_1672) {
-  return [&](const auto &x_1673) {
-    if (IsSome(HashtblFind(x_1672.prop, "flex-shrink"))) {
-      return string_to_float(HashtblForceFind(x_1672.prop, "flex-shrink"));
-    } else {
-      return VFloat(0.);
-    }
-  };
-}
-auto var_modified_x_864(const auto &x_1676) {
-  return [&](const auto &x_1677) { return MakeUnit(); };
-}
-auto eval_expr_x_861(const auto &x_1680) {
-  return [&](const auto &x_1681) {
-    if (IsSome(HashtblFind(x_1680.prop, "flex-grow"))) {
-      return string_to_float(HashtblForceFind(x_1680.prop, "flex-grow"));
-    } else {
-      return VFloat(0.);
-    }
-  };
-}
-auto var_modified_x_859(const auto &x_1684) {
-  return [&](const auto &x_1685) { return MakeUnit(); };
-}
-auto eval_expr_x_856(const auto &x_1691) {
-  return [&](const auto &x_1692) {
-    if (IsSome(HashtblFind(x_1691.prop, "position"))) {
-      return HashtblForceFind(x_1691.prop, "position");
-    } else {
-      return VString("static");
-    }
-  };
-}
-auto var_modified_x_854(const auto &x_1695) {
-  return [&](const auto &x_1696) { return MakeUnit(); };
-}
-auto eval_expr_x_851(const auto &x_1722) {
-  return [&](const auto &x_1723) {
-    if (IsSome(HashtblFind(x_1722.prop, "display"))) {
-      return HashtblForceFind(x_1722.prop, "display");
-    } else {
-      return VString("block");
-    }
-  };
-}
-auto var_modified_x_847(const auto &x_1726) {
-  return [&](const auto &x_1727) { return MakeUnit(); };
-}
-auto eval_expr_x_844(const auto &x_1737) {
-  return [&](const auto &x_1738) {
-    if (IsSome(x_1737.prev)) {
-      if (BoolOfValue(x_1737.var_line_break)) {
-        return plus(UnSome(x_1737.prev).var_finished_intrinsic_height_sum,
-                    plus(UnSome(x_1737.prev).var_intrinsic_current_line_height, x_1737.var_intrinsic_height_external));
-      } else {
-        return UnSome(x_1737.prev).var_finished_intrinsic_height_sum;
-      }
-    } else {
-      if (BoolOfValue(x_1737.var_line_break)) {
-        return x_1737.var_intrinsic_height_external;
-      } else {
-        return VFloat(0.);
+        return Panic();
       }
     }
-  };
+  } else {
+    return false;
+  }
 }
-auto var_modified_x_842(const auto &x_1767) {
-  return [&](const auto &x_1768) { return MakeUnit(); };
-}
-auto eval_expr_x_839(const auto &x_1778) {
-  return [&](const auto &x_1779) {
-    if (BoolOfValue(x_1778.var_line_break)) {
-      return VFloat(0.);
+auto var_modified_x_885(const auto &x_1545) { return MakeUnit(); }
+auto eval_expr_x_882(const auto &x_1549) {
+  if ((x_1549.parent == nullptr) &&
+      (eq((*(x_1549.parent)).var_display, "flex") || eq((*(x_1549.parent)).var_display, "inline-flex"))) {
+    if (eq((*(x_1549.parent)).var_flex_direction, "row")) {
+      return true;
     } else {
-      return max(x_1778.var_intrinsic_height_external,
-                 (IsSome(x_1778.prev)) ? (UnSome(x_1778.prev).var_intrinsic_current_line_height) : (VFloat(0.)));
-    }
-  };
-}
-auto var_modified_x_837(const auto &x_1792) {
-  return [&](const auto &x_1793) { return MakeUnit(); };
-}
-auto eval_expr_x_834(const auto &x_1800) {
-  return [&](const auto &x_1801) {
-    return plus((IsSome(x_1800.prev)) ? (UnSome(x_1800.prev).var_intrinsic_height_sum) : (VFloat(0.)),
-                x_1800.var_intrinsic_height_external);
-  };
-}
-auto var_modified_x_832(const auto &x_1810) {
-  return [&](const auto &x_1811) { return MakeUnit(); };
-}
-auto eval_expr_x_829(const auto &x_1816) {
-  return [&](const auto &x_1817) {
-    if (BoolOfValue(eq(x_1816.var_position, VString("absolute")))) {
-      return VFloat(0.);
-    } else {
-      return x_1816.var_intrinsic_height_internal;
-    }
-  };
-}
-auto var_modified_x_827(const auto &x_1826) {
-  return [&](const auto &x_1827) { return MakeUnit(); };
-}
-auto eval_expr_x_824(const auto &x_1832) {
-  return [&](const auto &x_1833) {
-    if (BoolOfValue(eq(x_1832.var_display, VString("none")))) {
-      return VFloat(0.);
-    } else {
-      if (BoolOfValue(x_1832.var_inside_svg)) {
-        return VFloat(0.);
+      if (eq((*(x_1549.parent)).var_flex_direction, "column") ||
+          eq((*(x_1549.parent)).var_flex_direction, "column-reverse")) {
+        return false;
       } else {
-        if (BoolOfValue(x_1832.var_disabled)) {
-          return VFloat(0.);
-        } else {
-          if (BoolOfValue((BoolOfValue(neq(x_1832.var_height_expr, VString("auto"))))
-                              ? ((BoolOfValue(not(has_suffix(x_1832.var_height_expr, VString("%")))))
-                                     ? (neq(x_1832.var_height_expr, VString("fit-content")))
-                                     : (VBool(false)))
-                              : (VBool(false)))) {
-            if (BoolOfValue(has_suffix(x_1832.var_height_expr, VString("px")))) {
-              return string_to_float(strip_suffix(x_1832.var_height_expr, VString("px")));
-            } else {
-              if (BoolOfValue(has_suffix(x_1832.var_height_expr, VString("ch")))) {
-                return string_to_float(strip_suffix(x_1832.var_height_expr, VString("ch")));
-              } else {
-                if (BoolOfValue(has_suffix(x_1832.var_height_expr, VString("lh")))) {
-                  return string_to_float(strip_suffix(x_1832.var_height_expr, VString("lh")));
-                } else {
-                  return Panic();
-                }
-              }
-            }
+        return Panic();
+      }
+    }
+  } else {
+    return false;
+  }
+}
+auto var_modified_x_880(const auto &x_1574) { return MakeUnit(); }
+auto eval_expr_x_877(const auto &x_1581) {
+  if (IsSome(HashtblFind(x_1581.prop, "flex-direction"))) {
+    return HashtblForceFind(x_1581.prop, "flex-direction");
+  } else {
+    return "";
+  }
+}
+auto var_modified_x_875(const auto &x_1584) { return MakeUnit(); }
+auto eval_expr_x_872(const auto &x_1589) {
+  return plus((x_1589.prev == nullptr) ? ((*(x_1589.prev)).var_flex_shrink_sum) : (0.), x_1589.var_flex_shrink);
+}
+auto var_modified_x_870(const auto &x_1598) { return MakeUnit(); }
+auto eval_expr_x_867(const auto &x_1603) {
+  return plus((x_1603.prev == nullptr) ? ((*(x_1603.prev)).var_flex_grow_sum) : (0.), x_1603.var_flex_grow);
+}
+auto var_modified_x_865(const auto &x_1612) { return MakeUnit(); }
+auto eval_expr_x_862(const auto &x_1615) {
+  if (IsSome(HashtblFind(x_1615.prop, "flex-shrink"))) {
+    return string_to_float(HashtblForceFind(x_1615.prop, "flex-shrink"));
+  } else {
+    return 0.;
+  }
+}
+auto var_modified_x_860(const auto &x_1618) { return MakeUnit(); }
+auto eval_expr_x_857(const auto &x_1621) {
+  if (IsSome(HashtblFind(x_1621.prop, "flex-grow"))) {
+    return string_to_float(HashtblForceFind(x_1621.prop, "flex-grow"));
+  } else {
+    return 0.;
+  }
+}
+auto var_modified_x_855(const auto &x_1624) { return MakeUnit(); }
+auto eval_expr_x_852(const auto &x_1630) {
+  if (IsSome(HashtblFind(x_1630.prop, "position"))) {
+    return HashtblForceFind(x_1630.prop, "position");
+  } else {
+    return "static";
+  }
+}
+auto var_modified_x_850(const auto &x_1633) { return MakeUnit(); }
+auto eval_expr_x_847(const auto &x_1659) {
+  if (IsSome(HashtblFind(x_1659.prop, "display"))) {
+    return HashtblForceFind(x_1659.prop, "display");
+  } else {
+    return "block";
+  }
+}
+auto var_modified_x_843(const auto &x_1662) { return MakeUnit(); }
+auto eval_expr_x_840(const auto &x_1672) {
+  if (x_1672.prev == nullptr) {
+    if (x_1672.var_line_break) {
+      return plus((*(x_1672.prev)).var_finished_intrinsic_height_sum,
+                  plus((*(x_1672.prev)).var_intrinsic_current_line_height, x_1672.var_intrinsic_height_external));
+    } else {
+      return (*(x_1672.prev)).var_finished_intrinsic_height_sum;
+    }
+  } else {
+    if (x_1672.var_line_break) {
+      return x_1672.var_intrinsic_height_external;
+    } else {
+      return 0.;
+    }
+  }
+}
+auto var_modified_x_838(const auto &x_1701) { return MakeUnit(); }
+auto eval_expr_x_835(const auto &x_1711) {
+  if (x_1711.var_line_break) {
+    return 0.;
+  } else {
+    return max(x_1711.var_intrinsic_height_external,
+               (x_1711.prev == nullptr) ? ((*(x_1711.prev)).var_intrinsic_current_line_height) : (0.));
+  }
+}
+auto var_modified_x_833(const auto &x_1724) { return MakeUnit(); }
+auto eval_expr_x_830(const auto &x_1731) {
+  return plus((x_1731.prev == nullptr) ? ((*(x_1731.prev)).var_intrinsic_height_sum) : (0.),
+              x_1731.var_intrinsic_height_external);
+}
+auto var_modified_x_828(const auto &x_1740) { return MakeUnit(); }
+auto eval_expr_x_825(const auto &x_1745) {
+  if (eq(x_1745.var_position, "absolute")) {
+    return 0.;
+  } else {
+    return x_1745.var_intrinsic_height_internal;
+  }
+}
+auto var_modified_x_823(const auto &x_1754) { return MakeUnit(); }
+auto eval_expr_x_820(const auto &x_1759) {
+  if (eq(x_1759.var_display, "none")) {
+    return 0.;
+  } else {
+    if (x_1759.var_inside_svg) {
+      return 0.;
+    } else {
+      if (x_1759.var_disabled) {
+        return 0.;
+      } else {
+        if (neq(x_1759.var_height_expr, "auto") &&
+            (not(has_suffix(x_1759.var_height_expr, "%")) && neq(x_1759.var_height_expr, "fit-content"))) {
+          if (has_suffix(x_1759.var_height_expr, "px")) {
+            return string_to_float(strip_suffix(x_1759.var_height_expr, "px"));
           } else {
-            return plus(
-                x_1832.var_children_intrinsic_height,
-                (StringEqual(x_1832.name, "#text"))
-                    ? ((IsSome(ListHead(x_1832.children))) ? (Panic()) : (VFloat(10.)))
-                    : ((BoolOfValue(x_1832.var_is_default_case))
-                           ? (VFloat(0.))
-                           : ((StringEqual(x_1832.name, "BR"))
-                                  ? ((IsSome(ListHead(x_1832.children))) ? (Panic()) : (VFloat(0.)))
-                                  : ((StringEqual(x_1832.name, "INPUT"))
-                                         ? (VFloat(10.))
-                                         : ((StringEqual(x_1832.name, "svg"))
-                                                ? ((BoolOfValue((BoolOfValue(x_1832.var_has_height_attr))
-                                                                    ? (string_is_float(x_1832.var_height_attr_expr))
-                                                                    : (VBool(false))))
-                                                       ? (string_to_float(x_1832.var_height_attr_expr))
-                                                       : ((IsSome(HashtblFind(x_1832.attr, "viewBox")))
-                                                              ? (string_to_float(
-                                                                    nth_by_sep(HashtblForceFind(x_1832.attr, "viewBox"),
-                                                                               VString(" "), VInt(3))))
-                                                              : ((BoolOfValue(
-                                                                     (BoolOfValue(x_1832.var_has_height_attr))
-                                                                         ? ((BoolOfValue(
-                                                                                has_suffix(x_1832.var_height_attr_expr,
-                                                                                           VString("%"))))
-                                                                                ? (VBool(IsSome(HashtblFind(
-                                                                                      x_1832.attr, "viewBox"))))
-                                                                                : (VBool(false)))
-                                                                         : (VBool(false))))
-                                                                     ? (mult(
-                                                                           string_to_float(nth_by_sep(
-                                                                               HashtblForceFind(x_1832.attr, "viewBox"),
-                                                                               VString(" "), VInt(3))),
-                                                                           divide(string_to_float(strip_suffix(
-                                                                                      x_1832.var_height_attr_expr,
-                                                                                      VString("%"))),
-                                                                                  VFloat(100.))))
-                                                                     : (Panic()))))
-                                                : ((StringEqual(x_1832.name, "IMG"))
-                                                       ? ((BoolOfValue(x_1832.var_has_height_attr))
-                                                              ? (string_to_float(x_1832.var_height_attr_expr))
-                                                              : ((BoolOfValue(
-                                                                     (IsSome(HashtblFind(x_1832.attr, "image_height")))
-                                                                         ? (not(x_1832.var_has_width_attr))
-                                                                         : (VBool(false))))
-                                                                     ? (int_to_float(HashtblForceFind(x_1832.attr,
-                                                                                                      "image_height")))
-                                                                     : ((BoolOfValue(
-                                                                            (BoolOfValue(x_1832.var_has_width_attr))
-                                                                                ? ((BoolOfValue(
-                                                                                       not(x_1832.var_has_height_attr)))
-                                                                                       ? ((IsSome(HashtblFind(
-                                                                                              x_1832.attr,
-                                                                                              "image_width")))
-                                                                                              ? (VBool(
-                                                                                                    IsSome(HashtblFind(
-                                                                                                        x_1832.attr,
-                                                                                                        "image_"
-                                                                                                        "height"))))
-                                                                                              : (VBool(false)))
-                                                                                       : (VBool(false)))
-                                                                                : (VBool(false))))
-                                                                            ? ((BoolOfValue(
-                                                                                   neq(HashtblForceFind(x_1832.attr,
-                                                                                                        "image_width"),
-                                                                                       VInt(0))))
-                                                                                   ? (mult(
-                                                                                         string_to_float(
-                                                                                             x_1832
-                                                                                                 .var_width_attr_expr),
-                                                                                         divide(
-                                                                                             int_to_float(
-                                                                                                 HashtblForceFind(
-                                                                                                     x_1832.attr,
-                                                                                                     "image_height")),
-                                                                                             int_to_float(
-                                                                                                 HashtblForceFind(
-                                                                                                     x_1832.attr,
-                                                                                                     "image_width")))))
-                                                                                   : (VFloat(0.)))
-                                                                     : (Panic()))))
-                                                : ((StringEqual(x_1832.name, "IFRAME"))
-                                                       ? ((BoolOfValue(x_1832.var_has_height_attr))
-                                                              ? (Panic())
-                                                              : (VFloat(150.)))
-                                                       : ((StringEqual(x_1832.name, "TEXTAREA"))
-                                                              ? (VFloat(100.))
-                                                              : ((StringEqual(x_1832.name, "VIDEO"))
-                                                                     ? ((BoolOfValue(x_1832.var_has_height_attr))
-                                                                            ? (Panic())
-                                                                            : (VFloat(150.)))
-                                                                     : (Panic()))))))))));
-          }
-        }
-      }
-    }
-  };
-}
-auto var_modified_x_822(const auto &x_1978) {
-  return [&](const auto &x_1979) { return MakeUnit(); };
-}
-auto eval_expr_x_819(const auto &x_1981) {
-  return [&](const auto &x_1982) {
-    if (BoolOfValue((BoolOfValue(eq(x_1981.var_display, VString("none"))))
-                        ? (VBool(true))
-                        : ((BoolOfValue(x_1981.var_inside_svg)) ? (VBool(true)) : (x_1981.var_disabled)))) {
-      return VBool(true);
-    } else {
-      if (BoolOfValue((IsSome(x_1981.parent)) ? (UnSome(x_1981.parent).var_is_flex_column) : (VBool(false)))) {
-        return VBool(false);
-      } else {
-        if (BoolOfValue((BoolOfValue(eq(x_1981.var_height_expr, VString("auto"))))
-                            ? (VBool(true))
-                            : ((BoolOfValue(has_suffix(x_1981.var_height_expr, VString("px"))))
-                                   ? (VBool(true))
-                                   : ((BoolOfValue(has_suffix(x_1981.var_height_expr, VString("ch"))))
-                                          ? (VBool(true))
-                                          : ((BoolOfValue(has_suffix(x_1981.var_height_expr, VString("lh"))))
-                                                 ? (VBool(true))
-                                                 : (eq(x_1981.var_height_expr, VString("max-content")))))))) {
-          return VBool(true);
-        } else {
-          if (BoolOfValue((BoolOfValue(has_suffix(x_1981.var_height_expr, VString("%"))))
-                              ? (VBool(true))
-                              : (eq(x_1981.var_height_expr, VString("fit-content"))))) {
-            return VBool(false);
-          } else {
-            return Panic();
-          }
-        }
-      }
-    }
-  };
-}
-auto var_modified_x_817(const auto &x_2031) {
-  return [&](const auto &x_2032) { return MakeUnit(); };
-}
-auto eval_expr_x_814(const auto &x_2052) {
-  return [&](const auto &x_2053) {
-    if (IsSome(HashtblFind(x_2052.prop, "height"))) {
-      return HashtblForceFind(x_2052.prop, "height");
-    } else {
-      return VString("auto");
-    }
-  };
-}
-auto var_modified_x_812(const auto &x_2056) {
-  return [&](const auto &x_2057) { return MakeUnit(); };
-}
-auto eval_expr_x_809(const auto &x_2059) {
-  return [&](const auto &x_2060) {
-    if (IsSome(ListLast(x_2059.children))) {
-      return plus(UnSome(ListLast(x_2059.children)).var_finished_intrinsic_height_sum,
-                  UnSome(ListLast(x_2059.children)).var_intrinsic_current_line_height);
-    } else {
-      return VFloat(0.);
-    }
-  };
-}
-auto var_modified_x_807(const auto &x_2069) {
-  return [&](const auto &x_2070) { return MakeUnit(); };
-}
-auto eval_expr_x_804(const auto &x_2077) {
-  return [&](const auto &x_2078) {
-    return plus((IsSome(x_2077.prev)) ? (UnSome(x_2077.prev).var_intrinsic_width_sum) : (VFloat(0.)),
-                x_2077.var_intrinsic_width_external);
-  };
-}
-auto var_modified_x_802(const auto &x_2087) {
-  return [&](const auto &x_2088) { return MakeUnit(); };
-}
-auto eval_expr_x_799(const auto &x_2095) {
-  return [&](const auto &x_2096) {
-    return max(x_2095.var_intrinsic_current_line_width,
-               (IsSome(x_2095.prev)) ? (UnSome(x_2095.prev).var_intrinsic_width_max) : (VFloat(0.)));
-  };
-}
-auto var_modified_x_797(const auto &x_2105) {
-  return [&](const auto &x_2106) { return MakeUnit(); };
-}
-auto eval_expr_x_794(const auto &x_2111) {
-  return [&](const auto &x_2112) {
-    return plus(x_2111.var_intrinsic_width_external,
-                (BoolOfValue((IsSome(x_2111.prev)) ? (not(UnSome(x_2111.prev).var_line_break)) : (VBool(false))))
-                    ? (UnSome(x_2111.prev).var_intrinsic_current_line_width)
-                    : (VFloat(0.)));
-  };
-}
-auto var_modified_x_792(const auto &x_2125) {
-  return [&](const auto &x_2126) { return MakeUnit(); };
-}
-auto eval_expr_x_789(const auto &x_2129) {
-  return [&](const auto &x_2130) {
-    if (BoolOfValue(eq(x_2129.var_position, VString("absolute")))) {
-      return VFloat(0.);
-    } else {
-      return x_2129.var_intrinsic_width_internal;
-    }
-  };
-}
-auto var_modified_x_787(const auto &x_2139) {
-  return [&](const auto &x_2140) { return MakeUnit(); };
-}
-auto eval_expr_x_784(const auto &x_2145) {
-  return [&](const auto &x_2146) {
-    if (BoolOfValue(eq(x_2145.var_display, VString("none")))) {
-      return VFloat(0.);
-    } else {
-      if (BoolOfValue(x_2145.var_inside_svg)) {
-        return VFloat(0.);
-      } else {
-        if (BoolOfValue(x_2145.var_disabled)) {
-          return VFloat(0.);
-        } else {
-          if (BoolOfValue((BoolOfValue(neq(x_2145.var_width_expr, VString("auto"))))
-                              ? ((BoolOfValue(not(has_suffix(x_2145.var_width_expr, VString("%")))))
-                                     ? ((BoolOfValue(neq(x_2145.var_width_expr, VString("fit-content"))))
-                                            ? ((BoolOfValue(neq(x_2145.var_width_expr, VString("max-content"))))
-                                                   ? (not(has_prefix(x_2145.var_width_expr, VString("calc"))))
-                                                   : (VBool(false)))
-                                            : (VBool(false)))
-                                     : (VBool(false)))
-                              : (VBool(false)))) {
-            if (BoolOfValue(has_suffix(x_2145.var_width_expr, VString("px")))) {
-              return string_to_float(strip_suffix(x_2145.var_width_expr, VString("px")));
+            if (has_suffix(x_1759.var_height_expr, "ch")) {
+              return string_to_float(strip_suffix(x_1759.var_height_expr, "ch"));
             } else {
-              if (BoolOfValue(has_suffix(x_2145.var_width_expr, VString("ch")))) {
-                return string_to_float(strip_suffix(x_2145.var_width_expr, VString("ch")));
+              if (has_suffix(x_1759.var_height_expr, "lh")) {
+                return string_to_float(strip_suffix(x_1759.var_height_expr, "lh"));
               } else {
                 return Panic();
               }
             }
-          } else {
-            return plus(
-                x_2145.var_children_intrinsic_width,
-                (StringEqual(x_2145.name, "#text"))
-                    ? ((IsSome(ListHead(x_2145.children))) ? (Panic()) : (VFloat(100.)))
-                    : ((BoolOfValue(x_2145.var_is_default_case))
-                           ? (VFloat(0.))
-                           : ((StringEqual(x_2145.name, "BR"))
-                                  ? ((IsSome(ListHead(x_2145.children))) ? (Panic()) : (VFloat(0.)))
-                                  : ((StringEqual(x_2145.name, "INPUT"))
-                                         ? (VFloat(100.))
-                                         : ((StringEqual(x_2145.name, "svg"))
-                                                ? ((BoolOfValue((BoolOfValue(x_2145.var_has_width_attr))
-                                                                    ? (string_is_float(x_2145.var_width_attr_expr))
-                                                                    : (VBool(false))))
-                                                       ? (string_to_float(x_2145.var_width_attr_expr))
-                                                       : ((BoolOfValue(
-                                                              (BoolOfValue(not(x_2145.var_has_width_attr)))
-                                                                  ? (VBool(IsSome(HashtblFind(x_2145.attr, "viewBox"))))
-                                                                  : (VBool(false))))
-                                                              ? (string_to_float(
-                                                                    nth_by_sep(HashtblForceFind(x_2145.attr, "viewBox"),
-                                                                               VString(" "), VInt(2))))
-                                                              : ((BoolOfValue(
-                                                                     (BoolOfValue(x_2145.var_has_width_attr))
-                                                                         ? ((BoolOfValue(
-                                                                                has_suffix(x_2145.var_width_attr_expr,
-                                                                                           VString("%"))))
-                                                                                ? (VBool(IsSome(HashtblFind(
-                                                                                      x_2145.attr, "viewBox"))))
-                                                                                : (VBool(false)))
-                                                                         : (VBool(false))))
-                                                                     ? (mult(
-                                                                           string_to_float(nth_by_sep(
-                                                                               HashtblForceFind(x_2145.attr, "viewBox"),
-                                                                               VString(" "), VInt(2))),
-                                                                           divide(string_to_float(strip_suffix(
-                                                                                      x_2145.var_width_attr_expr,
-                                                                                      VString("%"))),
-                                                                                  VFloat(100.))))
-                                                                     : (Panic()))))
-                                                : ((StringEqual(x_2145.name, "IMG"))
-                                                       ? ((BoolOfValue(x_2145.var_has_width_attr))
-                                                              ? (string_to_float(x_2145.var_width_attr_expr))
-                                                              : ((BoolOfValue(
-                                                                     (IsSome(HashtblFind(x_2145.attr, "image_width")))
-                                                                         ? (not(x_2145.var_has_height_attr))
-                                                                         : (VBool(false))))
-                                                                     ? (int_to_float(HashtblForceFind(x_2145.attr,
-                                                                                                      "image_width")))
-                                                                     : ((BoolOfValue(
-                                                                            (BoolOfValue(
-                                                                                not(x_2145.var_has_width_attr)))
-                                                                                ? ((BoolOfValue(
-                                                                                       x_2145.var_has_height_attr))
-                                                                                       ? ((IsSome(HashtblFind(
-                                                                                              x_2145.attr,
-                                                                                              "image_width")))
-                                                                                              ? (VBool(
-                                                                                                    IsSome(HashtblFind(
-                                                                                                        x_2145.attr,
-                                                                                                        "image_"
-                                                                                                        "height"))))
-                                                                                              : (VBool(false)))
-                                                                                       : (VBool(false)))
-                                                                                : (VBool(false))))
-                                                                            ? ((BoolOfValue(
-                                                                                   neq(HashtblForceFind(x_2145.attr,
-                                                                                                        "image_height"),
-                                                                                       VInt(0))))
-                                                                                   ? (mult(
-                                                                                         string_to_float(
-                                                                                             x_2145
-                                                                                                 .var_height_attr_expr),
-                                                                                         divide(
-                                                                                             int_to_float(
-                                                                                                 HashtblForceFind(
-                                                                                                     x_2145.attr,
-                                                                                                     "image_width")),
-                                                                                             int_to_float(
-                                                                                                 HashtblForceFind(
-                                                                                                     x_2145.attr,
-                                                                                                     "image_height")))))
-                                                                                   : (VFloat(0.)))
-                                                                     : (Panic()))))
-                                                : ((StringEqual(x_2145.name, "IFRAME"))
-                                                       ? ((BoolOfValue(x_2145.var_has_width_attr))
-                                                              ? (Panic())
-                                                              : (VFloat(300.)))
-                                                       : ((StringEqual(x_2145.name, "TEXTAREA"))
-                                                              ? (VFloat(100.))
-                                                              : ((StringEqual(x_2145.name, "VIDEO"))
-                                                                     ? ((BoolOfValue(x_2145.var_has_width_attr))
-                                                                            ? (Panic())
-                                                                            : (VFloat(300.)))
-                                                                     : (Panic()))))))))));
           }
-        }
-      }
-    }
-  };
-}
-auto var_modified_x_782(const auto &x_2299) {
-  return [&](const auto &x_2300) { return MakeUnit(); };
-}
-auto eval_expr_x_779(const auto &x_2302) {
-  return [&](const auto &x_2303) {
-    if (IsSome(ListLast(x_2302.children))) {
-      return UnSome(ListLast(x_2302.children)).var_intrinsic_width_max;
-    } else {
-      return VFloat(0.);
-    }
-  };
-}
-auto var_modified_x_777(const auto &x_2308) {
-  return [&](const auto &x_2309) { return MakeUnit(); };
-}
-auto eval_expr_x_774(const auto &x_2311) {
-  return [&](const auto &x_2312) {
-    if (BoolOfValue((BoolOfValue(eq(x_2311.var_display, VString("none"))))
-                        ? (VBool(true))
-                        : ((BoolOfValue(x_2311.var_inside_svg)) ? (VBool(true)) : (x_2311.var_disabled)))) {
-      return VBool(true);
-    } else {
-      if (BoolOfValue((IsSome(x_2311.parent)) ? (UnSome(x_2311.parent).var_is_flex_row) : (VBool(false)))) {
-        return VBool(false);
-      } else {
-        if (BoolOfValue((BoolOfValue(eq(x_2311.var_width_expr, VString("auto"))))
-                            ? (VBool(true))
-                            : ((BoolOfValue(has_suffix(x_2311.var_width_expr, VString("px"))))
-                                   ? (VBool(true))
-                                   : ((BoolOfValue(has_suffix(x_2311.var_width_expr, VString("ch"))))
-                                          ? (VBool(true))
-                                          : ((BoolOfValue(has_prefix(x_2311.var_width_expr, VString("calc("))))
-                                                 ? (VBool(true))
-                                                 : (eq(x_2311.var_width_expr, VString("max-content")))))))) {
-          return VBool(true);
         } else {
-          if (BoolOfValue((BoolOfValue(has_suffix(x_2311.var_width_expr, VString("%"))))
-                              ? (VBool(true))
-                              : (eq(x_2311.var_width_expr, VString("fit-content"))))) {
-            return VBool(false);
-          } else {
-            return Panic();
-          }
+          return plus(
+              x_1759.var_children_intrinsic_height,
+              (eq(x_1759.name, "#text"))
+                  ? ((IsSome(ListHead(x_1759.children))) ? (Panic()) : (10.))
+                  : ((x_1759.var_is_default_case)
+                         ? (0.)
+                         : ((eq(x_1759.name, "BR"))
+                                ? ((IsSome(ListHead(x_1759.children))) ? (Panic()) : (0.))
+                                : ((eq(x_1759.name, "INPUT"))
+                                       ? (10.)
+                                       : ((eq(x_1759.name, "svg"))
+                                              ? ((x_1759.var_has_height_attr &&
+                                                  string_is_float(x_1759.var_height_attr_expr))
+                                                     ? (string_to_float(x_1759.var_height_attr_expr))
+                                                     : ((IsSome(HashtblFind(x_1759.attr, "viewBox")))
+                                                            ? (string_to_float(
+                                                                  nth_by_sep(HashtblForceFind(x_1759.attr, "viewBox"),
+                                                                             " ", VInt(3))))
+                                                            : ((x_1759.var_has_height_attr &&
+                                                                (has_suffix(x_1759.var_height_attr_expr, "%") &&
+                                                                 IsSome(HashtblFind(x_1759.attr, "viewBox"))))
+                                                                   ? (mult(
+                                                                         string_to_float(nth_by_sep(
+                                                                             HashtblForceFind(x_1759.attr, "viewBox"),
+                                                                             " ", VInt(3))),
+                                                                         divide(string_to_float(strip_suffix(
+                                                                                    x_1759.var_height_attr_expr, "%")),
+                                                                                100.)))
+                                                                   : (Panic()))))
+                                              : ((eq(x_1759.name, "IMG"))
+                                                     ? ((x_1759.var_has_height_attr)
+                                                            ? (string_to_float(x_1759.var_height_attr_expr))
+                                                            : ((IsSome(HashtblFind(x_1759.attr, "image_height")) &&
+                                                                not(x_1759.var_has_width_attr))
+                                                                   ? (int_to_float(
+                                                                         HashtblForceFind(x_1759.attr, "image_height")))
+                                                                   : ((x_1759.var_has_width_attr &&
+                                                                       (not(x_1759.var_has_height_attr) &&
+                                                                        (IsSome(
+                                                                             HashtblFind(x_1759.attr, "image_width")) &&
+                                                                         IsSome(HashtblFind(x_1759.attr,
+                                                                                            "image_height")))))
+                                                                          ? ((neq(HashtblForceFind(x_1759.attr,
+                                                                                                   "image_width"),
+                                                                                  VInt(0)))
+                                                                                 ? (mult(
+                                                                                       string_to_float(
+                                                                                           x_1759.var_width_attr_expr),
+                                                                                       divide(int_to_float(
+                                                                                                  HashtblForceFind(
+                                                                                                      x_1759.attr,
+                                                                                                      "image_height")),
+                                                                                              int_to_float(
+                                                                                                  HashtblForceFind(
+                                                                                                      x_1759.attr,
+                                                                                                      "image_width")))))
+                                                                                 : (0.))
+                                                                          : (Panic()))))
+                                                     : ((eq(x_1759.name, "IFRAME"))
+                                                            ? ((x_1759.var_has_height_attr) ? (Panic()) : (150.))
+                                                            : ((eq(x_1759.name, "TEXTAREA"))
+                                                                   ? (100.)
+                                                                   : ((eq(x_1759.name, "VIDEO"))
+                                                                          ? ((x_1759.var_has_height_attr) ? (Panic())
+                                                                                                          : (150.))
+                                                                          : (Panic()))))))))));
         }
       }
     }
-  };
+  }
 }
-auto var_modified_x_772(const auto &x_2361) {
-  return [&](const auto &x_2362) { return MakeUnit(); };
-}
-auto eval_expr_x_769(const auto &x_2365) {
-  return [&](const auto &x_2366) {
-    if (BoolOfValue(eq(x_2365.var_display, VString("none")))) {
-      return VBool(true);
+auto var_modified_x_818(const auto &x_1904) { return MakeUnit(); }
+auto eval_expr_x_815(const auto &x_1906) {
+  if (eq(x_1906.var_display, "none") || (x_1906.var_inside_svg || x_1906.var_disabled)) {
+    return true;
+  } else {
+    if ((x_1906.parent == nullptr) && (*(x_1906.parent)).var_is_flex_column) {
+      return false;
     } else {
-      if (BoolOfValue(x_2365.var_inside_svg)) {
-        return VBool(true);
+      if (eq(x_1906.var_height_expr, "auto") ||
+          (has_suffix(x_1906.var_height_expr, "px") ||
+           (has_suffix(x_1906.var_height_expr, "ch") ||
+            (has_suffix(x_1906.var_height_expr, "lh") || eq(x_1906.var_height_expr, "max-content"))))) {
+        return true;
       } else {
-        if (BoolOfValue(x_2365.var_disabled)) {
-          return VBool(true);
-        } else {if (BoolOfValue((StringEqual(x_2365.name,"#document"))?(VBool(true)):((StringEqual(x_2365.name,"#shadow-root"))?(VBool(true)):((StringEqual(x_2365.name,"DIV"))?(VBool(true)):((StringEqual(x_2365.name,"HTML"))?(VBool(true)):((StringEqual(x_2365.name,"BODY"))?(VBool(true)):((StringEqual(x_2365.name,"BUTTON"))?(VBool(true)):((StringEqual(x_2365.name,"FOOTER"))?(VBool(true)):((StringEqual(x_2365.name,"SELECT"))?(VBool(true)):((StringEqual(x_2365.name,"SECTION"))?(VBool(true)):((StringEqual(x_2365.name,"FORM"))?(VBool(true)):((StringEqual(x_2365.name,"CENTER"))?(VBool(true)):((StringEqual(x_2365.name,"TD"))?(VBool(true)):((StringEqual(x_2365.name,"TR"))?(VBool(true)):((StringEqual(x_2365.name,"TBODY"))?(VBool(true)):((StringEqual(x_2365.name,"TABLE"))?(VBool(true)):((StringEqual(x_2365.name,"SPAN"))?(VBool(true)):((StringEqual(x_2365.name,"FONT"))?(VBool(true)):((StringEqual(x_2365.name,"A"))?(VBool(true)):((StringEqual(x_2365.name,"ARTICLE"))?(VBool(true)):((StringEqual(x_2365.name,"P"))?(VBool(true)):((StringEqual(x_2365.name,"U"))?(VBool(true)):((StringEqual(x_2365.name,"UL"))?(VBool(true)):((StringEqual(x_2365.name,"B"))?(VBool(true)):((StringEqual(x_2365.name,"H1"))?(VBool(true)):((StringEqual(x_2365.name,"H2"))?(VBool(true)):((StringEqual(x_2365.name,"H3"))?(VBool(true)):((StringEqual(x_2365.name,"H4"))?(VBool(true)):((StringEqual(x_2365.name,"DT"))?(VBool(true)):((StringEqual(x_2365.name,"DD"))?(VBool(true)):((StringEqual(x_2365.name,"DL"))?(VBool(true)):((StringEqual(x_2365.name,"LI"))?(VBool(true)):((StringEqual(x_2365.name,"LABEL"))?(VBool(true)):((StringEqual(x_2365.name,"OL"))?(VBool(true)):((StringEqual(x_2365.name,"NAV"))?(VBool(true)):((StringEqual(x_2365.name,"HEADER"))?(VBool(true)):((StringEqual(x_2365.name,"HEAD"))?(VBool(true)):((StringEqual(x_2365.name,"SOURCE"))?(VBool(true)):((StringEqual(x_2365.name,"PICTURE"))?(VBool(true)):((StringEqual(x_2365.name,"FIGURE"))?(VBool(true)):((StringEqual(x_2365.name,"FIGCAPTION"))?(VBool(true)):((StringEqual(x_2365.name,"MAIN"))?(VBool(true)):((StringEqual(x_2365.name,"REACT-PARTIAL"))?(VBool(true)):((StringEqual(x_2365.name,"QUERY-BUILDER"))?(VBool(true)):((StringEqual(x_2365.name,"MODAL-DIALOG"))?(VBool(true)):((StringEqual(x_2365.name,"SCROLLABLE-REGION"))?(VBool(true)):((StringEqual(x_2365.name,"DIALOG-HELPER"))?(VBool(true)):((StringEqual(x_2365.name,"AUTO-CHECK"))?(VBool(true)):((StringEqual(x_2365.name,"TOOL-TIP"))?(VBool(true)):((StringEqual(x_2365.name,"CUSTOM-SCOPES"))?(VBool(true)):((StringEqual(x_2365.name,"QBSEARCH-INPUT"))?(VBool(true)):((StringEqual(x_2365.name,"INCLUDE-FRAGMENT"))?(VBool(true)):((StringEqual(x_2365.name,"COOKIE-CONSENT-LINK"))?(VBool(true)):((StringEqual(x_2365.name,"FULLSTORY-CAPTURE"))?(VBool(true)):((StringEqual(x_2365.name,"GHCC-CONSENT"))?(VBool(true)):((StringEqual(x_2365.name,"GLOBAL-BANNER"))?(VBool(true)):((StringEqual(x_2365.name,"ACTIVE-GLOBAL-BANNERS"))?(VBool(true)):((StringEqual(x_2365.name,"CARD-SKEW"))?(VBool(true)):((StringEqual(x_2365.name,"EM"))?(VBool(true)):((StringEqual(x_2365.name,"ASIDE"))?(VBool(true)):((StringEqual(x_2365.name,"AUDIO"))?(VBool(true)):((StringEqual(x_2365.name,"SUP"))?(VBool(true)):((StringEqual(x_2365.name,"TIME"))?(VBool(true)):((StringEqual(x_2365.name,"ABBR"))?(VBool(true)):((StringEqual(x_2365.name,"SMALL"))?(VBool(true)):((StringEqual(x_2365.name,"SLOT"))?(VBool(true)):(eq(VString(x_2365.name),VString("I"))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))){
-            return VBool(true);
+        if (has_suffix(x_1906.var_height_expr, "%") || eq(x_1906.var_height_expr, "fit-content")) {
+          return false;
+        } else {
+          return Panic();
+        }
+      }
+    }
+  }
+}
+auto var_modified_x_813(const auto &x_1955) { return MakeUnit(); }
+auto eval_expr_x_810(const auto &x_1975) {
+  if (IsSome(HashtblFind(x_1975.prop, "height"))) {
+    return HashtblForceFind(x_1975.prop, "height");
+  } else {
+    return "auto";
+  }
+}
+auto var_modified_x_808(const auto &x_1978) { return MakeUnit(); }
+auto eval_expr_x_805(const auto &x_1980) {
+  if (IsSome(ListLast(x_1980.children))) {
+    return plus(UnSome(ListLast(x_1980.children)).var_finished_intrinsic_height_sum,
+                UnSome(ListLast(x_1980.children)).var_intrinsic_current_line_height);
+  } else {
+    return 0.;
+  }
+}
+auto var_modified_x_803(const auto &x_1989) { return MakeUnit(); }
+auto eval_expr_x_800(const auto &x_1996) {
+  return plus((x_1996.prev == nullptr) ? ((*(x_1996.prev)).var_intrinsic_width_sum) : (0.),
+              x_1996.var_intrinsic_width_external);
+}
+auto var_modified_x_798(const auto &x_2005) { return MakeUnit(); }
+auto eval_expr_x_795(const auto &x_2012) {
+  return max(x_2012.var_intrinsic_current_line_width,
+             (x_2012.prev == nullptr) ? ((*(x_2012.prev)).var_intrinsic_width_max) : (0.));
+}
+auto var_modified_x_793(const auto &x_2021) { return MakeUnit(); }
+auto eval_expr_x_790(const auto &x_2026) {
+  return plus(x_2026.var_intrinsic_width_external,
+              ((x_2026.prev == nullptr) && not((*(x_2026.prev)).var_line_break))
+                  ? ((*(x_2026.prev)).var_intrinsic_current_line_width)
+                  : (0.));
+}
+auto var_modified_x_788(const auto &x_2039) { return MakeUnit(); }
+auto eval_expr_x_785(const auto &x_2042) {
+  if (eq(x_2042.var_position, "absolute")) {
+    return 0.;
+  } else {
+    return x_2042.var_intrinsic_width_internal;
+  }
+}
+auto var_modified_x_783(const auto &x_2051) { return MakeUnit(); }
+auto eval_expr_x_780(const auto &x_2056) {
+  if (eq(x_2056.var_display, "none")) {
+    return 0.;
+  } else {
+    if (x_2056.var_inside_svg) {
+      return 0.;
+    } else {
+      if (x_2056.var_disabled) {
+        return 0.;
+      } else {
+        if (neq(x_2056.var_width_expr, "auto") &&
+            (not(has_suffix(x_2056.var_width_expr, "%")) &&
+             (neq(x_2056.var_width_expr, "fit-content") &&
+              (neq(x_2056.var_width_expr, "max-content") && not(has_prefix(x_2056.var_width_expr, "calc")))))) {
+          if (has_suffix(x_2056.var_width_expr, "px")) {
+            return string_to_float(strip_suffix(x_2056.var_width_expr, "px"));
           } else {
-            if (BoolOfValue((StringEqual(x_2365.name, "#text"))
-                                ? (VBool(true))
-                                : ((StringEqual(x_2365.name, "svg"))
-                                       ? (VBool(true))
-                                       : ((StringEqual(x_2365.name, "IFRAME"))
-                                              ? (VBool(true))
-                                              : ((StringEqual(x_2365.name, "INPUT"))
-                                                     ? (VBool(true))
-                                                     : ((StringEqual(x_2365.name, "VIDEO"))
-                                                            ? (VBool(true))
-                                                            : ((StringEqual(x_2365.name, "BR"))
-                                                                   ? (VBool(true))
-                                                                   : ((StringEqual(x_2365.name, "IMG"))
-                                                                          ? (VBool(true))
-                                                                          : (eq(VString(x_2365.name),
-                                                                                VString("TEXTAREA"))))))))))) {
-              return VBool(false);
+            if (has_suffix(x_2056.var_width_expr, "ch")) {
+              return string_to_float(strip_suffix(x_2056.var_width_expr, "ch"));
             } else {
               return Panic();
             }
           }
+        } else {
+          return plus(
+              x_2056.var_children_intrinsic_width,
+              (eq(x_2056.name, "#text"))
+                  ? ((IsSome(ListHead(x_2056.children))) ? (Panic()) : (100.))
+                  : ((x_2056.var_is_default_case)
+                         ? (0.)
+                         : ((eq(x_2056.name, "BR"))
+                                ? ((IsSome(ListHead(x_2056.children))) ? (Panic()) : (0.))
+                                : ((eq(x_2056.name, "INPUT"))
+                                       ? (100.)
+                                       : ((eq(x_2056.name, "svg"))
+                                              ? ((x_2056.var_has_width_attr &&
+                                                  string_is_float(x_2056.var_width_attr_expr))
+                                                     ? (string_to_float(x_2056.var_width_attr_expr))
+                                                     : ((not(x_2056.var_has_width_attr) &&
+                                                         IsSome(HashtblFind(x_2056.attr, "viewBox")))
+                                                            ? (string_to_float(
+                                                                  nth_by_sep(HashtblForceFind(x_2056.attr, "viewBox"),
+                                                                             " ", VInt(2))))
+                                                            : ((x_2056.var_has_width_attr &&
+                                                                (has_suffix(x_2056.var_width_attr_expr, "%") &&
+                                                                 IsSome(HashtblFind(x_2056.attr, "viewBox"))))
+                                                                   ? (mult(string_to_float(nth_by_sep(
+                                                                               HashtblForceFind(x_2056.attr, "viewBox"),
+                                                                               " ", VInt(2))),
+                                                                           divide(string_to_float(strip_suffix(
+                                                                                      x_2056.var_width_attr_expr, "%")),
+                                                                                  100.)))
+                                                                   : (Panic()))))
+                                              : ((eq(x_2056.name, "IMG"))
+                                                     ? ((x_2056.var_has_width_attr)
+                                                            ? (string_to_float(x_2056.var_width_attr_expr))
+                                                            : ((IsSome(HashtblFind(x_2056.attr, "image_width")) &&
+                                                                not(x_2056.var_has_height_attr))
+                                                                   ? (int_to_float(
+                                                                         HashtblForceFind(x_2056.attr, "image_width")))
+                                                                   : ((not(x_2056.var_has_width_attr) &&
+                                                                       (x_2056.var_has_height_attr &&
+                                                                        (IsSome(
+                                                                             HashtblFind(x_2056.attr, "image_width")) &&
+                                                                         IsSome(HashtblFind(x_2056.attr,
+                                                                                            "image_height")))))
+                                                                          ? ((neq(HashtblForceFind(x_2056.attr,
+                                                                                                   "image_height"),
+                                                                                  VInt(0)))
+                                                                                 ? (mult(
+                                                                                       string_to_float(
+                                                                                           x_2056.var_height_attr_expr),
+                                                                                       divide(
+                                                                                           int_to_float(
+                                                                                               HashtblForceFind(
+                                                                                                   x_2056.attr,
+                                                                                                   "image_width")),
+                                                                                           int_to_float(
+                                                                                               HashtblForceFind(
+                                                                                                   x_2056.attr,
+                                                                                                   "image_height")))))
+                                                                                 : (0.))
+                                                                          : (Panic()))))
+                                                     : ((eq(x_2056.name, "IFRAME"))
+                                                            ? ((x_2056.var_has_width_attr) ? (Panic()) : (300.))
+                                                            : ((eq(x_2056.name, "TEXTAREA"))
+                                                                   ? (100.)
+                                                                   : ((eq(x_2056.name, "VIDEO"))
+                                                                          ? ((x_2056.var_has_width_attr) ? (Panic())
+                                                                                                         : (300.))
+                                                                          : (Panic()))))))))));
         }
       }
     }
-  };
+  }
 }
-auto var_modified_x_767(const auto &x_2379) {
-  return [&](const auto &x_2380) { return MakeUnit(); };
+auto var_modified_x_778(const auto &x_2209) { return MakeUnit(); }
+auto eval_expr_x_775(const auto &x_2211) {
+  if (IsSome(ListLast(x_2211.children))) {
+    return UnSome(ListLast(x_2211.children)).var_intrinsic_width_max;
+  } else {
+    return 0.;
+  }
 }
-auto eval_expr_x_764(const auto &x_2400) {
-  return [&](const auto &x_2401) {
-    if (IsSome(HashtblFind(x_2400.prop, "width"))) {
-      return HashtblForceFind(x_2400.prop, "width");
+auto var_modified_x_773(const auto &x_2216) { return MakeUnit(); }
+auto eval_expr_x_770(const auto &x_2218) {
+  if (eq(x_2218.var_display, "none") || (x_2218.var_inside_svg || x_2218.var_disabled)) {
+    return true;
+  } else {
+    if ((x_2218.parent == nullptr) && (*(x_2218.parent)).var_is_flex_row) {
+      return false;
     } else {
-      return VString("auto");
-    }
-  };
-}
-auto var_modified_x_760(const auto &x_2404) {
-  return [&](const auto &x_2405) { return MakeUnit(); };
-}
-auto eval_expr_x_757(const auto &x_2412) {
-  return [&](const auto &x_2413) {
-    if (BoolOfValue((IsSome(x_2412.prev)) ? (not(UnSome(x_2412.prev).var_line_break)) : (VBool(false)))) {
-      return max(x_2412.var_height_external, UnSome(x_2412.prev).var_line_height);
-    } else {
-      return x_2412.var_height_external;
-    }
-  };
-}
-auto var_modified_x_755(const auto &x_2430) {
-  return [&](const auto &x_2431) { return MakeUnit(); };
-}
-auto eval_expr_x_752(const auto &x_2434) {
-  return [&](const auto &x_2435) {
-    if (BoolOfValue(eq(x_2434.var_position, VString("absolute")))) {
-      return VFloat(0.);
-    } else {
-      return x_2434.var_height_internal;
-    }
-  };
-}
-auto var_modified_x_750(const auto &x_2444) {
-  return [&](const auto &x_2445) { return MakeUnit(); };
-}
-auto eval_expr_x_747(const auto &x_2448) {
-  return [&](const auto &x_2449) {
-    if (BoolOfValue(x_2448.var_intrinsic_height_is_height)) {
-      return x_2448.var_intrinsic_height_internal;
-    } else {
-      if (BoolOfValue((IsSome(x_2448.parent)) ? (UnSome(x_2448.parent).var_is_flex_column) : (VBool(false)))) {
-        return plus(x_2448.var_intrinsic_height_internal,
-                    mult(x_2448.var_flex_amount, UnSome(x_2448.parent).var_flex_unit));
+      if (eq(x_2218.var_width_expr, "auto") ||
+          (has_suffix(x_2218.var_width_expr, "px") ||
+           (has_suffix(x_2218.var_width_expr, "ch") ||
+            (has_prefix(x_2218.var_width_expr, "calc(") || eq(x_2218.var_width_expr, "max-content"))))) {
+        return true;
       } else {
-        if (BoolOfValue(has_suffix(x_2448.var_height_expr, VString("%")))) {
-          return mult(x_2448.var_box_height,
-                      divide(string_to_float(strip_suffix(x_2448.var_height_expr, VString("%"))), VFloat(100.)));
+        if (has_suffix(x_2218.var_width_expr, "%") || eq(x_2218.var_width_expr, "fit-content")) {
+          return false;
         } else {
-          if (BoolOfValue(eq(x_2448.var_height_expr, VString("fit-content")))) {
-            return max(x_2448.var_box_height, x_2448.var_intrinsic_height_internal);
+          return Panic();
+        }
+      }
+    }
+  }
+}
+auto var_modified_x_768(const auto &x_2267) { return MakeUnit(); }
+auto eval_expr_x_765(const auto &x_2270) {
+  if (eq(x_2270.var_display, "none")) {
+    return true;
+  } else {
+    if (x_2270.var_inside_svg) {
+      return true;
+    } else {
+      if (x_2270.var_disabled) {
+        return true;
+      } else {if ( eq(x_2270.name,"#document") || (eq(x_2270.name,"#shadow-root") || (eq(x_2270.name,"DIV") || (eq(x_2270.name,"HTML") || (eq(x_2270.name,"BODY") || (eq(x_2270.name,"BUTTON") || (eq(x_2270.name,"FOOTER") || (eq(x_2270.name,"SELECT") || (eq(x_2270.name,"SECTION") || (eq(x_2270.name,"FORM") || (eq(x_2270.name,"CENTER") || (eq(x_2270.name,"TD") || (eq(x_2270.name,"TR") || (eq(x_2270.name,"TBODY") || (eq(x_2270.name,"TABLE") || (eq(x_2270.name,"SPAN") || (eq(x_2270.name,"FONT") || (eq(x_2270.name,"A") || (eq(x_2270.name,"ARTICLE") || (eq(x_2270.name,"P") || (eq(x_2270.name,"U") || (eq(x_2270.name,"UL") || (eq(x_2270.name,"B") || (eq(x_2270.name,"H1") || (eq(x_2270.name,"H2") || (eq(x_2270.name,"H3") || (eq(x_2270.name,"H4") || (eq(x_2270.name,"DT") || (eq(x_2270.name,"DD") || (eq(x_2270.name,"DL") || (eq(x_2270.name,"LI") || (eq(x_2270.name,"LABEL") || (eq(x_2270.name,"OL") || (eq(x_2270.name,"NAV") || (eq(x_2270.name,"HEADER") || (eq(x_2270.name,"HEAD") || (eq(x_2270.name,"SOURCE") || (eq(x_2270.name,"PICTURE") || (eq(x_2270.name,"FIGURE") || (eq(x_2270.name,"FIGCAPTION") || (eq(x_2270.name,"MAIN") || (eq(x_2270.name,"REACT-PARTIAL") || (eq(x_2270.name,"QUERY-BUILDER") || (eq(x_2270.name,"MODAL-DIALOG") || (eq(x_2270.name,"SCROLLABLE-REGION") || (eq(x_2270.name,"DIALOG-HELPER") || (eq(x_2270.name,"AUTO-CHECK") || (eq(x_2270.name,"TOOL-TIP") || (eq(x_2270.name,"CUSTOM-SCOPES") || (eq(x_2270.name,"QBSEARCH-INPUT") || (eq(x_2270.name,"INCLUDE-FRAGMENT") || (eq(x_2270.name,"COOKIE-CONSENT-LINK") || (eq(x_2270.name,"FULLSTORY-CAPTURE") || (eq(x_2270.name,"GHCC-CONSENT") || (eq(x_2270.name,"GLOBAL-BANNER") || (eq(x_2270.name,"ACTIVE-GLOBAL-BANNERS") || (eq(x_2270.name,"CARD-SKEW") || (eq(x_2270.name,"EM") || (eq(x_2270.name,"ASIDE") || (eq(x_2270.name,"AUDIO") || (eq(x_2270.name,"SUP") || (eq(x_2270.name,"TIME") || (eq(x_2270.name,"ABBR") || (eq(x_2270.name,"SMALL") || (eq(x_2270.name,"SLOT") || eq(x_2270.name,"I"))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))) ){
+          return true;
+        } else {
+          if (eq(x_2270.name, "#text") ||
+              (eq(x_2270.name, "svg") ||
+               (eq(x_2270.name, "IFRAME") ||
+                (eq(x_2270.name, "INPUT") ||
+                 (eq(x_2270.name, "VIDEO") ||
+                  (eq(x_2270.name, "BR") || (eq(x_2270.name, "IMG") || eq(x_2270.name, "TEXTAREA")))))))) {
+            return false;
           } else {
             return Panic();
           }
         }
       }
     }
-  };
+  }
 }
-auto var_modified_x_745(const auto &x_2502) {
-  return [&](const auto &x_2503) { return MakeUnit(); };
+auto var_modified_x_763(const auto &x_2283) { return MakeUnit(); }
+auto eval_expr_x_760(const auto &x_2303) {
+  if (IsSome(HashtblFind(x_2303.prop, "width"))) {
+    return HashtblForceFind(x_2303.prop, "width");
+  } else {
+    return "auto";
+  }
 }
-auto eval_expr_x_742(const auto &x_2511) {
-  return [&](const auto &x_2512) {
-    if (IsSome(x_2511.prev)) {
-      if (BoolOfValue((BoolOfValue(x_2511.var_line_break)) ? (VBool(true)) : (UnSome(x_2511.prev).var_line_break))) {
-        return plus(UnSome(x_2511.prev).var_y, UnSome(x_2511.prev).var_line_height);
-      } else {
-        return UnSome(x_2511.prev).var_y;
-      }
+auto var_modified_x_756(const auto &x_2306) { return MakeUnit(); }
+auto eval_expr_x_753(const auto &x_2313) {
+  if ((x_2313.prev == nullptr) && not((*(x_2313.prev)).var_line_break)) {
+    return max(x_2313.var_height_external, (*(x_2313.prev)).var_line_height);
+  } else {
+    return x_2313.var_height_external;
+  }
+}
+auto var_modified_x_751(const auto &x_2330) { return MakeUnit(); }
+auto eval_expr_x_748(const auto &x_2333) {
+  if (eq(x_2333.var_position, "absolute")) {
+    return 0.;
+  } else {
+    return x_2333.var_height_internal;
+  }
+}
+auto var_modified_x_746(const auto &x_2342) { return MakeUnit(); }
+auto eval_expr_x_743(const auto &x_2345) {
+  if (x_2345.var_intrinsic_height_is_height) {
+    return x_2345.var_intrinsic_height_internal;
+  } else {
+    if ((x_2345.parent == nullptr) && (*(x_2345.parent)).var_is_flex_column) {
+      return plus(x_2345.var_intrinsic_height_internal, mult(x_2345.var_flex_amount, (*(x_2345.parent)).var_flex_unit));
     } else {
-      if (IsSome(x_2511.parent)) {
-        return UnSome(x_2511.parent).var_y;
+      if (has_suffix(x_2345.var_height_expr, "%")) {
+        return mult(x_2345.var_box_height, divide(string_to_float(strip_suffix(x_2345.var_height_expr, "%")), 100.));
       } else {
-        return VFloat(0.);
-      }
-    }
-  };
-}
-auto var_modified_x_740(const auto &x_2537) {
-  return [&](const auto &x_2538) { return MakeUnit(); };
-}
-auto eval_expr_x_737(const auto &x_2542) {
-  return [&](const auto &x_2543) {
-    if (BoolOfValue(eq(x_2542.var_position, VString("absolute")))) {
-      return VFloat(0.);
-    } else {
-      return x_2542.var_width_internal;
-    }
-  };
-}
-auto var_modified_x_735(const auto &x_2552) {
-  return [&](const auto &x_2553) { return MakeUnit(); };
-}
-auto eval_expr_x_732(const auto &x_2556) {
-  return [&](const auto &x_2557) {
-    if (BoolOfValue(x_2556.var_intrinsic_width_is_width)) {
-      return x_2556.var_intrinsic_width_internal;
-    } else {
-      if (BoolOfValue((IsSome(x_2556.parent)) ? (UnSome(x_2556.parent).var_is_flex_row) : (VBool(false)))) {
-        return plus(x_2556.var_intrinsic_width_internal,
-                    mult(x_2556.var_flex_amount, UnSome(x_2556.parent).var_flex_unit));
-      } else {
-        if (BoolOfValue(has_suffix(x_2556.var_width_expr, VString("%")))) {
-          return mult(x_2556.var_box_width,
-                      divide(string_to_float(strip_suffix(x_2556.var_width_expr, VString("%"))), VFloat(100.)));
+        if (eq(x_2345.var_height_expr, "fit-content")) {
+          return max(x_2345.var_box_height, x_2345.var_intrinsic_height_internal);
         } else {
-          if (BoolOfValue(eq(x_2556.var_width_expr, VString("fit-content")))) {
-            return max(x_2556.var_box_width, x_2556.var_intrinsic_width_internal);
-          } else {
-            return Panic();
-          }
+          return Panic();
         }
       }
     }
-  };
+  }
 }
-auto var_modified_x_730(const auto &x_2610) {
-  return [&](const auto &x_2611) { return MakeUnit(); };
+auto var_modified_x_741(const auto &x_2398) { return MakeUnit(); }
+auto eval_expr_x_738(const auto &x_2406) {
+  if (x_2406.prev == nullptr) {
+    if (x_2406.var_line_break || (*(x_2406.prev)).var_line_break) {
+      return plus((*(x_2406.prev)).var_y, (*(x_2406.prev)).var_line_height);
+    } else {
+      return (*(x_2406.prev)).var_y;
+    }
+  } else {
+    if (x_2406.parent == nullptr) {
+      return (*(x_2406.parent)).var_y;
+    } else {
+      return 0.;
+    }
+  }
 }
-auto eval_expr_x_727(const auto &x_2616) {
-  return [&](const auto &x_2617) {
-    if (IsSome(x_2616.prev)) {
-      if (BoolOfValue((BoolOfValue(x_2616.var_line_break)) ? (VBool(true)) : (UnSome(x_2616.prev).var_line_break))) {
-        return VFloat(0.);
+auto var_modified_x_736(const auto &x_2431) { return MakeUnit(); }
+auto eval_expr_x_733(const auto &x_2435) {
+  if (eq(x_2435.var_position, "absolute")) {
+    return 0.;
+  } else {
+    return x_2435.var_width_internal;
+  }
+}
+auto var_modified_x_731(const auto &x_2444) { return MakeUnit(); }
+auto eval_expr_x_728(const auto &x_2447) {
+  if (x_2447.var_intrinsic_width_is_width) {
+    return x_2447.var_intrinsic_width_internal;
+  } else {
+    if ((x_2447.parent == nullptr) && (*(x_2447.parent)).var_is_flex_row) {
+      return plus(x_2447.var_intrinsic_width_internal, mult(x_2447.var_flex_amount, (*(x_2447.parent)).var_flex_unit));
+    } else {
+      if (has_suffix(x_2447.var_width_expr, "%")) {
+        return mult(x_2447.var_box_width, divide(string_to_float(strip_suffix(x_2447.var_width_expr, "%")), 100.));
       } else {
-        return plus(UnSome(x_2616.prev).var_x, UnSome(x_2616.prev).var_width_external);
-      }
-    } else {
-      if (IsSome(x_2616.parent)) {
-        return UnSome(x_2616.parent).var_x;
-      } else {
-        return VFloat(0.);
-      }
-    }
-  };
-}
-auto var_modified_x_725(const auto &x_2638) {
-  return [&](const auto &x_2639) { return MakeUnit(); };
-}
-auto eval_expr_x_722(const auto &x_2642) {
-  return [&](const auto &x_2643) {
-    if (BoolOfValue(gt(x_2642.var_left_over, VFloat(0.)))) {
-      return divide(x_2642.var_left_over, x_2642.var_flex_grow_sum);
-    } else {
-      return divide(x_2642.var_left_over, x_2642.var_flex_shrink_sum);
-    }
-  };
-}
-auto var_modified_x_720(const auto &x_2664) {
-  return [&](const auto &x_2665) { return MakeUnit(); };
-}
-auto eval_expr_x_717(const auto &x_2668) {
-  return [&](const auto &x_2669) {
-    if (BoolOfValue((IsSome(x_2668.parent)) ? (gt(UnSome(x_2668.parent).var_left_over, VFloat(0.))) : (VBool(false)))) {
-      return x_2668.var_flex_grow;
-    } else {
-      return x_2668.var_flex_shrink;
-    }
-  };
-}
-auto var_modified_x_715(const auto &x_2682) {
-  return [&](const auto &x_2683) { return MakeUnit(); };
-}
-auto eval_expr_x_712(const auto &x_2688) {
-  return [&](const auto &x_2689) {
-    if (BoolOfValue(x_2688.var_is_flex_row)) {
-      return minus(x_2688.var_box_width,
-                   (IsSome(ListLast(x_2688.children))) ? (UnSome(ListLast(x_2688.children)).var_intrinsic_width_sum)
-                                                       : (VFloat(0.)));
-    } else {
-      return minus(x_2688.var_box_height,
-                   (IsSome(ListLast(x_2688.children))) ? (UnSome(ListLast(x_2688.children)).var_intrinsic_height_sum)
-                                                       : (VFloat(0.)));
-    }
-  };
-}
-auto var_modified_x_710(const auto &x_2710) {
-  return [&](const auto &x_2711) { return MakeUnit(); };
-}
-auto eval_expr_x_707(const auto &x_2715) {
-  return [&](const auto &x_2716) {
-    if (IsSome(x_2715.parent)) {
-      return UnSome(x_2715.parent).var_height_internal;
-    } else {
-      return VFloat(1080.);
-    }
-  };
-}
-auto var_modified_x_705(const auto &x_2721) {
-  return [&](const auto &x_2722) { return MakeUnit(); };
-}
-auto eval_expr_x_702(const auto &x_2726) {
-  return [&](const auto &x_2727) {
-    if (IsSome(x_2726.parent)) {
-      return UnSome(x_2726.parent).var_width_internal;
-    } else {
-      return VFloat(1920.);
-    }
-  };
-}
-auto var_modified_x_698(const auto &x_2732) {
-  return [&](const auto &x_2733) { return MakeUnit(); };
-}
-auto eval_expr_x_695(const auto &x_2751) {
-  return [&](const auto &x_2752) {
-    if (BoolOfValue(eq(x_2751.var_display, VString("none")))) {
-      return VBool(false);
-    } else {
-      if (BoolOfValue(eq(x_2751.var_position, VString("absolute")))) {
-        return VBool(false);
-      } else {
-        if (BoolOfValue((IsSome(x_2751.parent))
-                            ? ((BoolOfValue(eq(UnSome(x_2751.parent).var_display, VString("flex"))))
-                                   ? (VBool(true))
-                                   : (eq(UnSome(x_2751.parent).var_display, VString("inline-flex"))))
-                            : (VBool(false)))) {
-          return VBool(true);
+        if (eq(x_2447.var_width_expr, "fit-content")) {
+          return max(x_2447.var_box_width, x_2447.var_intrinsic_width_internal);
         } else {
-          if (BoolOfValue(eq(x_2751.var_display, VString("block")))) {
-            return VBool(true);
+          return Panic();
+        }
+      }
+    }
+  }
+}
+auto var_modified_x_726(const auto &x_2500) { return MakeUnit(); }
+auto eval_expr_x_723(const auto &x_2505) {
+  if (x_2505.prev == nullptr) {
+    if (x_2505.var_line_break || (*(x_2505.prev)).var_line_break) {
+      return 0.;
+    } else {
+      return plus((*(x_2505.prev)).var_x, (*(x_2505.prev)).var_width_external);
+    }
+  } else {
+    if (x_2505.parent == nullptr) {
+      return (*(x_2505.parent)).var_x;
+    } else {
+      return 0.;
+    }
+  }
+}
+auto var_modified_x_721(const auto &x_2526) { return MakeUnit(); }
+auto eval_expr_x_718(const auto &x_2529) {
+  if (gt(x_2529.var_left_over, 0.)) {
+    return divide(x_2529.var_left_over, x_2529.var_flex_grow_sum);
+  } else {
+    return divide(x_2529.var_left_over, x_2529.var_flex_shrink_sum);
+  }
+}
+auto var_modified_x_716(const auto &x_2550) { return MakeUnit(); }
+auto eval_expr_x_713(const auto &x_2553) {
+  if ((x_2553.parent == nullptr) && gt((*(x_2553.parent)).var_left_over, 0.)) {
+    return x_2553.var_flex_grow;
+  } else {
+    return x_2553.var_flex_shrink;
+  }
+}
+auto var_modified_x_711(const auto &x_2566) { return MakeUnit(); }
+auto eval_expr_x_708(const auto &x_2571) {
+  if (x_2571.var_is_flex_row) {
+    return minus(x_2571.var_box_width,
+                 (IsSome(ListLast(x_2571.children))) ? (UnSome(ListLast(x_2571.children)).var_intrinsic_width_sum)
+                                                     : (0.));
+  } else {
+    return minus(x_2571.var_box_height,
+                 (IsSome(ListLast(x_2571.children))) ? (UnSome(ListLast(x_2571.children)).var_intrinsic_height_sum)
+                                                     : (0.));
+  }
+}
+auto var_modified_x_706(const auto &x_2592) { return MakeUnit(); }
+auto eval_expr_x_703(const auto &x_2596) {
+  if (x_2596.parent == nullptr) {
+    return (*(x_2596.parent)).var_height_internal;
+  } else {
+    return 1080.;
+  }
+}
+auto var_modified_x_701(const auto &x_2601) { return MakeUnit(); }
+auto eval_expr_x_698(const auto &x_2605) {
+  if (x_2605.parent == nullptr) {
+    return (*(x_2605.parent)).var_width_internal;
+  } else {
+    return 1920.;
+  }
+}
+auto var_modified_x_694(const auto &x_2610) { return MakeUnit(); }
+auto eval_expr_x_691(const auto &x_2628) {
+  if (eq(x_2628.var_display, "none")) {
+    return false;
+  } else {
+    if (eq(x_2628.var_position, "absolute")) {
+      return false;
+    } else {
+      if ((x_2628.parent == nullptr) &&
+          (eq((*(x_2628.parent)).var_display, "flex") || eq((*(x_2628.parent)).var_display, "inline-flex"))) {
+        return true;
+      } else {
+        if (eq(x_2628.var_display, "block")) {
+          return true;
+        } else {
+          if (eq(x_2628.var_display, "inline")) {
+            return false;
           } else {
-            if (BoolOfValue(eq(x_2751.var_display, VString("inline")))) {
-              return VBool(false);
+            if (eq(x_2628.var_display, "inline-block")) {
+              return false;
             } else {
-              if (BoolOfValue(eq(x_2751.var_display, VString("inline-block")))) {
-                return VBool(false);
-              } else {
-                if (BoolOfValue(eq(x_2751.var_display, VString("flex")))) {
-                  if (BoolOfValue(eq(HashtblForceFind(x_2751.prop, "flex-direction"), VString("row")))) {
-                    return VBool(false);
+              if (eq(x_2628.var_display, "flex")) {
+                if (eq(HashtblForceFind(x_2628.prop, "flex-direction"), "row")) {
+                  return false;
+                } else {
+                  if (eq(HashtblForceFind(x_2628.prop, "flex-direction"), "column")) {
+                    return true;
                   } else {
-                    if (BoolOfValue(eq(HashtblForceFind(x_2751.prop, "flex-direction"), VString("column")))) {
-                      return VBool(true);
+                    if (eq(HashtblForceFind(x_2628.prop, "flex-direction"), "column-reverse")) {
+                      return true;
                     } else {
-                      if (BoolOfValue(eq(HashtblForceFind(x_2751.prop, "flex-direction"), VString("column-reverse")))) {
-                        return VBool(true);
-                      } else {
-                        return Panic();
-                      }
+                      return Panic();
                     }
                   }
+                }
+              } else {
+                if (eq(x_2628.var_display, "inline-flex")) {
+                  return false;
                 } else {
-                  if (BoolOfValue(eq(x_2751.var_display, VString("inline-flex")))) {
-                    return VBool(false);
+                  if (eq(x_2628.var_display, "contents")) {
+                    return false;
                   } else {
-                    if (BoolOfValue(eq(x_2751.var_display, VString("contents")))) {
-                      return VBool(false);
+                    if (eq(x_2628.var_display, "table")) {
+                      return true;
                     } else {
-                      if (BoolOfValue(eq(x_2751.var_display, VString("table")))) {
-                        return VBool(true);
+                      if (eq(x_2628.var_display, "table-row-group")) {
+                        return true;
                       } else {
-                        if (BoolOfValue(eq(x_2751.var_display, VString("table-row-group")))) {
-                          return VBool(true);
+                        if (eq(x_2628.var_display, "table-row")) {
+                          return true;
                         } else {
-                          if (BoolOfValue(eq(x_2751.var_display, VString("table-row")))) {
-                            return VBool(true);
+                          if (eq(x_2628.var_display, "table-cell")) {
+                            return false;
                           } else {
-                            if (BoolOfValue(eq(x_2751.var_display, VString("table-cell")))) {
-                              return VBool(false);
+                            if (eq(x_2628.var_display, "list-item")) {
+                              return true;
                             } else {
-                              if (BoolOfValue(eq(x_2751.var_display, VString("list-item")))) {
-                                return VBool(true);
+                              if (eq(x_2628.var_display, "grid")) {
+                                return true;
                               } else {
-                                if (BoolOfValue(eq(x_2751.var_display, VString("grid")))) {
-                                  return VBool(true);
-                                } else {
-                                  return Panic();
-                                }
+                                return Panic();
                               }
                             }
                           }
@@ -1313,1776 +937,1511 @@ auto eval_expr_x_695(const auto &x_2751) {
         }
       }
     }
-  };
+  }
 }
-auto var_modified_x_693(const auto &x_2829) {
-  return [&](const auto &x_2830) { return MakeUnit(); };
+auto var_modified_x_689(const auto &x_2705) { return MakeUnit(); }
+auto eval_expr_x_686(const auto &x_2707) {
+  return ((not(x_2707.parent == nullptr) || (*(x_2707.parent)).var_visible) &&
+          (neq(x_2707.var_display, "none") && (not(x_2707.var_inside_svg) && not(x_2707.var_disabled))));
 }
-auto eval_expr_x_690(const auto &x_2832) {
-  return [&](const auto &x_2833) {
-    if (BoolOfValue((BoolOfValue(not(VBool(IsSome(x_2832.parent))))) ? (VBool(true))
-                                                                     : (UnSome(x_2832.parent).var_visible))) {
-      if (BoolOfValue(neq(x_2832.var_display, VString("none")))) {
-        if (BoolOfValue(not(x_2832.var_inside_svg))) {
-          return not(x_2832.var_disabled);
-        } else {
-          return VBool(false);
-        }
-      } else {
-        return VBool(false);
-      }
+auto var_modified_x_684(const auto &x_2724) { return MakeUnit(); }
+auto eval_expr_x_681(const auto &x_2732) {
+  if (eq(x_2732.name, "NOSCRIPT")) {
+    return true;
+  } else {
+    return ((x_2732.parent == nullptr) && (*(x_2732.parent)).var_disabled);
+  }
+}
+auto var_modified_x_679(const auto &x_2737) { return MakeUnit(); }
+auto eval_expr_x_676(const auto &x_2745) {
+  return ((x_2745.parent == nullptr) && ((*(x_2745.parent)).var_is_svg_block || (*(x_2745.parent)).var_inside_svg));
+}
+auto var_modified_x_674(const auto &x_2754) { return MakeUnit(); }
+auto eval_expr_x_671(const auto &x_2756) { return eq(x_2756.name, "svg"); }
+auto var_modified_x_669(const auto &x_2757) { return MakeUnit(); }
+auto eval_expr_x_666(const auto &x_2766) { return neq(x_2766.var_height_attr_expr, "auto"); }
+auto var_modified_x_664(const auto &x_2771) { return MakeUnit(); }
+auto eval_expr_x_661(const auto &x_2779) {
+  if (not(IsSome(HashtblFind(x_2779.attr, "height")))) {
+    return "auto";
+  } else {
+    if (string_is_float(HashtblForceFind(x_2779.attr, "height")) ||
+        has_suffix(HashtblForceFind(x_2779.attr, "height"), "%")) {
+      return HashtblForceFind(x_2779.attr, "height");
     } else {
-      return VBool(false);
-    }
-  };
-}
-auto var_modified_x_688(const auto &x_2850) {
-  return [&](const auto &x_2851) { return MakeUnit(); };
-}
-auto eval_expr_x_685(const auto &x_2859) {
-  return [&](const auto &x_2860) {
-    if (StringEqual(x_2859.name, "NOSCRIPT")) {
-      return VBool(true);
-    } else {
-      if (IsSome(x_2859.parent)) {
-        return UnSome(x_2859.parent).var_disabled;
+      if (eq(HashtblForceFind(x_2779.attr, "height"), "Auto")) {
+        return "auto";
       } else {
-        return VBool(false);
-      }
-    }
-  };
-}
-auto var_modified_x_683(const auto &x_2865) {
-  return [&](const auto &x_2866) { return MakeUnit(); };
-}
-auto eval_expr_x_680(const auto &x_2874) {
-  return [&](const auto &x_2875) {
-    if (IsSome(x_2874.parent)) {
-      if (BoolOfValue(UnSome(x_2874.parent).var_is_svg_block)) {
-        return VBool(true);
-      } else {
-        return UnSome(x_2874.parent).var_inside_svg;
-      }
-    } else {
-      return VBool(false);
-    }
-  };
-}
-auto var_modified_x_678(const auto &x_2884) {
-  return [&](const auto &x_2885) { return MakeUnit(); };
-}
-auto eval_expr_x_675(const auto &x_2887) {
-  return [&](const auto &x_2888) { return eq(VString(x_2887.name), VString("svg")); };
-}
-auto var_modified_x_673(const auto &x_2889) {
-  return [&](const auto &x_2890) { return MakeUnit(); };
-}
-auto eval_expr_x_670(const auto &x_2899) {
-  return [&](const auto &x_2900) { return neq(x_2899.var_height_attr_expr, VString("auto")); };
-}
-auto var_modified_x_668(const auto &x_2905) {
-  return [&](const auto &x_2906) { return MakeUnit(); };
-}
-auto eval_expr_x_665(const auto &x_2914) {
-  return [&](const auto &x_2915) {
-    if (BoolOfValue(not(VBool(IsSome(HashtblFind(x_2914.attr, "height")))))) {
-      return VString("auto");
-    } else {
-      if (BoolOfValue((BoolOfValue(string_is_float(HashtblForceFind(x_2914.attr, "height"))))
-                          ? (VBool(true))
-                          : (has_suffix(HashtblForceFind(x_2914.attr, "height"), VString("%"))))) {
-        return HashtblForceFind(x_2914.attr, "height");
-      } else {
-        if (BoolOfValue(eq(HashtblForceFind(x_2914.attr, "height"), VString("Auto")))) {
-          return VString("auto");
-        } else {
-          return Panic();
-        }
+        return Panic();
       }
     }
-  };
+  }
 }
-auto var_modified_x_663(const auto &x_2926) {
-  return [&](const auto &x_2927) { return MakeUnit(); };
-}
-auto eval_expr_x_660(const auto &x_2937) {
-  return [&](const auto &x_2938) { return neq(x_2937.var_width_attr_expr, VString("auto")); };
-}
-auto var_modified_x_658(const auto &x_2943) {
-  return [&](const auto &x_2944) { return MakeUnit(); };
-}
-auto eval_expr_x_655(const auto &x_2952) {
-  return [&](const auto &x_2953) {
-    if (BoolOfValue(not(VBool(IsSome(HashtblFind(x_2952.attr, "width")))))) {
-      return VString("auto");
+auto var_modified_x_659(const auto &x_2790) { return MakeUnit(); }
+auto eval_expr_x_656(const auto &x_2800) { return neq(x_2800.var_width_attr_expr, "auto"); }
+auto var_modified_x_654(const auto &x_2805) { return MakeUnit(); }
+auto eval_expr_x_651(const auto &x_2813) {
+  if (not(IsSome(HashtblFind(x_2813.attr, "width")))) {
+    return "auto";
+  } else {
+    if (string_is_float(HashtblForceFind(x_2813.attr, "width")) ||
+        has_suffix(HashtblForceFind(x_2813.attr, "width"), "%")) {
+      return HashtblForceFind(x_2813.attr, "width");
     } else {
-      if (BoolOfValue((BoolOfValue(string_is_float(HashtblForceFind(x_2952.attr, "width"))))
-                          ? (VBool(true))
-                          : (has_suffix(HashtblForceFind(x_2952.attr, "width"), VString("%"))))) {
-        return HashtblForceFind(x_2952.attr, "width");
+      if (eq(HashtblForceFind(x_2813.attr, "width"), "Auto")) {
+        return "auto";
       } else {
-        if (BoolOfValue(eq(HashtblForceFind(x_2952.attr, "width"), VString("Auto")))) {
-          return VString("auto");
-        } else {
-          return Panic();
-        }
+        return Panic();
       }
     }
-  };
+  }
 }
-auto var_modified_x_653(const auto &x_2964) {
-  return [&](const auto &x_2965) { return MakeUnit(); };
-}
-auto eval_expr_x_650(const auto &x_2968) {
-  return [&](const auto &x_2969) {
-    if (BoolOfValue((IsSome(x_2968.parent)) ? ((BoolOfValue(eq(UnSome(x_2968.parent).var_display, VString("flex"))))
-                                                   ? (VBool(true))
-                                                   : (eq(UnSome(x_2968.parent).var_display, VString("inline-flex"))))
-                                            : (VBool(false)))) {
-      if (BoolOfValue((BoolOfValue(eq(UnSome(x_2968.parent).var_flex_direction, VString("column"))))
-                          ? (VBool(true))
-                          : (eq(UnSome(x_2968.parent).var_flex_direction, VString("column-reverse"))))) {
-        return VBool(true);
+auto var_modified_x_649(const auto &x_2824) { return MakeUnit(); }
+auto eval_expr_x_646(const auto &x_2827) {
+  if ((x_2827.parent == nullptr) &&
+      (eq((*(x_2827.parent)).var_display, "flex") || eq((*(x_2827.parent)).var_display, "inline-flex"))) {
+    if (eq((*(x_2827.parent)).var_flex_direction, "column") ||
+        eq((*(x_2827.parent)).var_flex_direction, "column-reverse")) {
+      return true;
+    } else {
+      if (eq((*(x_2827.parent)).var_flex_direction, "row")) {
+        return false;
       } else {
-        if (BoolOfValue(eq(UnSome(x_2968.parent).var_flex_direction, VString("row")))) {
-          return VBool(false);
-        } else {
-          return Panic();
-        }
-      }
-    } else {
-      return VBool(false);
-    }
-  };
-}
-auto var_modified_x_648(const auto &x_2994) {
-  return [&](const auto &x_2995) { return MakeUnit(); };
-}
-auto eval_expr_x_645(const auto &x_2999) {
-  return [&](const auto &x_3000) {
-    if (BoolOfValue((IsSome(x_2999.parent)) ? ((BoolOfValue(eq(UnSome(x_2999.parent).var_display, VString("flex"))))
-                                                   ? (VBool(true))
-                                                   : (eq(UnSome(x_2999.parent).var_display, VString("inline-flex"))))
-                                            : (VBool(false)))) {
-      if (BoolOfValue(eq(UnSome(x_2999.parent).var_flex_direction, VString("row")))) {
-        return VBool(true);
-      } else {
-        if (BoolOfValue((BoolOfValue(eq(UnSome(x_2999.parent).var_flex_direction, VString("column"))))
-                            ? (VBool(true))
-                            : (eq(UnSome(x_2999.parent).var_flex_direction, VString("column-reverse"))))) {
-          return VBool(false);
-        } else {
-          return Panic();
-        }
-      }
-    } else {
-      return VBool(false);
-    }
-  };
-}
-auto var_modified_x_643(const auto &x_3025) {
-  return [&](const auto &x_3026) { return MakeUnit(); };
-}
-auto eval_expr_x_640(const auto &x_3033) {
-  return [&](const auto &x_3034) {
-    if (IsSome(HashtblFind(x_3033.prop, "flex-direction"))) {
-      return HashtblForceFind(x_3033.prop, "flex-direction");
-    } else {
-      return VString("");
-    }
-  };
-}
-auto var_modified_x_638(const auto &x_3037) {
-  return [&](const auto &x_3038) { return MakeUnit(); };
-}
-auto eval_expr_x_635(const auto &x_3043) {
-  return [&](const auto &x_3044) {
-    return plus((IsSome(x_3043.prev)) ? (UnSome(x_3043.prev).var_flex_shrink_sum) : (VFloat(0.)),
-                x_3043.var_flex_shrink);
-  };
-}
-auto var_modified_x_633(const auto &x_3053) {
-  return [&](const auto &x_3054) { return MakeUnit(); };
-}
-auto eval_expr_x_630(const auto &x_3059) {
-  return [&](const auto &x_3060) {
-    return plus((IsSome(x_3059.prev)) ? (UnSome(x_3059.prev).var_flex_grow_sum) : (VFloat(0.)), x_3059.var_flex_grow);
-  };
-}
-auto var_modified_x_628(const auto &x_3069) {
-  return [&](const auto &x_3070) { return MakeUnit(); };
-}
-auto eval_expr_x_625(const auto &x_3073) {
-  return [&](const auto &x_3074) {
-    if (IsSome(HashtblFind(x_3073.prop, "flex-shrink"))) {
-      return string_to_float(HashtblForceFind(x_3073.prop, "flex-shrink"));
-    } else {
-      return VFloat(0.);
-    }
-  };
-}
-auto var_modified_x_623(const auto &x_3077) {
-  return [&](const auto &x_3078) { return MakeUnit(); };
-}
-auto eval_expr_x_620(const auto &x_3081) {
-  return [&](const auto &x_3082) {
-    if (IsSome(HashtblFind(x_3081.prop, "flex-grow"))) {
-      return string_to_float(HashtblForceFind(x_3081.prop, "flex-grow"));
-    } else {
-      return VFloat(0.);
-    }
-  };
-}
-auto var_modified_x_618(const auto &x_3085) {
-  return [&](const auto &x_3086) { return MakeUnit(); };
-}
-auto eval_expr_x_615(const auto &x_3092) {
-  return [&](const auto &x_3093) {
-    if (IsSome(HashtblFind(x_3092.prop, "position"))) {
-      return HashtblForceFind(x_3092.prop, "position");
-    } else {
-      return VString("static");
-    }
-  };
-}
-auto var_modified_x_613(const auto &x_3096) {
-  return [&](const auto &x_3097) { return MakeUnit(); };
-}
-auto eval_expr_x_610(const auto &x_3123) {
-  return [&](const auto &x_3124) {
-    if (IsSome(HashtblFind(x_3123.prop, "display"))) {
-      return HashtblForceFind(x_3123.prop, "display");
-    } else {
-      return VString("block");
-    }
-  };
-}
-auto var_modified_x_606(const auto &x_3127) {
-  return [&](const auto &x_3128) { return MakeUnit(); };
-}
-auto eval_expr_x_603(const auto &x_3138) {
-  return [&](const auto &x_3139) {
-    if (IsSome(x_3138.prev)) {
-      if (BoolOfValue(x_3138.var_line_break)) {
-        return plus(UnSome(x_3138.prev).var_finished_intrinsic_height_sum,
-                    plus(UnSome(x_3138.prev).var_intrinsic_current_line_height, x_3138.var_intrinsic_height_external));
-      } else {
-        return UnSome(x_3138.prev).var_finished_intrinsic_height_sum;
-      }
-    } else {
-      if (BoolOfValue(x_3138.var_line_break)) {
-        return x_3138.var_intrinsic_height_external;
-      } else {
-        return VFloat(0.);
+        return Panic();
       }
     }
-  };
+  } else {
+    return false;
+  }
 }
-auto var_modified_x_601(const auto &x_3168) {
-  return [&](const auto &x_3169) { return MakeUnit(); };
-}
-auto eval_expr_x_598(const auto &x_3179) {
-  return [&](const auto &x_3180) {
-    if (BoolOfValue(x_3179.var_line_break)) {
-      return VFloat(0.);
+auto var_modified_x_644(const auto &x_2852) { return MakeUnit(); }
+auto eval_expr_x_641(const auto &x_2856) {
+  if ((x_2856.parent == nullptr) &&
+      (eq((*(x_2856.parent)).var_display, "flex") || eq((*(x_2856.parent)).var_display, "inline-flex"))) {
+    if (eq((*(x_2856.parent)).var_flex_direction, "row")) {
+      return true;
     } else {
-      return max(x_3179.var_intrinsic_height_external,
-                 (IsSome(x_3179.prev)) ? (UnSome(x_3179.prev).var_intrinsic_current_line_height) : (VFloat(0.)));
-    }
-  };
-}
-auto var_modified_x_596(const auto &x_3193) {
-  return [&](const auto &x_3194) { return MakeUnit(); };
-}
-auto eval_expr_x_593(const auto &x_3201) {
-  return [&](const auto &x_3202) {
-    return plus((IsSome(x_3201.prev)) ? (UnSome(x_3201.prev).var_intrinsic_height_sum) : (VFloat(0.)),
-                x_3201.var_intrinsic_height_external);
-  };
-}
-auto var_modified_x_591(const auto &x_3211) {
-  return [&](const auto &x_3212) { return MakeUnit(); };
-}
-auto eval_expr_x_588(const auto &x_3217) {
-  return [&](const auto &x_3218) {
-    if (BoolOfValue(eq(x_3217.var_position, VString("absolute")))) {
-      return VFloat(0.);
-    } else {
-      return x_3217.var_intrinsic_height_internal;
-    }
-  };
-}
-auto var_modified_x_586(const auto &x_3227) {
-  return [&](const auto &x_3228) { return MakeUnit(); };
-}
-auto eval_expr_x_583(const auto &x_3233) {
-  return [&](const auto &x_3234) {
-    if (BoolOfValue(eq(x_3233.var_display, VString("none")))) {
-      return VFloat(0.);
-    } else {
-      if (BoolOfValue(x_3233.var_inside_svg)) {
-        return VFloat(0.);
+      if (eq((*(x_2856.parent)).var_flex_direction, "column") ||
+          eq((*(x_2856.parent)).var_flex_direction, "column-reverse")) {
+        return false;
       } else {
-        if (BoolOfValue(x_3233.var_disabled)) {
-          return VFloat(0.);
-        } else {
-          if (BoolOfValue((BoolOfValue(neq(x_3233.var_height_expr, VString("auto"))))
-                              ? ((BoolOfValue(not(has_suffix(x_3233.var_height_expr, VString("%")))))
-                                     ? (neq(x_3233.var_height_expr, VString("fit-content")))
-                                     : (VBool(false)))
-                              : (VBool(false)))) {
-            if (BoolOfValue(has_suffix(x_3233.var_height_expr, VString("px")))) {
-              return string_to_float(strip_suffix(x_3233.var_height_expr, VString("px")));
-            } else {
-              if (BoolOfValue(has_suffix(x_3233.var_height_expr, VString("ch")))) {
-                return string_to_float(strip_suffix(x_3233.var_height_expr, VString("ch")));
-              } else {
-                if (BoolOfValue(has_suffix(x_3233.var_height_expr, VString("lh")))) {
-                  return string_to_float(strip_suffix(x_3233.var_height_expr, VString("lh")));
-                } else {
-                  return Panic();
-                }
-              }
-            }
+        return Panic();
+      }
+    }
+  } else {
+    return false;
+  }
+}
+auto var_modified_x_639(const auto &x_2881) { return MakeUnit(); }
+auto eval_expr_x_636(const auto &x_2888) {
+  if (IsSome(HashtblFind(x_2888.prop, "flex-direction"))) {
+    return HashtblForceFind(x_2888.prop, "flex-direction");
+  } else {
+    return "";
+  }
+}
+auto var_modified_x_634(const auto &x_2891) { return MakeUnit(); }
+auto eval_expr_x_631(const auto &x_2896) {
+  return plus((x_2896.prev == nullptr) ? ((*(x_2896.prev)).var_flex_shrink_sum) : (0.), x_2896.var_flex_shrink);
+}
+auto var_modified_x_629(const auto &x_2905) { return MakeUnit(); }
+auto eval_expr_x_626(const auto &x_2910) {
+  return plus((x_2910.prev == nullptr) ? ((*(x_2910.prev)).var_flex_grow_sum) : (0.), x_2910.var_flex_grow);
+}
+auto var_modified_x_624(const auto &x_2919) { return MakeUnit(); }
+auto eval_expr_x_621(const auto &x_2922) {
+  if (IsSome(HashtblFind(x_2922.prop, "flex-shrink"))) {
+    return string_to_float(HashtblForceFind(x_2922.prop, "flex-shrink"));
+  } else {
+    return 0.;
+  }
+}
+auto var_modified_x_619(const auto &x_2925) { return MakeUnit(); }
+auto eval_expr_x_616(const auto &x_2928) {
+  if (IsSome(HashtblFind(x_2928.prop, "flex-grow"))) {
+    return string_to_float(HashtblForceFind(x_2928.prop, "flex-grow"));
+  } else {
+    return 0.;
+  }
+}
+auto var_modified_x_614(const auto &x_2931) { return MakeUnit(); }
+auto eval_expr_x_611(const auto &x_2937) {
+  if (IsSome(HashtblFind(x_2937.prop, "position"))) {
+    return HashtblForceFind(x_2937.prop, "position");
+  } else {
+    return "static";
+  }
+}
+auto var_modified_x_609(const auto &x_2940) { return MakeUnit(); }
+auto eval_expr_x_606(const auto &x_2966) {
+  if (IsSome(HashtblFind(x_2966.prop, "display"))) {
+    return HashtblForceFind(x_2966.prop, "display");
+  } else {
+    return "block";
+  }
+}
+auto var_modified_x_602(const auto &x_2969) { return MakeUnit(); }
+auto eval_expr_x_599(const auto &x_2979) {
+  if (x_2979.prev == nullptr) {
+    if (x_2979.var_line_break) {
+      return plus((*(x_2979.prev)).var_finished_intrinsic_height_sum,
+                  plus((*(x_2979.prev)).var_intrinsic_current_line_height, x_2979.var_intrinsic_height_external));
+    } else {
+      return (*(x_2979.prev)).var_finished_intrinsic_height_sum;
+    }
+  } else {
+    if (x_2979.var_line_break) {
+      return x_2979.var_intrinsic_height_external;
+    } else {
+      return 0.;
+    }
+  }
+}
+auto var_modified_x_597(const auto &x_3008) { return MakeUnit(); }
+auto eval_expr_x_594(const auto &x_3018) {
+  if (x_3018.var_line_break) {
+    return 0.;
+  } else {
+    return max(x_3018.var_intrinsic_height_external,
+               (x_3018.prev == nullptr) ? ((*(x_3018.prev)).var_intrinsic_current_line_height) : (0.));
+  }
+}
+auto var_modified_x_592(const auto &x_3031) { return MakeUnit(); }
+auto eval_expr_x_589(const auto &x_3038) {
+  return plus((x_3038.prev == nullptr) ? ((*(x_3038.prev)).var_intrinsic_height_sum) : (0.),
+              x_3038.var_intrinsic_height_external);
+}
+auto var_modified_x_587(const auto &x_3047) { return MakeUnit(); }
+auto eval_expr_x_584(const auto &x_3052) {
+  if (eq(x_3052.var_position, "absolute")) {
+    return 0.;
+  } else {
+    return x_3052.var_intrinsic_height_internal;
+  }
+}
+auto var_modified_x_582(const auto &x_3061) { return MakeUnit(); }
+auto eval_expr_x_579(const auto &x_3066) {
+  if (eq(x_3066.var_display, "none")) {
+    return 0.;
+  } else {
+    if (x_3066.var_inside_svg) {
+      return 0.;
+    } else {
+      if (x_3066.var_disabled) {
+        return 0.;
+      } else {
+        if (neq(x_3066.var_height_expr, "auto") &&
+            (not(has_suffix(x_3066.var_height_expr, "%")) && neq(x_3066.var_height_expr, "fit-content"))) {
+          if (has_suffix(x_3066.var_height_expr, "px")) {
+            return string_to_float(strip_suffix(x_3066.var_height_expr, "px"));
           } else {
-            return plus(
-                x_3233.var_children_intrinsic_height,
-                (StringEqual(x_3233.name, "#text"))
-                    ? ((IsSome(ListHead(x_3233.children))) ? (Panic()) : (VFloat(10.)))
-                    : ((BoolOfValue(x_3233.var_is_default_case))
-                           ? (VFloat(0.))
-                           : ((StringEqual(x_3233.name, "BR"))
-                                  ? ((IsSome(ListHead(x_3233.children))) ? (Panic()) : (VFloat(0.)))
-                                  : ((StringEqual(x_3233.name, "INPUT"))
-                                         ? (VFloat(10.))
-                                         : ((StringEqual(x_3233.name, "svg"))
-                                                ? ((BoolOfValue((BoolOfValue(x_3233.var_has_height_attr))
-                                                                    ? (string_is_float(x_3233.var_height_attr_expr))
-                                                                    : (VBool(false))))
-                                                       ? (string_to_float(x_3233.var_height_attr_expr))
-                                                       : ((IsSome(HashtblFind(x_3233.attr, "viewBox")))
-                                                              ? (string_to_float(
-                                                                    nth_by_sep(HashtblForceFind(x_3233.attr, "viewBox"),
-                                                                               VString(" "), VInt(3))))
-                                                              : ((BoolOfValue(
-                                                                     (BoolOfValue(x_3233.var_has_height_attr))
-                                                                         ? ((BoolOfValue(
-                                                                                has_suffix(x_3233.var_height_attr_expr,
-                                                                                           VString("%"))))
-                                                                                ? (VBool(IsSome(HashtblFind(
-                                                                                      x_3233.attr, "viewBox"))))
-                                                                                : (VBool(false)))
-                                                                         : (VBool(false))))
-                                                                     ? (mult(
-                                                                           string_to_float(nth_by_sep(
-                                                                               HashtblForceFind(x_3233.attr, "viewBox"),
-                                                                               VString(" "), VInt(3))),
-                                                                           divide(string_to_float(strip_suffix(
-                                                                                      x_3233.var_height_attr_expr,
-                                                                                      VString("%"))),
-                                                                                  VFloat(100.))))
-                                                                     : (Panic()))))
-                                                : ((StringEqual(x_3233.name, "IMG"))
-                                                       ? ((BoolOfValue(x_3233.var_has_height_attr))
-                                                              ? (string_to_float(x_3233.var_height_attr_expr))
-                                                              : ((BoolOfValue(
-                                                                     (IsSome(HashtblFind(x_3233.attr, "image_height")))
-                                                                         ? (not(x_3233.var_has_width_attr))
-                                                                         : (VBool(false))))
-                                                                     ? (int_to_float(HashtblForceFind(x_3233.attr,
-                                                                                                      "image_height")))
-                                                                     : ((BoolOfValue(
-                                                                            (BoolOfValue(x_3233.var_has_width_attr))
-                                                                                ? ((BoolOfValue(
-                                                                                       not(x_3233.var_has_height_attr)))
-                                                                                       ? ((IsSome(HashtblFind(
-                                                                                              x_3233.attr,
-                                                                                              "image_width")))
-                                                                                              ? (VBool(
-                                                                                                    IsSome(HashtblFind(
-                                                                                                        x_3233.attr,
-                                                                                                        "image_"
-                                                                                                        "height"))))
-                                                                                              : (VBool(false)))
-                                                                                       : (VBool(false)))
-                                                                                : (VBool(false))))
-                                                                            ? ((BoolOfValue(
-                                                                                   neq(HashtblForceFind(x_3233.attr,
-                                                                                                        "image_width"),
-                                                                                       VInt(0))))
-                                                                                   ? (mult(
-                                                                                         string_to_float(
-                                                                                             x_3233
-                                                                                                 .var_width_attr_expr),
-                                                                                         divide(
-                                                                                             int_to_float(
-                                                                                                 HashtblForceFind(
-                                                                                                     x_3233.attr,
-                                                                                                     "image_height")),
-                                                                                             int_to_float(
-                                                                                                 HashtblForceFind(
-                                                                                                     x_3233.attr,
-                                                                                                     "image_width")))))
-                                                                                   : (VFloat(0.)))
-                                                                     : (Panic()))))
-                                                : ((StringEqual(x_3233.name, "IFRAME"))
-                                                       ? ((BoolOfValue(x_3233.var_has_height_attr))
-                                                              ? (Panic())
-                                                              : (VFloat(150.)))
-                                                       : ((StringEqual(x_3233.name, "TEXTAREA"))
-                                                              ? (VFloat(100.))
-                                                              : ((StringEqual(x_3233.name, "VIDEO"))
-                                                                     ? ((BoolOfValue(x_3233.var_has_height_attr))
-                                                                            ? (Panic())
-                                                                            : (VFloat(150.)))
-                                                                     : (Panic()))))))))));
-          }
-        }
-      }
-    }
-  };
-}
-auto var_modified_x_581(const auto &x_3379) {
-  return [&](const auto &x_3380) { return MakeUnit(); };
-}
-auto eval_expr_x_578(const auto &x_3382) {
-  return [&](const auto &x_3383) {
-    if (BoolOfValue((BoolOfValue(eq(x_3382.var_display, VString("none"))))
-                        ? (VBool(true))
-                        : ((BoolOfValue(x_3382.var_inside_svg)) ? (VBool(true)) : (x_3382.var_disabled)))) {
-      return VBool(true);
-    } else {
-      if (BoolOfValue((IsSome(x_3382.parent)) ? (UnSome(x_3382.parent).var_is_flex_column) : (VBool(false)))) {
-        return VBool(false);
-      } else {
-        if (BoolOfValue((BoolOfValue(eq(x_3382.var_height_expr, VString("auto"))))
-                            ? (VBool(true))
-                            : ((BoolOfValue(has_suffix(x_3382.var_height_expr, VString("px"))))
-                                   ? (VBool(true))
-                                   : ((BoolOfValue(has_suffix(x_3382.var_height_expr, VString("ch"))))
-                                          ? (VBool(true))
-                                          : ((BoolOfValue(has_suffix(x_3382.var_height_expr, VString("lh"))))
-                                                 ? (VBool(true))
-                                                 : (eq(x_3382.var_height_expr, VString("max-content")))))))) {
-          return VBool(true);
-        } else {
-          if (BoolOfValue((BoolOfValue(has_suffix(x_3382.var_height_expr, VString("%"))))
-                              ? (VBool(true))
-                              : (eq(x_3382.var_height_expr, VString("fit-content"))))) {
-            return VBool(false);
-          } else {
-            return Panic();
-          }
-        }
-      }
-    }
-  };
-}
-auto var_modified_x_576(const auto &x_3432) {
-  return [&](const auto &x_3433) { return MakeUnit(); };
-}
-auto eval_expr_x_573(const auto &x_3453) {
-  return [&](const auto &x_3454) {
-    if (IsSome(HashtblFind(x_3453.prop, "height"))) {
-      return HashtblForceFind(x_3453.prop, "height");
-    } else {
-      return VString("auto");
-    }
-  };
-}
-auto var_modified_x_571(const auto &x_3457) {
-  return [&](const auto &x_3458) { return MakeUnit(); };
-}
-auto eval_expr_x_568(const auto &x_3460) {
-  return [&](const auto &x_3461) {
-    if (IsSome(ListLast(x_3460.children))) {
-      return plus(UnSome(ListLast(x_3460.children)).var_finished_intrinsic_height_sum,
-                  UnSome(ListLast(x_3460.children)).var_intrinsic_current_line_height);
-    } else {
-      return VFloat(0.);
-    }
-  };
-}
-auto var_modified_x_566(const auto &x_3470) {
-  return [&](const auto &x_3471) { return MakeUnit(); };
-}
-auto eval_expr_x_563(const auto &x_3478) {
-  return [&](const auto &x_3479) {
-    return plus((IsSome(x_3478.prev)) ? (UnSome(x_3478.prev).var_intrinsic_width_sum) : (VFloat(0.)),
-                x_3478.var_intrinsic_width_external);
-  };
-}
-auto var_modified_x_561(const auto &x_3488) {
-  return [&](const auto &x_3489) { return MakeUnit(); };
-}
-auto eval_expr_x_558(const auto &x_3496) {
-  return [&](const auto &x_3497) {
-    return max(x_3496.var_intrinsic_current_line_width,
-               (IsSome(x_3496.prev)) ? (UnSome(x_3496.prev).var_intrinsic_width_max) : (VFloat(0.)));
-  };
-}
-auto var_modified_x_556(const auto &x_3506) {
-  return [&](const auto &x_3507) { return MakeUnit(); };
-}
-auto eval_expr_x_553(const auto &x_3512) {
-  return [&](const auto &x_3513) {
-    return plus(x_3512.var_intrinsic_width_external,
-                (BoolOfValue((IsSome(x_3512.prev)) ? (not(UnSome(x_3512.prev).var_line_break)) : (VBool(false))))
-                    ? (UnSome(x_3512.prev).var_intrinsic_current_line_width)
-                    : (VFloat(0.)));
-  };
-}
-auto var_modified_x_551(const auto &x_3526) {
-  return [&](const auto &x_3527) { return MakeUnit(); };
-}
-auto eval_expr_x_548(const auto &x_3530) {
-  return [&](const auto &x_3531) {
-    if (BoolOfValue(eq(x_3530.var_position, VString("absolute")))) {
-      return VFloat(0.);
-    } else {
-      return x_3530.var_intrinsic_width_internal;
-    }
-  };
-}
-auto var_modified_x_546(const auto &x_3540) {
-  return [&](const auto &x_3541) { return MakeUnit(); };
-}
-auto eval_expr_x_543(const auto &x_3546) {
-  return [&](const auto &x_3547) {
-    if (BoolOfValue(eq(x_3546.var_display, VString("none")))) {
-      return VFloat(0.);
-    } else {
-      if (BoolOfValue(x_3546.var_inside_svg)) {
-        return VFloat(0.);
-      } else {
-        if (BoolOfValue(x_3546.var_disabled)) {
-          return VFloat(0.);
-        } else {
-          if (BoolOfValue((BoolOfValue(neq(x_3546.var_width_expr, VString("auto"))))
-                              ? ((BoolOfValue(not(has_suffix(x_3546.var_width_expr, VString("%")))))
-                                     ? ((BoolOfValue(neq(x_3546.var_width_expr, VString("fit-content"))))
-                                            ? ((BoolOfValue(neq(x_3546.var_width_expr, VString("max-content"))))
-                                                   ? (not(has_prefix(x_3546.var_width_expr, VString("calc"))))
-                                                   : (VBool(false)))
-                                            : (VBool(false)))
-                                     : (VBool(false)))
-                              : (VBool(false)))) {
-            if (BoolOfValue(has_suffix(x_3546.var_width_expr, VString("px")))) {
-              return string_to_float(strip_suffix(x_3546.var_width_expr, VString("px")));
+            if (has_suffix(x_3066.var_height_expr, "ch")) {
+              return string_to_float(strip_suffix(x_3066.var_height_expr, "ch"));
             } else {
-              if (BoolOfValue(has_suffix(x_3546.var_width_expr, VString("ch")))) {
-                return string_to_float(strip_suffix(x_3546.var_width_expr, VString("ch")));
+              if (has_suffix(x_3066.var_height_expr, "lh")) {
+                return string_to_float(strip_suffix(x_3066.var_height_expr, "lh"));
               } else {
                 return Panic();
               }
             }
-          } else {
-            return plus(
-                x_3546.var_children_intrinsic_width,
-                (StringEqual(x_3546.name, "#text"))
-                    ? ((IsSome(ListHead(x_3546.children))) ? (Panic()) : (VFloat(100.)))
-                    : ((BoolOfValue(x_3546.var_is_default_case))
-                           ? (VFloat(0.))
-                           : ((StringEqual(x_3546.name, "BR"))
-                                  ? ((IsSome(ListHead(x_3546.children))) ? (Panic()) : (VFloat(0.)))
-                                  : ((StringEqual(x_3546.name, "INPUT"))
-                                         ? (VFloat(100.))
-                                         : ((StringEqual(x_3546.name, "svg"))
-                                                ? ((BoolOfValue((BoolOfValue(x_3546.var_has_width_attr))
-                                                                    ? (string_is_float(x_3546.var_width_attr_expr))
-                                                                    : (VBool(false))))
-                                                       ? (string_to_float(x_3546.var_width_attr_expr))
-                                                       : ((BoolOfValue(
-                                                              (BoolOfValue(not(x_3546.var_has_width_attr)))
-                                                                  ? (VBool(IsSome(HashtblFind(x_3546.attr, "viewBox"))))
-                                                                  : (VBool(false))))
-                                                              ? (string_to_float(
-                                                                    nth_by_sep(HashtblForceFind(x_3546.attr, "viewBox"),
-                                                                               VString(" "), VInt(2))))
-                                                              : ((BoolOfValue(
-                                                                     (BoolOfValue(x_3546.var_has_width_attr))
-                                                                         ? ((BoolOfValue(
-                                                                                has_suffix(x_3546.var_width_attr_expr,
-                                                                                           VString("%"))))
-                                                                                ? (VBool(IsSome(HashtblFind(
-                                                                                      x_3546.attr, "viewBox"))))
-                                                                                : (VBool(false)))
-                                                                         : (VBool(false))))
-                                                                     ? (mult(
-                                                                           string_to_float(nth_by_sep(
-                                                                               HashtblForceFind(x_3546.attr, "viewBox"),
-                                                                               VString(" "), VInt(2))),
-                                                                           divide(string_to_float(strip_suffix(
-                                                                                      x_3546.var_width_attr_expr,
-                                                                                      VString("%"))),
-                                                                                  VFloat(100.))))
-                                                                     : (Panic()))))
-                                                : ((StringEqual(x_3546.name, "IMG"))
-                                                       ? ((BoolOfValue(x_3546.var_has_width_attr))
-                                                              ? (string_to_float(x_3546.var_width_attr_expr))
-                                                              : ((BoolOfValue(
-                                                                     (IsSome(HashtblFind(x_3546.attr, "image_width")))
-                                                                         ? (not(x_3546.var_has_height_attr))
-                                                                         : (VBool(false))))
-                                                                     ? (int_to_float(HashtblForceFind(x_3546.attr,
-                                                                                                      "image_width")))
-                                                                     : ((BoolOfValue(
-                                                                            (BoolOfValue(
-                                                                                not(x_3546.var_has_width_attr)))
-                                                                                ? ((BoolOfValue(
-                                                                                       x_3546.var_has_height_attr))
-                                                                                       ? ((IsSome(HashtblFind(
-                                                                                              x_3546.attr,
-                                                                                              "image_width")))
-                                                                                              ? (VBool(
-                                                                                                    IsSome(HashtblFind(
-                                                                                                        x_3546.attr,
-                                                                                                        "image_"
-                                                                                                        "height"))))
-                                                                                              : (VBool(false)))
-                                                                                       : (VBool(false)))
-                                                                                : (VBool(false))))
-                                                                            ? ((BoolOfValue(
-                                                                                   neq(HashtblForceFind(x_3546.attr,
-                                                                                                        "image_height"),
-                                                                                       VInt(0))))
-                                                                                   ? (mult(
-                                                                                         string_to_float(
-                                                                                             x_3546
-                                                                                                 .var_height_attr_expr),
-                                                                                         divide(
-                                                                                             int_to_float(
-                                                                                                 HashtblForceFind(
-                                                                                                     x_3546.attr,
-                                                                                                     "image_width")),
-                                                                                             int_to_float(
-                                                                                                 HashtblForceFind(
-                                                                                                     x_3546.attr,
-                                                                                                     "image_height")))))
-                                                                                   : (VFloat(0.)))
-                                                                     : (Panic()))))
-                                                : ((StringEqual(x_3546.name, "IFRAME"))
-                                                       ? ((BoolOfValue(x_3546.var_has_width_attr))
-                                                              ? (Panic())
-                                                              : (VFloat(300.)))
-                                                       : ((StringEqual(x_3546.name, "TEXTAREA"))
-                                                              ? (VFloat(100.))
-                                                              : ((StringEqual(x_3546.name, "VIDEO"))
-                                                                     ? ((BoolOfValue(x_3546.var_has_width_attr))
-                                                                            ? (Panic())
-                                                                            : (VFloat(300.)))
-                                                                     : (Panic()))))))))));
           }
+        } else {
+          return plus(
+              x_3066.var_children_intrinsic_height,
+              (eq(x_3066.name, "#text"))
+                  ? ((IsSome(ListHead(x_3066.children))) ? (Panic()) : (10.))
+                  : ((x_3066.var_is_default_case)
+                         ? (0.)
+                         : ((eq(x_3066.name, "BR"))
+                                ? ((IsSome(ListHead(x_3066.children))) ? (Panic()) : (0.))
+                                : ((eq(x_3066.name, "INPUT"))
+                                       ? (10.)
+                                       : ((eq(x_3066.name, "svg"))
+                                              ? ((x_3066.var_has_height_attr &&
+                                                  string_is_float(x_3066.var_height_attr_expr))
+                                                     ? (string_to_float(x_3066.var_height_attr_expr))
+                                                     : ((IsSome(HashtblFind(x_3066.attr, "viewBox")))
+                                                            ? (string_to_float(
+                                                                  nth_by_sep(HashtblForceFind(x_3066.attr, "viewBox"),
+                                                                             " ", VInt(3))))
+                                                            : ((x_3066.var_has_height_attr &&
+                                                                (has_suffix(x_3066.var_height_attr_expr, "%") &&
+                                                                 IsSome(HashtblFind(x_3066.attr, "viewBox"))))
+                                                                   ? (mult(
+                                                                         string_to_float(nth_by_sep(
+                                                                             HashtblForceFind(x_3066.attr, "viewBox"),
+                                                                             " ", VInt(3))),
+                                                                         divide(string_to_float(strip_suffix(
+                                                                                    x_3066.var_height_attr_expr, "%")),
+                                                                                100.)))
+                                                                   : (Panic()))))
+                                              : ((eq(x_3066.name, "IMG"))
+                                                     ? ((x_3066.var_has_height_attr)
+                                                            ? (string_to_float(x_3066.var_height_attr_expr))
+                                                            : ((IsSome(HashtblFind(x_3066.attr, "image_height")) &&
+                                                                not(x_3066.var_has_width_attr))
+                                                                   ? (int_to_float(
+                                                                         HashtblForceFind(x_3066.attr, "image_height")))
+                                                                   : ((x_3066.var_has_width_attr &&
+                                                                       (not(x_3066.var_has_height_attr) &&
+                                                                        (IsSome(
+                                                                             HashtblFind(x_3066.attr, "image_width")) &&
+                                                                         IsSome(HashtblFind(x_3066.attr,
+                                                                                            "image_height")))))
+                                                                          ? ((neq(HashtblForceFind(x_3066.attr,
+                                                                                                   "image_width"),
+                                                                                  VInt(0)))
+                                                                                 ? (mult(
+                                                                                       string_to_float(
+                                                                                           x_3066.var_width_attr_expr),
+                                                                                       divide(int_to_float(
+                                                                                                  HashtblForceFind(
+                                                                                                      x_3066.attr,
+                                                                                                      "image_height")),
+                                                                                              int_to_float(
+                                                                                                  HashtblForceFind(
+                                                                                                      x_3066.attr,
+                                                                                                      "image_width")))))
+                                                                                 : (0.))
+                                                                          : (Panic()))))
+                                                     : ((eq(x_3066.name, "IFRAME"))
+                                                            ? ((x_3066.var_has_height_attr) ? (Panic()) : (150.))
+                                                            : ((eq(x_3066.name, "TEXTAREA"))
+                                                                   ? (100.)
+                                                                   : ((eq(x_3066.name, "VIDEO"))
+                                                                          ? ((x_3066.var_has_height_attr) ? (Panic())
+                                                                                                          : (150.))
+                                                                          : (Panic()))))))))));
         }
       }
     }
-  };
+  }
 }
-auto var_modified_x_541(const auto &x_3700) {
-  return [&](const auto &x_3701) { return MakeUnit(); };
-}
-auto eval_expr_x_538(const auto &x_3703) {
-  return [&](const auto &x_3704) {
-    if (IsSome(ListLast(x_3703.children))) {
-      return UnSome(ListLast(x_3703.children)).var_intrinsic_width_max;
+auto var_modified_x_577(const auto &x_3211) { return MakeUnit(); }
+auto eval_expr_x_574(const auto &x_3213) {
+  if (eq(x_3213.var_display, "none") || (x_3213.var_inside_svg || x_3213.var_disabled)) {
+    return true;
+  } else {
+    if ((x_3213.parent == nullptr) && (*(x_3213.parent)).var_is_flex_column) {
+      return false;
     } else {
-      return VFloat(0.);
-    }
-  };
-}
-auto var_modified_x_536(const auto &x_3709) {
-  return [&](const auto &x_3710) { return MakeUnit(); };
-}
-auto eval_expr_x_533(const auto &x_3712) {
-  return [&](const auto &x_3713) {
-    if (BoolOfValue((BoolOfValue(eq(x_3712.var_display, VString("none"))))
-                        ? (VBool(true))
-                        : ((BoolOfValue(x_3712.var_inside_svg)) ? (VBool(true)) : (x_3712.var_disabled)))) {
-      return VBool(true);
-    } else {
-      if (BoolOfValue((IsSome(x_3712.parent)) ? (UnSome(x_3712.parent).var_is_flex_row) : (VBool(false)))) {
-        return VBool(false);
+      if (eq(x_3213.var_height_expr, "auto") ||
+          (has_suffix(x_3213.var_height_expr, "px") ||
+           (has_suffix(x_3213.var_height_expr, "ch") ||
+            (has_suffix(x_3213.var_height_expr, "lh") || eq(x_3213.var_height_expr, "max-content"))))) {
+        return true;
       } else {
-        if (BoolOfValue((BoolOfValue(eq(x_3712.var_width_expr, VString("auto"))))
-                            ? (VBool(true))
-                            : ((BoolOfValue(has_suffix(x_3712.var_width_expr, VString("px"))))
-                                   ? (VBool(true))
-                                   : ((BoolOfValue(has_suffix(x_3712.var_width_expr, VString("ch"))))
-                                          ? (VBool(true))
-                                          : ((BoolOfValue(has_prefix(x_3712.var_width_expr, VString("calc("))))
-                                                 ? (VBool(true))
-                                                 : (eq(x_3712.var_width_expr, VString("max-content")))))))) {
-          return VBool(true);
+        if (has_suffix(x_3213.var_height_expr, "%") || eq(x_3213.var_height_expr, "fit-content")) {
+          return false;
         } else {
-          if (BoolOfValue((BoolOfValue(has_suffix(x_3712.var_width_expr, VString("%"))))
-                              ? (VBool(true))
-                              : (eq(x_3712.var_width_expr, VString("fit-content"))))) {
-            return VBool(false);
+          return Panic();
+        }
+      }
+    }
+  }
+}
+auto var_modified_x_572(const auto &x_3262) { return MakeUnit(); }
+auto eval_expr_x_569(const auto &x_3282) {
+  if (IsSome(HashtblFind(x_3282.prop, "height"))) {
+    return HashtblForceFind(x_3282.prop, "height");
+  } else {
+    return "auto";
+  }
+}
+auto var_modified_x_567(const auto &x_3285) { return MakeUnit(); }
+auto eval_expr_x_564(const auto &x_3287) {
+  if (IsSome(ListLast(x_3287.children))) {
+    return plus(UnSome(ListLast(x_3287.children)).var_finished_intrinsic_height_sum,
+                UnSome(ListLast(x_3287.children)).var_intrinsic_current_line_height);
+  } else {
+    return 0.;
+  }
+}
+auto var_modified_x_562(const auto &x_3296) { return MakeUnit(); }
+auto eval_expr_x_559(const auto &x_3303) {
+  return plus((x_3303.prev == nullptr) ? ((*(x_3303.prev)).var_intrinsic_width_sum) : (0.),
+              x_3303.var_intrinsic_width_external);
+}
+auto var_modified_x_557(const auto &x_3312) { return MakeUnit(); }
+auto eval_expr_x_554(const auto &x_3319) {
+  return max(x_3319.var_intrinsic_current_line_width,
+             (x_3319.prev == nullptr) ? ((*(x_3319.prev)).var_intrinsic_width_max) : (0.));
+}
+auto var_modified_x_552(const auto &x_3328) { return MakeUnit(); }
+auto eval_expr_x_549(const auto &x_3333) {
+  return plus(x_3333.var_intrinsic_width_external,
+              ((x_3333.prev == nullptr) && not((*(x_3333.prev)).var_line_break))
+                  ? ((*(x_3333.prev)).var_intrinsic_current_line_width)
+                  : (0.));
+}
+auto var_modified_x_547(const auto &x_3346) { return MakeUnit(); }
+auto eval_expr_x_544(const auto &x_3349) {
+  if (eq(x_3349.var_position, "absolute")) {
+    return 0.;
+  } else {
+    return x_3349.var_intrinsic_width_internal;
+  }
+}
+auto var_modified_x_542(const auto &x_3358) { return MakeUnit(); }
+auto eval_expr_x_539(const auto &x_3363) {
+  if (eq(x_3363.var_display, "none")) {
+    return 0.;
+  } else {
+    if (x_3363.var_inside_svg) {
+      return 0.;
+    } else {
+      if (x_3363.var_disabled) {
+        return 0.;
+      } else {
+        if (neq(x_3363.var_width_expr, "auto") &&
+            (not(has_suffix(x_3363.var_width_expr, "%")) &&
+             (neq(x_3363.var_width_expr, "fit-content") &&
+              (neq(x_3363.var_width_expr, "max-content") && not(has_prefix(x_3363.var_width_expr, "calc")))))) {
+          if (has_suffix(x_3363.var_width_expr, "px")) {
+            return string_to_float(strip_suffix(x_3363.var_width_expr, "px"));
+          } else {
+            if (has_suffix(x_3363.var_width_expr, "ch")) {
+              return string_to_float(strip_suffix(x_3363.var_width_expr, "ch"));
+            } else {
+              return Panic();
+            }
+          }
+        } else {
+          return plus(
+              x_3363.var_children_intrinsic_width,
+              (eq(x_3363.name, "#text"))
+                  ? ((IsSome(ListHead(x_3363.children))) ? (Panic()) : (100.))
+                  : ((x_3363.var_is_default_case)
+                         ? (0.)
+                         : ((eq(x_3363.name, "BR"))
+                                ? ((IsSome(ListHead(x_3363.children))) ? (Panic()) : (0.))
+                                : ((eq(x_3363.name, "INPUT"))
+                                       ? (100.)
+                                       : ((eq(x_3363.name, "svg"))
+                                              ? ((x_3363.var_has_width_attr &&
+                                                  string_is_float(x_3363.var_width_attr_expr))
+                                                     ? (string_to_float(x_3363.var_width_attr_expr))
+                                                     : ((not(x_3363.var_has_width_attr) &&
+                                                         IsSome(HashtblFind(x_3363.attr, "viewBox")))
+                                                            ? (string_to_float(
+                                                                  nth_by_sep(HashtblForceFind(x_3363.attr, "viewBox"),
+                                                                             " ", VInt(2))))
+                                                            : ((x_3363.var_has_width_attr &&
+                                                                (has_suffix(x_3363.var_width_attr_expr, "%") &&
+                                                                 IsSome(HashtblFind(x_3363.attr, "viewBox"))))
+                                                                   ? (mult(string_to_float(nth_by_sep(
+                                                                               HashtblForceFind(x_3363.attr, "viewBox"),
+                                                                               " ", VInt(2))),
+                                                                           divide(string_to_float(strip_suffix(
+                                                                                      x_3363.var_width_attr_expr, "%")),
+                                                                                  100.)))
+                                                                   : (Panic()))))
+                                              : ((eq(x_3363.name, "IMG"))
+                                                     ? ((x_3363.var_has_width_attr)
+                                                            ? (string_to_float(x_3363.var_width_attr_expr))
+                                                            : ((IsSome(HashtblFind(x_3363.attr, "image_width")) &&
+                                                                not(x_3363.var_has_height_attr))
+                                                                   ? (int_to_float(
+                                                                         HashtblForceFind(x_3363.attr, "image_width")))
+                                                                   : ((not(x_3363.var_has_width_attr) &&
+                                                                       (x_3363.var_has_height_attr &&
+                                                                        (IsSome(
+                                                                             HashtblFind(x_3363.attr, "image_width")) &&
+                                                                         IsSome(HashtblFind(x_3363.attr,
+                                                                                            "image_height")))))
+                                                                          ? ((neq(HashtblForceFind(x_3363.attr,
+                                                                                                   "image_height"),
+                                                                                  VInt(0)))
+                                                                                 ? (mult(
+                                                                                       string_to_float(
+                                                                                           x_3363.var_height_attr_expr),
+                                                                                       divide(
+                                                                                           int_to_float(
+                                                                                               HashtblForceFind(
+                                                                                                   x_3363.attr,
+                                                                                                   "image_width")),
+                                                                                           int_to_float(
+                                                                                               HashtblForceFind(
+                                                                                                   x_3363.attr,
+                                                                                                   "image_height")))))
+                                                                                 : (0.))
+                                                                          : (Panic()))))
+                                                     : ((eq(x_3363.name, "IFRAME"))
+                                                            ? ((x_3363.var_has_width_attr) ? (Panic()) : (300.))
+                                                            : ((eq(x_3363.name, "TEXTAREA"))
+                                                                   ? (100.)
+                                                                   : ((eq(x_3363.name, "VIDEO"))
+                                                                          ? ((x_3363.var_has_width_attr) ? (Panic())
+                                                                                                         : (300.))
+                                                                          : (Panic()))))))))));
+        }
+      }
+    }
+  }
+}
+auto var_modified_x_537(const auto &x_3516) { return MakeUnit(); }
+auto eval_expr_x_534(const auto &x_3518) {
+  if (IsSome(ListLast(x_3518.children))) {
+    return UnSome(ListLast(x_3518.children)).var_intrinsic_width_max;
+  } else {
+    return 0.;
+  }
+}
+auto var_modified_x_532(const auto &x_3523) { return MakeUnit(); }
+auto eval_expr_x_529(const auto &x_3525) {
+  if (eq(x_3525.var_display, "none") || (x_3525.var_inside_svg || x_3525.var_disabled)) {
+    return true;
+  } else {
+    if ((x_3525.parent == nullptr) && (*(x_3525.parent)).var_is_flex_row) {
+      return false;
+    } else {
+      if (eq(x_3525.var_width_expr, "auto") ||
+          (has_suffix(x_3525.var_width_expr, "px") ||
+           (has_suffix(x_3525.var_width_expr, "ch") ||
+            (has_prefix(x_3525.var_width_expr, "calc(") || eq(x_3525.var_width_expr, "max-content"))))) {
+        return true;
+      } else {
+        if (has_suffix(x_3525.var_width_expr, "%") || eq(x_3525.var_width_expr, "fit-content")) {
+          return false;
+        } else {
+          return Panic();
+        }
+      }
+    }
+  }
+}
+auto var_modified_x_527(const auto &x_3574) { return MakeUnit(); }
+auto eval_expr_x_524(const auto &x_3577) {
+  if (eq(x_3577.var_display, "none")) {
+    return true;
+  } else {
+    if (x_3577.var_inside_svg) {
+      return true;
+    } else {
+      if (x_3577.var_disabled) {
+        return true;
+      } else {if ( eq(x_3577.name,"#document") || (eq(x_3577.name,"#shadow-root") || (eq(x_3577.name,"DIV") || (eq(x_3577.name,"HTML") || (eq(x_3577.name,"BODY") || (eq(x_3577.name,"BUTTON") || (eq(x_3577.name,"FOOTER") || (eq(x_3577.name,"SELECT") || (eq(x_3577.name,"SECTION") || (eq(x_3577.name,"FORM") || (eq(x_3577.name,"CENTER") || (eq(x_3577.name,"TD") || (eq(x_3577.name,"TR") || (eq(x_3577.name,"TBODY") || (eq(x_3577.name,"TABLE") || (eq(x_3577.name,"SPAN") || (eq(x_3577.name,"FONT") || (eq(x_3577.name,"A") || (eq(x_3577.name,"ARTICLE") || (eq(x_3577.name,"P") || (eq(x_3577.name,"U") || (eq(x_3577.name,"UL") || (eq(x_3577.name,"B") || (eq(x_3577.name,"H1") || (eq(x_3577.name,"H2") || (eq(x_3577.name,"H3") || (eq(x_3577.name,"H4") || (eq(x_3577.name,"DT") || (eq(x_3577.name,"DD") || (eq(x_3577.name,"DL") || (eq(x_3577.name,"LI") || (eq(x_3577.name,"LABEL") || (eq(x_3577.name,"OL") || (eq(x_3577.name,"NAV") || (eq(x_3577.name,"HEADER") || (eq(x_3577.name,"HEAD") || (eq(x_3577.name,"SOURCE") || (eq(x_3577.name,"PICTURE") || (eq(x_3577.name,"FIGURE") || (eq(x_3577.name,"FIGCAPTION") || (eq(x_3577.name,"MAIN") || (eq(x_3577.name,"REACT-PARTIAL") || (eq(x_3577.name,"QUERY-BUILDER") || (eq(x_3577.name,"MODAL-DIALOG") || (eq(x_3577.name,"SCROLLABLE-REGION") || (eq(x_3577.name,"DIALOG-HELPER") || (eq(x_3577.name,"AUTO-CHECK") || (eq(x_3577.name,"TOOL-TIP") || (eq(x_3577.name,"CUSTOM-SCOPES") || (eq(x_3577.name,"QBSEARCH-INPUT") || (eq(x_3577.name,"INCLUDE-FRAGMENT") || (eq(x_3577.name,"COOKIE-CONSENT-LINK") || (eq(x_3577.name,"FULLSTORY-CAPTURE") || (eq(x_3577.name,"GHCC-CONSENT") || (eq(x_3577.name,"GLOBAL-BANNER") || (eq(x_3577.name,"ACTIVE-GLOBAL-BANNERS") || (eq(x_3577.name,"CARD-SKEW") || (eq(x_3577.name,"EM") || (eq(x_3577.name,"ASIDE") || (eq(x_3577.name,"AUDIO") || (eq(x_3577.name,"SUP") || (eq(x_3577.name,"TIME") || (eq(x_3577.name,"ABBR") || (eq(x_3577.name,"SMALL") || (eq(x_3577.name,"SLOT") || eq(x_3577.name,"I"))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))) ){
+          return true;
+        } else {
+          if (eq(x_3577.name, "#text") ||
+              (eq(x_3577.name, "svg") ||
+               (eq(x_3577.name, "IFRAME") ||
+                (eq(x_3577.name, "INPUT") ||
+                 (eq(x_3577.name, "VIDEO") ||
+                  (eq(x_3577.name, "BR") || (eq(x_3577.name, "IMG") || eq(x_3577.name, "TEXTAREA")))))))) {
+            return false;
           } else {
             return Panic();
           }
         }
       }
     }
-  };
+  }
 }
-auto var_modified_x_531(const auto &x_3762) {
-  return [&](const auto &x_3763) { return MakeUnit(); };
+auto var_modified_x_522(const auto &x_3590) { return MakeUnit(); }
+auto eval_expr_x_519(const auto &x_3610) {
+  if (IsSome(HashtblFind(x_3610.prop, "width"))) {
+    return HashtblForceFind(x_3610.prop, "width");
+  } else {
+    return "auto";
+  }
 }
-auto eval_expr_x_528(const auto &x_3766) {
-  return [&](const auto &x_3767) {
-    if (BoolOfValue(eq(x_3766.var_display, VString("none")))) {
-      return VBool(true);
-    } else {
-      if (BoolOfValue(x_3766.var_inside_svg)) {
-        return VBool(true);
-      } else {
-        if (BoolOfValue(x_3766.var_disabled)) {
-          return VBool(true);
-        } else {if (BoolOfValue((StringEqual(x_3766.name,"#document"))?(VBool(true)):((StringEqual(x_3766.name,"#shadow-root"))?(VBool(true)):((StringEqual(x_3766.name,"DIV"))?(VBool(true)):((StringEqual(x_3766.name,"HTML"))?(VBool(true)):((StringEqual(x_3766.name,"BODY"))?(VBool(true)):((StringEqual(x_3766.name,"BUTTON"))?(VBool(true)):((StringEqual(x_3766.name,"FOOTER"))?(VBool(true)):((StringEqual(x_3766.name,"SELECT"))?(VBool(true)):((StringEqual(x_3766.name,"SECTION"))?(VBool(true)):((StringEqual(x_3766.name,"FORM"))?(VBool(true)):((StringEqual(x_3766.name,"CENTER"))?(VBool(true)):((StringEqual(x_3766.name,"TD"))?(VBool(true)):((StringEqual(x_3766.name,"TR"))?(VBool(true)):((StringEqual(x_3766.name,"TBODY"))?(VBool(true)):((StringEqual(x_3766.name,"TABLE"))?(VBool(true)):((StringEqual(x_3766.name,"SPAN"))?(VBool(true)):((StringEqual(x_3766.name,"FONT"))?(VBool(true)):((StringEqual(x_3766.name,"A"))?(VBool(true)):((StringEqual(x_3766.name,"ARTICLE"))?(VBool(true)):((StringEqual(x_3766.name,"P"))?(VBool(true)):((StringEqual(x_3766.name,"U"))?(VBool(true)):((StringEqual(x_3766.name,"UL"))?(VBool(true)):((StringEqual(x_3766.name,"B"))?(VBool(true)):((StringEqual(x_3766.name,"H1"))?(VBool(true)):((StringEqual(x_3766.name,"H2"))?(VBool(true)):((StringEqual(x_3766.name,"H3"))?(VBool(true)):((StringEqual(x_3766.name,"H4"))?(VBool(true)):((StringEqual(x_3766.name,"DT"))?(VBool(true)):((StringEqual(x_3766.name,"DD"))?(VBool(true)):((StringEqual(x_3766.name,"DL"))?(VBool(true)):((StringEqual(x_3766.name,"LI"))?(VBool(true)):((StringEqual(x_3766.name,"LABEL"))?(VBool(true)):((StringEqual(x_3766.name,"OL"))?(VBool(true)):((StringEqual(x_3766.name,"NAV"))?(VBool(true)):((StringEqual(x_3766.name,"HEADER"))?(VBool(true)):((StringEqual(x_3766.name,"HEAD"))?(VBool(true)):((StringEqual(x_3766.name,"SOURCE"))?(VBool(true)):((StringEqual(x_3766.name,"PICTURE"))?(VBool(true)):((StringEqual(x_3766.name,"FIGURE"))?(VBool(true)):((StringEqual(x_3766.name,"FIGCAPTION"))?(VBool(true)):((StringEqual(x_3766.name,"MAIN"))?(VBool(true)):((StringEqual(x_3766.name,"REACT-PARTIAL"))?(VBool(true)):((StringEqual(x_3766.name,"QUERY-BUILDER"))?(VBool(true)):((StringEqual(x_3766.name,"MODAL-DIALOG"))?(VBool(true)):((StringEqual(x_3766.name,"SCROLLABLE-REGION"))?(VBool(true)):((StringEqual(x_3766.name,"DIALOG-HELPER"))?(VBool(true)):((StringEqual(x_3766.name,"AUTO-CHECK"))?(VBool(true)):((StringEqual(x_3766.name,"TOOL-TIP"))?(VBool(true)):((StringEqual(x_3766.name,"CUSTOM-SCOPES"))?(VBool(true)):((StringEqual(x_3766.name,"QBSEARCH-INPUT"))?(VBool(true)):((StringEqual(x_3766.name,"INCLUDE-FRAGMENT"))?(VBool(true)):((StringEqual(x_3766.name,"COOKIE-CONSENT-LINK"))?(VBool(true)):((StringEqual(x_3766.name,"FULLSTORY-CAPTURE"))?(VBool(true)):((StringEqual(x_3766.name,"GHCC-CONSENT"))?(VBool(true)):((StringEqual(x_3766.name,"GLOBAL-BANNER"))?(VBool(true)):((StringEqual(x_3766.name,"ACTIVE-GLOBAL-BANNERS"))?(VBool(true)):((StringEqual(x_3766.name,"CARD-SKEW"))?(VBool(true)):((StringEqual(x_3766.name,"EM"))?(VBool(true)):((StringEqual(x_3766.name,"ASIDE"))?(VBool(true)):((StringEqual(x_3766.name,"AUDIO"))?(VBool(true)):((StringEqual(x_3766.name,"SUP"))?(VBool(true)):((StringEqual(x_3766.name,"TIME"))?(VBool(true)):((StringEqual(x_3766.name,"ABBR"))?(VBool(true)):((StringEqual(x_3766.name,"SMALL"))?(VBool(true)):((StringEqual(x_3766.name,"SLOT"))?(VBool(true)):(eq(VString(x_3766.name),VString("I"))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))){
-            return VBool(true);
-          } else {
-            if (BoolOfValue((StringEqual(x_3766.name, "#text"))
-                                ? (VBool(true))
-                                : ((StringEqual(x_3766.name, "svg"))
-                                       ? (VBool(true))
-                                       : ((StringEqual(x_3766.name, "IFRAME"))
-                                              ? (VBool(true))
-                                              : ((StringEqual(x_3766.name, "INPUT"))
-                                                     ? (VBool(true))
-                                                     : ((StringEqual(x_3766.name, "VIDEO"))
-                                                            ? (VBool(true))
-                                                            : ((StringEqual(x_3766.name, "BR"))
-                                                                   ? (VBool(true))
-                                                                   : ((StringEqual(x_3766.name, "IMG"))
-                                                                          ? (VBool(true))
-                                                                          : (eq(VString(x_3766.name),
-                                                                                VString("TEXTAREA"))))))))))) {
-              return VBool(false);
-            } else {
-              return Panic();
-            }
-          }
-        }
-      }
-    }
-  };
-}
-auto var_modified_x_526(const auto &x_3780) {
-  return [&](const auto &x_3781) { return MakeUnit(); };
-}
-auto eval_expr_x_523(const auto &x_3801) {
-  return [&](const auto &x_3802) {
-    if (IsSome(HashtblFind(x_3801.prop, "width"))) {
-      return HashtblForceFind(x_3801.prop, "width");
-    } else {
-      return VString("auto");
-    }
-  };
-}
-auto eval_stmts_x_91(const auto &x_521) {
-  return [&](const auto &x_522) {
-    WriteMetric(x_522);
-    auto x_524 = eval_expr_x_523(x_521)(x_522);
-    HashtblSet(x_521.var, "width_expr", x_524);
-    WriteMetric(x_522);
-    auto x_529 = eval_expr_x_528(x_521)(x_522);
-    HashtblSet(x_521.var, "is_default_case", x_529);
-    WriteMetric(x_522);
-    auto x_534 = eval_expr_x_533(x_521)(x_522);
-    HashtblSet(x_521.var, "intrinsic_width_is_width", x_534);
-    WriteMetric(x_522);
-    auto x_539 = eval_expr_x_538(x_521)(x_522);
-    HashtblSet(x_521.var, "children_intrinsic_width", x_539);
-    WriteMetric(x_522);
-    auto x_544 = eval_expr_x_543(x_521)(x_522);
-    HashtblSet(x_521.var, "intrinsic_width_internal", x_544);
-    WriteMetric(x_522);
-    auto x_549 = eval_expr_x_548(x_521)(x_522);
-    HashtblSet(x_521.var, "intrinsic_width_external", x_549);
-    WriteMetric(x_522);
-    auto x_554 = eval_expr_x_553(x_521)(x_522);
-    HashtblSet(x_521.var, "intrinsic_current_line_width", x_554);
-    WriteMetric(x_522);
-    auto x_559 = eval_expr_x_558(x_521)(x_522);
-    HashtblSet(x_521.var, "intrinsic_width_max", x_559);
-    WriteMetric(x_522);
-    auto x_564 = eval_expr_x_563(x_521)(x_522);
-    HashtblSet(x_521.var, "intrinsic_width_sum", x_564);
-    WriteMetric(x_522);
-    auto x_569 = eval_expr_x_568(x_521)(x_522);
-    HashtblSet(x_521.var, "children_intrinsic_height", x_569);
-    WriteMetric(x_522);
-    auto x_574 = eval_expr_x_573(x_521)(x_522);
-    HashtblSet(x_521.var, "height_expr", x_574);
-    WriteMetric(x_522);
-    auto x_579 = eval_expr_x_578(x_521)(x_522);
-    HashtblSet(x_521.var, "intrinsic_height_is_height", x_579);
-    WriteMetric(x_522);
-    auto x_584 = eval_expr_x_583(x_521)(x_522);
-    HashtblSet(x_521.var, "intrinsic_height_internal", x_584);
-    WriteMetric(x_522);
-    auto x_589 = eval_expr_x_588(x_521)(x_522);
-    HashtblSet(x_521.var, "intrinsic_height_external", x_589);
-    WriteMetric(x_522);
-    auto x_594 = eval_expr_x_593(x_521)(x_522);
-    HashtblSet(x_521.var, "intrinsic_height_sum", x_594);
-    WriteMetric(x_522);
-    auto x_599 = eval_expr_x_598(x_521)(x_522);
-    HashtblSet(x_521.var, "intrinsic_current_line_height", x_599);
-    WriteMetric(x_522);
-    auto x_604 = eval_expr_x_603(x_521)(x_522);
-    HashtblSet(x_521.var, "finished_intrinsic_height_sum", x_604);
+auto eval_stmts_x_257(const auto &x_517) {
+  return [&](const auto &x_518) {
+    WriteMetric(x_518);
+    auto x_520 = eval_expr_x_519(x_517);
+    x_517.var_width_expr = x_520;
+    WriteMetric(x_518);
+    auto x_525 = eval_expr_x_524(x_517);
+    x_517.var_is_default_case = x_525;
+    WriteMetric(x_518);
+    auto x_530 = eval_expr_x_529(x_517);
+    x_517.var_intrinsic_width_is_width = x_530;
+    WriteMetric(x_518);
+    auto x_535 = eval_expr_x_534(x_517);
+    x_517.var_children_intrinsic_width = x_535;
+    WriteMetric(x_518);
+    auto x_540 = eval_expr_x_539(x_517);
+    x_517.var_intrinsic_width_internal = x_540;
+    WriteMetric(x_518);
+    auto x_545 = eval_expr_x_544(x_517);
+    x_517.var_intrinsic_width_external = x_545;
+    WriteMetric(x_518);
+    auto x_550 = eval_expr_x_549(x_517);
+    x_517.var_intrinsic_current_line_width = x_550;
+    WriteMetric(x_518);
+    auto x_555 = eval_expr_x_554(x_517);
+    x_517.var_intrinsic_width_max = x_555;
+    WriteMetric(x_518);
+    auto x_560 = eval_expr_x_559(x_517);
+    x_517.var_intrinsic_width_sum = x_560;
+    WriteMetric(x_518);
+    auto x_565 = eval_expr_x_564(x_517);
+    x_517.var_children_intrinsic_height = x_565;
+    WriteMetric(x_518);
+    auto x_570 = eval_expr_x_569(x_517);
+    x_517.var_height_expr = x_570;
+    WriteMetric(x_518);
+    auto x_575 = eval_expr_x_574(x_517);
+    x_517.var_intrinsic_height_is_height = x_575;
+    WriteMetric(x_518);
+    auto x_580 = eval_expr_x_579(x_517);
+    x_517.var_intrinsic_height_internal = x_580;
+    WriteMetric(x_518);
+    auto x_585 = eval_expr_x_584(x_517);
+    x_517.var_intrinsic_height_external = x_585;
+    WriteMetric(x_518);
+    auto x_590 = eval_expr_x_589(x_517);
+    x_517.var_intrinsic_height_sum = x_590;
+    WriteMetric(x_518);
+    auto x_595 = eval_expr_x_594(x_517);
+    x_517.var_intrinsic_current_line_height = x_595;
+    WriteMetric(x_518);
+    auto x_600 = eval_expr_x_599(x_517);
+    x_517.var_finished_intrinsic_height_sum = x_600;
     return MakeUnit();
   };
 }
-auto eval_stmts_x_89(const auto &x_608) {
-  return [&](const auto &x_609) {
-    WriteMetric(x_609);
-    auto x_611 = eval_expr_x_610(x_608)(x_609);
-    HashtblSet(x_608.var, "display", x_611);
-    WriteMetric(x_609);
-    auto x_616 = eval_expr_x_615(x_608)(x_609);
-    HashtblSet(x_608.var, "position", x_616);
-    WriteMetric(x_609);
-    auto x_621 = eval_expr_x_620(x_608)(x_609);
-    HashtblSet(x_608.var, "flex_grow", x_621);
-    WriteMetric(x_609);
-    auto x_626 = eval_expr_x_625(x_608)(x_609);
-    HashtblSet(x_608.var, "flex_shrink", x_626);
-    WriteMetric(x_609);
-    auto x_631 = eval_expr_x_630(x_608)(x_609);
-    HashtblSet(x_608.var, "flex_grow_sum", x_631);
-    WriteMetric(x_609);
-    auto x_636 = eval_expr_x_635(x_608)(x_609);
-    HashtblSet(x_608.var, "flex_shrink_sum", x_636);
-    WriteMetric(x_609);
-    auto x_641 = eval_expr_x_640(x_608)(x_609);
-    HashtblSet(x_608.var, "flex_direction", x_641);
-    WriteMetric(x_609);
-    auto x_646 = eval_expr_x_645(x_608)(x_609);
-    HashtblSet(x_608.var, "is_flex_row", x_646);
-    WriteMetric(x_609);
-    auto x_651 = eval_expr_x_650(x_608)(x_609);
-    HashtblSet(x_608.var, "is_flex_column", x_651);
-    WriteMetric(x_609);
-    auto x_656 = eval_expr_x_655(x_608)(x_609);
-    HashtblSet(x_608.var, "width_attr_expr", x_656);
-    WriteMetric(x_609);
-    auto x_661 = eval_expr_x_660(x_608)(x_609);
-    HashtblSet(x_608.var, "has_width_attr", x_661);
-    WriteMetric(x_609);
-    auto x_666 = eval_expr_x_665(x_608)(x_609);
-    HashtblSet(x_608.var, "height_attr_expr", x_666);
-    WriteMetric(x_609);
-    auto x_671 = eval_expr_x_670(x_608)(x_609);
-    HashtblSet(x_608.var, "has_height_attr", x_671);
-    WriteMetric(x_609);
-    auto x_676 = eval_expr_x_675(x_608)(x_609);
-    HashtblSet(x_608.var, "is_svg_block", x_676);
-    WriteMetric(x_609);
-    auto x_681 = eval_expr_x_680(x_608)(x_609);
-    HashtblSet(x_608.var, "inside_svg", x_681);
-    WriteMetric(x_609);
-    auto x_686 = eval_expr_x_685(x_608)(x_609);
-    HashtblSet(x_608.var, "disabled", x_686);
-    WriteMetric(x_609);
-    auto x_691 = eval_expr_x_690(x_608)(x_609);
-    HashtblSet(x_608.var, "visible", x_691);
-    WriteMetric(x_609);
-    auto x_696 = eval_expr_x_695(x_608)(x_609);
-    HashtblSet(x_608.var, "line_break", x_696);
+auto eval_stmts_x_255(const auto &x_604) {
+  return [&](const auto &x_605) {
+    WriteMetric(x_605);
+    auto x_607 = eval_expr_x_606(x_604);
+    x_604.var_display = x_607;
+    WriteMetric(x_605);
+    auto x_612 = eval_expr_x_611(x_604);
+    x_604.var_position = x_612;
+    WriteMetric(x_605);
+    auto x_617 = eval_expr_x_616(x_604);
+    x_604.var_flex_grow = x_617;
+    WriteMetric(x_605);
+    auto x_622 = eval_expr_x_621(x_604);
+    x_604.var_flex_shrink = x_622;
+    WriteMetric(x_605);
+    auto x_627 = eval_expr_x_626(x_604);
+    x_604.var_flex_grow_sum = x_627;
+    WriteMetric(x_605);
+    auto x_632 = eval_expr_x_631(x_604);
+    x_604.var_flex_shrink_sum = x_632;
+    WriteMetric(x_605);
+    auto x_637 = eval_expr_x_636(x_604);
+    x_604.var_flex_direction = x_637;
+    WriteMetric(x_605);
+    auto x_642 = eval_expr_x_641(x_604);
+    x_604.var_is_flex_row = x_642;
+    WriteMetric(x_605);
+    auto x_647 = eval_expr_x_646(x_604);
+    x_604.var_is_flex_column = x_647;
+    WriteMetric(x_605);
+    auto x_652 = eval_expr_x_651(x_604);
+    x_604.var_width_attr_expr = x_652;
+    WriteMetric(x_605);
+    auto x_657 = eval_expr_x_656(x_604);
+    x_604.var_has_width_attr = x_657;
+    WriteMetric(x_605);
+    auto x_662 = eval_expr_x_661(x_604);
+    x_604.var_height_attr_expr = x_662;
+    WriteMetric(x_605);
+    auto x_667 = eval_expr_x_666(x_604);
+    x_604.var_has_height_attr = x_667;
+    WriteMetric(x_605);
+    auto x_672 = eval_expr_x_671(x_604);
+    x_604.var_is_svg_block = x_672;
+    WriteMetric(x_605);
+    auto x_677 = eval_expr_x_676(x_604);
+    x_604.var_inside_svg = x_677;
+    WriteMetric(x_605);
+    auto x_682 = eval_expr_x_681(x_604);
+    x_604.var_disabled = x_682;
+    WriteMetric(x_605);
+    auto x_687 = eval_expr_x_686(x_604);
+    x_604.var_visible = x_687;
+    WriteMetric(x_605);
+    auto x_692 = eval_expr_x_691(x_604);
+    x_604.var_line_break = x_692;
     return MakeUnit();
   };
 }
-auto eval_stmts_x_85(const auto &x_700) {
-  return [&](const auto &x_701) {
-    WriteMetric(x_701);
-    auto x_703 = eval_expr_x_702(x_700)(x_701);
-    HashtblSet(x_700.var, "box_width", x_703);
-    WriteMetric(x_701);
-    auto x_708 = eval_expr_x_707(x_700)(x_701);
-    HashtblSet(x_700.var, "box_height", x_708);
-    WriteMetric(x_701);
-    auto x_713 = eval_expr_x_712(x_700)(x_701);
-    HashtblSet(x_700.var, "left_over", x_713);
-    WriteMetric(x_701);
-    auto x_718 = eval_expr_x_717(x_700)(x_701);
-    HashtblSet(x_700.var, "flex_amount", x_718);
-    WriteMetric(x_701);
-    auto x_723 = eval_expr_x_722(x_700)(x_701);
-    HashtblSet(x_700.var, "flex_unit", x_723);
-    WriteMetric(x_701);
-    auto x_728 = eval_expr_x_727(x_700)(x_701);
-    HashtblSet(x_700.var, "x", x_728);
-    WriteMetric(x_701);
-    auto x_733 = eval_expr_x_732(x_700)(x_701);
-    HashtblSet(x_700.var, "width_internal", x_733);
-    WriteMetric(x_701);
-    auto x_738 = eval_expr_x_737(x_700)(x_701);
-    HashtblSet(x_700.var, "width_external", x_738);
-    WriteMetric(x_701);
-    auto x_743 = eval_expr_x_742(x_700)(x_701);
-    HashtblSet(x_700.var, "y", x_743);
-    WriteMetric(x_701);
-    auto x_748 = eval_expr_x_747(x_700)(x_701);
-    HashtblSet(x_700.var, "height_internal", x_748);
-    WriteMetric(x_701);
-    auto x_753 = eval_expr_x_752(x_700)(x_701);
-    HashtblSet(x_700.var, "height_external", x_753);
-    WriteMetric(x_701);
-    auto x_758 = eval_expr_x_757(x_700)(x_701);
-    HashtblSet(x_700.var, "line_height", x_758);
+auto eval_stmts_x_251(const auto &x_696) {
+  return [&](const auto &x_697) {
+    WriteMetric(x_697);
+    auto x_699 = eval_expr_x_698(x_696);
+    x_696.var_box_width = x_699;
+    WriteMetric(x_697);
+    auto x_704 = eval_expr_x_703(x_696);
+    x_696.var_box_height = x_704;
+    WriteMetric(x_697);
+    auto x_709 = eval_expr_x_708(x_696);
+    x_696.var_left_over = x_709;
+    WriteMetric(x_697);
+    auto x_714 = eval_expr_x_713(x_696);
+    x_696.var_flex_amount = x_714;
+    WriteMetric(x_697);
+    auto x_719 = eval_expr_x_718(x_696);
+    x_696.var_flex_unit = x_719;
+    WriteMetric(x_697);
+    auto x_724 = eval_expr_x_723(x_696);
+    x_696.var_x = x_724;
+    WriteMetric(x_697);
+    auto x_729 = eval_expr_x_728(x_696);
+    x_696.var_width_internal = x_729;
+    WriteMetric(x_697);
+    auto x_734 = eval_expr_x_733(x_696);
+    x_696.var_width_external = x_734;
+    WriteMetric(x_697);
+    auto x_739 = eval_expr_x_738(x_696);
+    x_696.var_y = x_739;
+    WriteMetric(x_697);
+    auto x_744 = eval_expr_x_743(x_696);
+    x_696.var_height_internal = x_744;
+    WriteMetric(x_697);
+    auto x_749 = eval_expr_x_748(x_696);
+    x_696.var_height_external = x_749;
+    WriteMetric(x_697);
+    auto x_754 = eval_expr_x_753(x_696);
+    x_696.var_line_height = x_754;
     return MakeUnit();
   };
 }
-auto eval_stmts_x_76(const auto &x_762) {
-  return [&](const auto &x_763) {
-    WriteMetric(x_763);
-    auto x_765 = eval_expr_x_764(x_762)(x_763);
-    HashtblSet(x_762.var, "width_expr", x_765);
-    WriteMetric(x_763);
-    auto x_770 = eval_expr_x_769(x_762)(x_763);
-    HashtblSet(x_762.var, "is_default_case", x_770);
-    WriteMetric(x_763);
-    auto x_775 = eval_expr_x_774(x_762)(x_763);
-    HashtblSet(x_762.var, "intrinsic_width_is_width", x_775);
-    WriteMetric(x_763);
-    auto x_780 = eval_expr_x_779(x_762)(x_763);
-    HashtblSet(x_762.var, "children_intrinsic_width", x_780);
-    WriteMetric(x_763);
-    auto x_785 = eval_expr_x_784(x_762)(x_763);
-    HashtblSet(x_762.var, "intrinsic_width_internal", x_785);
-    WriteMetric(x_763);
-    auto x_790 = eval_expr_x_789(x_762)(x_763);
-    HashtblSet(x_762.var, "intrinsic_width_external", x_790);
-    WriteMetric(x_763);
-    auto x_795 = eval_expr_x_794(x_762)(x_763);
-    HashtblSet(x_762.var, "intrinsic_current_line_width", x_795);
-    WriteMetric(x_763);
-    auto x_800 = eval_expr_x_799(x_762)(x_763);
-    HashtblSet(x_762.var, "intrinsic_width_max", x_800);
-    WriteMetric(x_763);
-    auto x_805 = eval_expr_x_804(x_762)(x_763);
-    HashtblSet(x_762.var, "intrinsic_width_sum", x_805);
-    WriteMetric(x_763);
-    auto x_810 = eval_expr_x_809(x_762)(x_763);
-    HashtblSet(x_762.var, "children_intrinsic_height", x_810);
-    WriteMetric(x_763);
-    auto x_815 = eval_expr_x_814(x_762)(x_763);
-    HashtblSet(x_762.var, "height_expr", x_815);
-    WriteMetric(x_763);
-    auto x_820 = eval_expr_x_819(x_762)(x_763);
-    HashtblSet(x_762.var, "intrinsic_height_is_height", x_820);
-    WriteMetric(x_763);
-    auto x_825 = eval_expr_x_824(x_762)(x_763);
-    HashtblSet(x_762.var, "intrinsic_height_internal", x_825);
-    WriteMetric(x_763);
-    auto x_830 = eval_expr_x_829(x_762)(x_763);
-    HashtblSet(x_762.var, "intrinsic_height_external", x_830);
-    WriteMetric(x_763);
-    auto x_835 = eval_expr_x_834(x_762)(x_763);
-    HashtblSet(x_762.var, "intrinsic_height_sum", x_835);
-    WriteMetric(x_763);
-    auto x_840 = eval_expr_x_839(x_762)(x_763);
-    HashtblSet(x_762.var, "intrinsic_current_line_height", x_840);
-    WriteMetric(x_763);
-    auto x_845 = eval_expr_x_844(x_762)(x_763);
-    HashtblSet(x_762.var, "finished_intrinsic_height_sum", x_845);
+auto eval_stmts_x_242(const auto &x_758) {
+  return [&](const auto &x_759) {
+    WriteMetric(x_759);
+    auto x_761 = eval_expr_x_760(x_758);
+    x_758.var_width_expr = x_761;
+    WriteMetric(x_759);
+    auto x_766 = eval_expr_x_765(x_758);
+    x_758.var_is_default_case = x_766;
+    WriteMetric(x_759);
+    auto x_771 = eval_expr_x_770(x_758);
+    x_758.var_intrinsic_width_is_width = x_771;
+    WriteMetric(x_759);
+    auto x_776 = eval_expr_x_775(x_758);
+    x_758.var_children_intrinsic_width = x_776;
+    WriteMetric(x_759);
+    auto x_781 = eval_expr_x_780(x_758);
+    x_758.var_intrinsic_width_internal = x_781;
+    WriteMetric(x_759);
+    auto x_786 = eval_expr_x_785(x_758);
+    x_758.var_intrinsic_width_external = x_786;
+    WriteMetric(x_759);
+    auto x_791 = eval_expr_x_790(x_758);
+    x_758.var_intrinsic_current_line_width = x_791;
+    WriteMetric(x_759);
+    auto x_796 = eval_expr_x_795(x_758);
+    x_758.var_intrinsic_width_max = x_796;
+    WriteMetric(x_759);
+    auto x_801 = eval_expr_x_800(x_758);
+    x_758.var_intrinsic_width_sum = x_801;
+    WriteMetric(x_759);
+    auto x_806 = eval_expr_x_805(x_758);
+    x_758.var_children_intrinsic_height = x_806;
+    WriteMetric(x_759);
+    auto x_811 = eval_expr_x_810(x_758);
+    x_758.var_height_expr = x_811;
+    WriteMetric(x_759);
+    auto x_816 = eval_expr_x_815(x_758);
+    x_758.var_intrinsic_height_is_height = x_816;
+    WriteMetric(x_759);
+    auto x_821 = eval_expr_x_820(x_758);
+    x_758.var_intrinsic_height_internal = x_821;
+    WriteMetric(x_759);
+    auto x_826 = eval_expr_x_825(x_758);
+    x_758.var_intrinsic_height_external = x_826;
+    WriteMetric(x_759);
+    auto x_831 = eval_expr_x_830(x_758);
+    x_758.var_intrinsic_height_sum = x_831;
+    WriteMetric(x_759);
+    auto x_836 = eval_expr_x_835(x_758);
+    x_758.var_intrinsic_current_line_height = x_836;
+    WriteMetric(x_759);
+    auto x_841 = eval_expr_x_840(x_758);
+    x_758.var_finished_intrinsic_height_sum = x_841;
     return MakeUnit();
   };
 }
-auto eval_stmts_x_74(const auto &x_849) {
-  return [&](const auto &x_850) {
-    WriteMetric(x_850);
-    auto x_852 = eval_expr_x_851(x_849)(x_850);
-    HashtblSet(x_849.var, "display", x_852);
-    WriteMetric(x_850);
-    auto x_857 = eval_expr_x_856(x_849)(x_850);
-    HashtblSet(x_849.var, "position", x_857);
-    WriteMetric(x_850);
-    auto x_862 = eval_expr_x_861(x_849)(x_850);
-    HashtblSet(x_849.var, "flex_grow", x_862);
-    WriteMetric(x_850);
-    auto x_867 = eval_expr_x_866(x_849)(x_850);
-    HashtblSet(x_849.var, "flex_shrink", x_867);
-    WriteMetric(x_850);
-    auto x_872 = eval_expr_x_871(x_849)(x_850);
-    HashtblSet(x_849.var, "flex_grow_sum", x_872);
-    WriteMetric(x_850);
-    auto x_877 = eval_expr_x_876(x_849)(x_850);
-    HashtblSet(x_849.var, "flex_shrink_sum", x_877);
-    WriteMetric(x_850);
-    auto x_882 = eval_expr_x_881(x_849)(x_850);
-    HashtblSet(x_849.var, "flex_direction", x_882);
-    WriteMetric(x_850);
-    auto x_887 = eval_expr_x_886(x_849)(x_850);
-    HashtblSet(x_849.var, "is_flex_row", x_887);
-    WriteMetric(x_850);
-    auto x_892 = eval_expr_x_891(x_849)(x_850);
-    HashtblSet(x_849.var, "is_flex_column", x_892);
-    WriteMetric(x_850);
-    auto x_897 = eval_expr_x_896(x_849)(x_850);
-    HashtblSet(x_849.var, "width_attr_expr", x_897);
-    WriteMetric(x_850);
-    auto x_902 = eval_expr_x_901(x_849)(x_850);
-    HashtblSet(x_849.var, "has_width_attr", x_902);
-    WriteMetric(x_850);
-    auto x_907 = eval_expr_x_906(x_849)(x_850);
-    HashtblSet(x_849.var, "height_attr_expr", x_907);
-    WriteMetric(x_850);
-    auto x_912 = eval_expr_x_911(x_849)(x_850);
-    HashtblSet(x_849.var, "has_height_attr", x_912);
-    WriteMetric(x_850);
-    auto x_917 = eval_expr_x_916(x_849)(x_850);
-    HashtblSet(x_849.var, "is_svg_block", x_917);
-    WriteMetric(x_850);
-    auto x_922 = eval_expr_x_921(x_849)(x_850);
-    HashtblSet(x_849.var, "inside_svg", x_922);
-    WriteMetric(x_850);
-    auto x_927 = eval_expr_x_926(x_849)(x_850);
-    HashtblSet(x_849.var, "disabled", x_927);
-    WriteMetric(x_850);
-    auto x_932 = eval_expr_x_931(x_849)(x_850);
-    HashtblSet(x_849.var, "visible", x_932);
-    WriteMetric(x_850);
-    auto x_937 = eval_expr_x_936(x_849)(x_850);
-    HashtblSet(x_849.var, "line_break", x_937);
+auto eval_stmts_x_240(const auto &x_845) {
+  return [&](const auto &x_846) {
+    WriteMetric(x_846);
+    auto x_848 = eval_expr_x_847(x_845);
+    x_845.var_display = x_848;
+    WriteMetric(x_846);
+    auto x_853 = eval_expr_x_852(x_845);
+    x_845.var_position = x_853;
+    WriteMetric(x_846);
+    auto x_858 = eval_expr_x_857(x_845);
+    x_845.var_flex_grow = x_858;
+    WriteMetric(x_846);
+    auto x_863 = eval_expr_x_862(x_845);
+    x_845.var_flex_shrink = x_863;
+    WriteMetric(x_846);
+    auto x_868 = eval_expr_x_867(x_845);
+    x_845.var_flex_grow_sum = x_868;
+    WriteMetric(x_846);
+    auto x_873 = eval_expr_x_872(x_845);
+    x_845.var_flex_shrink_sum = x_873;
+    WriteMetric(x_846);
+    auto x_878 = eval_expr_x_877(x_845);
+    x_845.var_flex_direction = x_878;
+    WriteMetric(x_846);
+    auto x_883 = eval_expr_x_882(x_845);
+    x_845.var_is_flex_row = x_883;
+    WriteMetric(x_846);
+    auto x_888 = eval_expr_x_887(x_845);
+    x_845.var_is_flex_column = x_888;
+    WriteMetric(x_846);
+    auto x_893 = eval_expr_x_892(x_845);
+    x_845.var_width_attr_expr = x_893;
+    WriteMetric(x_846);
+    auto x_898 = eval_expr_x_897(x_845);
+    x_845.var_has_width_attr = x_898;
+    WriteMetric(x_846);
+    auto x_903 = eval_expr_x_902(x_845);
+    x_845.var_height_attr_expr = x_903;
+    WriteMetric(x_846);
+    auto x_908 = eval_expr_x_907(x_845);
+    x_845.var_has_height_attr = x_908;
+    WriteMetric(x_846);
+    auto x_913 = eval_expr_x_912(x_845);
+    x_845.var_is_svg_block = x_913;
+    WriteMetric(x_846);
+    auto x_918 = eval_expr_x_917(x_845);
+    x_845.var_inside_svg = x_918;
+    WriteMetric(x_846);
+    auto x_923 = eval_expr_x_922(x_845);
+    x_845.var_disabled = x_923;
+    WriteMetric(x_846);
+    auto x_928 = eval_expr_x_927(x_845);
+    x_845.var_visible = x_928;
+    WriteMetric(x_846);
+    auto x_933 = eval_expr_x_932(x_845);
+    x_845.var_line_break = x_933;
     return MakeUnit();
   };
 }
-auto eval_stmts_x_70(const auto &x_941) {
-  return [&](const auto &x_942) {
-    WriteMetric(x_942);
-    auto x_944 = eval_expr_x_943(x_941)(x_942);
-    HashtblSet(x_941.var, "box_width", x_944);
-    WriteMetric(x_942);
-    auto x_949 = eval_expr_x_948(x_941)(x_942);
-    HashtblSet(x_941.var, "box_height", x_949);
-    WriteMetric(x_942);
-    auto x_954 = eval_expr_x_953(x_941)(x_942);
-    HashtblSet(x_941.var, "left_over", x_954);
-    WriteMetric(x_942);
-    auto x_959 = eval_expr_x_958(x_941)(x_942);
-    HashtblSet(x_941.var, "flex_amount", x_959);
-    WriteMetric(x_942);
-    auto x_964 = eval_expr_x_963(x_941)(x_942);
-    HashtblSet(x_941.var, "flex_unit", x_964);
-    WriteMetric(x_942);
-    auto x_969 = eval_expr_x_968(x_941)(x_942);
-    HashtblSet(x_941.var, "x", x_969);
-    WriteMetric(x_942);
-    auto x_974 = eval_expr_x_973(x_941)(x_942);
-    HashtblSet(x_941.var, "width_internal", x_974);
-    WriteMetric(x_942);
-    auto x_979 = eval_expr_x_978(x_941)(x_942);
-    HashtblSet(x_941.var, "width_external", x_979);
-    WriteMetric(x_942);
-    auto x_984 = eval_expr_x_983(x_941)(x_942);
-    HashtblSet(x_941.var, "y", x_984);
-    WriteMetric(x_942);
-    auto x_989 = eval_expr_x_988(x_941)(x_942);
-    HashtblSet(x_941.var, "height_internal", x_989);
-    WriteMetric(x_942);
-    auto x_994 = eval_expr_x_993(x_941)(x_942);
-    HashtblSet(x_941.var, "height_external", x_994);
-    WriteMetric(x_942);
-    auto x_999 = eval_expr_x_998(x_941)(x_942);
-    HashtblSet(x_941.var, "line_height", x_999);
+auto eval_stmts_x_236(const auto &x_937) {
+  return [&](const auto &x_938) {
+    WriteMetric(x_938);
+    auto x_940 = eval_expr_x_939(x_937);
+    x_937.var_box_width = x_940;
+    WriteMetric(x_938);
+    auto x_945 = eval_expr_x_944(x_937);
+    x_937.var_box_height = x_945;
+    WriteMetric(x_938);
+    auto x_950 = eval_expr_x_949(x_937);
+    x_937.var_left_over = x_950;
+    WriteMetric(x_938);
+    auto x_955 = eval_expr_x_954(x_937);
+    x_937.var_flex_amount = x_955;
+    WriteMetric(x_938);
+    auto x_960 = eval_expr_x_959(x_937);
+    x_937.var_flex_unit = x_960;
+    WriteMetric(x_938);
+    auto x_965 = eval_expr_x_964(x_937);
+    x_937.var_x = x_965;
+    WriteMetric(x_938);
+    auto x_970 = eval_expr_x_969(x_937);
+    x_937.var_width_internal = x_970;
+    WriteMetric(x_938);
+    auto x_975 = eval_expr_x_974(x_937);
+    x_937.var_width_external = x_975;
+    WriteMetric(x_938);
+    auto x_980 = eval_expr_x_979(x_937);
+    x_937.var_y = x_980;
+    WriteMetric(x_938);
+    auto x_985 = eval_expr_x_984(x_937);
+    x_937.var_height_internal = x_985;
+    WriteMetric(x_938);
+    auto x_990 = eval_expr_x_989(x_937);
+    x_937.var_height_external = x_990;
+    WriteMetric(x_938);
+    auto x_995 = eval_expr_x_994(x_937);
+    x_937.var_line_height = x_995;
     return MakeUnit();
   };
 }
 auto x_50(const auto &x_51) {
-  return OptionIter(ListLast(x_51.children), [&](const auto &x_55) {
-    x_55.parent = Some(x_51);
-    return x_50(x_55);
-  });
-}
-auto set_children_relation_x_42(const auto &x_51) { return x_50(x_51); }
-auto x_56(const auto &x_57) {
-  return OptionIter(ListLast(x_57.children), [&](const auto &x_61) {
-    x_61.parent = Some(x_57);
-    return x_56(x_61);
-  });
-}
-auto set_children_relation_x_38(const auto &x_57) { return x_56(x_57); }
-auto x_62(const auto &x_63) {
-  return OptionIter(ListLast(x_63.children), [&](const auto &x_67) {
-    x_67.parent = Some(x_63);
-    return x_62(x_67);
-  });
-}
-auto set_children_relation_x_35(const auto &x_63) { return x_62(x_63); }
-auto eval_stmts_x_31(const auto &x_68) {
-  return [&](const auto &x_69) { return MakeUnit(); };
-}
-auto eval_stmts_x_30(const auto &x_72) {
-  return [&](const auto &x_73) { return MakeUnit(); };
-}
-auto x_77(const auto &x_78) {
-  return OptionIter(ListLast(x_78.children), [&](const auto &x_82) {
-    x_82.parent = Some(x_78);
-    return x_77(x_82);
-  });
-}
-auto set_children_relation_x_28(const auto &x_78) { return x_77(x_78); }
-auto eval_stmts_x_26(const auto &x_83) {
-  return [&](const auto &x_84) { return MakeUnit(); };
-}
-auto eval_stmts_x_25(const auto &x_87) {
-  return [&](const auto &x_88) { return MakeUnit(); };
-}
-auto x_92(const auto &x_93) {
-  return OptionIter(ListLast(x_93.children), [&](const auto &x_97) {
-    x_97.parent = Some(x_93);
-    return x_92(x_97);
-  });
-}
-auto set_children_relation_x_22(const auto &x_93) { return x_92(x_93); }
-auto x_98(const auto &x_99) {
-  auto x_100 = Zro(x_99);
-  auto x_101 = Fst(x_99);
-  auto x_102 = Zro(x_100);
-  auto x_103 = Fst(x_100);
+  auto x_52 = Zro(x_51);
+  auto x_53 = Fst(x_51);
+  auto x_54 = Zro(x_52);
+  auto x_55 = Fst(x_52);
   return ListMatch(
-      x_102,
-      [&](const auto &x_106) {
-        auto x_107 = Zro(x_101);
-        auto x_108 = Zro(x_107);
-        auto x_109 = Fst(x_107);
-        auto x_110 = Fst(x_101);
-        auto x_111 = Zro(x_110);
-        auto x_112 = Fst(x_110);
-        InputChangeMetric(x_112, 1);
-        std::string x_3805 = x_108;
-        if (x_3805 == "attributes") {
-          std::string x_3806 = x_109;
-          if (x_3806 == "width") {
-            WriteMetric(x_112);
-            HashtblAddExn(x_103.attr, "width", x_111);
-            return MakeUnit();
-          } else if (x_3806 == "image_height") {
-            WriteMetric(x_112);
-            HashtblAddExn(x_103.attr, "image_height", x_111);
-            return MakeUnit();
-          } else if (x_3806 == "image_width") {
-            WriteMetric(x_112);
-            HashtblAddExn(x_103.attr, "image_width", x_111);
-            return MakeUnit();
-          } else if (x_3806 == "height") {
-            WriteMetric(x_112);
-            HashtblAddExn(x_103.attr, "height", x_111);
-            return MakeUnit();
-          } else if (x_3806 == "viewBox") {
-            WriteMetric(x_112);
-            HashtblAddExn(x_103.attr, "viewBox", x_111);
-            return MakeUnit();
-          } else {
-            return MakeUnit();
-          }
-        } else if (x_3805 == "properties") {
-          std::string x_3807 = x_109;
-          if (x_3807 == "width") {
-            WriteMetric(x_112);
-            HashtblAddExn(x_103.prop, "width", x_111);
-            return MakeUnit();
-          } else if (x_3807 == "flex-grow") {
-            WriteMetric(x_112);
-            HashtblAddExn(x_103.prop, "flex-grow", x_111);
-            return MakeUnit();
-          } else if (x_3807 == "height") {
-            WriteMetric(x_112);
-            HashtblAddExn(x_103.prop, "height", x_111);
-            return MakeUnit();
-          } else if (x_3807 == "display") {
-            WriteMetric(x_112);
-            HashtblAddExn(x_103.prop, "display", x_111);
-            return MakeUnit();
-          } else if (x_3807 == "position") {
-            WriteMetric(x_112);
-            HashtblAddExn(x_103.prop, "position", x_111);
-            return MakeUnit();
-          } else if (x_3807 == "flex-shrink") {
-            WriteMetric(x_112);
-            HashtblAddExn(x_103.prop, "flex-shrink", x_111);
-            return MakeUnit();
-          } else if (x_3807 == "flex-direction") {
-            WriteMetric(x_112);
-            HashtblAddExn(x_103.prop, "flex-direction", x_111);
-            return MakeUnit();
-          } else {
-            return MakeUnit();
-          }
-        } else {
-          return Panic();
-        }
-      },
-      [&](const auto &x_104) {
-        return [&](const auto &x_105) {
-          return x_98(MakePair(MakePair(x_105, ListNthExn(x_103.children, x_104)), x_101));
-        };
-      });
-}
-auto insert_value_x_13(const auto &x_99) { return x_98(x_99); }
-auto x_113(const auto &x_114) {
-  auto x_115 = Zro(x_114);
-  auto x_116 = Fst(x_114);
-  auto x_117 = Zro(x_115);
-  auto x_118 = Fst(x_115);
-  return ListMatch(
-      x_117,
-      [&](const auto &x_121) {
-        auto x_122 = Zro(x_116);
-        auto x_123 = Zro(x_122);
-        auto x_124 = Fst(x_122);
-        auto x_125 = Fst(x_116);
-        InputChangeMetric(x_125, 1);
-        std::string x_3808 = x_123;
-        if (x_3808 == "attributes") {
-          std::string x_3809 = x_124;
-          if (x_3809 == "width") {
-            WriteMetric(x_125);
-            HashtblForceRemove(x_118.attr, "width");
-            return MakeUnit();
-          } else if (x_3809 == "image_height") {
-            WriteMetric(x_125);
-            HashtblForceRemove(x_118.attr, "image_height");
-            return MakeUnit();
-          } else if (x_3809 == "image_width") {
-            WriteMetric(x_125);
-            HashtblForceRemove(x_118.attr, "image_width");
-            return MakeUnit();
-          } else if (x_3809 == "height") {
-            WriteMetric(x_125);
-            HashtblForceRemove(x_118.attr, "height");
-            return MakeUnit();
-          } else if (x_3809 == "viewBox") {
-            WriteMetric(x_125);
-            HashtblForceRemove(x_118.attr, "viewBox");
-            return MakeUnit();
-          } else {
-            return MakeUnit();
-          }
-        } else if (x_3808 == "properties") {
-          std::string x_3810 = x_124;
-          if (x_3810 == "width") {
-            WriteMetric(x_125);
-            HashtblForceRemove(x_118.prop, "width");
-            return MakeUnit();
-          } else if (x_3810 == "flex-grow") {
-            WriteMetric(x_125);
-            HashtblForceRemove(x_118.prop, "flex-grow");
-            return MakeUnit();
-          } else if (x_3810 == "height") {
-            WriteMetric(x_125);
-            HashtblForceRemove(x_118.prop, "height");
-            return MakeUnit();
-          } else if (x_3810 == "display") {
-            WriteMetric(x_125);
-            HashtblForceRemove(x_118.prop, "display");
-            return MakeUnit();
-          } else if (x_3810 == "position") {
-            WriteMetric(x_125);
-            HashtblForceRemove(x_118.prop, "position");
-            return MakeUnit();
-          } else if (x_3810 == "flex-shrink") {
-            WriteMetric(x_125);
-            HashtblForceRemove(x_118.prop, "flex-shrink");
-            return MakeUnit();
-          } else if (x_3810 == "flex-direction") {
-            WriteMetric(x_125);
-            HashtblForceRemove(x_118.prop, "flex-direction");
-            return MakeUnit();
-          } else {
-            return MakeUnit();
-          }
-        } else {
-          return Panic();
-        }
-      },
-      [&](const auto &x_119) {
-        return [&](const auto &x_120) {
-          return x_113(MakePair(MakePair(x_120, ListNthExn(x_118.children, x_119)), x_116));
-        };
-      });
-}
-auto delete_value_x_12(const auto &x_114) { return x_113(x_114); }
-auto x_126(const auto &x_127) {
-  auto x_128 = Zro(x_127);
-  auto x_129 = Fst(x_127);
-  auto x_130 = Zro(x_128);
-  auto x_131 = Fst(x_128);
-  return ListMatch(
-      x_130,
-      [&](const auto &x_134) {
-        auto x_135 = Zro(x_129);
-        auto x_136 = Zro(x_135);
-        auto x_137 = Fst(x_135);
-        auto x_138 = Fst(x_129);
-        auto x_139 = Zro(x_138);
-        auto x_140 = Fst(x_138);
-        InputChangeMetric(x_140, 1);
-        std::string x_3811 = x_136;
-        if (x_3811 == "attributes") {
-          std::string x_3812 = x_137;
-          if (x_3812 == "width") {
-            WriteMetric(x_140);
-            HashtblForceRemove(x_131.attr, "width");
-            WriteMetric(x_140);
-            HashtblAddExn(x_131.attr, "width", x_139);
-            return MakeUnit();
-          } else if (x_3812 == "image_height") {
-            WriteMetric(x_140);
-            HashtblForceRemove(x_131.attr, "image_height");
-            WriteMetric(x_140);
-            HashtblAddExn(x_131.attr, "image_height", x_139);
-            return MakeUnit();
-          } else if (x_3812 == "image_width") {
-            WriteMetric(x_140);
-            HashtblForceRemove(x_131.attr, "image_width");
-            WriteMetric(x_140);
-            HashtblAddExn(x_131.attr, "image_width", x_139);
-            return MakeUnit();
-          } else if (x_3812 == "height") {
-            WriteMetric(x_140);
-            HashtblForceRemove(x_131.attr, "height");
-            WriteMetric(x_140);
-            HashtblAddExn(x_131.attr, "height", x_139);
-            return MakeUnit();
-          } else if (x_3812 == "viewBox") {
-            WriteMetric(x_140);
-            HashtblForceRemove(x_131.attr, "viewBox");
-            WriteMetric(x_140);
-            HashtblAddExn(x_131.attr, "viewBox", x_139);
-            return MakeUnit();
-          } else {
-            return MakeUnit();
-          }
-        } else if (x_3811 == "properties") {
-          std::string x_3813 = x_137;
-          if (x_3813 == "width") {
-            WriteMetric(x_140);
-            HashtblForceRemove(x_131.prop, "width");
-            WriteMetric(x_140);
-            HashtblAddExn(x_131.prop, "width", x_139);
-            return MakeUnit();
-          } else if (x_3813 == "flex-grow") {
-            WriteMetric(x_140);
-            HashtblForceRemove(x_131.prop, "flex-grow");
-            WriteMetric(x_140);
-            HashtblAddExn(x_131.prop, "flex-grow", x_139);
-            return MakeUnit();
-          } else if (x_3813 == "height") {
-            WriteMetric(x_140);
-            HashtblForceRemove(x_131.prop, "height");
-            WriteMetric(x_140);
-            HashtblAddExn(x_131.prop, "height", x_139);
-            return MakeUnit();
-          } else if (x_3813 == "display") {
-            WriteMetric(x_140);
-            HashtblForceRemove(x_131.prop, "display");
-            WriteMetric(x_140);
-            HashtblAddExn(x_131.prop, "display", x_139);
-            return MakeUnit();
-          } else if (x_3813 == "position") {
-            WriteMetric(x_140);
-            HashtblForceRemove(x_131.prop, "position");
-            WriteMetric(x_140);
-            HashtblAddExn(x_131.prop, "position", x_139);
-            return MakeUnit();
-          } else if (x_3813 == "flex-shrink") {
-            WriteMetric(x_140);
-            HashtblForceRemove(x_131.prop, "flex-shrink");
-            WriteMetric(x_140);
-            HashtblAddExn(x_131.prop, "flex-shrink", x_139);
-            return MakeUnit();
-          } else if (x_3813 == "flex-direction") {
-            WriteMetric(x_140);
-            HashtblForceRemove(x_131.prop, "flex-direction");
-            WriteMetric(x_140);
-            HashtblAddExn(x_131.prop, "flex-direction", x_139);
-            return MakeUnit();
-          } else {
-            return MakeUnit();
-          }
-        } else {
-          return Panic();
-        }
-      },
-      [&](const auto &x_132) {
-        return [&](const auto &x_133) {
-          return x_126(MakePair(MakePair(x_133, ListNthExn(x_131.children, x_132)), x_129));
-        };
-      });
-}
-auto replace_value_x_11(const auto &x_127) { return x_126(x_127); }
-auto x_141(const auto &x_142) {
-  auto x_143 = Zro(x_142);
-  auto x_144 = Fst(x_142);
-  auto x_145 = Zro(x_143);
-  auto x_146 = Fst(x_143);
-  return ListMatch(
-      x_145, [&](const auto &x_155) { return Panic(); },
-      [&](const auto &x_147) {
-        return [&](const auto &x_148) {
+      x_54, [&](const auto &x_62) { return Panic(); },
+      [&](const auto &x_56) {
+        return [&](const auto &x_57) {
           return ListMatch(
-              x_148,
-              [&](const auto &x_151) {
-                auto x_152 = Zro(x_144);
-                auto x_153 = Fst(x_144);
-                auto x_154 = ListSplitN(x_146.children, x_147);
-                OutputChangeMetric(x_153,
-                                   IntAdd(layout_size_x_3(ListNthExn(x_146.children, x_147)), layout_size_x_3(x_152)));
-                x_146.children = ListAppend(Zro(x_154), Cons(x_152, ListTailExn(Fst(x_154))));
+              x_57,
+              [&](const auto &x_60) {
+                auto x_61 = ListSplitN(x_55.children, x_56);
+                OutputChangeMetric(x_15,
+                                   IntAdd(layout_size_x_3(ListNthExn(x_55.children, x_56)), layout_size_x_3(x_53)));
+                x_55.children = ListAppend(Zro(x_61), Cons(x_53, ListTailExn(Fst(x_61))));
                 return MakeUnit();
               },
-              [&](const auto &x_149) {
-                return [&](const auto &x_150) {
-                  return x_141(MakePair(MakePair(x_148, ListNthExn(x_146.children, x_147)), x_144));
+              [&](const auto &x_58) {
+                return [&](const auto &x_59) {
+                  return x_50(MakePair(MakePair(x_57, ListNthExn(x_55.children, x_56)), x_53));
                 };
               });
         };
       });
 }
-auto replace_layout_node_x_10(const auto &x_142) { return x_141(x_142); }
-auto x_156(const auto &x_157) {
-  auto x_158 = Zro(x_157);
-  auto x_159 = Fst(x_157);
-  auto x_160 = Zro(x_158);
-  auto x_161 = Fst(x_158);
+auto replace_layout_node_x_49(const auto &x_51) { return x_50(x_51); }
+auto x_63(const auto &x_64) {
+  auto x_65 = Zro(x_64);
+  auto x_66 = Fst(x_64);
+  auto x_67 = Zro(x_65);
+  auto x_68 = Fst(x_65);
   return ListMatch(
-      x_160, [&](const auto &x_310) { return Panic(); },
-      [&](const auto &x_162) {
-        return [&](const auto &x_163) {
+      x_67, [&](const auto &x_215) { return Panic(); },
+      [&](const auto &x_69) {
+        return [&](const auto &x_70) {
           return ListMatch(
-              x_163,
-              [&](const auto &x_166) {
-                auto x_167 = Zro(x_159);
-                auto x_168 = Fst(x_159);
-                InputChangeMetric(x_168,
-                                  IntAdd(node_size_x_4(ListNthExn(x_161.children, x_162)), node_size_x_4(x_167)));
-                auto x_169 = ListSplitN(x_161.children, x_162);
-                auto x_170 = Zro(x_169);
-                auto x_171 = Fst(x_169);
+              x_70,
+              [&](const auto &x_73) {
+                InputChangeMetric(x_15, IntAdd(node_size_x_4(ListNthExn(x_68.children, x_69)), node_size_x_4(x_66)));
+                auto x_74 = ListSplitN(x_68.children, x_69);
+                auto x_75 = Zro(x_74);
+                auto x_76 = Fst(x_74);
                 ListMatch(
-                    x_171, [&](const auto &x_240) { return Panic(); },
-                    [&](const auto &x_172) {
-                      return [&](const auto &x_173) {
-                        x_161.children = ListAppend(x_170, x_173);
+                    x_76, [&](const auto &x_145) { return Panic(); },
+                    [&](const auto &x_77) {
+                      return [&](const auto &x_78) {
+                        x_68.children = ListAppend(x_75, x_78);
                         return MakeUnit();
                       };
                     });
-                auto x_241 = ListSplitN(x_161.children, x_162);
-                auto x_242 = Zro(x_241);
-                auto x_243 = Fst(x_241);
-                x_161.children = ListAppend(x_242, Cons(x_167, x_243));
-                x_167.parent = Some(x_161);
+                auto x_146 = ListSplitN(x_68.children, x_69);
+                auto x_147 = Zro(x_146);
+                auto x_148 = Fst(x_146);
+                x_68.children = ListAppend(x_147, Cons(x_66, x_148));
+                x_66.parent = Some(x_68);
                 MakeUnit();
                 return MakeUnit();
               },
-              [&](const auto &x_164) {
-                return [&](const auto &x_165) {
-                  return x_156(MakePair(MakePair(x_163, ListNthExn(x_161.children, x_162)), x_159));
+              [&](const auto &x_71) {
+                return [&](const auto &x_72) {
+                  return x_63(MakePair(MakePair(x_70, ListNthExn(x_68.children, x_69)), x_66));
                 };
               });
         };
       });
 }
-auto replace_node_x_9(const auto &x_157) { return x_156(x_157); }
-auto x_311(const auto &x_312) {
-  auto x_313 = Zro(x_312);
-  auto x_314 = Fst(x_312);
-  auto x_315 = Zro(x_313);
-  auto x_316 = Fst(x_313);
+auto replace_node_x_42(const auto &x_64) { return x_63(x_64); }
+auto x_216(const auto &x_217) {
+  return OptionIter(ListLast(x_217.children), [&](const auto &x_221) {
+    x_221.parent = Some(x_217);
+    return x_216(x_221);
+  });
+}
+auto set_children_relation_x_40(const auto &x_217) { return x_216(x_217); }
+auto x_222(const auto &x_223) {
+  return OptionIter(ListLast(x_223.children), [&](const auto &x_227) {
+    x_227.parent = Some(x_223);
+    return x_222(x_227);
+  });
+}
+auto set_children_relation_x_36(const auto &x_223) { return x_222(x_223); }
+auto x_228(const auto &x_229) {
+  return OptionIter(ListLast(x_229.children), [&](const auto &x_233) {
+    x_233.parent = Some(x_229);
+    return x_228(x_233);
+  });
+}
+auto set_children_relation_x_33(const auto &x_229) { return x_228(x_229); }
+auto eval_stmts_x_29(const auto &x_234) {
+  return [&](const auto &x_235) { return MakeUnit(); };
+}
+auto eval_stmts_x_28(const auto &x_238) {
+  return [&](const auto &x_239) { return MakeUnit(); };
+}
+auto x_243(const auto &x_244) {
+  return OptionIter(ListLast(x_244.children), [&](const auto &x_248) {
+    x_248.parent = Some(x_244);
+    return x_243(x_248);
+  });
+}
+auto set_children_relation_x_26(const auto &x_244) { return x_243(x_244); }
+auto eval_stmts_x_24(const auto &x_249) {
+  return [&](const auto &x_250) { return MakeUnit(); };
+}
+auto eval_stmts_x_23(const auto &x_253) {
+  return [&](const auto &x_254) { return MakeUnit(); };
+}
+auto x_258(const auto &x_259) {
+  return OptionIter(ListLast(x_259.children), [&](const auto &x_263) {
+    x_263.parent = Some(x_259);
+    return x_258(x_263);
+  });
+}
+auto set_children_relation_x_20(const auto &x_259) { return x_258(x_259); }
+auto x_264(const auto &x_265) {
+  auto x_266 = Zro(x_265);
+  auto x_267 = Fst(x_265);
+  auto x_268 = Zro(x_266);
+  auto x_269 = Fst(x_266);
   return ListMatch(
-      x_315, [&](const auto &x_323) { return Panic(); },
-      [&](const auto &x_317) {
-        return [&](const auto &x_318) {
+      x_268,
+      [&](const auto &x_272) {
+        auto x_273 = Zro(x_267);
+        auto x_274 = Zro(x_273);
+        auto x_275 = Fst(x_273);
+        auto x_276 = Fst(x_267);
+        auto x_277 = Zro(x_276);
+        auto x_278 = Fst(x_276);
+        InputChangeMetric(x_278, 1);
+        std::string x_3613 = x_274;
+        if (x_3613 == "attributes") {
+          std::string x_3614 = x_275;
+          if (x_3614 == "width") {
+            WriteMetric(x_278);
+            HashtblAddExn(x_269.attr, "width", x_277);
+            return MakeUnit();
+          } else if (x_3614 == "image_height") {
+            WriteMetric(x_278);
+            HashtblAddExn(x_269.attr, "image_height", x_277);
+            return MakeUnit();
+          } else if (x_3614 == "image_width") {
+            WriteMetric(x_278);
+            HashtblAddExn(x_269.attr, "image_width", x_277);
+            return MakeUnit();
+          } else if (x_3614 == "height") {
+            WriteMetric(x_278);
+            HashtblAddExn(x_269.attr, "height", x_277);
+            return MakeUnit();
+          } else if (x_3614 == "viewBox") {
+            WriteMetric(x_278);
+            HashtblAddExn(x_269.attr, "viewBox", x_277);
+            return MakeUnit();
+          } else {
+            return MakeUnit();
+          }
+        } else if (x_3613 == "properties") {
+          std::string x_3615 = x_275;
+          if (x_3615 == "width") {
+            WriteMetric(x_278);
+            HashtblAddExn(x_269.prop, "width", x_277);
+            return MakeUnit();
+          } else if (x_3615 == "flex-grow") {
+            WriteMetric(x_278);
+            HashtblAddExn(x_269.prop, "flex-grow", x_277);
+            return MakeUnit();
+          } else if (x_3615 == "height") {
+            WriteMetric(x_278);
+            HashtblAddExn(x_269.prop, "height", x_277);
+            return MakeUnit();
+          } else if (x_3615 == "display") {
+            WriteMetric(x_278);
+            HashtblAddExn(x_269.prop, "display", x_277);
+            return MakeUnit();
+          } else if (x_3615 == "position") {
+            WriteMetric(x_278);
+            HashtblAddExn(x_269.prop, "position", x_277);
+            return MakeUnit();
+          } else if (x_3615 == "flex-shrink") {
+            WriteMetric(x_278);
+            HashtblAddExn(x_269.prop, "flex-shrink", x_277);
+            return MakeUnit();
+          } else if (x_3615 == "flex-direction") {
+            WriteMetric(x_278);
+            HashtblAddExn(x_269.prop, "flex-direction", x_277);
+            return MakeUnit();
+          } else {
+            return MakeUnit();
+          }
+        } else {
+          return Panic();
+        }
+      },
+      [&](const auto &x_270) {
+        return [&](const auto &x_271) {
+          return x_264(MakePair(MakePair(x_271, ListNthExn(x_269.children, x_270)), x_267));
+        };
+      });
+}
+auto insert_value_x_11(const auto &x_265) { return x_264(x_265); }
+auto x_279(const auto &x_280) {
+  auto x_281 = Zro(x_280);
+  auto x_282 = Fst(x_280);
+  auto x_283 = Zro(x_281);
+  auto x_284 = Fst(x_281);
+  return ListMatch(
+      x_283,
+      [&](const auto &x_287) {
+        auto x_288 = Zro(x_282);
+        auto x_289 = Zro(x_288);
+        auto x_290 = Fst(x_288);
+        auto x_291 = Fst(x_282);
+        InputChangeMetric(x_291, 1);
+        std::string x_3616 = x_289;
+        if (x_3616 == "attributes") {
+          std::string x_3617 = x_290;
+          if (x_3617 == "width") {
+            WriteMetric(x_291);
+            HashtblForceRemove(x_284.attr, "width");
+            return MakeUnit();
+          } else if (x_3617 == "image_height") {
+            WriteMetric(x_291);
+            HashtblForceRemove(x_284.attr, "image_height");
+            return MakeUnit();
+          } else if (x_3617 == "image_width") {
+            WriteMetric(x_291);
+            HashtblForceRemove(x_284.attr, "image_width");
+            return MakeUnit();
+          } else if (x_3617 == "height") {
+            WriteMetric(x_291);
+            HashtblForceRemove(x_284.attr, "height");
+            return MakeUnit();
+          } else if (x_3617 == "viewBox") {
+            WriteMetric(x_291);
+            HashtblForceRemove(x_284.attr, "viewBox");
+            return MakeUnit();
+          } else {
+            return MakeUnit();
+          }
+        } else if (x_3616 == "properties") {
+          std::string x_3618 = x_290;
+          if (x_3618 == "width") {
+            WriteMetric(x_291);
+            HashtblForceRemove(x_284.prop, "width");
+            return MakeUnit();
+          } else if (x_3618 == "flex-grow") {
+            WriteMetric(x_291);
+            HashtblForceRemove(x_284.prop, "flex-grow");
+            return MakeUnit();
+          } else if (x_3618 == "height") {
+            WriteMetric(x_291);
+            HashtblForceRemove(x_284.prop, "height");
+            return MakeUnit();
+          } else if (x_3618 == "display") {
+            WriteMetric(x_291);
+            HashtblForceRemove(x_284.prop, "display");
+            return MakeUnit();
+          } else if (x_3618 == "position") {
+            WriteMetric(x_291);
+            HashtblForceRemove(x_284.prop, "position");
+            return MakeUnit();
+          } else if (x_3618 == "flex-shrink") {
+            WriteMetric(x_291);
+            HashtblForceRemove(x_284.prop, "flex-shrink");
+            return MakeUnit();
+          } else if (x_3618 == "flex-direction") {
+            WriteMetric(x_291);
+            HashtblForceRemove(x_284.prop, "flex-direction");
+            return MakeUnit();
+          } else {
+            return MakeUnit();
+          }
+        } else {
+          return Panic();
+        }
+      },
+      [&](const auto &x_285) {
+        return [&](const auto &x_286) {
+          return x_279(MakePair(MakePair(x_286, ListNthExn(x_284.children, x_285)), x_282));
+        };
+      });
+}
+auto delete_value_x_10(const auto &x_280) { return x_279(x_280); }
+auto x_292(const auto &x_293) {
+  auto x_294 = Zro(x_293);
+  auto x_295 = Fst(x_293);
+  auto x_296 = Zro(x_294);
+  auto x_297 = Fst(x_294);
+  return ListMatch(
+      x_296,
+      [&](const auto &x_300) {
+        auto x_301 = Zro(x_295);
+        auto x_302 = Zro(x_301);
+        auto x_303 = Fst(x_301);
+        auto x_304 = Fst(x_295);
+        auto x_305 = Zro(x_304);
+        auto x_306 = Fst(x_304);
+        InputChangeMetric(x_306, 1);
+        std::string x_3619 = x_302;
+        if (x_3619 == "attributes") {
+          std::string x_3620 = x_303;
+          if (x_3620 == "width") {
+            WriteMetric(x_306);
+            HashtblForceRemove(x_297.attr, "width");
+            WriteMetric(x_306);
+            HashtblAddExn(x_297.attr, "width", x_305);
+            return MakeUnit();
+          } else if (x_3620 == "image_height") {
+            WriteMetric(x_306);
+            HashtblForceRemove(x_297.attr, "image_height");
+            WriteMetric(x_306);
+            HashtblAddExn(x_297.attr, "image_height", x_305);
+            return MakeUnit();
+          } else if (x_3620 == "image_width") {
+            WriteMetric(x_306);
+            HashtblForceRemove(x_297.attr, "image_width");
+            WriteMetric(x_306);
+            HashtblAddExn(x_297.attr, "image_width", x_305);
+            return MakeUnit();
+          } else if (x_3620 == "height") {
+            WriteMetric(x_306);
+            HashtblForceRemove(x_297.attr, "height");
+            WriteMetric(x_306);
+            HashtblAddExn(x_297.attr, "height", x_305);
+            return MakeUnit();
+          } else if (x_3620 == "viewBox") {
+            WriteMetric(x_306);
+            HashtblForceRemove(x_297.attr, "viewBox");
+            WriteMetric(x_306);
+            HashtblAddExn(x_297.attr, "viewBox", x_305);
+            return MakeUnit();
+          } else {
+            return MakeUnit();
+          }
+        } else if (x_3619 == "properties") {
+          std::string x_3621 = x_303;
+          if (x_3621 == "width") {
+            WriteMetric(x_306);
+            HashtblForceRemove(x_297.prop, "width");
+            WriteMetric(x_306);
+            HashtblAddExn(x_297.prop, "width", x_305);
+            return MakeUnit();
+          } else if (x_3621 == "flex-grow") {
+            WriteMetric(x_306);
+            HashtblForceRemove(x_297.prop, "flex-grow");
+            WriteMetric(x_306);
+            HashtblAddExn(x_297.prop, "flex-grow", x_305);
+            return MakeUnit();
+          } else if (x_3621 == "height") {
+            WriteMetric(x_306);
+            HashtblForceRemove(x_297.prop, "height");
+            WriteMetric(x_306);
+            HashtblAddExn(x_297.prop, "height", x_305);
+            return MakeUnit();
+          } else if (x_3621 == "display") {
+            WriteMetric(x_306);
+            HashtblForceRemove(x_297.prop, "display");
+            WriteMetric(x_306);
+            HashtblAddExn(x_297.prop, "display", x_305);
+            return MakeUnit();
+          } else if (x_3621 == "position") {
+            WriteMetric(x_306);
+            HashtblForceRemove(x_297.prop, "position");
+            WriteMetric(x_306);
+            HashtblAddExn(x_297.prop, "position", x_305);
+            return MakeUnit();
+          } else if (x_3621 == "flex-shrink") {
+            WriteMetric(x_306);
+            HashtblForceRemove(x_297.prop, "flex-shrink");
+            WriteMetric(x_306);
+            HashtblAddExn(x_297.prop, "flex-shrink", x_305);
+            return MakeUnit();
+          } else if (x_3621 == "flex-direction") {
+            WriteMetric(x_306);
+            HashtblForceRemove(x_297.prop, "flex-direction");
+            WriteMetric(x_306);
+            HashtblAddExn(x_297.prop, "flex-direction", x_305);
+            return MakeUnit();
+          } else {
+            return MakeUnit();
+          }
+        } else {
+          return Panic();
+        }
+      },
+      [&](const auto &x_298) {
+        return [&](const auto &x_299) {
+          return x_292(MakePair(MakePair(x_299, ListNthExn(x_297.children, x_298)), x_295));
+        };
+      });
+}
+auto replace_value_x_9(const auto &x_293) { return x_292(x_293); }
+auto x_307(const auto &x_308) {
+  auto x_309 = Zro(x_308);
+  auto x_310 = Fst(x_308);
+  auto x_311 = Zro(x_309);
+  auto x_312 = Fst(x_309);
+  return ListMatch(
+      x_311, [&](const auto &x_319) { return Panic(); },
+      [&](const auto &x_313) {
+        return [&](const auto &x_314) {
           return ListMatch(
-              x_318,
-              [&](const auto &x_321) {
-                OutputChangeMetric(x_314, layout_size_x_3(ListNthExn(x_316.children, x_317)));
-                auto x_322 = ListSplitN(x_316.children, x_317);
-                x_316.children = ListAppend(Zro(x_322), ListTailExn(Fst(x_322)));
+              x_314,
+              [&](const auto &x_317) {
+                OutputChangeMetric(x_310, layout_size_x_3(ListNthExn(x_312.children, x_313)));
+                auto x_318 = ListSplitN(x_312.children, x_313);
+                x_312.children = ListAppend(Zro(x_318), ListTailExn(Fst(x_318)));
               },
-              [&](const auto &x_319) {
-                return [&](const auto &x_320) {
-                  return x_311(MakePair(MakePair(x_318, ListNthExn(x_316.children, x_317)), x_314));
+              [&](const auto &x_315) {
+                return [&](const auto &x_316) {
+                  return x_307(MakePair(MakePair(x_314, ListNthExn(x_312.children, x_313)), x_310));
                 };
               });
         };
       });
 }
-auto remove_layout_node_x_8(const auto &x_312) { return x_311(x_312); }
-auto x_324(const auto &x_325) {
-  auto x_326 = Zro(x_325);
-  auto x_327 = Fst(x_325);
-  auto x_328 = Zro(x_326);
-  auto x_329 = Fst(x_326);
+auto remove_layout_node_x_8(const auto &x_308) { return x_307(x_308); }
+auto x_320(const auto &x_321) {
+  auto x_322 = Zro(x_321);
+  auto x_323 = Fst(x_321);
+  auto x_324 = Zro(x_322);
+  auto x_325 = Fst(x_322);
   return ListMatch(
-      x_328, [&](const auto &x_407) { return Panic(); },
-      [&](const auto &x_330) {
-        return [&](const auto &x_331) {
+      x_324, [&](const auto &x_403) { return Panic(); },
+      [&](const auto &x_326) {
+        return [&](const auto &x_327) {
           return ListMatch(
-              x_331,
-              [&](const auto &x_334) {
-                InputChangeMetric(x_327, node_size_x_4(ListNthExn(x_329.children, x_330)));
-                auto x_335 = ListSplitN(x_329.children, x_330);
-                auto x_336 = Zro(x_335);
-                auto x_337 = Fst(x_335);
+              x_327,
+              [&](const auto &x_330) {
+                InputChangeMetric(x_323, node_size_x_4(ListNthExn(x_325.children, x_326)));
+                auto x_331 = ListSplitN(x_325.children, x_326);
+                auto x_332 = Zro(x_331);
+                auto x_333 = Fst(x_331);
                 return ListMatch(
-                    x_337, [&](const auto &x_406) { return Panic(); },
-                    [&](const auto &x_338) {
-                      return [&](const auto &x_339) {
-                        x_329.children = ListAppend(x_336, x_339);
+                    x_333, [&](const auto &x_402) { return Panic(); },
+                    [&](const auto &x_334) {
+                      return [&](const auto &x_335) {
+                        x_325.children = ListAppend(x_332, x_335);
                         return MakeUnit();
                       };
                     });
               },
-              [&](const auto &x_332) {
-                return [&](const auto &x_333) {
-                  return x_324(MakePair(MakePair(x_331, ListNthExn(x_329.children, x_330)), x_327));
+              [&](const auto &x_328) {
+                return [&](const auto &x_329) {
+                  return x_320(MakePair(MakePair(x_327, ListNthExn(x_325.children, x_326)), x_323));
                 };
               });
         };
       });
 }
-auto remove_node_x_7(const auto &x_325) { return x_324(x_325); }
-auto x_408(const auto &x_409) {
-  auto x_410 = Zro(x_409);
-  auto x_411 = Fst(x_409);
-  auto x_412 = Zro(x_410);
-  auto x_413 = Fst(x_410);
+auto remove_node_x_7(const auto &x_321) { return x_320(x_321); }
+auto x_404(const auto &x_405) {
+  auto x_406 = Zro(x_405);
+  auto x_407 = Fst(x_405);
+  auto x_408 = Zro(x_406);
+  auto x_409 = Fst(x_406);
   return ListMatch(
-      x_412, [&](const auto &x_422) { return Panic(); },
-      [&](const auto &x_414) {
-        return [&](const auto &x_415) {
+      x_408, [&](const auto &x_418) { return Panic(); },
+      [&](const auto &x_410) {
+        return [&](const auto &x_411) {
           return ListMatch(
-              x_415,
-              [&](const auto &x_418) {
-                auto x_419 = Zro(x_411);
-                auto x_420 = Fst(x_411);
-                OutputChangeMetric(x_420, layout_size_x_3(x_419));
-                auto x_421 = ListSplitN(x_413.children, x_414);
-                x_413.children = ListAppend(Zro(x_421), Cons(x_419, Fst(x_421)));
+              x_411,
+              [&](const auto &x_414) {
+                auto x_415 = Zro(x_407);
+                auto x_416 = Fst(x_407);
+                OutputChangeMetric(x_416, layout_size_x_3(x_415));
+                auto x_417 = ListSplitN(x_409.children, x_410);
+                x_409.children = ListAppend(Zro(x_417), Cons(x_415, Fst(x_417)));
               },
-              [&](const auto &x_416) {
-                return [&](const auto &x_417) {
-                  return x_408(MakePair(MakePair(x_415, ListNthExn(x_413.children, x_414)), x_411));
+              [&](const auto &x_412) {
+                return [&](const auto &x_413) {
+                  return x_404(MakePair(MakePair(x_411, ListNthExn(x_409.children, x_410)), x_407));
                 };
               });
         };
       });
 }
-auto add_layout_node_x_6(const auto &x_409) { return x_408(x_409); }
-auto x_423(const auto &x_424) {
-  auto x_425 = Zro(x_424);
-  auto x_426 = Fst(x_424);
-  auto x_427 = Zro(x_425);
-  auto x_428 = Fst(x_425);
+auto add_layout_node_x_6(const auto &x_405) { return x_404(x_405); }
+auto x_419(const auto &x_420) {
+  auto x_421 = Zro(x_420);
+  auto x_422 = Fst(x_420);
+  auto x_423 = Zro(x_421);
+  auto x_424 = Fst(x_421);
   return ListMatch(
-      x_427, [&](const auto &x_505) { return Panic(); },
-      [&](const auto &x_429) {
-        return [&](const auto &x_430) {
+      x_423, [&](const auto &x_501) { return Panic(); },
+      [&](const auto &x_425) {
+        return [&](const auto &x_426) {
           return ListMatch(
-              x_430,
-              [&](const auto &x_433) {
-                auto x_434 = Zro(x_426);
-                auto x_435 = Fst(x_426);
-                InputChangeMetric(x_435, node_size_x_4(x_434));
-                auto x_436 = ListSplitN(x_428.children, x_429);
-                auto x_437 = Zro(x_436);
-                auto x_438 = Fst(x_436);
-                x_428.children = ListAppend(x_437, Cons(x_434, x_438));
-                x_434.parent = Some(x_428);
+              x_426,
+              [&](const auto &x_429) {
+                auto x_430 = Zro(x_422);
+                auto x_431 = Fst(x_422);
+                InputChangeMetric(x_431, node_size_x_4(x_430));
+                auto x_432 = ListSplitN(x_424.children, x_425);
+                auto x_433 = Zro(x_432);
+                auto x_434 = Fst(x_432);
+                x_424.children = ListAppend(x_433, Cons(x_430, x_434));
+                x_430.parent = Some(x_424);
                 return MakeUnit();
               },
-              [&](const auto &x_431) {
-                return [&](const auto &x_432) {
-                  return x_423(MakePair(MakePair(x_430, ListNthExn(x_428.children, x_429)), x_426));
+              [&](const auto &x_427) {
+                return [&](const auto &x_428) {
+                  return x_419(MakePair(MakePair(x_426, ListNthExn(x_424.children, x_425)), x_422));
                 };
               });
         };
       });
 }
-auto add_node_x_5(const auto &x_424) { return x_423(x_424); }
-auto x_506(const auto &x_507) {
-  return IntAdd(1, ListIntSum(x_507.children, [&](const auto &x_508) { return x_506(x_508); }));
+auto add_node_x_5(const auto &x_420) { return x_419(x_420); }
+auto x_502(const auto &x_503) {
+  return IntAdd(1, ListIntSum(x_503.children, [&](const auto &x_504) { return x_502(x_504); }));
 }
-auto node_size_x_4(const auto &x_507) { return x_506(x_507); }
-auto x_509(const auto &x_510) {
-  return IntAdd(1, ListIntSum(x_510.children, [&](const auto &x_511) { return x_509(x_511); }));
+auto node_size_x_4(const auto &x_503) { return x_502(x_503); }
+auto x_505(const auto &x_506) {
+  return IntAdd(1, ListIntSum(x_506.children, [&](const auto &x_507) { return x_505(x_507); }));
 }
-auto layout_size_x_3(const auto &x_510) { return x_509(x_510); }
-auto x_512(const auto &x_513) {
+auto layout_size_x_3(const auto &x_506) { return x_505(x_506); }
+auto x_508(const auto &x_509) {
   return MakeLayoutNode(
-      ListMap(JsonToList(JsonMember("children", x_513)), [&](const auto &x_514) { return x_512(x_514); }));
+      ListMap(JsonToList(JsonMember("children", x_509)), [&](const auto &x_510) { return x_508(x_510); }));
 }
-auto json_to_layout_node_x_2(const auto &x_513) { return x_512(x_513); }
-auto x_515(const auto &x_516) {
-  return MakeNode(x_516.name, x_516.attr, x_516.prop, x_516.extern_id,
-                  ListMap(x_516.children, [&](const auto &x_517) { return x_515(x_517); }));
+auto json_to_layout_node_x_2(const auto &x_509) { return x_508(x_509); }
+auto x_511(const auto &x_512) {
+  return MakeNode(x_512.name, x_512.attr, x_512.prop, x_512.extern_id,
+                  ListMap(x_512.children, [&](const auto &x_513) { return x_511(x_513); }));
 }
-auto node_to_fs_node_x_1(const auto &x_516) { return x_515(x_516); }
-auto x_518(const auto &x_519) {
-  return MakeNode(JsonToString(JsonMember("name", x_519)), JsonToDict(JsonMember("attributes", x_519)),
-                  JsonToDict(JsonMember("properties", x_519)), JsonToInt(JsonMember("id", x_519)),
-                  ListMap(JsonToList(JsonMember("children", x_519)), [&](const auto &x_520) { return x_518(x_520); }));
+auto node_to_fs_node_x_1(const auto &x_512) { return x_511(x_512); }
+auto x_514(const auto &x_515) {
+  return MakeNode(JsonToString(JsonMember("name", x_515)), JsonToDict(JsonMember("attributes", x_515)),
+                  JsonToDict(JsonMember("properties", x_515)), JsonToInt(JsonMember("id", x_515)),
+                  ListMap(JsonToList(JsonMember("children", x_515)), [&](const auto &x_516) { return x_514(x_516); }));
 }
-auto json_to_node_aux_x_0(const auto &x_519) { return x_518(x_519); }
+auto json_to_node_aux_x_0(const auto &x_515) { return x_514(x_515); }
 int main() {
-  return WithOutFile("hn_type.out", [&](const auto &x_14) {
+  return WithOutFile("hn_type.out", [&](const auto &x_12) {
     PrintEndline("RUNNING FS");
-    return WithInFile("command.json", [&](const auto &x_15) {
-      auto x_16 = MakeRef(0);
-      auto x_17 = FreshMetric();
-      auto x_18 = JsonOfString(InputLine(x_15));
-      auto x_19 = JsonOfString(InputLine(x_15));
-      auto x_20 = MakeStack();
-      PushStack(x_20, x_18);
-      PushStack(x_20, x_19);
-      Assert(StringEqual(JsonToString(JsonMember("name", x_18)), "init"));
-      Assert(StringEqual(JsonToString(JsonMember("name", x_19)), "layout_init"));
-      auto x_23 = [&]() {
-        auto x_21 = json_to_node_aux_x_0(JsonMember("node", x_18));
-        x_21.parent = None();
-        x_21.prev = None();
-        x_21.next = None();
-        return x_21;
+    return WithInFile("command.json", [&](const auto &x_13) {
+      auto x_14 = MakeRef(0);
+      auto x_15 = FreshMetric();
+      auto x_16 = JsonOfString(InputLine(x_13));
+      auto x_17 = JsonOfString(InputLine(x_13));
+      auto x_18 = MakeStack();
+      PushStack(x_18, x_16);
+      PushStack(x_18, x_17);
+      Assert(StringEqual(JsonToString(JsonMember("name", x_16)), "init"));
+      Assert(StringEqual(JsonToString(JsonMember("name", x_17)), "layout_init"));
+      auto x_21 = [&]() {
+        auto x_19 = json_to_node_aux_x_0(JsonMember("node", x_16));
+        x_19.parent = None();
+        x_19.prev = None();
+        x_19.next = None();
+        return x_19;
       }();
-      auto x_24 = json_to_layout_node_x_2(JsonMember("node", x_19));
-      OutputChangeMetric(x_17, layout_size_x_3(x_24));
-      InputChangeMetric(x_17, node_size_x_4(x_23));
+      auto x_22 = json_to_layout_node_x_2(JsonMember("node", x_17));
+      OutputChangeMetric(x_15, layout_size_x_3(x_22));
+      InputChangeMetric(x_15, node_size_x_4(x_21));
       JsonToChannel(
-          x_14,
+          x_12,
           AssocToJson(Cons(
               MakePair("name", StringToJson("FS")),
               Cons(
-                  MakePair("diff_num", IntToJson(ReadRef(x_16))),
-                  Cons(MakePair("read_count", IntToJson(MetricReadCount(x_17))),
-                       Cons(MakePair("meta_read_count", IntToJson(MetricMetaReadCount(x_17))),
-                            Cons(MakePair("write_count", IntToJson(MetricWriteCount(x_17))),
-                                 Cons(MakePair("meta_write_count", IntToJson(MetricMetaWriteCount(x_17))),
-                                      Cons(MakePair("queue_size_acc", IntToJson(MetricQueueSizeAcc(x_17))),
-                                           Cons(MakePair("input_change_count", IntToJson(MetricInputChangeCount(x_17))),
+                  MakePair("diff_num", IntToJson(ReadRef(x_14))),
+                  Cons(MakePair("read_count", IntToJson(MetricReadCount(x_15))),
+                       Cons(MakePair("meta_read_count", IntToJson(MetricMetaReadCount(x_15))),
+                            Cons(MakePair("write_count", IntToJson(MetricWriteCount(x_15))),
+                                 Cons(MakePair("meta_write_count", IntToJson(MetricMetaWriteCount(x_15))),
+                                      Cons(MakePair("queue_size_acc", IntToJson(MetricQueueSizeAcc(x_15))),
+                                           Cons(MakePair("input_change_count", IntToJson(MetricInputChangeCount(x_15))),
                                                 Cons(MakePair("output_change_count",
-                                                              IntToJson(MetricOutputChangeCount(x_17))),
+                                                              IntToJson(MetricOutputChangeCount(x_15))),
                                                      Cons(MakePair("html", StringToJson("")),
-                                                          Cons(MakePair("command", ListToJson(StackToList(x_20))),
+                                                          Cons(MakePair("command", ListToJson(StackToList(x_18))),
                                                                Nil())))))))))))));
-      OutputString(x_14, "\n");
-      ResetMetric(x_17);
-      ClearStack(x_20);
-      WriteRef(x_16, IntAdd(ReadRef(x_16), 1));
-      auto x_29 = [&]() {
-        auto x_27 = node_to_fs_node_x_1(x_23);
-        x_27.parent = None();
-        x_27.prev = None();
-        x_27.next = None();
-        return x_27;
+      OutputString(x_12, "\n");
+      ClearStack(x_18);
+      WriteRef(x_14, IntAdd(ReadRef(x_14), 1));
+      auto x_27 = [&]() {
+        auto x_25 = node_to_fs_node_x_1(x_21);
+        x_25.parent = None();
+        x_25.prev = None();
+        x_25.next = None();
+        return x_25;
       }();
-      AssertNodeValueEqual(x_23, x_29);
+      AssertNodeValueEqual(x_21, x_27);
+      ResetMetric(x_15);
       PrintEndline("EVAL OK!");
-      IterLines(x_15, [&](const auto &x_32) {
-        auto x_33 = JsonOfString(x_32);
-        PushStack(x_20, x_33);
-        std::string x_3814 = JsonToString(JsonMember("name", x_33));
-        if (x_3814 == "add") {
+      IterLines(x_13, [&](const auto &x_30) {
+        auto x_31 = JsonOfString(x_30);
+        PushStack(x_18, x_31);
+        std::string x_3622 = JsonToString(JsonMember("name", x_31));
+        if (x_3622 == "add") {
           return add_node_x_5(MakePair(
-              MakePair(ListMap(JsonToList(JsonMember("path", x_33)), [&](const auto &x_36) { return JsonToInt(x_36); }),
-                       x_23),
+              MakePair(ListMap(JsonToList(JsonMember("path", x_31)), [&](const auto &x_34) { return JsonToInt(x_34); }),
+                       x_21),
               MakePair(
                   [&]() {
-                    auto x_34 = json_to_node_aux_x_0(JsonMember("node", x_33));
-                    x_34.parent = None();
-                    x_34.prev = None();
-                    x_34.next = None();
-                    return x_34;
+                    auto x_32 = json_to_node_aux_x_0(JsonMember("node", x_31));
+                    x_32.parent = None();
+                    x_32.prev = None();
+                    x_32.next = None();
+                    return x_32;
                   }(),
-                  x_17)));
-        } else if (x_3814 == "recalculate") {
+                  x_15)));
+        } else if (x_3622 == "recalculate") {
           JsonToChannel(
-              x_14,
+              x_12,
               AssocToJson(Cons(
                   MakePair("name", StringToJson("FS")),
-                  Cons(MakePair("diff_num", IntToJson(ReadRef(x_16))),
-                       Cons(MakePair("read_count", IntToJson(MetricReadCount(x_17))),
-                            Cons(MakePair("meta_read_count", IntToJson(MetricMetaReadCount(x_17))),
-                                 Cons(MakePair("write_count", IntToJson(MetricWriteCount(x_17))),
-                                      Cons(MakePair("meta_write_count", IntToJson(MetricMetaWriteCount(x_17))),
-                                           Cons(MakePair("queue_size_acc", IntToJson(MetricQueueSizeAcc(x_17))),
+                  Cons(MakePair("diff_num", IntToJson(ReadRef(x_14))),
+                       Cons(MakePair("read_count", IntToJson(MetricReadCount(x_15))),
+                            Cons(MakePair("meta_read_count", IntToJson(MetricMetaReadCount(x_15))),
+                                 Cons(MakePair("write_count", IntToJson(MetricWriteCount(x_15))),
+                                      Cons(MakePair("meta_write_count", IntToJson(MetricMetaWriteCount(x_15))),
+                                           Cons(MakePair("queue_size_acc", IntToJson(MetricQueueSizeAcc(x_15))),
                                                 Cons(MakePair("input_change_count",
-                                                              IntToJson(MetricInputChangeCount(x_17))),
+                                                              IntToJson(MetricInputChangeCount(x_15))),
                                                      Cons(MakePair("output_change_count",
-                                                                   IntToJson(MetricOutputChangeCount(x_17))),
+                                                                   IntToJson(MetricOutputChangeCount(x_15))),
                                                           Cons(MakePair("html", StringToJson("")),
-                                                               Cons(MakePair("command", ListToJson(StackToList(x_20))),
+                                                               Cons(MakePair("command", ListToJson(StackToList(x_18))),
                                                                     Nil())))))))))))));
-          OutputString(x_14, "\n");
-          ResetMetric(x_17);
-          ClearStack(x_20);
-          WriteRef(x_16, IntAdd(ReadRef(x_16), 1));
-          auto x_39 = [&]() {
-            auto x_37 = node_to_fs_node_x_1(x_23);
-            x_37.parent = None();
-            x_37.prev = None();
-            x_37.next = None();
-            return x_37;
+          OutputString(x_12, "\n");
+          ClearStack(x_18);
+          WriteRef(x_14, IntAdd(ReadRef(x_14), 1));
+          auto x_37 = [&]() {
+            auto x_35 = node_to_fs_node_x_1(x_21);
+            x_35.parent = None();
+            x_35.prev = None();
+            x_35.next = None();
+            return x_35;
           }();
-          AssertNodeValueEqual(x_23, x_39);
+          AssertNodeValueEqual(x_21, x_37);
+          ResetMetric(x_15);
           return MakeUnit();
-        } else if (x_3814 == "remove") {
+        } else if (x_3622 == "remove") {
           return remove_node_x_7(MakePair(
-              MakePair(ListMap(JsonToList(JsonMember("path", x_33)), [&](const auto &x_40) { return JsonToInt(x_40); }),
-                       x_23),
-              x_17));
-        } else if (x_3814 == "replace") {
-          return replace_node_x_9(MakePair(
-              MakePair(ListMap(JsonToList(JsonMember("path", x_33)), [&](const auto &x_43) { return JsonToInt(x_43); }),
-                       x_23),
-              MakePair(
-                  [&]() {
-                    auto x_41 = json_to_node_aux_x_0(JsonMember("node", x_33));
-                    x_41.parent = None();
-                    x_41.prev = None();
-                    x_41.next = None();
-                    return x_41;
-                  }(),
-                  x_17)));
-        } else if (x_3814 == "replace_value") {
-          return replace_value_x_11(MakePair(
-              MakePair(ListMap(JsonToList(JsonMember("path", x_33)), [&](const auto &x_44) { return JsonToInt(x_44); }),
-                       x_23),
-              MakePair(MakePair(JsonToString(JsonMember("type", x_33)), JsonToString(JsonMember("key", x_33))),
-                       MakePair(JsonToValue(JsonMember("value", x_33)), x_17))));
-        } else if (x_3814 == "delete_value") {
-          return delete_value_x_12(MakePair(
-              MakePair(ListMap(JsonToList(JsonMember("path", x_33)), [&](const auto &x_45) { return JsonToInt(x_45); }),
-                       x_23),
-              MakePair(MakePair(JsonToString(JsonMember("type", x_33)), JsonToString(JsonMember("key", x_33))), x_17)));
-        } else if (x_3814 == "insert_value") {
-          return insert_value_x_13(MakePair(
-              MakePair(ListMap(JsonToList(JsonMember("path", x_33)), [&](const auto &x_46) { return JsonToInt(x_46); }),
-                       x_23),
-              MakePair(MakePair(JsonToString(JsonMember("type", x_33)), JsonToString(JsonMember("key", x_33))),
-                       MakePair(JsonToValue(JsonMember("value", x_33)), x_17))));
-        } else if (x_3814 == "layout_remove") {
+              MakePair(ListMap(JsonToList(JsonMember("path", x_31)), [&](const auto &x_38) { return JsonToInt(x_38); }),
+                       x_21),
+              x_15));
+        } else if (x_3622 == "replace") {
+          return replace_node_x_42(MakePair(
+              MakePair(ListMap(JsonToList(JsonMember("path", x_31)), [&](const auto &x_41) { return JsonToInt(x_41); }),
+                       x_21),
+              [&]() {
+                auto x_39 = json_to_node_aux_x_0(JsonMember("node", x_31));
+                x_39.parent = None();
+                x_39.prev = None();
+                x_39.next = None();
+                return x_39;
+              }()));
+        } else if (x_3622 == "replace_value") {
+          return replace_value_x_9(MakePair(
+              MakePair(ListMap(JsonToList(JsonMember("path", x_31)), [&](const auto &x_43) { return JsonToInt(x_43); }),
+                       x_21),
+              MakePair(MakePair(JsonToString(JsonMember("type", x_31)), JsonToString(JsonMember("key", x_31))),
+                       MakePair(JsonToValue(JsonMember("value", x_31)), x_15))));
+        } else if (x_3622 == "delete_value") {
+          return delete_value_x_10(MakePair(
+              MakePair(ListMap(JsonToList(JsonMember("path", x_31)), [&](const auto &x_44) { return JsonToInt(x_44); }),
+                       x_21),
+              MakePair(MakePair(JsonToString(JsonMember("type", x_31)), JsonToString(JsonMember("key", x_31))), x_15)));
+        } else if (x_3622 == "insert_value") {
+          return insert_value_x_11(MakePair(
+              MakePair(ListMap(JsonToList(JsonMember("path", x_31)), [&](const auto &x_45) { return JsonToInt(x_45); }),
+                       x_21),
+              MakePair(MakePair(JsonToString(JsonMember("type", x_31)), JsonToString(JsonMember("key", x_31))),
+                       MakePair(JsonToValue(JsonMember("value", x_31)), x_15))));
+        } else if (x_3622 == "layout_remove") {
           return remove_layout_node_x_8(MakePair(
-              MakePair(ListMap(JsonToList(JsonMember("path", x_33)), [&](const auto &x_47) { return JsonToInt(x_47); }),
-                       x_24),
-              x_17));
-        } else if (x_3814 == "layout_add") {
+              MakePair(ListMap(JsonToList(JsonMember("path", x_31)), [&](const auto &x_46) { return JsonToInt(x_46); }),
+                       x_22),
+              x_15));
+        } else if (x_3622 == "layout_add") {
           return add_layout_node_x_6(MakePair(
-              MakePair(ListMap(JsonToList(JsonMember("path", x_33)), [&](const auto &x_48) { return JsonToInt(x_48); }),
-                       x_24),
-              MakePair(json_to_layout_node_x_2(JsonMember("node", x_33)), x_17)));
-        } else if (x_3814 == "layout_replace") {
-          return replace_layout_node_x_10(MakePair(
-              MakePair(ListMap(JsonToList(JsonMember("path", x_33)), [&](const auto &x_49) { return JsonToInt(x_49); }),
-                       x_24),
-              MakePair(json_to_layout_node_x_2(JsonMember("node", x_33)), x_17)));
-        } else if (x_3814 == "layout_info_changed") {
-          return OutputChangeMetric(x_17, 1);
+              MakePair(ListMap(JsonToList(JsonMember("path", x_31)), [&](const auto &x_47) { return JsonToInt(x_47); }),
+                       x_22),
+              MakePair(json_to_layout_node_x_2(JsonMember("node", x_31)), x_15)));
+        } else if (x_3622 == "layout_replace") {
+          return replace_layout_node_x_49(MakePair(
+              MakePair(ListMap(JsonToList(JsonMember("path", x_31)), [&](const auto &x_48) { return JsonToInt(x_48); }),
+                       x_22),
+              json_to_layout_node_x_2(JsonMember("node", x_31))));
+        } else if (x_3622 == "layout_info_changed") {
+          return OutputChangeMetric(x_15, 1);
         } else {
           return Panic();
         }

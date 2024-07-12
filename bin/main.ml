@@ -191,15 +191,17 @@ let rec simplify x =
       recurse x
   | CApp (CPF "OptionMatch", [ x; CFun (_, CPanic _); y ]) -> recurse (CApp (y, [ CApp (CPF "UnSome", [ x ]) ]))
   | CApp (CPF "OptionMatch", [ CApp (CPF "Some", [ x ]); y; z ]) -> recurse (CSeq [ y; CApp (z, [ x ]) ])
-  | CApp (CPF "BoolOfValue", [ CApp (CPF "VBool", [ x ]) ]) -> recurse x
   | CApp (CPF "ListIter", [ x; CFun (_, CApp (CPF "MakeUnit", [])) ]) -> recurse x
-  | CApp (CPF "BoolOfValue", [ CApp (CPF "eq", [ CApp (CPF "VString", [ x ]); CApp (CPF "VString", [ y ]) ]) ]) ->
-      recurse (CApp (CPF "StringEqual", [ x; y ]))
   | CApp (CPF "UnSome", [ CApp (CPF "Some", [ x ]) ]) -> recurse x
   | CApp (CPF "UnSome", [ CApp (CPF "HashtblFind", [ x; y ]) ]) -> recurse (CApp (CPF "HashtblForceFind", [ x; y ]))
-  | CApp (CPF "HashtblForceFind", [ CGetMember (x, "var"); CString f ]) -> CGetMember (x, "var_" ^ f)
+  | CApp (CPF "HashtblForceFind", [ CGetMember (x, "var"); CString f ]) -> recurse (CGetMember (x, "var_" ^ f))
+  | CApp (CPF "HashtblSet", [ CGetMember (x, "var"); CString f; v ]) -> recurse (CSetMember (x, "var_" ^ f, v))
+  | CApp (CPF "BoolOfValue", [ x ]) -> recurse x
+  | CApp (CPF "VBool", [ x ]) -> recurse x
+  | CApp (CPF "VString", [ x ]) -> recurse x
+  | CApp (CPF "VFloat", [ x ]) -> recurse x
   | CApp (CFun (xname, body), [ x ]) -> recurse (CLet (xname, x, body))
-  | CIf (i, CApp (CPF "MakeUnit", []), CApp (CPF "MakeUnit", [])) -> CSeq [ i; CApp (CPF "MakeUnit", []) ]
+  | CIf (i, CApp (CPF "MakeUnit", []), CApp (CPF "MakeUnit", [])) -> recurse (CSeq [ i; CApp (CPF "MakeUnit", []) ])
   | CPanic xs -> CPanic (recurse xs)
   | CSeq [ x ] -> x
   | CSeq xs ->
@@ -221,6 +223,9 @@ let rec simplify x =
            ~f:recurse)
   | CLet (lhs, rhs, CVar body) -> if String.equal lhs body then recurse rhs else CSeq [ rhs; CVar body ]
   | CIf (i, t, e) -> CIf (recurse i, recurse t, recurse e)
+  | CAnd (l, r) -> CAnd (recurse l, recurse r)
+  | COr (l, r) -> COr (recurse l, recurse r)
+  | CNot i -> CNot (recurse i)
   | CApp (f, xs) -> CApp (recurse f, List.map xs ~f:recurse)
   | CLet (lhs, rhs, body) -> CLet (lhs, recurse rhs, recurse body)
   | CFix (fname, xname, body) -> CFix (fname, xname, recurse body)
@@ -255,7 +260,7 @@ let rec compile_stmt c x =
       output_string c "}else{";
       compile_stmt c e;
       output_string c "}"
-  | CApp _ | CVar _ | CPanic _ | CFun _ | CGetMember _ ->
+  | CApp _ | CVar _ | CPanic _ | CFun _ | CGetMember _ | CBool _ | CAnd _ | CString _ | CFloat _ ->
       output_string c "return ";
       compile_expr c x;
       output_string c ";"
@@ -325,6 +330,34 @@ and compile_expr c x =
       output_string c "[&](){";
       compile_stmt c x;
       output_string c "}()"
+  | CApp (CPF "IsSome", [ CGetMember (x, (("parent" | "prev") as y)) ]) ->
+      output_string c "(";
+      compile_expr c x;
+      output_string c ".";
+      output_string c y;
+      output_string c " == nullptr)"
+  | CApp (CPF "UnSome", [ CGetMember (x, (("parent" | "prev") as y)) ]) ->
+      output_string c "(*(";
+      compile_expr c x;
+      output_string c ".";
+      output_string c y;
+      output_string c "))"
+  | CAnd (l, r) ->
+      output_string c "(";
+      compile_expr c l;
+      output_string c " && ";
+      compile_expr c r;
+      output_string c ")"
+  | COr (l, r) ->
+      output_string c "(";
+      compile_expr c l;
+      output_string c " || ";
+      compile_expr c r;
+      output_string c ")"
+  | CNot x ->
+      output_string c "(!";
+      compile_expr c x;
+      output_string c ")"
   | CPanic xs -> output_string c "Panic()"
   | CString str -> output_string c (quoted str)
   | CGetMember (x, f) ->
@@ -524,40 +557,34 @@ module Main (EVAL : Eval) = struct
   let remove_layout_node (path : int list sd) (x : layout_node sd) (m : metric sd) : unit sd =
     app remove_layout_node_aux (make_pair (make_pair path x) m)
 
-  let replace_node_aux =
-    follow_path_last "replace_node" (fun i x r ->
-        let_ (zro r) (fun y ->
-            let_ (fst r) (fun m ->
-                seqs
-                  [
-                    (fun _ ->
-                      input_change_metric m (int_add (node_size (list_nth_exn (node_get_children x) i)) (node_size y)));
-                    (fun _ -> EVAL.remove_children prog x i m);
-                    (fun _ -> EVAL.add_children prog x y i m);
-                  ])))
+  let replace_node_aux m =
+    follow_path_last "replace_node" (fun i x y ->
+        seqs
+          [
+            (fun _ -> input_change_metric m (int_add (node_size (list_nth_exn (node_get_children x) i)) (node_size y)));
+            (fun _ -> EVAL.remove_children prog x i m);
+            (fun _ -> EVAL.add_children prog x y i m);
+          ])
 
   let replace_node (path : int list sd) (x : _ node sd) (y : _ node sd) (m : metric sd) : unit sd =
-    app replace_node_aux (make_pair (make_pair path x) (make_pair y m))
+    app (replace_node_aux m) (make_pair (make_pair path x) y)
 
-  let replace_layout_node_aux =
-    follow_layout_path_last "replace_layout_node" (fun i x r ->
-        let_ (zro r) (fun y ->
-            let_ (fst r) (fun m ->
-                let_
-                  (list_split_n (layout_node_get_children x) i)
-                  (fun splitted ->
-                    seqs
-                      [
-                        (fun _ ->
-                          output_change_metric m
-                            (int_add (layout_size (list_nth_exn (layout_node_get_children x) i)) (layout_size y)));
-                        (fun _ ->
-                          layout_node_set_children x
-                            (list_append (zro splitted) (cons y (fst splitted |> list_tail_exn))));
-                      ]))))
+  let replace_layout_node_aux m =
+    follow_layout_path_last "replace_layout_node" (fun i x y ->
+        let_
+          (list_split_n (layout_node_get_children x) i)
+          (fun splitted ->
+            seqs
+              [
+                (fun _ ->
+                  output_change_metric m
+                    (int_add (layout_size (list_nth_exn (layout_node_get_children x) i)) (layout_size y)));
+                (fun _ ->
+                  layout_node_set_children x (list_append (zro splitted) (cons y (fst splitted |> list_tail_exn))));
+              ]))
 
   let replace_layout_node (path : int list sd) (x : layout_node sd) (y : layout_node sd) (m : metric sd) : unit sd =
-    app replace_layout_node_aux (make_pair (make_pair path x) (make_pair y m))
+    app (replace_layout_node_aux m) (make_pair (make_pair path x) y)
 
   let follow_path str (f : 'a node sd -> 'b sd -> unit sd) : ((int list * 'a node) * 'b -> unit) sd =
     lift str
@@ -730,15 +757,14 @@ module Main (EVAL : Eval) = struct
                                                                       (list_to_json (stack_to_list command));
                                                                   ])));
                                                         (fun _ -> output_string out_file (string "\n"));
-                                                        (fun _ -> reset_metric m);
                                                         (fun _ -> clear_stack command);
                                                         (fun _ ->
                                                           write_ref diff_num (int_add (read_ref diff_num) (int 1)));
                                                         (fun _ ->
                                                           let_ (node_to_fs_node n) (fun fsn ->
-                                                              seq
-                                                                (FS.eval prog fsn (fresh_metric ()))
-                                                                (fun _ -> assert_node_value_equal n fsn)));
+                                                              seq (FS.eval prog fsn m) (fun _ ->
+                                                                  assert_node_value_equal n fsn)));
+                                                        (fun _ -> reset_metric m);
                                                       ]
                                                   in
                                                   let work () : unit sd =

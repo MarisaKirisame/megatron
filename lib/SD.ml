@@ -21,6 +21,9 @@ type code =
   | CSetMember of code * string * code
   | CPanic of code
   | CStringMatch of code * (string * code) list * code
+  | CAnd of code * code
+  | COr of code * code
+  | CNot of code
 [@@deriving show, equal]
 
 module type SDIN = sig
@@ -160,6 +163,8 @@ module type SDIN = sig
   val list_is_empty : 'a list sd -> bool sd
   val list_length : 'a list sd -> int sd
   val unsome : 'a option sd -> 'a sd
+  val and_ : bool sd -> (unit -> bool sd) -> bool sd
+  val or_ : bool sd -> (unit -> bool sd) -> bool sd
 end
 
 module type SD = sig
@@ -437,6 +442,8 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
   let list_tail_exn l = match l with _ :: t -> t
   let list_hd x = match x with [] -> None | x :: _ -> Some x
   let list_is_empty l = List.is_empty l
+  let and_ l r = if l then r () else false
+  let or_ l r = if l then true else r ()
 end)
 
 module D : SD with type 'x sd = code = MakeSD (struct
@@ -603,4 +610,6 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let list_tail_exn l = CApp (CPF "ListTailExn", [ l ])
   let list_hd l = CApp (CPF "ListHead", [ l ])
   let list_is_empty l = CApp (CPF "ListIsEmpty", [ l ])
+  let and_ l r = CAnd (l, r ())
+  let or_ l r = COr (l, r ())
 end)
