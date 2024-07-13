@@ -46,6 +46,8 @@ type 'meta node = {
   mutable parent : 'meta node option;
   mutable next : 'meta node option;
   mutable prev : 'meta node option;
+  mutable first : 'meta node option;
+  mutable last : 'meta node option;
   m : 'meta;
 }
 

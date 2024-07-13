@@ -331,13 +331,13 @@ and compile_expr c x =
       output_string c "[&](){";
       compile_stmt c x;
       output_string c "}()"
-  | CApp (CPF "IsSome", [ CGetMember (x, (("parent" | "prev") as y)) ]) ->
+  | CApp (CPF "IsSome", [ CGetMember (x, (("parent" | "prev" | "next" | "first" | "last") as y)) ]) ->
       output_string c "(";
       compile_expr c x;
       output_string c ".";
       output_string c y;
       output_string c " == nullptr)"
-  | CApp (CPF "UnSome", [ CGetMember (x, (("parent" | "prev") as y)) ]) ->
+  | CApp (CPF "UnSome", [ CGetMember (x, (("parent" | "prev" | "next" | "first" | "last") as y)) ]) ->
       output_string c "(*(";
       compile_expr c x;
       output_string c ".";
@@ -417,23 +417,30 @@ module Main (EVAL : Eval) = struct
         (lift "set_children_relation"
            (lazy
              (fix (fun recurse (n : 'a node sd) ->
-                  seq
-                    (list_iter
-                       (list_zip (list_drop_last (node_get_children n)) (list_tl (node_get_children n)))
-                       (fun p ->
-                         let_ (zro p) (fun x ->
-                             let_ (fst p) (fun y ->
-                                 seqs
-                                   [
-                                     (fun _ -> node_set_parent x (n |> some));
-                                     (fun _ -> node_set_next x (y |> some));
-                                     (fun _ -> node_set_prev y (x |> some));
-                                     (fun _ -> recurse x);
-                                   ]))))
-                    (fun _ ->
-                      option_iter
-                        (n |> node_get_children |> list_last)
-                        (fun x -> seq (node_set_parent x (some n)) (fun _ -> recurse x)))))))
+                  seqs
+                    [
+                      (fun _ -> node_set_first n (none ()));
+                      (fun _ ->
+                        list_iter
+                          (list_zip (list_drop_last (node_get_children n)) (list_tl (node_get_children n)))
+                          (fun p ->
+                            let_ (zro p) (fun x ->
+                                let_ (fst p) (fun y ->
+                                    seqs
+                                      [
+                                        (fun _ -> node_set_parent x (n |> some));
+                                        (fun _ -> node_set_parent y (n |> some));
+                                        (fun _ -> node_set_next x (y |> some));
+                                        (fun _ -> node_set_prev y (x |> some));
+                                        (fun _ ->
+                                          ite
+                                            (is_none (node_get_first n))
+                                            (fun _ -> node_set_first n (x |> some))
+                                            (fun _ -> tt));
+                                        (fun _ -> node_set_last n (y |> some));
+                                        (fun _ -> recurse x);
+                                      ]))));
+                    ]))))
     in
     seqs
       [

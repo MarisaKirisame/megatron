@@ -76,6 +76,8 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
         parent = None;
         next = None;
         prev = None;
+        first = None;
+        last = None;
         m = unstatic (EI.fresh_meta tt);
       }
       |> static
@@ -229,6 +231,8 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                             (fun next -> node_set_prev next (node_get_prev removed)));
                         (fun _ -> remove_meta (node_get_meta removed));
                         (fun _ -> node_set_children x (list_append lhs rhs));
+                        (fun _ -> ite (list_is_empty lhs) (fun _ -> node_set_first x (list_hd rhs)) (fun _ -> tt));
+                        (fun _ -> ite (list_is_empty rhs) (fun _ -> node_set_last x (list_last lhs)) (fun _ -> tt));
                         (fun _ ->
                           seqs
                             (List.map (Hashtbl.to_alist p.procs) ~f:(fun (proc_name, _) _ ->
@@ -281,6 +285,8 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                 seqs
                   [
                     (fun _ -> node_set_children x (list_append lhs (cons y rhs)));
+                    (fun _ -> ite (list_is_empty lhs) (fun _ -> node_set_first x (some y)) (fun _ -> tt));
+                    (fun _ -> ite (list_is_empty rhs) (fun _ -> node_set_last x (some y)) (fun _ -> tt));
                     (fun _ ->
                       option_match (list_last lhs)
                         (fun _ -> node_set_prev y (none ()))

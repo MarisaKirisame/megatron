@@ -86,6 +86,10 @@ module type SDIN = sig
   val node_set_prev : 'a node sd -> 'a node option sd -> unit sd
   val node_get_next : 'a node sd -> 'a node option sd
   val node_set_next : 'a node sd -> 'a node option sd -> unit sd
+  val node_get_first : 'a node sd -> 'a node option sd
+  val node_set_first : 'a node sd -> 'a node option sd -> unit sd
+  val node_get_last : 'a node sd -> 'a node option sd
+  val node_set_last : 'a node sd -> 'a node option sd -> unit sd
   val node_get_children : 'a node sd -> 'a node list sd
   val node_set_children : 'a node sd -> 'a node list sd -> unit sd
   val node_get_prop : 'a node sd -> (string, value) Hashtbl.t sd
@@ -189,10 +193,10 @@ module MakeSD (SDIN : SDIN) : SD with type 'a sd = 'a SDIN.sd = struct
     match p with
     | Self -> some n
     | Parent -> node_get_parent n
-    | First -> list_hd (node_get_children n)
+    | First -> node_get_first n
     | Next -> node_get_next n
     | Prev -> node_get_prev n
-    | Last -> list_last (node_get_children n)
+    | Last -> node_get_last n
 
   let eval_path n p = unsome (eval_path_opt n p)
 end
@@ -298,6 +302,10 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
   let node_set_prev n v = n.prev <- v
   let node_get_next n = n.next
   let node_set_next n v = n.next <- v
+  let node_get_last n = n.last
+  let node_set_last n v = n.last <- v
+  let node_get_first n = n.first
+  let node_set_first n v = n.first <- v
   let node_get_prop n = n.prop
   let node_get_var n = n.var
   let node_get_attr n = n.attr
@@ -527,6 +535,10 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let node_set_prev n v = CSetMember (n, "prev", v)
   let node_get_next n = CGetMember (n, "next")
   let node_set_next n v = CSetMember (n, "next", v)
+  let node_get_last n = CGetMember (n, "last")
+  let node_set_last n v = CSetMember (n, "last", v)
+  let node_get_first n = CGetMember (n, "first")
+  let node_set_first n v = CSetMember (n, "first", v)
   let node_get_children n = CGetMember (n, "children")
   let node_set_children n v = CSetMember (n, "children", v)
   let node_get_prop n = CGetMember (n, "prop")
