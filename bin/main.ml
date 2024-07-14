@@ -155,6 +155,7 @@ let rec node_to_html_buffer (b : Buffer.t) (parent_x : int) (parent_y : int) (n 
 
 let truncate_length = 120
 let truncate str = if String.length str <= truncate_length then str else String.sub str ~pos:0 ~len:truncate_length
+let is_absolutely_pure_function f = false
 
 let is_pure_function f =
   match f with
@@ -164,7 +165,8 @@ let is_pure_function f =
       false
   | "MakeUnit" | "ListIsEmpty" | "IntEqual" | "ListLength" | "ListSplitN" | "Zro" | "Fst" | "FreshMetric" | "Cons"
   | "Nil" | "IsNone" | "HashtblForceFind" | "UnSome" | "ListLast" | "JsonMember" | "ListMatch" | "OptionIter"
-  | "OptionMatch" | "ListIter" | "HashtblFind" | "EqualValue" | "ListZip" | "ListDropLast" | "ListTl" | "ListHead" ->
+  | "OptionMatch" | "ListIter" | "HashtblFind" | "EqualValue" | "ListZip" | "ListDropLast" | "ListTl" | "ListHead"
+  | "ListHeadExn" | "ListTailExn" ->
       true
   | _ -> panic ("is_pure_function:" ^ f)
 
@@ -196,14 +198,16 @@ let rec simplify x =
   | CApp (CPF "UnSome", [ CApp (CPF "HashtblFind", [ x; y ]) ]) -> recurse (CApp (CPF "HashtblForceFind", [ x; y ]))
   | CApp (CPF "HashtblForceFind", [ CGetMember (x, "var"); CString f ]) -> recurse (CGetMember (x, "var_" ^ f))
   | CApp (CPF "HashtblSet", [ CGetMember (x, "var"); CString f; v ]) -> recurse (CSetMember (x, "var_" ^ f, v))
-  | CApp (CPF "BoolOfValue", [ x ]) -> recurse x
-  | CApp (CPF "VBool", [ x ]) -> recurse x
-  | CApp (CPF "VString", [ x ]) -> recurse x
-  | CApp (CPF "VFloat", [ x ]) -> recurse x
-  | CApp (CPF "VInt", [ x ]) -> recurse x
-  | CApp (CFun (xname, body), [ x ]) -> recurse (CLet (xname, x, body))
+  | CApp (CPF ("BoolOfValue" | "VBool" | "VString" | "VFloat" | "VInt"), [ x ]) -> recurse x
+  | CApp
+      ( CPF
+          (("WriteMetric" | "MetricWriteCount" | "MetricQueueSizeAcc" | "MetricMetaReadCount" | "MetricMetaWriteCount")
+          as f),
+        [ _ ] ) ->
+      CApp (CPF f, [])
+  | CApp (CPF (("OutputChangeMetric" | "InputChangeMetric") as f), [ _; i ]) -> CApp (CPF f, [ i ])
+  | CApp (CFun ([ xname ], body), [ x ]) -> recurse (CLet (xname, x, body))
   | CIf (i, CApp (CPF "MakeUnit", []), CApp (CPF "MakeUnit", [])) -> recurse (CSeq [ i; CApp (CPF "MakeUnit", []) ])
-  | CPanic xs -> CPanic (recurse xs)
   | CSeq [ x ] -> x
   | CSeq xs ->
       let xs, last = unsnoc xs in
@@ -216,13 +220,18 @@ let rec simplify x =
                       else
                         match x with
                         | CSeq xs -> xs
-                        | CApp (CPF f, xs) -> if is_pure_function f then xs else [ x ]
+                        | CApp (CPF f, xs) -> if is_absolutely_pure_function f then xs else [ x ]
                         | CIf _ | CLet _ | CSetMember _ -> [ x ]
                         | CFun _ -> []
                         | _ -> Megatron.Common.panic ("simplify_seq:" ^ truncate (show_code x)))))
               [ last ])
            ~f:recurse)
+  | CIf (i, CPanic t, e) -> recurse (CAssert (CNot i, t, e))
+  | CIf (i, t, CPanic e) -> recurse (CAssert (i, e, t))
   | CLet (lhs, rhs, CVar body) -> if String.equal lhs body then recurse rhs else CSeq [ rhs; CVar body ]
+  (* default cases *)
+  | CAssert (b, e, t) -> CAssert (recurse b, recurse e, recurse t)
+  | CPanic xs -> CPanic (recurse xs)
   | CIf (i, t, e) -> CIf (recurse i, recurse t, recurse e)
   | CAnd (l, r) -> CAnd (recurse l, recurse r)
   | COr (l, r) -> COr (recurse l, recurse r)
@@ -261,11 +270,17 @@ let rec compile_stmt c x =
       output_string c "}else{";
       compile_stmt c e;
       output_string c "}"
-  | CApp _ | CVar _ | CPanic _ | CFun _ | CGetMember _ | CBool _ | CAnd _ | CString _ | CFloat _ ->
+  | CPanic _ -> output_string c "Panic();"
+  | CApp _ | CVar _ | CFun _ | CGetMember _ | CBool _ | CAnd _ | CString _ | CFloat _ ->
       output_string c "return ";
       compile_expr c x;
       output_string c ";"
   | CSetMember _ -> compile_proc c x
+  | CAssert (b, _, t) ->
+      output_string c "assert(";
+      compile_expr c b;
+      output_string c ");";
+      compile_stmt c t
   | CStringMatch (str, cases, default) ->
       let v = fresh () in
       output_string c ("std::string " ^ v ^ " = ");
@@ -294,6 +309,9 @@ and compile_proc c x =
   | CApp _ | CGetMember _ | CVar _ | CInt _ | CStringMatch _ ->
       compile_expr c x;
       output_string c ";"
+  | CSetMember (x, (("first" | "parent" | "prev" | "next") as f), CApp (CPF "None", [])) ->
+      compile_expr c x;
+      output_string c ("." ^ f ^ "= nullptr;")
   | CSetMember (x, f, v) ->
       compile_expr c x;
       output_string c ("." ^ f ^ "=");
@@ -305,7 +323,8 @@ and compile_proc c x =
       output_string c "){";
       compile_proc c t;
       output_string c "}else{";
-      compile_proc c e
+      compile_proc c e;
+      output_string c "}"
   | _ -> Megatron.Common.panic ("compile_proc:" ^ truncate (show_code x))
 
 and compile_expr c x =
@@ -316,7 +335,7 @@ and compile_expr c x =
   | CBool b -> output_string c (string_of_bool b)
   | CFloat f -> output_string c (string_of_float f)
   | CFun (var, body) ->
-      output_string c ("[&](const auto&" ^ var ^ "){");
+      output_string c ("[&](" ^ String.concat ~sep:"," (List.map var ~f:(fun v -> "const auto&" ^ v)) ^ "){");
       compile_stmt c body;
       output_string c "}"
   | CIf (i, t, e) ->
@@ -343,6 +362,12 @@ and compile_expr c x =
       output_string c ".";
       output_string c y;
       output_string c "))"
+  | CAssert (b, _, t) ->
+      output_string c "ASSERT(";
+      compile_expr c b;
+      output_string c ", [&](){";
+      compile_stmt c t;
+      output_string c "})"
   | CAnd (l, r) ->
       output_string c "(";
       compile_expr c l;
@@ -382,7 +407,8 @@ let compile_def c (name, x) =
       output_string c "}";
       output_string c ("auto " ^ name ^ bracket ("const auto&" ^ xname) ^ "{return " ^ fname ^ bracket xname ^ ";}")
   | CFun (xname, body) ->
-      output_string c ("auto " ^ name ^ bracket ("const auto&" ^ xname) ^ "{");
+      output_string c
+        ("auto " ^ name ^ bracket (String.concat ~sep:"," (List.map xname ~f:(fun v -> "const auto&" ^ v))) ^ "{");
       compile_stmt c body;
       output_string c "}"
   | _ -> Megatron.Common.panic ("compile_def:" ^ truncate (show_code x))
@@ -498,13 +524,13 @@ module Main (EVAL : Eval) = struct
                  let_ (fst v) (fun r ->
                      let_ (zro l) (fun path ->
                          let_ (fst l) (fun x ->
-                             list_match path
-                               (fun _ -> panic (string "bad path!"))
-                               (fun h t ->
-                                 list_match t
-                                   (fun _ -> f h x r)
-                                   (fun _ _ ->
-                                     recurse (make_pair (make_pair t (list_nth_exn (layout_node_get_children x) h)) r))))))))))
+                             let_ (list_hd_exn path) (fun h ->
+                                 let_ (list_tail_exn path) (fun t ->
+                                     ite (list_is_empty t)
+                                       (fun _ -> f h x r)
+                                       (fun _ ->
+                                         recurse
+                                           (make_pair (make_pair t (list_nth_exn (layout_node_get_children x) h)) r)))))))))))
 
   let follow_path_last str (f : int sd -> 'a node sd -> 'b sd -> unit sd) : ((int list * 'a node) * 'b -> unit) sd =
     lift str
@@ -514,13 +540,12 @@ module Main (EVAL : Eval) = struct
                  let_ (fst v) (fun r ->
                      let_ (zro l) (fun path ->
                          let_ (fst l) (fun x ->
-                             list_match path
-                               (fun _ -> panic (string "bad path!"))
-                               (fun h t ->
-                                 list_match t
-                                   (fun _ -> f h x r)
-                                   (fun _ _ ->
-                                     recurse (make_pair (make_pair t (list_nth_exn (node_get_children x) h)) r))))))))))
+                             let_ (list_hd_exn path) (fun h ->
+                                 let_ (list_tail_exn path) (fun t ->
+                                     ite (list_is_empty t)
+                                       (fun _ -> f h x r)
+                                       (fun _ ->
+                                         recurse (make_pair (make_pair t (list_nth_exn (node_get_children x) h)) r)))))))))))
 
   let add_node_aux =
     follow_path_last "add_node" (fun i x r ->
@@ -836,6 +861,7 @@ module Main (EVAL : Eval) = struct
     let compiled_file_name = "Layout" ^ name ^ ".cpp" in
 
     let c = Stdio.Out_channel.create compiled_file_name in
+    Stdio.Out_channel.output_string c "#include \"header.h\"\n";
     List.iter (defs ()) (compile_def c);
     Stdio.Out_channel.output_string c "int main(){";
     compile_stmt c (main |> undyn |> optimize);

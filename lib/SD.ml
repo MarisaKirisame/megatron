@@ -12,7 +12,7 @@ type code =
   | CSeq of code list
   | CLet of string * code * code
   | CVar of string
-  | CFun of string * code
+  | CFun of string list * code
   | CApp of code * code list
   | CIf of code * code * code
   | CPF of string
@@ -24,6 +24,7 @@ type code =
   | CAnd of code * code
   | COr of code * code
   | CNot of code
+  | CAssert of (*assertion*) code * (*error message*) code * (*return*) code
 [@@deriving show, equal]
 
 module type SDIN = sig
@@ -45,6 +46,13 @@ module type SDIN = sig
   val let_ : 'a sd -> ('a sd -> 'b sd) -> 'b sd
   val lam : ('a sd -> 'b sd) -> ('a -> 'b) sd
   val app : ('a -> 'b) sd -> 'a sd -> 'b sd
+
+  (*note that we are compiling lamx/appx different then repeated application of lam/app.
+    this is because cpp's function have multi-arity, different from tuple-packing/currying.
+    specifically, this mean lamx can only be consumed via appx, instead of repeated application.
+    sadly this is not trackable by the type system.*)
+  val lam2 : ('a sd -> 'b sd -> 'c sd) -> ('a -> 'b -> 'c) sd
+  val app2 : ('a -> 'b -> 'c) sd -> 'a sd -> 'b sd -> 'c sd
   val ignore : 'a sd -> unit sd
   val tt : unit sd
   val make_ref : 'a sd -> 'a ref sd
@@ -164,6 +172,7 @@ module type SDIN = sig
   val list_append : 'a list sd -> 'a list sd -> 'a list sd
   val list_tail_exn : 'a list sd -> 'a list sd
   val list_hd : 'a list sd -> 'a option sd
+  val list_hd_exn : 'a list sd -> 'a sd
   val list_is_empty : 'a list sd -> bool sd
   val list_length : 'a list sd -> int sd
   val unsome : 'a option sd -> 'a sd
@@ -219,7 +228,9 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
 
   let let_ x f = f x
   let lam f = f
-  let app f x = f x
+  let app f = f
+  let lam2 f = f
+  let app2 f = f
   let ite i t e = if i then t () else e ()
   let json_of_string x = Yojson.Basic.from_string x
   let with_in_file name f = f (Stdio.In_channel.create name) (*Stdio.In_channel.with_file name ~f*)
@@ -449,6 +460,7 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
   let list_split_n l i = List.split_n l i
   let list_tail_exn l = match l with _ :: t -> t
   let list_hd x = match x with [] -> None | x :: _ -> Some x
+  let list_hd_exn x = match x with x :: _ -> x
   let list_is_empty l = List.is_empty l
   let and_ l r = if l then r () else false
   let or_ l r = if l then true else r ()
@@ -485,15 +497,22 @@ module D : SD with type 'x sd = code = MakeSD (struct
 
   let lam (f : code -> code) : code =
     let v = fresh () in
-    CFun (v, f (CVar v))
+    CFun ([ v ], f (CVar v))
 
+  let app f x = CApp (f, [ x ])
+
+  let lam2 (f : code -> code -> code) : code =
+    let v0 = fresh () in
+    let v1 = fresh () in
+    CFun ([ v0; v1 ], f (CVar v0) (CVar v1))
+
+  let app2 (f : code) x0 x1 = CApp (f, [ x0; x1 ])
   let ignore x = x
   let int x = CInt x
   let bool x = CBool x
   let float x = CFloat x
   let string x = CString x
   let tt = CApp (CPF "MakeUnit", [])
-  let app f x = CApp (f, [ x ])
   let ite (i : code) (t : unit -> code) (e : unit -> code) : code = CIf (i, t (), e ())
   let with_in_file name f = CApp (CPF "WithInFile", [ name; lam f ])
   let with_out_file name f = CApp (CPF "WithOutFile", [ name; lam f ])
@@ -563,7 +582,7 @@ module D : SD with type 'x sd = code = MakeSD (struct
     CStringMatch (s, List.map cases ~f:(fun (l, r) -> (l, r ())), default ())
 
   let list_match (l : 'a list sd) (n : unit -> 'b sd) (c : 'a sd -> 'a list sd -> 'b sd) : 'b sd =
-    CApp (CPF "ListMatch", [ l; lam (fun _ -> n ()); lam (fun h -> lam (fun t -> c h t)) ])
+    CApp (CPF "ListMatch", [ l; lam (fun _ -> n ()); lam2 (fun h t -> c h t) ])
 
   let option_iter (o : 'a option sd) (f : 'a sd -> unit sd) : unit sd = CApp (CPF "OptionIter", [ o; lam f ])
   let list_nth_exn l i = CApp (CPF "ListNthExn", [ l; i ])
@@ -620,6 +639,7 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let list_split_n l i = CApp (CPF "ListSplitN", [ l; i ])
   let list_append l r = CApp (CPF "ListAppend", [ l; r ])
   let list_tail_exn l = CApp (CPF "ListTailExn", [ l ])
+  let list_hd_exn l = CApp (CPF "ListHeadExn", [ l ])
   let list_hd l = CApp (CPF "ListHead", [ l ])
   let list_is_empty l = CApp (CPF "ListIsEmpty", [ l ])
   let and_ l r = CAnd (l, r ())

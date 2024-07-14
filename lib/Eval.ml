@@ -216,65 +216,64 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
       (fun v ->
         let_ (zro v) (fun lhs ->
             let_ (fst v) (fun rhs_ ->
-                list_match rhs_
-                  (fun _ -> panic (string "bad argument"))
-                  (fun removed rhs ->
-                    seqs
-                      [
-                        (fun _ ->
-                          option_match (node_get_prev removed)
-                            (fun _ -> tt)
-                            (fun prev -> node_set_next prev (node_get_next removed)));
-                        (fun _ ->
-                          option_match (node_get_next removed)
-                            (fun _ -> tt)
-                            (fun next -> node_set_prev next (node_get_prev removed)));
-                        (fun _ -> remove_meta (node_get_meta removed));
-                        (fun _ -> node_set_children x (list_append lhs rhs));
-                        (fun _ -> ite (list_is_empty lhs) (fun _ -> node_set_first x (list_hd rhs)) (fun _ -> tt));
-                        (fun _ -> ite (list_is_empty rhs) (fun _ -> node_set_last x (list_last lhs)) (fun _ -> tt));
-                        (fun _ ->
-                          seqs
-                            (List.map (Hashtbl.to_alist p.procs) ~f:(fun (proc_name, _) _ ->
-                                 let work bb_name =
-                                   let (BasicBlock (_, stmts)) = Hashtbl.find_exn p.bbs bb_name in
-                                   let reads = reads_of_stmts stmts in
-                                   let dirty read : unit sd =
-                                     match read with
-                                     | ReadVar (Self, _) | ReadHasPath Parent | ReadVar (Parent, _) -> tt
-                                     | ReadHasPath First | ReadHasPath Last ->
-                                         ite
-                                           (list_is_empty (node_get_children x))
-                                           (fun _ -> bb_dirtied x ~proc_name ~bb_name m)
-                                           (fun _ -> tt)
-                                     | ReadVar (First, _) ->
-                                         ite (list_is_empty lhs)
-                                           (fun _ -> bb_dirtied x ~proc_name ~bb_name m)
-                                           (fun _ -> tt)
-                                     | ReadVar (Last, _) ->
-                                         ite (list_is_empty rhs)
-                                           (fun _ -> bb_dirtied x ~proc_name ~bb_name m)
-                                           (fun _ -> tt)
-                                     | ReadHasPath Prev | ReadVar (Prev, _) ->
-                                         option_match (node_get_next removed)
-                                           (fun _ -> tt)
-                                           (fun x -> bb_dirtied x ~proc_name ~bb_name m)
-                                     | ReadHasPath Next | ReadVar (Next, _) ->
-                                         option_match (node_get_prev removed)
-                                           (fun _ -> tt)
-                                           (fun x -> bb_dirtied x ~proc_name ~bb_name m)
-                                     | ReadProp _ | ReadAttr _ -> tt
-                                     | _ -> Common.panic (show_read read)
-                                   in
-                                   seqs (List.map reads ~f:(fun r () -> dirty r))
-                                 in
-                                 let down, up = get_bb_from_proc p proc_name in
-                                 seqs
-                                   [
-                                     (fun _ -> match down with Some down -> work down | None -> tt);
-                                     (fun _ -> match up with Some up -> work up | None -> tt);
-                                   ])));
-                      ]))))
+                let_ (list_hd_exn rhs_) (fun removed ->
+                    let_ (list_tail_exn rhs_) (fun rhs ->
+                        seqs
+                          [
+                            (fun _ ->
+                              option_match (node_get_prev removed)
+                                (fun _ -> tt)
+                                (fun prev -> node_set_next prev (node_get_next removed)));
+                            (fun _ ->
+                              option_match (node_get_next removed)
+                                (fun _ -> tt)
+                                (fun next -> node_set_prev next (node_get_prev removed)));
+                            (fun _ -> remove_meta (node_get_meta removed));
+                            (fun _ -> node_set_children x (list_append lhs rhs));
+                            (fun _ -> ite (list_is_empty lhs) (fun _ -> node_set_first x (list_hd rhs)) (fun _ -> tt));
+                            (fun _ -> ite (list_is_empty rhs) (fun _ -> node_set_last x (list_last lhs)) (fun _ -> tt));
+                            (fun _ ->
+                              seqs
+                                (List.map (Hashtbl.to_alist p.procs) ~f:(fun (proc_name, _) _ ->
+                                     let work bb_name =
+                                       let (BasicBlock (_, stmts)) = Hashtbl.find_exn p.bbs bb_name in
+                                       let reads = reads_of_stmts stmts in
+                                       let dirty read : unit sd =
+                                         match read with
+                                         | ReadVar (Self, _) | ReadHasPath Parent | ReadVar (Parent, _) -> tt
+                                         | ReadHasPath First | ReadHasPath Last ->
+                                             ite
+                                               (list_is_empty (node_get_children x))
+                                               (fun _ -> bb_dirtied x ~proc_name ~bb_name m)
+                                               (fun _ -> tt)
+                                         | ReadVar (First, _) ->
+                                             ite (list_is_empty lhs)
+                                               (fun _ -> bb_dirtied x ~proc_name ~bb_name m)
+                                               (fun _ -> tt)
+                                         | ReadVar (Last, _) ->
+                                             ite (list_is_empty rhs)
+                                               (fun _ -> bb_dirtied x ~proc_name ~bb_name m)
+                                               (fun _ -> tt)
+                                         | ReadHasPath Prev | ReadVar (Prev, _) ->
+                                             option_match (node_get_next removed)
+                                               (fun _ -> tt)
+                                               (fun x -> bb_dirtied x ~proc_name ~bb_name m)
+                                         | ReadHasPath Next | ReadVar (Next, _) ->
+                                             option_match (node_get_prev removed)
+                                               (fun _ -> tt)
+                                               (fun x -> bb_dirtied x ~proc_name ~bb_name m)
+                                         | ReadProp _ | ReadAttr _ -> tt
+                                         | _ -> Common.panic (show_read read)
+                                       in
+                                       seqs (List.map reads ~f:(fun r () -> dirty r))
+                                     in
+                                     let down, up = get_bb_from_proc p proc_name in
+                                     seqs
+                                       [
+                                         (fun _ -> match down with Some down -> work down | None -> tt);
+                                         (fun _ -> match up with Some up -> work up | None -> tt);
+                                       ])));
+                          ])))))
 
   let add_children (p : prog) (x : meta node sd) (y : meta node sd) (n : int sd) (m : metric sd) : unit sd =
     let_
