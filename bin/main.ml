@@ -166,7 +166,7 @@ let is_pure_function f =
   | "MakeUnit" | "ListIsEmpty" | "IntEqual" | "ListLength" | "ListSplitN" | "Zro" | "Fst" | "FreshMetric" | "Cons"
   | "Nil" | "IsNone" | "HashtblForceFind" | "UnSome" | "ListLast" | "JsonMember" | "ListMatch" | "OptionIter"
   | "OptionMatch" | "ListIter" | "HashtblFind" | "EqualValue" | "ListZip" | "ListDropLast" | "ListTl" | "ListHead"
-  | "ListHeadExn" | "ListTailExn" ->
+  | "ListHeadExn" | "ListTailExn" | "ListIter2" ->
       true
   | _ -> panic ("is_pure_function:" ^ f)
 
@@ -447,22 +447,18 @@ module Main (EVAL : Eval) = struct
                     [
                       (fun _ -> node_set_first n (none ()));
                       (fun _ ->
-                        list_iter_2
-                          (fun x y ->
-                                    seqs
-                                      [
-                                        (fun _ -> node_set_parent x (n |> some));
-                                        (fun _ -> node_set_parent y (n |> some));
-                                        (fun _ -> node_set_next x (y |> some));
-                                        (fun _ -> node_set_prev y (x |> some));
-                                        (fun _ ->
-                                          ite
-                                            (is_none (node_get_first n))
-                                            (fun _ -> node_set_first n (x |> some))
-                                            (fun _ -> tt));
-                                        (fun _ -> node_set_last n (y |> some));
-                                        (fun _ -> recurse x);
-                                      ]));
+                        list_iter_2 (node_get_children n) (fun x y ->
+                            seqs
+                              [
+                                (fun _ -> node_set_parent x (n |> some));
+                                (fun _ -> node_set_parent y (n |> some));
+                                (fun _ -> node_set_next x (y |> some));
+                                (fun _ -> node_set_prev y (x |> some));
+                                (fun _ ->
+                                  ite (is_none (node_get_first n)) (fun _ -> node_set_first n (x |> some)) (fun _ -> tt));
+                                (fun _ -> node_set_last n (y |> some));
+                                (fun _ -> recurse x);
+                              ]));
                     ]))))
     in
     seqs

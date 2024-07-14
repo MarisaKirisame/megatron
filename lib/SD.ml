@@ -118,6 +118,7 @@ module type SDIN = sig
   val option_iter : 'a option sd -> ('a sd -> unit sd) -> unit sd
   val option_match : 'a option sd -> (unit -> 'b sd) -> ('a sd -> 'b sd) -> 'b sd
   val list_iter : 'a list sd -> ('a sd -> unit sd) -> unit sd
+  val list_iter_2 : 'a list sd -> ('a sd -> 'a sd -> unit sd) -> unit sd
   val list_tl : 'a list sd -> 'a list sd
   val list_drop_last : 'a list sd -> 'a list sd
   val list_last : 'a list sd -> 'a option sd
@@ -338,10 +339,12 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
   let some x = Some x
   let is_none o = Option.is_none o
   let is_some o = Option.is_some o
+  let make_pair a b = (a, b)
+  let zro (a, b) = a
+  let fst (a, b) = b
   let option_iter o f = Option.iter o ~f
   let option_match o n s = match o with Some x -> s x | None -> n ()
   let list_nth_exn l i = List.nth_exn l i
-  let list_iter (l : 'a list) (f : 'a -> unit) = List.iter l ~f
   let list_tl l = Option.value (List.tl l) ~default:[]
   let list_drop_last l = Option.value (List.drop_last l) ~default:[]
   let list_zip x y = List.zip_exn x y
@@ -349,9 +352,11 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
   let list_int_sum l f = List.sum (module Int) l ~f
   let list_length l = List.length l
   let list_append l r = List.append l r
-  let make_pair a b = (a, b)
-  let zro (a, b) = a
-  let fst (a, b) = b
+  let list_iter (l : 'a list) (f : 'a -> unit) = List.iter l ~f
+
+  let list_iter_2 l (f : 'a -> 'a -> unit) =
+    list_iter (list_zip (list_drop_last l) (list_tl l)) (fun p -> f (zro p) (fst p))
+
   let make_layout_node l = { children = l }
   let layout_node_get_children (l : layout_node) = l.children
   let layout_node_set_children (l : layout_node) c = l.children <- c
@@ -588,6 +593,7 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let list_nth_exn l i = CApp (CPF "ListNthExn", [ l; i ])
   let list_map l f = CApp (CPF "ListMap", [ l; lam f ])
   let list_iter (l : 'a list sd) (f : 'a sd -> unit sd) : unit sd = CApp (CPF "ListIter", [ l; lam f ])
+  let list_iter_2 l f = CApp (CPF "ListIter2", [ l; lam2 f ])
   let list_tl l = CApp (CPF "ListTl", [ l ])
   let list_last l = CApp (CPF "ListLast", [ l ])
   let list_drop_last l = CApp (CPF "ListDropLast", [ l ])
