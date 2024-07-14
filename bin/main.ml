@@ -447,11 +447,8 @@ module Main (EVAL : Eval) = struct
                     [
                       (fun _ -> node_set_first n (none ()));
                       (fun _ ->
-                        list_iter
-                          (list_zip (list_drop_last (node_get_children n)) (list_tl (node_get_children n)))
-                          (fun p ->
-                            let_ (zro p) (fun x ->
-                                let_ (fst p) (fun y ->
+                        list_iter_2
+                          (fun x y ->
                                     seqs
                                       [
                                         (fun _ -> node_set_parent x (n |> some));
@@ -465,7 +462,7 @@ module Main (EVAL : Eval) = struct
                                             (fun _ -> tt));
                                         (fun _ -> node_set_last n (y |> some));
                                         (fun _ -> recurse x);
-                                      ]))));
+                                      ]));
                     ]))))
     in
     seqs
