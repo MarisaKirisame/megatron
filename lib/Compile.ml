@@ -13,12 +13,12 @@ let is_pure_function f =
   match f with
   | "InputChangeMetric" | "OutputChangeMetric" | "PrintEndline" | "WriteMetric" | "HashtblAddExn" | "HashtblForceRemove"
   | "PushStack" | "Assert" | "IterLines" | "JsonToChannel" | "OutputString" | "ResetMetric" | "ClearStack" | "WriteRef"
-  | "ReadMetric" | "HashtblSet" | "WriteJson" ->
+  | "ReadMetric" | "HashtblSet" | "WriteJson" | "MetaReadMetric" | "MetaWriteMetric" ->
       false
   | "MakeUnit" | "ListIsEmpty" | "IntEqual" | "ListLength" | "ListSplitN" | "Zro" | "Fst" | "FreshMetric" | "Cons"
   | "Nil" | "IsNone" | "HashtblForceFind" | "UnSome" | "ListLast" | "JsonMember" | "ListMatch" | "OptionIter"
   | "OptionMatch" | "ListIter" | "HashtblFind" | "EqualValue" | "ListZip" | "ListDropLast" | "ListTl" | "ListHead"
-  | "ListHeadExn" | "ListTailExn" | "ListIter2" | "HashtblContain" ->
+  | "ListHeadExn" | "ListTailExn" | "ListIter2" | "HashtblContain" | "IsSome"| "HashtblFindExn" ->
       true
   | _ -> panic ("is_pure_function:" ^ f)
 

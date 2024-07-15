@@ -590,7 +590,7 @@ end
 module MainFSC = Main (Megatron.EvalFS.EVAL (D))
 
 (*module MainDBI = Main (Megatron.EvalDB.EVAL (S))*)
-(*module MainDBC = Main (Megatron.EvalDB.EVAL (D))*)
+module MainDBC = Main (Megatron.EvalDB.EVAL (D))
 
 (*module MainPQI = Main (Megatron.EvalPQ.EVAL (S))*)
-(*module MainPQC = Main (Megatron.EvalPQ.EVAL (D))*)
+module MainPQC = Main (Megatron.EvalPQ.EVAL (D))
