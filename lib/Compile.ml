@@ -15,9 +15,6 @@ let header =
   \  #include <vector>\n\
   \  #include <cmath>\n\
   \  #include <memory>\n\
-  \  struct Value {\n\
-  \    std::variant<int, double, bool, std::string> v;\n\
-  \  };\n\
   \  struct Content;\n\
   \  using Node = std::shared_ptr<Content>;\n\
   \  "

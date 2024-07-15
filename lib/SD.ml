@@ -16,7 +16,7 @@ type code =
   | CApp of code * code list
   | CIf of code * code * code
   | CPF of string
-  | CFix of string * string * code
+  | CFix of string * string list * code
   | CGetMember of code * string
   | CSetMember of code * string * code
   | CPanic of code
@@ -52,7 +52,11 @@ module type SDIN = sig
     specifically, this mean lamx can only be consumed via appx, instead of repeated application.
     sadly this is not trackable by the type system.*)
   val lam2 : ('a sd -> 'b sd -> 'c sd) -> ('a -> 'b -> 'c) sd
+  val fix2 : (('a sd -> 'b sd -> 'c sd) -> 'a sd -> 'b sd -> 'c sd) -> ('a -> 'b -> 'c) sd
   val app2 : ('a -> 'b -> 'c) sd -> 'a sd -> 'b sd -> 'c sd
+  val lam3 : ('a sd -> 'b sd -> 'c sd -> 'd sd) -> ('a -> 'b -> 'c -> 'd sd) sd
+  val fix3 : (('a sd -> 'b sd -> 'c sd -> 'd sd) -> 'a sd -> 'b sd -> 'c sd -> 'd sd) -> ('a -> 'b -> 'c -> 'd) sd
+  val app3 : ('a -> 'b -> 'c -> 'd) sd -> 'a sd -> 'b sd -> 'c sd -> 'd sd
   val ignore : 'a sd -> unit sd
   val tt : unit sd
   val make_ref : 'a sd -> 'a ref sd
@@ -230,8 +234,16 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
   let let_ x f = f x
   let lam f = f
   let app f = f
+  let rec fix (f : ('a -> 'b) -> 'a -> 'b) (x : 'a) : 'b = f (fun x -> fix f x) x
   let lam2 f = f
   let app2 f = f
+  let rec fix2 (f : ('a -> 'b -> 'c) -> 'a -> 'b -> 'c) (x0 : 'a) (x1 : 'b) : 'c = f (fun x0 x1 -> fix2 f x0 x1) x0 x1
+  let lam3 f = f
+  let app3 f = f
+
+  let rec fix3 (f : ('a -> 'b -> 'c -> 'd) -> 'a -> 'b -> 'c -> 'd) (x0 : 'a) (x1 : 'b) (x2 : 'c) : 'd =
+    f (fun x0 x1 x2 -> fix3 f x0 x1 x2) x0 x1 x2
+
   let ite i t e = if i then t () else e ()
   let json_of_string x = Yojson.Basic.from_string x
   let with_in_file name f = f (Stdio.In_channel.create name) (*Stdio.In_channel.with_file name ~f*)
@@ -307,7 +319,6 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
   let json_to_list = Yojson.Basic.Util.to_list
   let json_to_channel c j = Yojson.Basic.to_channel c j
   let list_map l f = List.map l ~f
-  let rec fix (f : ('a -> 'b) -> 'a -> 'b) (x : 'a) : 'b = f (fun x -> fix f x) x
   let node_get_parent n = n.parent
   let node_set_parent n v = n.parent <- v
   let node_get_prev n = n.prev
@@ -504,6 +515,11 @@ module D : SD with type 'x sd = code = MakeSD (struct
     let v = fresh () in
     CFun ([ v ], f (CVar v))
 
+  let fix (f : ('a sd -> 'b sd) -> 'a sd -> 'b sd) : ('a -> 'b) sd =
+    let fname = fresh () in
+    let xname = fresh () in
+    CFix (fname, [ xname ], f (fun x -> CApp (CVar fname, [ x ])) (CVar xname))
+
   let app f x = CApp (f, [ x ])
 
   let lam2 (f : code -> code -> code) : code =
@@ -511,7 +527,31 @@ module D : SD with type 'x sd = code = MakeSD (struct
     let v1 = fresh () in
     CFun ([ v0; v1 ], f (CVar v0) (CVar v1))
 
+  let fix2 (f : ('a sd -> 'b sd -> 'c sd) -> 'a sd -> 'b sd -> 'c sd) : ('a -> 'b -> 'c) sd =
+    let fname = fresh () in
+    let xname0 = fresh () in
+    let xname1 = fresh () in
+    CFix (fname, [ xname0; xname1 ], f (fun x0 x1 -> CApp (CVar fname, [ x0; x1 ])) (CVar xname0) (CVar xname1))
+
   let app2 (f : code) x0 x1 = CApp (f, [ x0; x1 ])
+
+  let lam3 (f : code -> code -> code -> code) : code =
+    let v0 = fresh () in
+    let v1 = fresh () in
+    let v2 = fresh () in
+    CFun ([ v0; v1; v2 ], f (CVar v0) (CVar v1) (CVar v2))
+
+  let fix3 (f : ('a sd -> 'b sd -> 'c sd -> 'd sd) -> 'a sd -> 'b sd -> 'c sd -> 'd sd) : ('a -> 'b -> 'c -> 'd) sd =
+    let fname = fresh () in
+    let xname0 = fresh () in
+    let xname1 = fresh () in
+    let xname2 = fresh () in
+    CFix
+      ( fname,
+        [ xname0; xname1; xname2 ],
+        f (fun x0 x1 x2 -> CApp (CVar fname, [ x0; x1; x2 ])) (CVar xname0) (CVar xname1) (CVar xname2) )
+
+  let app3 (f : code) x0 x1 x2 = CApp (f, [ x0; x1; x2 ])
   let ignore x = x
   let int x = CInt x
   let bool x = CBool x
@@ -547,12 +587,6 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let json_to_list j = CApp (CPF "JsonToList", [ j ])
   let json_to_channel c j = CApp (CPF "JsonToChannel", [ c; j ])
   let unsome o = CApp (CPF "UnSome", [ o ])
-
-  let fix (f : ('a sd -> 'b sd) -> 'a sd -> 'b sd) : ('a -> 'b) sd =
-    let fname = fresh () in
-    let xname = fresh () in
-    CFix (fname, xname, f (fun x -> CApp (CVar fname, [ x ])) (CVar xname))
-
   let node_get_parent n = CGetMember (n, "parent")
   let node_set_parent n v = CSetMember (n, "parent", v)
   let node_get_prev n = CGetMember (n, "prev")

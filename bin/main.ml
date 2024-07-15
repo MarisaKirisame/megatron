@@ -161,7 +161,7 @@ let is_pure_function f =
   match f with
   | "InputChangeMetric" | "OutputChangeMetric" | "PrintEndline" | "WriteMetric" | "HashtblAddExn" | "HashtblForceRemove"
   | "PushStack" | "Assert" | "IterLines" | "JsonToChannel" | "OutputString" | "ResetMetric" | "ClearStack" | "WriteRef"
-  | "ReadMetric" | "HashtblSet" ->
+  | "ReadMetric" | "HashtblSet" | "WriteJson" ->
       false
   | "MakeUnit" | "ListIsEmpty" | "IntEqual" | "ListLength" | "ListSplitN" | "Zro" | "Fst" | "FreshMetric" | "Cons"
   | "Nil" | "IsNone" | "HashtblForceFind" | "UnSome" | "ListLast" | "JsonMember" | "ListMatch" | "OptionIter"
@@ -201,8 +201,8 @@ let rec simplify x =
   | CApp (CPF ("BoolOfValue" | "VBool" | "VString" | "VFloat" | "VInt"), [ x ]) -> recurse x
   | CApp
       ( CPF
-          (("WriteMetric" | "MetricWriteCount" | "MetricQueueSizeAcc" | "MetricMetaReadCount" | "MetricMetaWriteCount")
-          as f),
+          (( "WriteMetric" | "MetricWriteCount" | "MetricQueueSizeAcc" | "MetricMetaReadCount" | "MetricMetaWriteCount"
+           | "MetricOutputChangeCount" | "MetricInputChangeCount" | "MetricReadCount" | "ResetMetric" ) as f),
         [ _ ] ) ->
       CApp (CPF f, [])
   | CApp (CPF (("OutputChangeMetric" | "InputChangeMetric") as f), [ _; i ]) -> CApp (CPF f, [ i ])
@@ -229,6 +229,14 @@ let rec simplify x =
   | CIf (i, CPanic t, e) -> recurse (CAssert (CNot i, t, e))
   | CIf (i, t, CPanic e) -> recurse (CAssert (i, e, t))
   | CLet (lhs, rhs, CVar body) -> if String.equal lhs body then recurse rhs else CSeq [ rhs; CVar body ]
+  | CApp (CPF "AssocToJson", [ x ]) ->
+      let v = fresh () in
+      recurse (CLet (v, CApp (CPF "FreshJson", []), CApp (CPF "WriteAssocToJson", [ CVar v; x ])))
+  | CApp (CPF "WriteAssocToJson", [ CVar j; CApp (CPF "Cons", [ CApp (CPF "MakePair", [ CString f; x ]); y ]) ]) ->
+      recurse (CSeq [ CApp (CPF "WriteJson", [ CVar j; CString f; x ]); CApp (CPF "WriteAssocToJson", [ CVar j; y ]) ])
+  | CApp (CPF "WriteJson", [ j; f; CApp (CPF ("IntToJson" | "StringToJson" | "ListToJson"), [ x ]) ]) ->
+      recurse (CApp (CPF "WriteJson", [ j; f; x ]))
+  | CApp (CPF "WriteAssocToJson", [ j; CApp (CPF "Nil", []) ]) -> recurse j
   (* default cases *)
   | CAssert (b, e, t) -> CAssert (recurse b, recurse e, recurse t)
   | CPanic xs -> CPanic (recurse xs)
@@ -249,6 +257,8 @@ let rec simplify x =
 let rec optimize x =
   let new_x = simplify x in
   if equal_code x new_x then x else optimize new_x
+
+let names_to_args x = bracket (String.concat ~sep:"," (List.map x ~f:(fun v -> "const auto&" ^ v)))
 
 let rec compile_stmt c x =
   match x with
@@ -311,10 +321,10 @@ and compile_proc c x =
       output_string c ";"
   | CSetMember (x, (("first" | "parent" | "prev" | "next") as f), CApp (CPF "None", [])) ->
       compile_expr c x;
-      output_string c ("." ^ f ^ "= nullptr;")
+      output_string c ("->" ^ f ^ "= nullptr;")
   | CSetMember (x, f, v) ->
       compile_expr c x;
-      output_string c ("." ^ f ^ "=");
+      output_string c ("->" ^ f ^ "=");
       compile_expr c v;
       output_string c ";"
   | CIf (i, t, e) ->
@@ -330,12 +340,12 @@ and compile_proc c x =
 and compile_expr c x =
   match x with
   | CPF str -> output_string c str
-  | CInt i -> output_string c (string_of_int i)
+  | CInt i -> output_string c ("static_cast<int64_t>" ^ bracket (string_of_int i))
   | CVar x -> output_string c x
   | CBool b -> output_string c (string_of_bool b)
   | CFloat f -> output_string c (string_of_float f)
   | CFun (var, body) ->
-      output_string c ("[&](" ^ String.concat ~sep:"," (List.map var ~f:(fun v -> "const auto&" ^ v)) ^ "){");
+      output_string c ("[&]" ^ names_to_args var ^ "{");
       compile_stmt c body;
       output_string c "}"
   | CIf (i, t, e) ->
@@ -353,13 +363,18 @@ and compile_expr c x =
   | CApp (CPF "IsSome", [ CGetMember (x, (("parent" | "prev" | "next" | "first" | "last") as y)) ]) ->
       output_string c "(";
       compile_expr c x;
-      output_string c ".";
+      output_string c "->";
       output_string c y;
       output_string c " == nullptr)"
+  | CGetMember (x, (("children" | "name" | "attr" | "prop" | "extern_id") as f)) ->
+      output_string c "(";
+      compile_expr c x;
+      output_string c ("->" ^ f);
+      output_string c ")"
   | CApp (CPF "UnSome", [ CGetMember (x, (("parent" | "prev" | "next" | "first" | "last") as y)) ]) ->
       output_string c "(*(";
       compile_expr c x;
-      output_string c ".";
+      output_string c "->";
       output_string c y;
       output_string c "))"
   | CAssert (b, _, t) ->
@@ -399,16 +414,21 @@ and compile_expr c x =
       output_string c ")"
   | _ -> Megatron.Common.panic ("compile_expr:" ^ truncate (show_code x))
 
+let guess_type x =
+  match x with CApp (CPF "MakeNode", _) -> "Node" | CApp (CPF "MakeLayoutNode", _) -> "LayoutNode" | _ -> "auto"
+
 let compile_def c (name, x) =
   match optimize x with
   | CFix (fname, xname, body) ->
-      output_string c ("auto " ^ fname ^ bracket ("const auto&" ^ xname) ^ "{");
+      output_string c (guess_type body ^ " " ^ fname ^ names_to_args xname ^ "{");
       compile_stmt c body;
       output_string c "}";
-      output_string c ("auto " ^ name ^ bracket ("const auto&" ^ xname) ^ "{return " ^ fname ^ bracket xname ^ ";}")
-  | CFun (xname, body) ->
       output_string c
-        ("auto " ^ name ^ bracket (String.concat ~sep:"," (List.map xname ~f:(fun v -> "const auto&" ^ v))) ^ "{");
+        (guess_type body ^ " " ^ name ^ names_to_args xname ^ "{return " ^ fname
+        ^ bracket (String.concat ~sep:"," xname)
+        ^ ";}")
+  | CFun (xname, body) ->
+      output_string c (guess_type body ^ " " ^ name ^ names_to_args xname ^ "{");
       compile_stmt c body;
       output_string c "}"
   | _ -> Megatron.Common.panic ("compile_def:" ^ truncate (show_code x))
@@ -509,70 +529,55 @@ module Main (EVAL : Eval) = struct
     app (lift "node_size" (lazy (fix (fun recurse n -> int_add (int 1) (list_int_sum (node_get_children n) recurse)))))
 
   let follow_layout_path_last str (f : int sd -> layout_node sd -> 'a sd -> unit sd) :
-      ((int list * layout_node) * 'a -> unit) sd =
+      (int list -> layout_node -> 'a -> unit) sd =
     lift str
       (lazy
-        (fix (fun recurse v ->
-             let_ (zro v) (fun l ->
-                 let_ (fst v) (fun r ->
-                     let_ (zro l) (fun path ->
-                         let_ (fst l) (fun x ->
-                             let_ (list_hd_exn path) (fun h ->
-                                 let_ (list_tail_exn path) (fun t ->
-                                     ite (list_is_empty t)
-                                       (fun _ -> f h x r)
-                                       (fun _ ->
-                                         recurse
-                                           (make_pair (make_pair t (list_nth_exn (layout_node_get_children x) h)) r)))))))))))
+        (fix3 (fun recurse path x r ->
+             let_ (list_hd_exn path) (fun h ->
+                 let_ (list_tail_exn path) (fun t ->
+                     ite (list_is_empty t)
+                       (fun _ -> f h x r)
+                       (fun _ -> recurse t (list_nth_exn (layout_node_get_children x) h) r))))))
 
-  let follow_path_last str (f : int sd -> 'a node sd -> 'b sd -> unit sd) : ((int list * 'a node) * 'b -> unit) sd =
+  let follow_path_last str (f : int sd -> 'a node sd -> 'b sd -> unit sd) : (int list -> 'a node -> 'b -> unit) sd =
     lift str
       (lazy
-        (fix (fun recurse v ->
-             let_ (zro v) (fun l ->
-                 let_ (fst v) (fun r ->
-                     let_ (zro l) (fun path ->
-                         let_ (fst l) (fun x ->
-                             let_ (list_hd_exn path) (fun h ->
-                                 let_ (list_tail_exn path) (fun t ->
-                                     ite (list_is_empty t)
-                                       (fun _ -> f h x r)
-                                       (fun _ ->
-                                         recurse (make_pair (make_pair t (list_nth_exn (node_get_children x) h)) r)))))))))))
+        (fix3 (fun recurse path x r ->
+             let_ (list_hd_exn path) (fun h ->
+                 let_ (list_tail_exn path) (fun t ->
+                     ite (list_is_empty t)
+                       (fun _ -> f h x r)
+                       (fun _ -> recurse t (list_nth_exn (node_get_children x) h) r))))))
 
-  let add_node_aux =
-    follow_path_last "add_node" (fun i x r ->
-        let_ (zro r) (fun y ->
-            let_ (fst r) (fun m -> seq (input_change_metric m (node_size y)) (fun _ -> EVAL.add_children prog x y i m))))
+  let add_node_aux m =
+    follow_path_last "add_node" (fun i x y ->
+        seq (input_change_metric m (node_size y)) (fun _ -> EVAL.add_children prog x y i m))
 
   let add_node (path : int list sd) (x : _ node sd) (y : _ node sd) (m : metric sd) : unit sd =
-    app add_node_aux (make_pair (make_pair path x) (make_pair y m))
+    app3 (add_node_aux m) path x y
 
-  let add_layout_node_aux =
-    follow_layout_path_last "add_layout_node" (fun i x r ->
-        let_ (zro r) (fun y ->
-            let_ (fst r) (fun m ->
-                seq
-                  (output_change_metric m (layout_size y))
-                  (fun _ ->
-                    let_
-                      (list_split_n (layout_node_get_children x) i)
-                      (fun splitted -> layout_node_set_children x (list_append (zro splitted) (cons y (fst splitted))))))))
+  let add_layout_node_aux m =
+    follow_layout_path_last "add_layout_node" (fun i x y ->
+        seq
+          (output_change_metric m (layout_size y))
+          (fun _ ->
+            let_
+              (list_split_n (layout_node_get_children x) i)
+              (fun splitted -> layout_node_set_children x (list_append (zro splitted) (cons y (fst splitted))))))
 
   let add_layout_node (path : int list sd) (x : layout_node sd) (y : layout_node sd) (m : metric sd) : unit sd =
-    app add_layout_node_aux (make_pair (make_pair path x) (make_pair y m))
+    app3 (add_layout_node_aux m) path x y
 
-  let remove_node_aux =
-    follow_path_last "remove_node" (fun i x m ->
+  let remove_node_aux m =
+    follow_path_last "remove_node" (fun i x _ ->
         seq
           (input_change_metric m (node_size (list_nth_exn (node_get_children x) i)))
           (fun _ -> EVAL.remove_children prog x i m))
 
-  let remove_node (path : int list sd) (x : _ node sd) (m : metric sd) : unit sd =
-    app remove_node_aux (make_pair (make_pair path x) m)
+  let remove_node (path : int list sd) (x : _ node sd) (m : metric sd) : unit sd = app3 (remove_node_aux m) path x tt
 
-  let remove_layout_node_aux =
-    follow_layout_path_last "remove_layout_node" (fun i x m ->
+  let remove_layout_node_aux m =
+    follow_layout_path_last "remove_layout_node" (fun i x _ ->
         seq
           (output_change_metric m (layout_size (list_nth_exn (layout_node_get_children x) i)))
           (fun _ ->
@@ -581,7 +586,7 @@ module Main (EVAL : Eval) = struct
               (fun splitted -> layout_node_set_children x (list_append (zro splitted) (list_tail_exn (fst splitted))))))
 
   let remove_layout_node (path : int list sd) (x : layout_node sd) (m : metric sd) : unit sd =
-    app remove_layout_node_aux (make_pair (make_pair path x) m)
+    app3 (remove_layout_node_aux m) path x tt
 
   let replace_node_aux m =
     follow_path_last "replace_node" (fun i x y ->
@@ -593,7 +598,7 @@ module Main (EVAL : Eval) = struct
           ])
 
   let replace_node (path : int list sd) (x : _ node sd) (y : _ node sd) (m : metric sd) : unit sd =
-    app (replace_node_aux m) (make_pair (make_pair path x) y)
+    app3 (replace_node_aux m) path x y
 
   let replace_layout_node_aux m =
     follow_layout_path_last "replace_layout_node" (fun i x y ->
@@ -610,64 +615,20 @@ module Main (EVAL : Eval) = struct
               ]))
 
   let replace_layout_node (path : int list sd) (x : layout_node sd) (y : layout_node sd) (m : metric sd) : unit sd =
-    app (replace_layout_node_aux m) (make_pair (make_pair path x) y)
+    app3 (replace_layout_node_aux m) path x y
 
-  let follow_path str (f : 'a node sd -> 'b sd -> unit sd) : ((int list * 'a node) * 'b -> unit) sd =
+  let follow_path str (f : 'a node sd -> 'b sd -> unit sd) : (int list -> 'a node -> 'b -> unit) sd =
     lift str
       (lazy
-        (fix (fun recurse v ->
-             let_ (zro v) (fun l ->
-                 let_ (fst v) (fun r ->
-                     let_ (zro l) (fun path ->
-                         let_ (fst l) (fun x ->
-                             list_match path
-                               (fun _ -> f x r)
-                               (fun h t -> recurse (make_pair (make_pair t (list_nth_exn (node_get_children x) h)) r)))))))))
+        (fix3 (fun recurse path x r ->
+             list_match path (fun _ -> f x r) (fun h t -> recurse t (list_nth_exn (node_get_children x) h) r))))
 
-  let replace_value_aux : ((int list * _ node) * ((string * string) * (value * metric)) -> unit) sd =
+  let replace_value_aux m : (int list -> _ node -> (string * string) * value -> unit) sd =
     follow_path "replace_value" (fun x v ->
         let_ (zro v) (fun l ->
             let_ (zro l) (fun type_ ->
                 let_ (fst l) (fun key ->
-                    let_ (fst v) (fun r ->
-                        let_ (zro r) (fun value ->
-                            let_ (fst r) (fun m ->
-                                seq
-                                  (input_change_metric m (int 1))
-                                  (fun _ ->
-                                    string_match type_
-                                      [
-                                        ( "attributes",
-                                          fun _ ->
-                                            string_match key
-                                              (List.map (Hashtbl.to_alist prog.tyck_env.attr_type) ~f:(fun (s, _) ->
-                                                   ( s,
-                                                     fun _ ->
-                                                       seq (EVAL.remove_attr prog x s m) (fun _ ->
-                                                           EVAL.add_attr prog x s value m) )))
-                                              (fun _ -> tt) );
-                                        ( "properties",
-                                          fun _ ->
-                                            string_match key
-                                              (List.map (Hashtbl.to_alist prog.tyck_env.prop_type) ~f:(fun (s, _) ->
-                                                   ( s,
-                                                     fun _ ->
-                                                       seq (EVAL.remove_prop prog x s m) (fun _ ->
-                                                           EVAL.add_prop prog x s value m) )))
-                                              (fun _ -> tt) );
-                                      ]
-                                      (fun _ -> panic (string_append (string "bad type:") type_))))))))))
-
-  let replace_value (path : int list sd) (x : _ node sd) (type_ : string sd) (key : string sd) (value : value sd)
-      (m : metric sd) : unit sd =
-    app replace_value_aux (make_pair (make_pair path x) (make_pair (make_pair type_ key) (make_pair value m)))
-
-  let delete_value_aux : ((int list * _ node) * ((string * string) * metric) -> unit) sd =
-    follow_path "delete_value" (fun x v ->
-        let_ (zro v) (fun l ->
-            let_ (zro l) (fun type_ ->
-                let_ (fst l) (fun key ->
-                    let_ (fst v) (fun m ->
+                    let_ (fst v) (fun value ->
                         seq
                           (input_change_metric m (int 1))
                           (fun _ ->
@@ -677,52 +638,84 @@ module Main (EVAL : Eval) = struct
                                   fun _ ->
                                     string_match key
                                       (List.map (Hashtbl.to_alist prog.tyck_env.attr_type) ~f:(fun (s, _) ->
-                                           (s, fun _ -> EVAL.remove_attr prog x s m)))
+                                           ( s,
+                                             fun _ ->
+                                               seq (EVAL.remove_attr prog x s m) (fun _ ->
+                                                   EVAL.add_attr prog x s value m) )))
                                       (fun _ -> tt) );
                                 ( "properties",
                                   fun _ ->
                                     string_match key
                                       (List.map (Hashtbl.to_alist prog.tyck_env.prop_type) ~f:(fun (s, _) ->
-                                           (s, fun _ -> EVAL.remove_prop prog x s m)))
+                                           ( s,
+                                             fun _ ->
+                                               seq (EVAL.remove_prop prog x s m) (fun _ ->
+                                                   EVAL.add_prop prog x s value m) )))
                                       (fun _ -> tt) );
                               ]
                               (fun _ -> panic (string_append (string "bad type:") type_))))))))
 
+  let replace_value (path : int list sd) (x : _ node sd) (type_ : string sd) (key : string sd) (value : value sd)
+      (m : metric sd) : unit sd =
+    app3 (replace_value_aux m) path x (make_pair (make_pair type_ key) value)
+
+  let delete_value_aux m : (int list -> _ node -> string * string -> unit) sd =
+    follow_path "delete_value" (fun x v ->
+        let_ (zro v) (fun type_ ->
+            let_ (fst v) (fun key ->
+                seq
+                  (input_change_metric m (int 1))
+                  (fun _ ->
+                    string_match type_
+                      [
+                        ( "attributes",
+                          fun _ ->
+                            string_match key
+                              (List.map (Hashtbl.to_alist prog.tyck_env.attr_type) ~f:(fun (s, _) ->
+                                   (s, fun _ -> EVAL.remove_attr prog x s m)))
+                              (fun _ -> tt) );
+                        ( "properties",
+                          fun _ ->
+                            string_match key
+                              (List.map (Hashtbl.to_alist prog.tyck_env.prop_type) ~f:(fun (s, _) ->
+                                   (s, fun _ -> EVAL.remove_prop prog x s m)))
+                              (fun _ -> tt) );
+                      ]
+                      (fun _ -> panic (string_append (string "bad type:") type_))))))
+
   let delete_value (path : int list sd) (x : _ node sd) (type_ : string sd) (key : string sd) (m : metric sd) : unit sd
       =
-    app delete_value_aux (make_pair (make_pair path x) (make_pair (make_pair type_ key) m))
+    app3 (delete_value_aux m) path x (make_pair type_ key)
 
-  let insert_value_aux : ((int list * _ node) * ((string * string) * (value * metric)) -> unit) sd =
+  let insert_value_aux m : (int list -> _ node -> (string * string) * value -> unit) sd =
     follow_path "insert_value" (fun x v ->
         let_ (zro v) (fun l ->
             let_ (zro l) (fun type_ ->
                 let_ (fst l) (fun key ->
-                    let_ (fst v) (fun r ->
-                        let_ (zro r) (fun value ->
-                            let_ (fst r) (fun m ->
-                                seq
-                                  (input_change_metric m (int 1))
-                                  (fun _ ->
-                                    string_match type_
-                                      [
-                                        ( "attributes",
-                                          fun _ ->
-                                            string_match key
-                                              (List.map (Hashtbl.to_alist prog.tyck_env.attr_type) ~f:(fun (s, _) ->
-                                                   (s, fun _ -> EVAL.add_attr prog x s value m)))
-                                              (fun _ -> tt) );
-                                        ( "properties",
-                                          fun _ ->
-                                            string_match key
-                                              (List.map (Hashtbl.to_alist prog.tyck_env.prop_type) ~f:(fun (s, _) ->
-                                                   (s, fun _ -> EVAL.add_prop prog x s value m)))
-                                              (fun _ -> tt) );
-                                      ]
-                                      (fun _ -> panic (string_append (string "bad type:") type_))))))))))
+                    let_ (fst v) (fun value ->
+                        seq
+                          (input_change_metric m (int 1))
+                          (fun _ ->
+                            string_match type_
+                              [
+                                ( "attributes",
+                                  fun _ ->
+                                    string_match key
+                                      (List.map (Hashtbl.to_alist prog.tyck_env.attr_type) ~f:(fun (s, _) ->
+                                           (s, fun _ -> EVAL.add_attr prog x s value m)))
+                                      (fun _ -> tt) );
+                                ( "properties",
+                                  fun _ ->
+                                    string_match key
+                                      (List.map (Hashtbl.to_alist prog.tyck_env.prop_type) ~f:(fun (s, _) ->
+                                           (s, fun _ -> EVAL.add_prop prog x s value m)))
+                                      (fun _ -> tt) );
+                              ]
+                              (fun _ -> panic (string_append (string "bad type:") type_))))))))
 
   let insert_value (path : int list sd) (x : _ node sd) (type_ : string sd) (key : string sd) (value : value sd)
       (m : metric sd) : unit sd =
-    app insert_value_aux (make_pair (make_pair path x) (make_pair (make_pair type_ key) (make_pair value m)))
+    app3 (insert_value_aux m) path x (make_pair (make_pair type_ key) value)
 
   let main : unit sd =
     with_out_file (string out_file_path) (fun out_file ->
@@ -857,7 +850,7 @@ module Main (EVAL : Eval) = struct
     Stdio.Out_channel.output_string c "#include \"header.h\"\n";
     List.iter (defs ()) (compile_def c);
     Stdio.Out_channel.output_string c "int main(){";
-    compile_stmt c (main |> undyn |> optimize);
+    compile_proc c (main |> undyn |> optimize);
     Stdio.Out_channel.output_string c "}";
     Stdio.Out_channel.close c;
 
