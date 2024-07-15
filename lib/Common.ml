@@ -5,6 +5,7 @@ let debug = true
 let bracket str = "(" ^ str ^ ")"
 let curly_bracket str = "{" ^ str ^ "}"
 let square_bracket str = "[" ^ str ^ "]"
+let angle_bracket str = "<" ^ str ^ ">"
 let quoted str = "\"" ^ String.escaped str ^ "\""
 
 let make_counter () : unit -> int =

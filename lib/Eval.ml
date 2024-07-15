@@ -8,7 +8,7 @@ exception ReRaise of string
 
 let compile_type_expr ty =
   match resolve ty with
-  | TInt -> "int"
+  | TInt -> "int64_t"
   | TBool -> "bool"
   | TString -> "std::string"
   | TFloat -> "double"
@@ -118,7 +118,8 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
 
   let var_modified (p : prog) (n : meta node sd) (var_name : string) (m : metric sd) : unit sd =
     if Option.is_none (Hashtbl.find var_modified_hash var_name) then
-      Hashtbl.add_exn var_modified_hash ~key:var_name ~data:(lift "var_modified" (lazy (var_modified_aux p var_name m)));
+      Hashtbl.add_exn var_modified_hash ~key:var_name
+        ~data:(lift "Unit" "var_modified" (lazy (var_modified_aux p var_name m)));
     app (Hashtbl.find_exn var_modified_hash var_name) n
 
   let rec eval_expr_aux (n : 'meta node sd) (e : expr) (m : metric sd) : value sd =
@@ -128,7 +129,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
         panic
           (string_append (string "External: ")
              (string_concat (string " ") (List.map x ~f:(fun x -> show_value (recurse x)) |> list)))
-    | HasProperty p -> is_some (hashtbl_find (node_get_prop n) (string p)) |> vbool
+    | HasProperty p -> hashtbl_contain (node_get_prop n) (string p) |> vbool
     | GetProperty p ->
         seq (read_metric m) (fun _ ->
             option_match
@@ -170,7 +171,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
 
   let eval_expr (n : meta node sd) (e : expr) (m : metric sd) : value sd =
     if Option.is_none (Hashtbl.find eval_expr_hash e) then
-      Hashtbl.add_exn eval_expr_hash ~key:e ~data:(lift "eval_expr" (lazy (lam (fun n -> eval_expr_aux n e m))));
+      Hashtbl.add_exn eval_expr_hash ~key:e ~data:(lift "auto" "eval_expr" (lazy (lam (fun n -> eval_expr_aux n e m))));
     app (Hashtbl.find_exn eval_expr_hash e) n
 
   module STMTS = struct
@@ -202,7 +203,8 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
 
   and eval_stmts (p : prog) (n : meta node sd) (s : stmts) (m : metric sd) : unit sd =
     if Option.is_none (Hashtbl.find eval_stmts_hash s) then
-      Hashtbl.add_exn eval_stmts_hash ~key:s ~data:(lift "eval_stmts" (lazy (lam (fun n -> eval_stmts_aux p n s m))));
+      Hashtbl.add_exn eval_stmts_hash ~key:s
+        ~data:(lift "Unit" "eval_stmts" (lazy (lam (fun n -> eval_stmts_aux p n s m))));
     app (Hashtbl.find_exn eval_stmts_hash s) n
 
   let eval (p : prog) (n : meta node sd) (m : metric sd) : unit sd =

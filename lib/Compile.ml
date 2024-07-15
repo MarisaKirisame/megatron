@@ -3,145 +3,361 @@ open Core
 open Eval
 open Common
 open SD
+open TypeCheck
 
-let header =
-  "  #include <string>\n\
-  \  #include <cassert>\n\
-  \  #include <variant>\n\
-  \  #include <unordered_map>\n\
-  \  #include <stdexcept>\n\
-  \  #include <ranges>\n\
-  \  #include <iterator>\n\
-  \  #include <vector>\n\
-  \  #include <cmath>\n\
-  \  #include <memory>\n\
-  \  struct Content;\n\
-  \  using Node = std::shared_ptr<Content>;\n\
-  \  "
+let truncate_length = 120
+let truncate str = if String.length str <= truncate_length then str else String.sub str ~pos:0 ~len:truncate_length
+let is_absolutely_pure_function f = match f with "Cons" -> true | _ -> false
 
-let forward =
-  "template<typename T>\n\
-  \  T panic() { assert(false); }\n\
-  \  template<typename T>\n\
-  \  T get_attribute(const Content& self, const std::string& str) { \n\
-  \    return std::get<T>(self.attr.at(str).v);\n\
-  \  }\n\
-  \  bool has_attribute(const Content& self, const std::string& str) { \n\
-  \    return self.attr.count(str) != 0;\n\
-  \  }\n\
-  \  template<typename T>\n\
-  \  T get_property(const Content& self, const std::string& str) {\n\
-  \    return std::get<T>(self.prop.at(str).v);\n\
-  \  }\n\
-  \  bool has_property(const Content& self, const std::string& str) {\n\
-  \    return self.prop.count(str) != 0;\n\
-  \  }\n\
-  \  template<typename T>\n\
-  \  T max(T x, T y) { return x > y ? x : y; }\n\
-  \  template<typename T>\n\
-  \  T plus(T x, T y) { return x + y; }\n\
-  \  template<typename T>\n\
-  \  T minus(T x, T y) { return x - y; }\n\
-  \  template<typename T>\n\
-  \  T mult(T x, T y) { return x * y; }\n\
-  \  template<typename T>\n\
-  \  T divide(T x, T y) { return x * y; }\n\
-  \  template<typename T>\n\
-  \  bool gt(T x, T y) { return x > y; }\n\
-  \  bool eq(int x, int y) { return x == y; }\n\
-  \  bool eq(double x, double y) { \n\
-  \    return (std::isnan(x) && std::isnan(y)) || (x == y);\n\
-  \  }\n\
-  \  bool eq(const std::string& x, const std::string& y) { return x == y; }\n\
-  \  bool neq(int x, int y) { return x != y; }\n\
-  \  bool neq(double x, double y) { return !eq(x, y); }\n\
-  \  bool neq(const std::string& x, const std::string& y) { return x != y; }\n\
-  \  double string_to_float(const std::string& x) { \n\
-  \    return std::stod(x);\n\
-  \  }\n\
-  \  bool string_is_float(const std::string& x) {\n\
-  \    try {\n\
-  \      std::stod(x);\n\
-  \      return true;\n\
-  \    } catch(const std::invalid_argument&) {\n\
-  \      return false;\n\
-  \    }\n\
-  \  }\n\
-  \  double int_to_float(int x) {\n\
-  \    return static_cast<double>(x);\n\
-  \  }\n\
-  \  std::string strip_suffix(const std::string& str, const std::string& sfx) {\n\
-  \    return str.substr(0, str.size() - sfx.size());\n\
-  \  }\n\
-  \  bool has_suffix(const std::string& str, const std::string& sfx) {\n\
-  \    return str.substr(str.size() - sfx.size(), sfx.size()) == sfx;\n\
-  \  }\n\
-  \  bool has_prefix(const std::string& str, const std::string& pfx) {\n\
-  \    return str.substr(0, pfx.size()) == pfx;\n\
-  \  }\n\
-  \  std::string nth_by_sep(const std::string& str, const std::string& sep, int nth) {\n\
-  \    auto to_string = [](auto&& r) -> std::string {\n\
-  \      const auto data = &*r.begin();\n\
-  \      const auto size = static_cast<std::size_t>(std::ranges::distance(r));\n\
-  \      return std::string{data, size};\n\
-  \    };\n\
-  \    assert(sep.size() == 1);\n\
-  \    auto range = str | std::ranges::views::split(sep.at(0)) | std::ranges::views::transform(to_string);\n\
-  \    return *std::next(range.begin(), nth);\n\
-  \  }\n\
-  \  "
+let is_pure_function f =
+  match f with
+  | "InputChangeMetric" | "OutputChangeMetric" | "PrintEndline" | "WriteMetric" | "HashtblAddExn" | "HashtblForceRemove"
+  | "PushStack" | "Assert" | "IterLines" | "JsonToChannel" | "OutputString" | "ResetMetric" | "ClearStack" | "WriteRef"
+  | "ReadMetric" | "HashtblSet" | "WriteJson" ->
+      false
+  | "MakeUnit" | "ListIsEmpty" | "IntEqual" | "ListLength" | "ListSplitN" | "Zro" | "Fst" | "FreshMetric" | "Cons"
+  | "Nil" | "IsNone" | "HashtblForceFind" | "UnSome" | "ListLast" | "JsonMember" | "ListMatch" | "OptionIter"
+  | "OptionMatch" | "ListIter" | "HashtblFind" | "EqualValue" | "ListZip" | "ListDropLast" | "ListTl" | "ListHead"
+  | "ListHeadExn" | "ListTailExn" | "ListIter2" | "HashtblContain" ->
+      true
+  | _ -> panic ("is_pure_function:" ^ f)
 
-let compile_field name type_expr = compile_type_expr type_expr ^ " " ^ name ^ ";"
+let rec is_pure x =
+  match x with
+  | CSetMember _ | CPanic _ -> false
+  | CInt _ | CString _ | CVar _ -> true
+  | CFun (name, body) -> is_pure body
+  | CSeq xs -> List.for_all xs ~f:is_pure
+  | CApp (CVar _, _) -> false
+  | CApp (f, xs) -> is_pure f && List.for_all xs ~f:is_pure
+  | CPF f -> is_pure_function f
+  | CIf (i, t, e) -> is_pure i && is_pure t && is_pure e
+  | CGetMember (x, f) -> is_pure x
+  | CLet (lhs, rhs, body) -> is_pure rhs && is_pure body
+  | _ -> Common.panic ("is_pure:" ^ truncate (show_code x))
+
+let rec simplify (p : prog) x =
+  let recurse x = simplify p x in
+  match x with
+  | CString _ | CVar _ | CPF _ | CInt _ | CBool _ | CFloat _ -> x
+  | CApp (CPF "ReadMetric", [ x ]) ->
+      recurse x (* not correct, but we dont care about ReadMetric rn, and this simplify the generated code *)
+  | CAssert (_, _, x) -> recurse x (*also not correct.*)
+  | CApp (CPF "OptionMatch", [ x; CFun (_, CApp (CPF "MakeUnit", [])); CFun (_, CApp (CPF "MakeUnit", [])) ]) ->
+      recurse x
+  | CApp (CPF "OptionMatch", [ x; CFun (_, CPanic _); y ]) -> recurse (CApp (y, [ CApp (CPF "UnSome", [ x ]) ]))
+  | CApp (CPF "OptionMatch", [ CApp (CPF "Some", [ x ]); y; z ]) -> recurse (CSeq [ y; CApp (z, [ x ]) ])
+  | CApp (CPF "OptionMatch", [ CApp (CPF "HashtblFind", [ x; y ]); CFun (_, nbody); s ]) ->
+      CIf (CApp (CPF "HashtblContain", [ x; y ]), CApp (s, [ CApp (CPF "HashtblForceFind", [ x; y ]) ]), nbody)
+  | CApp (CPF "ListIter", [ x; CFun (_, CApp (CPF "MakeUnit", [])) ]) -> recurse x
+  | CApp (CPF "UnSome", [ CApp (CPF "Some", [ x ]) ]) -> recurse x
+  | CApp (CPF "UnSome", [ CApp (CPF "HashtblFind", [ x; y ]) ]) -> recurse (CApp (CPF "HashtblForceFind", [ x; y ]))
+  | CApp (CPF "HashtblForceFind", [ CGetMember (x, "var"); CString f ]) -> recurse (CGetMember (x, "var_" ^ f))
+  | CApp (CPF "HashtblContain", [ CGetMember (x, "var"); CString f ]) -> recurse (CGetMember (x, "has_var_" ^ f))
+  | CApp (CPF "HashtblSet", [ CGetMember (x, "var"); CString f; v ]) -> recurse (CSetMember (x, "var_" ^ f, v))
+  | CApp (CPF "HashtblForceFind", [ CGetMember (x, "prop"); CString f ]) ->
+      recurse
+        (CApp (CPF ("GetProp" ^ angle_bracket (compile_type_expr (prop_from_tyck_env p.tyck_env f))), [ x; CString f ]))
+  | CApp (CPF "IsSome", [ CApp (CPF "HashtblFind", [ CGetMember (x, "prop"); CString f ]) ]) ->
+      recurse (CApp (CPF "HasProp", [ x; CString f ]))
+  | CApp (CPF "HashtblForceFind", [ CGetMember (x, "attr"); CString f ]) ->
+      recurse
+        (CApp (CPF ("GetAttr" ^ angle_bracket (compile_type_expr (attr_from_tyck_env p.tyck_env f))), [ x; CString f ]))
+  | CApp (CPF "IsSome", [ CApp (CPF "HashtblFind", [ CGetMember (x, "attr"); CString f ]) ]) ->
+      recurse (CApp (CPF "HasAttr", [ x; CString f ]))
+  | CApp (CPF ("BoolOfValue" | "VBool" | "VString" | "VFloat" | "VInt"), [ x ]) -> recurse x
+  | CApp
+      ( CPF
+          (( "WriteMetric" | "MetricWriteCount" | "MetricQueueSizeAcc" | "MetricMetaReadCount" | "MetricMetaWriteCount"
+           | "MetricOutputChangeCount" | "MetricInputChangeCount" | "MetricReadCount" | "ResetMetric" ) as f),
+        [ _ ] ) ->
+      CApp (CPF f, [])
+  | CApp (CPF (("OutputChangeMetric" | "InputChangeMetric") as f), [ _; i ]) -> CApp (CPF f, [ i ])
+  | CApp (CFun ([ xname ], body), [ x ]) -> recurse (CLet (xname, x, body))
+  | CIf (i, CApp (CPF "MakeUnit", []), CApp (CPF "MakeUnit", [])) -> recurse (CSeq [ i; CApp (CPF "MakeUnit", []) ])
+  | CSeq [ x ] -> x
+  | CSeq xs ->
+      let xs, last = unsnoc xs in
+      CSeq
+        (List.map
+           (List.append
+              (List.concat
+                 (List.map xs ~f:(fun x ->
+                      if is_pure x then []
+                      else
+                        match x with
+                        | CSeq xs -> xs
+                        | CApp (CPF f, xs) -> if is_absolutely_pure_function f then xs else [ x ]
+                        | CIf _ | CLet _ | CSetMember _ | CApp (CVar _, _) -> [ x ]
+                        | CFun _ | CVar _ -> []
+                        | CGetMember (x, _) -> [ x ]
+                        | _ -> Common.panic ("simplify_seq:" ^ truncate (show_code x)))))
+              [ last ])
+           ~f:recurse)
+  | CIf (i, CPanic t, e) -> recurse (CAssert (CNot i, t, e))
+  | CIf (i, t, CPanic e) -> recurse (CAssert (i, e, t))
+  | CLet (lhs, rhs, CVar body) -> if String.equal lhs body then recurse rhs else CSeq [ rhs; CVar body ]
+  | CApp (CPF "AssocToJson", [ x ]) ->
+      let v = fresh () in
+      recurse (CLet (v, CApp (CPF "FreshJson", []), CApp (CPF "WriteAssocToJson", [ CVar v; x ])))
+  | CApp (CPF "WriteAssocToJson", [ CVar j; CApp (CPF "Cons", [ CApp (CPF "MakePair", [ CString f; x ]); y ]) ]) ->
+      recurse (CSeq [ CApp (CPF "WriteJson", [ CVar j; CString f; x ]); CApp (CPF "WriteAssocToJson", [ CVar j; y ]) ])
+  | CApp (CPF "WriteJson", [ j; f; CApp (CPF ("IntToJson" | "StringToJson" | "ListToJson"), [ x ]) ]) ->
+      recurse (CApp (CPF "WriteJson", [ j; f; x ]))
+  | CApp (CPF "WriteAssocToJson", [ j; CApp (CPF "Nil", []) ]) -> recurse j
+  | CApp (CPF "not", [ x ]) -> recurse (CNot x)
+  (* default cases *)
+  | CAssert (b, e, t) -> CAssert (recurse b, recurse e, recurse t)
+  | CPanic xs -> CPanic (recurse xs)
+  | CIf (i, t, e) -> CIf (recurse i, recurse t, recurse e)
+  | CAnd (l, r) -> CAnd (recurse l, recurse r)
+  | COr (l, r) -> COr (recurse l, recurse r)
+  | CNot i -> CNot (recurse i)
+  | CApp (f, xs) -> CApp (recurse f, List.map xs ~f:recurse)
+  | CLet (lhs, rhs, body) -> CLet (lhs, recurse rhs, recurse body)
+  | CFix (fname, xname, body) -> CFix (fname, xname, recurse body)
+  | CFun (xname, body) -> CFun (xname, recurse body)
+  | CGetMember (x, f) -> CGetMember (recurse x, f)
+  | CSetMember (x, f, v) -> CSetMember (recurse x, f, recurse v)
+  | CStringMatch (str, cases, default) ->
+      CStringMatch (recurse str, List.map cases ~f:(fun (l, r) -> (l, recurse r)), recurse default)
+  | _ -> Common.panic ("simplify:" ^ truncate (show_code x))
+
+let rec optimize prog x =
+  let new_x = simplify prog x in
+  if equal_code x new_x then x else optimize prog new_x
+
+let names_to_args x = bracket (String.concat ~sep:"," (List.map x ~f:(fun v -> "const auto&" ^ v)))
+
+let rec compile_stmt c x =
+  match x with
+  | CSeq [ x ] -> compile_stmt c x
+  | CSeq [] -> output_string c "return MakeUnit();"
+  | CSeq (x :: xs) ->
+      compile_proc c x;
+      compile_stmt c (CSeq xs)
+  | CLet (var, value, body) ->
+      output_string c ("auto " ^ var ^ " = ");
+      compile_expr c value;
+      output_string c ";";
+      compile_stmt c body
+  | CIf (i, t, e) ->
+      output_string c "if (";
+      compile_expr c i;
+      output_string c "){";
+      compile_stmt c t;
+      output_string c "}else{";
+      compile_stmt c e;
+      output_string c "}"
+  | CPanic _ -> output_string c "Panic();"
+  | CApp _ | CVar _ | CFun _ | CGetMember _ | CBool _ | CAnd _ | CString _ | CFloat _ ->
+      output_string c "return ";
+      compile_expr c x;
+      output_string c ";"
+  | CSetMember _ ->
+      compile_proc c x;
+      output_string c "return MakeUnit();"
+  | CAssert (b, _, t) ->
+      output_string c "assert(";
+      compile_expr c b;
+      output_string c ");";
+      compile_stmt c t
+  | CStringMatch (str, cases, default) ->
+      let v = fresh () in
+      output_string c ("std::string " ^ v ^ " = ");
+      compile_expr c str;
+      output_string c ";";
+      List.iter cases ~f:(fun (value, case) ->
+          output_string c ("if (" ^ v ^ "==" ^ quoted value ^ "){");
+          compile_stmt c case;
+          output_string c "}else ");
+      output_string c "{";
+      compile_stmt c default;
+      output_string c "}"
+  | _ -> Common.panic ("compile_stmt:" ^ truncate (show_code x))
+
+and compile_proc c x =
+  match x with
+  | CSeq (x :: xs) ->
+      compile_proc c x;
+      compile_proc c (CSeq xs)
+  | CSeq [] -> ()
+  | CLet (var, value, body) ->
+      output_string c ("auto " ^ var ^ " = ");
+      compile_expr c value;
+      output_string c ";";
+      compile_proc c body
+  | CApp _ | CGetMember _ | CVar _ | CInt _ | CStringMatch _ ->
+      compile_expr c x;
+      output_string c ";"
+  | CSetMember (x, (("first" | "parent" | "prev" | "next" | "last") as f), CApp (CPF "None", [])) ->
+      compile_expr c x;
+      output_string c ("->" ^ f ^ "= nullptr;")
+  | CSetMember (x, (("first" | "parent" | "prev" | "next" | "last") as f), CApp (CPF "Some", [ v ])) ->
+      compile_expr c x;
+      output_string c ("->" ^ f ^ "=");
+      compile_expr c v;
+      output_string c ".get();"
+  | CSetMember (x, (("first" | "parent" | "prev" | "next" | "last") as f), v) ->
+      compile_expr c x;
+      output_string c ("->" ^ f ^ "= ToPath(");
+      compile_expr c v;
+      output_string c ");"
+  | CSetMember (x, f, v) ->
+      compile_expr c x;
+      output_string c ("->" ^ f ^ "=");
+      compile_expr c v;
+      output_string c ";"
+  | CIf (i, t, e) ->
+      output_string c "if (";
+      compile_expr c i;
+      output_string c "){";
+      compile_proc c t;
+      output_string c "}else{";
+      compile_proc c e;
+      output_string c "}"
+  | _ -> Common.panic ("compile_proc:" ^ truncate (show_code x))
+
+and compile_expr c x =
+  match x with
+  | CPF str -> output_string c str
+  | CInt i -> output_string c ("static_cast<int64_t>" ^ bracket (string_of_int i))
+  | CVar x -> output_string c x
+  | CBool b -> output_string c (string_of_bool b)
+  | CFloat f -> output_string c (string_of_float f)
+  | CFun (var, body) ->
+      output_string c ("[&]" ^ names_to_args var ^ "{");
+      compile_stmt c body;
+      output_string c "}"
+  | CIf (i, t, e) ->
+      output_string c "(";
+      compile_expr c i;
+      output_string c ")?(";
+      compile_expr c t;
+      output_string c "):(";
+      compile_expr c e;
+      output_string c ")"
+  | CLet _ | CSeq _ | CStringMatch _ ->
+      output_string c "[&](){";
+      compile_stmt c x;
+      output_string c "}()"
+  | CApp (CPF "IsSome", [ CGetMember (x, (("parent" | "prev" | "next" | "first" | "last") as y)) ]) ->
+      output_string c "(";
+      compile_expr c x;
+      output_string c "->";
+      output_string c y;
+      output_string c " != nullptr)"
+  | CApp (CPF "IsNone", [ CGetMember (x, (("parent" | "prev" | "next" | "first" | "last") as y)) ]) ->
+      output_string c "(";
+      compile_expr c x;
+      output_string c "->";
+      output_string c y;
+      output_string c " != nullptr)"
+  | CApp (CPF "UnSome", [ CGetMember (x, (("parent" | "prev" | "next" | "first" | "last") as y)) ]) ->
+      output_string c "(";
+      compile_expr c x;
+      output_string c "->";
+      output_string c y;
+      output_string c ")"
+  | CAssert (b, _, t) ->
+      output_string c "ASSERT(";
+      compile_expr c b;
+      output_string c ", [&](){";
+      compile_stmt c t;
+      output_string c "})"
+  | CAnd (l, r) ->
+      output_string c "(";
+      compile_expr c l;
+      output_string c " && ";
+      compile_expr c r;
+      output_string c ")"
+  | COr (l, r) ->
+      output_string c "(";
+      compile_expr c l;
+      output_string c " || ";
+      compile_expr c r;
+      output_string c ")"
+  | CNot x ->
+      output_string c "(!";
+      compile_expr c x;
+      output_string c ")"
+  | CPanic xs -> output_string c "Panic()"
+  | CString str -> output_string c ("std::string" ^ bracket (quoted str))
+  | CGetMember (x, f) ->
+      compile_expr c x;
+      output_string c ("->" ^ f)
+  | CApp (f, xs) ->
+      compile_expr c f;
+      output_string c "(";
+      let init = ref true in
+      List.iter xs ~f:(fun x ->
+          if !init then init := false else Stdio.Out_channel.output_string c ",";
+          compile_expr c x);
+      output_string c ")"
+  | _ -> Common.panic ("compile_expr:" ^ truncate (show_code x))
+
+let compile_def prog c (ret_type, name, x) =
+  match optimize prog x with
+  | CFix (fname, xname, body) ->
+      output_string c (ret_type ^ " " ^ fname ^ names_to_args xname ^ "{");
+      compile_stmt c body;
+      output_string c "}";
+      output_string c
+        (ret_type ^ " " ^ name ^ names_to_args xname ^ "{return " ^ fname
+        ^ bracket (String.concat ~sep:"," xname)
+        ^ ";}")
+  | CFun (xname, body) ->
+      output_string c (ret_type ^ " " ^ name ^ names_to_args xname ^ "{");
+      compile_stmt c body;
+      output_string c "}"
+  | _ -> Common.panic ("compile_def:" ^ truncate (show_code x))
+
+let compile_field name type_expr =
+  compile_type_expr type_expr ^ " var_" ^ name ^ ";" ^ "bool " ^ "has_var_" ^ name ^ ";"
 
 let compile_typedef (env : tyck_env) : string =
-  "struct Content { \n\
-  \    Content* parent = nullptr; \n\
-  \    Content* prev = nullptr; \n\
-  \    Content* first = nullptr; \n\
-  \    Content* last = nullptr; \n\
-  \    std::vector<Node> children;\n\
+  "struct Content {\n\
+  \    Content* parent = nullptr;\n\
+  \    Content* prev = nullptr;\n\
+  \    Content* next = nullptr;\n\
+  \    Content* first = nullptr;\n\
+  \    Content* last = nullptr;\n\
+  \    int64_t extern_id;\n\
+  \    List<Node> children;\n\
   \    std::string name;\n\
   \    std::unordered_map<std::string, Value> attr;\n\
-  \    std::unordered_map<std::string, Value> prop;"
+  \    std::unordered_map<std::string, Value> prop;\n\
+  \    Content(const std::string& name,\n\
+  \            std::unordered_map<std::string, Value>&& attr,\n\
+  \            std::unordered_map<std::string, Value>&& prop,\n\
+  \            int64_t extern_id, \n\
+  \            const List<Node>& children) :\n\
+  \            name(name),\n\
+  \            attr(std::move(attr)), \n\
+  \            prop(std::move(prop)), \n\
+  \            extern_id(extern_id), \n\
+  \            children(children) { }\n\
+  \    Content(const std::string& name,\n\
+  \            const std::unordered_map<std::string, Value>& attr,\n\
+  \            const std::unordered_map<std::string, Value>& prop,\n\
+  \            int64_t extern_id, \n\
+  \            const List<Node>& children) :\n\
+  \            name(name),\n\
+  \            attr(attr), \n\
+  \            prop(prop), \n\
+  \            extern_id(extern_id), \n\
+  \            children(children) { }"
   ^ String.concat (List.map (Hashtbl.to_alist env.var_type) ~f:(fun (x, y) -> compile_field x y))
   ^ "};"
 
-let rec compile_expr env expr : string =
-  let recurse expr = compile_expr env expr in
-
-  bracket
-    (match expr with
-    | IfExpr (i, t, e) -> recurse i ^ "?" ^ recurse t ^ ":" ^ recurse e
-    | String b -> quoted b
-    | GetProperty p ->
-        "get_property<" ^ compile_type_expr (Hashtbl.find_exn env.prop_type p) ^ ">(self, " ^ quoted p ^ ")"
-    | HasProperty p -> "has_property(self, " ^ quoted p ^ ")"
-    | GetAttribute p ->
-        "get_attribute<" ^ compile_type_expr (Hashtbl.find_exn env.attr_type p) ^ ">(self, " ^ quoted p ^ ")"
-    | HasAttribute p -> "has_attribute(self, " ^ quoted p ^ ")"
-    | Float f -> "double" ^ bracket (string_of_float f)
-    | Call (f, xs) -> func_name_compiled f ^ bracket (String.concat (List.map xs ~f:recurse) ~sep:",")
-    | Read (path, p) -> (*unexpr (eval_path_staged path) ^*) "->" ^ p
-    | HasPath path -> (*unexpr (eval_path_staged path) ^*) "!= nullptr"
-    | Bool b -> string_of_bool b
-    | Panic (t, _) -> "panic<" ^ compile_type_expr t ^ ">()"
-    | Or (x, y) -> recurse x ^ "||" ^ recurse y
-    | And (x, y) -> recurse x ^ "&&" ^ recurse y
-    | GetName -> "self.name"
-    | Int x -> "int" ^ bracket (string_of_int x) (*| _ -> panic (show_expr expr)*))
-
-let compile_stmt env stmt =
-  match stmt with
-  | Write (name, expr) -> "self." ^ name ^ "=" ^ compile_expr env expr ^ ";\n"
-  | BBCall name -> name ^ "(self);"
-  | ChildrenCall name -> "for (const Node& n : self.children) {" ^ name ^ "(*n);}"
-(*| _ -> panic (show_stmt stmt)*)
-
-let compile_stmts env stmts = String.concat (List.map stmts ~f:(compile_stmt env))
-let compile_bb env (BasicBlock (name, stmts)) = "void " ^ name ^ "(Content& self)" ^ "{" ^ compile_stmts env stmts ^ "}"
-
-let compile_proc env (ProcessedProc (name, stmts)) =
-  "void " ^ name ^ "(Content& self)" ^ "{" ^ compile_stmts env stmts ^ "}"
+let compile (prog : prog) defs main c : unit =
+  Stdio.Out_channel.output_string c "#include \"header.h\"\n";
+  Stdio.Out_channel.output_string c (compile_typedef prog.tyck_env);
+  Stdio.Out_channel.output_string c "#include \"header_continued.h\"\n\n";
+  List.iter defs (compile_def prog c);
+  Stdio.Out_channel.output_string c "int main(){";
+  compile_proc c (main |> optimize prog);
+  Stdio.Out_channel.output_string c "}"
 
 (*let compile (p : prog) : string =
   header ^ compile_typedef p.tyck_env ^ forward

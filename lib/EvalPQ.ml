@@ -16,7 +16,7 @@ module EVAL (SD : SD) = MakeEval (struct
     else CApp (CPF "NextTotalOrder", [ o |> undyn ]) |> dyn
 
   let name = "PQ"
-  let current_time = lift "current_time" (lazy (make_ref (make_total_order ())))
+  let current_time = lift "TotalOrder" "current_time" (lazy (make_ref (make_total_order ())))
 
   type meta = {
     (*time of bbs*)

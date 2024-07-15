@@ -37,11 +37,11 @@ module type SDIN = sig
   val unstatic : 'a sd -> 'a
   val dyn : code -> 'a sd
   val undyn : 'a sd -> code
-  val defs : unit -> (string * code) list
+  val defs : unit -> (string * string * code) list
 
   (*for dynamic value, lift a definition to global definition, returning the var that represent it.
     accept a lazy value so meta-recursiveness is allowed.*)
-  val lift : string -> 'a sd Lazy.t -> 'a sd
+  val lift : string -> string -> 'a sd Lazy.t -> 'a sd
   val fix : (('a sd -> 'b sd) -> 'a sd -> 'b sd) -> ('a -> 'b) sd
   val let_ : 'a sd -> ('a sd -> 'b sd) -> 'b sd
   val lam : ('a sd -> 'b sd) -> ('a -> 'b) sd
@@ -111,6 +111,7 @@ module type SDIN = sig
   val node_get_name : 'a node sd -> string sd
   val node_get_meta : 'a node sd -> 'a sd
   val hashtbl_force_remove : (string, 'a) Hashtbl.t sd -> string sd -> unit sd
+  val hashtbl_contain : (string, 'a) Hashtbl.t sd -> string sd -> bool sd
   val hashtbl_find : (string, 'a) Hashtbl.t sd -> string sd -> 'a option sd
   val hashtbl_find_exn : (string, 'a) Hashtbl.t sd -> string sd -> 'a sd
   val hashtbl_set : (string, 'a) Hashtbl.t sd -> string sd -> 'a sd -> unit sd
@@ -224,7 +225,7 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
   let defs _ = []
   let dyn _ = panic "dyn"
   let undyn _ = panic "undyn"
-  let lift _ x = Lazy.force x
+  let lift _ _ x = Lazy.force x
   let tt = ()
 
   let seq lhs rhs =
@@ -338,6 +339,7 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
   let node_get_name x = x.name
   let node_get_meta x = x.m
   let hashtbl_find h k = Hashtbl.find h k
+  let hashtbl_contain h k = Option.is_some (Hashtbl.find h k)
   let hashtbl_find_exn h k = Hashtbl.find_exn h k
   let hashtbl_set h key data = Hashtbl.set h ~key ~data
   let hashtbl_add_exn h key data = Hashtbl.add_exn h ~key ~data
@@ -490,19 +492,19 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let unstatic x = panic "unstatic"
   let dyn x = x
   let undyn x = x
-  let global_defs : (string * code Lazy.t) list ref = ref []
+  let global_defs : (string * string * code Lazy.t) list ref = ref []
 
   let rec defs _ =
     let ret =
-      List.map !global_defs (fun (s, cl) ->
+      List.map !global_defs (fun (ret_type, s, cl) ->
           Stdio.print_endline s;
-          (s, Lazy.force cl))
+          (ret_type, s, Lazy.force cl))
     in
     if Int.equal (List.length ret) (List.length !global_defs) then ret else defs ()
 
-  let lift name x : code =
+  let lift ret_type name x : code =
     let v = name ^ "_" ^ fresh () in
-    global_defs := (v, x) :: !global_defs;
+    global_defs := (ret_type, v, x) :: !global_defs;
     CVar v
 
   let seq lhs rhs = CSeq [ lhs; rhs () ]
@@ -604,6 +606,7 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let node_get_attr n = CGetMember (n, "attr")
   let node_get_name n = CGetMember (n, "name")
   let node_get_meta n = CGetMember (n, "meta")
+  let hashtbl_contain h k = CApp (CPF "HashtblContain", [ h; k ])
   let hashtbl_find h k = CApp (CPF "HashtblFind", [ h; k ])
   let hashtbl_find_exn h k = CApp (CPF "HashtblFindExn", [ h; k ])
   let hashtbl_set h k v = CApp (CPF "HashtblSet", [ h; k; v ])

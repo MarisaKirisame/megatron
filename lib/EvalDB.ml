@@ -55,7 +55,7 @@ module EVAL (SD : SD) = MakeEval (struct
   let set_recursive_proc_dirtied (n : meta node sd) (proc_name : string) (m : metric sd) : unit sd =
     if Option.is_none (Hashtbl.find set_recursive_proc_dirtied_hash proc_name) then
       Hashtbl.add_exn set_recursive_proc_dirtied_hash ~key:proc_name
-        ~data:(lift "set_recursive_proc_dirtied" (lazy (set_recursive_proc_dirtied_inner proc_name m)));
+        ~data:(lift "Unit" "set_recursive_proc_dirtied" (lazy (set_recursive_proc_dirtied_inner proc_name m)));
     app (Hashtbl.find_exn set_recursive_proc_dirtied_hash proc_name) n
 
   let bb_dirtied (n : meta node sd) ~(proc_name : string) ~(bb_name : string) (m : metric sd) : unit sd =
@@ -87,7 +87,7 @@ module EVAL (SD : SD) = MakeEval (struct
   let recalculate_internal_aux_code (p : prog) (proc_name : string) (down_name : string option)
       (up_name : string option) (eval_stmts : meta node sd -> stmts -> unit sd) (m : metric sd) : (meta node -> unit) sd
       =
-    lift "recalculate_internal"
+    lift "Unit" "recalculate_internal"
       (lazy
         (fix (fun recurse n ->
              (*inlined*)
