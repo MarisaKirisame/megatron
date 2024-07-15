@@ -30,6 +30,14 @@ Unit WriteMetric() {
   m.write_count += 1;
   return Unit{};
 }
+Unit MetaWriteMetric() {
+  m.meta_write_count += 1;
+  return Unit{};
+}
+Unit MetaReadMetric() {
+  m.meta_read_count += 1;
+  return Unit{};
+}
 Unit InputChangeMetric(size_t i) {
   m.input_change_count += i;
   return Unit{};

@@ -112,10 +112,7 @@ struct Content {
   bool has_var_intrinsic_width_internal;
 };
 #include "header_continued.h"
-
-    Unit var_modified_x_943(const auto &x_945) {
-  return MakeUnit();
-}
+Unit var_modified_x_943(const auto &x_945) { return MakeUnit(); }
 auto eval_expr_x_940(const auto &x_952) {
   if ((x_952->prev != nullptr) && (!(x_952->prev)->var_line_break)) {
     return max(x_952->var_height_external, (x_952->prev)->var_line_height);
@@ -3032,7 +3029,7 @@ Unit x_248(const auto &x_249) {
       },
       [&](const auto &x_254) {
         x_249->last = x_254.get();
-        x_254->last = x_249.get();
+        x_254->parent = x_249.get();
         return MakeUnit();
       });
   return MakeUnit();
@@ -3105,7 +3102,7 @@ Unit x_333(const auto &x_334) {
       },
       [&](const auto &x_339) {
         x_334->last = x_339.get();
-        x_339->last = x_334.get();
+        x_339->parent = x_334.get();
         return MakeUnit();
       });
   return MakeUnit();
@@ -3187,7 +3184,7 @@ Unit x_416(const auto &x_417) {
       },
       [&](const auto &x_422) {
         x_417->last = x_422.get();
-        x_422->last = x_417.get();
+        x_422->parent = x_417.get();
         return MakeUnit();
       });
   return MakeUnit();
@@ -3232,7 +3229,7 @@ Unit x_431(const auto &x_432) {
       },
       [&](const auto &x_437) {
         x_432->last = x_437.get();
-        x_437->last = x_432.get();
+        x_437->parent = x_432.get();
         return MakeUnit();
       });
   return MakeUnit();
@@ -3277,7 +3274,7 @@ Unit x_446(const auto &x_447) {
       },
       [&](const auto &x_452) {
         x_447->last = x_452.get();
-        x_452->last = x_447.get();
+        x_452->parent = x_447.get();
         return MakeUnit();
       });
   return MakeUnit();

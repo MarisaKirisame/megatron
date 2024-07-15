@@ -18,7 +18,7 @@ let is_pure_function f =
   | "MakeUnit" | "ListIsEmpty" | "IntEqual" | "ListLength" | "ListSplitN" | "Zro" | "Fst" | "FreshMetric" | "Cons"
   | "Nil" | "IsNone" | "HashtblForceFind" | "UnSome" | "ListLast" | "JsonMember" | "ListMatch" | "OptionIter"
   | "OptionMatch" | "ListIter" | "HashtblFind" | "EqualValue" | "ListZip" | "ListDropLast" | "ListTl" | "ListHead"
-  | "ListHeadExn" | "ListTailExn" | "ListIter2" | "HashtblContain" | "IsSome"| "HashtblFindExn" ->
+  | "ListHeadExn" | "ListTailExn" | "ListIter2" | "HashtblContain" | "IsSome" | "HashtblFindExn" ->
       true
   | _ -> panic ("is_pure_function:" ^ f)
 
@@ -41,40 +41,57 @@ let rec simplify (p : prog) x =
   match x with
   | CString _ | CVar _ | CPF _ | CInt _ | CBool _ | CFloat _ -> x
   | CApp (CPF "ReadMetric", [ x ]) ->
-      recurse x (* not correct, but we dont care about ReadMetric rn, and this simplify the generated code *)
-  | CAssert (_, _, x) -> recurse x (*also not correct.*)
-  | CApp (CPF "OptionMatch", [ x; CFun (_, CApp (CPF "MakeUnit", [])); CFun (_, CApp (CPF "MakeUnit", [])) ]) ->
-      recurse x
-  | CApp (CPF "OptionMatch", [ x; CFun (_, CPanic _); y ]) -> recurse (CApp (y, [ CApp (CPF "UnSome", [ x ]) ]))
-  | CApp (CPF "OptionMatch", [ CApp (CPF "Some", [ x ]); y; z ]) -> recurse (CSeq [ y; CApp (z, [ x ]) ])
+      x (* not correct, but we dont care about ReadMetric rn, and this simplify the generated code *)
+  | CAssert (_, _, x) -> x (*also not correct.*)
+  | CApp (CPF "OptionMatch", [ x; CFun (_, CApp (CPF "MakeUnit", [])); CFun (_, CApp (CPF "MakeUnit", [])) ]) -> x
+  | CApp (CPF "OptionMatch", [ x; CFun (_, CPanic _); y ]) -> CApp (y, [ CApp (CPF "UnSome", [ x ]) ])
+  | CApp (CPF "OptionMatch", [ CApp (CPF "Some", [ x ]); y; z ]) -> CSeq [ y; CApp (z, [ x ]) ]
   | CApp (CPF "OptionMatch", [ CApp (CPF "HashtblFind", [ x; y ]); CFun (_, nbody); s ]) ->
       CIf (CApp (CPF "HashtblContain", [ x; y ]), CApp (s, [ CApp (CPF "HashtblForceFind", [ x; y ]) ]), nbody)
-  | CApp (CPF "ListIter", [ x; CFun (_, CApp (CPF "MakeUnit", [])) ]) -> recurse x
-  | CApp (CPF "UnSome", [ CApp (CPF "Some", [ x ]) ]) -> recurse x
-  | CApp (CPF "UnSome", [ CApp (CPF "HashtblFind", [ x; y ]) ]) -> recurse (CApp (CPF "HashtblForceFind", [ x; y ]))
-  | CApp (CPF "HashtblForceFind", [ CGetMember (x, "var"); CString f ]) -> recurse (CGetMember (x, "var_" ^ f))
-  | CApp (CPF "HashtblContain", [ CGetMember (x, "var"); CString f ]) -> recurse (CGetMember (x, "has_var_" ^ f))
-  | CApp (CPF "HashtblSet", [ CGetMember (x, "var"); CString f; v ]) -> recurse (CSetMember (x, "var_" ^ f, v))
+  | CApp (CPF "ListIter", [ x; CFun (_, CApp (CPF "MakeUnit", [])) ]) -> x
+  | CApp (CPF "ListIter", [ CApp (CPF "Cons", [ hd; tl ]); f ]) ->
+      let v = fresh () in
+      CLet (v, f, CSeq [ CApp (CVar v, [ hd ]); CApp (CPF "ListIter", [ tl; CVar v ]) ])
+  | CApp (CPF "ListIter", [ CApp (CPF "Nil", []); f ]) -> CSeq [ f; CApp (CPF "MakeUnit", []) ]
+  | CApp (CPF "ListIter", [ CApp (CPF "OptionMatch", [ o; CFun ([ nn ], nb); CFun ([ sn ], sb) ]); f ]) ->
+      let v = fresh () in
+      CLet
+        ( v,
+          f,
+          CApp
+            ( CPF "OptionMatch",
+              [
+                o;
+                CFun ([ nn ], CApp (CPF "ListIter", [ nb; CVar v ]));
+                CFun ([ sn ], CApp (CPF "ListIter", [ sb; CVar v ]));
+              ] ) )
+  | CApp (CPF "ListIter", [ CIf (i, t, e); f ]) ->
+      let v = fresh () in
+      CLet (v, f, CIf (i, CApp (CPF "ListIter", [ t; CVar v ]), CApp (CPF "ListIter", [ e; CVar v ])))
+  | CApp (CPF "UnSome", [ CApp (CPF "Some", [ x ]) ]) -> x
+  | CApp (CPF "UnSome", [ CApp (CPF "HashtblFind", [ x; y ]) ]) -> CApp (CPF "HashtblForceFind", [ x; y ])
+  | CApp (CPF "HashtblForceFind", [ CGetMember (x, "var"); CString f ]) -> CGetMember (x, "var_" ^ f)
+  | CApp (CPF "HashtblContain", [ CGetMember (x, "var"); CString f ]) -> CGetMember (x, "has_var_" ^ f)
+  | CApp (CPF "HashtblSet", [ CGetMember (x, "var"); CString f; v ]) -> CSetMember (x, "var_" ^ f, v)
   | CApp (CPF "HashtblForceFind", [ CGetMember (x, "prop"); CString f ]) ->
-      recurse
-        (CApp (CPF ("GetProp" ^ angle_bracket (compile_type_expr (prop_from_tyck_env p.tyck_env f))), [ x; CString f ]))
+      CApp (CPF ("GetProp" ^ angle_bracket (compile_type_expr (prop_from_tyck_env p.tyck_env f))), [ x; CString f ])
   | CApp (CPF "IsSome", [ CApp (CPF "HashtblFind", [ CGetMember (x, "prop"); CString f ]) ]) ->
-      recurse (CApp (CPF "HasProp", [ x; CString f ]))
+      CApp (CPF "HasProp", [ x; CString f ])
   | CApp (CPF "HashtblForceFind", [ CGetMember (x, "attr"); CString f ]) ->
-      recurse
-        (CApp (CPF ("GetAttr" ^ angle_bracket (compile_type_expr (attr_from_tyck_env p.tyck_env f))), [ x; CString f ]))
+      CApp (CPF ("GetAttr" ^ angle_bracket (compile_type_expr (attr_from_tyck_env p.tyck_env f))), [ x; CString f ])
   | CApp (CPF "IsSome", [ CApp (CPF "HashtblFind", [ CGetMember (x, "attr"); CString f ]) ]) ->
-      recurse (CApp (CPF "HasAttr", [ x; CString f ]))
-  | CApp (CPF ("BoolOfValue" | "VBool" | "VString" | "VFloat" | "VInt"), [ x ]) -> recurse x
+      CApp (CPF "HasAttr", [ x; CString f ])
+  | CApp (CPF ("BoolOfValue" | "VBool" | "VString" | "VFloat" | "VInt"), [ x ]) -> x
   | CApp
       ( CPF
-          (( "WriteMetric" | "MetricWriteCount" | "MetricQueueSizeAcc" | "MetricMetaReadCount" | "MetricMetaWriteCount"
-           | "MetricOutputChangeCount" | "MetricInputChangeCount" | "MetricReadCount" | "ResetMetric" ) as f),
+          (( "WriteMetric" | "MetricWriteCount" | "MetaWriteMetric" | "MetricQueueSizeAcc" | "MetricMetaReadCount"
+           | "MetricMetaWriteCount" | "MetricOutputChangeCount" | "MetricInputChangeCount" | "MetricReadCount"
+           | "ResetMetric" | "MetaReadMetric" ) as f),
         [ _ ] ) ->
       CApp (CPF f, [])
   | CApp (CPF (("OutputChangeMetric" | "InputChangeMetric") as f), [ _; i ]) -> CApp (CPF f, [ i ])
-  | CApp (CFun ([ xname ], body), [ x ]) -> recurse (CLet (xname, x, body))
-  | CIf (i, CApp (CPF "MakeUnit", []), CApp (CPF "MakeUnit", [])) -> recurse (CSeq [ i; CApp (CPF "MakeUnit", []) ])
+  | CApp (CFun ([ xname ], body), [ x ]) -> CLet (xname, x, body)
+  | CIf (i, CApp (CPF "MakeUnit", []), CApp (CPF "MakeUnit", [])) -> CSeq [ i; CApp (CPF "MakeUnit", []) ]
   | CSeq [ x ] -> x
   | CSeq xs ->
       let xs, last = unsnoc xs in
@@ -94,9 +111,9 @@ let rec simplify (p : prog) x =
                         | _ -> Common.panic ("simplify_seq:" ^ truncate (show_code x)))))
               [ last ])
            ~f:recurse)
-  | CIf (i, CPanic t, e) -> recurse (CAssert (CNot i, t, e))
-  | CIf (i, t, CPanic e) -> recurse (CAssert (i, e, t))
-  | CLet (lhs, rhs, CVar body) -> if String.equal lhs body then recurse rhs else CSeq [ rhs; CVar body ]
+  | CIf (i, CPanic t, e) -> CAssert (CNot i, t, e)
+  | CIf (i, t, CPanic e) -> CAssert (i, e, t)
+  | CLet (lhs, rhs, CVar body) -> if String.equal lhs body then rhs else CSeq [ rhs; CVar body ]
   | CApp (CPF "AssocToJson", [ x ]) ->
       let v = fresh () in
       recurse (CLet (v, CApp (CPF "FreshJson", []), CApp (CPF "WriteAssocToJson", [ CVar v; x ])))
@@ -104,8 +121,8 @@ let rec simplify (p : prog) x =
       recurse (CSeq [ CApp (CPF "WriteJson", [ CVar j; CString f; x ]); CApp (CPF "WriteAssocToJson", [ CVar j; y ]) ])
   | CApp (CPF "WriteJson", [ j; f; CApp (CPF ("IntToJson" | "StringToJson" | "ListToJson"), [ x ]) ]) ->
       recurse (CApp (CPF "WriteJson", [ j; f; x ]))
-  | CApp (CPF "WriteAssocToJson", [ j; CApp (CPF "Nil", []) ]) -> recurse j
-  | CApp (CPF "not", [ x ]) -> recurse (CNot x)
+  | CApp (CPF "WriteAssocToJson", [ j; CApp (CPF "Nil", []) ]) -> j
+  | CApp (CPF "not", [ x ]) -> CNot x
   (* default cases *)
   | CAssert (b, e, t) -> CAssert (recurse b, recurse e, recurse t)
   | CPanic xs -> CPanic (recurse xs)
@@ -353,7 +370,8 @@ let compile_typedef (env : tyck_env) : string =
 let compile (prog : prog) defs main c : unit =
   Stdio.Out_channel.output_string c "#include \"header.h\"\n";
   Stdio.Out_channel.output_string c (compile_typedef prog.tyck_env);
-  Stdio.Out_channel.output_string c "#include \"header_continued.h\"\n\n";
+  Stdio.Out_channel.output_string c "\n";
+  Stdio.Out_channel.output_string c "#include \"header_continued.h\"\n";
   List.iter defs (compile_def prog c);
   Stdio.Out_channel.output_string c "int main(){";
   compile_proc c (main |> optimize prog);

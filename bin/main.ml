@@ -204,7 +204,7 @@ module Main (EVAL : Eval) = struct
                         option_match
                           (list_last (node_get_children n))
                           (fun _ -> node_set_last n (none ()))
-                          (fun x -> seq (node_set_last n (some x)) (fun _ -> node_set_last x (some n))));
+                          (fun x -> seq (node_set_last n (some x)) (fun _ -> node_set_parent x (some n))));
                     ]))))
     in
     seqs
