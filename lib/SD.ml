@@ -490,8 +490,8 @@ module D : SD with type 'x sd = code = MakeSD (struct
   type 'x sd = code
 
   let is_static = false
-  let static x = panic "static"
-  let unstatic x = panic "unstatic"
+  let static x = Common.panic "static"
+  let unstatic x = Common.panic "unstatic"
   let dyn x = x
   let undyn x = x
   let global_defs : (string * string * code Lazy.t) list ref = ref []
@@ -502,7 +502,7 @@ module D : SD with type 'x sd = code = MakeSD (struct
           Stdio.print_endline s;
           (ret_type, s, Lazy.force cl))
     in
-    if Int.equal (List.length ret) (List.length !global_defs) then ret else defs ()
+    if Int.equal (List.length ret) (List.length !global_defs) then (global_defs := [];ret) else (defs ())
 
   let lift ret_type name x : code =
     let v = name ^ "_" ^ fresh () in
