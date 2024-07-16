@@ -347,19 +347,20 @@ let compile_field name type_expr =
   compile_type_expr type_expr ^ " var_" ^ name ^ ";" ^ "bool " ^ "has_var_" ^ name ^ " = false;"
 
 let compile_typedef (env : tyck_env) meta_defs : string =
-  " struct MetaNode{\n\ " ^ meta_defs ^ "};\n\
-  \ using Meta = std::shared_ptr<MetaNode>;
-  \ struct Content : std::enable_shared_from_this<Content> {\n\
-  \    Content* parent = nullptr;\n\
-  \    Content* prev = nullptr;\n\
-  \    Content* next = nullptr;\n\
-  \    Content* first = nullptr;\n\
-  \    Content* last = nullptr;\n\
-  \    int64_t extern_id;\n\
-  \    List<Node> children;\n\
-  \    std::string name;\n\
-  \    std::unordered_map<std::string, Value> attr;\n\
-  \    std::unordered_map<std::string, Value> prop;\n\
+  " struct MetaNode{\n " ^ meta_defs
+  ^ "};\n\
+    \ using Meta = std::shared_ptr<MetaNode>;\n\
+    \   struct Content : std::enable_shared_from_this<Content> {\n\
+    \    Content* parent = nullptr;\n\
+    \    Content* prev = nullptr;\n\
+    \    Content* next = nullptr;\n\
+    \    Content* first = nullptr;\n\
+    \    Content* last = nullptr;\n\
+    \    int64_t extern_id;\n\
+    \    List<Node> children;\n\
+    \    std::string name;\n\
+    \    std::unordered_map<std::string, Value> attr;\n\
+    \    std::unordered_map<std::string, Value> prop;\n\
     \    Meta meta = std::make_shared<MetaNode>();\n\
     \    Content(const std::string& name,\n\
     \            std::unordered_map<std::string, Value>&& attr,\n\

@@ -152,6 +152,7 @@ module type SDIN = sig
   val metric_meta_write_count : metric sd -> int sd
   val metric_input_change_count : metric sd -> int sd
   val metric_output_change_count : metric sd -> int sd
+  val queue_size_metric : metric sd -> int sd -> unit sd
   val metric_queue_size_acc : metric sd -> int sd
   val vbool : bool sd -> value sd
   val vint : int sd -> value sd
@@ -398,6 +399,7 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
   let metric_meta_write_count m = m.meta_write_count
   let metric_input_change_count m = m.input_change_count
   let metric_output_change_count m = m.output_change_count
+  let queue_size_metric m i = m.queue_size_acc <- m.queue_size_acc + i
   let metric_queue_size_acc m = m.queue_size_acc
   let vbool b = VBool b
   let vint i = VInt i
@@ -502,7 +504,10 @@ module D : SD with type 'x sd = code = MakeSD (struct
           Stdio.print_endline s;
           (ret_type, s, Lazy.force cl))
     in
-    if Int.equal (List.length ret) (List.length !global_defs) then (global_defs := [];ret) else (defs ())
+    if Int.equal (List.length ret) (List.length !global_defs) then (
+      global_defs := [];
+      ret)
+    else defs ()
 
   let lift ret_type name x : code =
     let v = name ^ "_" ^ fresh () in
@@ -667,6 +672,7 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let metric_meta_write_count m = CApp (CPF "MetricMetaWriteCount", [ m ])
   let metric_input_change_count m = CApp (CPF "MetricInputChangeCount", [ m ])
   let metric_output_change_count m = CApp (CPF "MetricOutputChangeCount", [ m ])
+  let queue_size_metric m i = CApp (CPF "MetricQueueSize", [ m; i ])
   let metric_queue_size_acc m = CApp (CPF "MetricQueueSizeAcc", [ m ])
   let vbool b = CApp (CPF "VBool", [ b ])
   let vint i = CApp (CPF "VInt", [ i ])
