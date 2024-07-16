@@ -25,16 +25,25 @@ struct PQData {
 };
 PQData MakeRecomputeBB(const std::string &name) { return PQData(true, name); }
 PQData MakeRecomputeProc(const std::string &name) { return PQData(false, name); }
+auto RFMatch(const PQData &rf, const auto &bb, const auto &proc) {
+  if (rf.BBOrProc) {
+    return bb(rf.name);
+  } else {
+    return proc(rf.name);
+  }
+}
 #include <map>
 struct Key {
   Node n;
-  PQData data;
+  PQData rf;
 };
 std::map<TotalOrder, Key> queue;
 Unit QueuePush(const TotalOrder &to, const Node &n, PQData &&data) {
   queue.insert({to, Key(n, std::move(data))});
   return Unit{};
 }
+int64_t QueueSize() { return queue.size(); }
+bool QueueIsEmpty() { return queue.empty(); }
 Unit QueuePush(const TotalOrder &to, Content *n, PQData &&data) {
   queue.insert({to, Key(n->shared_from_this(), std::move(data))});
   return Unit{};
@@ -48,4 +57,11 @@ Unit QueueForcePush(const TotalOrder &to, const Node &n, PQData &&data) {
 Unit QueueForcePush(const TotalOrder &to, Content *n, PQData &&data) {
   queue.insert({to, Key(n->shared_from_this(), std::move(data))});
   return Unit{};
+}
+std::pair<TotalOrder, Key> QueuePeek() { return *(queue.begin()); }
+std::pair<TotalOrder, Key> QueuePop() {
+  auto it = queue.begin();
+  auto ret = *it;
+  queue.erase(it);
+  return ret;
 }

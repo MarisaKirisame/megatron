@@ -38,12 +38,16 @@ Unit MetaReadMetric() {
   m.meta_read_count += 1;
   return Unit{};
 }
-Unit InputChangeMetric(size_t i) {
+Unit InputChangeMetric(int64_t i) {
   m.input_change_count += i;
   return Unit{};
 }
-Unit OutputChangeMetric(size_t i) {
+Unit OutputChangeMetric(int64_t i) {
   m.output_change_count += i;
+  return Unit{};
+}
+Unit MetricQueueSize(int64_t i) {
+  m.queue_size_acc += i;
   return Unit{};
 }
 int64_t MetricQueueSizeAcc() { return m.queue_size_acc; }

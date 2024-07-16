@@ -14,12 +14,13 @@ let is_pure_function f =
   | "InputChangeMetric" | "OutputChangeMetric" | "PrintEndline" | "WriteMetric" | "HashtblAddExn" | "HashtblForceRemove"
   | "PushStack" | "Assert" | "IterLines" | "JsonToChannel" | "OutputString" | "ResetMetric" | "ClearStack" | "WriteRef"
   | "ReadMetric" | "HashtblSet" | "WriteJson" | "MetaReadMetric" | "MetaWriteMetric" | "RemoveMeta" | "NextTotalOrder"
-    ->
+  | "QueuePop" | "MetricQueueSize" ->
       false
   | "MakeUnit" | "ListIsEmpty" | "IntEqual" | "ListLength" | "ListSplitN" | "Zro" | "Fst" | "FreshMetric" | "Cons"
   | "Nil" | "IsNone" | "HashtblFind" | "UnSome" | "ListLast" | "JsonMember" | "ListMatch" | "OptionIter" | "OptionMatch"
   | "ListIter" | "HashtblFind" | "EqualValue" | "ListZip" | "ListDropLast" | "ListTl" | "ListHead" | "ListHeadExn"
-  | "ListTailExn" | "ListIter2" | "HashtblContain" | "IsSome" | "HashtblFindExn" | "ListIsSingleton" ->
+  | "ListTailExn" | "ListIter2" | "HashtblContain" | "IsSome" | "HashtblFindExn" | "ListIsSingleton" | "RFMatch"
+  | "TotalOrderEqual" ->
       true
   | _ -> panic ("is_pure_function:" ^ f)
 
@@ -27,6 +28,7 @@ let rec is_pure x =
   match x with
   | CSetMember _ | CPanic _ -> false
   | CInt _ | CString _ | CVar _ -> true
+  | CAssert _ -> false
   | CFun (name, body) -> is_pure body
   | CSeq xs -> List.for_all xs ~f:is_pure
   | CApp (CVar _, _) -> false
@@ -36,6 +38,8 @@ let rec is_pure x =
   | CNot x -> is_pure x
   | CGetMember (x, f) -> is_pure x
   | CLet (lhs, rhs, body) -> is_pure rhs && is_pure body
+  | CStringMatch (str, cases, default) ->
+      is_pure str && List.for_all cases ~f:(fun (_, c) -> is_pure c) && is_pure default
   | _ -> Common.panic ("is_pure:" ^ truncate (show_code x))
 
 let rec simplify (p : prog) x =
@@ -91,7 +95,7 @@ let rec simplify (p : prog) x =
            | "ResetMetric" | "MetaReadMetric" ) as f),
         [ _ ] ) ->
       CApp (CPF f, [])
-  | CApp (CPF (("OutputChangeMetric" | "InputChangeMetric") as f), [ _; i ]) -> CApp (CPF f, [ i ])
+  | CApp (CPF (("OutputChangeMetric" | "InputChangeMetric" | "MetricQueueSize") as f), [ _; i ]) -> CApp (CPF f, [ i ])
   | CApp (CPF (("QueuePush" | "QueueForcePush") as f), [ a; b; c; _ ]) -> CApp (CPF f, [ a; b; c ])
   | CApp (CFun ([ xname ], body), [ x ]) -> CLet (xname, x, body)
   | CIf (i, CApp (CPF "MakeUnit", []), CApp (CPF "MakeUnit", [])) -> CSeq [ i; CApp (CPF "MakeUnit", []) ]
@@ -109,7 +113,7 @@ let rec simplify (p : prog) x =
                         match x with
                         | CSeq xs -> xs
                         | CApp (CPF f, xs) -> if is_absolutely_pure_function f then xs else [ x ]
-                        | CIf _ | CLet _ | CSetMember _ | CApp (CVar _, _) -> [ x ]
+                        | CIf _ | CLet _ | CSetMember _ | CApp (CVar _, _) | CStringMatch (_, _, _) | CAssert _ -> [ x ]
                         | CFun _ | CVar _ -> []
                         | CGetMember (x, _) -> [ x ]
                         | _ -> Common.panic ("simplify_seq:" ^ truncate (show_code x)))))
@@ -310,6 +314,9 @@ and compile_expr c x =
       output_string c ")"
   | CPanic xs -> output_string c "Panic()"
   | CString str -> output_string c ("std::string" ^ bracket (quoted str))
+  | CGetMember (x, (("n" | "rf") as f)) ->
+      compile_expr c x;
+      output_string c ("." ^ f)
   | CGetMember (x, f) ->
       compile_expr c x;
       output_string c ("->" ^ f)
@@ -322,6 +329,11 @@ and compile_expr c x =
           compile_expr c x);
       output_string c ")"
   | _ -> Common.panic ("compile_expr:" ^ truncate (show_code x))
+
+let compile_forward_def prog c (ret_type, name, x) =
+  match x with
+  | CFix (name, xname, _) -> output_string c (ret_type ^ " " ^ name ^ names_to_args xname ^ ";")
+  | CFun (xname, _) -> output_string c (ret_type ^ " " ^ name ^ names_to_args xname ^ ";")
 
 let compile_def prog c (ret_type, name, x) =
   match optimize prog x with
@@ -390,13 +402,8 @@ let compile (prog : prog) defs main meta_defs c : unit =
   Stdio.Out_channel.output_string c (compile_typedef prog.tyck_env meta_defs);
   Stdio.Out_channel.output_string c "\n";
   Stdio.Out_channel.output_string c "#include \"header_continued.h\"\n";
+  List.iter defs (compile_forward_def prog c);
   List.iter defs (compile_def prog c);
   Stdio.Out_channel.output_string c "int main(){";
   compile_proc c (main |> optimize prog);
   Stdio.Out_channel.output_string c "}"
-
-(*let compile (p : prog) : string =
-  header ^ compile_typedef p.tyck_env ^ forward
-  ^ String.concat (List.map (Hashtbl.to_alist p.bbs) ~f:(fun (_, x) -> compile_bb p.tyck_env x))
-  ^ String.concat (List.map (Hashtbl.to_alist p.procs) ~f:(fun (_, x) -> compile_proc p.tyck_env x))
-  ^ "Node root;\n  int main() {}"*)

@@ -74,7 +74,7 @@ module EVAL (SD : SD) = MakeEval (struct
 
   let queue_pop () = if is_static then PriorityQueue.pop queue |> static else CApp (CPF "QueuePop", []) |> dyn
   let queue_peek () = if is_static then PriorityQueue.peek queue |> static else CApp (CPF "QueuePeek", []) |> dyn
-  let queue_size () = if is_static then PriorityQueue.size queue |> static else CApp (CPF "QueuePop", []) |> dyn
+  let queue_size () = if is_static then PriorityQueue.size queue |> static else CApp (CPF "QueueSize", []) |> dyn
 
   let queue_push (x : TotalOrder.t sd) (y : meta node sd) (z : recompute_func sd) (m : metric sd) : unit sd =
     seq (meta_write_metric m) (fun _ ->
@@ -163,14 +163,22 @@ module EVAL (SD : SD) = MakeEval (struct
                                      (k |> key_get_node |> node_get_meta |> meta_get_alive)
                                      (fun _ ->
                                        rf_match (k |> key_get_rf)
-                                         (fun bb -> eval_stmts (key_get_node k) (stmts_of_basic_block p bb))
+                                         (fun bb ->
+                                           string_match bb
+                                             (List.map (Hashtbl.to_alist p.bbs) ~f:(fun (str, BasicBlock (_, stmts)) ->
+                                                  (str, fun _ -> eval_stmts (key_get_node k) stmts)))
+                                             (fun _ -> panic (string "unknown bb")))
                                          (fun proc ->
                                            let_ (read_ref current_time) (fun old_time ->
                                                seqs
                                                  [
                                                    (fun _ -> write_ref current_time x);
                                                    (fun _ ->
-                                                     eval_stmts (key_get_node k) (stmts_of_processed_proc p proc));
+                                                     string_match proc
+                                                       (List.map (Hashtbl.to_alist p.procs)
+                                                          ~f:(fun (str, ProcessedProc (_, stmts)) ->
+                                                            (str, fun _ -> eval_stmts (key_get_node k) stmts)))
+                                                       (fun _ -> panic (string "unknown proc")));
                                                    (fun _ ->
                                                      hashtbl_set
                                                        (meta_get_proc_time_table (node_get_meta (key_get_node k)))
