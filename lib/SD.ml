@@ -180,6 +180,7 @@ module type SDIN = sig
   val list_hd : 'a list sd -> 'a option sd
   val list_hd_exn : 'a list sd -> 'a sd
   val list_is_empty : 'a list sd -> bool sd
+  val list_is_singleton : 'a list sd -> bool sd
   val list_length : 'a list sd -> int sd
   val unsome : 'a option sd -> 'a sd
   val and_ : bool sd -> (unit -> bool sd) -> bool sd
@@ -480,6 +481,7 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
   let list_hd x = match x with [] -> None | x :: _ -> Some x
   let list_hd_exn x = match x with x :: _ -> x
   let list_is_empty l = List.is_empty l
+  let list_is_singleton x = match x with [] -> false | _ :: y -> list_is_empty y
   let and_ l r = if l then r () else false
   let or_ l r = if l then true else r ()
 end)
@@ -685,6 +687,7 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let list_hd_exn l = CApp (CPF "ListHeadExn", [ l ])
   let list_hd l = CApp (CPF "ListHead", [ l ])
   let list_is_empty l = CApp (CPF "ListIsEmpty", [ l ])
+  let list_is_singleton l = CApp (CPF "ListIsSingleton", [ l ])
   let and_ l r = CAnd (l, r ())
   let or_ l r = COr (l, r ())
 end)

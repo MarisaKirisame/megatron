@@ -26,7 +26,7 @@ module type EvalIn = sig
 
   type meta
 
-  val meta_staged : string
+  val meta_defs : string
   val fresh_meta : unit sd -> meta sd
   val remove_meta : meta sd -> unit sd
   val register_todo_proc : prog -> meta node sd -> string -> metric sd -> unit sd
@@ -102,17 +102,18 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                let work bb_name : unit sd =
                  let (BasicBlock (_, stmts)) = Hashtbl.find_exn p.bbs bb_name in
                  let reads = reads_of_stmts stmts in
-                 let dirty read =
+                 let dirty read : path Option.t =
                    match read with
-                   | ReadVar (path, read_var_name) ->
-                       if String.equal var_name read_var_name then
-                         list_iter (reversed_path path n) (fun dirtied_node ->
-                             bb_dirtied dirtied_node ~proc_name ~bb_name m)
-                       else tt
-                   | ReadHasPath _ -> tt (*property being changed cannot change haspath status*)
-                   | ReadProp _ | ReadAttr _ -> tt
+                   | ReadVar (path, read_var_name) -> if String.equal var_name read_var_name then Some path else None
+                   | ReadHasPath _ -> None (*property being changed cannot change haspath status*)
+                   | ReadProp _ | ReadAttr _ -> None
                  in
-                 seqs (List.map reads ~f:(fun r () -> dirty r))
+                 seqs
+                   (List.map
+                      (List.dedup_and_sort (List.filter_map reads ~f:dirty) ~compare:compare_path)
+                      ~f:(fun path _ ->
+                        list_iter (reversed_path path n) (fun dirtied_node ->
+                            bb_dirtied dirtied_node ~proc_name ~bb_name m)))
                in
                seqs (List.map (List.append (Option.to_list down) (Option.to_list up)) ~f:(fun n () -> work n)))))
 
@@ -240,30 +241,41 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                                      let work bb_name =
                                        let (BasicBlock (_, stmts)) = Hashtbl.find_exn p.bbs bb_name in
                                        let reads = reads_of_stmts stmts in
+                                       let once_hashtbl : (string, unit) Hashtbl.t = Hashtbl.create (module String) in
+                                       let once str (fu : unit -> unit sd) =
+                                         match Hashtbl.add once_hashtbl ~key:str ~data:() with
+                                         | `Ok -> fu ()
+                                         | `Duplicate -> tt
+                                       in
                                        let dirty read : unit sd =
                                          match read with
                                          | ReadVar (Self, _) | ReadHasPath Parent | ReadVar (Parent, _) -> tt
                                          | ReadHasPath First | ReadHasPath Last ->
-                                             ite
-                                               (list_is_empty (node_get_children x))
-                                               (fun _ -> bb_dirtied x ~proc_name ~bb_name m)
-                                               (fun _ -> tt)
+                                             once "HasPathFirstLast" (fun _ ->
+                                                 ite
+                                                   (list_is_empty (node_get_children x))
+                                                   (fun _ -> bb_dirtied x ~proc_name ~bb_name m)
+                                                   (fun _ -> tt))
                                          | ReadVar (First, _) ->
-                                             ite (list_is_empty lhs)
-                                               (fun _ -> bb_dirtied x ~proc_name ~bb_name m)
-                                               (fun _ -> tt)
+                                             once "VarFirst" (fun _ ->
+                                                 ite (list_is_empty lhs)
+                                                   (fun _ -> bb_dirtied x ~proc_name ~bb_name m)
+                                                   (fun _ -> tt))
                                          | ReadVar (Last, _) ->
-                                             ite (list_is_empty rhs)
-                                               (fun _ -> bb_dirtied x ~proc_name ~bb_name m)
-                                               (fun _ -> tt)
+                                             once "VarLast" (fun _ ->
+                                                 ite (list_is_empty rhs)
+                                                   (fun _ -> bb_dirtied x ~proc_name ~bb_name m)
+                                                   (fun _ -> tt))
                                          | ReadHasPath Prev | ReadVar (Prev, _) ->
-                                             option_match (node_get_next removed)
-                                               (fun _ -> tt)
-                                               (fun x -> bb_dirtied x ~proc_name ~bb_name m)
+                                             once "VarPrev" (fun _ ->
+                                                 option_match (node_get_next removed)
+                                                   (fun _ -> tt)
+                                                   (fun x -> bb_dirtied x ~proc_name ~bb_name m))
                                          | ReadHasPath Next | ReadVar (Next, _) ->
-                                             option_match (node_get_prev removed)
-                                               (fun _ -> tt)
-                                               (fun x -> bb_dirtied x ~proc_name ~bb_name m)
+                                             once "VarNext" (fun _ ->
+                                                 option_match (node_get_prev removed)
+                                                   (fun _ -> tt)
+                                                   (fun x -> bb_dirtied x ~proc_name ~bb_name m))
                                          | ReadProp _ | ReadAttr _ -> tt
                                          | _ -> Common.panic (show_read read)
                                        in
@@ -303,26 +315,39 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                              let work bb_name =
                                let (BasicBlock (_, stmts)) = Hashtbl.find_exn p.bbs bb_name in
                                let reads = reads_of_stmts stmts in
+                               let once_hashtbl : (string, unit) Hashtbl.t = Hashtbl.create (module String) in
+                               let once str (fu : unit -> unit sd) =
+                                 match Hashtbl.add once_hashtbl ~key:str ~data:() with `Ok -> fu () | `Duplicate -> tt
+                               in
                                let dirty read : unit sd =
                                  match read with
                                  | ReadHasPath Parent | ReadVar (Parent, _) -> tt
                                  | ReadHasPath First | ReadHasPath Last ->
-                                     ite
-                                       (int_equal (list_length (node_get_children x)) (int 1))
-                                       (fun _ -> bb_dirtied x ~proc_name ~bb_name m)
-                                       (fun _ -> tt)
+                                     once "HasPathFirstLast" (fun _ ->
+                                         ite
+                                           (list_is_singleton (node_get_children x))
+                                           (fun _ -> bb_dirtied x ~proc_name ~bb_name m)
+                                           (fun _ -> tt))
                                  | ReadVar (First, _) ->
-                                     ite (list_is_empty lhs) (fun _ -> bb_dirtied x ~proc_name ~bb_name m) (fun _ -> tt)
+                                     once "VarFirst" (fun _ ->
+                                         ite (list_is_empty lhs)
+                                           (fun _ -> bb_dirtied x ~proc_name ~bb_name m)
+                                           (fun _ -> tt))
                                  | ReadVar (Last, _) ->
-                                     ite (list_is_empty rhs) (fun _ -> bb_dirtied x ~proc_name ~bb_name m) (fun _ -> tt)
+                                     once "VarLast" (fun _ ->
+                                         ite (list_is_empty rhs)
+                                           (fun _ -> bb_dirtied x ~proc_name ~bb_name m)
+                                           (fun _ -> tt))
                                  | ReadHasPath Prev | ReadVar (Prev, _) ->
-                                     option_match (node_get_next y)
-                                       (fun _ -> tt)
-                                       (fun x -> bb_dirtied x ~proc_name ~bb_name m)
-                                 | ReadHasPath Next | ReadVar (Next, _) -> (
-                                     match (y |> unstatic).prev with
-                                     | Some x -> bb_dirtied (x |> static) ~proc_name ~bb_name m
-                                     | None -> tt)
+                                     once "VarPrev" (fun _ ->
+                                         option_match (node_get_next y)
+                                           (fun _ -> tt)
+                                           (fun x -> bb_dirtied x ~proc_name ~bb_name m))
+                                 | ReadHasPath Next | ReadVar (Next, _) ->
+                                     once "VarNext" (fun _ ->
+                                         option_match (node_get_prev y)
+                                           (fun _ -> tt)
+                                           (fun x -> bb_dirtied x ~proc_name ~bb_name m))
                                  | ReadVar (Self, _) | ReadProp _ | ReadAttr _ -> tt
                                  | _ -> Common.panic (show_read read)
                                in
@@ -348,14 +373,13 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                  let work bb_name : unit sd =
                    let (BasicBlock (_, stmts)) = Hashtbl.find_exn p.bbs bb_name in
                    let reads = reads_of_stmts stmts in
-                   let dirty read : unit sd =
+                   let dirty read : bool =
                      match read with
-                     | ReadHasPath _ | ReadVar _ | ReadAttr _ -> tt
-                     | ReadProp read_name ->
-                         if String.equal name read_name then bb_dirtied n ~proc_name ~bb_name m else tt
+                     | ReadHasPath _ | ReadVar _ | ReadAttr _ -> false
+                     | ReadProp read_name -> String.equal name read_name
                      (*| _ -> panic (show_read read)*)
                    in
-                   seqs (List.map reads ~f:(fun r _ -> dirty r))
+                   if List.exists reads ~f:dirty then bb_dirtied n ~proc_name ~bb_name m else tt
                  in
                  let down, up = get_bb_from_proc p proc_name in
                  seqs
@@ -376,14 +400,13 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                  let work bb_name : unit sd =
                    let (BasicBlock (_, stmts)) = Hashtbl.find_exn p.bbs bb_name in
                    let reads = reads_of_stmts stmts in
-                   let dirty read : unit sd =
+                   let dirty read : bool =
                      match read with
-                     | ReadHasPath _ | ReadVar _ | ReadAttr _ -> tt
-                     | ReadProp read_name ->
-                         if String.equal name read_name then bb_dirtied n ~proc_name ~bb_name m else tt
+                     | ReadHasPath _ | ReadVar _ | ReadAttr _ -> false
+                     | ReadProp read_name -> String.equal name read_name
                      (*| _ -> panic (show_read read)*)
                    in
-                   seqs (List.map reads ~f:(fun r _ -> dirty r))
+                   if List.exists reads ~f:dirty then bb_dirtied n ~proc_name ~bb_name m else tt
                  in
                  let down, up = get_bb_from_proc p proc_name in
                  seqs
@@ -404,14 +427,13 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                  let work bb_name : unit sd =
                    let (BasicBlock (_, stmts)) = Hashtbl.find_exn p.bbs bb_name in
                    let reads = reads_of_stmts stmts in
-                   let dirty read : unit sd =
+                   let dirty read : bool =
                      match read with
-                     | ReadHasPath _ | ReadVar _ | ReadProp _ -> tt
-                     | ReadAttr read_name ->
-                         if String.equal name read_name then bb_dirtied n ~proc_name ~bb_name m else tt
+                     | ReadHasPath _ | ReadVar _ | ReadProp _ -> false
+                     | ReadAttr read_name -> String.equal name read_name
                      (*| _ -> panic (show_read read)*)
                    in
-                   seqs (List.map reads ~f:(fun r _ -> dirty r))
+                   if List.exists reads ~f:dirty then bb_dirtied n ~proc_name ~bb_name m else tt
                  in
                  let down, up = get_bb_from_proc p proc_name in
                  seqs
@@ -432,14 +454,13 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                  let work bb_name : unit sd =
                    let (BasicBlock (_, stmts)) = Hashtbl.find_exn p.bbs bb_name in
                    let reads = reads_of_stmts stmts in
-                   let dirty read : unit sd =
+                   let dirty read : bool =
                      match read with
-                     | ReadHasPath _ | ReadVar _ | ReadProp _ -> tt
-                     | ReadAttr read_name ->
-                         if String.equal name read_name then bb_dirtied n ~proc_name ~bb_name m else tt
+                     | ReadHasPath _ | ReadVar _ | ReadProp _ -> false
+                     | ReadAttr read_name -> String.equal name read_name
                      (*| _ -> panic (show_read read)*)
                    in
-                   seqs (List.map reads ~f:(fun r _ -> dirty r))
+                   if List.exists reads ~f:dirty then bb_dirtied n ~proc_name ~bb_name m else tt
                  in
                  let down, up = get_bb_from_proc p proc_name in
                  seqs

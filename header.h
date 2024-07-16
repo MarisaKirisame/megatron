@@ -53,7 +53,7 @@ int64_t MetricReadCount() { return m.read_count; }
 int64_t MetricMetaReadCount() { return m.meta_read_count; }
 int64_t MetricOutputChangeCount() { return m.output_change_count; }
 int64_t MetricInputChangeCount() { return m.input_change_count; }
-void Panic() { assert(false); }
+#define Panic() assert(false)
 void PrintEndline(const std::string &str) { std::cout << str << std::endl; }
 Unit MakeUnit() { return Unit{}; }
 template <typename T> struct RefNode {
@@ -155,12 +155,24 @@ template <typename T> List<T> ListTailExn(const List<T> &l) {
     assert(false);
   }
 }
+
 template <typename T> bool ListIsEmpty(const List<T> &l) {
   auto *p_ = l.get();
   if (auto *p = dynamic_cast<NilNode<T> *>(p_)) {
     return true;
   } else if (auto *p = dynamic_cast<ConsNode<T> *>(p_)) {
     return false;
+  } else {
+    assert(false);
+  }
+}
+
+template <typename T> bool ListIsSingleton(const List<T> &l) {
+  auto *p_ = l.get();
+  if (auto *p = dynamic_cast<NilNode<T> *>(p_)) {
+    return false;
+  } else if (auto *p = dynamic_cast<ConsNode<T> *>(p_)) {
+    return ListIsEmpty(p->tl);
   } else {
     assert(false);
   }
@@ -282,7 +294,7 @@ Unit IterLines(const std::ifstream &i, const auto &f) {
 template <typename X> bool HashtblContain(const std::unordered_map<std::string, X> &hash, const std::string &field) {
   return hash.count(field) == 1;
 }
-template <typename X> X HashtblForceFind(const std::unordered_map<std::string, X> &hash, const std::string &field) {
+template <typename X> X HashtblFindExn(const std::unordered_map<std::string, X> &hash, const std::string &field) {
   assert(hash.count(field) == 1);
   return hash.at(field);
 }
@@ -295,7 +307,12 @@ Unit HashtblForceRemove(const std::unordered_map<std::string, X> &hash, const st
 template <typename X>
 Unit HashtblAddExn(const std::unordered_map<std::string, X> &hash, const std::string &field, const X &v) {
   assert(hash.count(field) == 0);
-  const_cast<std::unordered_map<std::string, X> &>(hash).insert({field, v});
+  const_cast<std::unordered_map<std::string, X> &>(hash).insert_or_assign(field, v);
+  return Unit{};
+}
+template <typename X>
+Unit HashtblSet(const std::unordered_map<std::string, X> &hash, const std::string &field, const X &v) {
+  const_cast<std::unordered_map<std::string, X> &>(hash).insert_or_assign(field, v);
   return Unit{};
 }
 struct Content;
@@ -351,3 +368,9 @@ std::string nth_by_sep(const std::string &str, const std::string &sep, int nth) 
   auto range = str | std::ranges::views::split(sep.at(0)) | std::ranges::views::transform(to_string);
   return *std::next(range.begin(), nth);
 }
+#include "otto.h"
+typedef total_order<1.4, uint8_t> TotalOrderS;
+typedef TotalOrderS::node TotalOrder;
+TotalOrderS tos;
+auto current_time = MakeRef(tos.smallest());
+TotalOrder NextTotalOrder(const TotalOrder &to) { return tos.insert(to); }

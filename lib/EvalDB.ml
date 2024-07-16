@@ -27,7 +27,10 @@ module EVAL (SD : SD) = MakeEval (struct
     if is_static then (n |> unstatic).recursive_proc_dirtied |> static
     else CGetMember (n |> undyn, "RecursiveProcDirtied") |> dyn
 
-  let meta_staged = "???"
+  let meta_defs =
+    " std::unordered_map<std::string, bool> BBDirtied;\n\
+    \ std::unordered_map<std::string, Unit> ProcInited;\n\
+    \ std::unordered_map<std::string, bool> RecursiveProcDirtied;"
 
   let fresh_meta _ =
     {

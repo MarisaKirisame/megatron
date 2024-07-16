@@ -16,7 +16,7 @@ module EVAL (SD : SD) = MakeEval (struct
     else CApp (CPF "NextTotalOrder", [ o |> undyn ]) |> dyn
 
   let name = "PQ"
-  let current_time = lift "TotalOrder" "current_time" (lazy (make_ref (make_total_order ())))
+  let current_time = if is_static then make_ref (make_total_order ()) else CVar "current_time" |> dyn
 
   type meta = {
     (*time of bbs*)
@@ -25,7 +25,7 @@ module EVAL (SD : SD) = MakeEval (struct
     mutable alive : bool;
   }
 
-  let meta_staged = "???"
+  let meta_defs = "std::unordered_map<std::string, TotalOrder> BBTimeTable;std::unordered_map<std::string, TotalOrder> ProcTimeTable;bool alive=true;"
 
   let meta_get_bb_time_table m =
     if is_static then (m |> unstatic).bb_time_table |> static else CGetMember (m |> undyn, "BBTimeTable") |> dyn
@@ -38,7 +38,7 @@ module EVAL (SD : SD) = MakeEval (struct
     |> static
 
   let remove_meta m =
-    if is_static then ((m |> unstatic).alive <- false) |> static else CApp (CPF "RemoveMeta", [ m |> undyn ]) |> dyn
+    if is_static then ((m |> unstatic).alive <- false) |> static else CSetMember (m |> undyn, "alive", CBool false) |> dyn
 
   type recompute_func = RecomputeBB of string | RecomputeProc of string
 

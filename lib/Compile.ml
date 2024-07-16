@@ -13,12 +13,13 @@ let is_pure_function f =
   match f with
   | "InputChangeMetric" | "OutputChangeMetric" | "PrintEndline" | "WriteMetric" | "HashtblAddExn" | "HashtblForceRemove"
   | "PushStack" | "Assert" | "IterLines" | "JsonToChannel" | "OutputString" | "ResetMetric" | "ClearStack" | "WriteRef"
-  | "ReadMetric" | "HashtblSet" | "WriteJson" | "MetaReadMetric" | "MetaWriteMetric" ->
+  | "ReadMetric" | "HashtblSet" | "WriteJson" | "MetaReadMetric" | "MetaWriteMetric" | "RemoveMeta" | "NextTotalOrder"
+    ->
       false
   | "MakeUnit" | "ListIsEmpty" | "IntEqual" | "ListLength" | "ListSplitN" | "Zro" | "Fst" | "FreshMetric" | "Cons"
-  | "Nil" | "IsNone" | "HashtblForceFind" | "UnSome" | "ListLast" | "JsonMember" | "ListMatch" | "OptionIter"
-  | "OptionMatch" | "ListIter" | "HashtblFind" | "EqualValue" | "ListZip" | "ListDropLast" | "ListTl" | "ListHead"
-  | "ListHeadExn" | "ListTailExn" | "ListIter2" | "HashtblContain" | "IsSome" | "HashtblFindExn" ->
+  | "Nil" | "IsNone" | "HashtblFind" | "UnSome" | "ListLast" | "JsonMember" | "ListMatch" | "OptionIter" | "OptionMatch"
+  | "ListIter" | "HashtblFind" | "EqualValue" | "ListZip" | "ListDropLast" | "ListTl" | "ListHead" | "ListHeadExn"
+  | "ListTailExn" | "ListIter2" | "HashtblContain" | "IsSome" | "HashtblFindExn" | "ListIsSingleton" ->
       true
   | _ -> panic ("is_pure_function:" ^ f)
 
@@ -32,6 +33,7 @@ let rec is_pure x =
   | CApp (f, xs) -> is_pure f && List.for_all xs ~f:is_pure
   | CPF f -> is_pure_function f
   | CIf (i, t, e) -> is_pure i && is_pure t && is_pure e
+  | CNot x -> is_pure x
   | CGetMember (x, f) -> is_pure x
   | CLet (lhs, rhs, body) -> is_pure rhs && is_pure body
   | _ -> Common.panic ("is_pure:" ^ truncate (show_code x))
@@ -47,7 +49,7 @@ let rec simplify (p : prog) x =
   | CApp (CPF "OptionMatch", [ x; CFun (_, CPanic _); y ]) -> CApp (y, [ CApp (CPF "UnSome", [ x ]) ])
   | CApp (CPF "OptionMatch", [ CApp (CPF "Some", [ x ]); y; z ]) -> CSeq [ y; CApp (z, [ x ]) ]
   | CApp (CPF "OptionMatch", [ CApp (CPF "HashtblFind", [ x; y ]); CFun (_, nbody); s ]) ->
-      CIf (CApp (CPF "HashtblContain", [ x; y ]), CApp (s, [ CApp (CPF "HashtblForceFind", [ x; y ]) ]), nbody)
+      CIf (CApp (CPF "HashtblContain", [ x; y ]), CApp (s, [ CApp (CPF "HashtblFindExn", [ x; y ]) ]), nbody)
   | CApp (CPF "ListIter", [ x; CFun (_, CApp (CPF "MakeUnit", [])) ]) -> x
   | CApp (CPF "ListIter", [ CApp (CPF "Cons", [ hd; tl ]); f ]) ->
       let v = fresh () in
@@ -69,18 +71,18 @@ let rec simplify (p : prog) x =
       let v = fresh () in
       CLet (v, f, CIf (i, CApp (CPF "ListIter", [ t; CVar v ]), CApp (CPF "ListIter", [ e; CVar v ])))
   | CApp (CPF "UnSome", [ CApp (CPF "Some", [ x ]) ]) -> x
-  | CApp (CPF "UnSome", [ CApp (CPF "HashtblFind", [ x; y ]) ]) -> CApp (CPF "HashtblForceFind", [ x; y ])
-  | CApp (CPF "HashtblForceFind", [ CGetMember (x, "var"); CString f ]) -> CGetMember (x, "var_" ^ f)
+  | CApp (CPF "UnSome", [ CApp (CPF "HashtblFind", [ x; y ]) ]) -> CApp (CPF "HashtblFindExn", [ x; y ])
+  | CApp (CPF "HashtblFindExn", [ CGetMember (x, "var"); CString f ]) -> CGetMember (x, "var_" ^ f)
   | CApp (CPF "HashtblContain", [ CGetMember (x, "var"); CString f ]) -> CGetMember (x, "has_var_" ^ f)
-  | CApp (CPF "HashtblSet", [ CGetMember (x, "var"); CString f; v ]) -> CSetMember (x, "var_" ^ f, v)
-  | CApp (CPF "HashtblForceFind", [ CGetMember (x, "prop"); CString f ]) ->
+  | CApp (CPF "HashtblSet", [ CGetMember (x, "var"); CString f; v ]) ->
+      CSeq [ CSetMember (x, "has_var_" ^ f, CBool true); CSetMember (x, "var_" ^ f, v) ]
+  | CApp (CPF "HashtblFindExn", [ CGetMember (x, "prop"); CString f ]) ->
       CApp (CPF ("GetProp" ^ angle_bracket (compile_type_expr (prop_from_tyck_env p.tyck_env f))), [ x; CString f ])
-  | CApp (CPF "IsSome", [ CApp (CPF "HashtblFind", [ CGetMember (x, "prop"); CString f ]) ]) ->
-      CApp (CPF "HasProp", [ x; CString f ])
-  | CApp (CPF "HashtblForceFind", [ CGetMember (x, "attr"); CString f ]) ->
+  | CApp (CPF "IsSome", [ CApp (CPF "HashtblFind", [ x; y ]) ]) -> CApp (CPF "HashtblContain", [ x; y ])
+  | CApp (CPF "HashtblContain", [ CGetMember (x, "prop"); CString f ]) -> CApp (CPF "HasProp", [ x; CString f ])
+  | CApp (CPF "HashtblFindExn", [ CGetMember (x, "attr"); CString f ]) ->
       CApp (CPF ("GetAttr" ^ angle_bracket (compile_type_expr (attr_from_tyck_env p.tyck_env f))), [ x; CString f ])
-  | CApp (CPF "IsSome", [ CApp (CPF "HashtblFind", [ CGetMember (x, "attr"); CString f ]) ]) ->
-      CApp (CPF "HasAttr", [ x; CString f ])
+  | CApp (CPF "HashtblContain", [ CGetMember (x, "attr"); CString f ]) -> CApp (CPF "HasAttr", [ x; CString f ])
   | CApp (CPF ("BoolOfValue" | "VBool" | "VString" | "VFloat" | "VInt"), [ x ]) -> x
   | CApp
       ( CPF
@@ -90,8 +92,10 @@ let rec simplify (p : prog) x =
         [ _ ] ) ->
       CApp (CPF f, [])
   | CApp (CPF (("OutputChangeMetric" | "InputChangeMetric") as f), [ _; i ]) -> CApp (CPF f, [ i ])
+  | CApp (CPF (("QueuePush" | "QueueForcePush") as f), [ a; b; c; _ ]) -> CApp (CPF f, [ a; b; c ])
   | CApp (CFun ([ xname ], body), [ x ]) -> CLet (xname, x, body)
   | CIf (i, CApp (CPF "MakeUnit", []), CApp (CPF "MakeUnit", [])) -> CSeq [ i; CApp (CPF "MakeUnit", []) ]
+  | CIf (i, CApp (CPF "MakeUnit", []), x) -> CIf (CNot i, x, CApp (CPF "MakeUnit", []))
   | CSeq [ x ] -> x
   | CSeq xs ->
       let xs, last = unsnoc xs in
@@ -225,6 +229,12 @@ and compile_proc c x =
       output_string c ("->" ^ f ^ "=");
       compile_expr c v;
       output_string c ";"
+  | CIf (i, t, CApp (CPF "MakeUnit", [])) ->
+      output_string c "if (";
+      compile_expr c i;
+      output_string c "){";
+      compile_proc c t;
+      output_string c "}"
   | CIf (i, t, e) ->
       output_string c "if (";
       compile_expr c i;
@@ -327,13 +337,19 @@ let compile_def prog c (ret_type, name, x) =
       output_string c (ret_type ^ " " ^ name ^ names_to_args xname ^ "{");
       compile_stmt c body;
       output_string c "}"
+  | _ ->
+      output_string c ("auto " ^ name ^ " = ");
+      compile_expr c x;
+      output_string c ";"
   | _ -> Common.panic ("compile_def:" ^ truncate (show_code x))
 
 let compile_field name type_expr =
-  compile_type_expr type_expr ^ " var_" ^ name ^ ";" ^ "bool " ^ "has_var_" ^ name ^ ";"
+  compile_type_expr type_expr ^ " var_" ^ name ^ ";" ^ "bool " ^ "has_var_" ^ name ^ " = false;"
 
-let compile_typedef (env : tyck_env) : string =
-  "struct Content {\n\
+let compile_typedef (env : tyck_env) meta_defs : string =
+  " struct MetaNode{\n\ " ^ meta_defs ^ "};\n\
+  \ using Meta = std::shared_ptr<MetaNode>;
+  \ struct Content : std::enable_shared_from_this<Content> {\n\
   \    Content* parent = nullptr;\n\
   \    Content* prev = nullptr;\n\
   \    Content* next = nullptr;\n\
@@ -344,32 +360,33 @@ let compile_typedef (env : tyck_env) : string =
   \    std::string name;\n\
   \    std::unordered_map<std::string, Value> attr;\n\
   \    std::unordered_map<std::string, Value> prop;\n\
-  \    Content(const std::string& name,\n\
-  \            std::unordered_map<std::string, Value>&& attr,\n\
-  \            std::unordered_map<std::string, Value>&& prop,\n\
-  \            int64_t extern_id, \n\
-  \            const List<Node>& children) :\n\
-  \            name(name),\n\
-  \            attr(std::move(attr)), \n\
-  \            prop(std::move(prop)), \n\
-  \            extern_id(extern_id), \n\
-  \            children(children) { }\n\
-  \    Content(const std::string& name,\n\
-  \            const std::unordered_map<std::string, Value>& attr,\n\
-  \            const std::unordered_map<std::string, Value>& prop,\n\
-  \            int64_t extern_id, \n\
-  \            const List<Node>& children) :\n\
-  \            name(name),\n\
-  \            attr(attr), \n\
-  \            prop(prop), \n\
-  \            extern_id(extern_id), \n\
-  \            children(children) { }"
+    \    Meta meta = std::make_shared<MetaNode>();\n\
+    \    Content(const std::string& name,\n\
+    \            std::unordered_map<std::string, Value>&& attr,\n\
+    \            std::unordered_map<std::string, Value>&& prop,\n\
+    \            int64_t extern_id, \n\
+    \            const List<Node>& children) :\n\
+    \            name(name),\n\
+    \            attr(std::move(attr)), \n\
+    \            prop(std::move(prop)), \n\
+    \            extern_id(extern_id), \n\
+    \            children(children) { }\n\
+    \    Content(const std::string& name,\n\
+    \            const std::unordered_map<std::string, Value>& attr,\n\
+    \            const std::unordered_map<std::string, Value>& prop,\n\
+    \            int64_t extern_id, \n\
+    \            const List<Node>& children) :\n\
+    \            name(name),\n\
+    \            attr(attr), \n\
+    \            prop(prop), \n\
+    \            extern_id(extern_id), \n\
+    \            children(children) { }"
   ^ String.concat (List.map (Hashtbl.to_alist env.var_type) ~f:(fun (x, y) -> compile_field x y))
   ^ "};"
 
-let compile (prog : prog) defs main c : unit =
+let compile (prog : prog) defs main meta_defs c : unit =
   Stdio.Out_channel.output_string c "#include \"header.h\"\n";
-  Stdio.Out_channel.output_string c (compile_typedef prog.tyck_env);
+  Stdio.Out_channel.output_string c (compile_typedef prog.tyck_env meta_defs);
   Stdio.Out_channel.output_string c "\n";
   Stdio.Out_channel.output_string c "#include \"header_continued.h\"\n";
   List.iter defs (compile_def prog c);

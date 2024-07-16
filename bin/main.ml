@@ -575,7 +575,7 @@ module Main (EVAL : Eval) = struct
     let compiled_file_name = "Layout" ^ name ^ ".cpp" in
 
     let c = Stdio.Out_channel.create compiled_file_name in
-    compile prog (defs ()) (undyn main) c;
+    compile prog (defs ()) (undyn main) EVAL.meta_defs c;
     Stdio.Out_channel.close c;
 
     shell ("clang-format --style=file -i " ^ compiled_file_name);
