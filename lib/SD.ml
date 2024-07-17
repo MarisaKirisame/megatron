@@ -249,9 +249,9 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
 
   let ite i t e = if i then t () else e ()
   let json_of_string x = Yojson.Basic.from_string x
-  let with_in_file name f = f (Stdio.In_channel.create name) (*Stdio.In_channel.with_file name ~f*)
+  let with_in_file name f = Stdio.In_channel.with_file name ~f
 
-  let with_out_file name f = f (Stdio.Out_channel.create name) (*Stdio.Out_channel.with_file name ~f*)
+  let with_out_file name f = Stdio.Out_channel.with_file name ~f
 
   let ignore x = Core.ignore x
   let output_string c s = Stdio.Out_channel.output_string c s

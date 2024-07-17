@@ -204,7 +204,8 @@ module Main (EVAL : Eval) = struct
                         option_match
                           (list_last (node_get_children n))
                           (fun _ -> node_set_last n (none ()))
-                          (fun x -> seq (node_set_last n (some x)) (fun _ -> node_set_parent x (some n))));
+                          (fun x -> seqs
+                            [(fun _ -> node_set_last n (some x)); (fun _ -> node_set_parent x (some n)); (fun _ -> recurse x)]));
                     ]))))
     in
     seqs
@@ -586,11 +587,11 @@ module Main (EVAL : Eval) = struct
   let () = if is_static then () else run_dynamic ()
 end
 
-(*module MainFSI = Main (Megatron.EvalFS.EVAL (S))*)
-module MainFSC = Main (Megatron.EvalFS.EVAL (D))
+module MainFSI = Main (Megatron.EvalFS.EVAL (S))
+(*module MainFSC = Main (Megatron.EvalFS.EVAL (D))*)
 
-(*module MainDBI = Main (Megatron.EvalDB.EVAL (S))*)
-module MainDBC = Main (Megatron.EvalDB.EVAL (D))
+module MainDBI = Main (Megatron.EvalDB.EVAL (S))
+(*module MainDBC = Main (Megatron.EvalDB.EVAL (D))*)
 
-(*module MainPQI = Main (Megatron.EvalPQ.EVAL (S))*)
-module MainPQC = Main (Megatron.EvalPQ.EVAL (D))
+module MainPQI = Main (Megatron.EvalPQ.EVAL (S))
+(*module MainPQC = Main (Megatron.EvalPQ.EVAL (D))*)
