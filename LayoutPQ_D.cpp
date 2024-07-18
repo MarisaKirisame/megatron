@@ -300,9 +300,9 @@ auto eval_expr_x_4009(const auto &x_4031) {
     if (eq(x_4031->var_position, std::string("absolute"))) {
       return false;
     } else {
-      if ((x_4031->parent != nullptr) &&
-          (eq((x_4031->parent)->var_display, std::string("flex")) ||
-           eq((x_4031->parent)->var_display, std::string("inline-flex")))) {
+      if (((x_4031->parent != nullptr) &&
+           (eq((x_4031->parent)->var_display, std::string("flex")) ||
+            eq((x_4031->parent)->var_display, std::string("inline-flex"))))) {
         return true;
       } else {
         if (eq(x_4031->var_display, std::string("block"))) {
@@ -510,11 +510,11 @@ Unit var_modified_x_3982(const auto &x_4177) {
   return MakeUnit();
 }
 auto eval_expr_x_3979(const auto &x_4184) {
-  if (!HasAttr(x_4184, std::string("height"))) {
+  if ((!HasAttr(x_4184, std::string("height")))) {
     return std::string("auto");
   } else {
-    if (string_is_float(GetAttr<std::string>(x_4184, std::string("height"))) ||
-        has_suffix(GetAttr<std::string>(x_4184, std::string("height")), std::string("%"))) {
+    if ((string_is_float(GetAttr<std::string>(x_4184, std::string("height"))) ||
+         has_suffix(GetAttr<std::string>(x_4184, std::string("height")), std::string("%")))) {
       return GetAttr<std::string>(x_4184, std::string("height"));
     } else {
       return std::string("auto");
@@ -562,11 +562,11 @@ Unit var_modified_x_3972(const auto &x_4204) {
   return MakeUnit();
 }
 auto eval_expr_x_3969(const auto &x_4211) {
-  if (!HasAttr(x_4211, std::string("width"))) {
+  if ((!HasAttr(x_4211, std::string("width")))) {
     return std::string("auto");
   } else {
-    if (string_is_float(GetAttr<std::string>(x_4211, std::string("width"))) ||
-        has_suffix(GetAttr<std::string>(x_4211, std::string("width")), std::string("%"))) {
+    if ((string_is_float(GetAttr<std::string>(x_4211, std::string("width"))) ||
+         has_suffix(GetAttr<std::string>(x_4211, std::string("width")), std::string("%")))) {
       return GetAttr<std::string>(x_4211, std::string("width"));
     } else {
       return std::string("auto");
@@ -595,11 +595,11 @@ Unit var_modified_x_3967(const auto &x_4222) {
   return MakeUnit();
 }
 auto eval_expr_x_3964(const auto &x_4229) {
-  if ((x_4229->parent != nullptr) &&
-      (eq((x_4229->parent)->var_display, std::string("flex")) ||
-       eq((x_4229->parent)->var_display, std::string("inline-flex")))) {
-    if (eq((x_4229->parent)->var_flex_direction, std::string("column")) ||
-        eq((x_4229->parent)->var_flex_direction, std::string("column-reverse"))) {
+  if (((x_4229->parent != nullptr) &&
+       (eq((x_4229->parent)->var_display, std::string("flex")) ||
+        eq((x_4229->parent)->var_display, std::string("inline-flex"))))) {
+    if ((eq((x_4229->parent)->var_flex_direction, std::string("column")) ||
+         eq((x_4229->parent)->var_flex_direction, std::string("column-reverse")))) {
       return true;
     } else {
       return false;
@@ -641,9 +641,9 @@ Unit var_modified_x_3962(const auto &x_4254) {
   return MakeUnit();
 }
 auto eval_expr_x_3959(const auto &x_4264) {
-  if ((x_4264->parent != nullptr) &&
-      (eq((x_4264->parent)->var_display, std::string("flex")) ||
-       eq((x_4264->parent)->var_display, std::string("inline-flex")))) {
+  if (((x_4264->parent != nullptr) &&
+       (eq((x_4264->parent)->var_display, std::string("flex")) ||
+        eq((x_4264->parent)->var_display, std::string("inline-flex"))))) {
     if (eq((x_4264->parent)->var_flex_direction, std::string("row"))) {
       return true;
     } else {
@@ -703,7 +703,7 @@ Unit var_modified_x_3952(const auto &x_4296) {
   return MakeUnit();
 }
 auto eval_expr_x_3949(const auto &x_4305) {
-  return plus((x_4305->prev != nullptr) ? ((x_4305->prev)->var_flex_shrink_sum) : (0.), x_4305->var_flex_shrink);
+  return plus(((x_4305->prev != nullptr)) ? ((x_4305->prev)->var_flex_shrink_sum) : (0.), x_4305->var_flex_shrink);
 }
 Unit var_modified_x_3947(const auto &x_4314) {
   auto x_5370 = [&](const auto &x_4317) {
@@ -736,7 +736,7 @@ Unit var_modified_x_3947(const auto &x_4314) {
   return MakeUnit();
 }
 auto eval_expr_x_3944(const auto &x_4323) {
-  return plus((x_4323->prev != nullptr) ? ((x_4323->prev)->var_flex_grow_sum) : (0.), x_4323->var_flex_grow);
+  return plus(((x_4323->prev != nullptr)) ? ((x_4323->prev)->var_flex_grow_sum) : (0.), x_4323->var_flex_grow);
 }
 Unit var_modified_x_3942(const auto &x_4332) {
   auto x_5373 = [&](const auto &x_4333) {
@@ -896,7 +896,7 @@ Unit var_modified_x_3921(const auto &x_4378) {
       return MakeUnit();
     }
   };
-  if (x_4378->next != nullptr) {
+  if ((x_4378->next != nullptr)) {
     auto x_5384 = x_5382;
     OptionMatch(
         x_4378->parent, [&](const auto &x_4380) { return MakeUnit(); },
@@ -925,7 +925,7 @@ Unit var_modified_x_3921(const auto &x_4378) {
   return MakeUnit();
 }
 auto eval_expr_x_3918(const auto &x_4389) {
-  if (x_4389->prev != nullptr) {
+  if ((x_4389->prev != nullptr)) {
     if (x_4389->var_line_break) {
       return plus((x_4389->prev)->var_finished_intrinsic_height_sum,
                   plus((x_4389->prev)->var_intrinsic_current_line_height, x_4389->var_intrinsic_height_external));
@@ -950,7 +950,7 @@ Unit var_modified_x_3916(const auto &x_4418) {
       return MakeUnit();
     }
   };
-  if (x_4418->next != nullptr) {
+  if ((x_4418->next != nullptr)) {
     auto x_5389 = x_5387;
     OptionMatch(
         x_4418->parent, [&](const auto &x_4420) { return MakeUnit(); },
@@ -983,7 +983,7 @@ auto eval_expr_x_3913(const auto &x_4429) {
     return 0.;
   } else {
     return max(x_4429->var_intrinsic_height_external,
-               (x_4429->prev != nullptr) ? ((x_4429->prev)->var_intrinsic_current_line_height) : (0.));
+               ((x_4429->prev != nullptr)) ? ((x_4429->prev)->var_intrinsic_current_line_height) : (0.));
   }
 }
 Unit var_modified_x_3911(const auto &x_4442) {
@@ -1012,7 +1012,7 @@ Unit var_modified_x_3911(const auto &x_4442) {
       return MakeUnit();
     }
   };
-  if (x_4442->next != nullptr) {
+  if ((x_4442->next != nullptr)) {
     auto x_5395 = x_5393;
     OptionMatch(
         x_4442->parent, [&](const auto &x_4449) { return MakeUnit(); },
@@ -1025,7 +1025,7 @@ Unit var_modified_x_3911(const auto &x_4442) {
   return MakeUnit();
 }
 auto eval_expr_x_3908(const auto &x_4453) {
-  return plus((x_4453->prev != nullptr) ? ((x_4453->prev)->var_intrinsic_height_sum) : (0.),
+  return plus(((x_4453->prev != nullptr)) ? ((x_4453->prev)->var_intrinsic_height_sum) : (0.),
               x_4453->var_intrinsic_height_external);
 }
 Unit var_modified_x_3906(const auto &x_4462) {
@@ -1084,9 +1084,9 @@ auto eval_expr_x_3898(const auto &x_4482) {
       if (x_4482->var_disabled) {
         return 0.;
       } else {
-        if (neq(x_4482->var_height_expr, std::string("auto")) &&
-            ((!has_suffix(x_4482->var_height_expr, std::string("%"))) &&
-             neq(x_4482->var_height_expr, std::string("fit-content")))) {
+        if ((neq(x_4482->var_height_expr, std::string("auto")) &&
+             ((!has_suffix(x_4482->var_height_expr, std::string("%"))) &&
+              neq(x_4482->var_height_expr, std::string("fit-content"))))) {
           if (has_suffix(x_4482->var_height_expr, std::string("px"))) {
             return string_to_float(strip_suffix(x_4482->var_height_expr, std::string("px")));
           } else {
@@ -1108,8 +1108,8 @@ auto eval_expr_x_3898(const auto &x_4482) {
                                 : ((eq(x_4482->name, std::string("INPUT")))
                                        ? (10.)
                                        : ((eq(x_4482->name, std::string("svg")))
-                                              ? ((x_4482->var_has_height_attr &&
-                                                  string_is_float(x_4482->var_height_attr_expr))
+                                              ? (((x_4482->var_has_height_attr &&
+                                                   string_is_float(x_4482->var_height_attr_expr)))
                                                      ? (string_to_float(x_4482->var_height_attr_expr))
                                                      : ((HasAttr(x_4482, std::string("viewBox")))
                                                             ? (string_to_float(nth_by_sep(
@@ -1126,8 +1126,8 @@ auto eval_expr_x_3898(const auto &x_4482) {
                                               : ((eq(x_4482->name, std::string("IMG")))
                                                      ? ((x_4482->var_has_height_attr)
                                                             ? (string_to_float(x_4482->var_height_attr_expr))
-                                                            : ((HasAttr(x_4482, std::string("image_height")) &&
-                                                                (!x_4482->var_has_width_attr))
+                                                            : (((HasAttr(x_4482, std::string("image_height")) &&
+                                                                 (!x_4482->var_has_width_attr)))
                                                                    ? (int_to_float(GetAttr<int64_t>(
                                                                          x_4482, std::string("image_height"))))
                                                                    : ((neq(GetAttr<int64_t>(x_4482,
@@ -1169,17 +1169,17 @@ Unit var_modified_x_3896(const auto &x_4627) {
   return MakeUnit();
 }
 auto eval_expr_x_3893(const auto &x_4631) {
-  if (eq(x_4631->var_display, std::string("none")) || (x_4631->var_inside_svg || x_4631->var_disabled)) {
+  if ((eq(x_4631->var_display, std::string("none")) || (x_4631->var_inside_svg || x_4631->var_disabled))) {
     return true;
   } else {
-    if ((x_4631->parent != nullptr) && (x_4631->parent)->var_is_flex_column) {
+    if (((x_4631->parent != nullptr) && (x_4631->parent)->var_is_flex_column)) {
       return false;
     } else {
-      if (eq(x_4631->var_height_expr, std::string("auto")) ||
-          (has_suffix(x_4631->var_height_expr, std::string("px")) ||
-           (has_suffix(x_4631->var_height_expr, std::string("ch")) ||
-            (has_suffix(x_4631->var_height_expr, std::string("lh")) ||
-             eq(x_4631->var_height_expr, std::string("max-content")))))) {
+      if ((eq(x_4631->var_height_expr, std::string("auto")) ||
+           (has_suffix(x_4631->var_height_expr, std::string("px")) ||
+            (has_suffix(x_4631->var_height_expr, std::string("ch")) ||
+             (has_suffix(x_4631->var_height_expr, std::string("lh")) ||
+              eq(x_4631->var_height_expr, std::string("max-content"))))))) {
         return true;
       } else {
         return false;
@@ -1234,7 +1234,7 @@ Unit var_modified_x_3886(const auto &x_4690) {
   return MakeUnit();
 }
 auto eval_expr_x_3883(const auto &x_4694) {
-  if (x_4694->last != nullptr) {
+  if ((x_4694->last != nullptr)) {
     return plus((x_4694->last)->var_finished_intrinsic_height_sum, (x_4694->last)->var_intrinsic_current_line_height);
   } else {
     return 0.;
@@ -1266,7 +1266,7 @@ Unit var_modified_x_3881(const auto &x_4703) {
       return MakeUnit();
     }
   };
-  if (x_4703->next != nullptr) {
+  if ((x_4703->next != nullptr)) {
     auto x_5407 = x_5405;
     OptionMatch(
         x_4703->parent, [&](const auto &x_4710) { return MakeUnit(); },
@@ -1279,7 +1279,7 @@ Unit var_modified_x_3881(const auto &x_4703) {
   return MakeUnit();
 }
 auto eval_expr_x_3878(const auto &x_4714) {
-  return plus((x_4714->prev != nullptr) ? ((x_4714->prev)->var_intrinsic_width_sum) : (0.),
+  return plus(((x_4714->prev != nullptr)) ? ((x_4714->prev)->var_intrinsic_width_sum) : (0.),
               x_4714->var_intrinsic_width_external);
 }
 Unit var_modified_x_3876(const auto &x_4723) {
@@ -1292,7 +1292,7 @@ Unit var_modified_x_3876(const auto &x_4723) {
       return MakeUnit();
     }
   };
-  if (x_4723->next != nullptr) {
+  if ((x_4723->next != nullptr)) {
     auto x_5411 = x_5409;
     OptionMatch(
         x_4723->parent, [&](const auto &x_4725) { return MakeUnit(); },
@@ -1322,7 +1322,7 @@ Unit var_modified_x_3876(const auto &x_4723) {
 }
 auto eval_expr_x_3873(const auto &x_4734) {
   return max(x_4734->var_intrinsic_current_line_width,
-             (x_4734->prev != nullptr) ? ((x_4734->prev)->var_intrinsic_width_max) : (0.));
+             ((x_4734->prev != nullptr)) ? ((x_4734->prev)->var_intrinsic_width_max) : (0.));
 }
 Unit var_modified_x_3871(const auto &x_4743) {
   auto x_5414 = [&](const auto &x_4744) {
@@ -1356,7 +1356,7 @@ Unit var_modified_x_3871(const auto &x_4743) {
 }
 auto eval_expr_x_3868(const auto &x_4752) {
   return plus(x_4752->var_intrinsic_width_external,
-              ((x_4752->prev != nullptr) && (!(x_4752->prev)->var_line_break))
+              (((x_4752->prev != nullptr) && (!(x_4752->prev)->var_line_break)))
                   ? ((x_4752->prev)->var_intrinsic_current_line_width)
                   : (0.));
 }
@@ -1416,11 +1416,11 @@ auto eval_expr_x_3858(const auto &x_4785) {
       if (x_4785->var_disabled) {
         return 0.;
       } else {
-        if (neq(x_4785->var_width_expr, std::string("auto")) &&
-            ((!has_suffix(x_4785->var_width_expr, std::string("%"))) &&
-             (neq(x_4785->var_width_expr, std::string("fit-content")) &&
-              (neq(x_4785->var_width_expr, std::string("max-content")) &&
-               (!has_prefix(x_4785->var_width_expr, std::string("calc"))))))) {
+        if ((neq(x_4785->var_width_expr, std::string("auto")) &&
+             ((!has_suffix(x_4785->var_width_expr, std::string("%"))) &&
+              (neq(x_4785->var_width_expr, std::string("fit-content")) &&
+               (neq(x_4785->var_width_expr, std::string("max-content")) &&
+                (!has_prefix(x_4785->var_width_expr, std::string("calc")))))))) {
           if (has_suffix(x_4785->var_width_expr, std::string("px"))) {
             return string_to_float(strip_suffix(x_4785->var_width_expr, std::string("px")));
           } else {
@@ -1438,11 +1438,11 @@ auto eval_expr_x_3858(const auto &x_4785) {
                                 : ((eq(x_4785->name, std::string("INPUT")))
                                        ? (100.)
                                        : ((eq(x_4785->name, std::string("svg")))
-                                              ? ((x_4785->var_has_width_attr &&
-                                                  string_is_float(x_4785->var_width_attr_expr))
+                                              ? (((x_4785->var_has_width_attr &&
+                                                   string_is_float(x_4785->var_width_attr_expr)))
                                                      ? (string_to_float(x_4785->var_width_attr_expr))
-                                                     : (((!x_4785->var_has_width_attr) &&
-                                                         HasAttr(x_4785, std::string("viewBox")))
+                                                     : ((((!x_4785->var_has_width_attr) &&
+                                                          HasAttr(x_4785, std::string("viewBox"))))
                                                             ? (string_to_float(nth_by_sep(
                                                                   GetAttr<std::string>(x_4785, std::string("viewBox")),
                                                                   std::string(" "), static_cast<int64_t>(2))))
@@ -1457,8 +1457,8 @@ auto eval_expr_x_3858(const auto &x_4785) {
                                               : ((eq(x_4785->name, std::string("IMG")))
                                                      ? ((x_4785->var_has_width_attr)
                                                             ? (string_to_float(x_4785->var_width_attr_expr))
-                                                            : ((HasAttr(x_4785, std::string("image_width")) &&
-                                                                (!x_4785->var_has_height_attr))
+                                                            : (((HasAttr(x_4785, std::string("image_width")) &&
+                                                                 (!x_4785->var_has_height_attr)))
                                                                    ? (int_to_float(GetAttr<int64_t>(
                                                                          x_4785, std::string("image_width"))))
                                                                    : ((neq(GetAttr<int64_t>(
@@ -1500,7 +1500,7 @@ Unit var_modified_x_3856(const auto &x_4938) {
   return MakeUnit();
 }
 auto eval_expr_x_3853(const auto &x_4942) {
-  if (x_4942->last != nullptr) {
+  if ((x_4942->last != nullptr)) {
     return (x_4942->last)->var_intrinsic_width_max;
   } else {
     return 0.;
@@ -1521,17 +1521,17 @@ Unit var_modified_x_3851(const auto &x_4947) {
   return MakeUnit();
 }
 auto eval_expr_x_3848(const auto &x_4951) {
-  if (eq(x_4951->var_display, std::string("none")) || (x_4951->var_inside_svg || x_4951->var_disabled)) {
+  if ((eq(x_4951->var_display, std::string("none")) || (x_4951->var_inside_svg || x_4951->var_disabled))) {
     return true;
   } else {
-    if ((x_4951->parent != nullptr) && (x_4951->parent)->var_is_flex_row) {
+    if (((x_4951->parent != nullptr) && (x_4951->parent)->var_is_flex_row)) {
       return false;
     } else {
-      if (eq(x_4951->var_width_expr, std::string("auto")) ||
-          (has_suffix(x_4951->var_width_expr, std::string("px")) ||
-           (has_suffix(x_4951->var_width_expr, std::string("ch")) ||
-            (has_prefix(x_4951->var_width_expr, std::string("calc(")) ||
-             eq(x_4951->var_width_expr, std::string("max-content")))))) {
+      if ((eq(x_4951->var_width_expr, std::string("auto")) ||
+           (has_suffix(x_4951->var_width_expr, std::string("px")) ||
+            (has_suffix(x_4951->var_width_expr, std::string("ch")) ||
+             (has_prefix(x_4951->var_width_expr, std::string("calc(")) ||
+              eq(x_4951->var_width_expr, std::string("max-content"))))))) {
         return true;
       } else {
         return false;
@@ -1562,7 +1562,7 @@ auto eval_expr_x_3843(const auto &x_5004) {
     } else {
       if (x_5004->var_disabled) {
         return true;
-      } else {if ( eq(x_5004->name,std::string("#document")) || (eq(x_5004->name,std::string("#shadow-root")) || (eq(x_5004->name,std::string("DIV")) || (eq(x_5004->name,std::string("HTML")) || (eq(x_5004->name,std::string("BODY")) || (eq(x_5004->name,std::string("BUTTON")) || (eq(x_5004->name,std::string("FOOTER")) || (eq(x_5004->name,std::string("SELECT")) || (eq(x_5004->name,std::string("SECTION")) || (eq(x_5004->name,std::string("FORM")) || (eq(x_5004->name,std::string("CENTER")) || (eq(x_5004->name,std::string("TD")) || (eq(x_5004->name,std::string("TR")) || (eq(x_5004->name,std::string("TBODY")) || (eq(x_5004->name,std::string("TABLE")) || (eq(x_5004->name,std::string("SPAN")) || (eq(x_5004->name,std::string("FONT")) || (eq(x_5004->name,std::string("A")) || (eq(x_5004->name,std::string("ARTICLE")) || (eq(x_5004->name,std::string("P")) || (eq(x_5004->name,std::string("U")) || (eq(x_5004->name,std::string("UL")) || (eq(x_5004->name,std::string("B")) || (eq(x_5004->name,std::string("H1")) || (eq(x_5004->name,std::string("H2")) || (eq(x_5004->name,std::string("H3")) || (eq(x_5004->name,std::string("H4")) || (eq(x_5004->name,std::string("DT")) || (eq(x_5004->name,std::string("DD")) || (eq(x_5004->name,std::string("DL")) || (eq(x_5004->name,std::string("LI")) || (eq(x_5004->name,std::string("LABEL")) || (eq(x_5004->name,std::string("OL")) || (eq(x_5004->name,std::string("NAV")) || (eq(x_5004->name,std::string("HEADER")) || (eq(x_5004->name,std::string("HEAD")) || (eq(x_5004->name,std::string("SOURCE")) || (eq(x_5004->name,std::string("PICTURE")) || (eq(x_5004->name,std::string("FIGURE")) || (eq(x_5004->name,std::string("FIGCAPTION")) || (eq(x_5004->name,std::string("MAIN")) || (eq(x_5004->name,std::string("REACT-PARTIAL")) || (eq(x_5004->name,std::string("QUERY-BUILDER")) || (eq(x_5004->name,std::string("MODAL-DIALOG")) || (eq(x_5004->name,std::string("SCROLLABLE-REGION")) || (eq(x_5004->name,std::string("DIALOG-HELPER")) || (eq(x_5004->name,std::string("AUTO-CHECK")) || (eq(x_5004->name,std::string("TOOL-TIP")) || (eq(x_5004->name,std::string("CUSTOM-SCOPES")) || (eq(x_5004->name,std::string("QBSEARCH-INPUT")) || (eq(x_5004->name,std::string("INCLUDE-FRAGMENT")) || (eq(x_5004->name,std::string("COOKIE-CONSENT-LINK")) || (eq(x_5004->name,std::string("FULLSTORY-CAPTURE")) || (eq(x_5004->name,std::string("GHCC-CONSENT")) || (eq(x_5004->name,std::string("GLOBAL-BANNER")) || (eq(x_5004->name,std::string("ACTIVE-GLOBAL-BANNERS")) || (eq(x_5004->name,std::string("CARD-SKEW")) || (eq(x_5004->name,std::string("EM")) || (eq(x_5004->name,std::string("ASIDE")) || (eq(x_5004->name,std::string("AUDIO")) || (eq(x_5004->name,std::string("SUP")) || (eq(x_5004->name,std::string("TIME")) || (eq(x_5004->name,std::string("ABBR")) || (eq(x_5004->name,std::string("SMALL")) || (eq(x_5004->name,std::string("SLOT")) || eq(x_5004->name,std::string("I")))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))) ){
+      } else {if ((eq(x_5004->name,std::string("#document")) || (eq(x_5004->name,std::string("#shadow-root")) || (eq(x_5004->name,std::string("DIV")) || (eq(x_5004->name,std::string("HTML")) || (eq(x_5004->name,std::string("BODY")) || (eq(x_5004->name,std::string("BUTTON")) || (eq(x_5004->name,std::string("FOOTER")) || (eq(x_5004->name,std::string("SELECT")) || (eq(x_5004->name,std::string("SECTION")) || (eq(x_5004->name,std::string("FORM")) || (eq(x_5004->name,std::string("CENTER")) || (eq(x_5004->name,std::string("TD")) || (eq(x_5004->name,std::string("TR")) || (eq(x_5004->name,std::string("TBODY")) || (eq(x_5004->name,std::string("TABLE")) || (eq(x_5004->name,std::string("SPAN")) || (eq(x_5004->name,std::string("FONT")) || (eq(x_5004->name,std::string("A")) || (eq(x_5004->name,std::string("ARTICLE")) || (eq(x_5004->name,std::string("P")) || (eq(x_5004->name,std::string("U")) || (eq(x_5004->name,std::string("UL")) || (eq(x_5004->name,std::string("B")) || (eq(x_5004->name,std::string("H1")) || (eq(x_5004->name,std::string("H2")) || (eq(x_5004->name,std::string("H3")) || (eq(x_5004->name,std::string("H4")) || (eq(x_5004->name,std::string("DT")) || (eq(x_5004->name,std::string("DD")) || (eq(x_5004->name,std::string("DL")) || (eq(x_5004->name,std::string("LI")) || (eq(x_5004->name,std::string("LABEL")) || (eq(x_5004->name,std::string("OL")) || (eq(x_5004->name,std::string("NAV")) || (eq(x_5004->name,std::string("HEADER")) || (eq(x_5004->name,std::string("HEAD")) || (eq(x_5004->name,std::string("SOURCE")) || (eq(x_5004->name,std::string("PICTURE")) || (eq(x_5004->name,std::string("FIGURE")) || (eq(x_5004->name,std::string("FIGCAPTION")) || (eq(x_5004->name,std::string("MAIN")) || (eq(x_5004->name,std::string("REACT-PARTIAL")) || (eq(x_5004->name,std::string("QUERY-BUILDER")) || (eq(x_5004->name,std::string("MODAL-DIALOG")) || (eq(x_5004->name,std::string("SCROLLABLE-REGION")) || (eq(x_5004->name,std::string("DIALOG-HELPER")) || (eq(x_5004->name,std::string("AUTO-CHECK")) || (eq(x_5004->name,std::string("TOOL-TIP")) || (eq(x_5004->name,std::string("CUSTOM-SCOPES")) || (eq(x_5004->name,std::string("QBSEARCH-INPUT")) || (eq(x_5004->name,std::string("INCLUDE-FRAGMENT")) || (eq(x_5004->name,std::string("COOKIE-CONSENT-LINK")) || (eq(x_5004->name,std::string("FULLSTORY-CAPTURE")) || (eq(x_5004->name,std::string("GHCC-CONSENT")) || (eq(x_5004->name,std::string("GLOBAL-BANNER")) || (eq(x_5004->name,std::string("ACTIVE-GLOBAL-BANNERS")) || (eq(x_5004->name,std::string("CARD-SKEW")) || (eq(x_5004->name,std::string("EM")) || (eq(x_5004->name,std::string("ASIDE")) || (eq(x_5004->name,std::string("AUDIO")) || (eq(x_5004->name,std::string("SUP")) || (eq(x_5004->name,std::string("TIME")) || (eq(x_5004->name,std::string("ABBR")) || (eq(x_5004->name,std::string("SMALL")) || (eq(x_5004->name,std::string("SLOT")) || eq(x_5004->name,std::string("I")))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))){
           return true;
         } else {
           return false;
@@ -1623,7 +1623,7 @@ Unit var_modified_x_3835(const auto &x_5027) {
   return MakeUnit();
 }
 auto eval_expr_x_3832(const auto &x_5033) {
-  if ((x_5033->prev != nullptr) && (!(x_5033->prev)->var_line_break)) {
+  if (((x_5033->prev != nullptr) && (!(x_5033->prev)->var_line_break))) {
     return max(x_5033->var_height_external, (x_5033->prev)->var_line_height);
   } else {
     return x_5033->var_height_external;
@@ -1677,7 +1677,7 @@ auto eval_expr_x_3822(const auto &x_5070) {
   if (x_5070->var_intrinsic_height_is_height) {
     return x_5070->var_intrinsic_height_internal;
   } else {
-    if ((x_5070->parent != nullptr) && (x_5070->parent)->var_is_flex_column) {
+    if (((x_5070->parent != nullptr) && (x_5070->parent)->var_is_flex_column)) {
       return plus(x_5070->var_intrinsic_height_internal,
                   mult(x_5070->var_flex_amount, (x_5070->parent)->var_flex_unit));
     } else {
@@ -1719,14 +1719,14 @@ Unit var_modified_x_3820(const auto &x_5123) {
   return MakeUnit();
 }
 auto eval_expr_x_3817(const auto &x_5132) {
-  if (x_5132->prev != nullptr) {
-    if (x_5132->var_line_break || (x_5132->prev)->var_line_break) {
+  if ((x_5132->prev != nullptr)) {
+    if ((x_5132->var_line_break || (x_5132->prev)->var_line_break)) {
       return plus((x_5132->prev)->var_y, (x_5132->prev)->var_line_height);
     } else {
       return (x_5132->prev)->var_y;
     }
   } else {
-    if (x_5132->parent != nullptr) {
+    if ((x_5132->parent != nullptr)) {
       return (x_5132->parent)->var_y;
     } else {
       return 0.;
@@ -1786,7 +1786,7 @@ auto eval_expr_x_3807(const auto &x_5179) {
   if (x_5179->var_intrinsic_width_is_width) {
     return x_5179->var_intrinsic_width_internal;
   } else {
-    if ((x_5179->parent != nullptr) && (x_5179->parent)->var_is_flex_row) {
+    if (((x_5179->parent != nullptr) && (x_5179->parent)->var_is_flex_row)) {
       return plus(x_5179->var_intrinsic_width_internal, mult(x_5179->var_flex_amount, (x_5179->parent)->var_flex_unit));
     } else {
       if (has_suffix(x_5179->var_width_expr, std::string("%"))) {
@@ -1827,14 +1827,14 @@ Unit var_modified_x_3805(const auto &x_5232) {
   return MakeUnit();
 }
 auto eval_expr_x_3802(const auto &x_5241) {
-  if (x_5241->prev != nullptr) {
-    if (x_5241->var_line_break || (x_5241->prev)->var_line_break) {
+  if ((x_5241->prev != nullptr)) {
+    if ((x_5241->var_line_break || (x_5241->prev)->var_line_break)) {
       return 0.;
     } else {
       return plus((x_5241->prev)->var_x, (x_5241->prev)->var_width_external);
     }
   } else {
-    if (x_5241->parent != nullptr) {
+    if ((x_5241->parent != nullptr)) {
       return (x_5241->parent)->var_x;
     } else {
       return 0.;
@@ -1875,7 +1875,7 @@ Unit var_modified_x_3795(const auto &x_5287) {
   return MakeUnit();
 }
 auto eval_expr_x_3792(const auto &x_5291) {
-  if ((x_5291->parent != nullptr) && gt((x_5291->parent)->var_left_over, 0.)) {
+  if (((x_5291->parent != nullptr) && gt((x_5291->parent)->var_left_over, 0.))) {
     return x_5291->var_flex_grow;
   } else {
     return x_5291->var_flex_shrink;
@@ -1906,9 +1906,10 @@ Unit var_modified_x_3790(const auto &x_5304) {
 }
 auto eval_expr_x_3787(const auto &x_5311) {
   if (x_5311->var_is_flex_row) {
-    return minus(x_5311->var_box_width, (x_5311->last != nullptr) ? ((x_5311->last)->var_intrinsic_width_sum) : (0.));
+    return minus(x_5311->var_box_width, ((x_5311->last != nullptr)) ? ((x_5311->last)->var_intrinsic_width_sum) : (0.));
   } else {
-    return minus(x_5311->var_box_height, (x_5311->last != nullptr) ? ((x_5311->last)->var_intrinsic_height_sum) : (0.));
+    return minus(x_5311->var_box_height,
+                 ((x_5311->last != nullptr)) ? ((x_5311->last)->var_intrinsic_height_sum) : (0.));
   }
 }
 Unit var_modified_x_3785(const auto &x_5332) {
@@ -1926,7 +1927,7 @@ Unit var_modified_x_3785(const auto &x_5332) {
   return MakeUnit();
 }
 auto eval_expr_x_3782(const auto &x_5336) {
-  if (x_5336->parent != nullptr) {
+  if ((x_5336->parent != nullptr)) {
     return (x_5336->parent)->var_height_internal;
   } else {
     return 1080.;
@@ -1947,7 +1948,7 @@ Unit var_modified_x_3780(const auto &x_5341) {
   return MakeUnit();
 }
 auto eval_expr_x_3777(const auto &x_5345) {
-  if (x_5345->parent != nullptr) {
+  if ((x_5345->parent != nullptr)) {
     return (x_5345->parent)->var_width_internal;
   } else {
     return 1920.;
@@ -1958,7 +1959,7 @@ Unit eval_stmts_x_3696(const auto &x_3776) {
   auto x_3778 = eval_expr_x_3777(x_3776);
   if (x_3776->has_var_box_width) {
     auto x_3779 = x_3776->var_box_width;
-    if (!EqualValue(x_3779, x_3778)) {
+    if ((!EqualValue(x_3779, x_3778))) {
       var_modified_x_3780(x_3776);
     }
   }
@@ -1968,7 +1969,7 @@ Unit eval_stmts_x_3696(const auto &x_3776) {
   auto x_3783 = eval_expr_x_3782(x_3776);
   if (x_3776->has_var_box_height) {
     auto x_3784 = x_3776->var_box_height;
-    if (!EqualValue(x_3784, x_3783)) {
+    if ((!EqualValue(x_3784, x_3783))) {
       var_modified_x_3785(x_3776);
     }
   }
@@ -1978,7 +1979,7 @@ Unit eval_stmts_x_3696(const auto &x_3776) {
   auto x_3788 = eval_expr_x_3787(x_3776);
   if (x_3776->has_var_left_over) {
     auto x_3789 = x_3776->var_left_over;
-    if (!EqualValue(x_3789, x_3788)) {
+    if ((!EqualValue(x_3789, x_3788))) {
       var_modified_x_3790(x_3776);
     }
   }
@@ -1988,7 +1989,7 @@ Unit eval_stmts_x_3696(const auto &x_3776) {
   auto x_3793 = eval_expr_x_3792(x_3776);
   if (x_3776->has_var_flex_amount) {
     auto x_3794 = x_3776->var_flex_amount;
-    if (!EqualValue(x_3794, x_3793)) {
+    if ((!EqualValue(x_3794, x_3793))) {
       var_modified_x_3795(x_3776);
     }
   }
@@ -1998,7 +1999,7 @@ Unit eval_stmts_x_3696(const auto &x_3776) {
   auto x_3798 = eval_expr_x_3797(x_3776);
   if (x_3776->has_var_flex_unit) {
     auto x_3799 = x_3776->var_flex_unit;
-    if (!EqualValue(x_3799, x_3798)) {
+    if ((!EqualValue(x_3799, x_3798))) {
       var_modified_x_3800(x_3776);
     }
   }
@@ -2008,7 +2009,7 @@ Unit eval_stmts_x_3696(const auto &x_3776) {
   auto x_3803 = eval_expr_x_3802(x_3776);
   if (x_3776->has_var_x) {
     auto x_3804 = x_3776->var_x;
-    if (!EqualValue(x_3804, x_3803)) {
+    if ((!EqualValue(x_3804, x_3803))) {
       var_modified_x_3805(x_3776);
     }
   }
@@ -2018,7 +2019,7 @@ Unit eval_stmts_x_3696(const auto &x_3776) {
   auto x_3808 = eval_expr_x_3807(x_3776);
   if (x_3776->has_var_width_internal) {
     auto x_3809 = x_3776->var_width_internal;
-    if (!EqualValue(x_3809, x_3808)) {
+    if ((!EqualValue(x_3809, x_3808))) {
       var_modified_x_3810(x_3776);
     }
   }
@@ -2028,7 +2029,7 @@ Unit eval_stmts_x_3696(const auto &x_3776) {
   auto x_3813 = eval_expr_x_3812(x_3776);
   if (x_3776->has_var_width_external) {
     auto x_3814 = x_3776->var_width_external;
-    if (!EqualValue(x_3814, x_3813)) {
+    if ((!EqualValue(x_3814, x_3813))) {
       var_modified_x_3815(x_3776);
     }
   }
@@ -2038,7 +2039,7 @@ Unit eval_stmts_x_3696(const auto &x_3776) {
   auto x_3818 = eval_expr_x_3817(x_3776);
   if (x_3776->has_var_y) {
     auto x_3819 = x_3776->var_y;
-    if (!EqualValue(x_3819, x_3818)) {
+    if ((!EqualValue(x_3819, x_3818))) {
       var_modified_x_3820(x_3776);
     }
   }
@@ -2048,7 +2049,7 @@ Unit eval_stmts_x_3696(const auto &x_3776) {
   auto x_3823 = eval_expr_x_3822(x_3776);
   if (x_3776->has_var_height_internal) {
     auto x_3824 = x_3776->var_height_internal;
-    if (!EqualValue(x_3824, x_3823)) {
+    if ((!EqualValue(x_3824, x_3823))) {
       var_modified_x_3825(x_3776);
     }
   }
@@ -2058,7 +2059,7 @@ Unit eval_stmts_x_3696(const auto &x_3776) {
   auto x_3828 = eval_expr_x_3827(x_3776);
   if (x_3776->has_var_height_external) {
     auto x_3829 = x_3776->var_height_external;
-    if (!EqualValue(x_3829, x_3828)) {
+    if ((!EqualValue(x_3829, x_3828))) {
       var_modified_x_3830(x_3776);
     }
   }
@@ -2068,7 +2069,7 @@ Unit eval_stmts_x_3696(const auto &x_3776) {
   auto x_3833 = eval_expr_x_3832(x_3776);
   if (x_3776->has_var_line_height) {
     auto x_3834 = x_3776->var_line_height;
-    if (!EqualValue(x_3834, x_3833)) {
+    if ((!EqualValue(x_3834, x_3833))) {
       var_modified_x_3835(x_3776);
     }
   }
@@ -2081,7 +2082,7 @@ Unit eval_stmts_x_3695(const auto &x_3837) {
   auto x_3839 = eval_expr_x_3838(x_3837);
   if (x_3837->has_var_width_expr) {
     auto x_3840 = x_3837->var_width_expr;
-    if (!EqualValue(x_3840, x_3839)) {
+    if ((!EqualValue(x_3840, x_3839))) {
       var_modified_x_3841(x_3837);
     }
   }
@@ -2091,7 +2092,7 @@ Unit eval_stmts_x_3695(const auto &x_3837) {
   auto x_3844 = eval_expr_x_3843(x_3837);
   if (x_3837->has_var_is_default_case) {
     auto x_3845 = x_3837->var_is_default_case;
-    if (!EqualValue(x_3845, x_3844)) {
+    if ((!EqualValue(x_3845, x_3844))) {
       var_modified_x_3846(x_3837);
     }
   }
@@ -2101,7 +2102,7 @@ Unit eval_stmts_x_3695(const auto &x_3837) {
   auto x_3849 = eval_expr_x_3848(x_3837);
   if (x_3837->has_var_intrinsic_width_is_width) {
     auto x_3850 = x_3837->var_intrinsic_width_is_width;
-    if (!EqualValue(x_3850, x_3849)) {
+    if ((!EqualValue(x_3850, x_3849))) {
       var_modified_x_3851(x_3837);
     }
   }
@@ -2111,7 +2112,7 @@ Unit eval_stmts_x_3695(const auto &x_3837) {
   auto x_3854 = eval_expr_x_3853(x_3837);
   if (x_3837->has_var_children_intrinsic_width) {
     auto x_3855 = x_3837->var_children_intrinsic_width;
-    if (!EqualValue(x_3855, x_3854)) {
+    if ((!EqualValue(x_3855, x_3854))) {
       var_modified_x_3856(x_3837);
     }
   }
@@ -2121,7 +2122,7 @@ Unit eval_stmts_x_3695(const auto &x_3837) {
   auto x_3859 = eval_expr_x_3858(x_3837);
   if (x_3837->has_var_intrinsic_width_internal) {
     auto x_3860 = x_3837->var_intrinsic_width_internal;
-    if (!EqualValue(x_3860, x_3859)) {
+    if ((!EqualValue(x_3860, x_3859))) {
       var_modified_x_3861(x_3837);
     }
   }
@@ -2131,7 +2132,7 @@ Unit eval_stmts_x_3695(const auto &x_3837) {
   auto x_3864 = eval_expr_x_3863(x_3837);
   if (x_3837->has_var_intrinsic_width_external) {
     auto x_3865 = x_3837->var_intrinsic_width_external;
-    if (!EqualValue(x_3865, x_3864)) {
+    if ((!EqualValue(x_3865, x_3864))) {
       var_modified_x_3866(x_3837);
     }
   }
@@ -2141,7 +2142,7 @@ Unit eval_stmts_x_3695(const auto &x_3837) {
   auto x_3869 = eval_expr_x_3868(x_3837);
   if (x_3837->has_var_intrinsic_current_line_width) {
     auto x_3870 = x_3837->var_intrinsic_current_line_width;
-    if (!EqualValue(x_3870, x_3869)) {
+    if ((!EqualValue(x_3870, x_3869))) {
       var_modified_x_3871(x_3837);
     }
   }
@@ -2151,7 +2152,7 @@ Unit eval_stmts_x_3695(const auto &x_3837) {
   auto x_3874 = eval_expr_x_3873(x_3837);
   if (x_3837->has_var_intrinsic_width_max) {
     auto x_3875 = x_3837->var_intrinsic_width_max;
-    if (!EqualValue(x_3875, x_3874)) {
+    if ((!EqualValue(x_3875, x_3874))) {
       var_modified_x_3876(x_3837);
     }
   }
@@ -2161,7 +2162,7 @@ Unit eval_stmts_x_3695(const auto &x_3837) {
   auto x_3879 = eval_expr_x_3878(x_3837);
   if (x_3837->has_var_intrinsic_width_sum) {
     auto x_3880 = x_3837->var_intrinsic_width_sum;
-    if (!EqualValue(x_3880, x_3879)) {
+    if ((!EqualValue(x_3880, x_3879))) {
       var_modified_x_3881(x_3837);
     }
   }
@@ -2171,7 +2172,7 @@ Unit eval_stmts_x_3695(const auto &x_3837) {
   auto x_3884 = eval_expr_x_3883(x_3837);
   if (x_3837->has_var_children_intrinsic_height) {
     auto x_3885 = x_3837->var_children_intrinsic_height;
-    if (!EqualValue(x_3885, x_3884)) {
+    if ((!EqualValue(x_3885, x_3884))) {
       var_modified_x_3886(x_3837);
     }
   }
@@ -2181,7 +2182,7 @@ Unit eval_stmts_x_3695(const auto &x_3837) {
   auto x_3889 = eval_expr_x_3888(x_3837);
   if (x_3837->has_var_height_expr) {
     auto x_3890 = x_3837->var_height_expr;
-    if (!EqualValue(x_3890, x_3889)) {
+    if ((!EqualValue(x_3890, x_3889))) {
       var_modified_x_3891(x_3837);
     }
   }
@@ -2191,7 +2192,7 @@ Unit eval_stmts_x_3695(const auto &x_3837) {
   auto x_3894 = eval_expr_x_3893(x_3837);
   if (x_3837->has_var_intrinsic_height_is_height) {
     auto x_3895 = x_3837->var_intrinsic_height_is_height;
-    if (!EqualValue(x_3895, x_3894)) {
+    if ((!EqualValue(x_3895, x_3894))) {
       var_modified_x_3896(x_3837);
     }
   }
@@ -2201,7 +2202,7 @@ Unit eval_stmts_x_3695(const auto &x_3837) {
   auto x_3899 = eval_expr_x_3898(x_3837);
   if (x_3837->has_var_intrinsic_height_internal) {
     auto x_3900 = x_3837->var_intrinsic_height_internal;
-    if (!EqualValue(x_3900, x_3899)) {
+    if ((!EqualValue(x_3900, x_3899))) {
       var_modified_x_3901(x_3837);
     }
   }
@@ -2211,7 +2212,7 @@ Unit eval_stmts_x_3695(const auto &x_3837) {
   auto x_3904 = eval_expr_x_3903(x_3837);
   if (x_3837->has_var_intrinsic_height_external) {
     auto x_3905 = x_3837->var_intrinsic_height_external;
-    if (!EqualValue(x_3905, x_3904)) {
+    if ((!EqualValue(x_3905, x_3904))) {
       var_modified_x_3906(x_3837);
     }
   }
@@ -2221,7 +2222,7 @@ Unit eval_stmts_x_3695(const auto &x_3837) {
   auto x_3909 = eval_expr_x_3908(x_3837);
   if (x_3837->has_var_intrinsic_height_sum) {
     auto x_3910 = x_3837->var_intrinsic_height_sum;
-    if (!EqualValue(x_3910, x_3909)) {
+    if ((!EqualValue(x_3910, x_3909))) {
       var_modified_x_3911(x_3837);
     }
   }
@@ -2231,7 +2232,7 @@ Unit eval_stmts_x_3695(const auto &x_3837) {
   auto x_3914 = eval_expr_x_3913(x_3837);
   if (x_3837->has_var_intrinsic_current_line_height) {
     auto x_3915 = x_3837->var_intrinsic_current_line_height;
-    if (!EqualValue(x_3915, x_3914)) {
+    if ((!EqualValue(x_3915, x_3914))) {
       var_modified_x_3916(x_3837);
     }
   }
@@ -2241,7 +2242,7 @@ Unit eval_stmts_x_3695(const auto &x_3837) {
   auto x_3919 = eval_expr_x_3918(x_3837);
   if (x_3837->has_var_finished_intrinsic_height_sum) {
     auto x_3920 = x_3837->var_finished_intrinsic_height_sum;
-    if (!EqualValue(x_3920, x_3919)) {
+    if ((!EqualValue(x_3920, x_3919))) {
       var_modified_x_3921(x_3837);
     }
   }
@@ -2254,7 +2255,7 @@ Unit eval_stmts_x_3694(const auto &x_3923) {
   auto x_3925 = eval_expr_x_3924(x_3923);
   if (x_3923->has_var_display) {
     auto x_3926 = x_3923->var_display;
-    if (!EqualValue(x_3926, x_3925)) {
+    if ((!EqualValue(x_3926, x_3925))) {
       var_modified_x_3927(x_3923);
     }
   }
@@ -2264,7 +2265,7 @@ Unit eval_stmts_x_3694(const auto &x_3923) {
   auto x_3930 = eval_expr_x_3929(x_3923);
   if (x_3923->has_var_position) {
     auto x_3931 = x_3923->var_position;
-    if (!EqualValue(x_3931, x_3930)) {
+    if ((!EqualValue(x_3931, x_3930))) {
       var_modified_x_3932(x_3923);
     }
   }
@@ -2274,7 +2275,7 @@ Unit eval_stmts_x_3694(const auto &x_3923) {
   auto x_3935 = eval_expr_x_3934(x_3923);
   if (x_3923->has_var_flex_grow) {
     auto x_3936 = x_3923->var_flex_grow;
-    if (!EqualValue(x_3936, x_3935)) {
+    if ((!EqualValue(x_3936, x_3935))) {
       var_modified_x_3937(x_3923);
     }
   }
@@ -2284,7 +2285,7 @@ Unit eval_stmts_x_3694(const auto &x_3923) {
   auto x_3940 = eval_expr_x_3939(x_3923);
   if (x_3923->has_var_flex_shrink) {
     auto x_3941 = x_3923->var_flex_shrink;
-    if (!EqualValue(x_3941, x_3940)) {
+    if ((!EqualValue(x_3941, x_3940))) {
       var_modified_x_3942(x_3923);
     }
   }
@@ -2294,7 +2295,7 @@ Unit eval_stmts_x_3694(const auto &x_3923) {
   auto x_3945 = eval_expr_x_3944(x_3923);
   if (x_3923->has_var_flex_grow_sum) {
     auto x_3946 = x_3923->var_flex_grow_sum;
-    if (!EqualValue(x_3946, x_3945)) {
+    if ((!EqualValue(x_3946, x_3945))) {
       var_modified_x_3947(x_3923);
     }
   }
@@ -2304,7 +2305,7 @@ Unit eval_stmts_x_3694(const auto &x_3923) {
   auto x_3950 = eval_expr_x_3949(x_3923);
   if (x_3923->has_var_flex_shrink_sum) {
     auto x_3951 = x_3923->var_flex_shrink_sum;
-    if (!EqualValue(x_3951, x_3950)) {
+    if ((!EqualValue(x_3951, x_3950))) {
       var_modified_x_3952(x_3923);
     }
   }
@@ -2314,7 +2315,7 @@ Unit eval_stmts_x_3694(const auto &x_3923) {
   auto x_3955 = eval_expr_x_3954(x_3923);
   if (x_3923->has_var_flex_direction) {
     auto x_3956 = x_3923->var_flex_direction;
-    if (!EqualValue(x_3956, x_3955)) {
+    if ((!EqualValue(x_3956, x_3955))) {
       var_modified_x_3957(x_3923);
     }
   }
@@ -2324,7 +2325,7 @@ Unit eval_stmts_x_3694(const auto &x_3923) {
   auto x_3960 = eval_expr_x_3959(x_3923);
   if (x_3923->has_var_is_flex_row) {
     auto x_3961 = x_3923->var_is_flex_row;
-    if (!EqualValue(x_3961, x_3960)) {
+    if ((!EqualValue(x_3961, x_3960))) {
       var_modified_x_3962(x_3923);
     }
   }
@@ -2334,7 +2335,7 @@ Unit eval_stmts_x_3694(const auto &x_3923) {
   auto x_3965 = eval_expr_x_3964(x_3923);
   if (x_3923->has_var_is_flex_column) {
     auto x_3966 = x_3923->var_is_flex_column;
-    if (!EqualValue(x_3966, x_3965)) {
+    if ((!EqualValue(x_3966, x_3965))) {
       var_modified_x_3967(x_3923);
     }
   }
@@ -2344,7 +2345,7 @@ Unit eval_stmts_x_3694(const auto &x_3923) {
   auto x_3970 = eval_expr_x_3969(x_3923);
   if (x_3923->has_var_width_attr_expr) {
     auto x_3971 = x_3923->var_width_attr_expr;
-    if (!EqualValue(x_3971, x_3970)) {
+    if ((!EqualValue(x_3971, x_3970))) {
       var_modified_x_3972(x_3923);
     }
   }
@@ -2354,7 +2355,7 @@ Unit eval_stmts_x_3694(const auto &x_3923) {
   auto x_3975 = eval_expr_x_3974(x_3923);
   if (x_3923->has_var_has_width_attr) {
     auto x_3976 = x_3923->var_has_width_attr;
-    if (!EqualValue(x_3976, x_3975)) {
+    if ((!EqualValue(x_3976, x_3975))) {
       var_modified_x_3977(x_3923);
     }
   }
@@ -2364,7 +2365,7 @@ Unit eval_stmts_x_3694(const auto &x_3923) {
   auto x_3980 = eval_expr_x_3979(x_3923);
   if (x_3923->has_var_height_attr_expr) {
     auto x_3981 = x_3923->var_height_attr_expr;
-    if (!EqualValue(x_3981, x_3980)) {
+    if ((!EqualValue(x_3981, x_3980))) {
       var_modified_x_3982(x_3923);
     }
   }
@@ -2374,7 +2375,7 @@ Unit eval_stmts_x_3694(const auto &x_3923) {
   auto x_3985 = eval_expr_x_3984(x_3923);
   if (x_3923->has_var_has_height_attr) {
     auto x_3986 = x_3923->var_has_height_attr;
-    if (!EqualValue(x_3986, x_3985)) {
+    if ((!EqualValue(x_3986, x_3985))) {
       var_modified_x_3987(x_3923);
     }
   }
@@ -2384,7 +2385,7 @@ Unit eval_stmts_x_3694(const auto &x_3923) {
   auto x_3990 = eval_expr_x_3989(x_3923);
   if (x_3923->has_var_is_svg_block) {
     auto x_3991 = x_3923->var_is_svg_block;
-    if (!EqualValue(x_3991, x_3990)) {
+    if ((!EqualValue(x_3991, x_3990))) {
       var_modified_x_3992(x_3923);
     }
   }
@@ -2394,7 +2395,7 @@ Unit eval_stmts_x_3694(const auto &x_3923) {
   auto x_3995 = eval_expr_x_3994(x_3923);
   if (x_3923->has_var_inside_svg) {
     auto x_3996 = x_3923->var_inside_svg;
-    if (!EqualValue(x_3996, x_3995)) {
+    if ((!EqualValue(x_3996, x_3995))) {
       var_modified_x_3997(x_3923);
     }
   }
@@ -2404,7 +2405,7 @@ Unit eval_stmts_x_3694(const auto &x_3923) {
   auto x_4000 = eval_expr_x_3999(x_3923);
   if (x_3923->has_var_disabled) {
     auto x_4001 = x_3923->var_disabled;
-    if (!EqualValue(x_4001, x_4000)) {
+    if ((!EqualValue(x_4001, x_4000))) {
       var_modified_x_4002(x_3923);
     }
   }
@@ -2414,7 +2415,7 @@ Unit eval_stmts_x_3694(const auto &x_3923) {
   auto x_4005 = eval_expr_x_4004(x_3923);
   if (x_3923->has_var_visible) {
     auto x_4006 = x_3923->var_visible;
-    if (!EqualValue(x_4006, x_4005)) {
+    if ((!EqualValue(x_4006, x_4005))) {
       var_modified_x_4007(x_3923);
     }
   }
@@ -2424,7 +2425,7 @@ Unit eval_stmts_x_3694(const auto &x_3923) {
   auto x_4010 = eval_expr_x_4009(x_3923);
   if (x_3923->has_var_line_break) {
     auto x_4011 = x_3923->var_line_break;
-    if (!EqualValue(x_4011, x_4010)) {
+    if ((!EqualValue(x_4011, x_4010))) {
       var_modified_x_4012(x_3923);
     }
   }
@@ -3334,7 +3335,7 @@ Unit remove_node_x_3406(const auto &x_3652, const auto &x_3653, const auto &x_36
   return x_3651(x_3652, x_3653, x_3654);
 }
 Unit x_3686(const auto &x_3687) {
-  if (!QueueIsEmpty()) {
+  if ((!QueueIsEmpty())) {
     auto x_3688 = QueuePeek();
     auto x_3689 = Zro(x_3688);
     auto x_3690 = Fst(x_3688);
@@ -3640,7 +3641,7 @@ Node x_3773(const auto &x_3774) {
 }
 Node json_to_node_aux_x_3380(const auto &x_3774) { return x_3773(x_3774); }
 int main() {
-  WithOutFile(std::string("hn_type.out"), [&](const auto &x_3385) {
+  WithOutFile(std::string("wikipedia_idle.out"), [&](const auto &x_3385) {
     PrintEndline(std::string("RUNNING PQ_D"));
     return WithInFile(std::string("command.json"), [&](const auto &x_3386) {
       auto x_3387 = MakeRef(static_cast<int64_t>(0));

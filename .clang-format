@@ -2,3 +2,4 @@ IndentWidth: 2
 ColumnLimit: 120
 AlignOperands: DontAlign
 BreakBeforeTernaryOperators: true
+RemoveParentheses: MultipleParentheses

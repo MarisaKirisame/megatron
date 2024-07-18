@@ -588,10 +588,10 @@ module Main (EVAL : Eval) = struct
     compile prog (defs ()) (undyn main) EVAL.meta_defs c;
     Stdio.Out_channel.close c;
 
-    shell ("clang-format --style=file -i " ^ compiled_file_name);
-    shell ("clang-format --style=file -i " ^ "header.h");
-    shell ("clang-format --style=file -i " ^ "header_continued.h");
-    shell ("clang++ -O3 -std=c++23 " ^ compiled_file_name);
+    shell ("clang-format-18 --style=file -i " ^ compiled_file_name);
+    shell ("clang-format-18 --style=file -i " ^ "header.h");
+    shell ("clang-format-18 --style=file -i " ^ "header_continued.h");
+    shell ("clang++-18 -O3 -std=c++23 " ^ compiled_file_name);
     shell "./a.out"
 
   let () = if is_static then () else run_dynamic ()
