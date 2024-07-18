@@ -339,7 +339,8 @@ bool neq(const std::string &x, const std::string &y) { return x != y; }
 bool neq(bool x, bool y) { return x != y; }
 template <typename X> bool EqualValue(const X &l, const X &r) { return eq(l, r); }
 
-template <typename T> T max(T x, T y) { return x > y ? x : y; }
+double max(double x, double y) { return std::isnan(x) ? x : std::isnan(y) ? y : x > y ? x : y; }
+int64_t max(int64_t x, int64_t y) { return x > y ? x : y; }
 template <typename T> T plus(T x, T y) { return x + y; }
 template <typename T> T minus(T x, T y) { return x - y; }
 template <typename T> T mult(T x, T y) { return x * y; }
