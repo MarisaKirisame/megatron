@@ -355,7 +355,7 @@ bool string_is_float(const std::string &x) {
     return false;
   }
 }
-double int_to_float(int x) { return static_cast<double>(x); }
+double int_to_float(int64_t x) { return static_cast<double>(x); }
 std::string strip_suffix(const std::string &str, const std::string &sfx) {
   return str.substr(0, str.size() - sfx.size());
 }
@@ -365,7 +365,7 @@ bool has_suffix(const std::string &str, const std::string &sfx) {
 bool has_prefix(const std::string &str, const std::string &pfx) {
   return str.size() >= pfx.size() && str.substr(0, pfx.size()) == pfx;
 }
-std::string nth_by_sep(const std::string &str, const std::string &sep, int nth) {
+std::string nth_by_sep(const std::string &str, const std::string &sep, int64_t nth) {
   std::stringstream test(str);
   std::string segment;
   assert(sep.size() == 1);
