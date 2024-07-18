@@ -343,7 +343,7 @@ template <typename T> T max(T x, T y) { return x > y ? x : y; }
 template <typename T> T plus(T x, T y) { return x + y; }
 template <typename T> T minus(T x, T y) { return x - y; }
 template <typename T> T mult(T x, T y) { return x * y; }
-template <typename T> T divide(T x, T y) { return x * y; }
+template <typename T> T divide(T x, T y) { return x / y; }
 template <typename T> bool gt(T x, T y) { return x > y; }
 double string_to_float(const std::string &x) { return std::stod(x); }
 bool string_is_float(const std::string &x) {
@@ -361,7 +361,9 @@ std::string strip_suffix(const std::string &str, const std::string &sfx) {
 bool has_suffix(const std::string &str, const std::string &sfx) {
   return str.size() >= sfx.size() && str.substr(str.size() - sfx.size(), sfx.size()) == sfx;
 }
-bool has_prefix(const std::string &str, const std::string &pfx) { return str.size() >= pfx.size() && str.substr(0, pfx.size()) == pfx; }
+bool has_prefix(const std::string &str, const std::string &pfx) {
+  return str.size() >= pfx.size() && str.substr(0, pfx.size()) == pfx;
+}
 std::string nth_by_sep(const std::string &str, const std::string &sep, int nth) {
   auto to_string = [](auto &&r) -> std::string {
     const auto data = &*r.begin();

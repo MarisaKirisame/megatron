@@ -119,664 +119,563 @@ struct Content : std::enable_shared_from_this<Content> {
   bool has_var_intrinsic_width_internal = false;
 };
 #include "header_continued.h"
-Unit var_modified_x_3806(const auto &x_3816);
-auto eval_expr_x_3803(const auto &x_3820);
-Unit var_modified_x_3801(const auto &x_3837);
-auto eval_expr_x_3798(const auto &x_3839);
-Unit var_modified_x_3796(const auto &x_3848);
-auto eval_expr_x_3793(const auto &x_3851);
-Unit var_modified_x_3791(const auto &x_3904);
-auto eval_expr_x_3788(const auto &x_3909);
-Unit var_modified_x_3786(const auto &x_3934);
-auto eval_expr_x_3783(const auto &x_3938);
-Unit var_modified_x_3781(const auto &x_3947);
-auto eval_expr_x_3778(const auto &x_3950);
-Unit var_modified_x_3776(const auto &x_4003);
-auto eval_expr_x_3773(const auto &x_4008);
-Unit var_modified_x_3771(const auto &x_4029);
-auto eval_expr_x_3768(const auto &x_4031);
-Unit var_modified_x_3766(const auto &x_4052);
-auto eval_expr_x_3763(const auto &x_4054);
-Unit var_modified_x_3761(const auto &x_4067);
-auto eval_expr_x_3758(const auto &x_4070);
-Unit var_modified_x_3756(const auto &x_4091);
-auto eval_expr_x_3753(const auto &x_4093);
-Unit var_modified_x_3751(const auto &x_4098);
-auto eval_expr_x_3748(const auto &x_4100);
-Unit var_modified_x_3745(const auto &x_4105);
-auto eval_expr_x_3742(const auto &x_4114);
-Unit var_modified_x_3740(const auto &x_4191);
-auto eval_expr_x_3737(const auto &x_4193);
-Unit var_modified_x_3735(const auto &x_4210);
-auto eval_expr_x_3732(const auto &x_4214);
-Unit var_modified_x_3730(const auto &x_4219);
-auto eval_expr_x_3727(const auto &x_4223);
-Unit var_modified_x_3725(const auto &x_4232);
-auto eval_expr_x_3722(const auto &x_4234);
-Unit var_modified_x_3720(const auto &x_4235);
-auto eval_expr_x_3717(const auto &x_4237);
-Unit var_modified_x_3715(const auto &x_4242);
-auto eval_expr_x_3712(const auto &x_4245);
-Unit var_modified_x_3710(const auto &x_4256);
-auto eval_expr_x_3707(const auto &x_4258);
-Unit var_modified_x_3705(const auto &x_4263);
-auto eval_expr_x_3702(const auto &x_4266);
-Unit var_modified_x_3700(const auto &x_4277);
-auto eval_expr_x_3697(const auto &x_4280);
-Unit var_modified_x_3695(const auto &x_4305);
-auto eval_expr_x_3692(const auto &x_4309);
-Unit var_modified_x_3690(const auto &x_4334);
-auto eval_expr_x_3687(const auto &x_4336);
-Unit var_modified_x_3685(const auto &x_4339);
-auto eval_expr_x_3682(const auto &x_4344);
-Unit var_modified_x_3680(const auto &x_4353);
-auto eval_expr_x_3677(const auto &x_4358);
-Unit var_modified_x_3675(const auto &x_4367);
-auto eval_expr_x_3672(const auto &x_4370);
-Unit var_modified_x_3670(const auto &x_4373);
-auto eval_expr_x_3667(const auto &x_4376);
-Unit var_modified_x_3665(const auto &x_4379);
-auto eval_expr_x_3662(const auto &x_4383);
-Unit var_modified_x_3660(const auto &x_4386);
-auto eval_expr_x_3657(const auto &x_4390);
-Unit var_modified_x_3654(const auto &x_4393);
-auto eval_expr_x_3651(const auto &x_4400);
-Unit var_modified_x_3649(const auto &x_4429);
-auto eval_expr_x_3646(const auto &x_4436);
-Unit var_modified_x_3644(const auto &x_4449);
-auto eval_expr_x_3641(const auto &x_4456);
-Unit var_modified_x_3639(const auto &x_4465);
-auto eval_expr_x_3636(const auto &x_4467);
-Unit var_modified_x_3634(const auto &x_4476);
-auto eval_expr_x_3631(const auto &x_4479);
-Unit var_modified_x_3629(const auto &x_4624);
-auto eval_expr_x_3626(const auto &x_4626);
-Unit var_modified_x_3624(const auto &x_4675);
-auto eval_expr_x_3621(const auto &x_4678);
-Unit var_modified_x_3619(const auto &x_4681);
-auto eval_expr_x_3616(const auto &x_4683);
-Unit var_modified_x_3614(const auto &x_4692);
-auto eval_expr_x_3611(const auto &x_4699);
-Unit var_modified_x_3609(const auto &x_4708);
-auto eval_expr_x_3606(const auto &x_4715);
-Unit var_modified_x_3604(const auto &x_4724);
-auto eval_expr_x_3601(const auto &x_4729);
-Unit var_modified_x_3599(const auto &x_4742);
-auto eval_expr_x_3596(const auto &x_4744);
-Unit var_modified_x_3594(const auto &x_4753);
-auto eval_expr_x_3591(const auto &x_4756);
-Unit var_modified_x_3589(const auto &x_4909);
-auto eval_expr_x_3586(const auto &x_4911);
-Unit var_modified_x_3584(const auto &x_4916);
-auto eval_expr_x_3581(const auto &x_4918);
-Unit var_modified_x_3579(const auto &x_4967);
-auto eval_expr_x_3576(const auto &x_4969);
-Unit var_modified_x_3574(const auto &x_4982);
-auto eval_expr_x_3571(const auto &x_4985);
-Unit var_modified_x_3568(const auto &x_4988);
-auto eval_expr_x_3565(const auto &x_4992);
-Unit var_modified_x_3563(const auto &x_5009);
-auto eval_expr_x_3560(const auto &x_5011);
-Unit var_modified_x_3558(const auto &x_5020);
-auto eval_expr_x_3555(const auto &x_5023);
-Unit var_modified_x_3553(const auto &x_5076);
-auto eval_expr_x_3550(const auto &x_5081);
-Unit var_modified_x_3548(const auto &x_5106);
-auto eval_expr_x_3545(const auto &x_5110);
-Unit var_modified_x_3543(const auto &x_5119);
-auto eval_expr_x_3540(const auto &x_5122);
-Unit var_modified_x_3538(const auto &x_5175);
-auto eval_expr_x_3535(const auto &x_5180);
-Unit var_modified_x_3533(const auto &x_5201);
-auto eval_expr_x_3530(const auto &x_5203);
-Unit var_modified_x_3528(const auto &x_5224);
-auto eval_expr_x_3525(const auto &x_5226);
-Unit var_modified_x_3523(const auto &x_5239);
-auto eval_expr_x_3520(const auto &x_5242);
-Unit var_modified_x_3518(const auto &x_5263);
-auto eval_expr_x_3515(const auto &x_5265);
-Unit var_modified_x_3513(const auto &x_5270);
-auto eval_expr_x_3510(const auto &x_5272);
-Unit var_modified_x_3507(const auto &x_5277);
-auto eval_expr_x_3504(const auto &x_5286);
-Unit var_modified_x_3502(const auto &x_5363);
-auto eval_expr_x_3499(const auto &x_5365);
-Unit var_modified_x_3497(const auto &x_5382);
-auto eval_expr_x_3494(const auto &x_5386);
-Unit var_modified_x_3492(const auto &x_5391);
-auto eval_expr_x_3489(const auto &x_5395);
-Unit var_modified_x_3487(const auto &x_5404);
-auto eval_expr_x_3484(const auto &x_5406);
-Unit var_modified_x_3482(const auto &x_5407);
-auto eval_expr_x_3479(const auto &x_5409);
-Unit var_modified_x_3477(const auto &x_5414);
-auto eval_expr_x_3474(const auto &x_5417);
-Unit var_modified_x_3472(const auto &x_5428);
-auto eval_expr_x_3469(const auto &x_5430);
-Unit var_modified_x_3467(const auto &x_5435);
-auto eval_expr_x_3464(const auto &x_5438);
-Unit var_modified_x_3462(const auto &x_5449);
-auto eval_expr_x_3459(const auto &x_5452);
-Unit var_modified_x_3457(const auto &x_5477);
-auto eval_expr_x_3454(const auto &x_5481);
-Unit var_modified_x_3452(const auto &x_5506);
-auto eval_expr_x_3449(const auto &x_5508);
-Unit var_modified_x_3447(const auto &x_5511);
-auto eval_expr_x_3444(const auto &x_5516);
-Unit var_modified_x_3442(const auto &x_5525);
-auto eval_expr_x_3439(const auto &x_5530);
-Unit var_modified_x_3437(const auto &x_5539);
-auto eval_expr_x_3434(const auto &x_5542);
-Unit var_modified_x_3432(const auto &x_5545);
-auto eval_expr_x_3429(const auto &x_5548);
-Unit var_modified_x_3427(const auto &x_5551);
-auto eval_expr_x_3424(const auto &x_5555);
-Unit var_modified_x_3422(const auto &x_5558);
-auto eval_expr_x_3419(const auto &x_5562);
-Unit var_modified_x_3416(const auto &x_5565);
-auto eval_expr_x_3413(const auto &x_5572);
-Unit var_modified_x_3411(const auto &x_5601);
-auto eval_expr_x_3408(const auto &x_5608);
-Unit var_modified_x_3406(const auto &x_5621);
-auto eval_expr_x_3403(const auto &x_5628);
-Unit var_modified_x_3401(const auto &x_5637);
-auto eval_expr_x_3398(const auto &x_5639);
-Unit var_modified_x_3396(const auto &x_5648);
-auto eval_expr_x_3393(const auto &x_5651);
-Unit var_modified_x_3391(const auto &x_5796);
-auto eval_expr_x_3388(const auto &x_5798);
-Unit var_modified_x_3386(const auto &x_5847);
-auto eval_expr_x_3383(const auto &x_5850);
-Unit var_modified_x_3381(const auto &x_5853);
-auto eval_expr_x_3378(const auto &x_5855);
-Unit var_modified_x_3376(const auto &x_5864);
-auto eval_expr_x_3373(const auto &x_5871);
-Unit var_modified_x_3371(const auto &x_5880);
-auto eval_expr_x_3368(const auto &x_5887);
-Unit var_modified_x_3366(const auto &x_5896);
-auto eval_expr_x_3363(const auto &x_5901);
-Unit var_modified_x_3361(const auto &x_5914);
-auto eval_expr_x_3358(const auto &x_5916);
-Unit var_modified_x_3356(const auto &x_5925);
-auto eval_expr_x_3353(const auto &x_5928);
-Unit var_modified_x_3351(const auto &x_6081);
-auto eval_expr_x_3348(const auto &x_6083);
-Unit var_modified_x_3346(const auto &x_6088);
-auto eval_expr_x_3343(const auto &x_6090);
-Unit var_modified_x_3341(const auto &x_6139);
-auto eval_expr_x_3338(const auto &x_6141);
-Unit var_modified_x_3336(const auto &x_6154);
-auto eval_expr_x_3333(const auto &x_6157);
-Unit eval_stmts_x_3296(const auto &x_3332);
-Unit eval_stmts_x_3294(const auto &x_3418);
-Unit eval_stmts_x_3291(const auto &x_3509);
-Unit eval_stmts_x_3262(const auto &x_3570);
-Unit eval_stmts_x_3260(const auto &x_3656);
-Unit eval_stmts_x_3256(const auto &x_3747);
-Unit x_3808(const auto &x_3809);
-Unit x_3812(const auto &x_3813);
-Unit x_3129(const auto &x_3130, const auto &x_3131, const auto &x_3132);
-Unit x_3136(const auto &x_3137, const auto &x_3138, const auto &x_3139);
-Unit x_3143(const auto &x_3144, const auto &x_3145, const auto &x_3146);
-Unit x_3150(const auto &x_3151, const auto &x_3152, const auto &x_3153);
-Unit x_3162(const auto &x_3163, const auto &x_3164, const auto &x_3165);
-Unit x_3171(const auto &x_3172, const auto &x_3173, const auto &x_3174);
-Unit x_3182(const auto &x_3183, const auto &x_3184, const auto &x_3185);
-Unit x_3217(const auto &x_3218);
-Unit x_3225(const auto &x_3226, const auto &x_3227, const auto &x_3228);
-Unit x_3246(const auto &x_3247);
-Unit x_3254(const auto &x_3255);
-Unit x_3258(const auto &x_3259);
-Unit x_3263(const auto &x_3264, const auto &x_3265, const auto &x_3266);
-Unit x_3282(const auto &x_3283);
-Unit eval_stmts_x_3099(const auto &x_3290);
-Unit eval_stmts_x_3098(const auto &x_3293);
-Unit x_3297(const auto &x_3298);
-Unit eval_stmts_x_3094(const auto &x_3305);
-Unit eval_stmts_x_3093(const auto &x_3307);
-Unit x_3309(const auto &x_3310);
-int64_t x_3317(const auto &x_3318);
-int64_t x_3320(const auto &x_3321);
-LayoutNode x_3323(const auto &x_3324);
-Node x_3326(const auto &x_3327);
-Node x_3329(const auto &x_3330);
-Unit var_modified_x_3806(const auto &x_3816) {
-  auto x_6160 = [&](const auto &x_3819) {
-    if (HashtblContain(x_3819->meta->ProcInited, std::string("pass_1"))) {
-      HashtblSet(x_3819->meta->BBDirtied, std::string("bb_2"), true);
-      return set_recursive_proc_dirtied_x_3201(x_3819);
+Unit var_modified_x_2096(const auto &x_2106);
+auto eval_expr_x_2093(const auto &x_2110);
+Unit var_modified_x_2091(const auto &x_2127);
+auto eval_expr_x_2088(const auto &x_2129);
+Unit var_modified_x_2086(const auto &x_2138);
+auto eval_expr_x_2083(const auto &x_2141);
+Unit var_modified_x_2081(const auto &x_2194);
+auto eval_expr_x_2078(const auto &x_2199);
+Unit var_modified_x_2076(const auto &x_2224);
+auto eval_expr_x_2073(const auto &x_2228);
+Unit var_modified_x_2071(const auto &x_2237);
+auto eval_expr_x_2068(const auto &x_2240);
+Unit var_modified_x_2066(const auto &x_2293);
+auto eval_expr_x_2063(const auto &x_2298);
+Unit var_modified_x_2061(const auto &x_2319);
+auto eval_expr_x_2058(const auto &x_2321);
+Unit var_modified_x_2056(const auto &x_2342);
+auto eval_expr_x_2053(const auto &x_2344);
+Unit var_modified_x_2051(const auto &x_2357);
+auto eval_expr_x_2048(const auto &x_2360);
+Unit var_modified_x_2046(const auto &x_2381);
+auto eval_expr_x_2043(const auto &x_2383);
+Unit var_modified_x_2041(const auto &x_2388);
+auto eval_expr_x_2038(const auto &x_2390);
+Unit var_modified_x_2035(const auto &x_2395);
+auto eval_expr_x_2032(const auto &x_2404);
+Unit var_modified_x_2030(const auto &x_2481);
+auto eval_expr_x_2027(const auto &x_2483);
+Unit var_modified_x_2025(const auto &x_2500);
+auto eval_expr_x_2022(const auto &x_2504);
+Unit var_modified_x_2020(const auto &x_2509);
+auto eval_expr_x_2017(const auto &x_2513);
+Unit var_modified_x_2015(const auto &x_2522);
+auto eval_expr_x_2012(const auto &x_2524);
+Unit var_modified_x_2010(const auto &x_2525);
+auto eval_expr_x_2007(const auto &x_2527);
+Unit var_modified_x_2005(const auto &x_2532);
+auto eval_expr_x_2002(const auto &x_2535);
+Unit var_modified_x_2000(const auto &x_2546);
+auto eval_expr_x_1997(const auto &x_2548);
+Unit var_modified_x_1995(const auto &x_2553);
+auto eval_expr_x_1992(const auto &x_2556);
+Unit var_modified_x_1990(const auto &x_2567);
+auto eval_expr_x_1987(const auto &x_2570);
+Unit var_modified_x_1985(const auto &x_2595);
+auto eval_expr_x_1982(const auto &x_2599);
+Unit var_modified_x_1980(const auto &x_2624);
+auto eval_expr_x_1977(const auto &x_2626);
+Unit var_modified_x_1975(const auto &x_2629);
+auto eval_expr_x_1972(const auto &x_2634);
+Unit var_modified_x_1970(const auto &x_2643);
+auto eval_expr_x_1967(const auto &x_2648);
+Unit var_modified_x_1965(const auto &x_2657);
+auto eval_expr_x_1962(const auto &x_2660);
+Unit var_modified_x_1960(const auto &x_2663);
+auto eval_expr_x_1957(const auto &x_2666);
+Unit var_modified_x_1955(const auto &x_2669);
+auto eval_expr_x_1952(const auto &x_2673);
+Unit var_modified_x_1950(const auto &x_2676);
+auto eval_expr_x_1947(const auto &x_2680);
+Unit var_modified_x_1944(const auto &x_2683);
+auto eval_expr_x_1941(const auto &x_2690);
+Unit var_modified_x_1939(const auto &x_2719);
+auto eval_expr_x_1936(const auto &x_2726);
+Unit var_modified_x_1934(const auto &x_2739);
+auto eval_expr_x_1931(const auto &x_2746);
+Unit var_modified_x_1929(const auto &x_2755);
+auto eval_expr_x_1926(const auto &x_2757);
+Unit var_modified_x_1924(const auto &x_2766);
+auto eval_expr_x_1921(const auto &x_2769);
+Unit var_modified_x_1919(const auto &x_2914);
+auto eval_expr_x_1916(const auto &x_2916);
+Unit var_modified_x_1914(const auto &x_2965);
+auto eval_expr_x_1911(const auto &x_2968);
+Unit var_modified_x_1909(const auto &x_2971);
+auto eval_expr_x_1906(const auto &x_2973);
+Unit var_modified_x_1904(const auto &x_2982);
+auto eval_expr_x_1901(const auto &x_2989);
+Unit var_modified_x_1899(const auto &x_2998);
+auto eval_expr_x_1896(const auto &x_3005);
+Unit var_modified_x_1894(const auto &x_3014);
+auto eval_expr_x_1891(const auto &x_3019);
+Unit var_modified_x_1889(const auto &x_3032);
+auto eval_expr_x_1886(const auto &x_3034);
+Unit var_modified_x_1884(const auto &x_3043);
+auto eval_expr_x_1881(const auto &x_3046);
+Unit var_modified_x_1879(const auto &x_3199);
+auto eval_expr_x_1876(const auto &x_3201);
+Unit var_modified_x_1874(const auto &x_3206);
+auto eval_expr_x_1871(const auto &x_3208);
+Unit var_modified_x_1869(const auto &x_3257);
+auto eval_expr_x_1866(const auto &x_3259);
+Unit var_modified_x_1864(const auto &x_3272);
+auto eval_expr_x_1861(const auto &x_3275);
+Unit eval_stmts_x_1805(const auto &x_1860);
+Unit eval_stmts_x_1803(const auto &x_1946);
+Unit eval_stmts_x_1799(const auto &x_2037);
+Unit x_2098(const auto &x_2099);
+Unit x_2102(const auto &x_2103);
+Unit x_1680(const auto &x_1681, const auto &x_1682, const auto &x_1683);
+Unit x_1687(const auto &x_1688, const auto &x_1689, const auto &x_1690);
+Unit x_1694(const auto &x_1695, const auto &x_1696, const auto &x_1697);
+Unit x_1701(const auto &x_1702, const auto &x_1703, const auto &x_1704);
+Unit x_1713(const auto &x_1714, const auto &x_1715, const auto &x_1716);
+Unit x_1722(const auto &x_1723, const auto &x_1724, const auto &x_1725);
+Unit x_1733(const auto &x_1734, const auto &x_1735, const auto &x_1736);
+Unit x_1768(const auto &x_1769);
+Unit x_1776(const auto &x_1777, const auto &x_1778, const auto &x_1779);
+Unit x_1797(const auto &x_1798);
+Unit x_1801(const auto &x_1802);
+Unit x_1806(const auto &x_1807, const auto &x_1808, const auto &x_1809);
+Unit x_1825(const auto &x_1826);
+Unit eval_stmts_x_1653(const auto &x_1833);
+Unit eval_stmts_x_1652(const auto &x_1835);
+Unit x_1837(const auto &x_1838);
+int64_t x_1845(const auto &x_1846);
+int64_t x_1848(const auto &x_1849);
+LayoutNode x_1851(const auto &x_1852);
+Node x_1854(const auto &x_1855);
+Node x_1857(const auto &x_1858);
+Unit var_modified_x_2096(const auto &x_2106) {
+  auto x_3278 = [&](const auto &x_2109) {
+    if (HashtblContain(x_2109->meta->ProcInited, std::string("pass_1"))) {
+      HashtblSet(x_2109->meta->BBDirtied, std::string("bb_2"), true);
+      return set_recursive_proc_dirtied_x_1752(x_2109);
     } else {
       return MetaWriteMetric();
     }
   };
   OptionMatch(
-      x_3816->next, [&](const auto &x_3818) { return MakeUnit(); },
-      [&](const auto &x_3817) {
-        auto x_6161 = x_6160;
-        x_6161(x_3817);
+      x_2106->next, [&](const auto &x_2108) { return MakeUnit(); },
+      [&](const auto &x_2107) {
+        auto x_3279 = x_3278;
+        x_3279(x_2107);
         return MakeUnit();
       });
   return MakeUnit();
 }
-auto eval_expr_x_3803(const auto &x_3820) {
-  if ((x_3820->prev != nullptr) && (!(x_3820->prev)->var_line_break)) {
-    return max(x_3820->var_height_external, (x_3820->prev)->var_line_height);
+auto eval_expr_x_2093(const auto &x_2110) {
+  if ((x_2110->prev != nullptr) && (!(x_2110->prev)->var_line_break)) {
+    return max(x_2110->var_height_external, (x_2110->prev)->var_line_height);
   } else {
-    return x_3820->var_height_external;
+    return x_2110->var_height_external;
   }
 }
-Unit var_modified_x_3801(const auto &x_3837) {
-  auto x_6162 = [&](const auto &x_3838) {
-    if (HashtblContain(x_3838->meta->ProcInited, std::string("pass_1"))) {
-      HashtblSet(x_3838->meta->BBDirtied, std::string("bb_2"), true);
-      return set_recursive_proc_dirtied_x_3201(x_3838);
+Unit var_modified_x_2091(const auto &x_2127) {
+  auto x_3280 = [&](const auto &x_2128) {
+    if (HashtblContain(x_2128->meta->ProcInited, std::string("pass_1"))) {
+      HashtblSet(x_2128->meta->BBDirtied, std::string("bb_2"), true);
+      return set_recursive_proc_dirtied_x_1752(x_2128);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6162(x_3837);
+  x_3280(x_2127);
   MakeUnit();
   return MakeUnit();
 }
-auto eval_expr_x_3798(const auto &x_3839) {
-  if (eq(x_3839->var_position, std::string("absolute"))) {
+auto eval_expr_x_2088(const auto &x_2129) {
+  if (eq(x_2129->var_position, std::string("absolute"))) {
     return 0.;
   } else {
-    return x_3839->var_height_internal;
+    return x_2129->var_height_internal;
   }
 }
-Unit var_modified_x_3796(const auto &x_3848) {
-  auto x_6163 = [&](const auto &x_3849) {
-    if (HashtblContain(x_3849->meta->ProcInited, std::string("pass_1"))) {
-      HashtblSet(x_3849->meta->BBDirtied, std::string("bb_2"), true);
-      return set_recursive_proc_dirtied_x_3201(x_3849);
+Unit var_modified_x_2086(const auto &x_2138) {
+  auto x_3281 = [&](const auto &x_2139) {
+    if (HashtblContain(x_2139->meta->ProcInited, std::string("pass_1"))) {
+      HashtblSet(x_2139->meta->BBDirtied, std::string("bb_2"), true);
+      return set_recursive_proc_dirtied_x_1752(x_2139);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6163(x_3848);
+  x_3281(x_2138);
   MakeUnit();
-  ListIter(x_3848->children, [&](const auto &x_3850) {
-    if (HashtblContain(x_3850->meta->ProcInited, std::string("pass_1"))) {
-      HashtblSet(x_3850->meta->BBDirtied, std::string("bb_2"), true);
-      return set_recursive_proc_dirtied_x_3201(x_3850);
+  ListIter(x_2138->children, [&](const auto &x_2140) {
+    if (HashtblContain(x_2140->meta->ProcInited, std::string("pass_1"))) {
+      HashtblSet(x_2140->meta->BBDirtied, std::string("bb_2"), true);
+      return set_recursive_proc_dirtied_x_1752(x_2140);
     } else {
       return MetaWriteMetric();
     }
   });
   return MakeUnit();
 }
-auto eval_expr_x_3793(const auto &x_3851) {
-  if (x_3851->var_intrinsic_height_is_height) {
-    return x_3851->var_intrinsic_height_internal;
+auto eval_expr_x_2083(const auto &x_2141) {
+  if (x_2141->var_intrinsic_height_is_height) {
+    return x_2141->var_intrinsic_height_internal;
   } else {
-    if ((x_3851->parent != nullptr) && (x_3851->parent)->var_is_flex_column) {
-      return plus(x_3851->var_intrinsic_height_internal,
-                  mult(x_3851->var_flex_amount, (x_3851->parent)->var_flex_unit));
+    if ((x_2141->parent != nullptr) && (x_2141->parent)->var_is_flex_column) {
+      return plus(x_2141->var_intrinsic_height_internal,
+                  mult(x_2141->var_flex_amount, (x_2141->parent)->var_flex_unit));
     } else {
-      if (has_suffix(x_3851->var_height_expr, std::string("%"))) {
-        return mult(x_3851->var_box_height,
-                    divide(string_to_float(strip_suffix(x_3851->var_height_expr, std::string("%"))), 100.));
+      if (has_suffix(x_2141->var_height_expr, std::string("%"))) {
+        return mult(x_2141->var_box_height,
+                    divide(string_to_float(strip_suffix(x_2141->var_height_expr, std::string("%"))), 100.));
       } else {
-        return max(x_3851->var_box_height, x_3851->var_intrinsic_height_internal);
+        return max(x_2141->var_box_height, x_2141->var_intrinsic_height_internal);
       }
     }
   }
 }
-Unit var_modified_x_3791(const auto &x_3904) {
-  ListIter(x_3904->children, [&](const auto &x_3905) {
-    if (HashtblContain(x_3905->meta->ProcInited, std::string("pass_1"))) {
-      HashtblSet(x_3905->meta->BBDirtied, std::string("bb_2"), true);
-      return set_recursive_proc_dirtied_x_3201(x_3905);
+Unit var_modified_x_2081(const auto &x_2194) {
+  ListIter(x_2194->children, [&](const auto &x_2195) {
+    if (HashtblContain(x_2195->meta->ProcInited, std::string("pass_1"))) {
+      HashtblSet(x_2195->meta->BBDirtied, std::string("bb_2"), true);
+      return set_recursive_proc_dirtied_x_1752(x_2195);
     } else {
       return MetaWriteMetric();
     }
   });
-  auto x_6164 = [&](const auto &x_3908) {
-    if (HashtblContain(x_3908->meta->ProcInited, std::string("pass_1"))) {
-      HashtblSet(x_3908->meta->BBDirtied, std::string("bb_2"), true);
-      return set_recursive_proc_dirtied_x_3201(x_3908);
+  auto x_3282 = [&](const auto &x_2198) {
+    if (HashtblContain(x_2198->meta->ProcInited, std::string("pass_1"))) {
+      HashtblSet(x_2198->meta->BBDirtied, std::string("bb_2"), true);
+      return set_recursive_proc_dirtied_x_1752(x_2198);
     } else {
       return MetaWriteMetric();
     }
   };
   OptionMatch(
-      x_3904->next, [&](const auto &x_3907) { return MakeUnit(); },
-      [&](const auto &x_3906) {
-        auto x_6165 = x_6164;
-        x_6165(x_3906);
+      x_2194->next, [&](const auto &x_2197) { return MakeUnit(); },
+      [&](const auto &x_2196) {
+        auto x_3283 = x_3282;
+        x_3283(x_2196);
         return MakeUnit();
       });
   return MakeUnit();
 }
-auto eval_expr_x_3788(const auto &x_3909) {
-  if (x_3909->prev != nullptr) {
-    if (x_3909->var_line_break || (x_3909->prev)->var_line_break) {
-      return plus((x_3909->prev)->var_y, (x_3909->prev)->var_line_height);
+auto eval_expr_x_2078(const auto &x_2199) {
+  if (x_2199->prev != nullptr) {
+    if (x_2199->var_line_break || (x_2199->prev)->var_line_break) {
+      return plus((x_2199->prev)->var_y, (x_2199->prev)->var_line_height);
     } else {
-      return (x_3909->prev)->var_y;
+      return (x_2199->prev)->var_y;
     }
   } else {
-    if (x_3909->parent != nullptr) {
-      return (x_3909->parent)->var_y;
+    if (x_2199->parent != nullptr) {
+      return (x_2199->parent)->var_y;
     } else {
       return 0.;
     }
   }
 }
-Unit var_modified_x_3786(const auto &x_3934) {
-  auto x_6166 = [&](const auto &x_3937) {
-    if (HashtblContain(x_3937->meta->ProcInited, std::string("pass_1"))) {
-      HashtblSet(x_3937->meta->BBDirtied, std::string("bb_2"), true);
-      return set_recursive_proc_dirtied_x_3201(x_3937);
+Unit var_modified_x_2076(const auto &x_2224) {
+  auto x_3284 = [&](const auto &x_2227) {
+    if (HashtblContain(x_2227->meta->ProcInited, std::string("pass_1"))) {
+      HashtblSet(x_2227->meta->BBDirtied, std::string("bb_2"), true);
+      return set_recursive_proc_dirtied_x_1752(x_2227);
     } else {
       return MetaWriteMetric();
     }
   };
   OptionMatch(
-      x_3934->next, [&](const auto &x_3936) { return MakeUnit(); },
-      [&](const auto &x_3935) {
-        auto x_6167 = x_6166;
-        x_6167(x_3935);
+      x_2224->next, [&](const auto &x_2226) { return MakeUnit(); },
+      [&](const auto &x_2225) {
+        auto x_3285 = x_3284;
+        x_3285(x_2225);
         return MakeUnit();
       });
   return MakeUnit();
 }
-auto eval_expr_x_3783(const auto &x_3938) {
-  if (eq(x_3938->var_position, std::string("absolute"))) {
+auto eval_expr_x_2073(const auto &x_2228) {
+  if (eq(x_2228->var_position, std::string("absolute"))) {
     return 0.;
   } else {
-    return x_3938->var_width_internal;
+    return x_2228->var_width_internal;
   }
 }
-Unit var_modified_x_3781(const auto &x_3947) {
-  auto x_6168 = [&](const auto &x_3948) {
-    if (HashtblContain(x_3948->meta->ProcInited, std::string("pass_1"))) {
-      HashtblSet(x_3948->meta->BBDirtied, std::string("bb_2"), true);
-      return set_recursive_proc_dirtied_x_3201(x_3948);
+Unit var_modified_x_2071(const auto &x_2237) {
+  auto x_3286 = [&](const auto &x_2238) {
+    if (HashtblContain(x_2238->meta->ProcInited, std::string("pass_1"))) {
+      HashtblSet(x_2238->meta->BBDirtied, std::string("bb_2"), true);
+      return set_recursive_proc_dirtied_x_1752(x_2238);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6168(x_3947);
+  x_3286(x_2237);
   MakeUnit();
-  ListIter(x_3947->children, [&](const auto &x_3949) {
-    if (HashtblContain(x_3949->meta->ProcInited, std::string("pass_1"))) {
-      HashtblSet(x_3949->meta->BBDirtied, std::string("bb_2"), true);
-      return set_recursive_proc_dirtied_x_3201(x_3949);
+  ListIter(x_2237->children, [&](const auto &x_2239) {
+    if (HashtblContain(x_2239->meta->ProcInited, std::string("pass_1"))) {
+      HashtblSet(x_2239->meta->BBDirtied, std::string("bb_2"), true);
+      return set_recursive_proc_dirtied_x_1752(x_2239);
     } else {
       return MetaWriteMetric();
     }
   });
   return MakeUnit();
 }
-auto eval_expr_x_3778(const auto &x_3950) {
-  if (x_3950->var_intrinsic_width_is_width) {
-    return x_3950->var_intrinsic_width_internal;
+auto eval_expr_x_2068(const auto &x_2240) {
+  if (x_2240->var_intrinsic_width_is_width) {
+    return x_2240->var_intrinsic_width_internal;
   } else {
-    if ((x_3950->parent != nullptr) && (x_3950->parent)->var_is_flex_row) {
-      return plus(x_3950->var_intrinsic_width_internal, mult(x_3950->var_flex_amount, (x_3950->parent)->var_flex_unit));
+    if ((x_2240->parent != nullptr) && (x_2240->parent)->var_is_flex_row) {
+      return plus(x_2240->var_intrinsic_width_internal, mult(x_2240->var_flex_amount, (x_2240->parent)->var_flex_unit));
     } else {
-      if (has_suffix(x_3950->var_width_expr, std::string("%"))) {
-        return mult(x_3950->var_box_width,
-                    divide(string_to_float(strip_suffix(x_3950->var_width_expr, std::string("%"))), 100.));
+      if (has_suffix(x_2240->var_width_expr, std::string("%"))) {
+        return mult(x_2240->var_box_width,
+                    divide(string_to_float(strip_suffix(x_2240->var_width_expr, std::string("%"))), 100.));
       } else {
-        return max(x_3950->var_box_width, x_3950->var_intrinsic_width_internal);
+        return max(x_2240->var_box_width, x_2240->var_intrinsic_width_internal);
       }
     }
   }
 }
-Unit var_modified_x_3776(const auto &x_4003) {
-  ListIter(x_4003->children, [&](const auto &x_4004) {
-    if (HashtblContain(x_4004->meta->ProcInited, std::string("pass_1"))) {
-      HashtblSet(x_4004->meta->BBDirtied, std::string("bb_2"), true);
-      return set_recursive_proc_dirtied_x_3201(x_4004);
+Unit var_modified_x_2066(const auto &x_2293) {
+  ListIter(x_2293->children, [&](const auto &x_2294) {
+    if (HashtblContain(x_2294->meta->ProcInited, std::string("pass_1"))) {
+      HashtblSet(x_2294->meta->BBDirtied, std::string("bb_2"), true);
+      return set_recursive_proc_dirtied_x_1752(x_2294);
     } else {
       return MetaWriteMetric();
     }
   });
-  auto x_6169 = [&](const auto &x_4007) {
-    if (HashtblContain(x_4007->meta->ProcInited, std::string("pass_1"))) {
-      HashtblSet(x_4007->meta->BBDirtied, std::string("bb_2"), true);
-      return set_recursive_proc_dirtied_x_3201(x_4007);
+  auto x_3287 = [&](const auto &x_2297) {
+    if (HashtblContain(x_2297->meta->ProcInited, std::string("pass_1"))) {
+      HashtblSet(x_2297->meta->BBDirtied, std::string("bb_2"), true);
+      return set_recursive_proc_dirtied_x_1752(x_2297);
     } else {
       return MetaWriteMetric();
     }
   };
   OptionMatch(
-      x_4003->next, [&](const auto &x_4006) { return MakeUnit(); },
-      [&](const auto &x_4005) {
-        auto x_6170 = x_6169;
-        x_6170(x_4005);
+      x_2293->next, [&](const auto &x_2296) { return MakeUnit(); },
+      [&](const auto &x_2295) {
+        auto x_3288 = x_3287;
+        x_3288(x_2295);
         return MakeUnit();
       });
   return MakeUnit();
 }
-auto eval_expr_x_3773(const auto &x_4008) {
-  if (x_4008->prev != nullptr) {
-    if (x_4008->var_line_break || (x_4008->prev)->var_line_break) {
+auto eval_expr_x_2063(const auto &x_2298) {
+  if (x_2298->prev != nullptr) {
+    if (x_2298->var_line_break || (x_2298->prev)->var_line_break) {
       return 0.;
     } else {
-      return plus((x_4008->prev)->var_x, (x_4008->prev)->var_width_external);
+      return plus((x_2298->prev)->var_x, (x_2298->prev)->var_width_external);
     }
   } else {
-    if (x_4008->parent != nullptr) {
-      return (x_4008->parent)->var_x;
+    if (x_2298->parent != nullptr) {
+      return (x_2298->parent)->var_x;
     } else {
       return 0.;
     }
   }
 }
-Unit var_modified_x_3771(const auto &x_4029) {
-  ListIter(x_4029->children, [&](const auto &x_4030) {
-    if (HashtblContain(x_4030->meta->ProcInited, std::string("pass_1"))) {
-      HashtblSet(x_4030->meta->BBDirtied, std::string("bb_2"), true);
-      return set_recursive_proc_dirtied_x_3201(x_4030);
+Unit var_modified_x_2061(const auto &x_2319) {
+  ListIter(x_2319->children, [&](const auto &x_2320) {
+    if (HashtblContain(x_2320->meta->ProcInited, std::string("pass_1"))) {
+      HashtblSet(x_2320->meta->BBDirtied, std::string("bb_2"), true);
+      return set_recursive_proc_dirtied_x_1752(x_2320);
     } else {
       return MetaWriteMetric();
     }
   });
   return MakeUnit();
 }
-auto eval_expr_x_3768(const auto &x_4031) {
-  if (gt(x_4031->var_left_over, 0.)) {
-    return divide(x_4031->var_left_over, x_4031->var_flex_grow_sum);
+auto eval_expr_x_2058(const auto &x_2321) {
+  if (gt(x_2321->var_left_over, 0.)) {
+    return divide(x_2321->var_left_over, x_2321->var_flex_grow_sum);
   } else {
-    return divide(x_4031->var_left_over, x_4031->var_flex_shrink_sum);
+    return divide(x_2321->var_left_over, x_2321->var_flex_shrink_sum);
   }
 }
-Unit var_modified_x_3766(const auto &x_4052) {
-  auto x_6171 = [&](const auto &x_4053) {
-    if (HashtblContain(x_4053->meta->ProcInited, std::string("pass_1"))) {
-      HashtblSet(x_4053->meta->BBDirtied, std::string("bb_2"), true);
-      return set_recursive_proc_dirtied_x_3201(x_4053);
+Unit var_modified_x_2056(const auto &x_2342) {
+  auto x_3289 = [&](const auto &x_2343) {
+    if (HashtblContain(x_2343->meta->ProcInited, std::string("pass_1"))) {
+      HashtblSet(x_2343->meta->BBDirtied, std::string("bb_2"), true);
+      return set_recursive_proc_dirtied_x_1752(x_2343);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6171(x_4052);
+  x_3289(x_2342);
   MakeUnit();
   return MakeUnit();
 }
-auto eval_expr_x_3763(const auto &x_4054) {
-  if ((x_4054->parent != nullptr) && gt((x_4054->parent)->var_left_over, 0.)) {
-    return x_4054->var_flex_grow;
+auto eval_expr_x_2053(const auto &x_2344) {
+  if ((x_2344->parent != nullptr) && gt((x_2344->parent)->var_left_over, 0.)) {
+    return x_2344->var_flex_grow;
   } else {
-    return x_4054->var_flex_shrink;
+    return x_2344->var_flex_shrink;
   }
 }
-Unit var_modified_x_3761(const auto &x_4067) {
-  auto x_6172 = [&](const auto &x_4068) {
-    if (HashtblContain(x_4068->meta->ProcInited, std::string("pass_1"))) {
-      HashtblSet(x_4068->meta->BBDirtied, std::string("bb_2"), true);
-      return set_recursive_proc_dirtied_x_3201(x_4068);
+Unit var_modified_x_2051(const auto &x_2357) {
+  auto x_3290 = [&](const auto &x_2358) {
+    if (HashtblContain(x_2358->meta->ProcInited, std::string("pass_1"))) {
+      HashtblSet(x_2358->meta->BBDirtied, std::string("bb_2"), true);
+      return set_recursive_proc_dirtied_x_1752(x_2358);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6172(x_4067);
+  x_3290(x_2357);
   MakeUnit();
-  ListIter(x_4067->children, [&](const auto &x_4069) {
-    if (HashtblContain(x_4069->meta->ProcInited, std::string("pass_1"))) {
-      HashtblSet(x_4069->meta->BBDirtied, std::string("bb_2"), true);
-      return set_recursive_proc_dirtied_x_3201(x_4069);
+  ListIter(x_2357->children, [&](const auto &x_2359) {
+    if (HashtblContain(x_2359->meta->ProcInited, std::string("pass_1"))) {
+      HashtblSet(x_2359->meta->BBDirtied, std::string("bb_2"), true);
+      return set_recursive_proc_dirtied_x_1752(x_2359);
     } else {
       return MetaWriteMetric();
     }
   });
   return MakeUnit();
 }
-auto eval_expr_x_3758(const auto &x_4070) {
-  if (x_4070->var_is_flex_row) {
-    return minus(x_4070->var_box_width, (x_4070->last != nullptr) ? ((x_4070->last)->var_intrinsic_width_sum) : (0.));
+auto eval_expr_x_2048(const auto &x_2360) {
+  if (x_2360->var_is_flex_row) {
+    return minus(x_2360->var_box_width, (x_2360->last != nullptr) ? ((x_2360->last)->var_intrinsic_width_sum) : (0.));
   } else {
-    return minus(x_4070->var_box_height, (x_4070->last != nullptr) ? ((x_4070->last)->var_intrinsic_height_sum) : (0.));
+    return minus(x_2360->var_box_height, (x_2360->last != nullptr) ? ((x_2360->last)->var_intrinsic_height_sum) : (0.));
   }
 }
-Unit var_modified_x_3756(const auto &x_4091) {
-  auto x_6173 = [&](const auto &x_4092) {
-    if (HashtblContain(x_4092->meta->ProcInited, std::string("pass_1"))) {
-      HashtblSet(x_4092->meta->BBDirtied, std::string("bb_2"), true);
-      return set_recursive_proc_dirtied_x_3201(x_4092);
+Unit var_modified_x_2046(const auto &x_2381) {
+  auto x_3291 = [&](const auto &x_2382) {
+    if (HashtblContain(x_2382->meta->ProcInited, std::string("pass_1"))) {
+      HashtblSet(x_2382->meta->BBDirtied, std::string("bb_2"), true);
+      return set_recursive_proc_dirtied_x_1752(x_2382);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6173(x_4091);
+  x_3291(x_2381);
   MakeUnit();
   return MakeUnit();
 }
-auto eval_expr_x_3753(const auto &x_4093) {
-  if (x_4093->parent != nullptr) {
-    return (x_4093->parent)->var_height_internal;
+auto eval_expr_x_2043(const auto &x_2383) {
+  if (x_2383->parent != nullptr) {
+    return (x_2383->parent)->var_height_internal;
   } else {
     return 1080.;
   }
 }
-Unit var_modified_x_3751(const auto &x_4098) {
-  auto x_6174 = [&](const auto &x_4099) {
-    if (HashtblContain(x_4099->meta->ProcInited, std::string("pass_1"))) {
-      HashtblSet(x_4099->meta->BBDirtied, std::string("bb_2"), true);
-      return set_recursive_proc_dirtied_x_3201(x_4099);
+Unit var_modified_x_2041(const auto &x_2388) {
+  auto x_3292 = [&](const auto &x_2389) {
+    if (HashtblContain(x_2389->meta->ProcInited, std::string("pass_1"))) {
+      HashtblSet(x_2389->meta->BBDirtied, std::string("bb_2"), true);
+      return set_recursive_proc_dirtied_x_1752(x_2389);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6174(x_4098);
+  x_3292(x_2388);
   MakeUnit();
   return MakeUnit();
 }
-auto eval_expr_x_3748(const auto &x_4100) {
-  if (x_4100->parent != nullptr) {
-    return (x_4100->parent)->var_width_internal;
+auto eval_expr_x_2038(const auto &x_2390) {
+  if (x_2390->parent != nullptr) {
+    return (x_2390->parent)->var_width_internal;
   } else {
     return 1920.;
   }
 }
-Unit var_modified_x_3745(const auto &x_4105) {
-  auto x_6175 = [&](const auto &x_4106) {
-    if (HashtblContain(x_4106->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4106->meta->BBDirtied, std::string("bb_0"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4106);
+Unit var_modified_x_2035(const auto &x_2395) {
+  auto x_3293 = [&](const auto &x_2396) {
+    if (HashtblContain(x_2396->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2396->meta->BBDirtied, std::string("bb_0"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2396);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6175(x_4105);
+  x_3293(x_2395);
   MakeUnit();
-  auto x_6176 = [&](const auto &x_4109) {
-    if (HashtblContain(x_4109->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4109->meta->BBDirtied, std::string("bb_0"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4109);
+  auto x_3294 = [&](const auto &x_2399) {
+    if (HashtblContain(x_2399->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2399->meta->BBDirtied, std::string("bb_0"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2399);
     } else {
       return MetaWriteMetric();
     }
   };
   OptionMatch(
-      x_4105->next, [&](const auto &x_4108) { return MakeUnit(); },
-      [&](const auto &x_4107) {
-        auto x_6179 = x_6176;
-        x_6179(x_4107);
+      x_2395->next, [&](const auto &x_2398) { return MakeUnit(); },
+      [&](const auto &x_2397) {
+        auto x_3297 = x_3294;
+        x_3297(x_2397);
         return MakeUnit();
       });
-  auto x_6177 = [&](const auto &x_4110) {
-    if (HashtblContain(x_4110->meta->ProcInited, std::string("pass_1"))) {
-      HashtblSet(x_4110->meta->BBDirtied, std::string("bb_2"), true);
-      return set_recursive_proc_dirtied_x_3201(x_4110);
+  auto x_3295 = [&](const auto &x_2400) {
+    if (HashtblContain(x_2400->meta->ProcInited, std::string("pass_1"))) {
+      HashtblSet(x_2400->meta->BBDirtied, std::string("bb_2"), true);
+      return set_recursive_proc_dirtied_x_1752(x_2400);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6177(x_4105);
+  x_3295(x_2395);
   MakeUnit();
-  auto x_6178 = [&](const auto &x_4113) {
-    if (HashtblContain(x_4113->meta->ProcInited, std::string("pass_1"))) {
-      HashtblSet(x_4113->meta->BBDirtied, std::string("bb_2"), true);
-      return set_recursive_proc_dirtied_x_3201(x_4113);
+  auto x_3296 = [&](const auto &x_2403) {
+    if (HashtblContain(x_2403->meta->ProcInited, std::string("pass_1"))) {
+      HashtblSet(x_2403->meta->BBDirtied, std::string("bb_2"), true);
+      return set_recursive_proc_dirtied_x_1752(x_2403);
     } else {
       return MetaWriteMetric();
     }
   };
   OptionMatch(
-      x_4105->next, [&](const auto &x_4112) { return MakeUnit(); },
-      [&](const auto &x_4111) {
-        auto x_6180 = x_6178;
-        x_6180(x_4111);
+      x_2395->next, [&](const auto &x_2402) { return MakeUnit(); },
+      [&](const auto &x_2401) {
+        auto x_3298 = x_3296;
+        x_3298(x_2401);
         return MakeUnit();
       });
   return MakeUnit();
 }
-auto eval_expr_x_3742(const auto &x_4114) {
-  if (eq(x_4114->var_display, std::string("none"))) {
+auto eval_expr_x_2032(const auto &x_2404) {
+  if (eq(x_2404->var_display, std::string("none"))) {
     return false;
   } else {
-    if (eq(x_4114->var_position, std::string("absolute"))) {
+    if (eq(x_2404->var_position, std::string("absolute"))) {
       return false;
     } else {
-      if ((x_4114->parent != nullptr) &&
-          (eq((x_4114->parent)->var_display, std::string("flex")) ||
-           eq((x_4114->parent)->var_display, std::string("inline-flex")))) {
+      if ((x_2404->parent != nullptr) &&
+          (eq((x_2404->parent)->var_display, std::string("flex")) ||
+           eq((x_2404->parent)->var_display, std::string("inline-flex")))) {
         return true;
       } else {
-        if (eq(x_4114->var_display, std::string("block"))) {
+        if (eq(x_2404->var_display, std::string("block"))) {
           return true;
         } else {
-          if (eq(x_4114->var_display, std::string("inline"))) {
+          if (eq(x_2404->var_display, std::string("inline"))) {
             return false;
           } else {
-            if (eq(x_4114->var_display, std::string("inline-block"))) {
+            if (eq(x_2404->var_display, std::string("inline-block"))) {
               return false;
             } else {
-              if (eq(x_4114->var_display, std::string("flex"))) {
-                if (eq(GetProp<std::string>(x_4114, std::string("flex-direction")), std::string("row"))) {
+              if (eq(x_2404->var_display, std::string("flex"))) {
+                if (eq(GetProp<std::string>(x_2404, std::string("flex-direction")), std::string("row"))) {
                   return false;
                 } else {
-                  if (eq(GetProp<std::string>(x_4114, std::string("flex-direction")), std::string("column"))) {
+                  if (eq(GetProp<std::string>(x_2404, std::string("flex-direction")), std::string("column"))) {
                     return true;
                   } else {
                     return true;
                   }
                 }
               } else {
-                if (eq(x_4114->var_display, std::string("inline-flex"))) {
+                if (eq(x_2404->var_display, std::string("inline-flex"))) {
                   return false;
                 } else {
-                  if (eq(x_4114->var_display, std::string("contents"))) {
+                  if (eq(x_2404->var_display, std::string("contents"))) {
                     return false;
                   } else {
-                    if (eq(x_4114->var_display, std::string("table"))) {
+                    if (eq(x_2404->var_display, std::string("table"))) {
                       return true;
                     } else {
-                      if (eq(x_4114->var_display, std::string("table-row-group"))) {
+                      if (eq(x_2404->var_display, std::string("table-row-group"))) {
                         return true;
                       } else {
-                        if (eq(x_4114->var_display, std::string("table-row"))) {
+                        if (eq(x_2404->var_display, std::string("table-row"))) {
                           return true;
                         } else {
-                          if (eq(x_4114->var_display, std::string("table-cell"))) {
+                          if (eq(x_2404->var_display, std::string("table-cell"))) {
                             return false;
                           } else {
-                            if (eq(x_4114->var_display, std::string("list-item"))) {
+                            if (eq(x_2404->var_display, std::string("list-item"))) {
                               return true;
                             } else {
                               return true;
@@ -795,228 +694,228 @@ auto eval_expr_x_3742(const auto &x_4114) {
     }
   }
 }
-Unit var_modified_x_3740(const auto &x_4191) {
-  ListIter(x_4191->children, [&](const auto &x_4192) {
-    if (HashtblContain(x_4192->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4192->meta->BBDirtied, std::string("bb_1"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4192);
+Unit var_modified_x_2030(const auto &x_2481) {
+  ListIter(x_2481->children, [&](const auto &x_2482) {
+    if (HashtblContain(x_2482->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2482->meta->BBDirtied, std::string("bb_1"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2482);
     } else {
       return MetaWriteMetric();
     }
   });
   return MakeUnit();
 }
-auto eval_expr_x_3737(const auto &x_4193) {
-  return (((!(x_4193->parent != nullptr)) || (x_4193->parent)->var_visible) &&
-          (neq(x_4193->var_display, std::string("none")) && ((!x_4193->var_inside_svg) && (!x_4193->var_disabled))));
+auto eval_expr_x_2027(const auto &x_2483) {
+  return (((!(x_2483->parent != nullptr)) || (x_2483->parent)->var_visible) &&
+          (neq(x_2483->var_display, std::string("none")) && ((!x_2483->var_inside_svg) && (!x_2483->var_disabled))));
 }
-Unit var_modified_x_3735(const auto &x_4210) {
-  auto x_6181 = [&](const auto &x_4211) {
-    if (HashtblContain(x_4211->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4211->meta->BBDirtied, std::string("bb_1"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4211);
+Unit var_modified_x_2025(const auto &x_2500) {
+  auto x_3299 = [&](const auto &x_2501) {
+    if (HashtblContain(x_2501->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2501->meta->BBDirtied, std::string("bb_1"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2501);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6181(x_4210);
+  x_3299(x_2500);
   MakeUnit();
-  ListIter(x_4210->children, [&](const auto &x_4212) {
-    if (HashtblContain(x_4212->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4212->meta->BBDirtied, std::string("bb_1"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4212);
+  ListIter(x_2500->children, [&](const auto &x_2502) {
+    if (HashtblContain(x_2502->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2502->meta->BBDirtied, std::string("bb_1"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2502);
     } else {
       return MetaWriteMetric();
     }
   });
-  auto x_6182 = [&](const auto &x_4213) {
-    if (HashtblContain(x_4213->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4213->meta->BBDirtied, std::string("bb_0"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4213);
+  auto x_3300 = [&](const auto &x_2503) {
+    if (HashtblContain(x_2503->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2503->meta->BBDirtied, std::string("bb_0"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2503);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6182(x_4210);
+  x_3300(x_2500);
   MakeUnit();
   return MakeUnit();
 }
-auto eval_expr_x_3732(const auto &x_4214) {
-  if (eq(x_4214->name, std::string("NOSCRIPT"))) {
+auto eval_expr_x_2022(const auto &x_2504) {
+  if (eq(x_2504->name, std::string("NOSCRIPT"))) {
     return true;
   } else {
-    return ((x_4214->parent != nullptr) && (x_4214->parent)->var_disabled);
+    return ((x_2504->parent != nullptr) && (x_2504->parent)->var_disabled);
   }
 }
-Unit var_modified_x_3730(const auto &x_4219) {
-  auto x_6183 = [&](const auto &x_4220) {
-    if (HashtblContain(x_4220->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4220->meta->BBDirtied, std::string("bb_1"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4220);
+Unit var_modified_x_2020(const auto &x_2509) {
+  auto x_3301 = [&](const auto &x_2510) {
+    if (HashtblContain(x_2510->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2510->meta->BBDirtied, std::string("bb_1"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2510);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6183(x_4219);
+  x_3301(x_2509);
   MakeUnit();
-  ListIter(x_4219->children, [&](const auto &x_4221) {
-    if (HashtblContain(x_4221->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4221->meta->BBDirtied, std::string("bb_1"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4221);
+  ListIter(x_2509->children, [&](const auto &x_2511) {
+    if (HashtblContain(x_2511->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2511->meta->BBDirtied, std::string("bb_1"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2511);
     } else {
       return MetaWriteMetric();
     }
   });
-  auto x_6184 = [&](const auto &x_4222) {
-    if (HashtblContain(x_4222->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4222->meta->BBDirtied, std::string("bb_0"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4222);
+  auto x_3302 = [&](const auto &x_2512) {
+    if (HashtblContain(x_2512->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2512->meta->BBDirtied, std::string("bb_0"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2512);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6184(x_4219);
+  x_3302(x_2509);
   MakeUnit();
   return MakeUnit();
 }
-auto eval_expr_x_3727(const auto &x_4223) {
-  return ((x_4223->parent != nullptr) && ((x_4223->parent)->var_is_svg_block || (x_4223->parent)->var_inside_svg));
+auto eval_expr_x_2017(const auto &x_2513) {
+  return ((x_2513->parent != nullptr) && ((x_2513->parent)->var_is_svg_block || (x_2513->parent)->var_inside_svg));
 }
-Unit var_modified_x_3725(const auto &x_4232) {
-  ListIter(x_4232->children, [&](const auto &x_4233) {
-    if (HashtblContain(x_4233->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4233->meta->BBDirtied, std::string("bb_1"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4233);
+Unit var_modified_x_2015(const auto &x_2522) {
+  ListIter(x_2522->children, [&](const auto &x_2523) {
+    if (HashtblContain(x_2523->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2523->meta->BBDirtied, std::string("bb_1"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2523);
     } else {
       return MetaWriteMetric();
     }
   });
   return MakeUnit();
 }
-auto eval_expr_x_3722(const auto &x_4234) { return eq(x_4234->name, std::string("svg")); }
-Unit var_modified_x_3720(const auto &x_4235) {
-  auto x_6185 = [&](const auto &x_4236) {
-    if (HashtblContain(x_4236->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4236->meta->BBDirtied, std::string("bb_0"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4236);
+auto eval_expr_x_2012(const auto &x_2524) { return eq(x_2524->name, std::string("svg")); }
+Unit var_modified_x_2010(const auto &x_2525) {
+  auto x_3303 = [&](const auto &x_2526) {
+    if (HashtblContain(x_2526->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2526->meta->BBDirtied, std::string("bb_0"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2526);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6185(x_4235);
+  x_3303(x_2525);
   MakeUnit();
   return MakeUnit();
 }
-auto eval_expr_x_3717(const auto &x_4237) { return neq(x_4237->var_height_attr_expr, std::string("auto")); }
-Unit var_modified_x_3715(const auto &x_4242) {
-  auto x_6186 = [&](const auto &x_4243) {
-    if (HashtblContain(x_4243->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4243->meta->BBDirtied, std::string("bb_1"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4243);
+auto eval_expr_x_2007(const auto &x_2527) { return neq(x_2527->var_height_attr_expr, std::string("auto")); }
+Unit var_modified_x_2005(const auto &x_2532) {
+  auto x_3304 = [&](const auto &x_2533) {
+    if (HashtblContain(x_2533->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2533->meta->BBDirtied, std::string("bb_1"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2533);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6186(x_4242);
+  x_3304(x_2532);
   MakeUnit();
-  auto x_6187 = [&](const auto &x_4244) {
-    if (HashtblContain(x_4244->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4244->meta->BBDirtied, std::string("bb_0"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4244);
+  auto x_3305 = [&](const auto &x_2534) {
+    if (HashtblContain(x_2534->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2534->meta->BBDirtied, std::string("bb_0"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2534);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6187(x_4242);
+  x_3305(x_2532);
   MakeUnit();
   return MakeUnit();
 }
-auto eval_expr_x_3712(const auto &x_4245) {
-  if (!HasAttr(x_4245, std::string("height"))) {
+auto eval_expr_x_2002(const auto &x_2535) {
+  if (!HasAttr(x_2535, std::string("height"))) {
     return std::string("auto");
   } else {
-    if (string_is_float(GetAttr<std::string>(x_4245, std::string("height"))) ||
-        has_suffix(GetAttr<std::string>(x_4245, std::string("height")), std::string("%"))) {
-      return GetAttr<std::string>(x_4245, std::string("height"));
+    if (string_is_float(GetAttr<std::string>(x_2535, std::string("height"))) ||
+        has_suffix(GetAttr<std::string>(x_2535, std::string("height")), std::string("%"))) {
+      return GetAttr<std::string>(x_2535, std::string("height"));
     } else {
       return std::string("auto");
     }
   }
 }
-Unit var_modified_x_3710(const auto &x_4256) {
-  auto x_6188 = [&](const auto &x_4257) {
-    if (HashtblContain(x_4257->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4257->meta->BBDirtied, std::string("bb_0"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4257);
+Unit var_modified_x_2000(const auto &x_2546) {
+  auto x_3306 = [&](const auto &x_2547) {
+    if (HashtblContain(x_2547->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2547->meta->BBDirtied, std::string("bb_0"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2547);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6188(x_4256);
+  x_3306(x_2546);
   MakeUnit();
   return MakeUnit();
 }
-auto eval_expr_x_3707(const auto &x_4258) { return neq(x_4258->var_width_attr_expr, std::string("auto")); }
-Unit var_modified_x_3705(const auto &x_4263) {
-  auto x_6189 = [&](const auto &x_4264) {
-    if (HashtblContain(x_4264->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4264->meta->BBDirtied, std::string("bb_1"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4264);
+auto eval_expr_x_1997(const auto &x_2548) { return neq(x_2548->var_width_attr_expr, std::string("auto")); }
+Unit var_modified_x_1995(const auto &x_2553) {
+  auto x_3307 = [&](const auto &x_2554) {
+    if (HashtblContain(x_2554->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2554->meta->BBDirtied, std::string("bb_1"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2554);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6189(x_4263);
+  x_3307(x_2553);
   MakeUnit();
-  auto x_6190 = [&](const auto &x_4265) {
-    if (HashtblContain(x_4265->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4265->meta->BBDirtied, std::string("bb_0"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4265);
+  auto x_3308 = [&](const auto &x_2555) {
+    if (HashtblContain(x_2555->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2555->meta->BBDirtied, std::string("bb_0"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2555);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6190(x_4263);
+  x_3308(x_2553);
   MakeUnit();
   return MakeUnit();
 }
-auto eval_expr_x_3702(const auto &x_4266) {
-  if (!HasAttr(x_4266, std::string("width"))) {
+auto eval_expr_x_1992(const auto &x_2556) {
+  if (!HasAttr(x_2556, std::string("width"))) {
     return std::string("auto");
   } else {
-    if (string_is_float(GetAttr<std::string>(x_4266, std::string("width"))) ||
-        has_suffix(GetAttr<std::string>(x_4266, std::string("width")), std::string("%"))) {
-      return GetAttr<std::string>(x_4266, std::string("width"));
+    if (string_is_float(GetAttr<std::string>(x_2556, std::string("width"))) ||
+        has_suffix(GetAttr<std::string>(x_2556, std::string("width")), std::string("%"))) {
+      return GetAttr<std::string>(x_2556, std::string("width"));
     } else {
       return std::string("auto");
     }
   }
 }
-Unit var_modified_x_3700(const auto &x_4277) {
-  ListIter(x_4277->children, [&](const auto &x_4278) {
-    if (HashtblContain(x_4278->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4278->meta->BBDirtied, std::string("bb_0"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4278);
+Unit var_modified_x_1990(const auto &x_2567) {
+  ListIter(x_2567->children, [&](const auto &x_2568) {
+    if (HashtblContain(x_2568->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2568->meta->BBDirtied, std::string("bb_0"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2568);
     } else {
       return MetaWriteMetric();
     }
   });
-  ListIter(x_4277->children, [&](const auto &x_4279) {
-    if (HashtblContain(x_4279->meta->ProcInited, std::string("pass_1"))) {
-      HashtblSet(x_4279->meta->BBDirtied, std::string("bb_2"), true);
-      return set_recursive_proc_dirtied_x_3201(x_4279);
+  ListIter(x_2567->children, [&](const auto &x_2569) {
+    if (HashtblContain(x_2569->meta->ProcInited, std::string("pass_1"))) {
+      HashtblSet(x_2569->meta->BBDirtied, std::string("bb_2"), true);
+      return set_recursive_proc_dirtied_x_1752(x_2569);
     } else {
       return MetaWriteMetric();
     }
   });
   return MakeUnit();
 }
-auto eval_expr_x_3697(const auto &x_4280) {
-  if ((x_4280->parent != nullptr) &&
-      (eq((x_4280->parent)->var_display, std::string("flex")) ||
-       eq((x_4280->parent)->var_display, std::string("inline-flex")))) {
-    if (eq((x_4280->parent)->var_flex_direction, std::string("column")) ||
-        eq((x_4280->parent)->var_flex_direction, std::string("column-reverse"))) {
+auto eval_expr_x_1987(const auto &x_2570) {
+  if ((x_2570->parent != nullptr) &&
+      (eq((x_2570->parent)->var_display, std::string("flex")) ||
+       eq((x_2570->parent)->var_display, std::string("inline-flex")))) {
+    if (eq((x_2570->parent)->var_flex_direction, std::string("column")) ||
+        eq((x_2570->parent)->var_flex_direction, std::string("column-reverse"))) {
       return true;
     } else {
       return false;
@@ -1025,40 +924,40 @@ auto eval_expr_x_3697(const auto &x_4280) {
     return false;
   }
 }
-Unit var_modified_x_3695(const auto &x_4305) {
-  ListIter(x_4305->children, [&](const auto &x_4306) {
-    if (HashtblContain(x_4306->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4306->meta->BBDirtied, std::string("bb_0"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4306);
+Unit var_modified_x_1985(const auto &x_2595) {
+  ListIter(x_2595->children, [&](const auto &x_2596) {
+    if (HashtblContain(x_2596->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2596->meta->BBDirtied, std::string("bb_0"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2596);
     } else {
       return MetaWriteMetric();
     }
   });
-  auto x_6191 = [&](const auto &x_4307) {
-    if (HashtblContain(x_4307->meta->ProcInited, std::string("pass_1"))) {
-      HashtblSet(x_4307->meta->BBDirtied, std::string("bb_2"), true);
-      return set_recursive_proc_dirtied_x_3201(x_4307);
+  auto x_3309 = [&](const auto &x_2597) {
+    if (HashtblContain(x_2597->meta->ProcInited, std::string("pass_1"))) {
+      HashtblSet(x_2597->meta->BBDirtied, std::string("bb_2"), true);
+      return set_recursive_proc_dirtied_x_1752(x_2597);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6191(x_4305);
+  x_3309(x_2595);
   MakeUnit();
-  ListIter(x_4305->children, [&](const auto &x_4308) {
-    if (HashtblContain(x_4308->meta->ProcInited, std::string("pass_1"))) {
-      HashtblSet(x_4308->meta->BBDirtied, std::string("bb_2"), true);
-      return set_recursive_proc_dirtied_x_3201(x_4308);
+  ListIter(x_2595->children, [&](const auto &x_2598) {
+    if (HashtblContain(x_2598->meta->ProcInited, std::string("pass_1"))) {
+      HashtblSet(x_2598->meta->BBDirtied, std::string("bb_2"), true);
+      return set_recursive_proc_dirtied_x_1752(x_2598);
     } else {
       return MetaWriteMetric();
     }
   });
   return MakeUnit();
 }
-auto eval_expr_x_3692(const auto &x_4309) {
-  if ((x_4309->parent != nullptr) &&
-      (eq((x_4309->parent)->var_display, std::string("flex")) ||
-       eq((x_4309->parent)->var_display, std::string("inline-flex")))) {
-    if (eq((x_4309->parent)->var_flex_direction, std::string("row"))) {
+auto eval_expr_x_1982(const auto &x_2599) {
+  if ((x_2599->parent != nullptr) &&
+      (eq((x_2599->parent)->var_display, std::string("flex")) ||
+       eq((x_2599->parent)->var_display, std::string("inline-flex")))) {
+    if (eq((x_2599->parent)->var_flex_direction, std::string("row"))) {
       return true;
     } else {
       return false;
@@ -1067,476 +966,476 @@ auto eval_expr_x_3692(const auto &x_4309) {
     return false;
   }
 }
-Unit var_modified_x_3690(const auto &x_4334) {
-  ListIter(x_4334->children, [&](const auto &x_4335) {
-    if (HashtblContain(x_4335->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4335->meta->BBDirtied, std::string("bb_1"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4335);
+Unit var_modified_x_1980(const auto &x_2624) {
+  ListIter(x_2624->children, [&](const auto &x_2625) {
+    if (HashtblContain(x_2625->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2625->meta->BBDirtied, std::string("bb_1"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2625);
     } else {
       return MetaWriteMetric();
     }
   });
   return MakeUnit();
 }
-auto eval_expr_x_3687(const auto &x_4336) {
-  if (HasProp(x_4336, std::string("flex-direction"))) {
-    return GetProp<std::string>(x_4336, std::string("flex-direction"));
+auto eval_expr_x_1977(const auto &x_2626) {
+  if (HasProp(x_2626, std::string("flex-direction"))) {
+    return GetProp<std::string>(x_2626, std::string("flex-direction"));
   } else {
     return std::string("");
   }
 }
-Unit var_modified_x_3685(const auto &x_4339) {
-  auto x_6192 = [&](const auto &x_4342) {
-    if (HashtblContain(x_4342->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4342->meta->BBDirtied, std::string("bb_1"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4342);
+Unit var_modified_x_1975(const auto &x_2629) {
+  auto x_3310 = [&](const auto &x_2632) {
+    if (HashtblContain(x_2632->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2632->meta->BBDirtied, std::string("bb_1"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2632);
     } else {
       return MetaWriteMetric();
     }
   };
   OptionMatch(
-      x_4339->next, [&](const auto &x_4341) { return MakeUnit(); },
-      [&](const auto &x_4340) {
-        auto x_6194 = x_6192;
-        x_6194(x_4340);
+      x_2629->next, [&](const auto &x_2631) { return MakeUnit(); },
+      [&](const auto &x_2630) {
+        auto x_3312 = x_3310;
+        x_3312(x_2630);
         return MakeUnit();
       });
-  auto x_6193 = [&](const auto &x_4343) {
-    if (HashtblContain(x_4343->meta->ProcInited, std::string("pass_1"))) {
-      HashtblSet(x_4343->meta->BBDirtied, std::string("bb_2"), true);
-      return set_recursive_proc_dirtied_x_3201(x_4343);
+  auto x_3311 = [&](const auto &x_2633) {
+    if (HashtblContain(x_2633->meta->ProcInited, std::string("pass_1"))) {
+      HashtblSet(x_2633->meta->BBDirtied, std::string("bb_2"), true);
+      return set_recursive_proc_dirtied_x_1752(x_2633);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6193(x_4339);
+  x_3311(x_2629);
   MakeUnit();
   return MakeUnit();
 }
-auto eval_expr_x_3682(const auto &x_4344) {
-  return plus((x_4344->prev != nullptr) ? ((x_4344->prev)->var_flex_shrink_sum) : (0.), x_4344->var_flex_shrink);
+auto eval_expr_x_1972(const auto &x_2634) {
+  return plus((x_2634->prev != nullptr) ? ((x_2634->prev)->var_flex_shrink_sum) : (0.), x_2634->var_flex_shrink);
 }
-Unit var_modified_x_3680(const auto &x_4353) {
-  auto x_6195 = [&](const auto &x_4356) {
-    if (HashtblContain(x_4356->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4356->meta->BBDirtied, std::string("bb_1"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4356);
+Unit var_modified_x_1970(const auto &x_2643) {
+  auto x_3313 = [&](const auto &x_2646) {
+    if (HashtblContain(x_2646->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2646->meta->BBDirtied, std::string("bb_1"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2646);
     } else {
       return MetaWriteMetric();
     }
   };
   OptionMatch(
-      x_4353->next, [&](const auto &x_4355) { return MakeUnit(); },
-      [&](const auto &x_4354) {
-        auto x_6197 = x_6195;
-        x_6197(x_4354);
+      x_2643->next, [&](const auto &x_2645) { return MakeUnit(); },
+      [&](const auto &x_2644) {
+        auto x_3315 = x_3313;
+        x_3315(x_2644);
         return MakeUnit();
       });
-  auto x_6196 = [&](const auto &x_4357) {
-    if (HashtblContain(x_4357->meta->ProcInited, std::string("pass_1"))) {
-      HashtblSet(x_4357->meta->BBDirtied, std::string("bb_2"), true);
-      return set_recursive_proc_dirtied_x_3201(x_4357);
+  auto x_3314 = [&](const auto &x_2647) {
+    if (HashtblContain(x_2647->meta->ProcInited, std::string("pass_1"))) {
+      HashtblSet(x_2647->meta->BBDirtied, std::string("bb_2"), true);
+      return set_recursive_proc_dirtied_x_1752(x_2647);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6196(x_4353);
+  x_3314(x_2643);
   MakeUnit();
   return MakeUnit();
 }
-auto eval_expr_x_3677(const auto &x_4358) {
-  return plus((x_4358->prev != nullptr) ? ((x_4358->prev)->var_flex_grow_sum) : (0.), x_4358->var_flex_grow);
+auto eval_expr_x_1967(const auto &x_2648) {
+  return plus((x_2648->prev != nullptr) ? ((x_2648->prev)->var_flex_grow_sum) : (0.), x_2648->var_flex_grow);
 }
-Unit var_modified_x_3675(const auto &x_4367) {
-  auto x_6198 = [&](const auto &x_4368) {
-    if (HashtblContain(x_4368->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4368->meta->BBDirtied, std::string("bb_1"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4368);
+Unit var_modified_x_1965(const auto &x_2657) {
+  auto x_3316 = [&](const auto &x_2658) {
+    if (HashtblContain(x_2658->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2658->meta->BBDirtied, std::string("bb_1"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2658);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6198(x_4367);
+  x_3316(x_2657);
   MakeUnit();
-  auto x_6199 = [&](const auto &x_4369) {
-    if (HashtblContain(x_4369->meta->ProcInited, std::string("pass_1"))) {
-      HashtblSet(x_4369->meta->BBDirtied, std::string("bb_2"), true);
-      return set_recursive_proc_dirtied_x_3201(x_4369);
+  auto x_3317 = [&](const auto &x_2659) {
+    if (HashtblContain(x_2659->meta->ProcInited, std::string("pass_1"))) {
+      HashtblSet(x_2659->meta->BBDirtied, std::string("bb_2"), true);
+      return set_recursive_proc_dirtied_x_1752(x_2659);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6199(x_4367);
+  x_3317(x_2657);
   MakeUnit();
   return MakeUnit();
 }
-auto eval_expr_x_3672(const auto &x_4370) {
-  if (HasProp(x_4370, std::string("flex-shrink"))) {
-    return string_to_float(GetProp<std::string>(x_4370, std::string("flex-shrink")));
+auto eval_expr_x_1962(const auto &x_2660) {
+  if (HasProp(x_2660, std::string("flex-shrink"))) {
+    return string_to_float(GetProp<std::string>(x_2660, std::string("flex-shrink")));
   } else {
     return 0.;
   }
 }
-Unit var_modified_x_3670(const auto &x_4373) {
-  auto x_6200 = [&](const auto &x_4374) {
-    if (HashtblContain(x_4374->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4374->meta->BBDirtied, std::string("bb_1"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4374);
+Unit var_modified_x_1960(const auto &x_2663) {
+  auto x_3318 = [&](const auto &x_2664) {
+    if (HashtblContain(x_2664->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2664->meta->BBDirtied, std::string("bb_1"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2664);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6200(x_4373);
+  x_3318(x_2663);
   MakeUnit();
-  auto x_6201 = [&](const auto &x_4375) {
-    if (HashtblContain(x_4375->meta->ProcInited, std::string("pass_1"))) {
-      HashtblSet(x_4375->meta->BBDirtied, std::string("bb_2"), true);
-      return set_recursive_proc_dirtied_x_3201(x_4375);
+  auto x_3319 = [&](const auto &x_2665) {
+    if (HashtblContain(x_2665->meta->ProcInited, std::string("pass_1"))) {
+      HashtblSet(x_2665->meta->BBDirtied, std::string("bb_2"), true);
+      return set_recursive_proc_dirtied_x_1752(x_2665);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6201(x_4373);
+  x_3319(x_2663);
   MakeUnit();
   return MakeUnit();
 }
-auto eval_expr_x_3667(const auto &x_4376) {
-  if (HasProp(x_4376, std::string("flex-grow"))) {
-    return string_to_float(GetProp<std::string>(x_4376, std::string("flex-grow")));
+auto eval_expr_x_1957(const auto &x_2666) {
+  if (HasProp(x_2666, std::string("flex-grow"))) {
+    return string_to_float(GetProp<std::string>(x_2666, std::string("flex-grow")));
   } else {
     return 0.;
   }
 }
-Unit var_modified_x_3665(const auto &x_4379) {
-  auto x_6202 = [&](const auto &x_4380) {
-    if (HashtblContain(x_4380->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4380->meta->BBDirtied, std::string("bb_1"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4380);
+Unit var_modified_x_1955(const auto &x_2669) {
+  auto x_3320 = [&](const auto &x_2670) {
+    if (HashtblContain(x_2670->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2670->meta->BBDirtied, std::string("bb_1"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2670);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6202(x_4379);
+  x_3320(x_2669);
   MakeUnit();
-  auto x_6203 = [&](const auto &x_4381) {
-    if (HashtblContain(x_4381->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4381->meta->BBDirtied, std::string("bb_0"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4381);
+  auto x_3321 = [&](const auto &x_2671) {
+    if (HashtblContain(x_2671->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2671->meta->BBDirtied, std::string("bb_0"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2671);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6203(x_4379);
+  x_3321(x_2669);
   MakeUnit();
-  auto x_6204 = [&](const auto &x_4382) {
-    if (HashtblContain(x_4382->meta->ProcInited, std::string("pass_1"))) {
-      HashtblSet(x_4382->meta->BBDirtied, std::string("bb_2"), true);
-      return set_recursive_proc_dirtied_x_3201(x_4382);
+  auto x_3322 = [&](const auto &x_2672) {
+    if (HashtblContain(x_2672->meta->ProcInited, std::string("pass_1"))) {
+      HashtblSet(x_2672->meta->BBDirtied, std::string("bb_2"), true);
+      return set_recursive_proc_dirtied_x_1752(x_2672);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6204(x_4379);
+  x_3322(x_2669);
   MakeUnit();
   return MakeUnit();
 }
-auto eval_expr_x_3662(const auto &x_4383) {
-  if (HasProp(x_4383, std::string("position"))) {
-    return GetProp<std::string>(x_4383, std::string("position"));
+auto eval_expr_x_1952(const auto &x_2673) {
+  if (HasProp(x_2673, std::string("position"))) {
+    return GetProp<std::string>(x_2673, std::string("position"));
   } else {
     return std::string("static");
   }
 }
-Unit var_modified_x_3660(const auto &x_4386) {
-  auto x_6205 = [&](const auto &x_4387) {
-    if (HashtblContain(x_4387->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4387->meta->BBDirtied, std::string("bb_1"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4387);
+Unit var_modified_x_1950(const auto &x_2676) {
+  auto x_3323 = [&](const auto &x_2677) {
+    if (HashtblContain(x_2677->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2677->meta->BBDirtied, std::string("bb_1"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2677);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6205(x_4386);
+  x_3323(x_2676);
   MakeUnit();
-  ListIter(x_4386->children, [&](const auto &x_4388) {
-    if (HashtblContain(x_4388->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4388->meta->BBDirtied, std::string("bb_1"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4388);
+  ListIter(x_2676->children, [&](const auto &x_2678) {
+    if (HashtblContain(x_2678->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2678->meta->BBDirtied, std::string("bb_1"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2678);
     } else {
       return MetaWriteMetric();
     }
   });
-  auto x_6206 = [&](const auto &x_4389) {
-    if (HashtblContain(x_4389->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4389->meta->BBDirtied, std::string("bb_0"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4389);
+  auto x_3324 = [&](const auto &x_2679) {
+    if (HashtblContain(x_2679->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2679->meta->BBDirtied, std::string("bb_0"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2679);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6206(x_4386);
+  x_3324(x_2676);
   MakeUnit();
   return MakeUnit();
 }
-auto eval_expr_x_3657(const auto &x_4390) {
-  if (HasProp(x_4390, std::string("display"))) {
-    return GetProp<std::string>(x_4390, std::string("display"));
+auto eval_expr_x_1947(const auto &x_2680) {
+  if (HasProp(x_2680, std::string("display"))) {
+    return GetProp<std::string>(x_2680, std::string("display"));
   } else {
     return std::string("block");
   }
 }
-Unit var_modified_x_3654(const auto &x_4393) {
-  auto x_6207 = [&](const auto &x_4396) {
-    if (HashtblContain(x_4396->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4396->meta->BBDirtied, std::string("bb_0"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4396);
+Unit var_modified_x_1944(const auto &x_2683) {
+  auto x_3325 = [&](const auto &x_2686) {
+    if (HashtblContain(x_2686->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2686->meta->BBDirtied, std::string("bb_0"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2686);
     } else {
       return MetaWriteMetric();
     }
   };
-  if (x_4393->next != nullptr) {
-    auto x_6209 = x_6207;
+  if (x_2683->next != nullptr) {
+    auto x_3327 = x_3325;
     OptionMatch(
-        x_4393->parent, [&](const auto &x_4395) { return MakeUnit(); },
-        [&](const auto &x_4394) {
-          auto x_6211 = x_6209;
-          x_6211(x_4394);
+        x_2683->parent, [&](const auto &x_2685) { return MakeUnit(); },
+        [&](const auto &x_2684) {
+          auto x_3329 = x_3327;
+          x_3329(x_2684);
           return MakeUnit();
         });
   }
-  auto x_6208 = [&](const auto &x_4399) {
-    if (HashtblContain(x_4399->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4399->meta->BBDirtied, std::string("bb_0"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4399);
+  auto x_3326 = [&](const auto &x_2689) {
+    if (HashtblContain(x_2689->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2689->meta->BBDirtied, std::string("bb_0"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2689);
     } else {
       return MetaWriteMetric();
     }
   };
   OptionMatch(
-      x_4393->next, [&](const auto &x_4398) { return MakeUnit(); },
-      [&](const auto &x_4397) {
-        auto x_6210 = x_6208;
-        x_6210(x_4397);
+      x_2683->next, [&](const auto &x_2688) { return MakeUnit(); },
+      [&](const auto &x_2687) {
+        auto x_3328 = x_3326;
+        x_3328(x_2687);
         return MakeUnit();
       });
   return MakeUnit();
 }
-auto eval_expr_x_3651(const auto &x_4400) {
-  if (x_4400->prev != nullptr) {
-    if (x_4400->var_line_break) {
-      return plus((x_4400->prev)->var_finished_intrinsic_height_sum,
-                  plus((x_4400->prev)->var_intrinsic_current_line_height, x_4400->var_intrinsic_height_external));
+auto eval_expr_x_1941(const auto &x_2690) {
+  if (x_2690->prev != nullptr) {
+    if (x_2690->var_line_break) {
+      return plus((x_2690->prev)->var_finished_intrinsic_height_sum,
+                  plus((x_2690->prev)->var_intrinsic_current_line_height, x_2690->var_intrinsic_height_external));
     } else {
-      return (x_4400->prev)->var_finished_intrinsic_height_sum;
+      return (x_2690->prev)->var_finished_intrinsic_height_sum;
     }
   } else {
-    if (x_4400->var_line_break) {
-      return x_4400->var_intrinsic_height_external;
+    if (x_2690->var_line_break) {
+      return x_2690->var_intrinsic_height_external;
     } else {
       return 0.;
     }
   }
 }
-Unit var_modified_x_3649(const auto &x_4429) {
-  auto x_6212 = [&](const auto &x_4432) {
-    if (HashtblContain(x_4432->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4432->meta->BBDirtied, std::string("bb_0"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4432);
+Unit var_modified_x_1939(const auto &x_2719) {
+  auto x_3330 = [&](const auto &x_2722) {
+    if (HashtblContain(x_2722->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2722->meta->BBDirtied, std::string("bb_0"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2722);
     } else {
       return MetaWriteMetric();
     }
   };
-  if (x_4429->next != nullptr) {
-    auto x_6214 = x_6212;
+  if (x_2719->next != nullptr) {
+    auto x_3332 = x_3330;
     OptionMatch(
-        x_4429->parent, [&](const auto &x_4431) { return MakeUnit(); },
-        [&](const auto &x_4430) {
-          auto x_6216 = x_6214;
-          x_6216(x_4430);
+        x_2719->parent, [&](const auto &x_2721) { return MakeUnit(); },
+        [&](const auto &x_2720) {
+          auto x_3334 = x_3332;
+          x_3334(x_2720);
           return MakeUnit();
         });
   }
-  auto x_6213 = [&](const auto &x_4435) {
-    if (HashtblContain(x_4435->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4435->meta->BBDirtied, std::string("bb_0"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4435);
+  auto x_3331 = [&](const auto &x_2725) {
+    if (HashtblContain(x_2725->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2725->meta->BBDirtied, std::string("bb_0"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2725);
     } else {
       return MetaWriteMetric();
     }
   };
   OptionMatch(
-      x_4429->next, [&](const auto &x_4434) { return MakeUnit(); },
-      [&](const auto &x_4433) {
-        auto x_6215 = x_6213;
-        x_6215(x_4433);
+      x_2719->next, [&](const auto &x_2724) { return MakeUnit(); },
+      [&](const auto &x_2723) {
+        auto x_3333 = x_3331;
+        x_3333(x_2723);
         return MakeUnit();
       });
   return MakeUnit();
 }
-auto eval_expr_x_3646(const auto &x_4436) {
-  if (x_4436->var_line_break) {
+auto eval_expr_x_1936(const auto &x_2726) {
+  if (x_2726->var_line_break) {
     return 0.;
   } else {
-    return max(x_4436->var_intrinsic_height_external,
-               (x_4436->prev != nullptr) ? ((x_4436->prev)->var_intrinsic_current_line_height) : (0.));
+    return max(x_2726->var_intrinsic_height_external,
+               (x_2726->prev != nullptr) ? ((x_2726->prev)->var_intrinsic_current_line_height) : (0.));
   }
 }
-Unit var_modified_x_3644(const auto &x_4449) {
-  auto x_6217 = [&](const auto &x_4452) {
-    if (HashtblContain(x_4452->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4452->meta->BBDirtied, std::string("bb_0"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4452);
+Unit var_modified_x_1934(const auto &x_2739) {
+  auto x_3335 = [&](const auto &x_2742) {
+    if (HashtblContain(x_2742->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2742->meta->BBDirtied, std::string("bb_0"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2742);
     } else {
       return MetaWriteMetric();
     }
   };
   OptionMatch(
-      x_4449->next, [&](const auto &x_4451) { return MakeUnit(); },
-      [&](const auto &x_4450) {
-        auto x_6219 = x_6217;
-        x_6219(x_4450);
+      x_2739->next, [&](const auto &x_2741) { return MakeUnit(); },
+      [&](const auto &x_2740) {
+        auto x_3337 = x_3335;
+        x_3337(x_2740);
         return MakeUnit();
       });
-  auto x_6218 = [&](const auto &x_4455) {
-    if (HashtblContain(x_4455->meta->ProcInited, std::string("pass_1"))) {
-      HashtblSet(x_4455->meta->BBDirtied, std::string("bb_2"), true);
-      return set_recursive_proc_dirtied_x_3201(x_4455);
+  auto x_3336 = [&](const auto &x_2745) {
+    if (HashtblContain(x_2745->meta->ProcInited, std::string("pass_1"))) {
+      HashtblSet(x_2745->meta->BBDirtied, std::string("bb_2"), true);
+      return set_recursive_proc_dirtied_x_1752(x_2745);
     } else {
       return MetaWriteMetric();
     }
   };
-  if (x_4449->next != nullptr) {
-    auto x_6220 = x_6218;
+  if (x_2739->next != nullptr) {
+    auto x_3338 = x_3336;
     OptionMatch(
-        x_4449->parent, [&](const auto &x_4454) { return MakeUnit(); },
-        [&](const auto &x_4453) {
-          auto x_6221 = x_6220;
-          x_6221(x_4453);
+        x_2739->parent, [&](const auto &x_2744) { return MakeUnit(); },
+        [&](const auto &x_2743) {
+          auto x_3339 = x_3338;
+          x_3339(x_2743);
           return MakeUnit();
         });
   }
   return MakeUnit();
 }
-auto eval_expr_x_3641(const auto &x_4456) {
-  return plus((x_4456->prev != nullptr) ? ((x_4456->prev)->var_intrinsic_height_sum) : (0.),
-              x_4456->var_intrinsic_height_external);
+auto eval_expr_x_1931(const auto &x_2746) {
+  return plus((x_2746->prev != nullptr) ? ((x_2746->prev)->var_intrinsic_height_sum) : (0.),
+              x_2746->var_intrinsic_height_external);
 }
-Unit var_modified_x_3639(const auto &x_4465) {
-  auto x_6222 = [&](const auto &x_4466) {
-    if (HashtblContain(x_4466->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4466->meta->BBDirtied, std::string("bb_0"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4466);
+Unit var_modified_x_1929(const auto &x_2755) {
+  auto x_3340 = [&](const auto &x_2756) {
+    if (HashtblContain(x_2756->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2756->meta->BBDirtied, std::string("bb_0"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2756);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6222(x_4465);
+  x_3340(x_2755);
   MakeUnit();
   return MakeUnit();
 }
-auto eval_expr_x_3636(const auto &x_4467) {
-  if (eq(x_4467->var_position, std::string("absolute"))) {
+auto eval_expr_x_1926(const auto &x_2757) {
+  if (eq(x_2757->var_position, std::string("absolute"))) {
     return 0.;
   } else {
-    return x_4467->var_intrinsic_height_internal;
+    return x_2757->var_intrinsic_height_internal;
   }
 }
-Unit var_modified_x_3634(const auto &x_4476) {
-  auto x_6223 = [&](const auto &x_4477) {
-    if (HashtblContain(x_4477->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4477->meta->BBDirtied, std::string("bb_0"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4477);
+Unit var_modified_x_1924(const auto &x_2766) {
+  auto x_3341 = [&](const auto &x_2767) {
+    if (HashtblContain(x_2767->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2767->meta->BBDirtied, std::string("bb_0"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2767);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6223(x_4476);
+  x_3341(x_2766);
   MakeUnit();
-  auto x_6224 = [&](const auto &x_4478) {
-    if (HashtblContain(x_4478->meta->ProcInited, std::string("pass_1"))) {
-      HashtblSet(x_4478->meta->BBDirtied, std::string("bb_2"), true);
-      return set_recursive_proc_dirtied_x_3201(x_4478);
+  auto x_3342 = [&](const auto &x_2768) {
+    if (HashtblContain(x_2768->meta->ProcInited, std::string("pass_1"))) {
+      HashtblSet(x_2768->meta->BBDirtied, std::string("bb_2"), true);
+      return set_recursive_proc_dirtied_x_1752(x_2768);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6224(x_4476);
+  x_3342(x_2766);
   MakeUnit();
   return MakeUnit();
 }
-auto eval_expr_x_3631(const auto &x_4479) {
-  if (eq(x_4479->var_display, std::string("none"))) {
+auto eval_expr_x_1921(const auto &x_2769) {
+  if (eq(x_2769->var_display, std::string("none"))) {
     return 0.;
   } else {
-    if (x_4479->var_inside_svg) {
+    if (x_2769->var_inside_svg) {
       return 0.;
     } else {
-      if (x_4479->var_disabled) {
+      if (x_2769->var_disabled) {
         return 0.;
       } else {
-        if (neq(x_4479->var_height_expr, std::string("auto")) &&
-            ((!has_suffix(x_4479->var_height_expr, std::string("%"))) &&
-             neq(x_4479->var_height_expr, std::string("fit-content")))) {
-          if (has_suffix(x_4479->var_height_expr, std::string("px"))) {
-            return string_to_float(strip_suffix(x_4479->var_height_expr, std::string("px")));
+        if (neq(x_2769->var_height_expr, std::string("auto")) &&
+            ((!has_suffix(x_2769->var_height_expr, std::string("%"))) &&
+             neq(x_2769->var_height_expr, std::string("fit-content")))) {
+          if (has_suffix(x_2769->var_height_expr, std::string("px"))) {
+            return string_to_float(strip_suffix(x_2769->var_height_expr, std::string("px")));
           } else {
-            if (has_suffix(x_4479->var_height_expr, std::string("ch"))) {
-              return string_to_float(strip_suffix(x_4479->var_height_expr, std::string("ch")));
+            if (has_suffix(x_2769->var_height_expr, std::string("ch"))) {
+              return string_to_float(strip_suffix(x_2769->var_height_expr, std::string("ch")));
             } else {
-              return string_to_float(strip_suffix(x_4479->var_height_expr, std::string("lh")));
+              return string_to_float(strip_suffix(x_2769->var_height_expr, std::string("lh")));
             }
           }
         } else {
           return plus(
-              x_4479->var_children_intrinsic_height,
-              (eq(x_4479->name, std::string("#text")))
+              x_2769->var_children_intrinsic_height,
+              (eq(x_2769->name, std::string("#text")))
                   ? (10.)
-                  : ((x_4479->var_is_default_case)
+                  : ((x_2769->var_is_default_case)
                          ? (0.)
-                         : ((eq(x_4479->name, std::string("BR")))
+                         : ((eq(x_2769->name, std::string("BR")))
                                 ? (0.)
-                                : ((eq(x_4479->name, std::string("INPUT")))
+                                : ((eq(x_2769->name, std::string("INPUT")))
                                        ? (10.)
-                                       : ((eq(x_4479->name, std::string("svg")))
-                                              ? ((x_4479->var_has_height_attr &&
-                                                  string_is_float(x_4479->var_height_attr_expr))
-                                                     ? (string_to_float(x_4479->var_height_attr_expr))
-                                                     : ((HasAttr(x_4479, std::string("viewBox")))
+                                       : ((eq(x_2769->name, std::string("svg")))
+                                              ? ((x_2769->var_has_height_attr &&
+                                                  string_is_float(x_2769->var_height_attr_expr))
+                                                     ? (string_to_float(x_2769->var_height_attr_expr))
+                                                     : ((HasAttr(x_2769, std::string("viewBox")))
                                                             ? (string_to_float(nth_by_sep(
-                                                                  GetAttr<std::string>(x_4479, std::string("viewBox")),
+                                                                  GetAttr<std::string>(x_2769, std::string("viewBox")),
                                                                   std::string(" "), static_cast<int64_t>(3))))
                                                             : (mult(string_to_float(nth_by_sep(
-                                                                        GetAttr<std::string>(x_4479,
+                                                                        GetAttr<std::string>(x_2769,
                                                                                              std::string("viewBox")),
                                                                         std::string(" "), static_cast<int64_t>(3))),
                                                                     divide(string_to_float(strip_suffix(
-                                                                               x_4479->var_height_attr_expr,
+                                                                               x_2769->var_height_attr_expr,
                                                                                std::string("%"))),
                                                                            100.)))))
-                                              : ((eq(x_4479->name, std::string("IMG")))
-                                                     ? ((x_4479->var_has_height_attr)
-                                                            ? (string_to_float(x_4479->var_height_attr_expr))
-                                                            : ((HasAttr(x_4479, std::string("image_height")) &&
-                                                                (!x_4479->var_has_width_attr))
+                                              : ((eq(x_2769->name, std::string("IMG")))
+                                                     ? ((x_2769->var_has_height_attr)
+                                                            ? (string_to_float(x_2769->var_height_attr_expr))
+                                                            : ((HasAttr(x_2769, std::string("image_height")) &&
+                                                                (!x_2769->var_has_width_attr))
                                                                    ? (int_to_float(GetAttr<int64_t>(
-                                                                         x_4479, std::string("image_height"))))
-                                                                   : ((neq(GetAttr<int64_t>(x_4479,
+                                                                         x_2769, std::string("image_height"))))
+                                                                   : ((neq(GetAttr<int64_t>(x_2769,
                                                                                             std::string("image_width")),
                                                                            static_cast<int64_t>(0)))
                                                                           ? (mult(
                                                                                 string_to_float(
-                                                                                    x_4479->var_width_attr_expr),
+                                                                                    x_2769->var_width_attr_expr),
                                                                                 divide(
                                                                                     int_to_float(GetAttr<int64_t>(
-                                                                                        x_4479,
+                                                                                        x_2769,
                                                                                         std::string("image_height"))),
                                                                                     int_to_float(GetAttr<int64_t>(
-                                                                                        x_4479,
+                                                                                        x_2769,
                                                                                         std::string("image_width"))))))
                                                                           : (0.))))
-                                                     : ((eq(x_4479->name, std::string("IFRAME")))
+                                                     : ((eq(x_2769->name, std::string("IFRAME")))
                                                             ? (150.)
-                                                            : ((eq(x_4479->name, std::string("TEXTAREA")))
+                                                            : ((eq(x_2769->name, std::string("TEXTAREA")))
                                                                    ? (100.)
                                                                    : (150.)))))))));
         }
@@ -1544,31 +1443,31 @@ auto eval_expr_x_3631(const auto &x_4479) {
     }
   }
 }
-Unit var_modified_x_3629(const auto &x_4624) {
-  auto x_6225 = [&](const auto &x_4625) {
-    if (HashtblContain(x_4625->meta->ProcInited, std::string("pass_1"))) {
-      HashtblSet(x_4625->meta->BBDirtied, std::string("bb_2"), true);
-      return set_recursive_proc_dirtied_x_3201(x_4625);
+Unit var_modified_x_1919(const auto &x_2914) {
+  auto x_3343 = [&](const auto &x_2915) {
+    if (HashtblContain(x_2915->meta->ProcInited, std::string("pass_1"))) {
+      HashtblSet(x_2915->meta->BBDirtied, std::string("bb_2"), true);
+      return set_recursive_proc_dirtied_x_1752(x_2915);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6225(x_4624);
+  x_3343(x_2914);
   MakeUnit();
   return MakeUnit();
 }
-auto eval_expr_x_3626(const auto &x_4626) {
-  if (eq(x_4626->var_display, std::string("none")) || (x_4626->var_inside_svg || x_4626->var_disabled)) {
+auto eval_expr_x_1916(const auto &x_2916) {
+  if (eq(x_2916->var_display, std::string("none")) || (x_2916->var_inside_svg || x_2916->var_disabled)) {
     return true;
   } else {
-    if ((x_4626->parent != nullptr) && (x_4626->parent)->var_is_flex_column) {
+    if ((x_2916->parent != nullptr) && (x_2916->parent)->var_is_flex_column) {
       return false;
     } else {
-      if (eq(x_4626->var_height_expr, std::string("auto")) ||
-          (has_suffix(x_4626->var_height_expr, std::string("px")) ||
-           (has_suffix(x_4626->var_height_expr, std::string("ch")) ||
-            (has_suffix(x_4626->var_height_expr, std::string("lh")) ||
-             eq(x_4626->var_height_expr, std::string("max-content")))))) {
+      if (eq(x_2916->var_height_expr, std::string("auto")) ||
+          (has_suffix(x_2916->var_height_expr, std::string("px")) ||
+           (has_suffix(x_2916->var_height_expr, std::string("ch")) ||
+            (has_suffix(x_2916->var_height_expr, std::string("lh")) ||
+             eq(x_2916->var_height_expr, std::string("max-content")))))) {
         return true;
       } else {
         return false;
@@ -1576,285 +1475,285 @@ auto eval_expr_x_3626(const auto &x_4626) {
     }
   }
 }
-Unit var_modified_x_3624(const auto &x_4675) {
-  auto x_6226 = [&](const auto &x_4676) {
-    if (HashtblContain(x_4676->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4676->meta->BBDirtied, std::string("bb_0"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4676);
+Unit var_modified_x_1914(const auto &x_2965) {
+  auto x_3344 = [&](const auto &x_2966) {
+    if (HashtblContain(x_2966->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2966->meta->BBDirtied, std::string("bb_0"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2966);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6226(x_4675);
+  x_3344(x_2965);
   MakeUnit();
-  auto x_6227 = [&](const auto &x_4677) {
-    if (HashtblContain(x_4677->meta->ProcInited, std::string("pass_1"))) {
-      HashtblSet(x_4677->meta->BBDirtied, std::string("bb_2"), true);
-      return set_recursive_proc_dirtied_x_3201(x_4677);
+  auto x_3345 = [&](const auto &x_2967) {
+    if (HashtblContain(x_2967->meta->ProcInited, std::string("pass_1"))) {
+      HashtblSet(x_2967->meta->BBDirtied, std::string("bb_2"), true);
+      return set_recursive_proc_dirtied_x_1752(x_2967);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6227(x_4675);
+  x_3345(x_2965);
   MakeUnit();
   return MakeUnit();
 }
-auto eval_expr_x_3621(const auto &x_4678) {
-  if (HasProp(x_4678, std::string("height"))) {
-    return GetProp<std::string>(x_4678, std::string("height"));
+auto eval_expr_x_1911(const auto &x_2968) {
+  if (HasProp(x_2968, std::string("height"))) {
+    return GetProp<std::string>(x_2968, std::string("height"));
   } else {
     return std::string("auto");
   }
 }
-Unit var_modified_x_3619(const auto &x_4681) {
-  auto x_6228 = [&](const auto &x_4682) {
-    if (HashtblContain(x_4682->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4682->meta->BBDirtied, std::string("bb_0"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4682);
+Unit var_modified_x_1909(const auto &x_2971) {
+  auto x_3346 = [&](const auto &x_2972) {
+    if (HashtblContain(x_2972->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2972->meta->BBDirtied, std::string("bb_0"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2972);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6228(x_4681);
+  x_3346(x_2971);
   MakeUnit();
   return MakeUnit();
 }
-auto eval_expr_x_3616(const auto &x_4683) {
-  if (x_4683->last != nullptr) {
-    return plus((x_4683->last)->var_finished_intrinsic_height_sum, (x_4683->last)->var_intrinsic_current_line_height);
+auto eval_expr_x_1906(const auto &x_2973) {
+  if (x_2973->last != nullptr) {
+    return plus((x_2973->last)->var_finished_intrinsic_height_sum, (x_2973->last)->var_intrinsic_current_line_height);
   } else {
     return 0.;
   }
 }
-Unit var_modified_x_3614(const auto &x_4692) {
-  auto x_6229 = [&](const auto &x_4695) {
-    if (HashtblContain(x_4695->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4695->meta->BBDirtied, std::string("bb_0"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4695);
+Unit var_modified_x_1904(const auto &x_2982) {
+  auto x_3347 = [&](const auto &x_2985) {
+    if (HashtblContain(x_2985->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_2985->meta->BBDirtied, std::string("bb_0"), true);
+      return set_recursive_proc_dirtied_x_1712(x_2985);
     } else {
       return MetaWriteMetric();
     }
   };
   OptionMatch(
-      x_4692->next, [&](const auto &x_4694) { return MakeUnit(); },
-      [&](const auto &x_4693) {
-        auto x_6231 = x_6229;
-        x_6231(x_4693);
+      x_2982->next, [&](const auto &x_2984) { return MakeUnit(); },
+      [&](const auto &x_2983) {
+        auto x_3349 = x_3347;
+        x_3349(x_2983);
         return MakeUnit();
       });
-  auto x_6230 = [&](const auto &x_4698) {
-    if (HashtblContain(x_4698->meta->ProcInited, std::string("pass_1"))) {
-      HashtblSet(x_4698->meta->BBDirtied, std::string("bb_2"), true);
-      return set_recursive_proc_dirtied_x_3201(x_4698);
+  auto x_3348 = [&](const auto &x_2988) {
+    if (HashtblContain(x_2988->meta->ProcInited, std::string("pass_1"))) {
+      HashtblSet(x_2988->meta->BBDirtied, std::string("bb_2"), true);
+      return set_recursive_proc_dirtied_x_1752(x_2988);
     } else {
       return MetaWriteMetric();
     }
   };
-  if (x_4692->next != nullptr) {
-    auto x_6232 = x_6230;
+  if (x_2982->next != nullptr) {
+    auto x_3350 = x_3348;
     OptionMatch(
-        x_4692->parent, [&](const auto &x_4697) { return MakeUnit(); },
-        [&](const auto &x_4696) {
-          auto x_6233 = x_6232;
-          x_6233(x_4696);
+        x_2982->parent, [&](const auto &x_2987) { return MakeUnit(); },
+        [&](const auto &x_2986) {
+          auto x_3351 = x_3350;
+          x_3351(x_2986);
           return MakeUnit();
         });
   }
   return MakeUnit();
 }
-auto eval_expr_x_3611(const auto &x_4699) {
-  return plus((x_4699->prev != nullptr) ? ((x_4699->prev)->var_intrinsic_width_sum) : (0.),
-              x_4699->var_intrinsic_width_external);
+auto eval_expr_x_1901(const auto &x_2989) {
+  return plus((x_2989->prev != nullptr) ? ((x_2989->prev)->var_intrinsic_width_sum) : (0.),
+              x_2989->var_intrinsic_width_external);
 }
-Unit var_modified_x_3609(const auto &x_4708) {
-  auto x_6234 = [&](const auto &x_4711) {
-    if (HashtblContain(x_4711->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4711->meta->BBDirtied, std::string("bb_0"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4711);
+Unit var_modified_x_1899(const auto &x_2998) {
+  auto x_3352 = [&](const auto &x_3001) {
+    if (HashtblContain(x_3001->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_3001->meta->BBDirtied, std::string("bb_0"), true);
+      return set_recursive_proc_dirtied_x_1712(x_3001);
     } else {
       return MetaWriteMetric();
     }
   };
-  if (x_4708->next != nullptr) {
-    auto x_6236 = x_6234;
+  if (x_2998->next != nullptr) {
+    auto x_3354 = x_3352;
     OptionMatch(
-        x_4708->parent, [&](const auto &x_4710) { return MakeUnit(); },
-        [&](const auto &x_4709) {
-          auto x_6238 = x_6236;
-          x_6238(x_4709);
+        x_2998->parent, [&](const auto &x_3000) { return MakeUnit(); },
+        [&](const auto &x_2999) {
+          auto x_3356 = x_3354;
+          x_3356(x_2999);
           return MakeUnit();
         });
   }
-  auto x_6235 = [&](const auto &x_4714) {
-    if (HashtblContain(x_4714->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4714->meta->BBDirtied, std::string("bb_0"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4714);
+  auto x_3353 = [&](const auto &x_3004) {
+    if (HashtblContain(x_3004->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_3004->meta->BBDirtied, std::string("bb_0"), true);
+      return set_recursive_proc_dirtied_x_1712(x_3004);
     } else {
       return MetaWriteMetric();
     }
   };
   OptionMatch(
-      x_4708->next, [&](const auto &x_4713) { return MakeUnit(); },
-      [&](const auto &x_4712) {
-        auto x_6237 = x_6235;
-        x_6237(x_4712);
+      x_2998->next, [&](const auto &x_3003) { return MakeUnit(); },
+      [&](const auto &x_3002) {
+        auto x_3355 = x_3353;
+        x_3355(x_3002);
         return MakeUnit();
       });
   return MakeUnit();
 }
-auto eval_expr_x_3606(const auto &x_4715) {
-  return max(x_4715->var_intrinsic_current_line_width,
-             (x_4715->prev != nullptr) ? ((x_4715->prev)->var_intrinsic_width_max) : (0.));
+auto eval_expr_x_1896(const auto &x_3005) {
+  return max(x_3005->var_intrinsic_current_line_width,
+             (x_3005->prev != nullptr) ? ((x_3005->prev)->var_intrinsic_width_max) : (0.));
 }
-Unit var_modified_x_3604(const auto &x_4724) {
-  auto x_6239 = [&](const auto &x_4725) {
-    if (HashtblContain(x_4725->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4725->meta->BBDirtied, std::string("bb_0"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4725);
+Unit var_modified_x_1894(const auto &x_3014) {
+  auto x_3357 = [&](const auto &x_3015) {
+    if (HashtblContain(x_3015->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_3015->meta->BBDirtied, std::string("bb_0"), true);
+      return set_recursive_proc_dirtied_x_1712(x_3015);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6239(x_4724);
+  x_3357(x_3014);
   MakeUnit();
-  auto x_6240 = [&](const auto &x_4728) {
-    if (HashtblContain(x_4728->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4728->meta->BBDirtied, std::string("bb_0"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4728);
+  auto x_3358 = [&](const auto &x_3018) {
+    if (HashtblContain(x_3018->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_3018->meta->BBDirtied, std::string("bb_0"), true);
+      return set_recursive_proc_dirtied_x_1712(x_3018);
     } else {
       return MetaWriteMetric();
     }
   };
   OptionMatch(
-      x_4724->next, [&](const auto &x_4727) { return MakeUnit(); },
-      [&](const auto &x_4726) {
-        auto x_6241 = x_6240;
-        x_6241(x_4726);
+      x_3014->next, [&](const auto &x_3017) { return MakeUnit(); },
+      [&](const auto &x_3016) {
+        auto x_3359 = x_3358;
+        x_3359(x_3016);
         return MakeUnit();
       });
   return MakeUnit();
 }
-auto eval_expr_x_3601(const auto &x_4729) {
-  return plus(x_4729->var_intrinsic_width_external,
-              ((x_4729->prev != nullptr) && (!(x_4729->prev)->var_line_break))
-                  ? ((x_4729->prev)->var_intrinsic_current_line_width)
+auto eval_expr_x_1891(const auto &x_3019) {
+  return plus(x_3019->var_intrinsic_width_external,
+              ((x_3019->prev != nullptr) && (!(x_3019->prev)->var_line_break))
+                  ? ((x_3019->prev)->var_intrinsic_current_line_width)
                   : (0.));
 }
-Unit var_modified_x_3599(const auto &x_4742) {
-  auto x_6242 = [&](const auto &x_4743) {
-    if (HashtblContain(x_4743->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4743->meta->BBDirtied, std::string("bb_0"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4743);
+Unit var_modified_x_1889(const auto &x_3032) {
+  auto x_3360 = [&](const auto &x_3033) {
+    if (HashtblContain(x_3033->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_3033->meta->BBDirtied, std::string("bb_0"), true);
+      return set_recursive_proc_dirtied_x_1712(x_3033);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6242(x_4742);
+  x_3360(x_3032);
   MakeUnit();
   return MakeUnit();
 }
-auto eval_expr_x_3596(const auto &x_4744) {
-  if (eq(x_4744->var_position, std::string("absolute"))) {
+auto eval_expr_x_1886(const auto &x_3034) {
+  if (eq(x_3034->var_position, std::string("absolute"))) {
     return 0.;
   } else {
-    return x_4744->var_intrinsic_width_internal;
+    return x_3034->var_intrinsic_width_internal;
   }
 }
-Unit var_modified_x_3594(const auto &x_4753) {
-  auto x_6243 = [&](const auto &x_4754) {
-    if (HashtblContain(x_4754->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4754->meta->BBDirtied, std::string("bb_0"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4754);
+Unit var_modified_x_1884(const auto &x_3043) {
+  auto x_3361 = [&](const auto &x_3044) {
+    if (HashtblContain(x_3044->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_3044->meta->BBDirtied, std::string("bb_0"), true);
+      return set_recursive_proc_dirtied_x_1712(x_3044);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6243(x_4753);
+  x_3361(x_3043);
   MakeUnit();
-  auto x_6244 = [&](const auto &x_4755) {
-    if (HashtblContain(x_4755->meta->ProcInited, std::string("pass_1"))) {
-      HashtblSet(x_4755->meta->BBDirtied, std::string("bb_2"), true);
-      return set_recursive_proc_dirtied_x_3201(x_4755);
+  auto x_3362 = [&](const auto &x_3045) {
+    if (HashtblContain(x_3045->meta->ProcInited, std::string("pass_1"))) {
+      HashtblSet(x_3045->meta->BBDirtied, std::string("bb_2"), true);
+      return set_recursive_proc_dirtied_x_1752(x_3045);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6244(x_4753);
+  x_3362(x_3043);
   MakeUnit();
   return MakeUnit();
 }
-auto eval_expr_x_3591(const auto &x_4756) {
-  if (eq(x_4756->var_display, std::string("none"))) {
+auto eval_expr_x_1881(const auto &x_3046) {
+  if (eq(x_3046->var_display, std::string("none"))) {
     return 0.;
   } else {
-    if (x_4756->var_inside_svg) {
+    if (x_3046->var_inside_svg) {
       return 0.;
     } else {
-      if (x_4756->var_disabled) {
+      if (x_3046->var_disabled) {
         return 0.;
       } else {
-        if (neq(x_4756->var_width_expr, std::string("auto")) &&
-            ((!has_suffix(x_4756->var_width_expr, std::string("%"))) &&
-             (neq(x_4756->var_width_expr, std::string("fit-content")) &&
-              (neq(x_4756->var_width_expr, std::string("max-content")) &&
-               (!has_prefix(x_4756->var_width_expr, std::string("calc"))))))) {
-          if (has_suffix(x_4756->var_width_expr, std::string("px"))) {
-            return string_to_float(strip_suffix(x_4756->var_width_expr, std::string("px")));
+        if (neq(x_3046->var_width_expr, std::string("auto")) &&
+            ((!has_suffix(x_3046->var_width_expr, std::string("%"))) &&
+             (neq(x_3046->var_width_expr, std::string("fit-content")) &&
+              (neq(x_3046->var_width_expr, std::string("max-content")) &&
+               (!has_prefix(x_3046->var_width_expr, std::string("calc"))))))) {
+          if (has_suffix(x_3046->var_width_expr, std::string("px"))) {
+            return string_to_float(strip_suffix(x_3046->var_width_expr, std::string("px")));
           } else {
-            return string_to_float(strip_suffix(x_4756->var_width_expr, std::string("ch")));
+            return string_to_float(strip_suffix(x_3046->var_width_expr, std::string("ch")));
           }
         } else {
           return plus(
-              x_4756->var_children_intrinsic_width,
-              (eq(x_4756->name, std::string("#text")))
+              x_3046->var_children_intrinsic_width,
+              (eq(x_3046->name, std::string("#text")))
                   ? (100.)
-                  : ((x_4756->var_is_default_case)
+                  : ((x_3046->var_is_default_case)
                          ? (0.)
-                         : ((eq(x_4756->name, std::string("BR")))
+                         : ((eq(x_3046->name, std::string("BR")))
                                 ? (0.)
-                                : ((eq(x_4756->name, std::string("INPUT")))
+                                : ((eq(x_3046->name, std::string("INPUT")))
                                        ? (100.)
-                                       : ((eq(x_4756->name, std::string("svg")))
-                                              ? ((x_4756->var_has_width_attr &&
-                                                  string_is_float(x_4756->var_width_attr_expr))
-                                                     ? (string_to_float(x_4756->var_width_attr_expr))
-                                                     : (((!x_4756->var_has_width_attr) &&
-                                                         HasAttr(x_4756, std::string("viewBox")))
+                                       : ((eq(x_3046->name, std::string("svg")))
+                                              ? ((x_3046->var_has_width_attr &&
+                                                  string_is_float(x_3046->var_width_attr_expr))
+                                                     ? (string_to_float(x_3046->var_width_attr_expr))
+                                                     : (((!x_3046->var_has_width_attr) &&
+                                                         HasAttr(x_3046, std::string("viewBox")))
                                                             ? (string_to_float(nth_by_sep(
-                                                                  GetAttr<std::string>(x_4756, std::string("viewBox")),
+                                                                  GetAttr<std::string>(x_3046, std::string("viewBox")),
                                                                   std::string(" "), static_cast<int64_t>(2))))
                                                             : (mult(string_to_float(nth_by_sep(
-                                                                        GetAttr<std::string>(x_4756,
+                                                                        GetAttr<std::string>(x_3046,
                                                                                              std::string("viewBox")),
                                                                         std::string(" "), static_cast<int64_t>(2))),
                                                                     divide(string_to_float(
-                                                                               strip_suffix(x_4756->var_width_attr_expr,
+                                                                               strip_suffix(x_3046->var_width_attr_expr,
                                                                                             std::string("%"))),
                                                                            100.)))))
-                                              : ((eq(x_4756->name, std::string("IMG")))
-                                                     ? ((x_4756->var_has_width_attr)
-                                                            ? (string_to_float(x_4756->var_width_attr_expr))
-                                                            : ((HasAttr(x_4756, std::string("image_width")) &&
-                                                                (!x_4756->var_has_height_attr))
+                                              : ((eq(x_3046->name, std::string("IMG")))
+                                                     ? ((x_3046->var_has_width_attr)
+                                                            ? (string_to_float(x_3046->var_width_attr_expr))
+                                                            : ((HasAttr(x_3046, std::string("image_width")) &&
+                                                                (!x_3046->var_has_height_attr))
                                                                    ? (int_to_float(GetAttr<int64_t>(
-                                                                         x_4756, std::string("image_width"))))
+                                                                         x_3046, std::string("image_width"))))
                                                                    : ((neq(GetAttr<int64_t>(
-                                                                               x_4756, std::string("image_height")),
+                                                                               x_3046, std::string("image_height")),
                                                                            static_cast<int64_t>(0)))
                                                                           ? (mult(
                                                                                 string_to_float(
-                                                                                    x_4756->var_height_attr_expr),
+                                                                                    x_3046->var_height_attr_expr),
                                                                                 divide(
                                                                                     int_to_float(GetAttr<int64_t>(
-                                                                                        x_4756,
+                                                                                        x_3046,
                                                                                         std::string("image_width"))),
                                                                                     int_to_float(GetAttr<int64_t>(
-                                                                                        x_4756,
+                                                                                        x_3046,
                                                                                         std::string("image_height"))))))
                                                                           : (0.))))
-                                                     : ((eq(x_4756->name, std::string("IFRAME")))
+                                                     : ((eq(x_3046->name, std::string("IFRAME")))
                                                             ? (300.)
-                                                            : ((eq(x_4756->name, std::string("TEXTAREA")))
+                                                            : ((eq(x_3046->name, std::string("TEXTAREA")))
                                                                    ? (100.)
                                                                    : (300.)))))))));
         }
@@ -1862,51 +1761,51 @@ auto eval_expr_x_3591(const auto &x_4756) {
     }
   }
 }
-Unit var_modified_x_3589(const auto &x_4909) {
-  auto x_6245 = [&](const auto &x_4910) {
-    if (HashtblContain(x_4910->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4910->meta->BBDirtied, std::string("bb_0"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4910);
+Unit var_modified_x_1879(const auto &x_3199) {
+  auto x_3363 = [&](const auto &x_3200) {
+    if (HashtblContain(x_3200->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_3200->meta->BBDirtied, std::string("bb_0"), true);
+      return set_recursive_proc_dirtied_x_1712(x_3200);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6245(x_4909);
+  x_3363(x_3199);
   MakeUnit();
   return MakeUnit();
 }
-auto eval_expr_x_3586(const auto &x_4911) {
-  if (x_4911->last != nullptr) {
-    return (x_4911->last)->var_intrinsic_width_max;
+auto eval_expr_x_1876(const auto &x_3201) {
+  if (x_3201->last != nullptr) {
+    return (x_3201->last)->var_intrinsic_width_max;
   } else {
     return 0.;
   }
 }
-Unit var_modified_x_3584(const auto &x_4916) {
-  auto x_6246 = [&](const auto &x_4917) {
-    if (HashtblContain(x_4917->meta->ProcInited, std::string("pass_1"))) {
-      HashtblSet(x_4917->meta->BBDirtied, std::string("bb_2"), true);
-      return set_recursive_proc_dirtied_x_3201(x_4917);
+Unit var_modified_x_1874(const auto &x_3206) {
+  auto x_3364 = [&](const auto &x_3207) {
+    if (HashtblContain(x_3207->meta->ProcInited, std::string("pass_1"))) {
+      HashtblSet(x_3207->meta->BBDirtied, std::string("bb_2"), true);
+      return set_recursive_proc_dirtied_x_1752(x_3207);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6246(x_4916);
+  x_3364(x_3206);
   MakeUnit();
   return MakeUnit();
 }
-auto eval_expr_x_3581(const auto &x_4918) {
-  if (eq(x_4918->var_display, std::string("none")) || (x_4918->var_inside_svg || x_4918->var_disabled)) {
+auto eval_expr_x_1871(const auto &x_3208) {
+  if (eq(x_3208->var_display, std::string("none")) || (x_3208->var_inside_svg || x_3208->var_disabled)) {
     return true;
   } else {
-    if ((x_4918->parent != nullptr) && (x_4918->parent)->var_is_flex_row) {
+    if ((x_3208->parent != nullptr) && (x_3208->parent)->var_is_flex_row) {
       return false;
     } else {
-      if (eq(x_4918->var_width_expr, std::string("auto")) ||
-          (has_suffix(x_4918->var_width_expr, std::string("px")) ||
-           (has_suffix(x_4918->var_width_expr, std::string("ch")) ||
-            (has_prefix(x_4918->var_width_expr, std::string("calc(")) ||
-             eq(x_4918->var_width_expr, std::string("max-content")))))) {
+      if (eq(x_3208->var_width_expr, std::string("auto")) ||
+          (has_suffix(x_3208->var_width_expr, std::string("px")) ||
+           (has_suffix(x_3208->var_width_expr, std::string("ch")) ||
+            (has_prefix(x_3208->var_width_expr, std::string("calc(")) ||
+             eq(x_3208->var_width_expr, std::string("max-content")))))) {
         return true;
       } else {
         return false;
@@ -1914,29 +1813,29 @@ auto eval_expr_x_3581(const auto &x_4918) {
     }
   }
 }
-Unit var_modified_x_3579(const auto &x_4967) {
-  auto x_6247 = [&](const auto &x_4968) {
-    if (HashtblContain(x_4968->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4968->meta->BBDirtied, std::string("bb_0"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4968);
+Unit var_modified_x_1869(const auto &x_3257) {
+  auto x_3365 = [&](const auto &x_3258) {
+    if (HashtblContain(x_3258->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_3258->meta->BBDirtied, std::string("bb_0"), true);
+      return set_recursive_proc_dirtied_x_1712(x_3258);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6247(x_4967);
+  x_3365(x_3257);
   MakeUnit();
   return MakeUnit();
 }
-auto eval_expr_x_3576(const auto &x_4969) {
-  if (eq(x_4969->var_display, std::string("none"))) {
+auto eval_expr_x_1866(const auto &x_3259) {
+  if (eq(x_3259->var_display, std::string("none"))) {
     return true;
   } else {
-    if (x_4969->var_inside_svg) {
+    if (x_3259->var_inside_svg) {
       return true;
     } else {
-      if (x_4969->var_disabled) {
+      if (x_3259->var_disabled) {
         return true;
-      } else {if ( eq(x_4969->name,std::string("#document")) || (eq(x_4969->name,std::string("#shadow-root")) || (eq(x_4969->name,std::string("DIV")) || (eq(x_4969->name,std::string("HTML")) || (eq(x_4969->name,std::string("BODY")) || (eq(x_4969->name,std::string("BUTTON")) || (eq(x_4969->name,std::string("FOOTER")) || (eq(x_4969->name,std::string("SELECT")) || (eq(x_4969->name,std::string("SECTION")) || (eq(x_4969->name,std::string("FORM")) || (eq(x_4969->name,std::string("CENTER")) || (eq(x_4969->name,std::string("TD")) || (eq(x_4969->name,std::string("TR")) || (eq(x_4969->name,std::string("TBODY")) || (eq(x_4969->name,std::string("TABLE")) || (eq(x_4969->name,std::string("SPAN")) || (eq(x_4969->name,std::string("FONT")) || (eq(x_4969->name,std::string("A")) || (eq(x_4969->name,std::string("ARTICLE")) || (eq(x_4969->name,std::string("P")) || (eq(x_4969->name,std::string("U")) || (eq(x_4969->name,std::string("UL")) || (eq(x_4969->name,std::string("B")) || (eq(x_4969->name,std::string("H1")) || (eq(x_4969->name,std::string("H2")) || (eq(x_4969->name,std::string("H3")) || (eq(x_4969->name,std::string("H4")) || (eq(x_4969->name,std::string("DT")) || (eq(x_4969->name,std::string("DD")) || (eq(x_4969->name,std::string("DL")) || (eq(x_4969->name,std::string("LI")) || (eq(x_4969->name,std::string("LABEL")) || (eq(x_4969->name,std::string("OL")) || (eq(x_4969->name,std::string("NAV")) || (eq(x_4969->name,std::string("HEADER")) || (eq(x_4969->name,std::string("HEAD")) || (eq(x_4969->name,std::string("SOURCE")) || (eq(x_4969->name,std::string("PICTURE")) || (eq(x_4969->name,std::string("FIGURE")) || (eq(x_4969->name,std::string("FIGCAPTION")) || (eq(x_4969->name,std::string("MAIN")) || (eq(x_4969->name,std::string("REACT-PARTIAL")) || (eq(x_4969->name,std::string("QUERY-BUILDER")) || (eq(x_4969->name,std::string("MODAL-DIALOG")) || (eq(x_4969->name,std::string("SCROLLABLE-REGION")) || (eq(x_4969->name,std::string("DIALOG-HELPER")) || (eq(x_4969->name,std::string("AUTO-CHECK")) || (eq(x_4969->name,std::string("TOOL-TIP")) || (eq(x_4969->name,std::string("CUSTOM-SCOPES")) || (eq(x_4969->name,std::string("QBSEARCH-INPUT")) || (eq(x_4969->name,std::string("INCLUDE-FRAGMENT")) || (eq(x_4969->name,std::string("COOKIE-CONSENT-LINK")) || (eq(x_4969->name,std::string("FULLSTORY-CAPTURE")) || (eq(x_4969->name,std::string("GHCC-CONSENT")) || (eq(x_4969->name,std::string("GLOBAL-BANNER")) || (eq(x_4969->name,std::string("ACTIVE-GLOBAL-BANNERS")) || (eq(x_4969->name,std::string("CARD-SKEW")) || (eq(x_4969->name,std::string("EM")) || (eq(x_4969->name,std::string("ASIDE")) || (eq(x_4969->name,std::string("AUDIO")) || (eq(x_4969->name,std::string("SUP")) || (eq(x_4969->name,std::string("TIME")) || (eq(x_4969->name,std::string("ABBR")) || (eq(x_4969->name,std::string("SMALL")) || (eq(x_4969->name,std::string("SLOT")) || eq(x_4969->name,std::string("I")))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))) ){
+      } else {if ( eq(x_3259->name,std::string("#document")) || (eq(x_3259->name,std::string("#shadow-root")) || (eq(x_3259->name,std::string("DIV")) || (eq(x_3259->name,std::string("HTML")) || (eq(x_3259->name,std::string("BODY")) || (eq(x_3259->name,std::string("BUTTON")) || (eq(x_3259->name,std::string("FOOTER")) || (eq(x_3259->name,std::string("SELECT")) || (eq(x_3259->name,std::string("SECTION")) || (eq(x_3259->name,std::string("FORM")) || (eq(x_3259->name,std::string("CENTER")) || (eq(x_3259->name,std::string("TD")) || (eq(x_3259->name,std::string("TR")) || (eq(x_3259->name,std::string("TBODY")) || (eq(x_3259->name,std::string("TABLE")) || (eq(x_3259->name,std::string("SPAN")) || (eq(x_3259->name,std::string("FONT")) || (eq(x_3259->name,std::string("A")) || (eq(x_3259->name,std::string("ARTICLE")) || (eq(x_3259->name,std::string("P")) || (eq(x_3259->name,std::string("U")) || (eq(x_3259->name,std::string("UL")) || (eq(x_3259->name,std::string("B")) || (eq(x_3259->name,std::string("H1")) || (eq(x_3259->name,std::string("H2")) || (eq(x_3259->name,std::string("H3")) || (eq(x_3259->name,std::string("H4")) || (eq(x_3259->name,std::string("DT")) || (eq(x_3259->name,std::string("DD")) || (eq(x_3259->name,std::string("DL")) || (eq(x_3259->name,std::string("LI")) || (eq(x_3259->name,std::string("LABEL")) || (eq(x_3259->name,std::string("OL")) || (eq(x_3259->name,std::string("NAV")) || (eq(x_3259->name,std::string("HEADER")) || (eq(x_3259->name,std::string("HEAD")) || (eq(x_3259->name,std::string("SOURCE")) || (eq(x_3259->name,std::string("PICTURE")) || (eq(x_3259->name,std::string("FIGURE")) || (eq(x_3259->name,std::string("FIGCAPTION")) || (eq(x_3259->name,std::string("MAIN")) || (eq(x_3259->name,std::string("REACT-PARTIAL")) || (eq(x_3259->name,std::string("QUERY-BUILDER")) || (eq(x_3259->name,std::string("MODAL-DIALOG")) || (eq(x_3259->name,std::string("SCROLLABLE-REGION")) || (eq(x_3259->name,std::string("DIALOG-HELPER")) || (eq(x_3259->name,std::string("AUTO-CHECK")) || (eq(x_3259->name,std::string("TOOL-TIP")) || (eq(x_3259->name,std::string("CUSTOM-SCOPES")) || (eq(x_3259->name,std::string("QBSEARCH-INPUT")) || (eq(x_3259->name,std::string("INCLUDE-FRAGMENT")) || (eq(x_3259->name,std::string("COOKIE-CONSENT-LINK")) || (eq(x_3259->name,std::string("FULLSTORY-CAPTURE")) || (eq(x_3259->name,std::string("GHCC-CONSENT")) || (eq(x_3259->name,std::string("GLOBAL-BANNER")) || (eq(x_3259->name,std::string("ACTIVE-GLOBAL-BANNERS")) || (eq(x_3259->name,std::string("CARD-SKEW")) || (eq(x_3259->name,std::string("EM")) || (eq(x_3259->name,std::string("ASIDE")) || (eq(x_3259->name,std::string("AUDIO")) || (eq(x_3259->name,std::string("SUP")) || (eq(x_3259->name,std::string("TIME")) || (eq(x_3259->name,std::string("ABBR")) || (eq(x_3259->name,std::string("SMALL")) || (eq(x_3259->name,std::string("SLOT")) || eq(x_3259->name,std::string("I")))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))) ){
           return true;
         } else {
           return false;
@@ -1945,1764 +1844,642 @@ auto eval_expr_x_3576(const auto &x_4969) {
     }
   }
 }
-Unit var_modified_x_3574(const auto &x_4982) {
-  auto x_6248 = [&](const auto &x_4983) {
-    if (HashtblContain(x_4983->meta->ProcInited, std::string("pass_0"))) {
-      HashtblSet(x_4983->meta->BBDirtied, std::string("bb_0"), true);
-      return set_recursive_proc_dirtied_x_3161(x_4983);
+Unit var_modified_x_1864(const auto &x_3272) {
+  auto x_3366 = [&](const auto &x_3273) {
+    if (HashtblContain(x_3273->meta->ProcInited, std::string("pass_0"))) {
+      HashtblSet(x_3273->meta->BBDirtied, std::string("bb_0"), true);
+      return set_recursive_proc_dirtied_x_1712(x_3273);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6248(x_4982);
+  x_3366(x_3272);
   MakeUnit();
-  auto x_6249 = [&](const auto &x_4984) {
-    if (HashtblContain(x_4984->meta->ProcInited, std::string("pass_1"))) {
-      HashtblSet(x_4984->meta->BBDirtied, std::string("bb_2"), true);
-      return set_recursive_proc_dirtied_x_3201(x_4984);
+  auto x_3367 = [&](const auto &x_3274) {
+    if (HashtblContain(x_3274->meta->ProcInited, std::string("pass_1"))) {
+      HashtblSet(x_3274->meta->BBDirtied, std::string("bb_2"), true);
+      return set_recursive_proc_dirtied_x_1752(x_3274);
     } else {
       return MetaWriteMetric();
     }
   };
-  x_6249(x_4982);
+  x_3367(x_3272);
   MakeUnit();
   return MakeUnit();
 }
-auto eval_expr_x_3571(const auto &x_4985) {
-  if (HasProp(x_4985, std::string("width"))) {
-    return GetProp<std::string>(x_4985, std::string("width"));
+auto eval_expr_x_1861(const auto &x_3275) {
+  if (HasProp(x_3275, std::string("width"))) {
+    return GetProp<std::string>(x_3275, std::string("width"));
   } else {
     return std::string("auto");
   }
 }
-Unit var_modified_x_3568(const auto &x_4988) { return MakeUnit(); }
-auto eval_expr_x_3565(const auto &x_4992) {
-  if ((x_4992->prev != nullptr) && (!(x_4992->prev)->var_line_break)) {
-    return max(x_4992->var_height_external, (x_4992->prev)->var_line_height);
-  } else {
-    return x_4992->var_height_external;
-  }
-}
-Unit var_modified_x_3563(const auto &x_5009) { return MakeUnit(); }
-auto eval_expr_x_3560(const auto &x_5011) {
-  if (eq(x_5011->var_position, std::string("absolute"))) {
-    return 0.;
-  } else {
-    return x_5011->var_height_internal;
-  }
-}
-Unit var_modified_x_3558(const auto &x_5020) { return MakeUnit(); }
-auto eval_expr_x_3555(const auto &x_5023) {
-  if (x_5023->var_intrinsic_height_is_height) {
-    return x_5023->var_intrinsic_height_internal;
-  } else {
-    if ((x_5023->parent != nullptr) && (x_5023->parent)->var_is_flex_column) {
-      return plus(x_5023->var_intrinsic_height_internal,
-                  mult(x_5023->var_flex_amount, (x_5023->parent)->var_flex_unit));
-    } else {
-      if (has_suffix(x_5023->var_height_expr, std::string("%"))) {
-        return mult(x_5023->var_box_height,
-                    divide(string_to_float(strip_suffix(x_5023->var_height_expr, std::string("%"))), 100.));
-      } else {
-        return max(x_5023->var_box_height, x_5023->var_intrinsic_height_internal);
-      }
-    }
-  }
-}
-Unit var_modified_x_3553(const auto &x_5076) { return MakeUnit(); }
-auto eval_expr_x_3550(const auto &x_5081) {
-  if (x_5081->prev != nullptr) {
-    if (x_5081->var_line_break || (x_5081->prev)->var_line_break) {
-      return plus((x_5081->prev)->var_y, (x_5081->prev)->var_line_height);
-    } else {
-      return (x_5081->prev)->var_y;
-    }
-  } else {
-    if (x_5081->parent != nullptr) {
-      return (x_5081->parent)->var_y;
-    } else {
-      return 0.;
-    }
-  }
-}
-Unit var_modified_x_3548(const auto &x_5106) { return MakeUnit(); }
-auto eval_expr_x_3545(const auto &x_5110) {
-  if (eq(x_5110->var_position, std::string("absolute"))) {
-    return 0.;
-  } else {
-    return x_5110->var_width_internal;
-  }
-}
-Unit var_modified_x_3543(const auto &x_5119) { return MakeUnit(); }
-auto eval_expr_x_3540(const auto &x_5122) {
-  if (x_5122->var_intrinsic_width_is_width) {
-    return x_5122->var_intrinsic_width_internal;
-  } else {
-    if ((x_5122->parent != nullptr) && (x_5122->parent)->var_is_flex_row) {
-      return plus(x_5122->var_intrinsic_width_internal, mult(x_5122->var_flex_amount, (x_5122->parent)->var_flex_unit));
-    } else {
-      if (has_suffix(x_5122->var_width_expr, std::string("%"))) {
-        return mult(x_5122->var_box_width,
-                    divide(string_to_float(strip_suffix(x_5122->var_width_expr, std::string("%"))), 100.));
-      } else {
-        return max(x_5122->var_box_width, x_5122->var_intrinsic_width_internal);
-      }
-    }
-  }
-}
-Unit var_modified_x_3538(const auto &x_5175) { return MakeUnit(); }
-auto eval_expr_x_3535(const auto &x_5180) {
-  if (x_5180->prev != nullptr) {
-    if (x_5180->var_line_break || (x_5180->prev)->var_line_break) {
-      return 0.;
-    } else {
-      return plus((x_5180->prev)->var_x, (x_5180->prev)->var_width_external);
-    }
-  } else {
-    if (x_5180->parent != nullptr) {
-      return (x_5180->parent)->var_x;
-    } else {
-      return 0.;
-    }
-  }
-}
-Unit var_modified_x_3533(const auto &x_5201) { return MakeUnit(); }
-auto eval_expr_x_3530(const auto &x_5203) {
-  if (gt(x_5203->var_left_over, 0.)) {
-    return divide(x_5203->var_left_over, x_5203->var_flex_grow_sum);
-  } else {
-    return divide(x_5203->var_left_over, x_5203->var_flex_shrink_sum);
-  }
-}
-Unit var_modified_x_3528(const auto &x_5224) { return MakeUnit(); }
-auto eval_expr_x_3525(const auto &x_5226) {
-  if ((x_5226->parent != nullptr) && gt((x_5226->parent)->var_left_over, 0.)) {
-    return x_5226->var_flex_grow;
-  } else {
-    return x_5226->var_flex_shrink;
-  }
-}
-Unit var_modified_x_3523(const auto &x_5239) { return MakeUnit(); }
-auto eval_expr_x_3520(const auto &x_5242) {
-  if (x_5242->var_is_flex_row) {
-    return minus(x_5242->var_box_width, (x_5242->last != nullptr) ? ((x_5242->last)->var_intrinsic_width_sum) : (0.));
-  } else {
-    return minus(x_5242->var_box_height, (x_5242->last != nullptr) ? ((x_5242->last)->var_intrinsic_height_sum) : (0.));
-  }
-}
-Unit var_modified_x_3518(const auto &x_5263) { return MakeUnit(); }
-auto eval_expr_x_3515(const auto &x_5265) {
-  if (x_5265->parent != nullptr) {
-    return (x_5265->parent)->var_height_internal;
-  } else {
-    return 1080.;
-  }
-}
-Unit var_modified_x_3513(const auto &x_5270) { return MakeUnit(); }
-auto eval_expr_x_3510(const auto &x_5272) {
-  if (x_5272->parent != nullptr) {
-    return (x_5272->parent)->var_width_internal;
-  } else {
-    return 1920.;
-  }
-}
-Unit var_modified_x_3507(const auto &x_5277) { return MakeUnit(); }
-auto eval_expr_x_3504(const auto &x_5286) {
-  if (eq(x_5286->var_display, std::string("none"))) {
-    return false;
-  } else {
-    if (eq(x_5286->var_position, std::string("absolute"))) {
-      return false;
-    } else {
-      if ((x_5286->parent != nullptr) &&
-          (eq((x_5286->parent)->var_display, std::string("flex")) ||
-           eq((x_5286->parent)->var_display, std::string("inline-flex")))) {
-        return true;
-      } else {
-        if (eq(x_5286->var_display, std::string("block"))) {
-          return true;
-        } else {
-          if (eq(x_5286->var_display, std::string("inline"))) {
-            return false;
-          } else {
-            if (eq(x_5286->var_display, std::string("inline-block"))) {
-              return false;
-            } else {
-              if (eq(x_5286->var_display, std::string("flex"))) {
-                if (eq(GetProp<std::string>(x_5286, std::string("flex-direction")), std::string("row"))) {
-                  return false;
-                } else {
-                  if (eq(GetProp<std::string>(x_5286, std::string("flex-direction")), std::string("column"))) {
-                    return true;
-                  } else {
-                    return true;
-                  }
-                }
-              } else {
-                if (eq(x_5286->var_display, std::string("inline-flex"))) {
-                  return false;
-                } else {
-                  if (eq(x_5286->var_display, std::string("contents"))) {
-                    return false;
-                  } else {
-                    if (eq(x_5286->var_display, std::string("table"))) {
-                      return true;
-                    } else {
-                      if (eq(x_5286->var_display, std::string("table-row-group"))) {
-                        return true;
-                      } else {
-                        if (eq(x_5286->var_display, std::string("table-row"))) {
-                          return true;
-                        } else {
-                          if (eq(x_5286->var_display, std::string("table-cell"))) {
-                            return false;
-                          } else {
-                            if (eq(x_5286->var_display, std::string("list-item"))) {
-                              return true;
-                            } else {
-                              return true;
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
-Unit var_modified_x_3502(const auto &x_5363) { return MakeUnit(); }
-auto eval_expr_x_3499(const auto &x_5365) {
-  return (((!(x_5365->parent != nullptr)) || (x_5365->parent)->var_visible) &&
-          (neq(x_5365->var_display, std::string("none")) && ((!x_5365->var_inside_svg) && (!x_5365->var_disabled))));
-}
-Unit var_modified_x_3497(const auto &x_5382) { return MakeUnit(); }
-auto eval_expr_x_3494(const auto &x_5386) {
-  if (eq(x_5386->name, std::string("NOSCRIPT"))) {
-    return true;
-  } else {
-    return ((x_5386->parent != nullptr) && (x_5386->parent)->var_disabled);
-  }
-}
-Unit var_modified_x_3492(const auto &x_5391) { return MakeUnit(); }
-auto eval_expr_x_3489(const auto &x_5395) {
-  return ((x_5395->parent != nullptr) && ((x_5395->parent)->var_is_svg_block || (x_5395->parent)->var_inside_svg));
-}
-Unit var_modified_x_3487(const auto &x_5404) { return MakeUnit(); }
-auto eval_expr_x_3484(const auto &x_5406) { return eq(x_5406->name, std::string("svg")); }
-Unit var_modified_x_3482(const auto &x_5407) { return MakeUnit(); }
-auto eval_expr_x_3479(const auto &x_5409) { return neq(x_5409->var_height_attr_expr, std::string("auto")); }
-Unit var_modified_x_3477(const auto &x_5414) { return MakeUnit(); }
-auto eval_expr_x_3474(const auto &x_5417) {
-  if (!HasAttr(x_5417, std::string("height"))) {
-    return std::string("auto");
-  } else {
-    if (string_is_float(GetAttr<std::string>(x_5417, std::string("height"))) ||
-        has_suffix(GetAttr<std::string>(x_5417, std::string("height")), std::string("%"))) {
-      return GetAttr<std::string>(x_5417, std::string("height"));
-    } else {
-      return std::string("auto");
-    }
-  }
-}
-Unit var_modified_x_3472(const auto &x_5428) { return MakeUnit(); }
-auto eval_expr_x_3469(const auto &x_5430) { return neq(x_5430->var_width_attr_expr, std::string("auto")); }
-Unit var_modified_x_3467(const auto &x_5435) { return MakeUnit(); }
-auto eval_expr_x_3464(const auto &x_5438) {
-  if (!HasAttr(x_5438, std::string("width"))) {
-    return std::string("auto");
-  } else {
-    if (string_is_float(GetAttr<std::string>(x_5438, std::string("width"))) ||
-        has_suffix(GetAttr<std::string>(x_5438, std::string("width")), std::string("%"))) {
-      return GetAttr<std::string>(x_5438, std::string("width"));
-    } else {
-      return std::string("auto");
-    }
-  }
-}
-Unit var_modified_x_3462(const auto &x_5449) { return MakeUnit(); }
-auto eval_expr_x_3459(const auto &x_5452) {
-  if ((x_5452->parent != nullptr) &&
-      (eq((x_5452->parent)->var_display, std::string("flex")) ||
-       eq((x_5452->parent)->var_display, std::string("inline-flex")))) {
-    if (eq((x_5452->parent)->var_flex_direction, std::string("column")) ||
-        eq((x_5452->parent)->var_flex_direction, std::string("column-reverse"))) {
-      return true;
-    } else {
-      return false;
-    }
-  } else {
-    return false;
-  }
-}
-Unit var_modified_x_3457(const auto &x_5477) { return MakeUnit(); }
-auto eval_expr_x_3454(const auto &x_5481) {
-  if ((x_5481->parent != nullptr) &&
-      (eq((x_5481->parent)->var_display, std::string("flex")) ||
-       eq((x_5481->parent)->var_display, std::string("inline-flex")))) {
-    if (eq((x_5481->parent)->var_flex_direction, std::string("row"))) {
-      return true;
-    } else {
-      return false;
-    }
-  } else {
-    return false;
-  }
-}
-Unit var_modified_x_3452(const auto &x_5506) { return MakeUnit(); }
-auto eval_expr_x_3449(const auto &x_5508) {
-  if (HasProp(x_5508, std::string("flex-direction"))) {
-    return GetProp<std::string>(x_5508, std::string("flex-direction"));
-  } else {
-    return std::string("");
-  }
-}
-Unit var_modified_x_3447(const auto &x_5511) { return MakeUnit(); }
-auto eval_expr_x_3444(const auto &x_5516) {
-  return plus((x_5516->prev != nullptr) ? ((x_5516->prev)->var_flex_shrink_sum) : (0.), x_5516->var_flex_shrink);
-}
-Unit var_modified_x_3442(const auto &x_5525) { return MakeUnit(); }
-auto eval_expr_x_3439(const auto &x_5530) {
-  return plus((x_5530->prev != nullptr) ? ((x_5530->prev)->var_flex_grow_sum) : (0.), x_5530->var_flex_grow);
-}
-Unit var_modified_x_3437(const auto &x_5539) { return MakeUnit(); }
-auto eval_expr_x_3434(const auto &x_5542) {
-  if (HasProp(x_5542, std::string("flex-shrink"))) {
-    return string_to_float(GetProp<std::string>(x_5542, std::string("flex-shrink")));
-  } else {
-    return 0.;
-  }
-}
-Unit var_modified_x_3432(const auto &x_5545) { return MakeUnit(); }
-auto eval_expr_x_3429(const auto &x_5548) {
-  if (HasProp(x_5548, std::string("flex-grow"))) {
-    return string_to_float(GetProp<std::string>(x_5548, std::string("flex-grow")));
-  } else {
-    return 0.;
-  }
-}
-Unit var_modified_x_3427(const auto &x_5551) { return MakeUnit(); }
-auto eval_expr_x_3424(const auto &x_5555) {
-  if (HasProp(x_5555, std::string("position"))) {
-    return GetProp<std::string>(x_5555, std::string("position"));
-  } else {
-    return std::string("static");
-  }
-}
-Unit var_modified_x_3422(const auto &x_5558) { return MakeUnit(); }
-auto eval_expr_x_3419(const auto &x_5562) {
-  if (HasProp(x_5562, std::string("display"))) {
-    return GetProp<std::string>(x_5562, std::string("display"));
-  } else {
-    return std::string("block");
-  }
-}
-Unit var_modified_x_3416(const auto &x_5565) { return MakeUnit(); }
-auto eval_expr_x_3413(const auto &x_5572) {
-  if (x_5572->prev != nullptr) {
-    if (x_5572->var_line_break) {
-      return plus((x_5572->prev)->var_finished_intrinsic_height_sum,
-                  plus((x_5572->prev)->var_intrinsic_current_line_height, x_5572->var_intrinsic_height_external));
-    } else {
-      return (x_5572->prev)->var_finished_intrinsic_height_sum;
-    }
-  } else {
-    if (x_5572->var_line_break) {
-      return x_5572->var_intrinsic_height_external;
-    } else {
-      return 0.;
-    }
-  }
-}
-Unit var_modified_x_3411(const auto &x_5601) { return MakeUnit(); }
-auto eval_expr_x_3408(const auto &x_5608) {
-  if (x_5608->var_line_break) {
-    return 0.;
-  } else {
-    return max(x_5608->var_intrinsic_height_external,
-               (x_5608->prev != nullptr) ? ((x_5608->prev)->var_intrinsic_current_line_height) : (0.));
-  }
-}
-Unit var_modified_x_3406(const auto &x_5621) { return MakeUnit(); }
-auto eval_expr_x_3403(const auto &x_5628) {
-  return plus((x_5628->prev != nullptr) ? ((x_5628->prev)->var_intrinsic_height_sum) : (0.),
-              x_5628->var_intrinsic_height_external);
-}
-Unit var_modified_x_3401(const auto &x_5637) { return MakeUnit(); }
-auto eval_expr_x_3398(const auto &x_5639) {
-  if (eq(x_5639->var_position, std::string("absolute"))) {
-    return 0.;
-  } else {
-    return x_5639->var_intrinsic_height_internal;
-  }
-}
-Unit var_modified_x_3396(const auto &x_5648) { return MakeUnit(); }
-auto eval_expr_x_3393(const auto &x_5651) {
-  if (eq(x_5651->var_display, std::string("none"))) {
-    return 0.;
-  } else {
-    if (x_5651->var_inside_svg) {
-      return 0.;
-    } else {
-      if (x_5651->var_disabled) {
-        return 0.;
-      } else {
-        if (neq(x_5651->var_height_expr, std::string("auto")) &&
-            ((!has_suffix(x_5651->var_height_expr, std::string("%"))) &&
-             neq(x_5651->var_height_expr, std::string("fit-content")))) {
-          if (has_suffix(x_5651->var_height_expr, std::string("px"))) {
-            return string_to_float(strip_suffix(x_5651->var_height_expr, std::string("px")));
-          } else {
-            if (has_suffix(x_5651->var_height_expr, std::string("ch"))) {
-              return string_to_float(strip_suffix(x_5651->var_height_expr, std::string("ch")));
-            } else {
-              return string_to_float(strip_suffix(x_5651->var_height_expr, std::string("lh")));
-            }
-          }
-        } else {
-          return plus(
-              x_5651->var_children_intrinsic_height,
-              (eq(x_5651->name, std::string("#text")))
-                  ? (10.)
-                  : ((x_5651->var_is_default_case)
-                         ? (0.)
-                         : ((eq(x_5651->name, std::string("BR")))
-                                ? (0.)
-                                : ((eq(x_5651->name, std::string("INPUT")))
-                                       ? (10.)
-                                       : ((eq(x_5651->name, std::string("svg")))
-                                              ? ((x_5651->var_has_height_attr &&
-                                                  string_is_float(x_5651->var_height_attr_expr))
-                                                     ? (string_to_float(x_5651->var_height_attr_expr))
-                                                     : ((HasAttr(x_5651, std::string("viewBox")))
-                                                            ? (string_to_float(nth_by_sep(
-                                                                  GetAttr<std::string>(x_5651, std::string("viewBox")),
-                                                                  std::string(" "), static_cast<int64_t>(3))))
-                                                            : (mult(string_to_float(nth_by_sep(
-                                                                        GetAttr<std::string>(x_5651,
-                                                                                             std::string("viewBox")),
-                                                                        std::string(" "), static_cast<int64_t>(3))),
-                                                                    divide(string_to_float(strip_suffix(
-                                                                               x_5651->var_height_attr_expr,
-                                                                               std::string("%"))),
-                                                                           100.)))))
-                                              : ((eq(x_5651->name, std::string("IMG")))
-                                                     ? ((x_5651->var_has_height_attr)
-                                                            ? (string_to_float(x_5651->var_height_attr_expr))
-                                                            : ((HasAttr(x_5651, std::string("image_height")) &&
-                                                                (!x_5651->var_has_width_attr))
-                                                                   ? (int_to_float(GetAttr<int64_t>(
-                                                                         x_5651, std::string("image_height"))))
-                                                                   : ((neq(GetAttr<int64_t>(x_5651,
-                                                                                            std::string("image_width")),
-                                                                           static_cast<int64_t>(0)))
-                                                                          ? (mult(
-                                                                                string_to_float(
-                                                                                    x_5651->var_width_attr_expr),
-                                                                                divide(
-                                                                                    int_to_float(GetAttr<int64_t>(
-                                                                                        x_5651,
-                                                                                        std::string("image_height"))),
-                                                                                    int_to_float(GetAttr<int64_t>(
-                                                                                        x_5651,
-                                                                                        std::string("image_width"))))))
-                                                                          : (0.))))
-                                                     : ((eq(x_5651->name, std::string("IFRAME")))
-                                                            ? (150.)
-                                                            : ((eq(x_5651->name, std::string("TEXTAREA")))
-                                                                   ? (100.)
-                                                                   : (150.)))))))));
-        }
-      }
-    }
-  }
-}
-Unit var_modified_x_3391(const auto &x_5796) { return MakeUnit(); }
-auto eval_expr_x_3388(const auto &x_5798) {
-  if (eq(x_5798->var_display, std::string("none")) || (x_5798->var_inside_svg || x_5798->var_disabled)) {
-    return true;
-  } else {
-    if ((x_5798->parent != nullptr) && (x_5798->parent)->var_is_flex_column) {
-      return false;
-    } else {
-      if (eq(x_5798->var_height_expr, std::string("auto")) ||
-          (has_suffix(x_5798->var_height_expr, std::string("px")) ||
-           (has_suffix(x_5798->var_height_expr, std::string("ch")) ||
-            (has_suffix(x_5798->var_height_expr, std::string("lh")) ||
-             eq(x_5798->var_height_expr, std::string("max-content")))))) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  }
-}
-Unit var_modified_x_3386(const auto &x_5847) { return MakeUnit(); }
-auto eval_expr_x_3383(const auto &x_5850) {
-  if (HasProp(x_5850, std::string("height"))) {
-    return GetProp<std::string>(x_5850, std::string("height"));
-  } else {
-    return std::string("auto");
-  }
-}
-Unit var_modified_x_3381(const auto &x_5853) { return MakeUnit(); }
-auto eval_expr_x_3378(const auto &x_5855) {
-  if (x_5855->last != nullptr) {
-    return plus((x_5855->last)->var_finished_intrinsic_height_sum, (x_5855->last)->var_intrinsic_current_line_height);
-  } else {
-    return 0.;
-  }
-}
-Unit var_modified_x_3376(const auto &x_5864) { return MakeUnit(); }
-auto eval_expr_x_3373(const auto &x_5871) {
-  return plus((x_5871->prev != nullptr) ? ((x_5871->prev)->var_intrinsic_width_sum) : (0.),
-              x_5871->var_intrinsic_width_external);
-}
-Unit var_modified_x_3371(const auto &x_5880) { return MakeUnit(); }
-auto eval_expr_x_3368(const auto &x_5887) {
-  return max(x_5887->var_intrinsic_current_line_width,
-             (x_5887->prev != nullptr) ? ((x_5887->prev)->var_intrinsic_width_max) : (0.));
-}
-Unit var_modified_x_3366(const auto &x_5896) { return MakeUnit(); }
-auto eval_expr_x_3363(const auto &x_5901) {
-  return plus(x_5901->var_intrinsic_width_external,
-              ((x_5901->prev != nullptr) && (!(x_5901->prev)->var_line_break))
-                  ? ((x_5901->prev)->var_intrinsic_current_line_width)
-                  : (0.));
-}
-Unit var_modified_x_3361(const auto &x_5914) { return MakeUnit(); }
-auto eval_expr_x_3358(const auto &x_5916) {
-  if (eq(x_5916->var_position, std::string("absolute"))) {
-    return 0.;
-  } else {
-    return x_5916->var_intrinsic_width_internal;
-  }
-}
-Unit var_modified_x_3356(const auto &x_5925) { return MakeUnit(); }
-auto eval_expr_x_3353(const auto &x_5928) {
-  if (eq(x_5928->var_display, std::string("none"))) {
-    return 0.;
-  } else {
-    if (x_5928->var_inside_svg) {
-      return 0.;
-    } else {
-      if (x_5928->var_disabled) {
-        return 0.;
-      } else {
-        if (neq(x_5928->var_width_expr, std::string("auto")) &&
-            ((!has_suffix(x_5928->var_width_expr, std::string("%"))) &&
-             (neq(x_5928->var_width_expr, std::string("fit-content")) &&
-              (neq(x_5928->var_width_expr, std::string("max-content")) &&
-               (!has_prefix(x_5928->var_width_expr, std::string("calc"))))))) {
-          if (has_suffix(x_5928->var_width_expr, std::string("px"))) {
-            return string_to_float(strip_suffix(x_5928->var_width_expr, std::string("px")));
-          } else {
-            return string_to_float(strip_suffix(x_5928->var_width_expr, std::string("ch")));
-          }
-        } else {
-          return plus(
-              x_5928->var_children_intrinsic_width,
-              (eq(x_5928->name, std::string("#text")))
-                  ? (100.)
-                  : ((x_5928->var_is_default_case)
-                         ? (0.)
-                         : ((eq(x_5928->name, std::string("BR")))
-                                ? (0.)
-                                : ((eq(x_5928->name, std::string("INPUT")))
-                                       ? (100.)
-                                       : ((eq(x_5928->name, std::string("svg")))
-                                              ? ((x_5928->var_has_width_attr &&
-                                                  string_is_float(x_5928->var_width_attr_expr))
-                                                     ? (string_to_float(x_5928->var_width_attr_expr))
-                                                     : (((!x_5928->var_has_width_attr) &&
-                                                         HasAttr(x_5928, std::string("viewBox")))
-                                                            ? (string_to_float(nth_by_sep(
-                                                                  GetAttr<std::string>(x_5928, std::string("viewBox")),
-                                                                  std::string(" "), static_cast<int64_t>(2))))
-                                                            : (mult(string_to_float(nth_by_sep(
-                                                                        GetAttr<std::string>(x_5928,
-                                                                                             std::string("viewBox")),
-                                                                        std::string(" "), static_cast<int64_t>(2))),
-                                                                    divide(string_to_float(
-                                                                               strip_suffix(x_5928->var_width_attr_expr,
-                                                                                            std::string("%"))),
-                                                                           100.)))))
-                                              : ((eq(x_5928->name, std::string("IMG")))
-                                                     ? ((x_5928->var_has_width_attr)
-                                                            ? (string_to_float(x_5928->var_width_attr_expr))
-                                                            : ((HasAttr(x_5928, std::string("image_width")) &&
-                                                                (!x_5928->var_has_height_attr))
-                                                                   ? (int_to_float(GetAttr<int64_t>(
-                                                                         x_5928, std::string("image_width"))))
-                                                                   : ((neq(GetAttr<int64_t>(
-                                                                               x_5928, std::string("image_height")),
-                                                                           static_cast<int64_t>(0)))
-                                                                          ? (mult(
-                                                                                string_to_float(
-                                                                                    x_5928->var_height_attr_expr),
-                                                                                divide(
-                                                                                    int_to_float(GetAttr<int64_t>(
-                                                                                        x_5928,
-                                                                                        std::string("image_width"))),
-                                                                                    int_to_float(GetAttr<int64_t>(
-                                                                                        x_5928,
-                                                                                        std::string("image_height"))))))
-                                                                          : (0.))))
-                                                     : ((eq(x_5928->name, std::string("IFRAME")))
-                                                            ? (300.)
-                                                            : ((eq(x_5928->name, std::string("TEXTAREA")))
-                                                                   ? (100.)
-                                                                   : (300.)))))))));
-        }
-      }
-    }
-  }
-}
-Unit var_modified_x_3351(const auto &x_6081) { return MakeUnit(); }
-auto eval_expr_x_3348(const auto &x_6083) {
-  if (x_6083->last != nullptr) {
-    return (x_6083->last)->var_intrinsic_width_max;
-  } else {
-    return 0.;
-  }
-}
-Unit var_modified_x_3346(const auto &x_6088) { return MakeUnit(); }
-auto eval_expr_x_3343(const auto &x_6090) {
-  if (eq(x_6090->var_display, std::string("none")) || (x_6090->var_inside_svg || x_6090->var_disabled)) {
-    return true;
-  } else {
-    if ((x_6090->parent != nullptr) && (x_6090->parent)->var_is_flex_row) {
-      return false;
-    } else {
-      if (eq(x_6090->var_width_expr, std::string("auto")) ||
-          (has_suffix(x_6090->var_width_expr, std::string("px")) ||
-           (has_suffix(x_6090->var_width_expr, std::string("ch")) ||
-            (has_prefix(x_6090->var_width_expr, std::string("calc(")) ||
-             eq(x_6090->var_width_expr, std::string("max-content")))))) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  }
-}
-Unit var_modified_x_3341(const auto &x_6139) { return MakeUnit(); }
-auto eval_expr_x_3338(const auto &x_6141) {
-  if (eq(x_6141->var_display, std::string("none"))) {
-    return true;
-  } else {
-    if (x_6141->var_inside_svg) {
-      return true;
-    } else {
-      if (x_6141->var_disabled) {
-        return true;
-      } else {if ( eq(x_6141->name,std::string("#document")) || (eq(x_6141->name,std::string("#shadow-root")) || (eq(x_6141->name,std::string("DIV")) || (eq(x_6141->name,std::string("HTML")) || (eq(x_6141->name,std::string("BODY")) || (eq(x_6141->name,std::string("BUTTON")) || (eq(x_6141->name,std::string("FOOTER")) || (eq(x_6141->name,std::string("SELECT")) || (eq(x_6141->name,std::string("SECTION")) || (eq(x_6141->name,std::string("FORM")) || (eq(x_6141->name,std::string("CENTER")) || (eq(x_6141->name,std::string("TD")) || (eq(x_6141->name,std::string("TR")) || (eq(x_6141->name,std::string("TBODY")) || (eq(x_6141->name,std::string("TABLE")) || (eq(x_6141->name,std::string("SPAN")) || (eq(x_6141->name,std::string("FONT")) || (eq(x_6141->name,std::string("A")) || (eq(x_6141->name,std::string("ARTICLE")) || (eq(x_6141->name,std::string("P")) || (eq(x_6141->name,std::string("U")) || (eq(x_6141->name,std::string("UL")) || (eq(x_6141->name,std::string("B")) || (eq(x_6141->name,std::string("H1")) || (eq(x_6141->name,std::string("H2")) || (eq(x_6141->name,std::string("H3")) || (eq(x_6141->name,std::string("H4")) || (eq(x_6141->name,std::string("DT")) || (eq(x_6141->name,std::string("DD")) || (eq(x_6141->name,std::string("DL")) || (eq(x_6141->name,std::string("LI")) || (eq(x_6141->name,std::string("LABEL")) || (eq(x_6141->name,std::string("OL")) || (eq(x_6141->name,std::string("NAV")) || (eq(x_6141->name,std::string("HEADER")) || (eq(x_6141->name,std::string("HEAD")) || (eq(x_6141->name,std::string("SOURCE")) || (eq(x_6141->name,std::string("PICTURE")) || (eq(x_6141->name,std::string("FIGURE")) || (eq(x_6141->name,std::string("FIGCAPTION")) || (eq(x_6141->name,std::string("MAIN")) || (eq(x_6141->name,std::string("REACT-PARTIAL")) || (eq(x_6141->name,std::string("QUERY-BUILDER")) || (eq(x_6141->name,std::string("MODAL-DIALOG")) || (eq(x_6141->name,std::string("SCROLLABLE-REGION")) || (eq(x_6141->name,std::string("DIALOG-HELPER")) || (eq(x_6141->name,std::string("AUTO-CHECK")) || (eq(x_6141->name,std::string("TOOL-TIP")) || (eq(x_6141->name,std::string("CUSTOM-SCOPES")) || (eq(x_6141->name,std::string("QBSEARCH-INPUT")) || (eq(x_6141->name,std::string("INCLUDE-FRAGMENT")) || (eq(x_6141->name,std::string("COOKIE-CONSENT-LINK")) || (eq(x_6141->name,std::string("FULLSTORY-CAPTURE")) || (eq(x_6141->name,std::string("GHCC-CONSENT")) || (eq(x_6141->name,std::string("GLOBAL-BANNER")) || (eq(x_6141->name,std::string("ACTIVE-GLOBAL-BANNERS")) || (eq(x_6141->name,std::string("CARD-SKEW")) || (eq(x_6141->name,std::string("EM")) || (eq(x_6141->name,std::string("ASIDE")) || (eq(x_6141->name,std::string("AUDIO")) || (eq(x_6141->name,std::string("SUP")) || (eq(x_6141->name,std::string("TIME")) || (eq(x_6141->name,std::string("ABBR")) || (eq(x_6141->name,std::string("SMALL")) || (eq(x_6141->name,std::string("SLOT")) || eq(x_6141->name,std::string("I")))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))) ){
-          return true;
-        } else {
-          return false;
-        }
-      }
-    }
-  }
-}
-Unit var_modified_x_3336(const auto &x_6154) { return MakeUnit(); }
-auto eval_expr_x_3333(const auto &x_6157) {
-  if (HasProp(x_6157, std::string("width"))) {
-    return GetProp<std::string>(x_6157, std::string("width"));
-  } else {
-    return std::string("auto");
-  }
-}
-Unit eval_stmts_x_3296(const auto &x_3332) {
+Unit eval_stmts_x_1805(const auto &x_1860) {
   WriteMetric();
-  auto x_3334 = eval_expr_x_3333(x_3332);
-  if (x_3332->has_var_width_expr) {
-    auto x_3335 = x_3332->var_width_expr;
-    if (!EqualValue(x_3335, x_3334)) {
-      var_modified_x_3336(x_3332);
+  auto x_1862 = eval_expr_x_1861(x_1860);
+  if (x_1860->has_var_width_expr) {
+    auto x_1863 = x_1860->var_width_expr;
+    if (!EqualValue(x_1863, x_1862)) {
+      var_modified_x_1864(x_1860);
     }
   }
-  x_3332->has_var_width_expr = true;
-  x_3332->var_width_expr = x_3334;
+  x_1860->has_var_width_expr = true;
+  x_1860->var_width_expr = x_1862;
   WriteMetric();
-  auto x_3339 = eval_expr_x_3338(x_3332);
-  if (x_3332->has_var_is_default_case) {
-    auto x_3340 = x_3332->var_is_default_case;
-    if (!EqualValue(x_3340, x_3339)) {
-      var_modified_x_3341(x_3332);
+  auto x_1867 = eval_expr_x_1866(x_1860);
+  if (x_1860->has_var_is_default_case) {
+    auto x_1868 = x_1860->var_is_default_case;
+    if (!EqualValue(x_1868, x_1867)) {
+      var_modified_x_1869(x_1860);
     }
   }
-  x_3332->has_var_is_default_case = true;
-  x_3332->var_is_default_case = x_3339;
+  x_1860->has_var_is_default_case = true;
+  x_1860->var_is_default_case = x_1867;
   WriteMetric();
-  auto x_3344 = eval_expr_x_3343(x_3332);
-  if (x_3332->has_var_intrinsic_width_is_width) {
-    auto x_3345 = x_3332->var_intrinsic_width_is_width;
-    if (!EqualValue(x_3345, x_3344)) {
-      var_modified_x_3346(x_3332);
+  auto x_1872 = eval_expr_x_1871(x_1860);
+  if (x_1860->has_var_intrinsic_width_is_width) {
+    auto x_1873 = x_1860->var_intrinsic_width_is_width;
+    if (!EqualValue(x_1873, x_1872)) {
+      var_modified_x_1874(x_1860);
     }
   }
-  x_3332->has_var_intrinsic_width_is_width = true;
-  x_3332->var_intrinsic_width_is_width = x_3344;
+  x_1860->has_var_intrinsic_width_is_width = true;
+  x_1860->var_intrinsic_width_is_width = x_1872;
   WriteMetric();
-  auto x_3349 = eval_expr_x_3348(x_3332);
-  if (x_3332->has_var_children_intrinsic_width) {
-    auto x_3350 = x_3332->var_children_intrinsic_width;
-    if (!EqualValue(x_3350, x_3349)) {
-      var_modified_x_3351(x_3332);
+  auto x_1877 = eval_expr_x_1876(x_1860);
+  if (x_1860->has_var_children_intrinsic_width) {
+    auto x_1878 = x_1860->var_children_intrinsic_width;
+    if (!EqualValue(x_1878, x_1877)) {
+      var_modified_x_1879(x_1860);
     }
   }
-  x_3332->has_var_children_intrinsic_width = true;
-  x_3332->var_children_intrinsic_width = x_3349;
+  x_1860->has_var_children_intrinsic_width = true;
+  x_1860->var_children_intrinsic_width = x_1877;
   WriteMetric();
-  auto x_3354 = eval_expr_x_3353(x_3332);
-  if (x_3332->has_var_intrinsic_width_internal) {
-    auto x_3355 = x_3332->var_intrinsic_width_internal;
-    if (!EqualValue(x_3355, x_3354)) {
-      var_modified_x_3356(x_3332);
+  auto x_1882 = eval_expr_x_1881(x_1860);
+  if (x_1860->has_var_intrinsic_width_internal) {
+    auto x_1883 = x_1860->var_intrinsic_width_internal;
+    if (!EqualValue(x_1883, x_1882)) {
+      var_modified_x_1884(x_1860);
     }
   }
-  x_3332->has_var_intrinsic_width_internal = true;
-  x_3332->var_intrinsic_width_internal = x_3354;
+  x_1860->has_var_intrinsic_width_internal = true;
+  x_1860->var_intrinsic_width_internal = x_1882;
   WriteMetric();
-  auto x_3359 = eval_expr_x_3358(x_3332);
-  if (x_3332->has_var_intrinsic_width_external) {
-    auto x_3360 = x_3332->var_intrinsic_width_external;
-    if (!EqualValue(x_3360, x_3359)) {
-      var_modified_x_3361(x_3332);
+  auto x_1887 = eval_expr_x_1886(x_1860);
+  if (x_1860->has_var_intrinsic_width_external) {
+    auto x_1888 = x_1860->var_intrinsic_width_external;
+    if (!EqualValue(x_1888, x_1887)) {
+      var_modified_x_1889(x_1860);
     }
   }
-  x_3332->has_var_intrinsic_width_external = true;
-  x_3332->var_intrinsic_width_external = x_3359;
+  x_1860->has_var_intrinsic_width_external = true;
+  x_1860->var_intrinsic_width_external = x_1887;
   WriteMetric();
-  auto x_3364 = eval_expr_x_3363(x_3332);
-  if (x_3332->has_var_intrinsic_current_line_width) {
-    auto x_3365 = x_3332->var_intrinsic_current_line_width;
-    if (!EqualValue(x_3365, x_3364)) {
-      var_modified_x_3366(x_3332);
+  auto x_1892 = eval_expr_x_1891(x_1860);
+  if (x_1860->has_var_intrinsic_current_line_width) {
+    auto x_1893 = x_1860->var_intrinsic_current_line_width;
+    if (!EqualValue(x_1893, x_1892)) {
+      var_modified_x_1894(x_1860);
     }
   }
-  x_3332->has_var_intrinsic_current_line_width = true;
-  x_3332->var_intrinsic_current_line_width = x_3364;
+  x_1860->has_var_intrinsic_current_line_width = true;
+  x_1860->var_intrinsic_current_line_width = x_1892;
   WriteMetric();
-  auto x_3369 = eval_expr_x_3368(x_3332);
-  if (x_3332->has_var_intrinsic_width_max) {
-    auto x_3370 = x_3332->var_intrinsic_width_max;
-    if (!EqualValue(x_3370, x_3369)) {
-      var_modified_x_3371(x_3332);
+  auto x_1897 = eval_expr_x_1896(x_1860);
+  if (x_1860->has_var_intrinsic_width_max) {
+    auto x_1898 = x_1860->var_intrinsic_width_max;
+    if (!EqualValue(x_1898, x_1897)) {
+      var_modified_x_1899(x_1860);
     }
   }
-  x_3332->has_var_intrinsic_width_max = true;
-  x_3332->var_intrinsic_width_max = x_3369;
+  x_1860->has_var_intrinsic_width_max = true;
+  x_1860->var_intrinsic_width_max = x_1897;
   WriteMetric();
-  auto x_3374 = eval_expr_x_3373(x_3332);
-  if (x_3332->has_var_intrinsic_width_sum) {
-    auto x_3375 = x_3332->var_intrinsic_width_sum;
-    if (!EqualValue(x_3375, x_3374)) {
-      var_modified_x_3376(x_3332);
+  auto x_1902 = eval_expr_x_1901(x_1860);
+  if (x_1860->has_var_intrinsic_width_sum) {
+    auto x_1903 = x_1860->var_intrinsic_width_sum;
+    if (!EqualValue(x_1903, x_1902)) {
+      var_modified_x_1904(x_1860);
     }
   }
-  x_3332->has_var_intrinsic_width_sum = true;
-  x_3332->var_intrinsic_width_sum = x_3374;
+  x_1860->has_var_intrinsic_width_sum = true;
+  x_1860->var_intrinsic_width_sum = x_1902;
   WriteMetric();
-  auto x_3379 = eval_expr_x_3378(x_3332);
-  if (x_3332->has_var_children_intrinsic_height) {
-    auto x_3380 = x_3332->var_children_intrinsic_height;
-    if (!EqualValue(x_3380, x_3379)) {
-      var_modified_x_3381(x_3332);
+  auto x_1907 = eval_expr_x_1906(x_1860);
+  if (x_1860->has_var_children_intrinsic_height) {
+    auto x_1908 = x_1860->var_children_intrinsic_height;
+    if (!EqualValue(x_1908, x_1907)) {
+      var_modified_x_1909(x_1860);
     }
   }
-  x_3332->has_var_children_intrinsic_height = true;
-  x_3332->var_children_intrinsic_height = x_3379;
+  x_1860->has_var_children_intrinsic_height = true;
+  x_1860->var_children_intrinsic_height = x_1907;
   WriteMetric();
-  auto x_3384 = eval_expr_x_3383(x_3332);
-  if (x_3332->has_var_height_expr) {
-    auto x_3385 = x_3332->var_height_expr;
-    if (!EqualValue(x_3385, x_3384)) {
-      var_modified_x_3386(x_3332);
+  auto x_1912 = eval_expr_x_1911(x_1860);
+  if (x_1860->has_var_height_expr) {
+    auto x_1913 = x_1860->var_height_expr;
+    if (!EqualValue(x_1913, x_1912)) {
+      var_modified_x_1914(x_1860);
     }
   }
-  x_3332->has_var_height_expr = true;
-  x_3332->var_height_expr = x_3384;
+  x_1860->has_var_height_expr = true;
+  x_1860->var_height_expr = x_1912;
   WriteMetric();
-  auto x_3389 = eval_expr_x_3388(x_3332);
-  if (x_3332->has_var_intrinsic_height_is_height) {
-    auto x_3390 = x_3332->var_intrinsic_height_is_height;
-    if (!EqualValue(x_3390, x_3389)) {
-      var_modified_x_3391(x_3332);
+  auto x_1917 = eval_expr_x_1916(x_1860);
+  if (x_1860->has_var_intrinsic_height_is_height) {
+    auto x_1918 = x_1860->var_intrinsic_height_is_height;
+    if (!EqualValue(x_1918, x_1917)) {
+      var_modified_x_1919(x_1860);
     }
   }
-  x_3332->has_var_intrinsic_height_is_height = true;
-  x_3332->var_intrinsic_height_is_height = x_3389;
+  x_1860->has_var_intrinsic_height_is_height = true;
+  x_1860->var_intrinsic_height_is_height = x_1917;
   WriteMetric();
-  auto x_3394 = eval_expr_x_3393(x_3332);
-  if (x_3332->has_var_intrinsic_height_internal) {
-    auto x_3395 = x_3332->var_intrinsic_height_internal;
-    if (!EqualValue(x_3395, x_3394)) {
-      var_modified_x_3396(x_3332);
+  auto x_1922 = eval_expr_x_1921(x_1860);
+  if (x_1860->has_var_intrinsic_height_internal) {
+    auto x_1923 = x_1860->var_intrinsic_height_internal;
+    if (!EqualValue(x_1923, x_1922)) {
+      var_modified_x_1924(x_1860);
     }
   }
-  x_3332->has_var_intrinsic_height_internal = true;
-  x_3332->var_intrinsic_height_internal = x_3394;
+  x_1860->has_var_intrinsic_height_internal = true;
+  x_1860->var_intrinsic_height_internal = x_1922;
   WriteMetric();
-  auto x_3399 = eval_expr_x_3398(x_3332);
-  if (x_3332->has_var_intrinsic_height_external) {
-    auto x_3400 = x_3332->var_intrinsic_height_external;
-    if (!EqualValue(x_3400, x_3399)) {
-      var_modified_x_3401(x_3332);
+  auto x_1927 = eval_expr_x_1926(x_1860);
+  if (x_1860->has_var_intrinsic_height_external) {
+    auto x_1928 = x_1860->var_intrinsic_height_external;
+    if (!EqualValue(x_1928, x_1927)) {
+      var_modified_x_1929(x_1860);
     }
   }
-  x_3332->has_var_intrinsic_height_external = true;
-  x_3332->var_intrinsic_height_external = x_3399;
+  x_1860->has_var_intrinsic_height_external = true;
+  x_1860->var_intrinsic_height_external = x_1927;
   WriteMetric();
-  auto x_3404 = eval_expr_x_3403(x_3332);
-  if (x_3332->has_var_intrinsic_height_sum) {
-    auto x_3405 = x_3332->var_intrinsic_height_sum;
-    if (!EqualValue(x_3405, x_3404)) {
-      var_modified_x_3406(x_3332);
+  auto x_1932 = eval_expr_x_1931(x_1860);
+  if (x_1860->has_var_intrinsic_height_sum) {
+    auto x_1933 = x_1860->var_intrinsic_height_sum;
+    if (!EqualValue(x_1933, x_1932)) {
+      var_modified_x_1934(x_1860);
     }
   }
-  x_3332->has_var_intrinsic_height_sum = true;
-  x_3332->var_intrinsic_height_sum = x_3404;
+  x_1860->has_var_intrinsic_height_sum = true;
+  x_1860->var_intrinsic_height_sum = x_1932;
   WriteMetric();
-  auto x_3409 = eval_expr_x_3408(x_3332);
-  if (x_3332->has_var_intrinsic_current_line_height) {
-    auto x_3410 = x_3332->var_intrinsic_current_line_height;
-    if (!EqualValue(x_3410, x_3409)) {
-      var_modified_x_3411(x_3332);
+  auto x_1937 = eval_expr_x_1936(x_1860);
+  if (x_1860->has_var_intrinsic_current_line_height) {
+    auto x_1938 = x_1860->var_intrinsic_current_line_height;
+    if (!EqualValue(x_1938, x_1937)) {
+      var_modified_x_1939(x_1860);
     }
   }
-  x_3332->has_var_intrinsic_current_line_height = true;
-  x_3332->var_intrinsic_current_line_height = x_3409;
+  x_1860->has_var_intrinsic_current_line_height = true;
+  x_1860->var_intrinsic_current_line_height = x_1937;
   WriteMetric();
-  auto x_3414 = eval_expr_x_3413(x_3332);
-  if (x_3332->has_var_finished_intrinsic_height_sum) {
-    auto x_3415 = x_3332->var_finished_intrinsic_height_sum;
-    if (!EqualValue(x_3415, x_3414)) {
-      var_modified_x_3416(x_3332);
+  auto x_1942 = eval_expr_x_1941(x_1860);
+  if (x_1860->has_var_finished_intrinsic_height_sum) {
+    auto x_1943 = x_1860->var_finished_intrinsic_height_sum;
+    if (!EqualValue(x_1943, x_1942)) {
+      var_modified_x_1944(x_1860);
     }
   }
-  x_3332->has_var_finished_intrinsic_height_sum = true;
-  x_3332->var_finished_intrinsic_height_sum = x_3414;
+  x_1860->has_var_finished_intrinsic_height_sum = true;
+  x_1860->var_finished_intrinsic_height_sum = x_1942;
   return MakeUnit();
 }
-Unit eval_stmts_x_3294(const auto &x_3418) {
+Unit eval_stmts_x_1803(const auto &x_1946) {
   WriteMetric();
-  auto x_3420 = eval_expr_x_3419(x_3418);
-  if (x_3418->has_var_display) {
-    auto x_3421 = x_3418->var_display;
-    if (!EqualValue(x_3421, x_3420)) {
-      var_modified_x_3422(x_3418);
+  auto x_1948 = eval_expr_x_1947(x_1946);
+  if (x_1946->has_var_display) {
+    auto x_1949 = x_1946->var_display;
+    if (!EqualValue(x_1949, x_1948)) {
+      var_modified_x_1950(x_1946);
     }
   }
-  x_3418->has_var_display = true;
-  x_3418->var_display = x_3420;
+  x_1946->has_var_display = true;
+  x_1946->var_display = x_1948;
   WriteMetric();
-  auto x_3425 = eval_expr_x_3424(x_3418);
-  if (x_3418->has_var_position) {
-    auto x_3426 = x_3418->var_position;
-    if (!EqualValue(x_3426, x_3425)) {
-      var_modified_x_3427(x_3418);
+  auto x_1953 = eval_expr_x_1952(x_1946);
+  if (x_1946->has_var_position) {
+    auto x_1954 = x_1946->var_position;
+    if (!EqualValue(x_1954, x_1953)) {
+      var_modified_x_1955(x_1946);
     }
   }
-  x_3418->has_var_position = true;
-  x_3418->var_position = x_3425;
+  x_1946->has_var_position = true;
+  x_1946->var_position = x_1953;
   WriteMetric();
-  auto x_3430 = eval_expr_x_3429(x_3418);
-  if (x_3418->has_var_flex_grow) {
-    auto x_3431 = x_3418->var_flex_grow;
-    if (!EqualValue(x_3431, x_3430)) {
-      var_modified_x_3432(x_3418);
+  auto x_1958 = eval_expr_x_1957(x_1946);
+  if (x_1946->has_var_flex_grow) {
+    auto x_1959 = x_1946->var_flex_grow;
+    if (!EqualValue(x_1959, x_1958)) {
+      var_modified_x_1960(x_1946);
     }
   }
-  x_3418->has_var_flex_grow = true;
-  x_3418->var_flex_grow = x_3430;
+  x_1946->has_var_flex_grow = true;
+  x_1946->var_flex_grow = x_1958;
   WriteMetric();
-  auto x_3435 = eval_expr_x_3434(x_3418);
-  if (x_3418->has_var_flex_shrink) {
-    auto x_3436 = x_3418->var_flex_shrink;
-    if (!EqualValue(x_3436, x_3435)) {
-      var_modified_x_3437(x_3418);
+  auto x_1963 = eval_expr_x_1962(x_1946);
+  if (x_1946->has_var_flex_shrink) {
+    auto x_1964 = x_1946->var_flex_shrink;
+    if (!EqualValue(x_1964, x_1963)) {
+      var_modified_x_1965(x_1946);
     }
   }
-  x_3418->has_var_flex_shrink = true;
-  x_3418->var_flex_shrink = x_3435;
+  x_1946->has_var_flex_shrink = true;
+  x_1946->var_flex_shrink = x_1963;
   WriteMetric();
-  auto x_3440 = eval_expr_x_3439(x_3418);
-  if (x_3418->has_var_flex_grow_sum) {
-    auto x_3441 = x_3418->var_flex_grow_sum;
-    if (!EqualValue(x_3441, x_3440)) {
-      var_modified_x_3442(x_3418);
+  auto x_1968 = eval_expr_x_1967(x_1946);
+  if (x_1946->has_var_flex_grow_sum) {
+    auto x_1969 = x_1946->var_flex_grow_sum;
+    if (!EqualValue(x_1969, x_1968)) {
+      var_modified_x_1970(x_1946);
     }
   }
-  x_3418->has_var_flex_grow_sum = true;
-  x_3418->var_flex_grow_sum = x_3440;
+  x_1946->has_var_flex_grow_sum = true;
+  x_1946->var_flex_grow_sum = x_1968;
   WriteMetric();
-  auto x_3445 = eval_expr_x_3444(x_3418);
-  if (x_3418->has_var_flex_shrink_sum) {
-    auto x_3446 = x_3418->var_flex_shrink_sum;
-    if (!EqualValue(x_3446, x_3445)) {
-      var_modified_x_3447(x_3418);
+  auto x_1973 = eval_expr_x_1972(x_1946);
+  if (x_1946->has_var_flex_shrink_sum) {
+    auto x_1974 = x_1946->var_flex_shrink_sum;
+    if (!EqualValue(x_1974, x_1973)) {
+      var_modified_x_1975(x_1946);
     }
   }
-  x_3418->has_var_flex_shrink_sum = true;
-  x_3418->var_flex_shrink_sum = x_3445;
+  x_1946->has_var_flex_shrink_sum = true;
+  x_1946->var_flex_shrink_sum = x_1973;
   WriteMetric();
-  auto x_3450 = eval_expr_x_3449(x_3418);
-  if (x_3418->has_var_flex_direction) {
-    auto x_3451 = x_3418->var_flex_direction;
-    if (!EqualValue(x_3451, x_3450)) {
-      var_modified_x_3452(x_3418);
+  auto x_1978 = eval_expr_x_1977(x_1946);
+  if (x_1946->has_var_flex_direction) {
+    auto x_1979 = x_1946->var_flex_direction;
+    if (!EqualValue(x_1979, x_1978)) {
+      var_modified_x_1980(x_1946);
     }
   }
-  x_3418->has_var_flex_direction = true;
-  x_3418->var_flex_direction = x_3450;
+  x_1946->has_var_flex_direction = true;
+  x_1946->var_flex_direction = x_1978;
   WriteMetric();
-  auto x_3455 = eval_expr_x_3454(x_3418);
-  if (x_3418->has_var_is_flex_row) {
-    auto x_3456 = x_3418->var_is_flex_row;
-    if (!EqualValue(x_3456, x_3455)) {
-      var_modified_x_3457(x_3418);
+  auto x_1983 = eval_expr_x_1982(x_1946);
+  if (x_1946->has_var_is_flex_row) {
+    auto x_1984 = x_1946->var_is_flex_row;
+    if (!EqualValue(x_1984, x_1983)) {
+      var_modified_x_1985(x_1946);
     }
   }
-  x_3418->has_var_is_flex_row = true;
-  x_3418->var_is_flex_row = x_3455;
+  x_1946->has_var_is_flex_row = true;
+  x_1946->var_is_flex_row = x_1983;
   WriteMetric();
-  auto x_3460 = eval_expr_x_3459(x_3418);
-  if (x_3418->has_var_is_flex_column) {
-    auto x_3461 = x_3418->var_is_flex_column;
-    if (!EqualValue(x_3461, x_3460)) {
-      var_modified_x_3462(x_3418);
+  auto x_1988 = eval_expr_x_1987(x_1946);
+  if (x_1946->has_var_is_flex_column) {
+    auto x_1989 = x_1946->var_is_flex_column;
+    if (!EqualValue(x_1989, x_1988)) {
+      var_modified_x_1990(x_1946);
     }
   }
-  x_3418->has_var_is_flex_column = true;
-  x_3418->var_is_flex_column = x_3460;
+  x_1946->has_var_is_flex_column = true;
+  x_1946->var_is_flex_column = x_1988;
   WriteMetric();
-  auto x_3465 = eval_expr_x_3464(x_3418);
-  if (x_3418->has_var_width_attr_expr) {
-    auto x_3466 = x_3418->var_width_attr_expr;
-    if (!EqualValue(x_3466, x_3465)) {
-      var_modified_x_3467(x_3418);
+  auto x_1993 = eval_expr_x_1992(x_1946);
+  if (x_1946->has_var_width_attr_expr) {
+    auto x_1994 = x_1946->var_width_attr_expr;
+    if (!EqualValue(x_1994, x_1993)) {
+      var_modified_x_1995(x_1946);
     }
   }
-  x_3418->has_var_width_attr_expr = true;
-  x_3418->var_width_attr_expr = x_3465;
+  x_1946->has_var_width_attr_expr = true;
+  x_1946->var_width_attr_expr = x_1993;
   WriteMetric();
-  auto x_3470 = eval_expr_x_3469(x_3418);
-  if (x_3418->has_var_has_width_attr) {
-    auto x_3471 = x_3418->var_has_width_attr;
-    if (!EqualValue(x_3471, x_3470)) {
-      var_modified_x_3472(x_3418);
+  auto x_1998 = eval_expr_x_1997(x_1946);
+  if (x_1946->has_var_has_width_attr) {
+    auto x_1999 = x_1946->var_has_width_attr;
+    if (!EqualValue(x_1999, x_1998)) {
+      var_modified_x_2000(x_1946);
     }
   }
-  x_3418->has_var_has_width_attr = true;
-  x_3418->var_has_width_attr = x_3470;
+  x_1946->has_var_has_width_attr = true;
+  x_1946->var_has_width_attr = x_1998;
   WriteMetric();
-  auto x_3475 = eval_expr_x_3474(x_3418);
-  if (x_3418->has_var_height_attr_expr) {
-    auto x_3476 = x_3418->var_height_attr_expr;
-    if (!EqualValue(x_3476, x_3475)) {
-      var_modified_x_3477(x_3418);
+  auto x_2003 = eval_expr_x_2002(x_1946);
+  if (x_1946->has_var_height_attr_expr) {
+    auto x_2004 = x_1946->var_height_attr_expr;
+    if (!EqualValue(x_2004, x_2003)) {
+      var_modified_x_2005(x_1946);
     }
   }
-  x_3418->has_var_height_attr_expr = true;
-  x_3418->var_height_attr_expr = x_3475;
+  x_1946->has_var_height_attr_expr = true;
+  x_1946->var_height_attr_expr = x_2003;
   WriteMetric();
-  auto x_3480 = eval_expr_x_3479(x_3418);
-  if (x_3418->has_var_has_height_attr) {
-    auto x_3481 = x_3418->var_has_height_attr;
-    if (!EqualValue(x_3481, x_3480)) {
-      var_modified_x_3482(x_3418);
+  auto x_2008 = eval_expr_x_2007(x_1946);
+  if (x_1946->has_var_has_height_attr) {
+    auto x_2009 = x_1946->var_has_height_attr;
+    if (!EqualValue(x_2009, x_2008)) {
+      var_modified_x_2010(x_1946);
     }
   }
-  x_3418->has_var_has_height_attr = true;
-  x_3418->var_has_height_attr = x_3480;
+  x_1946->has_var_has_height_attr = true;
+  x_1946->var_has_height_attr = x_2008;
   WriteMetric();
-  auto x_3485 = eval_expr_x_3484(x_3418);
-  if (x_3418->has_var_is_svg_block) {
-    auto x_3486 = x_3418->var_is_svg_block;
-    if (!EqualValue(x_3486, x_3485)) {
-      var_modified_x_3487(x_3418);
+  auto x_2013 = eval_expr_x_2012(x_1946);
+  if (x_1946->has_var_is_svg_block) {
+    auto x_2014 = x_1946->var_is_svg_block;
+    if (!EqualValue(x_2014, x_2013)) {
+      var_modified_x_2015(x_1946);
     }
   }
-  x_3418->has_var_is_svg_block = true;
-  x_3418->var_is_svg_block = x_3485;
+  x_1946->has_var_is_svg_block = true;
+  x_1946->var_is_svg_block = x_2013;
   WriteMetric();
-  auto x_3490 = eval_expr_x_3489(x_3418);
-  if (x_3418->has_var_inside_svg) {
-    auto x_3491 = x_3418->var_inside_svg;
-    if (!EqualValue(x_3491, x_3490)) {
-      var_modified_x_3492(x_3418);
+  auto x_2018 = eval_expr_x_2017(x_1946);
+  if (x_1946->has_var_inside_svg) {
+    auto x_2019 = x_1946->var_inside_svg;
+    if (!EqualValue(x_2019, x_2018)) {
+      var_modified_x_2020(x_1946);
     }
   }
-  x_3418->has_var_inside_svg = true;
-  x_3418->var_inside_svg = x_3490;
+  x_1946->has_var_inside_svg = true;
+  x_1946->var_inside_svg = x_2018;
   WriteMetric();
-  auto x_3495 = eval_expr_x_3494(x_3418);
-  if (x_3418->has_var_disabled) {
-    auto x_3496 = x_3418->var_disabled;
-    if (!EqualValue(x_3496, x_3495)) {
-      var_modified_x_3497(x_3418);
+  auto x_2023 = eval_expr_x_2022(x_1946);
+  if (x_1946->has_var_disabled) {
+    auto x_2024 = x_1946->var_disabled;
+    if (!EqualValue(x_2024, x_2023)) {
+      var_modified_x_2025(x_1946);
     }
   }
-  x_3418->has_var_disabled = true;
-  x_3418->var_disabled = x_3495;
+  x_1946->has_var_disabled = true;
+  x_1946->var_disabled = x_2023;
   WriteMetric();
-  auto x_3500 = eval_expr_x_3499(x_3418);
-  if (x_3418->has_var_visible) {
-    auto x_3501 = x_3418->var_visible;
-    if (!EqualValue(x_3501, x_3500)) {
-      var_modified_x_3502(x_3418);
+  auto x_2028 = eval_expr_x_2027(x_1946);
+  if (x_1946->has_var_visible) {
+    auto x_2029 = x_1946->var_visible;
+    if (!EqualValue(x_2029, x_2028)) {
+      var_modified_x_2030(x_1946);
     }
   }
-  x_3418->has_var_visible = true;
-  x_3418->var_visible = x_3500;
+  x_1946->has_var_visible = true;
+  x_1946->var_visible = x_2028;
   WriteMetric();
-  auto x_3505 = eval_expr_x_3504(x_3418);
-  if (x_3418->has_var_line_break) {
-    auto x_3506 = x_3418->var_line_break;
-    if (!EqualValue(x_3506, x_3505)) {
-      var_modified_x_3507(x_3418);
+  auto x_2033 = eval_expr_x_2032(x_1946);
+  if (x_1946->has_var_line_break) {
+    auto x_2034 = x_1946->var_line_break;
+    if (!EqualValue(x_2034, x_2033)) {
+      var_modified_x_2035(x_1946);
     }
   }
-  x_3418->has_var_line_break = true;
-  x_3418->var_line_break = x_3505;
+  x_1946->has_var_line_break = true;
+  x_1946->var_line_break = x_2033;
   return MakeUnit();
 }
-Unit eval_stmts_x_3291(const auto &x_3509) {
+Unit eval_stmts_x_1799(const auto &x_2037) {
   WriteMetric();
-  auto x_3511 = eval_expr_x_3510(x_3509);
-  if (x_3509->has_var_box_width) {
-    auto x_3512 = x_3509->var_box_width;
-    if (!EqualValue(x_3512, x_3511)) {
-      var_modified_x_3513(x_3509);
+  auto x_2039 = eval_expr_x_2038(x_2037);
+  if (x_2037->has_var_box_width) {
+    auto x_2040 = x_2037->var_box_width;
+    if (!EqualValue(x_2040, x_2039)) {
+      var_modified_x_2041(x_2037);
     }
   }
-  x_3509->has_var_box_width = true;
-  x_3509->var_box_width = x_3511;
+  x_2037->has_var_box_width = true;
+  x_2037->var_box_width = x_2039;
   WriteMetric();
-  auto x_3516 = eval_expr_x_3515(x_3509);
-  if (x_3509->has_var_box_height) {
-    auto x_3517 = x_3509->var_box_height;
-    if (!EqualValue(x_3517, x_3516)) {
-      var_modified_x_3518(x_3509);
+  auto x_2044 = eval_expr_x_2043(x_2037);
+  if (x_2037->has_var_box_height) {
+    auto x_2045 = x_2037->var_box_height;
+    if (!EqualValue(x_2045, x_2044)) {
+      var_modified_x_2046(x_2037);
     }
   }
-  x_3509->has_var_box_height = true;
-  x_3509->var_box_height = x_3516;
+  x_2037->has_var_box_height = true;
+  x_2037->var_box_height = x_2044;
   WriteMetric();
-  auto x_3521 = eval_expr_x_3520(x_3509);
-  if (x_3509->has_var_left_over) {
-    auto x_3522 = x_3509->var_left_over;
-    if (!EqualValue(x_3522, x_3521)) {
-      var_modified_x_3523(x_3509);
+  auto x_2049 = eval_expr_x_2048(x_2037);
+  if (x_2037->has_var_left_over) {
+    auto x_2050 = x_2037->var_left_over;
+    if (!EqualValue(x_2050, x_2049)) {
+      var_modified_x_2051(x_2037);
     }
   }
-  x_3509->has_var_left_over = true;
-  x_3509->var_left_over = x_3521;
+  x_2037->has_var_left_over = true;
+  x_2037->var_left_over = x_2049;
   WriteMetric();
-  auto x_3526 = eval_expr_x_3525(x_3509);
-  if (x_3509->has_var_flex_amount) {
-    auto x_3527 = x_3509->var_flex_amount;
-    if (!EqualValue(x_3527, x_3526)) {
-      var_modified_x_3528(x_3509);
+  auto x_2054 = eval_expr_x_2053(x_2037);
+  if (x_2037->has_var_flex_amount) {
+    auto x_2055 = x_2037->var_flex_amount;
+    if (!EqualValue(x_2055, x_2054)) {
+      var_modified_x_2056(x_2037);
     }
   }
-  x_3509->has_var_flex_amount = true;
-  x_3509->var_flex_amount = x_3526;
+  x_2037->has_var_flex_amount = true;
+  x_2037->var_flex_amount = x_2054;
   WriteMetric();
-  auto x_3531 = eval_expr_x_3530(x_3509);
-  if (x_3509->has_var_flex_unit) {
-    auto x_3532 = x_3509->var_flex_unit;
-    if (!EqualValue(x_3532, x_3531)) {
-      var_modified_x_3533(x_3509);
+  auto x_2059 = eval_expr_x_2058(x_2037);
+  if (x_2037->has_var_flex_unit) {
+    auto x_2060 = x_2037->var_flex_unit;
+    if (!EqualValue(x_2060, x_2059)) {
+      var_modified_x_2061(x_2037);
     }
   }
-  x_3509->has_var_flex_unit = true;
-  x_3509->var_flex_unit = x_3531;
+  x_2037->has_var_flex_unit = true;
+  x_2037->var_flex_unit = x_2059;
   WriteMetric();
-  auto x_3536 = eval_expr_x_3535(x_3509);
-  if (x_3509->has_var_x) {
-    auto x_3537 = x_3509->var_x;
-    if (!EqualValue(x_3537, x_3536)) {
-      var_modified_x_3538(x_3509);
+  auto x_2064 = eval_expr_x_2063(x_2037);
+  if (x_2037->has_var_x) {
+    auto x_2065 = x_2037->var_x;
+    if (!EqualValue(x_2065, x_2064)) {
+      var_modified_x_2066(x_2037);
     }
   }
-  x_3509->has_var_x = true;
-  x_3509->var_x = x_3536;
+  x_2037->has_var_x = true;
+  x_2037->var_x = x_2064;
   WriteMetric();
-  auto x_3541 = eval_expr_x_3540(x_3509);
-  if (x_3509->has_var_width_internal) {
-    auto x_3542 = x_3509->var_width_internal;
-    if (!EqualValue(x_3542, x_3541)) {
-      var_modified_x_3543(x_3509);
+  auto x_2069 = eval_expr_x_2068(x_2037);
+  if (x_2037->has_var_width_internal) {
+    auto x_2070 = x_2037->var_width_internal;
+    if (!EqualValue(x_2070, x_2069)) {
+      var_modified_x_2071(x_2037);
     }
   }
-  x_3509->has_var_width_internal = true;
-  x_3509->var_width_internal = x_3541;
+  x_2037->has_var_width_internal = true;
+  x_2037->var_width_internal = x_2069;
   WriteMetric();
-  auto x_3546 = eval_expr_x_3545(x_3509);
-  if (x_3509->has_var_width_external) {
-    auto x_3547 = x_3509->var_width_external;
-    if (!EqualValue(x_3547, x_3546)) {
-      var_modified_x_3548(x_3509);
+  auto x_2074 = eval_expr_x_2073(x_2037);
+  if (x_2037->has_var_width_external) {
+    auto x_2075 = x_2037->var_width_external;
+    if (!EqualValue(x_2075, x_2074)) {
+      var_modified_x_2076(x_2037);
     }
   }
-  x_3509->has_var_width_external = true;
-  x_3509->var_width_external = x_3546;
+  x_2037->has_var_width_external = true;
+  x_2037->var_width_external = x_2074;
   WriteMetric();
-  auto x_3551 = eval_expr_x_3550(x_3509);
-  if (x_3509->has_var_y) {
-    auto x_3552 = x_3509->var_y;
-    if (!EqualValue(x_3552, x_3551)) {
-      var_modified_x_3553(x_3509);
+  auto x_2079 = eval_expr_x_2078(x_2037);
+  if (x_2037->has_var_y) {
+    auto x_2080 = x_2037->var_y;
+    if (!EqualValue(x_2080, x_2079)) {
+      var_modified_x_2081(x_2037);
     }
   }
-  x_3509->has_var_y = true;
-  x_3509->var_y = x_3551;
+  x_2037->has_var_y = true;
+  x_2037->var_y = x_2079;
   WriteMetric();
-  auto x_3556 = eval_expr_x_3555(x_3509);
-  if (x_3509->has_var_height_internal) {
-    auto x_3557 = x_3509->var_height_internal;
-    if (!EqualValue(x_3557, x_3556)) {
-      var_modified_x_3558(x_3509);
+  auto x_2084 = eval_expr_x_2083(x_2037);
+  if (x_2037->has_var_height_internal) {
+    auto x_2085 = x_2037->var_height_internal;
+    if (!EqualValue(x_2085, x_2084)) {
+      var_modified_x_2086(x_2037);
     }
   }
-  x_3509->has_var_height_internal = true;
-  x_3509->var_height_internal = x_3556;
+  x_2037->has_var_height_internal = true;
+  x_2037->var_height_internal = x_2084;
   WriteMetric();
-  auto x_3561 = eval_expr_x_3560(x_3509);
-  if (x_3509->has_var_height_external) {
-    auto x_3562 = x_3509->var_height_external;
-    if (!EqualValue(x_3562, x_3561)) {
-      var_modified_x_3563(x_3509);
+  auto x_2089 = eval_expr_x_2088(x_2037);
+  if (x_2037->has_var_height_external) {
+    auto x_2090 = x_2037->var_height_external;
+    if (!EqualValue(x_2090, x_2089)) {
+      var_modified_x_2091(x_2037);
     }
   }
-  x_3509->has_var_height_external = true;
-  x_3509->var_height_external = x_3561;
+  x_2037->has_var_height_external = true;
+  x_2037->var_height_external = x_2089;
   WriteMetric();
-  auto x_3566 = eval_expr_x_3565(x_3509);
-  if (x_3509->has_var_line_height) {
-    auto x_3567 = x_3509->var_line_height;
-    if (!EqualValue(x_3567, x_3566)) {
-      var_modified_x_3568(x_3509);
+  auto x_2094 = eval_expr_x_2093(x_2037);
+  if (x_2037->has_var_line_height) {
+    auto x_2095 = x_2037->var_line_height;
+    if (!EqualValue(x_2095, x_2094)) {
+      var_modified_x_2096(x_2037);
     }
   }
-  x_3509->has_var_line_height = true;
-  x_3509->var_line_height = x_3566;
+  x_2037->has_var_line_height = true;
+  x_2037->var_line_height = x_2094;
   return MakeUnit();
 }
-Unit eval_stmts_x_3262(const auto &x_3570) {
-  WriteMetric();
-  auto x_3572 = eval_expr_x_3571(x_3570);
-  if (x_3570->has_var_width_expr) {
-    auto x_3573 = x_3570->var_width_expr;
-    if (!EqualValue(x_3573, x_3572)) {
-      var_modified_x_3574(x_3570);
-    }
-  }
-  x_3570->has_var_width_expr = true;
-  x_3570->var_width_expr = x_3572;
-  WriteMetric();
-  auto x_3577 = eval_expr_x_3576(x_3570);
-  if (x_3570->has_var_is_default_case) {
-    auto x_3578 = x_3570->var_is_default_case;
-    if (!EqualValue(x_3578, x_3577)) {
-      var_modified_x_3579(x_3570);
-    }
-  }
-  x_3570->has_var_is_default_case = true;
-  x_3570->var_is_default_case = x_3577;
-  WriteMetric();
-  auto x_3582 = eval_expr_x_3581(x_3570);
-  if (x_3570->has_var_intrinsic_width_is_width) {
-    auto x_3583 = x_3570->var_intrinsic_width_is_width;
-    if (!EqualValue(x_3583, x_3582)) {
-      var_modified_x_3584(x_3570);
-    }
-  }
-  x_3570->has_var_intrinsic_width_is_width = true;
-  x_3570->var_intrinsic_width_is_width = x_3582;
-  WriteMetric();
-  auto x_3587 = eval_expr_x_3586(x_3570);
-  if (x_3570->has_var_children_intrinsic_width) {
-    auto x_3588 = x_3570->var_children_intrinsic_width;
-    if (!EqualValue(x_3588, x_3587)) {
-      var_modified_x_3589(x_3570);
-    }
-  }
-  x_3570->has_var_children_intrinsic_width = true;
-  x_3570->var_children_intrinsic_width = x_3587;
-  WriteMetric();
-  auto x_3592 = eval_expr_x_3591(x_3570);
-  if (x_3570->has_var_intrinsic_width_internal) {
-    auto x_3593 = x_3570->var_intrinsic_width_internal;
-    if (!EqualValue(x_3593, x_3592)) {
-      var_modified_x_3594(x_3570);
-    }
-  }
-  x_3570->has_var_intrinsic_width_internal = true;
-  x_3570->var_intrinsic_width_internal = x_3592;
-  WriteMetric();
-  auto x_3597 = eval_expr_x_3596(x_3570);
-  if (x_3570->has_var_intrinsic_width_external) {
-    auto x_3598 = x_3570->var_intrinsic_width_external;
-    if (!EqualValue(x_3598, x_3597)) {
-      var_modified_x_3599(x_3570);
-    }
-  }
-  x_3570->has_var_intrinsic_width_external = true;
-  x_3570->var_intrinsic_width_external = x_3597;
-  WriteMetric();
-  auto x_3602 = eval_expr_x_3601(x_3570);
-  if (x_3570->has_var_intrinsic_current_line_width) {
-    auto x_3603 = x_3570->var_intrinsic_current_line_width;
-    if (!EqualValue(x_3603, x_3602)) {
-      var_modified_x_3604(x_3570);
-    }
-  }
-  x_3570->has_var_intrinsic_current_line_width = true;
-  x_3570->var_intrinsic_current_line_width = x_3602;
-  WriteMetric();
-  auto x_3607 = eval_expr_x_3606(x_3570);
-  if (x_3570->has_var_intrinsic_width_max) {
-    auto x_3608 = x_3570->var_intrinsic_width_max;
-    if (!EqualValue(x_3608, x_3607)) {
-      var_modified_x_3609(x_3570);
-    }
-  }
-  x_3570->has_var_intrinsic_width_max = true;
-  x_3570->var_intrinsic_width_max = x_3607;
-  WriteMetric();
-  auto x_3612 = eval_expr_x_3611(x_3570);
-  if (x_3570->has_var_intrinsic_width_sum) {
-    auto x_3613 = x_3570->var_intrinsic_width_sum;
-    if (!EqualValue(x_3613, x_3612)) {
-      var_modified_x_3614(x_3570);
-    }
-  }
-  x_3570->has_var_intrinsic_width_sum = true;
-  x_3570->var_intrinsic_width_sum = x_3612;
-  WriteMetric();
-  auto x_3617 = eval_expr_x_3616(x_3570);
-  if (x_3570->has_var_children_intrinsic_height) {
-    auto x_3618 = x_3570->var_children_intrinsic_height;
-    if (!EqualValue(x_3618, x_3617)) {
-      var_modified_x_3619(x_3570);
-    }
-  }
-  x_3570->has_var_children_intrinsic_height = true;
-  x_3570->var_children_intrinsic_height = x_3617;
-  WriteMetric();
-  auto x_3622 = eval_expr_x_3621(x_3570);
-  if (x_3570->has_var_height_expr) {
-    auto x_3623 = x_3570->var_height_expr;
-    if (!EqualValue(x_3623, x_3622)) {
-      var_modified_x_3624(x_3570);
-    }
-  }
-  x_3570->has_var_height_expr = true;
-  x_3570->var_height_expr = x_3622;
-  WriteMetric();
-  auto x_3627 = eval_expr_x_3626(x_3570);
-  if (x_3570->has_var_intrinsic_height_is_height) {
-    auto x_3628 = x_3570->var_intrinsic_height_is_height;
-    if (!EqualValue(x_3628, x_3627)) {
-      var_modified_x_3629(x_3570);
-    }
-  }
-  x_3570->has_var_intrinsic_height_is_height = true;
-  x_3570->var_intrinsic_height_is_height = x_3627;
-  WriteMetric();
-  auto x_3632 = eval_expr_x_3631(x_3570);
-  if (x_3570->has_var_intrinsic_height_internal) {
-    auto x_3633 = x_3570->var_intrinsic_height_internal;
-    if (!EqualValue(x_3633, x_3632)) {
-      var_modified_x_3634(x_3570);
-    }
-  }
-  x_3570->has_var_intrinsic_height_internal = true;
-  x_3570->var_intrinsic_height_internal = x_3632;
-  WriteMetric();
-  auto x_3637 = eval_expr_x_3636(x_3570);
-  if (x_3570->has_var_intrinsic_height_external) {
-    auto x_3638 = x_3570->var_intrinsic_height_external;
-    if (!EqualValue(x_3638, x_3637)) {
-      var_modified_x_3639(x_3570);
-    }
-  }
-  x_3570->has_var_intrinsic_height_external = true;
-  x_3570->var_intrinsic_height_external = x_3637;
-  WriteMetric();
-  auto x_3642 = eval_expr_x_3641(x_3570);
-  if (x_3570->has_var_intrinsic_height_sum) {
-    auto x_3643 = x_3570->var_intrinsic_height_sum;
-    if (!EqualValue(x_3643, x_3642)) {
-      var_modified_x_3644(x_3570);
-    }
-  }
-  x_3570->has_var_intrinsic_height_sum = true;
-  x_3570->var_intrinsic_height_sum = x_3642;
-  WriteMetric();
-  auto x_3647 = eval_expr_x_3646(x_3570);
-  if (x_3570->has_var_intrinsic_current_line_height) {
-    auto x_3648 = x_3570->var_intrinsic_current_line_height;
-    if (!EqualValue(x_3648, x_3647)) {
-      var_modified_x_3649(x_3570);
-    }
-  }
-  x_3570->has_var_intrinsic_current_line_height = true;
-  x_3570->var_intrinsic_current_line_height = x_3647;
-  WriteMetric();
-  auto x_3652 = eval_expr_x_3651(x_3570);
-  if (x_3570->has_var_finished_intrinsic_height_sum) {
-    auto x_3653 = x_3570->var_finished_intrinsic_height_sum;
-    if (!EqualValue(x_3653, x_3652)) {
-      var_modified_x_3654(x_3570);
-    }
-  }
-  x_3570->has_var_finished_intrinsic_height_sum = true;
-  x_3570->var_finished_intrinsic_height_sum = x_3652;
-  return MakeUnit();
-}
-Unit eval_stmts_x_3260(const auto &x_3656) {
-  WriteMetric();
-  auto x_3658 = eval_expr_x_3657(x_3656);
-  if (x_3656->has_var_display) {
-    auto x_3659 = x_3656->var_display;
-    if (!EqualValue(x_3659, x_3658)) {
-      var_modified_x_3660(x_3656);
-    }
-  }
-  x_3656->has_var_display = true;
-  x_3656->var_display = x_3658;
-  WriteMetric();
-  auto x_3663 = eval_expr_x_3662(x_3656);
-  if (x_3656->has_var_position) {
-    auto x_3664 = x_3656->var_position;
-    if (!EqualValue(x_3664, x_3663)) {
-      var_modified_x_3665(x_3656);
-    }
-  }
-  x_3656->has_var_position = true;
-  x_3656->var_position = x_3663;
-  WriteMetric();
-  auto x_3668 = eval_expr_x_3667(x_3656);
-  if (x_3656->has_var_flex_grow) {
-    auto x_3669 = x_3656->var_flex_grow;
-    if (!EqualValue(x_3669, x_3668)) {
-      var_modified_x_3670(x_3656);
-    }
-  }
-  x_3656->has_var_flex_grow = true;
-  x_3656->var_flex_grow = x_3668;
-  WriteMetric();
-  auto x_3673 = eval_expr_x_3672(x_3656);
-  if (x_3656->has_var_flex_shrink) {
-    auto x_3674 = x_3656->var_flex_shrink;
-    if (!EqualValue(x_3674, x_3673)) {
-      var_modified_x_3675(x_3656);
-    }
-  }
-  x_3656->has_var_flex_shrink = true;
-  x_3656->var_flex_shrink = x_3673;
-  WriteMetric();
-  auto x_3678 = eval_expr_x_3677(x_3656);
-  if (x_3656->has_var_flex_grow_sum) {
-    auto x_3679 = x_3656->var_flex_grow_sum;
-    if (!EqualValue(x_3679, x_3678)) {
-      var_modified_x_3680(x_3656);
-    }
-  }
-  x_3656->has_var_flex_grow_sum = true;
-  x_3656->var_flex_grow_sum = x_3678;
-  WriteMetric();
-  auto x_3683 = eval_expr_x_3682(x_3656);
-  if (x_3656->has_var_flex_shrink_sum) {
-    auto x_3684 = x_3656->var_flex_shrink_sum;
-    if (!EqualValue(x_3684, x_3683)) {
-      var_modified_x_3685(x_3656);
-    }
-  }
-  x_3656->has_var_flex_shrink_sum = true;
-  x_3656->var_flex_shrink_sum = x_3683;
-  WriteMetric();
-  auto x_3688 = eval_expr_x_3687(x_3656);
-  if (x_3656->has_var_flex_direction) {
-    auto x_3689 = x_3656->var_flex_direction;
-    if (!EqualValue(x_3689, x_3688)) {
-      var_modified_x_3690(x_3656);
-    }
-  }
-  x_3656->has_var_flex_direction = true;
-  x_3656->var_flex_direction = x_3688;
-  WriteMetric();
-  auto x_3693 = eval_expr_x_3692(x_3656);
-  if (x_3656->has_var_is_flex_row) {
-    auto x_3694 = x_3656->var_is_flex_row;
-    if (!EqualValue(x_3694, x_3693)) {
-      var_modified_x_3695(x_3656);
-    }
-  }
-  x_3656->has_var_is_flex_row = true;
-  x_3656->var_is_flex_row = x_3693;
-  WriteMetric();
-  auto x_3698 = eval_expr_x_3697(x_3656);
-  if (x_3656->has_var_is_flex_column) {
-    auto x_3699 = x_3656->var_is_flex_column;
-    if (!EqualValue(x_3699, x_3698)) {
-      var_modified_x_3700(x_3656);
-    }
-  }
-  x_3656->has_var_is_flex_column = true;
-  x_3656->var_is_flex_column = x_3698;
-  WriteMetric();
-  auto x_3703 = eval_expr_x_3702(x_3656);
-  if (x_3656->has_var_width_attr_expr) {
-    auto x_3704 = x_3656->var_width_attr_expr;
-    if (!EqualValue(x_3704, x_3703)) {
-      var_modified_x_3705(x_3656);
-    }
-  }
-  x_3656->has_var_width_attr_expr = true;
-  x_3656->var_width_attr_expr = x_3703;
-  WriteMetric();
-  auto x_3708 = eval_expr_x_3707(x_3656);
-  if (x_3656->has_var_has_width_attr) {
-    auto x_3709 = x_3656->var_has_width_attr;
-    if (!EqualValue(x_3709, x_3708)) {
-      var_modified_x_3710(x_3656);
-    }
-  }
-  x_3656->has_var_has_width_attr = true;
-  x_3656->var_has_width_attr = x_3708;
-  WriteMetric();
-  auto x_3713 = eval_expr_x_3712(x_3656);
-  if (x_3656->has_var_height_attr_expr) {
-    auto x_3714 = x_3656->var_height_attr_expr;
-    if (!EqualValue(x_3714, x_3713)) {
-      var_modified_x_3715(x_3656);
-    }
-  }
-  x_3656->has_var_height_attr_expr = true;
-  x_3656->var_height_attr_expr = x_3713;
-  WriteMetric();
-  auto x_3718 = eval_expr_x_3717(x_3656);
-  if (x_3656->has_var_has_height_attr) {
-    auto x_3719 = x_3656->var_has_height_attr;
-    if (!EqualValue(x_3719, x_3718)) {
-      var_modified_x_3720(x_3656);
-    }
-  }
-  x_3656->has_var_has_height_attr = true;
-  x_3656->var_has_height_attr = x_3718;
-  WriteMetric();
-  auto x_3723 = eval_expr_x_3722(x_3656);
-  if (x_3656->has_var_is_svg_block) {
-    auto x_3724 = x_3656->var_is_svg_block;
-    if (!EqualValue(x_3724, x_3723)) {
-      var_modified_x_3725(x_3656);
-    }
-  }
-  x_3656->has_var_is_svg_block = true;
-  x_3656->var_is_svg_block = x_3723;
-  WriteMetric();
-  auto x_3728 = eval_expr_x_3727(x_3656);
-  if (x_3656->has_var_inside_svg) {
-    auto x_3729 = x_3656->var_inside_svg;
-    if (!EqualValue(x_3729, x_3728)) {
-      var_modified_x_3730(x_3656);
-    }
-  }
-  x_3656->has_var_inside_svg = true;
-  x_3656->var_inside_svg = x_3728;
-  WriteMetric();
-  auto x_3733 = eval_expr_x_3732(x_3656);
-  if (x_3656->has_var_disabled) {
-    auto x_3734 = x_3656->var_disabled;
-    if (!EqualValue(x_3734, x_3733)) {
-      var_modified_x_3735(x_3656);
-    }
-  }
-  x_3656->has_var_disabled = true;
-  x_3656->var_disabled = x_3733;
-  WriteMetric();
-  auto x_3738 = eval_expr_x_3737(x_3656);
-  if (x_3656->has_var_visible) {
-    auto x_3739 = x_3656->var_visible;
-    if (!EqualValue(x_3739, x_3738)) {
-      var_modified_x_3740(x_3656);
-    }
-  }
-  x_3656->has_var_visible = true;
-  x_3656->var_visible = x_3738;
-  WriteMetric();
-  auto x_3743 = eval_expr_x_3742(x_3656);
-  if (x_3656->has_var_line_break) {
-    auto x_3744 = x_3656->var_line_break;
-    if (!EqualValue(x_3744, x_3743)) {
-      var_modified_x_3745(x_3656);
-    }
-  }
-  x_3656->has_var_line_break = true;
-  x_3656->var_line_break = x_3743;
-  return MakeUnit();
-}
-Unit eval_stmts_x_3256(const auto &x_3747) {
-  WriteMetric();
-  auto x_3749 = eval_expr_x_3748(x_3747);
-  if (x_3747->has_var_box_width) {
-    auto x_3750 = x_3747->var_box_width;
-    if (!EqualValue(x_3750, x_3749)) {
-      var_modified_x_3751(x_3747);
-    }
-  }
-  x_3747->has_var_box_width = true;
-  x_3747->var_box_width = x_3749;
-  WriteMetric();
-  auto x_3754 = eval_expr_x_3753(x_3747);
-  if (x_3747->has_var_box_height) {
-    auto x_3755 = x_3747->var_box_height;
-    if (!EqualValue(x_3755, x_3754)) {
-      var_modified_x_3756(x_3747);
-    }
-  }
-  x_3747->has_var_box_height = true;
-  x_3747->var_box_height = x_3754;
-  WriteMetric();
-  auto x_3759 = eval_expr_x_3758(x_3747);
-  if (x_3747->has_var_left_over) {
-    auto x_3760 = x_3747->var_left_over;
-    if (!EqualValue(x_3760, x_3759)) {
-      var_modified_x_3761(x_3747);
-    }
-  }
-  x_3747->has_var_left_over = true;
-  x_3747->var_left_over = x_3759;
-  WriteMetric();
-  auto x_3764 = eval_expr_x_3763(x_3747);
-  if (x_3747->has_var_flex_amount) {
-    auto x_3765 = x_3747->var_flex_amount;
-    if (!EqualValue(x_3765, x_3764)) {
-      var_modified_x_3766(x_3747);
-    }
-  }
-  x_3747->has_var_flex_amount = true;
-  x_3747->var_flex_amount = x_3764;
-  WriteMetric();
-  auto x_3769 = eval_expr_x_3768(x_3747);
-  if (x_3747->has_var_flex_unit) {
-    auto x_3770 = x_3747->var_flex_unit;
-    if (!EqualValue(x_3770, x_3769)) {
-      var_modified_x_3771(x_3747);
-    }
-  }
-  x_3747->has_var_flex_unit = true;
-  x_3747->var_flex_unit = x_3769;
-  WriteMetric();
-  auto x_3774 = eval_expr_x_3773(x_3747);
-  if (x_3747->has_var_x) {
-    auto x_3775 = x_3747->var_x;
-    if (!EqualValue(x_3775, x_3774)) {
-      var_modified_x_3776(x_3747);
-    }
-  }
-  x_3747->has_var_x = true;
-  x_3747->var_x = x_3774;
-  WriteMetric();
-  auto x_3779 = eval_expr_x_3778(x_3747);
-  if (x_3747->has_var_width_internal) {
-    auto x_3780 = x_3747->var_width_internal;
-    if (!EqualValue(x_3780, x_3779)) {
-      var_modified_x_3781(x_3747);
-    }
-  }
-  x_3747->has_var_width_internal = true;
-  x_3747->var_width_internal = x_3779;
-  WriteMetric();
-  auto x_3784 = eval_expr_x_3783(x_3747);
-  if (x_3747->has_var_width_external) {
-    auto x_3785 = x_3747->var_width_external;
-    if (!EqualValue(x_3785, x_3784)) {
-      var_modified_x_3786(x_3747);
-    }
-  }
-  x_3747->has_var_width_external = true;
-  x_3747->var_width_external = x_3784;
-  WriteMetric();
-  auto x_3789 = eval_expr_x_3788(x_3747);
-  if (x_3747->has_var_y) {
-    auto x_3790 = x_3747->var_y;
-    if (!EqualValue(x_3790, x_3789)) {
-      var_modified_x_3791(x_3747);
-    }
-  }
-  x_3747->has_var_y = true;
-  x_3747->var_y = x_3789;
-  WriteMetric();
-  auto x_3794 = eval_expr_x_3793(x_3747);
-  if (x_3747->has_var_height_internal) {
-    auto x_3795 = x_3747->var_height_internal;
-    if (!EqualValue(x_3795, x_3794)) {
-      var_modified_x_3796(x_3747);
-    }
-  }
-  x_3747->has_var_height_internal = true;
-  x_3747->var_height_internal = x_3794;
-  WriteMetric();
-  auto x_3799 = eval_expr_x_3798(x_3747);
-  if (x_3747->has_var_height_external) {
-    auto x_3800 = x_3747->var_height_external;
-    if (!EqualValue(x_3800, x_3799)) {
-      var_modified_x_3801(x_3747);
-    }
-  }
-  x_3747->has_var_height_external = true;
-  x_3747->var_height_external = x_3799;
-  WriteMetric();
-  auto x_3804 = eval_expr_x_3803(x_3747);
-  if (x_3747->has_var_line_height) {
-    auto x_3805 = x_3747->var_line_height;
-    if (!EqualValue(x_3805, x_3804)) {
-      var_modified_x_3806(x_3747);
-    }
-  }
-  x_3747->has_var_line_height = true;
-  x_3747->var_line_height = x_3804;
-  return MakeUnit();
-}
-Unit x_3808(const auto &x_3809) {
+Unit x_2098(const auto &x_2099) {
   MetaWriteMetric();
-  if (!HashtblFindExn(x_3809->meta->RecursiveProcDirtied, std::string("pass_1"))) {
-    HashtblSet(x_3809->meta->RecursiveProcDirtied, std::string("pass_1"), true);
+  if (!HashtblFindExn(x_2099->meta->RecursiveProcDirtied, std::string("pass_1"))) {
+    HashtblSet(x_2099->meta->RecursiveProcDirtied, std::string("pass_1"), true);
     return OptionMatch(
-        x_3809->parent, [&](const auto &x_3811) { return MakeUnit(); },
-        [&](const auto &x_3810) { return x_3808(x_3810); });
+        x_2099->parent, [&](const auto &x_2101) { return MakeUnit(); },
+        [&](const auto &x_2100) { return x_2098(x_2100); });
   } else {
     return MakeUnit();
   }
 }
-Unit set_recursive_proc_dirtied_x_3201(const auto &x_3809) { return x_3808(x_3809); }
-Unit x_3812(const auto &x_3813) {
+Unit set_recursive_proc_dirtied_x_1752(const auto &x_2099) { return x_2098(x_2099); }
+Unit x_2102(const auto &x_2103) {
   MetaWriteMetric();
-  if (!HashtblFindExn(x_3813->meta->RecursiveProcDirtied, std::string("pass_0"))) {
-    HashtblSet(x_3813->meta->RecursiveProcDirtied, std::string("pass_0"), true);
+  if (!HashtblFindExn(x_2103->meta->RecursiveProcDirtied, std::string("pass_0"))) {
+    HashtblSet(x_2103->meta->RecursiveProcDirtied, std::string("pass_0"), true);
     return OptionMatch(
-        x_3813->parent, [&](const auto &x_3815) { return MakeUnit(); },
-        [&](const auto &x_3814) { return x_3812(x_3814); });
+        x_2103->parent, [&](const auto &x_2105) { return MakeUnit(); },
+        [&](const auto &x_2104) { return x_2102(x_2104); });
   } else {
     return MakeUnit();
   }
 }
-Unit set_recursive_proc_dirtied_x_3161(const auto &x_3813) { return x_3812(x_3813); }
-Unit x_3129(const auto &x_3130, const auto &x_3131, const auto &x_3132) {
-  auto x_3133 = ListHeadExn(x_3130);
-  auto x_3134 = ListTailExn(x_3130);
-  if (ListIsEmpty(x_3134)) {
-    auto x_3135 = ListSplitN(x_3131->children, x_3133);
-    OutputChangeMetric(IntAdd(layout_size_x_3080(ListNthExn(x_3131->children, x_3133)), layout_size_x_3080(x_3132)));
-    x_3131->children = ListAppend(Zro(x_3135), Cons(x_3132, ListTailExn(Fst(x_3135))));
+Unit set_recursive_proc_dirtied_x_1712(const auto &x_2103) { return x_2102(x_2103); }
+Unit x_1680(const auto &x_1681, const auto &x_1682, const auto &x_1683) {
+  auto x_1684 = ListHeadExn(x_1681);
+  auto x_1685 = ListTailExn(x_1681);
+  if (ListIsEmpty(x_1685)) {
+    auto x_1686 = ListSplitN(x_1682->children, x_1684);
+    OutputChangeMetric(IntAdd(layout_size_x_1639(ListNthExn(x_1682->children, x_1684)), layout_size_x_1639(x_1683)));
+    x_1682->children = ListAppend(Zro(x_1686), Cons(x_1683, ListTailExn(Fst(x_1686))));
     return MakeUnit();
   } else {
-    return x_3129(x_3134, ListNthExn(x_3131->children, x_3133), x_3132);
+    return x_1680(x_1685, ListNthExn(x_1682->children, x_1684), x_1683);
   }
 }
-Unit replace_layout_node_x_3128(const auto &x_3130, const auto &x_3131, const auto &x_3132) {
-  return x_3129(x_3130, x_3131, x_3132);
+Unit replace_layout_node_x_1679(const auto &x_1681, const auto &x_1682, const auto &x_1683) {
+  return x_1680(x_1681, x_1682, x_1683);
 }
-Unit x_3136(const auto &x_3137, const auto &x_3138, const auto &x_3139) {
-  auto x_3140 = ListHeadExn(x_3137);
-  auto x_3141 = ListTailExn(x_3137);
-  if (ListIsEmpty(x_3141)) {
-    OutputChangeMetric(layout_size_x_3080(x_3139));
-    auto x_3142 = ListSplitN(x_3138->children, x_3140);
-    x_3138->children = ListAppend(Zro(x_3142), Cons(x_3139, Fst(x_3142)));
+Unit x_1687(const auto &x_1688, const auto &x_1689, const auto &x_1690) {
+  auto x_1691 = ListHeadExn(x_1688);
+  auto x_1692 = ListTailExn(x_1688);
+  if (ListIsEmpty(x_1692)) {
+    OutputChangeMetric(layout_size_x_1639(x_1690));
+    auto x_1693 = ListSplitN(x_1689->children, x_1691);
+    x_1689->children = ListAppend(Zro(x_1693), Cons(x_1690, Fst(x_1693)));
     return MakeUnit();
   } else {
-    return x_3136(x_3141, ListNthExn(x_3138->children, x_3140), x_3139);
+    return x_1687(x_1692, ListNthExn(x_1689->children, x_1691), x_1690);
   }
 }
-Unit add_layout_node_x_3126(const auto &x_3137, const auto &x_3138, const auto &x_3139) {
-  return x_3136(x_3137, x_3138, x_3139);
+Unit add_layout_node_x_1677(const auto &x_1688, const auto &x_1689, const auto &x_1690) {
+  return x_1687(x_1688, x_1689, x_1690);
 }
-Unit x_3143(const auto &x_3144, const auto &x_3145, const auto &x_3146) {
-  auto x_3147 = ListHeadExn(x_3144);
-  auto x_3148 = ListTailExn(x_3144);
-  if (ListIsEmpty(x_3148)) {
-    OutputChangeMetric(layout_size_x_3080(ListNthExn(x_3145->children, x_3147)));
-    auto x_3149 = ListSplitN(x_3145->children, x_3147);
-    x_3145->children = ListAppend(Zro(x_3149), ListTailExn(Fst(x_3149)));
+Unit x_1694(const auto &x_1695, const auto &x_1696, const auto &x_1697) {
+  auto x_1698 = ListHeadExn(x_1695);
+  auto x_1699 = ListTailExn(x_1695);
+  if (ListIsEmpty(x_1699)) {
+    OutputChangeMetric(layout_size_x_1639(ListNthExn(x_1696->children, x_1698)));
+    auto x_1700 = ListSplitN(x_1696->children, x_1698);
+    x_1696->children = ListAppend(Zro(x_1700), ListTailExn(Fst(x_1700)));
     return MakeUnit();
   } else {
-    return x_3143(x_3148, ListNthExn(x_3145->children, x_3147), x_3146);
+    return x_1694(x_1699, ListNthExn(x_1696->children, x_1698), x_1697);
   }
 }
-Unit remove_layout_node_x_3124(const auto &x_3144, const auto &x_3145, const auto &x_3146) {
-  return x_3143(x_3144, x_3145, x_3146);
+Unit remove_layout_node_x_1675(const auto &x_1695, const auto &x_1696, const auto &x_1697) {
+  return x_1694(x_1695, x_1696, x_1697);
 }
-Unit x_3150(const auto &x_3151, const auto &x_3152, const auto &x_3153) {
+Unit x_1701(const auto &x_1702, const auto &x_1703, const auto &x_1704) {
   return ListMatch(
-      x_3151,
-      [&](const auto &x_3156) {
-        auto x_3157 = Zro(x_3153);
-        auto x_3158 = Zro(x_3157);
-        auto x_3159 = Fst(x_3157);
-        auto x_3160 = Fst(x_3153);
+      x_1702,
+      [&](const auto &x_1707) {
+        auto x_1708 = Zro(x_1704);
+        auto x_1709 = Zro(x_1708);
+        auto x_1710 = Fst(x_1708);
+        auto x_1711 = Fst(x_1704);
         InputChangeMetric(static_cast<int64_t>(1));
-        std::string x_6250 = x_3158;
-        if (x_6250 == "attributes") {
-          std::string x_6251 = x_3159;
-          if (x_6251 == "width") {
+        std::string x_3368 = x_1709;
+        if (x_3368 == "attributes") {
+          std::string x_3369 = x_1710;
+          if (x_3369 == "width") {
             WriteMetric();
-            HashtblAddExn(x_3152->attr, std::string("width"), x_3160);
-            if (HashtblContain(x_3152->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3152->meta->BBDirtied, std::string("bb_1"), true);
-              set_recursive_proc_dirtied_x_3161(x_3152);
+            HashtblAddExn(x_1703->attr, std::string("width"), x_1711);
+            if (HashtblContain(x_1703->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1703->meta->BBDirtied, std::string("bb_1"), true);
+              set_recursive_proc_dirtied_x_1712(x_1703);
             } else {
               MetaWriteMetric();
             }
             return MakeUnit();
-          } else if (x_6251 == "image_height") {
+          } else if (x_3369 == "image_height") {
             WriteMetric();
-            HashtblAddExn(x_3152->attr, std::string("image_height"), x_3160);
-            if (HashtblContain(x_3152->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3152->meta->BBDirtied, std::string("bb_0"), true);
-              set_recursive_proc_dirtied_x_3161(x_3152);
+            HashtblAddExn(x_1703->attr, std::string("image_height"), x_1711);
+            if (HashtblContain(x_1703->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1703->meta->BBDirtied, std::string("bb_0"), true);
+              set_recursive_proc_dirtied_x_1712(x_1703);
             } else {
               MetaWriteMetric();
             }
             return MakeUnit();
-          } else if (x_6251 == "image_width") {
+          } else if (x_3369 == "image_width") {
             WriteMetric();
-            HashtblAddExn(x_3152->attr, std::string("image_width"), x_3160);
-            if (HashtblContain(x_3152->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3152->meta->BBDirtied, std::string("bb_0"), true);
-              set_recursive_proc_dirtied_x_3161(x_3152);
+            HashtblAddExn(x_1703->attr, std::string("image_width"), x_1711);
+            if (HashtblContain(x_1703->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1703->meta->BBDirtied, std::string("bb_0"), true);
+              set_recursive_proc_dirtied_x_1712(x_1703);
             } else {
               MetaWriteMetric();
             }
             return MakeUnit();
-          } else if (x_6251 == "height") {
+          } else if (x_3369 == "height") {
             WriteMetric();
-            HashtblAddExn(x_3152->attr, std::string("height"), x_3160);
-            if (HashtblContain(x_3152->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3152->meta->BBDirtied, std::string("bb_1"), true);
-              set_recursive_proc_dirtied_x_3161(x_3152);
+            HashtblAddExn(x_1703->attr, std::string("height"), x_1711);
+            if (HashtblContain(x_1703->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1703->meta->BBDirtied, std::string("bb_1"), true);
+              set_recursive_proc_dirtied_x_1712(x_1703);
             } else {
               MetaWriteMetric();
             }
             return MakeUnit();
-          } else if (x_6251 == "viewBox") {
+          } else if (x_3369 == "viewBox") {
             WriteMetric();
-            HashtblAddExn(x_3152->attr, std::string("viewBox"), x_3160);
-            if (HashtblContain(x_3152->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3152->meta->BBDirtied, std::string("bb_0"), true);
-              set_recursive_proc_dirtied_x_3161(x_3152);
+            HashtblAddExn(x_1703->attr, std::string("viewBox"), x_1711);
+            if (HashtblContain(x_1703->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1703->meta->BBDirtied, std::string("bb_0"), true);
+              set_recursive_proc_dirtied_x_1712(x_1703);
             } else {
               MetaWriteMetric();
             }
@@ -3710,74 +2487,74 @@ Unit x_3150(const auto &x_3151, const auto &x_3152, const auto &x_3153) {
           } else {
             return MakeUnit();
           }
-        } else if (x_6250 == "properties") {
-          std::string x_6252 = x_3159;
-          if (x_6252 == "width") {
+        } else if (x_3368 == "properties") {
+          std::string x_3370 = x_1710;
+          if (x_3370 == "width") {
             WriteMetric();
-            HashtblAddExn(x_3152->prop, std::string("width"), x_3160);
-            if (HashtblContain(x_3152->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3152->meta->BBDirtied, std::string("bb_0"), true);
-              set_recursive_proc_dirtied_x_3161(x_3152);
+            HashtblAddExn(x_1703->prop, std::string("width"), x_1711);
+            if (HashtblContain(x_1703->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1703->meta->BBDirtied, std::string("bb_0"), true);
+              set_recursive_proc_dirtied_x_1712(x_1703);
             } else {
               MetaWriteMetric();
             }
             return MakeUnit();
-          } else if (x_6252 == "flex-grow") {
+          } else if (x_3370 == "flex-grow") {
             WriteMetric();
-            HashtblAddExn(x_3152->prop, std::string("flex-grow"), x_3160);
-            if (HashtblContain(x_3152->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3152->meta->BBDirtied, std::string("bb_1"), true);
-              set_recursive_proc_dirtied_x_3161(x_3152);
+            HashtblAddExn(x_1703->prop, std::string("flex-grow"), x_1711);
+            if (HashtblContain(x_1703->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1703->meta->BBDirtied, std::string("bb_1"), true);
+              set_recursive_proc_dirtied_x_1712(x_1703);
             } else {
               MetaWriteMetric();
             }
             return MakeUnit();
-          } else if (x_6252 == "height") {
+          } else if (x_3370 == "height") {
             WriteMetric();
-            HashtblAddExn(x_3152->prop, std::string("height"), x_3160);
-            if (HashtblContain(x_3152->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3152->meta->BBDirtied, std::string("bb_0"), true);
-              set_recursive_proc_dirtied_x_3161(x_3152);
+            HashtblAddExn(x_1703->prop, std::string("height"), x_1711);
+            if (HashtblContain(x_1703->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1703->meta->BBDirtied, std::string("bb_0"), true);
+              set_recursive_proc_dirtied_x_1712(x_1703);
             } else {
               MetaWriteMetric();
             }
             return MakeUnit();
-          } else if (x_6252 == "display") {
+          } else if (x_3370 == "display") {
             WriteMetric();
-            HashtblAddExn(x_3152->prop, std::string("display"), x_3160);
-            if (HashtblContain(x_3152->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3152->meta->BBDirtied, std::string("bb_1"), true);
-              set_recursive_proc_dirtied_x_3161(x_3152);
+            HashtblAddExn(x_1703->prop, std::string("display"), x_1711);
+            if (HashtblContain(x_1703->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1703->meta->BBDirtied, std::string("bb_1"), true);
+              set_recursive_proc_dirtied_x_1712(x_1703);
             } else {
               MetaWriteMetric();
             }
             return MakeUnit();
-          } else if (x_6252 == "position") {
+          } else if (x_3370 == "position") {
             WriteMetric();
-            HashtblAddExn(x_3152->prop, std::string("position"), x_3160);
-            if (HashtblContain(x_3152->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3152->meta->BBDirtied, std::string("bb_1"), true);
-              set_recursive_proc_dirtied_x_3161(x_3152);
+            HashtblAddExn(x_1703->prop, std::string("position"), x_1711);
+            if (HashtblContain(x_1703->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1703->meta->BBDirtied, std::string("bb_1"), true);
+              set_recursive_proc_dirtied_x_1712(x_1703);
             } else {
               MetaWriteMetric();
             }
             return MakeUnit();
-          } else if (x_6252 == "flex-shrink") {
+          } else if (x_3370 == "flex-shrink") {
             WriteMetric();
-            HashtblAddExn(x_3152->prop, std::string("flex-shrink"), x_3160);
-            if (HashtblContain(x_3152->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3152->meta->BBDirtied, std::string("bb_1"), true);
-              set_recursive_proc_dirtied_x_3161(x_3152);
+            HashtblAddExn(x_1703->prop, std::string("flex-shrink"), x_1711);
+            if (HashtblContain(x_1703->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1703->meta->BBDirtied, std::string("bb_1"), true);
+              set_recursive_proc_dirtied_x_1712(x_1703);
             } else {
               MetaWriteMetric();
             }
             return MakeUnit();
-          } else if (x_6252 == "flex-direction") {
+          } else if (x_3370 == "flex-direction") {
             WriteMetric();
-            HashtblAddExn(x_3152->prop, std::string("flex-direction"), x_3160);
-            if (HashtblContain(x_3152->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3152->meta->BBDirtied, std::string("bb_1"), true);
-              set_recursive_proc_dirtied_x_3161(x_3152);
+            HashtblAddExn(x_1703->prop, std::string("flex-direction"), x_1711);
+            if (HashtblContain(x_1703->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1703->meta->BBDirtied, std::string("bb_1"), true);
+              set_recursive_proc_dirtied_x_1712(x_1703);
             } else {
               MetaWriteMetric();
             }
@@ -3789,69 +2566,69 @@ Unit x_3150(const auto &x_3151, const auto &x_3152, const auto &x_3153) {
           Panic();
         }
       },
-      [&](const auto &x_3154, const auto &x_3155) {
-        return x_3150(x_3155, ListNthExn(x_3152->children, x_3154), x_3153);
+      [&](const auto &x_1705, const auto &x_1706) {
+        return x_1701(x_1706, ListNthExn(x_1703->children, x_1705), x_1704);
       });
 }
-Unit insert_value_x_3122(const auto &x_3151, const auto &x_3152, const auto &x_3153) {
-  return x_3150(x_3151, x_3152, x_3153);
+Unit insert_value_x_1673(const auto &x_1702, const auto &x_1703, const auto &x_1704) {
+  return x_1701(x_1702, x_1703, x_1704);
 }
-Unit x_3162(const auto &x_3163, const auto &x_3164, const auto &x_3165) {
+Unit x_1713(const auto &x_1714, const auto &x_1715, const auto &x_1716) {
   return ListMatch(
-      x_3163,
-      [&](const auto &x_3168) {
-        auto x_3169 = Zro(x_3165);
-        auto x_3170 = Fst(x_3165);
+      x_1714,
+      [&](const auto &x_1719) {
+        auto x_1720 = Zro(x_1716);
+        auto x_1721 = Fst(x_1716);
         InputChangeMetric(static_cast<int64_t>(1));
-        std::string x_6253 = x_3169;
-        if (x_6253 == "attributes") {
-          std::string x_6254 = x_3170;
-          if (x_6254 == "width") {
+        std::string x_3371 = x_1720;
+        if (x_3371 == "attributes") {
+          std::string x_3372 = x_1721;
+          if (x_3372 == "width") {
             WriteMetric();
-            HashtblForceRemove(x_3164->attr, std::string("width"));
-            if (HashtblContain(x_3164->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3164->meta->BBDirtied, std::string("bb_1"), true);
-              set_recursive_proc_dirtied_x_3161(x_3164);
+            HashtblForceRemove(x_1715->attr, std::string("width"));
+            if (HashtblContain(x_1715->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1715->meta->BBDirtied, std::string("bb_1"), true);
+              set_recursive_proc_dirtied_x_1712(x_1715);
             } else {
               MetaWriteMetric();
             }
             return MakeUnit();
-          } else if (x_6254 == "image_height") {
+          } else if (x_3372 == "image_height") {
             WriteMetric();
-            HashtblForceRemove(x_3164->attr, std::string("image_height"));
-            if (HashtblContain(x_3164->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3164->meta->BBDirtied, std::string("bb_0"), true);
-              set_recursive_proc_dirtied_x_3161(x_3164);
+            HashtblForceRemove(x_1715->attr, std::string("image_height"));
+            if (HashtblContain(x_1715->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1715->meta->BBDirtied, std::string("bb_0"), true);
+              set_recursive_proc_dirtied_x_1712(x_1715);
             } else {
               MetaWriteMetric();
             }
             return MakeUnit();
-          } else if (x_6254 == "image_width") {
+          } else if (x_3372 == "image_width") {
             WriteMetric();
-            HashtblForceRemove(x_3164->attr, std::string("image_width"));
-            if (HashtblContain(x_3164->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3164->meta->BBDirtied, std::string("bb_0"), true);
-              set_recursive_proc_dirtied_x_3161(x_3164);
+            HashtblForceRemove(x_1715->attr, std::string("image_width"));
+            if (HashtblContain(x_1715->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1715->meta->BBDirtied, std::string("bb_0"), true);
+              set_recursive_proc_dirtied_x_1712(x_1715);
             } else {
               MetaWriteMetric();
             }
             return MakeUnit();
-          } else if (x_6254 == "height") {
+          } else if (x_3372 == "height") {
             WriteMetric();
-            HashtblForceRemove(x_3164->attr, std::string("height"));
-            if (HashtblContain(x_3164->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3164->meta->BBDirtied, std::string("bb_1"), true);
-              set_recursive_proc_dirtied_x_3161(x_3164);
+            HashtblForceRemove(x_1715->attr, std::string("height"));
+            if (HashtblContain(x_1715->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1715->meta->BBDirtied, std::string("bb_1"), true);
+              set_recursive_proc_dirtied_x_1712(x_1715);
             } else {
               MetaWriteMetric();
             }
             return MakeUnit();
-          } else if (x_6254 == "viewBox") {
+          } else if (x_3372 == "viewBox") {
             WriteMetric();
-            HashtblForceRemove(x_3164->attr, std::string("viewBox"));
-            if (HashtblContain(x_3164->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3164->meta->BBDirtied, std::string("bb_0"), true);
-              set_recursive_proc_dirtied_x_3161(x_3164);
+            HashtblForceRemove(x_1715->attr, std::string("viewBox"));
+            if (HashtblContain(x_1715->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1715->meta->BBDirtied, std::string("bb_0"), true);
+              set_recursive_proc_dirtied_x_1712(x_1715);
             } else {
               MetaWriteMetric();
             }
@@ -3859,74 +2636,74 @@ Unit x_3162(const auto &x_3163, const auto &x_3164, const auto &x_3165) {
           } else {
             return MakeUnit();
           }
-        } else if (x_6253 == "properties") {
-          std::string x_6255 = x_3170;
-          if (x_6255 == "width") {
+        } else if (x_3371 == "properties") {
+          std::string x_3373 = x_1721;
+          if (x_3373 == "width") {
             WriteMetric();
-            HashtblForceRemove(x_3164->prop, std::string("width"));
-            if (HashtblContain(x_3164->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3164->meta->BBDirtied, std::string("bb_0"), true);
-              set_recursive_proc_dirtied_x_3161(x_3164);
+            HashtblForceRemove(x_1715->prop, std::string("width"));
+            if (HashtblContain(x_1715->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1715->meta->BBDirtied, std::string("bb_0"), true);
+              set_recursive_proc_dirtied_x_1712(x_1715);
             } else {
               MetaWriteMetric();
             }
             return MakeUnit();
-          } else if (x_6255 == "flex-grow") {
+          } else if (x_3373 == "flex-grow") {
             WriteMetric();
-            HashtblForceRemove(x_3164->prop, std::string("flex-grow"));
-            if (HashtblContain(x_3164->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3164->meta->BBDirtied, std::string("bb_1"), true);
-              set_recursive_proc_dirtied_x_3161(x_3164);
+            HashtblForceRemove(x_1715->prop, std::string("flex-grow"));
+            if (HashtblContain(x_1715->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1715->meta->BBDirtied, std::string("bb_1"), true);
+              set_recursive_proc_dirtied_x_1712(x_1715);
             } else {
               MetaWriteMetric();
             }
             return MakeUnit();
-          } else if (x_6255 == "height") {
+          } else if (x_3373 == "height") {
             WriteMetric();
-            HashtblForceRemove(x_3164->prop, std::string("height"));
-            if (HashtblContain(x_3164->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3164->meta->BBDirtied, std::string("bb_0"), true);
-              set_recursive_proc_dirtied_x_3161(x_3164);
+            HashtblForceRemove(x_1715->prop, std::string("height"));
+            if (HashtblContain(x_1715->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1715->meta->BBDirtied, std::string("bb_0"), true);
+              set_recursive_proc_dirtied_x_1712(x_1715);
             } else {
               MetaWriteMetric();
             }
             return MakeUnit();
-          } else if (x_6255 == "display") {
+          } else if (x_3373 == "display") {
             WriteMetric();
-            HashtblForceRemove(x_3164->prop, std::string("display"));
-            if (HashtblContain(x_3164->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3164->meta->BBDirtied, std::string("bb_1"), true);
-              set_recursive_proc_dirtied_x_3161(x_3164);
+            HashtblForceRemove(x_1715->prop, std::string("display"));
+            if (HashtblContain(x_1715->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1715->meta->BBDirtied, std::string("bb_1"), true);
+              set_recursive_proc_dirtied_x_1712(x_1715);
             } else {
               MetaWriteMetric();
             }
             return MakeUnit();
-          } else if (x_6255 == "position") {
+          } else if (x_3373 == "position") {
             WriteMetric();
-            HashtblForceRemove(x_3164->prop, std::string("position"));
-            if (HashtblContain(x_3164->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3164->meta->BBDirtied, std::string("bb_1"), true);
-              set_recursive_proc_dirtied_x_3161(x_3164);
+            HashtblForceRemove(x_1715->prop, std::string("position"));
+            if (HashtblContain(x_1715->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1715->meta->BBDirtied, std::string("bb_1"), true);
+              set_recursive_proc_dirtied_x_1712(x_1715);
             } else {
               MetaWriteMetric();
             }
             return MakeUnit();
-          } else if (x_6255 == "flex-shrink") {
+          } else if (x_3373 == "flex-shrink") {
             WriteMetric();
-            HashtblForceRemove(x_3164->prop, std::string("flex-shrink"));
-            if (HashtblContain(x_3164->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3164->meta->BBDirtied, std::string("bb_1"), true);
-              set_recursive_proc_dirtied_x_3161(x_3164);
+            HashtblForceRemove(x_1715->prop, std::string("flex-shrink"));
+            if (HashtblContain(x_1715->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1715->meta->BBDirtied, std::string("bb_1"), true);
+              set_recursive_proc_dirtied_x_1712(x_1715);
             } else {
               MetaWriteMetric();
             }
             return MakeUnit();
-          } else if (x_6255 == "flex-direction") {
+          } else if (x_3373 == "flex-direction") {
             WriteMetric();
-            HashtblForceRemove(x_3164->prop, std::string("flex-direction"));
-            if (HashtblContain(x_3164->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3164->meta->BBDirtied, std::string("bb_1"), true);
-              set_recursive_proc_dirtied_x_3161(x_3164);
+            HashtblForceRemove(x_1715->prop, std::string("flex-direction"));
+            if (HashtblContain(x_1715->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1715->meta->BBDirtied, std::string("bb_1"), true);
+              set_recursive_proc_dirtied_x_1712(x_1715);
             } else {
               MetaWriteMetric();
             }
@@ -3938,111 +2715,111 @@ Unit x_3162(const auto &x_3163, const auto &x_3164, const auto &x_3165) {
           Panic();
         }
       },
-      [&](const auto &x_3166, const auto &x_3167) {
-        return x_3162(x_3167, ListNthExn(x_3164->children, x_3166), x_3165);
+      [&](const auto &x_1717, const auto &x_1718) {
+        return x_1713(x_1718, ListNthExn(x_1715->children, x_1717), x_1716);
       });
 }
-Unit delete_value_x_3120(const auto &x_3163, const auto &x_3164, const auto &x_3165) {
-  return x_3162(x_3163, x_3164, x_3165);
+Unit delete_value_x_1671(const auto &x_1714, const auto &x_1715, const auto &x_1716) {
+  return x_1713(x_1714, x_1715, x_1716);
 }
-Unit x_3171(const auto &x_3172, const auto &x_3173, const auto &x_3174) {
+Unit x_1722(const auto &x_1723, const auto &x_1724, const auto &x_1725) {
   return ListMatch(
-      x_3172,
-      [&](const auto &x_3177) {
-        auto x_3178 = Zro(x_3174);
-        auto x_3179 = Zro(x_3178);
-        auto x_3180 = Fst(x_3178);
-        auto x_3181 = Fst(x_3174);
+      x_1723,
+      [&](const auto &x_1728) {
+        auto x_1729 = Zro(x_1725);
+        auto x_1730 = Zro(x_1729);
+        auto x_1731 = Fst(x_1729);
+        auto x_1732 = Fst(x_1725);
         InputChangeMetric(static_cast<int64_t>(1));
-        std::string x_6256 = x_3179;
-        if (x_6256 == "attributes") {
-          std::string x_6257 = x_3180;
-          if (x_6257 == "width") {
+        std::string x_3374 = x_1730;
+        if (x_3374 == "attributes") {
+          std::string x_3375 = x_1731;
+          if (x_3375 == "width") {
             WriteMetric();
-            HashtblForceRemove(x_3173->attr, std::string("width"));
-            if (HashtblContain(x_3173->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3173->meta->BBDirtied, std::string("bb_1"), true);
-              set_recursive_proc_dirtied_x_3161(x_3173);
+            HashtblForceRemove(x_1724->attr, std::string("width"));
+            if (HashtblContain(x_1724->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1724->meta->BBDirtied, std::string("bb_1"), true);
+              set_recursive_proc_dirtied_x_1712(x_1724);
             } else {
               MetaWriteMetric();
             }
             WriteMetric();
-            HashtblAddExn(x_3173->attr, std::string("width"), x_3181);
-            if (HashtblContain(x_3173->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3173->meta->BBDirtied, std::string("bb_1"), true);
-              set_recursive_proc_dirtied_x_3161(x_3173);
-            } else {
-              MetaWriteMetric();
-            }
-            return MakeUnit();
-          } else if (x_6257 == "image_height") {
-            WriteMetric();
-            HashtblForceRemove(x_3173->attr, std::string("image_height"));
-            if (HashtblContain(x_3173->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3173->meta->BBDirtied, std::string("bb_0"), true);
-              set_recursive_proc_dirtied_x_3161(x_3173);
-            } else {
-              MetaWriteMetric();
-            }
-            WriteMetric();
-            HashtblAddExn(x_3173->attr, std::string("image_height"), x_3181);
-            if (HashtblContain(x_3173->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3173->meta->BBDirtied, std::string("bb_0"), true);
-              set_recursive_proc_dirtied_x_3161(x_3173);
+            HashtblAddExn(x_1724->attr, std::string("width"), x_1732);
+            if (HashtblContain(x_1724->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1724->meta->BBDirtied, std::string("bb_1"), true);
+              set_recursive_proc_dirtied_x_1712(x_1724);
             } else {
               MetaWriteMetric();
             }
             return MakeUnit();
-          } else if (x_6257 == "image_width") {
+          } else if (x_3375 == "image_height") {
             WriteMetric();
-            HashtblForceRemove(x_3173->attr, std::string("image_width"));
-            if (HashtblContain(x_3173->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3173->meta->BBDirtied, std::string("bb_0"), true);
-              set_recursive_proc_dirtied_x_3161(x_3173);
+            HashtblForceRemove(x_1724->attr, std::string("image_height"));
+            if (HashtblContain(x_1724->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1724->meta->BBDirtied, std::string("bb_0"), true);
+              set_recursive_proc_dirtied_x_1712(x_1724);
             } else {
               MetaWriteMetric();
             }
             WriteMetric();
-            HashtblAddExn(x_3173->attr, std::string("image_width"), x_3181);
-            if (HashtblContain(x_3173->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3173->meta->BBDirtied, std::string("bb_0"), true);
-              set_recursive_proc_dirtied_x_3161(x_3173);
-            } else {
-              MetaWriteMetric();
-            }
-            return MakeUnit();
-          } else if (x_6257 == "height") {
-            WriteMetric();
-            HashtblForceRemove(x_3173->attr, std::string("height"));
-            if (HashtblContain(x_3173->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3173->meta->BBDirtied, std::string("bb_1"), true);
-              set_recursive_proc_dirtied_x_3161(x_3173);
-            } else {
-              MetaWriteMetric();
-            }
-            WriteMetric();
-            HashtblAddExn(x_3173->attr, std::string("height"), x_3181);
-            if (HashtblContain(x_3173->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3173->meta->BBDirtied, std::string("bb_1"), true);
-              set_recursive_proc_dirtied_x_3161(x_3173);
+            HashtblAddExn(x_1724->attr, std::string("image_height"), x_1732);
+            if (HashtblContain(x_1724->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1724->meta->BBDirtied, std::string("bb_0"), true);
+              set_recursive_proc_dirtied_x_1712(x_1724);
             } else {
               MetaWriteMetric();
             }
             return MakeUnit();
-          } else if (x_6257 == "viewBox") {
+          } else if (x_3375 == "image_width") {
             WriteMetric();
-            HashtblForceRemove(x_3173->attr, std::string("viewBox"));
-            if (HashtblContain(x_3173->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3173->meta->BBDirtied, std::string("bb_0"), true);
-              set_recursive_proc_dirtied_x_3161(x_3173);
+            HashtblForceRemove(x_1724->attr, std::string("image_width"));
+            if (HashtblContain(x_1724->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1724->meta->BBDirtied, std::string("bb_0"), true);
+              set_recursive_proc_dirtied_x_1712(x_1724);
             } else {
               MetaWriteMetric();
             }
             WriteMetric();
-            HashtblAddExn(x_3173->attr, std::string("viewBox"), x_3181);
-            if (HashtblContain(x_3173->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3173->meta->BBDirtied, std::string("bb_0"), true);
-              set_recursive_proc_dirtied_x_3161(x_3173);
+            HashtblAddExn(x_1724->attr, std::string("image_width"), x_1732);
+            if (HashtblContain(x_1724->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1724->meta->BBDirtied, std::string("bb_0"), true);
+              set_recursive_proc_dirtied_x_1712(x_1724);
+            } else {
+              MetaWriteMetric();
+            }
+            return MakeUnit();
+          } else if (x_3375 == "height") {
+            WriteMetric();
+            HashtblForceRemove(x_1724->attr, std::string("height"));
+            if (HashtblContain(x_1724->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1724->meta->BBDirtied, std::string("bb_1"), true);
+              set_recursive_proc_dirtied_x_1712(x_1724);
+            } else {
+              MetaWriteMetric();
+            }
+            WriteMetric();
+            HashtblAddExn(x_1724->attr, std::string("height"), x_1732);
+            if (HashtblContain(x_1724->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1724->meta->BBDirtied, std::string("bb_1"), true);
+              set_recursive_proc_dirtied_x_1712(x_1724);
+            } else {
+              MetaWriteMetric();
+            }
+            return MakeUnit();
+          } else if (x_3375 == "viewBox") {
+            WriteMetric();
+            HashtblForceRemove(x_1724->attr, std::string("viewBox"));
+            if (HashtblContain(x_1724->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1724->meta->BBDirtied, std::string("bb_0"), true);
+              set_recursive_proc_dirtied_x_1712(x_1724);
+            } else {
+              MetaWriteMetric();
+            }
+            WriteMetric();
+            HashtblAddExn(x_1724->attr, std::string("viewBox"), x_1732);
+            if (HashtblContain(x_1724->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1724->meta->BBDirtied, std::string("bb_0"), true);
+              set_recursive_proc_dirtied_x_1712(x_1724);
             } else {
               MetaWriteMetric();
             }
@@ -4050,130 +2827,130 @@ Unit x_3171(const auto &x_3172, const auto &x_3173, const auto &x_3174) {
           } else {
             return MakeUnit();
           }
-        } else if (x_6256 == "properties") {
-          std::string x_6258 = x_3180;
-          if (x_6258 == "width") {
+        } else if (x_3374 == "properties") {
+          std::string x_3376 = x_1731;
+          if (x_3376 == "width") {
             WriteMetric();
-            HashtblForceRemove(x_3173->prop, std::string("width"));
-            if (HashtblContain(x_3173->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3173->meta->BBDirtied, std::string("bb_0"), true);
-              set_recursive_proc_dirtied_x_3161(x_3173);
+            HashtblForceRemove(x_1724->prop, std::string("width"));
+            if (HashtblContain(x_1724->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1724->meta->BBDirtied, std::string("bb_0"), true);
+              set_recursive_proc_dirtied_x_1712(x_1724);
             } else {
               MetaWriteMetric();
             }
             WriteMetric();
-            HashtblAddExn(x_3173->prop, std::string("width"), x_3181);
-            if (HashtblContain(x_3173->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3173->meta->BBDirtied, std::string("bb_0"), true);
-              set_recursive_proc_dirtied_x_3161(x_3173);
-            } else {
-              MetaWriteMetric();
-            }
-            return MakeUnit();
-          } else if (x_6258 == "flex-grow") {
-            WriteMetric();
-            HashtblForceRemove(x_3173->prop, std::string("flex-grow"));
-            if (HashtblContain(x_3173->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3173->meta->BBDirtied, std::string("bb_1"), true);
-              set_recursive_proc_dirtied_x_3161(x_3173);
-            } else {
-              MetaWriteMetric();
-            }
-            WriteMetric();
-            HashtblAddExn(x_3173->prop, std::string("flex-grow"), x_3181);
-            if (HashtblContain(x_3173->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3173->meta->BBDirtied, std::string("bb_1"), true);
-              set_recursive_proc_dirtied_x_3161(x_3173);
+            HashtblAddExn(x_1724->prop, std::string("width"), x_1732);
+            if (HashtblContain(x_1724->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1724->meta->BBDirtied, std::string("bb_0"), true);
+              set_recursive_proc_dirtied_x_1712(x_1724);
             } else {
               MetaWriteMetric();
             }
             return MakeUnit();
-          } else if (x_6258 == "height") {
+          } else if (x_3376 == "flex-grow") {
             WriteMetric();
-            HashtblForceRemove(x_3173->prop, std::string("height"));
-            if (HashtblContain(x_3173->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3173->meta->BBDirtied, std::string("bb_0"), true);
-              set_recursive_proc_dirtied_x_3161(x_3173);
+            HashtblForceRemove(x_1724->prop, std::string("flex-grow"));
+            if (HashtblContain(x_1724->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1724->meta->BBDirtied, std::string("bb_1"), true);
+              set_recursive_proc_dirtied_x_1712(x_1724);
             } else {
               MetaWriteMetric();
             }
             WriteMetric();
-            HashtblAddExn(x_3173->prop, std::string("height"), x_3181);
-            if (HashtblContain(x_3173->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3173->meta->BBDirtied, std::string("bb_0"), true);
-              set_recursive_proc_dirtied_x_3161(x_3173);
-            } else {
-              MetaWriteMetric();
-            }
-            return MakeUnit();
-          } else if (x_6258 == "display") {
-            WriteMetric();
-            HashtblForceRemove(x_3173->prop, std::string("display"));
-            if (HashtblContain(x_3173->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3173->meta->BBDirtied, std::string("bb_1"), true);
-              set_recursive_proc_dirtied_x_3161(x_3173);
-            } else {
-              MetaWriteMetric();
-            }
-            WriteMetric();
-            HashtblAddExn(x_3173->prop, std::string("display"), x_3181);
-            if (HashtblContain(x_3173->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3173->meta->BBDirtied, std::string("bb_1"), true);
-              set_recursive_proc_dirtied_x_3161(x_3173);
+            HashtblAddExn(x_1724->prop, std::string("flex-grow"), x_1732);
+            if (HashtblContain(x_1724->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1724->meta->BBDirtied, std::string("bb_1"), true);
+              set_recursive_proc_dirtied_x_1712(x_1724);
             } else {
               MetaWriteMetric();
             }
             return MakeUnit();
-          } else if (x_6258 == "position") {
+          } else if (x_3376 == "height") {
             WriteMetric();
-            HashtblForceRemove(x_3173->prop, std::string("position"));
-            if (HashtblContain(x_3173->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3173->meta->BBDirtied, std::string("bb_1"), true);
-              set_recursive_proc_dirtied_x_3161(x_3173);
+            HashtblForceRemove(x_1724->prop, std::string("height"));
+            if (HashtblContain(x_1724->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1724->meta->BBDirtied, std::string("bb_0"), true);
+              set_recursive_proc_dirtied_x_1712(x_1724);
             } else {
               MetaWriteMetric();
             }
             WriteMetric();
-            HashtblAddExn(x_3173->prop, std::string("position"), x_3181);
-            if (HashtblContain(x_3173->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3173->meta->BBDirtied, std::string("bb_1"), true);
-              set_recursive_proc_dirtied_x_3161(x_3173);
-            } else {
-              MetaWriteMetric();
-            }
-            return MakeUnit();
-          } else if (x_6258 == "flex-shrink") {
-            WriteMetric();
-            HashtblForceRemove(x_3173->prop, std::string("flex-shrink"));
-            if (HashtblContain(x_3173->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3173->meta->BBDirtied, std::string("bb_1"), true);
-              set_recursive_proc_dirtied_x_3161(x_3173);
-            } else {
-              MetaWriteMetric();
-            }
-            WriteMetric();
-            HashtblAddExn(x_3173->prop, std::string("flex-shrink"), x_3181);
-            if (HashtblContain(x_3173->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3173->meta->BBDirtied, std::string("bb_1"), true);
-              set_recursive_proc_dirtied_x_3161(x_3173);
+            HashtblAddExn(x_1724->prop, std::string("height"), x_1732);
+            if (HashtblContain(x_1724->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1724->meta->BBDirtied, std::string("bb_0"), true);
+              set_recursive_proc_dirtied_x_1712(x_1724);
             } else {
               MetaWriteMetric();
             }
             return MakeUnit();
-          } else if (x_6258 == "flex-direction") {
+          } else if (x_3376 == "display") {
             WriteMetric();
-            HashtblForceRemove(x_3173->prop, std::string("flex-direction"));
-            if (HashtblContain(x_3173->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3173->meta->BBDirtied, std::string("bb_1"), true);
-              set_recursive_proc_dirtied_x_3161(x_3173);
+            HashtblForceRemove(x_1724->prop, std::string("display"));
+            if (HashtblContain(x_1724->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1724->meta->BBDirtied, std::string("bb_1"), true);
+              set_recursive_proc_dirtied_x_1712(x_1724);
             } else {
               MetaWriteMetric();
             }
             WriteMetric();
-            HashtblAddExn(x_3173->prop, std::string("flex-direction"), x_3181);
-            if (HashtblContain(x_3173->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_3173->meta->BBDirtied, std::string("bb_1"), true);
-              set_recursive_proc_dirtied_x_3161(x_3173);
+            HashtblAddExn(x_1724->prop, std::string("display"), x_1732);
+            if (HashtblContain(x_1724->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1724->meta->BBDirtied, std::string("bb_1"), true);
+              set_recursive_proc_dirtied_x_1712(x_1724);
+            } else {
+              MetaWriteMetric();
+            }
+            return MakeUnit();
+          } else if (x_3376 == "position") {
+            WriteMetric();
+            HashtblForceRemove(x_1724->prop, std::string("position"));
+            if (HashtblContain(x_1724->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1724->meta->BBDirtied, std::string("bb_1"), true);
+              set_recursive_proc_dirtied_x_1712(x_1724);
+            } else {
+              MetaWriteMetric();
+            }
+            WriteMetric();
+            HashtblAddExn(x_1724->prop, std::string("position"), x_1732);
+            if (HashtblContain(x_1724->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1724->meta->BBDirtied, std::string("bb_1"), true);
+              set_recursive_proc_dirtied_x_1712(x_1724);
+            } else {
+              MetaWriteMetric();
+            }
+            return MakeUnit();
+          } else if (x_3376 == "flex-shrink") {
+            WriteMetric();
+            HashtblForceRemove(x_1724->prop, std::string("flex-shrink"));
+            if (HashtblContain(x_1724->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1724->meta->BBDirtied, std::string("bb_1"), true);
+              set_recursive_proc_dirtied_x_1712(x_1724);
+            } else {
+              MetaWriteMetric();
+            }
+            WriteMetric();
+            HashtblAddExn(x_1724->prop, std::string("flex-shrink"), x_1732);
+            if (HashtblContain(x_1724->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1724->meta->BBDirtied, std::string("bb_1"), true);
+              set_recursive_proc_dirtied_x_1712(x_1724);
+            } else {
+              MetaWriteMetric();
+            }
+            return MakeUnit();
+          } else if (x_3376 == "flex-direction") {
+            WriteMetric();
+            HashtblForceRemove(x_1724->prop, std::string("flex-direction"));
+            if (HashtblContain(x_1724->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1724->meta->BBDirtied, std::string("bb_1"), true);
+              set_recursive_proc_dirtied_x_1712(x_1724);
+            } else {
+              MetaWriteMetric();
+            }
+            WriteMetric();
+            HashtblAddExn(x_1724->prop, std::string("flex-direction"), x_1732);
+            if (HashtblContain(x_1724->meta->ProcInited, std::string("pass_0"))) {
+              HashtblSet(x_1724->meta->BBDirtied, std::string("bb_1"), true);
+              set_recursive_proc_dirtied_x_1712(x_1724);
             } else {
               MetaWriteMetric();
             }
@@ -4185,200 +2962,200 @@ Unit x_3171(const auto &x_3172, const auto &x_3173, const auto &x_3174) {
           Panic();
         }
       },
-      [&](const auto &x_3175, const auto &x_3176) {
-        return x_3171(x_3176, ListNthExn(x_3173->children, x_3175), x_3174);
+      [&](const auto &x_1726, const auto &x_1727) {
+        return x_1722(x_1727, ListNthExn(x_1724->children, x_1726), x_1725);
       });
 }
-Unit replace_value_x_3118(const auto &x_3172, const auto &x_3173, const auto &x_3174) {
-  return x_3171(x_3172, x_3173, x_3174);
+Unit replace_value_x_1669(const auto &x_1723, const auto &x_1724, const auto &x_1725) {
+  return x_1722(x_1723, x_1724, x_1725);
 }
-Unit x_3182(const auto &x_3183, const auto &x_3184, const auto &x_3185) {
-  auto x_3186 = ListHeadExn(x_3183);
-  auto x_3187 = ListTailExn(x_3183);
-  if (ListIsEmpty(x_3187)) {
-    InputChangeMetric(IntAdd(node_size_x_3081(ListNthExn(x_3184->children, x_3186)), node_size_x_3081(x_3185)));
-    auto x_3188 = ListSplitN(x_3184->children, x_3186);
-    auto x_3189 = Zro(x_3188);
-    auto x_3190 = Fst(x_3188);
-    auto x_3191 = ListHeadExn(x_3190);
-    auto x_3192 = ListTailExn(x_3190);
+Unit x_1733(const auto &x_1734, const auto &x_1735, const auto &x_1736) {
+  auto x_1737 = ListHeadExn(x_1734);
+  auto x_1738 = ListTailExn(x_1734);
+  if (ListIsEmpty(x_1738)) {
+    InputChangeMetric(IntAdd(node_size_x_1640(ListNthExn(x_1735->children, x_1737)), node_size_x_1640(x_1736)));
+    auto x_1739 = ListSplitN(x_1735->children, x_1737);
+    auto x_1740 = Zro(x_1739);
+    auto x_1741 = Fst(x_1739);
+    auto x_1742 = ListHeadExn(x_1741);
+    auto x_1743 = ListTailExn(x_1741);
     OptionMatch(
-        x_3191->prev, [&](const auto &x_3194) { return MakeUnit(); },
-        [&](const auto &x_3193) {
-          x_3193->next = ToPath(x_3191->next);
+        x_1742->prev, [&](const auto &x_1745) { return MakeUnit(); },
+        [&](const auto &x_1744) {
+          x_1744->next = ToPath(x_1742->next);
           return MakeUnit();
         });
     OptionMatch(
-        x_3191->next, [&](const auto &x_3196) { return MakeUnit(); },
-        [&](const auto &x_3195) {
-          x_3195->prev = ToPath(x_3191->prev);
+        x_1742->next, [&](const auto &x_1747) { return MakeUnit(); },
+        [&](const auto &x_1746) {
+          x_1746->prev = ToPath(x_1742->prev);
           return MakeUnit();
         });
-    x_3184->children = ListAppend(x_3189, x_3192);
-    if (ListIsEmpty(x_3189)) {
-      x_3184->first = ToPath(ListHead(x_3192));
+    x_1735->children = ListAppend(x_1740, x_1743);
+    if (ListIsEmpty(x_1740)) {
+      x_1735->first = ToPath(ListHead(x_1743));
     }
-    if (ListIsEmpty(x_3192)) {
-      x_3184->last = ToPath(ListLast(x_3189));
+    if (ListIsEmpty(x_1743)) {
+      x_1735->last = ToPath(ListLast(x_1740));
     }
     OptionMatch(
-        x_3191->next, [&](const auto &x_3198) { return MakeUnit(); },
-        [&](const auto &x_3197) {
-          if (HashtblContain(x_3197->meta->ProcInited, std::string("pass_0"))) {
-            HashtblSet(x_3197->meta->BBDirtied, std::string("bb_1"), true);
-            return set_recursive_proc_dirtied_x_3161(x_3197);
+        x_1742->next, [&](const auto &x_1749) { return MakeUnit(); },
+        [&](const auto &x_1748) {
+          if (HashtblContain(x_1748->meta->ProcInited, std::string("pass_0"))) {
+            HashtblSet(x_1748->meta->BBDirtied, std::string("bb_1"), true);
+            return set_recursive_proc_dirtied_x_1712(x_1748);
           } else {
             return MetaWriteMetric();
           }
         });
-    if (ListIsEmpty(x_3184->children)) {
-      if (HashtblContain(x_3184->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_3184->meta->BBDirtied, std::string("bb_0"), true);
-        set_recursive_proc_dirtied_x_3161(x_3184);
+    if (ListIsEmpty(x_1735->children)) {
+      if (HashtblContain(x_1735->meta->ProcInited, std::string("pass_0"))) {
+        HashtblSet(x_1735->meta->BBDirtied, std::string("bb_0"), true);
+        set_recursive_proc_dirtied_x_1712(x_1735);
       } else {
         MetaWriteMetric();
       }
     }
-    if (ListIsEmpty(x_3192)) {
-      if (HashtblContain(x_3184->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_3184->meta->BBDirtied, std::string("bb_0"), true);
-        set_recursive_proc_dirtied_x_3161(x_3184);
+    if (ListIsEmpty(x_1743)) {
+      if (HashtblContain(x_1735->meta->ProcInited, std::string("pass_0"))) {
+        HashtblSet(x_1735->meta->BBDirtied, std::string("bb_0"), true);
+        set_recursive_proc_dirtied_x_1712(x_1735);
       } else {
         MetaWriteMetric();
       }
     }
     OptionMatch(
-        x_3191->next, [&](const auto &x_3200) { return MakeUnit(); },
-        [&](const auto &x_3199) {
-          if (HashtblContain(x_3199->meta->ProcInited, std::string("pass_0"))) {
-            HashtblSet(x_3199->meta->BBDirtied, std::string("bb_0"), true);
-            return set_recursive_proc_dirtied_x_3161(x_3199);
+        x_1742->next, [&](const auto &x_1751) { return MakeUnit(); },
+        [&](const auto &x_1750) {
+          if (HashtblContain(x_1750->meta->ProcInited, std::string("pass_0"))) {
+            HashtblSet(x_1750->meta->BBDirtied, std::string("bb_0"), true);
+            return set_recursive_proc_dirtied_x_1712(x_1750);
           } else {
             return MetaWriteMetric();
           }
         });
-    if (ListIsEmpty(x_3184->children)) {
-      if (HashtblContain(x_3184->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_3184->meta->BBDirtied, std::string("bb_2"), true);
-        set_recursive_proc_dirtied_x_3201(x_3184);
+    if (ListIsEmpty(x_1735->children)) {
+      if (HashtblContain(x_1735->meta->ProcInited, std::string("pass_1"))) {
+        HashtblSet(x_1735->meta->BBDirtied, std::string("bb_2"), true);
+        set_recursive_proc_dirtied_x_1752(x_1735);
       } else {
         MetaWriteMetric();
       }
     }
-    if (ListIsEmpty(x_3192)) {
-      if (HashtblContain(x_3184->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_3184->meta->BBDirtied, std::string("bb_2"), true);
-        set_recursive_proc_dirtied_x_3201(x_3184);
+    if (ListIsEmpty(x_1743)) {
+      if (HashtblContain(x_1735->meta->ProcInited, std::string("pass_1"))) {
+        HashtblSet(x_1735->meta->BBDirtied, std::string("bb_2"), true);
+        set_recursive_proc_dirtied_x_1752(x_1735);
       } else {
         MetaWriteMetric();
       }
     }
     OptionMatch(
-        x_3191->next, [&](const auto &x_3203) { return MakeUnit(); },
-        [&](const auto &x_3202) {
-          if (HashtblContain(x_3202->meta->ProcInited, std::string("pass_1"))) {
-            HashtblSet(x_3202->meta->BBDirtied, std::string("bb_2"), true);
-            return set_recursive_proc_dirtied_x_3201(x_3202);
+        x_1742->next, [&](const auto &x_1754) { return MakeUnit(); },
+        [&](const auto &x_1753) {
+          if (HashtblContain(x_1753->meta->ProcInited, std::string("pass_1"))) {
+            HashtblSet(x_1753->meta->BBDirtied, std::string("bb_2"), true);
+            return set_recursive_proc_dirtied_x_1752(x_1753);
           } else {
             return MetaWriteMetric();
           }
         });
     MakeUnit();
-    auto x_3204 = ListSplitN(x_3184->children, x_3186);
-    auto x_3205 = Zro(x_3204);
-    auto x_3206 = Fst(x_3204);
-    x_3184->children = ListAppend(x_3205, Cons(x_3185, x_3206));
-    if (ListIsEmpty(x_3205)) {
-      x_3184->first = x_3185.get();
+    auto x_1755 = ListSplitN(x_1735->children, x_1737);
+    auto x_1756 = Zro(x_1755);
+    auto x_1757 = Fst(x_1755);
+    x_1735->children = ListAppend(x_1756, Cons(x_1736, x_1757));
+    if (ListIsEmpty(x_1756)) {
+      x_1735->first = x_1736.get();
     }
-    if (ListIsEmpty(x_3206)) {
-      x_3184->last = x_3185.get();
+    if (ListIsEmpty(x_1757)) {
+      x_1735->last = x_1736.get();
     }
     OptionMatch(
-        ListLast(x_3205),
-        [&](const auto &x_3208) {
-          x_3185->prev = nullptr;
+        ListLast(x_1756),
+        [&](const auto &x_1759) {
+          x_1736->prev = nullptr;
           return MakeUnit();
         },
-        [&](const auto &x_3207) {
-          x_3185->prev = x_3207.get();
-          x_3207->next = x_3185.get();
+        [&](const auto &x_1758) {
+          x_1736->prev = x_1758.get();
+          x_1758->next = x_1736.get();
           return MakeUnit();
         });
     OptionMatch(
-        ListHead(x_3206),
-        [&](const auto &x_3210) {
-          x_3185->next = nullptr;
+        ListHead(x_1757),
+        [&](const auto &x_1761) {
+          x_1736->next = nullptr;
           return MakeUnit();
         },
-        [&](const auto &x_3209) {
-          x_3185->next = x_3209.get();
-          x_3209->prev = x_3185.get();
+        [&](const auto &x_1760) {
+          x_1736->next = x_1760.get();
+          x_1760->prev = x_1736.get();
           return MakeUnit();
         });
-    x_3185->parent = x_3184.get();
-    HashtblAddExn(x_3185->meta->RecursiveProcDirtied, std::string("pass_0"), false);
-    set_recursive_proc_dirtied_x_3161(x_3185);
+    x_1736->parent = x_1735.get();
+    HashtblAddExn(x_1736->meta->RecursiveProcDirtied, std::string("pass_0"), false);
+    set_recursive_proc_dirtied_x_1712(x_1736);
     OptionMatch(
-        x_3185->next, [&](const auto &x_3212) { return MakeUnit(); },
-        [&](const auto &x_3211) {
-          if (HashtblContain(x_3211->meta->ProcInited, std::string("pass_0"))) {
-            HashtblSet(x_3211->meta->BBDirtied, std::string("bb_1"), true);
-            return set_recursive_proc_dirtied_x_3161(x_3211);
+        x_1736->next, [&](const auto &x_1763) { return MakeUnit(); },
+        [&](const auto &x_1762) {
+          if (HashtblContain(x_1762->meta->ProcInited, std::string("pass_0"))) {
+            HashtblSet(x_1762->meta->BBDirtied, std::string("bb_1"), true);
+            return set_recursive_proc_dirtied_x_1712(x_1762);
           } else {
             return MetaWriteMetric();
           }
         });
-    if (ListIsSingleton(x_3184->children)) {
-      if (HashtblContain(x_3184->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_3184->meta->BBDirtied, std::string("bb_0"), true);
-        set_recursive_proc_dirtied_x_3161(x_3184);
+    if (ListIsSingleton(x_1735->children)) {
+      if (HashtblContain(x_1735->meta->ProcInited, std::string("pass_0"))) {
+        HashtblSet(x_1735->meta->BBDirtied, std::string("bb_0"), true);
+        set_recursive_proc_dirtied_x_1712(x_1735);
       } else {
         MetaWriteMetric();
       }
     }
-    if (ListIsEmpty(x_3206)) {
-      if (HashtblContain(x_3184->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_3184->meta->BBDirtied, std::string("bb_0"), true);
-        set_recursive_proc_dirtied_x_3161(x_3184);
+    if (ListIsEmpty(x_1757)) {
+      if (HashtblContain(x_1735->meta->ProcInited, std::string("pass_0"))) {
+        HashtblSet(x_1735->meta->BBDirtied, std::string("bb_0"), true);
+        set_recursive_proc_dirtied_x_1712(x_1735);
       } else {
         MetaWriteMetric();
       }
     }
     OptionMatch(
-        x_3185->next, [&](const auto &x_3214) { return MakeUnit(); },
-        [&](const auto &x_3213) {
-          if (HashtblContain(x_3213->meta->ProcInited, std::string("pass_0"))) {
-            HashtblSet(x_3213->meta->BBDirtied, std::string("bb_0"), true);
-            return set_recursive_proc_dirtied_x_3161(x_3213);
+        x_1736->next, [&](const auto &x_1765) { return MakeUnit(); },
+        [&](const auto &x_1764) {
+          if (HashtblContain(x_1764->meta->ProcInited, std::string("pass_0"))) {
+            HashtblSet(x_1764->meta->BBDirtied, std::string("bb_0"), true);
+            return set_recursive_proc_dirtied_x_1712(x_1764);
           } else {
             return MetaWriteMetric();
           }
         });
-    HashtblAddExn(x_3185->meta->RecursiveProcDirtied, std::string("pass_1"), false);
-    set_recursive_proc_dirtied_x_3201(x_3185);
-    if (ListIsSingleton(x_3184->children)) {
-      if (HashtblContain(x_3184->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_3184->meta->BBDirtied, std::string("bb_2"), true);
-        set_recursive_proc_dirtied_x_3201(x_3184);
+    HashtblAddExn(x_1736->meta->RecursiveProcDirtied, std::string("pass_1"), false);
+    set_recursive_proc_dirtied_x_1752(x_1736);
+    if (ListIsSingleton(x_1735->children)) {
+      if (HashtblContain(x_1735->meta->ProcInited, std::string("pass_1"))) {
+        HashtblSet(x_1735->meta->BBDirtied, std::string("bb_2"), true);
+        set_recursive_proc_dirtied_x_1752(x_1735);
       } else {
         MetaWriteMetric();
       }
     }
-    if (ListIsEmpty(x_3206)) {
-      if (HashtblContain(x_3184->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_3184->meta->BBDirtied, std::string("bb_2"), true);
-        set_recursive_proc_dirtied_x_3201(x_3184);
+    if (ListIsEmpty(x_1757)) {
+      if (HashtblContain(x_1735->meta->ProcInited, std::string("pass_1"))) {
+        HashtblSet(x_1735->meta->BBDirtied, std::string("bb_2"), true);
+        set_recursive_proc_dirtied_x_1752(x_1735);
       } else {
         MetaWriteMetric();
       }
     }
     OptionMatch(
-        x_3185->next, [&](const auto &x_3216) { return MakeUnit(); },
-        [&](const auto &x_3215) {
-          if (HashtblContain(x_3215->meta->ProcInited, std::string("pass_1"))) {
-            HashtblSet(x_3215->meta->BBDirtied, std::string("bb_2"), true);
-            return set_recursive_proc_dirtied_x_3201(x_3215);
+        x_1736->next, [&](const auto &x_1767) { return MakeUnit(); },
+        [&](const auto &x_1766) {
+          if (HashtblContain(x_1766->meta->ProcInited, std::string("pass_1"))) {
+            HashtblSet(x_1766->meta->BBDirtied, std::string("bb_2"), true);
+            return set_recursive_proc_dirtied_x_1752(x_1766);
           } else {
             return MetaWriteMetric();
           }
@@ -4386,662 +3163,559 @@ Unit x_3182(const auto &x_3183, const auto &x_3184, const auto &x_3185) {
     MakeUnit();
     return MakeUnit();
   } else {
-    return x_3182(x_3187, ListNthExn(x_3184->children, x_3186), x_3185);
+    return x_1733(x_1738, ListNthExn(x_1735->children, x_1737), x_1736);
   }
 }
-Unit replace_node_x_3116(const auto &x_3183, const auto &x_3184, const auto &x_3185) {
-  return x_3182(x_3183, x_3184, x_3185);
+Unit replace_node_x_1667(const auto &x_1734, const auto &x_1735, const auto &x_1736) {
+  return x_1733(x_1734, x_1735, x_1736);
 }
-Unit x_3217(const auto &x_3218) {
-  ListIter2(x_3218->children, [&](const auto &x_3219, const auto &x_3220) {
-    x_3219->parent = x_3218.get();
-    x_3220->parent = x_3218.get();
-    x_3219->next = x_3220.get();
-    x_3220->prev = x_3219.get();
-    x_3217(x_3219);
+Unit x_1768(const auto &x_1769) {
+  ListIter2(x_1769->children, [&](const auto &x_1770, const auto &x_1771) {
+    x_1770->parent = x_1769.get();
+    x_1771->parent = x_1769.get();
+    x_1770->next = x_1771.get();
+    x_1771->prev = x_1770.get();
+    x_1768(x_1770);
     return MakeUnit();
   });
   OptionMatch(
-      ListHead(x_3218->children),
-      [&](const auto &x_3222) {
-        x_3218->first = nullptr;
+      ListHead(x_1769->children),
+      [&](const auto &x_1773) {
+        x_1769->first = nullptr;
         return MakeUnit();
       },
-      [&](const auto &x_3221) {
-        x_3218->first = x_3221.get();
-        x_3221->parent = x_3218.get();
+      [&](const auto &x_1772) {
+        x_1769->first = x_1772.get();
+        x_1772->parent = x_1769.get();
         return MakeUnit();
       });
   OptionMatch(
-      ListLast(x_3218->children),
-      [&](const auto &x_3224) {
-        x_3218->last = nullptr;
+      ListLast(x_1769->children),
+      [&](const auto &x_1775) {
+        x_1769->last = nullptr;
         return MakeUnit();
       },
-      [&](const auto &x_3223) {
-        x_3218->last = x_3223.get();
-        x_3223->parent = x_3218.get();
-        x_3217(x_3223);
+      [&](const auto &x_1774) {
+        x_1769->last = x_1774.get();
+        x_1774->parent = x_1769.get();
+        x_1768(x_1774);
         return MakeUnit();
       });
   return MakeUnit();
 }
-Unit set_children_relation_x_3114(const auto &x_3218) { return x_3217(x_3218); }
-Unit x_3225(const auto &x_3226, const auto &x_3227, const auto &x_3228) {
-  auto x_3229 = ListHeadExn(x_3226);
-  auto x_3230 = ListTailExn(x_3226);
-  if (ListIsEmpty(x_3230)) {
-    InputChangeMetric(node_size_x_3081(ListNthExn(x_3227->children, x_3229)));
-    auto x_3231 = ListSplitN(x_3227->children, x_3229);
-    auto x_3232 = Zro(x_3231);
-    auto x_3233 = Fst(x_3231);
-    auto x_3234 = ListHeadExn(x_3233);
-    auto x_3235 = ListTailExn(x_3233);
+Unit set_children_relation_x_1665(const auto &x_1769) { return x_1768(x_1769); }
+Unit x_1776(const auto &x_1777, const auto &x_1778, const auto &x_1779) {
+  auto x_1780 = ListHeadExn(x_1777);
+  auto x_1781 = ListTailExn(x_1777);
+  if (ListIsEmpty(x_1781)) {
+    InputChangeMetric(node_size_x_1640(ListNthExn(x_1778->children, x_1780)));
+    auto x_1782 = ListSplitN(x_1778->children, x_1780);
+    auto x_1783 = Zro(x_1782);
+    auto x_1784 = Fst(x_1782);
+    auto x_1785 = ListHeadExn(x_1784);
+    auto x_1786 = ListTailExn(x_1784);
     OptionMatch(
-        x_3234->prev, [&](const auto &x_3237) { return MakeUnit(); },
-        [&](const auto &x_3236) {
-          x_3236->next = ToPath(x_3234->next);
+        x_1785->prev, [&](const auto &x_1788) { return MakeUnit(); },
+        [&](const auto &x_1787) {
+          x_1787->next = ToPath(x_1785->next);
           return MakeUnit();
         });
     OptionMatch(
-        x_3234->next, [&](const auto &x_3239) { return MakeUnit(); },
-        [&](const auto &x_3238) {
-          x_3238->prev = ToPath(x_3234->prev);
+        x_1785->next, [&](const auto &x_1790) { return MakeUnit(); },
+        [&](const auto &x_1789) {
+          x_1789->prev = ToPath(x_1785->prev);
           return MakeUnit();
         });
-    x_3227->children = ListAppend(x_3232, x_3235);
-    if (ListIsEmpty(x_3232)) {
-      x_3227->first = ToPath(ListHead(x_3235));
+    x_1778->children = ListAppend(x_1783, x_1786);
+    if (ListIsEmpty(x_1783)) {
+      x_1778->first = ToPath(ListHead(x_1786));
     }
-    if (ListIsEmpty(x_3235)) {
-      x_3227->last = ToPath(ListLast(x_3232));
+    if (ListIsEmpty(x_1786)) {
+      x_1778->last = ToPath(ListLast(x_1783));
     }
     OptionMatch(
-        x_3234->next, [&](const auto &x_3241) { return MakeUnit(); },
-        [&](const auto &x_3240) {
-          if (HashtblContain(x_3240->meta->ProcInited, std::string("pass_0"))) {
-            HashtblSet(x_3240->meta->BBDirtied, std::string("bb_1"), true);
-            return set_recursive_proc_dirtied_x_3161(x_3240);
+        x_1785->next, [&](const auto &x_1792) { return MakeUnit(); },
+        [&](const auto &x_1791) {
+          if (HashtblContain(x_1791->meta->ProcInited, std::string("pass_0"))) {
+            HashtblSet(x_1791->meta->BBDirtied, std::string("bb_1"), true);
+            return set_recursive_proc_dirtied_x_1712(x_1791);
           } else {
             return MetaWriteMetric();
           }
         });
-    if (ListIsEmpty(x_3227->children)) {
-      if (HashtblContain(x_3227->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_3227->meta->BBDirtied, std::string("bb_0"), true);
-        set_recursive_proc_dirtied_x_3161(x_3227);
+    if (ListIsEmpty(x_1778->children)) {
+      if (HashtblContain(x_1778->meta->ProcInited, std::string("pass_0"))) {
+        HashtblSet(x_1778->meta->BBDirtied, std::string("bb_0"), true);
+        set_recursive_proc_dirtied_x_1712(x_1778);
       } else {
         MetaWriteMetric();
       }
     }
-    if (ListIsEmpty(x_3235)) {
-      if (HashtblContain(x_3227->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_3227->meta->BBDirtied, std::string("bb_0"), true);
-        set_recursive_proc_dirtied_x_3161(x_3227);
+    if (ListIsEmpty(x_1786)) {
+      if (HashtblContain(x_1778->meta->ProcInited, std::string("pass_0"))) {
+        HashtblSet(x_1778->meta->BBDirtied, std::string("bb_0"), true);
+        set_recursive_proc_dirtied_x_1712(x_1778);
       } else {
         MetaWriteMetric();
       }
     }
     OptionMatch(
-        x_3234->next, [&](const auto &x_3243) { return MakeUnit(); },
-        [&](const auto &x_3242) {
-          if (HashtblContain(x_3242->meta->ProcInited, std::string("pass_0"))) {
-            HashtblSet(x_3242->meta->BBDirtied, std::string("bb_0"), true);
-            return set_recursive_proc_dirtied_x_3161(x_3242);
+        x_1785->next, [&](const auto &x_1794) { return MakeUnit(); },
+        [&](const auto &x_1793) {
+          if (HashtblContain(x_1793->meta->ProcInited, std::string("pass_0"))) {
+            HashtblSet(x_1793->meta->BBDirtied, std::string("bb_0"), true);
+            return set_recursive_proc_dirtied_x_1712(x_1793);
           } else {
             return MetaWriteMetric();
           }
         });
-    if (ListIsEmpty(x_3227->children)) {
-      if (HashtblContain(x_3227->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_3227->meta->BBDirtied, std::string("bb_2"), true);
-        set_recursive_proc_dirtied_x_3201(x_3227);
+    if (ListIsEmpty(x_1778->children)) {
+      if (HashtblContain(x_1778->meta->ProcInited, std::string("pass_1"))) {
+        HashtblSet(x_1778->meta->BBDirtied, std::string("bb_2"), true);
+        set_recursive_proc_dirtied_x_1752(x_1778);
       } else {
         MetaWriteMetric();
       }
     }
-    if (ListIsEmpty(x_3235)) {
-      if (HashtblContain(x_3227->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_3227->meta->BBDirtied, std::string("bb_2"), true);
-        set_recursive_proc_dirtied_x_3201(x_3227);
+    if (ListIsEmpty(x_1786)) {
+      if (HashtblContain(x_1778->meta->ProcInited, std::string("pass_1"))) {
+        HashtblSet(x_1778->meta->BBDirtied, std::string("bb_2"), true);
+        set_recursive_proc_dirtied_x_1752(x_1778);
       } else {
         MetaWriteMetric();
       }
     }
     OptionMatch(
-        x_3234->next, [&](const auto &x_3245) { return MakeUnit(); },
-        [&](const auto &x_3244) {
-          if (HashtblContain(x_3244->meta->ProcInited, std::string("pass_1"))) {
-            HashtblSet(x_3244->meta->BBDirtied, std::string("bb_2"), true);
-            return set_recursive_proc_dirtied_x_3201(x_3244);
+        x_1785->next, [&](const auto &x_1796) { return MakeUnit(); },
+        [&](const auto &x_1795) {
+          if (HashtblContain(x_1795->meta->ProcInited, std::string("pass_1"))) {
+            HashtblSet(x_1795->meta->BBDirtied, std::string("bb_2"), true);
+            return set_recursive_proc_dirtied_x_1752(x_1795);
           } else {
             return MetaWriteMetric();
           }
         });
     return MakeUnit();
   } else {
-    return x_3225(x_3230, ListNthExn(x_3227->children, x_3229), x_3228);
+    return x_1776(x_1781, ListNthExn(x_1778->children, x_1780), x_1779);
   }
 }
-Unit remove_node_x_3112(const auto &x_3226, const auto &x_3227, const auto &x_3228) {
-  return x_3225(x_3226, x_3227, x_3228);
+Unit remove_node_x_1663(const auto &x_1777, const auto &x_1778, const auto &x_1779) {
+  return x_1776(x_1777, x_1778, x_1779);
 }
-Unit x_3246(const auto &x_3247) {
-  ListIter2(x_3247->children, [&](const auto &x_3248, const auto &x_3249) {
-    x_3248->parent = x_3247.get();
-    x_3249->parent = x_3247.get();
-    x_3248->next = x_3249.get();
-    x_3249->prev = x_3248.get();
-    x_3246(x_3248);
-    return MakeUnit();
-  });
-  OptionMatch(
-      ListHead(x_3247->children),
-      [&](const auto &x_3251) {
-        x_3247->first = nullptr;
-        return MakeUnit();
-      },
-      [&](const auto &x_3250) {
-        x_3247->first = x_3250.get();
-        x_3250->parent = x_3247.get();
-        return MakeUnit();
-      });
-  OptionMatch(
-      ListLast(x_3247->children),
-      [&](const auto &x_3253) {
-        x_3247->last = nullptr;
-        return MakeUnit();
-      },
-      [&](const auto &x_3252) {
-        x_3247->last = x_3252.get();
-        x_3252->parent = x_3247.get();
-        x_3246(x_3252);
-        return MakeUnit();
-      });
-  return MakeUnit();
-}
-Unit set_children_relation_x_3109(const auto &x_3247) { return x_3246(x_3247); }
-Unit x_3254(const auto &x_3255) {
+Unit x_1797(const auto &x_1798) {
   MetaReadMetric();
-  if (HashtblFindExn(x_3255->meta->RecursiveProcDirtied, std::string("pass_1"))) {
-    if (HashtblContain(x_3255->meta->ProcInited, std::string("pass_1"))) {
-      if (HashtblFindExn(x_3255->meta->BBDirtied, std::string("bb_2"))) {
-        eval_stmts_x_3256(x_3255);
-        HashtblSet(x_3255->meta->BBDirtied, std::string("bb_2"), false);
+  if (HashtblFindExn(x_1798->meta->RecursiveProcDirtied, std::string("pass_1"))) {
+    if (HashtblContain(x_1798->meta->ProcInited, std::string("pass_1"))) {
+      if (HashtblFindExn(x_1798->meta->BBDirtied, std::string("bb_2"))) {
+        eval_stmts_x_1799(x_1798);
+        HashtblSet(x_1798->meta->BBDirtied, std::string("bb_2"), false);
       }
-      ListIter(x_3255->children, [&](const auto &x_3257) { return x_3254(x_3257); });
+      ListIter(x_1798->children, [&](const auto &x_1800) { return x_1797(x_1800); });
       MakeUnit();
     } else {
-      HashtblAddExn(x_3255->meta->ProcInited, std::string("pass_1"), MakeUnit());
-      eval_stmts_x_3094(x_3255);
+      HashtblAddExn(x_1798->meta->ProcInited, std::string("pass_1"), MakeUnit());
+      eval_stmts_x_1653(x_1798);
     }
   }
-  HashtblSet(x_3255->meta->RecursiveProcDirtied, std::string("pass_1"), false);
+  HashtblSet(x_1798->meta->RecursiveProcDirtied, std::string("pass_1"), false);
   return MakeUnit();
 }
-Unit recalculate_internal_x_3107(const auto &x_3255) { return x_3254(x_3255); }
-Unit x_3258(const auto &x_3259) {
+Unit recalculate_internal_x_1661(const auto &x_1798) { return x_1797(x_1798); }
+Unit x_1801(const auto &x_1802) {
   MetaReadMetric();
-  if (HashtblFindExn(x_3259->meta->RecursiveProcDirtied, std::string("pass_0"))) {
-    if (HashtblContain(x_3259->meta->ProcInited, std::string("pass_0"))) {
-      if (HashtblFindExn(x_3259->meta->BBDirtied, std::string("bb_1"))) {
-        eval_stmts_x_3260(x_3259);
-        HashtblSet(x_3259->meta->BBDirtied, std::string("bb_1"), false);
+  if (HashtblFindExn(x_1802->meta->RecursiveProcDirtied, std::string("pass_0"))) {
+    if (HashtblContain(x_1802->meta->ProcInited, std::string("pass_0"))) {
+      if (HashtblFindExn(x_1802->meta->BBDirtied, std::string("bb_1"))) {
+        eval_stmts_x_1803(x_1802);
+        HashtblSet(x_1802->meta->BBDirtied, std::string("bb_1"), false);
       }
-      ListIter(x_3259->children, [&](const auto &x_3261) { return x_3258(x_3261); });
-      if (HashtblFindExn(x_3259->meta->BBDirtied, std::string("bb_0"))) {
-        eval_stmts_x_3262(x_3259);
-        HashtblSet(x_3259->meta->BBDirtied, std::string("bb_0"), false);
+      ListIter(x_1802->children, [&](const auto &x_1804) { return x_1801(x_1804); });
+      if (HashtblFindExn(x_1802->meta->BBDirtied, std::string("bb_0"))) {
+        eval_stmts_x_1805(x_1802);
+        HashtblSet(x_1802->meta->BBDirtied, std::string("bb_0"), false);
       }
       MakeUnit();
     } else {
-      HashtblAddExn(x_3259->meta->ProcInited, std::string("pass_0"), MakeUnit());
-      eval_stmts_x_3093(x_3259);
+      HashtblAddExn(x_1802->meta->ProcInited, std::string("pass_0"), MakeUnit());
+      eval_stmts_x_1652(x_1802);
     }
   }
-  HashtblSet(x_3259->meta->RecursiveProcDirtied, std::string("pass_0"), false);
+  HashtblSet(x_1802->meta->RecursiveProcDirtied, std::string("pass_0"), false);
   return MakeUnit();
 }
-Unit recalculate_internal_x_3106(const auto &x_3259) { return x_3258(x_3259); }
-Unit x_3263(const auto &x_3264, const auto &x_3265, const auto &x_3266) {
-  auto x_3267 = ListHeadExn(x_3264);
-  auto x_3268 = ListTailExn(x_3264);
-  if (ListIsEmpty(x_3268)) {
-    InputChangeMetric(node_size_x_3081(x_3266));
-    auto x_3269 = ListSplitN(x_3265->children, x_3267);
-    auto x_3270 = Zro(x_3269);
-    auto x_3271 = Fst(x_3269);
-    x_3265->children = ListAppend(x_3270, Cons(x_3266, x_3271));
-    if (ListIsEmpty(x_3270)) {
-      x_3265->first = x_3266.get();
+Unit recalculate_internal_x_1660(const auto &x_1802) { return x_1801(x_1802); }
+Unit x_1806(const auto &x_1807, const auto &x_1808, const auto &x_1809) {
+  auto x_1810 = ListHeadExn(x_1807);
+  auto x_1811 = ListTailExn(x_1807);
+  if (ListIsEmpty(x_1811)) {
+    InputChangeMetric(node_size_x_1640(x_1809));
+    auto x_1812 = ListSplitN(x_1808->children, x_1810);
+    auto x_1813 = Zro(x_1812);
+    auto x_1814 = Fst(x_1812);
+    x_1808->children = ListAppend(x_1813, Cons(x_1809, x_1814));
+    if (ListIsEmpty(x_1813)) {
+      x_1808->first = x_1809.get();
     }
-    if (ListIsEmpty(x_3271)) {
-      x_3265->last = x_3266.get();
+    if (ListIsEmpty(x_1814)) {
+      x_1808->last = x_1809.get();
     }
     OptionMatch(
-        ListLast(x_3270),
-        [&](const auto &x_3273) {
-          x_3266->prev = nullptr;
+        ListLast(x_1813),
+        [&](const auto &x_1816) {
+          x_1809->prev = nullptr;
           return MakeUnit();
         },
-        [&](const auto &x_3272) {
-          x_3266->prev = x_3272.get();
-          x_3272->next = x_3266.get();
+        [&](const auto &x_1815) {
+          x_1809->prev = x_1815.get();
+          x_1815->next = x_1809.get();
           return MakeUnit();
         });
     OptionMatch(
-        ListHead(x_3271),
-        [&](const auto &x_3275) {
-          x_3266->next = nullptr;
+        ListHead(x_1814),
+        [&](const auto &x_1818) {
+          x_1809->next = nullptr;
           return MakeUnit();
         },
-        [&](const auto &x_3274) {
-          x_3266->next = x_3274.get();
-          x_3274->prev = x_3266.get();
+        [&](const auto &x_1817) {
+          x_1809->next = x_1817.get();
+          x_1817->prev = x_1809.get();
           return MakeUnit();
         });
-    x_3266->parent = x_3265.get();
-    HashtblAddExn(x_3266->meta->RecursiveProcDirtied, std::string("pass_0"), false);
-    set_recursive_proc_dirtied_x_3161(x_3266);
+    x_1809->parent = x_1808.get();
+    HashtblAddExn(x_1809->meta->RecursiveProcDirtied, std::string("pass_0"), false);
+    set_recursive_proc_dirtied_x_1712(x_1809);
     OptionMatch(
-        x_3266->next, [&](const auto &x_3277) { return MakeUnit(); },
-        [&](const auto &x_3276) {
-          if (HashtblContain(x_3276->meta->ProcInited, std::string("pass_0"))) {
-            HashtblSet(x_3276->meta->BBDirtied, std::string("bb_1"), true);
-            return set_recursive_proc_dirtied_x_3161(x_3276);
+        x_1809->next, [&](const auto &x_1820) { return MakeUnit(); },
+        [&](const auto &x_1819) {
+          if (HashtblContain(x_1819->meta->ProcInited, std::string("pass_0"))) {
+            HashtblSet(x_1819->meta->BBDirtied, std::string("bb_1"), true);
+            return set_recursive_proc_dirtied_x_1712(x_1819);
           } else {
             return MetaWriteMetric();
           }
         });
-    if (ListIsSingleton(x_3265->children)) {
-      if (HashtblContain(x_3265->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_3265->meta->BBDirtied, std::string("bb_0"), true);
-        set_recursive_proc_dirtied_x_3161(x_3265);
+    if (ListIsSingleton(x_1808->children)) {
+      if (HashtblContain(x_1808->meta->ProcInited, std::string("pass_0"))) {
+        HashtblSet(x_1808->meta->BBDirtied, std::string("bb_0"), true);
+        set_recursive_proc_dirtied_x_1712(x_1808);
       } else {
         MetaWriteMetric();
       }
     }
-    if (ListIsEmpty(x_3271)) {
-      if (HashtblContain(x_3265->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_3265->meta->BBDirtied, std::string("bb_0"), true);
-        set_recursive_proc_dirtied_x_3161(x_3265);
+    if (ListIsEmpty(x_1814)) {
+      if (HashtblContain(x_1808->meta->ProcInited, std::string("pass_0"))) {
+        HashtblSet(x_1808->meta->BBDirtied, std::string("bb_0"), true);
+        set_recursive_proc_dirtied_x_1712(x_1808);
       } else {
         MetaWriteMetric();
       }
     }
     OptionMatch(
-        x_3266->next, [&](const auto &x_3279) { return MakeUnit(); },
-        [&](const auto &x_3278) {
-          if (HashtblContain(x_3278->meta->ProcInited, std::string("pass_0"))) {
-            HashtblSet(x_3278->meta->BBDirtied, std::string("bb_0"), true);
-            return set_recursive_proc_dirtied_x_3161(x_3278);
+        x_1809->next, [&](const auto &x_1822) { return MakeUnit(); },
+        [&](const auto &x_1821) {
+          if (HashtblContain(x_1821->meta->ProcInited, std::string("pass_0"))) {
+            HashtblSet(x_1821->meta->BBDirtied, std::string("bb_0"), true);
+            return set_recursive_proc_dirtied_x_1712(x_1821);
           } else {
             return MetaWriteMetric();
           }
         });
-    HashtblAddExn(x_3266->meta->RecursiveProcDirtied, std::string("pass_1"), false);
-    set_recursive_proc_dirtied_x_3201(x_3266);
-    if (ListIsSingleton(x_3265->children)) {
-      if (HashtblContain(x_3265->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_3265->meta->BBDirtied, std::string("bb_2"), true);
-        set_recursive_proc_dirtied_x_3201(x_3265);
+    HashtblAddExn(x_1809->meta->RecursiveProcDirtied, std::string("pass_1"), false);
+    set_recursive_proc_dirtied_x_1752(x_1809);
+    if (ListIsSingleton(x_1808->children)) {
+      if (HashtblContain(x_1808->meta->ProcInited, std::string("pass_1"))) {
+        HashtblSet(x_1808->meta->BBDirtied, std::string("bb_2"), true);
+        set_recursive_proc_dirtied_x_1752(x_1808);
       } else {
         MetaWriteMetric();
       }
     }
-    if (ListIsEmpty(x_3271)) {
-      if (HashtblContain(x_3265->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_3265->meta->BBDirtied, std::string("bb_2"), true);
-        set_recursive_proc_dirtied_x_3201(x_3265);
+    if (ListIsEmpty(x_1814)) {
+      if (HashtblContain(x_1808->meta->ProcInited, std::string("pass_1"))) {
+        HashtblSet(x_1808->meta->BBDirtied, std::string("bb_2"), true);
+        set_recursive_proc_dirtied_x_1752(x_1808);
       } else {
         MetaWriteMetric();
       }
     }
     OptionMatch(
-        x_3266->next, [&](const auto &x_3281) { return MakeUnit(); },
-        [&](const auto &x_3280) {
-          if (HashtblContain(x_3280->meta->ProcInited, std::string("pass_1"))) {
-            HashtblSet(x_3280->meta->BBDirtied, std::string("bb_2"), true);
-            return set_recursive_proc_dirtied_x_3201(x_3280);
+        x_1809->next, [&](const auto &x_1824) { return MakeUnit(); },
+        [&](const auto &x_1823) {
+          if (HashtblContain(x_1823->meta->ProcInited, std::string("pass_1"))) {
+            HashtblSet(x_1823->meta->BBDirtied, std::string("bb_2"), true);
+            return set_recursive_proc_dirtied_x_1752(x_1823);
           } else {
             return MetaWriteMetric();
           }
         });
     return MakeUnit();
   } else {
-    return x_3263(x_3268, ListNthExn(x_3265->children, x_3267), x_3266);
+    return x_1806(x_1811, ListNthExn(x_1808->children, x_1810), x_1809);
   }
 }
-Unit add_node_x_3105(const auto &x_3264, const auto &x_3265, const auto &x_3266) {
-  return x_3263(x_3264, x_3265, x_3266);
+Unit add_node_x_1659(const auto &x_1807, const auto &x_1808, const auto &x_1809) {
+  return x_1806(x_1807, x_1808, x_1809);
 }
-Unit x_3282(const auto &x_3283) {
-  ListIter2(x_3283->children, [&](const auto &x_3284, const auto &x_3285) {
-    x_3284->parent = x_3283.get();
-    x_3285->parent = x_3283.get();
-    x_3284->next = x_3285.get();
-    x_3285->prev = x_3284.get();
-    x_3282(x_3284);
+Unit x_1825(const auto &x_1826) {
+  ListIter2(x_1826->children, [&](const auto &x_1827, const auto &x_1828) {
+    x_1827->parent = x_1826.get();
+    x_1828->parent = x_1826.get();
+    x_1827->next = x_1828.get();
+    x_1828->prev = x_1827.get();
+    x_1825(x_1827);
     return MakeUnit();
   });
   OptionMatch(
-      ListHead(x_3283->children),
-      [&](const auto &x_3287) {
-        x_3283->first = nullptr;
+      ListHead(x_1826->children),
+      [&](const auto &x_1830) {
+        x_1826->first = nullptr;
         return MakeUnit();
       },
-      [&](const auto &x_3286) {
-        x_3283->first = x_3286.get();
-        x_3286->parent = x_3283.get();
+      [&](const auto &x_1829) {
+        x_1826->first = x_1829.get();
+        x_1829->parent = x_1826.get();
         return MakeUnit();
       });
   OptionMatch(
-      ListLast(x_3283->children),
-      [&](const auto &x_3289) {
-        x_3283->last = nullptr;
+      ListLast(x_1826->children),
+      [&](const auto &x_1832) {
+        x_1826->last = nullptr;
         return MakeUnit();
       },
-      [&](const auto &x_3288) {
-        x_3283->last = x_3288.get();
-        x_3288->parent = x_3283.get();
-        x_3282(x_3288);
+      [&](const auto &x_1831) {
+        x_1826->last = x_1831.get();
+        x_1831->parent = x_1826.get();
+        x_1825(x_1831);
         return MakeUnit();
       });
   return MakeUnit();
 }
-Unit set_children_relation_x_3103(const auto &x_3283) { return x_3282(x_3283); }
-Unit eval_stmts_x_3099(const auto &x_3290) {
-  eval_stmts_x_3291(x_3290);
-  ListIter(x_3290->children, [&](const auto &x_3292) { return eval_stmts_x_3099(x_3292); });
-  return MakeUnit();
-}
-Unit eval_stmts_x_3098(const auto &x_3293) {
-  eval_stmts_x_3294(x_3293);
-  ListIter(x_3293->children, [&](const auto &x_3295) { return eval_stmts_x_3098(x_3295); });
-  eval_stmts_x_3296(x_3293);
-  return MakeUnit();
-}
-Unit x_3297(const auto &x_3298) {
-  ListIter2(x_3298->children, [&](const auto &x_3299, const auto &x_3300) {
-    x_3299->parent = x_3298.get();
-    x_3300->parent = x_3298.get();
-    x_3299->next = x_3300.get();
-    x_3300->prev = x_3299.get();
-    x_3297(x_3299);
-    return MakeUnit();
-  });
-  OptionMatch(
-      ListHead(x_3298->children),
-      [&](const auto &x_3302) {
-        x_3298->first = nullptr;
-        return MakeUnit();
-      },
-      [&](const auto &x_3301) {
-        x_3298->first = x_3301.get();
-        x_3301->parent = x_3298.get();
-        return MakeUnit();
-      });
-  OptionMatch(
-      ListLast(x_3298->children),
-      [&](const auto &x_3304) {
-        x_3298->last = nullptr;
-        return MakeUnit();
-      },
-      [&](const auto &x_3303) {
-        x_3298->last = x_3303.get();
-        x_3303->parent = x_3298.get();
-        x_3297(x_3303);
-        return MakeUnit();
-      });
-  return MakeUnit();
-}
-Unit set_children_relation_x_3096(const auto &x_3298) { return x_3297(x_3298); }
-Unit eval_stmts_x_3094(const auto &x_3305) {
-  HashtblSet(x_3305->meta->BBDirtied, std::string("bb_2"), false);
-  eval_stmts_x_3256(x_3305);
-  ListIter(x_3305->children, [&](const auto &x_3306) {
-    HashtblAddExn(x_3306->meta->ProcInited, std::string("pass_1"), MakeUnit());
-    HashtblAddExn(x_3306->meta->RecursiveProcDirtied, std::string("pass_1"), false);
-    eval_stmts_x_3094(x_3306);
+Unit set_children_relation_x_1657(const auto &x_1826) { return x_1825(x_1826); }
+Unit eval_stmts_x_1653(const auto &x_1833) {
+  HashtblSet(x_1833->meta->BBDirtied, std::string("bb_2"), false);
+  eval_stmts_x_1799(x_1833);
+  ListIter(x_1833->children, [&](const auto &x_1834) {
+    HashtblAddExn(x_1834->meta->ProcInited, std::string("pass_1"), MakeUnit());
+    HashtblAddExn(x_1834->meta->RecursiveProcDirtied, std::string("pass_1"), false);
+    eval_stmts_x_1653(x_1834);
     return MakeUnit();
   });
   return MakeUnit();
 }
-Unit eval_stmts_x_3093(const auto &x_3307) {
-  HashtblSet(x_3307->meta->BBDirtied, std::string("bb_1"), false);
-  eval_stmts_x_3260(x_3307);
-  ListIter(x_3307->children, [&](const auto &x_3308) {
-    HashtblAddExn(x_3308->meta->ProcInited, std::string("pass_0"), MakeUnit());
-    HashtblAddExn(x_3308->meta->RecursiveProcDirtied, std::string("pass_0"), false);
-    eval_stmts_x_3093(x_3308);
+Unit eval_stmts_x_1652(const auto &x_1835) {
+  HashtblSet(x_1835->meta->BBDirtied, std::string("bb_1"), false);
+  eval_stmts_x_1803(x_1835);
+  ListIter(x_1835->children, [&](const auto &x_1836) {
+    HashtblAddExn(x_1836->meta->ProcInited, std::string("pass_0"), MakeUnit());
+    HashtblAddExn(x_1836->meta->RecursiveProcDirtied, std::string("pass_0"), false);
+    eval_stmts_x_1652(x_1836);
     return MakeUnit();
   });
-  HashtblSet(x_3307->meta->BBDirtied, std::string("bb_0"), false);
-  eval_stmts_x_3262(x_3307);
+  HashtblSet(x_1835->meta->BBDirtied, std::string("bb_0"), false);
+  eval_stmts_x_1805(x_1835);
   return MakeUnit();
 }
-Unit x_3309(const auto &x_3310) {
-  ListIter2(x_3310->children, [&](const auto &x_3311, const auto &x_3312) {
-    x_3311->parent = x_3310.get();
-    x_3312->parent = x_3310.get();
-    x_3311->next = x_3312.get();
-    x_3312->prev = x_3311.get();
-    x_3309(x_3311);
+Unit x_1837(const auto &x_1838) {
+  ListIter2(x_1838->children, [&](const auto &x_1839, const auto &x_1840) {
+    x_1839->parent = x_1838.get();
+    x_1840->parent = x_1838.get();
+    x_1839->next = x_1840.get();
+    x_1840->prev = x_1839.get();
+    x_1837(x_1839);
     return MakeUnit();
   });
   OptionMatch(
-      ListHead(x_3310->children),
-      [&](const auto &x_3314) {
-        x_3310->first = nullptr;
+      ListHead(x_1838->children),
+      [&](const auto &x_1842) {
+        x_1838->first = nullptr;
         return MakeUnit();
       },
-      [&](const auto &x_3313) {
-        x_3310->first = x_3313.get();
-        x_3313->parent = x_3310.get();
+      [&](const auto &x_1841) {
+        x_1838->first = x_1841.get();
+        x_1841->parent = x_1838.get();
         return MakeUnit();
       });
   OptionMatch(
-      ListLast(x_3310->children),
-      [&](const auto &x_3316) {
-        x_3310->last = nullptr;
+      ListLast(x_1838->children),
+      [&](const auto &x_1844) {
+        x_1838->last = nullptr;
         return MakeUnit();
       },
-      [&](const auto &x_3315) {
-        x_3310->last = x_3315.get();
-        x_3315->parent = x_3310.get();
-        x_3309(x_3315);
+      [&](const auto &x_1843) {
+        x_1838->last = x_1843.get();
+        x_1843->parent = x_1838.get();
+        x_1837(x_1843);
         return MakeUnit();
       });
   return MakeUnit();
 }
-Unit set_children_relation_x_3090(const auto &x_3310) { return x_3309(x_3310); }
-int64_t x_3317(const auto &x_3318) {
+Unit set_children_relation_x_1649(const auto &x_1838) { return x_1837(x_1838); }
+int64_t x_1845(const auto &x_1846) {
   return IntAdd(static_cast<int64_t>(1),
-                ListIntSum(x_3318->children, [&](const auto &x_3319) { return x_3317(x_3319); }));
+                ListIntSum(x_1846->children, [&](const auto &x_1847) { return x_1845(x_1847); }));
 }
-int64_t node_size_x_3081(const auto &x_3318) { return x_3317(x_3318); }
-int64_t x_3320(const auto &x_3321) {
+int64_t node_size_x_1640(const auto &x_1846) { return x_1845(x_1846); }
+int64_t x_1848(const auto &x_1849) {
   return IntAdd(static_cast<int64_t>(1),
-                ListIntSum(x_3321->children, [&](const auto &x_3322) { return x_3320(x_3322); }));
+                ListIntSum(x_1849->children, [&](const auto &x_1850) { return x_1848(x_1850); }));
 }
-int64_t layout_size_x_3080(const auto &x_3321) { return x_3320(x_3321); }
-LayoutNode x_3323(const auto &x_3324) {
-  return MakeLayoutNode(ListMap(JsonToList(JsonMember(std::string("children"), x_3324)),
-                                [&](const auto &x_3325) { return x_3323(x_3325); }));
+int64_t layout_size_x_1639(const auto &x_1849) { return x_1848(x_1849); }
+LayoutNode x_1851(const auto &x_1852) {
+  return MakeLayoutNode(ListMap(JsonToList(JsonMember(std::string("children"), x_1852)),
+                                [&](const auto &x_1853) { return x_1851(x_1853); }));
 }
-LayoutNode json_to_layout_node_x_3079(const auto &x_3324) { return x_3323(x_3324); }
-Node x_3326(const auto &x_3327) {
-  return MakeNode(x_3327->name, x_3327->attr, x_3327->prop, x_3327->extern_id,
-                  ListMap(x_3327->children, [&](const auto &x_3328) { return x_3326(x_3328); }));
+LayoutNode json_to_layout_node_x_1638(const auto &x_1852) { return x_1851(x_1852); }
+Node x_1854(const auto &x_1855) {
+  return MakeNode(x_1855->name, x_1855->attr, x_1855->prop, x_1855->extern_id,
+                  ListMap(x_1855->children, [&](const auto &x_1856) { return x_1854(x_1856); }));
 }
-Node node_to_fs_node_x_3078(const auto &x_3327) { return x_3326(x_3327); }
-Node x_3329(const auto &x_3330) {
+Node node_to_fs_node_x_1637(const auto &x_1855) { return x_1854(x_1855); }
+Node x_1857(const auto &x_1858) {
   return MakeNode(
-      JsonToString(JsonMember(std::string("name"), x_3330)), JsonToDict(JsonMember(std::string("attributes"), x_3330)),
-      JsonToDict(JsonMember(std::string("properties"), x_3330)), JsonToInt(JsonMember(std::string("id"), x_3330)),
-      ListMap(JsonToList(JsonMember(std::string("children"), x_3330)),
-              [&](const auto &x_3331) { return x_3329(x_3331); }));
+      JsonToString(JsonMember(std::string("name"), x_1858)), JsonToDict(JsonMember(std::string("attributes"), x_1858)),
+      JsonToDict(JsonMember(std::string("properties"), x_1858)), JsonToInt(JsonMember(std::string("id"), x_1858)),
+      ListMap(JsonToList(JsonMember(std::string("children"), x_1858)),
+              [&](const auto &x_1859) { return x_1857(x_1859); }));
 }
-Node json_to_node_aux_x_3077(const auto &x_3330) { return x_3329(x_3330); }
+Node json_to_node_aux_x_1636(const auto &x_1858) { return x_1857(x_1858); }
 int main() {
-  WithOutFile(std::string("hn_type.out"), [&](const auto &x_3082) {
+  WithOutFile(std::string("hn_type.out"), [&](const auto &x_1641) {
     PrintEndline(std::string("RUNNING DB_D"));
-    return WithInFile(std::string("command.json"), [&](const auto &x_3083) {
-      auto x_3084 = MakeRef(static_cast<int64_t>(0));
-      auto x_3085 = FreshMetric();
-      auto x_3086 = JsonOfString(InputLine(x_3083));
-      auto x_3087 = JsonOfString(InputLine(x_3083));
-      auto x_3088 = MakeStack();
-      PushStack(x_3088, x_3086);
-      PushStack(x_3088, x_3087);
-      Assert(StringEqual(JsonToString(JsonMember(std::string("name"), x_3086)), std::string("init")));
-      Assert(StringEqual(JsonToString(JsonMember(std::string("name"), x_3087)), std::string("layout_init")));
-      auto x_3091 = [&]() {
-        auto x_3089 = json_to_node_aux_x_3077(JsonMember(std::string("node"), x_3086));
-        x_3089->parent = nullptr;
-        x_3089->prev = nullptr;
-        x_3089->next = nullptr;
-        set_children_relation_x_3090(x_3089);
-        return x_3089;
+    return WithInFile(std::string("command.json"), [&](const auto &x_1642) {
+      auto x_1643 = MakeRef(static_cast<int64_t>(0));
+      auto x_1644 = FreshMetric();
+      auto x_1645 = JsonOfString(InputLine(x_1642));
+      auto x_1646 = JsonOfString(InputLine(x_1642));
+      auto x_1647 = MakeStack();
+      PushStack(x_1647, x_1645);
+      PushStack(x_1647, x_1646);
+      Assert(StringEqual(JsonToString(JsonMember(std::string("name"), x_1645)), std::string("init")));
+      Assert(StringEqual(JsonToString(JsonMember(std::string("name"), x_1646)), std::string("layout_init")));
+      auto x_1650 = [&]() {
+        auto x_1648 = json_to_node_aux_x_1636(JsonMember(std::string("node"), x_1645));
+        x_1648->parent = nullptr;
+        x_1648->prev = nullptr;
+        x_1648->next = nullptr;
+        set_children_relation_x_1649(x_1648);
+        return x_1648;
       }();
-      auto x_3092 = json_to_layout_node_x_3079(JsonMember(std::string("node"), x_3087));
-      OutputChangeMetric(layout_size_x_3080(x_3092));
-      InputChangeMetric(node_size_x_3081(x_3091));
-      HashtblAddExn(x_3091->meta->ProcInited, std::string("pass_0"), MakeUnit());
-      HashtblAddExn(x_3091->meta->RecursiveProcDirtied, std::string("pass_0"), false);
-      eval_stmts_x_3093(x_3091);
-      HashtblAddExn(x_3091->meta->ProcInited, std::string("pass_1"), MakeUnit());
-      HashtblAddExn(x_3091->meta->RecursiveProcDirtied, std::string("pass_1"), false);
-      eval_stmts_x_3094(x_3091);
-      JsonToChannel(x_3082, [&]() {
-        auto x_6259 = FreshJson();
-        WriteJson(x_6259, std::string("name"), std::string("DB_D"));
-        WriteJson(x_6259, std::string("diff_num"), ReadRef(x_3084));
-        WriteJson(x_6259, std::string("read_count"), MetricReadCount());
-        WriteJson(x_6259, std::string("meta_read_count"), MetricMetaReadCount());
-        WriteJson(x_6259, std::string("write_count"), MetricWriteCount());
-        WriteJson(x_6259, std::string("meta_write_count"), MetricMetaWriteCount());
-        WriteJson(x_6259, std::string("queue_size_acc"), MetricQueueSizeAcc());
-        WriteJson(x_6259, std::string("input_change_count"), MetricInputChangeCount());
-        WriteJson(x_6259, std::string("output_change_count"), MetricOutputChangeCount());
-        WriteJson(x_6259, std::string("html"), std::string(""));
-        WriteJson(x_6259, std::string("command"), StackToList(x_3088));
-        return x_6259;
+      auto x_1651 = json_to_layout_node_x_1638(JsonMember(std::string("node"), x_1646));
+      OutputChangeMetric(layout_size_x_1639(x_1651));
+      InputChangeMetric(node_size_x_1640(x_1650));
+      HashtblAddExn(x_1650->meta->ProcInited, std::string("pass_0"), MakeUnit());
+      HashtblAddExn(x_1650->meta->RecursiveProcDirtied, std::string("pass_0"), false);
+      eval_stmts_x_1652(x_1650);
+      HashtblAddExn(x_1650->meta->ProcInited, std::string("pass_1"), MakeUnit());
+      HashtblAddExn(x_1650->meta->RecursiveProcDirtied, std::string("pass_1"), false);
+      eval_stmts_x_1653(x_1650);
+      JsonToChannel(x_1641, [&]() {
+        auto x_3377 = FreshJson();
+        WriteJson(x_3377, std::string("name"), std::string("DB_D"));
+        WriteJson(x_3377, std::string("diff_num"), ReadRef(x_1643));
+        WriteJson(x_3377, std::string("read_count"), MetricReadCount());
+        WriteJson(x_3377, std::string("meta_read_count"), MetricMetaReadCount());
+        WriteJson(x_3377, std::string("write_count"), MetricWriteCount());
+        WriteJson(x_3377, std::string("meta_write_count"), MetricMetaWriteCount());
+        WriteJson(x_3377, std::string("queue_size_acc"), MetricQueueSizeAcc());
+        WriteJson(x_3377, std::string("input_change_count"), MetricInputChangeCount());
+        WriteJson(x_3377, std::string("output_change_count"), MetricOutputChangeCount());
+        WriteJson(x_3377, std::string("html"), std::string(""));
+        WriteJson(x_3377, std::string("command"), StackToList(x_1647));
+        return x_3377;
       }());
-      OutputString(x_3082, std::string("\n"));
-      ClearStack(x_3088);
-      WriteRef(x_3084, IntAdd(ReadRef(x_3084), static_cast<int64_t>(1)));
-      auto x_3097 = [&]() {
-        auto x_3095 = node_to_fs_node_x_3078(x_3091);
-        x_3095->parent = nullptr;
-        x_3095->prev = nullptr;
-        x_3095->next = nullptr;
-        set_children_relation_x_3096(x_3095);
-        return x_3095;
-      }();
-      eval_stmts_x_3098(x_3097);
-      eval_stmts_x_3099(x_3097);
-      AssertNodeValueEqual(x_3091, x_3097);
+      OutputString(x_1641, std::string("\n"));
+      ClearStack(x_1647);
+      WriteRef(x_1643, IntAdd(ReadRef(x_1643), static_cast<int64_t>(1)));
       ResetMetric();
       PrintEndline(std::string("EVAL OK!"));
-      IterLines(x_3083, [&](const auto &x_3100) {
-        auto x_3101 = JsonOfString(x_3100);
-        PushStack(x_3088, x_3101);
-        std::string x_6261 = JsonToString(JsonMember(std::string("name"), x_3101));
-        if (x_6261 == "add") {
-          return add_node_x_3105(ListMap(JsonToList(JsonMember(std::string("path"), x_3101)),
-                                         [&](const auto &x_3104) { return JsonToInt(x_3104); }),
-                                 x_3091, [&]() {
-                                   auto x_3102 = json_to_node_aux_x_3077(JsonMember(std::string("node"), x_3101));
-                                   x_3102->parent = nullptr;
-                                   x_3102->prev = nullptr;
-                                   x_3102->next = nullptr;
-                                   set_children_relation_x_3103(x_3102);
-                                   return x_3102;
+      IterLines(x_1642, [&](const auto &x_1654) {
+        auto x_1655 = JsonOfString(x_1654);
+        PushStack(x_1647, x_1655);
+        std::string x_3379 = JsonToString(JsonMember(std::string("name"), x_1655));
+        if (x_3379 == "add") {
+          return add_node_x_1659(ListMap(JsonToList(JsonMember(std::string("path"), x_1655)),
+                                         [&](const auto &x_1658) { return JsonToInt(x_1658); }),
+                                 x_1650, [&]() {
+                                   auto x_1656 = json_to_node_aux_x_1636(JsonMember(std::string("node"), x_1655));
+                                   x_1656->parent = nullptr;
+                                   x_1656->prev = nullptr;
+                                   x_1656->next = nullptr;
+                                   set_children_relation_x_1657(x_1656);
+                                   return x_1656;
                                  }());
-        } else if (x_6261 == "recalculate") {
-          recalculate_internal_x_3106(x_3091);
-          recalculate_internal_x_3107(x_3091);
-          JsonToChannel(x_3082, [&]() {
-            auto x_6260 = FreshJson();
-            WriteJson(x_6260, std::string("name"), std::string("DB_D"));
-            WriteJson(x_6260, std::string("diff_num"), ReadRef(x_3084));
-            WriteJson(x_6260, std::string("read_count"), MetricReadCount());
-            WriteJson(x_6260, std::string("meta_read_count"), MetricMetaReadCount());
-            WriteJson(x_6260, std::string("write_count"), MetricWriteCount());
-            WriteJson(x_6260, std::string("meta_write_count"), MetricMetaWriteCount());
-            WriteJson(x_6260, std::string("queue_size_acc"), MetricQueueSizeAcc());
-            WriteJson(x_6260, std::string("input_change_count"), MetricInputChangeCount());
-            WriteJson(x_6260, std::string("output_change_count"), MetricOutputChangeCount());
-            WriteJson(x_6260, std::string("html"), std::string(""));
-            WriteJson(x_6260, std::string("command"), StackToList(x_3088));
-            return x_6260;
+        } else if (x_3379 == "recalculate") {
+          recalculate_internal_x_1660(x_1650);
+          recalculate_internal_x_1661(x_1650);
+          JsonToChannel(x_1641, [&]() {
+            auto x_3378 = FreshJson();
+            WriteJson(x_3378, std::string("name"), std::string("DB_D"));
+            WriteJson(x_3378, std::string("diff_num"), ReadRef(x_1643));
+            WriteJson(x_3378, std::string("read_count"), MetricReadCount());
+            WriteJson(x_3378, std::string("meta_read_count"), MetricMetaReadCount());
+            WriteJson(x_3378, std::string("write_count"), MetricWriteCount());
+            WriteJson(x_3378, std::string("meta_write_count"), MetricMetaWriteCount());
+            WriteJson(x_3378, std::string("queue_size_acc"), MetricQueueSizeAcc());
+            WriteJson(x_3378, std::string("input_change_count"), MetricInputChangeCount());
+            WriteJson(x_3378, std::string("output_change_count"), MetricOutputChangeCount());
+            WriteJson(x_3378, std::string("html"), std::string(""));
+            WriteJson(x_3378, std::string("command"), StackToList(x_1647));
+            return x_3378;
           }());
-          OutputString(x_3082, std::string("\n"));
-          ClearStack(x_3088);
-          WriteRef(x_3084, IntAdd(ReadRef(x_3084), static_cast<int64_t>(1)));
-          auto x_3110 = [&]() {
-            auto x_3108 = node_to_fs_node_x_3078(x_3091);
-            x_3108->parent = nullptr;
-            x_3108->prev = nullptr;
-            x_3108->next = nullptr;
-            set_children_relation_x_3109(x_3108);
-            return x_3108;
-          }();
-          eval_stmts_x_3098(x_3110);
-          eval_stmts_x_3099(x_3110);
-          AssertNodeValueEqual(x_3091, x_3110);
+          OutputString(x_1641, std::string("\n"));
+          ClearStack(x_1647);
+          WriteRef(x_1643, IntAdd(ReadRef(x_1643), static_cast<int64_t>(1)));
           ResetMetric();
           return MakeUnit();
-        } else if (x_6261 == "remove") {
-          return remove_node_x_3112(ListMap(JsonToList(JsonMember(std::string("path"), x_3101)),
-                                            [&](const auto &x_3111) { return JsonToInt(x_3111); }),
-                                    x_3091, MakeUnit());
-        } else if (x_6261 == "replace") {
-          return replace_node_x_3116(ListMap(JsonToList(JsonMember(std::string("path"), x_3101)),
-                                             [&](const auto &x_3115) { return JsonToInt(x_3115); }),
-                                     x_3091, [&]() {
-                                       auto x_3113 = json_to_node_aux_x_3077(JsonMember(std::string("node"), x_3101));
-                                       x_3113->parent = nullptr;
-                                       x_3113->prev = nullptr;
-                                       x_3113->next = nullptr;
-                                       set_children_relation_x_3114(x_3113);
-                                       return x_3113;
+        } else if (x_3379 == "remove") {
+          return remove_node_x_1663(ListMap(JsonToList(JsonMember(std::string("path"), x_1655)),
+                                            [&](const auto &x_1662) { return JsonToInt(x_1662); }),
+                                    x_1650, MakeUnit());
+        } else if (x_3379 == "replace") {
+          return replace_node_x_1667(ListMap(JsonToList(JsonMember(std::string("path"), x_1655)),
+                                             [&](const auto &x_1666) { return JsonToInt(x_1666); }),
+                                     x_1650, [&]() {
+                                       auto x_1664 = json_to_node_aux_x_1636(JsonMember(std::string("node"), x_1655));
+                                       x_1664->parent = nullptr;
+                                       x_1664->prev = nullptr;
+                                       x_1664->next = nullptr;
+                                       set_children_relation_x_1665(x_1664);
+                                       return x_1664;
                                      }());
-        } else if (x_6261 == "replace_value") {
-          return replace_value_x_3118(ListMap(JsonToList(JsonMember(std::string("path"), x_3101)),
-                                              [&](const auto &x_3117) { return JsonToInt(x_3117); }),
-                                      x_3091,
-                                      MakePair(MakePair(JsonToString(JsonMember(std::string("type"), x_3101)),
-                                                        JsonToString(JsonMember(std::string("key"), x_3101))),
-                                               JsonToValue(JsonMember(std::string("value"), x_3101))));
-        } else if (x_6261 == "delete_value") {
-          return delete_value_x_3120(ListMap(JsonToList(JsonMember(std::string("path"), x_3101)),
-                                             [&](const auto &x_3119) { return JsonToInt(x_3119); }),
-                                     x_3091,
-                                     MakePair(JsonToString(JsonMember(std::string("type"), x_3101)),
-                                              JsonToString(JsonMember(std::string("key"), x_3101))));
-        } else if (x_6261 == "insert_value") {
-          return insert_value_x_3122(ListMap(JsonToList(JsonMember(std::string("path"), x_3101)),
-                                             [&](const auto &x_3121) { return JsonToInt(x_3121); }),
-                                     x_3091,
-                                     MakePair(MakePair(JsonToString(JsonMember(std::string("type"), x_3101)),
-                                                       JsonToString(JsonMember(std::string("key"), x_3101))),
-                                              JsonToValue(JsonMember(std::string("value"), x_3101))));
-        } else if (x_6261 == "layout_remove") {
-          return remove_layout_node_x_3124(ListMap(JsonToList(JsonMember(std::string("path"), x_3101)),
-                                                   [&](const auto &x_3123) { return JsonToInt(x_3123); }),
-                                           x_3092, MakeUnit());
-        } else if (x_6261 == "layout_add") {
-          return add_layout_node_x_3126(ListMap(JsonToList(JsonMember(std::string("path"), x_3101)),
-                                                [&](const auto &x_3125) { return JsonToInt(x_3125); }),
-                                        x_3092, json_to_layout_node_x_3079(JsonMember(std::string("node"), x_3101)));
-        } else if (x_6261 == "layout_replace") {
-          return replace_layout_node_x_3128(ListMap(JsonToList(JsonMember(std::string("path"), x_3101)),
-                                                    [&](const auto &x_3127) { return JsonToInt(x_3127); }),
-                                            x_3092,
-                                            json_to_layout_node_x_3079(JsonMember(std::string("node"), x_3101)));
-        } else if (x_6261 == "layout_info_changed") {
+        } else if (x_3379 == "replace_value") {
+          return replace_value_x_1669(ListMap(JsonToList(JsonMember(std::string("path"), x_1655)),
+                                              [&](const auto &x_1668) { return JsonToInt(x_1668); }),
+                                      x_1650,
+                                      MakePair(MakePair(JsonToString(JsonMember(std::string("type"), x_1655)),
+                                                        JsonToString(JsonMember(std::string("key"), x_1655))),
+                                               JsonToValue(JsonMember(std::string("value"), x_1655))));
+        } else if (x_3379 == "delete_value") {
+          return delete_value_x_1671(ListMap(JsonToList(JsonMember(std::string("path"), x_1655)),
+                                             [&](const auto &x_1670) { return JsonToInt(x_1670); }),
+                                     x_1650,
+                                     MakePair(JsonToString(JsonMember(std::string("type"), x_1655)),
+                                              JsonToString(JsonMember(std::string("key"), x_1655))));
+        } else if (x_3379 == "insert_value") {
+          return insert_value_x_1673(ListMap(JsonToList(JsonMember(std::string("path"), x_1655)),
+                                             [&](const auto &x_1672) { return JsonToInt(x_1672); }),
+                                     x_1650,
+                                     MakePair(MakePair(JsonToString(JsonMember(std::string("type"), x_1655)),
+                                                       JsonToString(JsonMember(std::string("key"), x_1655))),
+                                              JsonToValue(JsonMember(std::string("value"), x_1655))));
+        } else if (x_3379 == "layout_remove") {
+          return remove_layout_node_x_1675(ListMap(JsonToList(JsonMember(std::string("path"), x_1655)),
+                                                   [&](const auto &x_1674) { return JsonToInt(x_1674); }),
+                                           x_1651, MakeUnit());
+        } else if (x_3379 == "layout_add") {
+          return add_layout_node_x_1677(ListMap(JsonToList(JsonMember(std::string("path"), x_1655)),
+                                                [&](const auto &x_1676) { return JsonToInt(x_1676); }),
+                                        x_1651, json_to_layout_node_x_1638(JsonMember(std::string("node"), x_1655)));
+        } else if (x_3379 == "layout_replace") {
+          return replace_layout_node_x_1679(ListMap(JsonToList(JsonMember(std::string("path"), x_1655)),
+                                                    [&](const auto &x_1678) { return JsonToInt(x_1678); }),
+                                            x_1651,
+                                            json_to_layout_node_x_1638(JsonMember(std::string("node"), x_1655)));
+        } else if (x_3379 == "layout_info_changed") {
           return OutputChangeMetric(static_cast<int64_t>(1));
         } else {
           Panic();
