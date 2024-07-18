@@ -365,14 +365,18 @@ bool has_prefix(const std::string &str, const std::string &pfx) {
   return str.size() >= pfx.size() && str.substr(0, pfx.size()) == pfx;
 }
 std::string nth_by_sep(const std::string &str, const std::string &sep, int nth) {
-  auto to_string = [](auto &&r) -> std::string {
-    const auto data = &*r.begin();
-    const auto size = static_cast<std::size_t>(std::ranges::distance(r));
-    return std::string{data, size};
-  };
+  std::stringstream test(str);
+  std::string segment;
   assert(sep.size() == 1);
-  auto range = str | std::ranges::views::split(sep.at(0)) | std::ranges::views::transform(to_string);
-  return *std::next(range.begin(), nth);
+
+  while (std::getline(test, segment, sep.at(0))) {
+    if (nth == 0) {
+      return segment;
+    } else {
+      --nth;
+    }
+  }
+  assert(false);
 }
 #include "otto.h"
 typedef total_order<1.4, uint32_t> TotalOrderS;
