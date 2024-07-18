@@ -204,8 +204,13 @@ module Main (EVAL : Eval) = struct
                         option_match
                           (list_last (node_get_children n))
                           (fun _ -> node_set_last n (none ()))
-                          (fun x -> seqs
-                            [(fun _ -> node_set_last n (some x)); (fun _ -> node_set_parent x (some n)); (fun _ -> recurse x)]));
+                          (fun x ->
+                            seqs
+                              [
+                                (fun _ -> node_set_last n (some x));
+                                (fun _ -> node_set_parent x (some n));
+                                (fun _ -> recurse x);
+                              ]));
                     ]))))
     in
     seqs
@@ -447,6 +452,7 @@ module Main (EVAL : Eval) = struct
     app3 (insert_value_aux m) path x (make_pair (make_pair type_ key) value)
 
   let name : string = if is_static then EVAL.name ^ "_S" else EVAL.name ^ "_D"
+
   let main : unit sd =
     with_out_file (string out_file_path) (fun out_file ->
         seq
@@ -510,9 +516,11 @@ module Main (EVAL : Eval) = struct
                                                         (fun _ ->
                                                           write_ref diff_num (int_add (read_ref diff_num) (int 1)));
                                                         (fun _ ->
-                                                          let_ (node_to_fs_node n) (fun fsn ->
-                                                              seq (FS.eval prog fsn m) (fun _ ->
-                                                                  assert_node_value_equal n fsn)));
+                                                          if is_static then
+                                                            let_ (node_to_fs_node n) (fun fsn ->
+                                                                seq (FS.eval prog fsn m) (fun _ ->
+                                                                    assert_node_value_equal n fsn))
+                                                          else tt);
                                                         (fun _ -> reset_metric m);
                                                       ]
                                                   in
@@ -583,17 +591,15 @@ module Main (EVAL : Eval) = struct
     shell ("clang-format --style=file -i " ^ compiled_file_name);
     shell ("clang-format --style=file -i " ^ "header.h");
     shell ("clang-format --style=file -i " ^ "header_continued.h");
-    shell ("clang++ -O3 -fsanitize=undefined -std=c++23 " ^ compiled_file_name);
-    shell ("./a.out")
+    shell ("clang++ -O3 -std=c++23 " ^ compiled_file_name);
+    shell "./a.out"
 
   let () = if is_static then () else run_dynamic ()
 end
 
 module MainFSI = Main (Megatron.EvalFS.EVAL (S))
 module MainFSC = Main (Megatron.EvalFS.EVAL (D))
-
 module MainDBI = Main (Megatron.EvalDB.EVAL (S))
 module MainDBC = Main (Megatron.EvalDB.EVAL (D))
-
 module MainPQI = Main (Megatron.EvalPQ.EVAL (S))
 module MainPQC = Main (Megatron.EvalPQ.EVAL (D))

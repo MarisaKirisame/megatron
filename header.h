@@ -359,9 +359,9 @@ std::string strip_suffix(const std::string &str, const std::string &sfx) {
   return str.substr(0, str.size() - sfx.size());
 }
 bool has_suffix(const std::string &str, const std::string &sfx) {
-  return str.substr(str.size() - sfx.size(), sfx.size()) == sfx;
+  return str.size() >= sfx.size() && str.substr(str.size() - sfx.size(), sfx.size()) == sfx;
 }
-bool has_prefix(const std::string &str, const std::string &pfx) { return str.substr(0, pfx.size()) == pfx; }
+bool has_prefix(const std::string &str, const std::string &pfx) { return str.size() >= pfx.size() && str.substr(0, pfx.size()) == pfx; }
 std::string nth_by_sep(const std::string &str, const std::string &sep, int nth) {
   auto to_string = [](auto &&r) -> std::string {
     const auto data = &*r.begin();

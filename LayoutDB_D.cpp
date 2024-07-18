@@ -4884,7 +4884,7 @@ Node x_3329(const auto &x_3330) {
 }
 Node json_to_node_aux_x_3077(const auto &x_3330) { return x_3329(x_3330); }
 int main() {
-  WithOutFile(std::string("wikipedia_hover.out"), [&](const auto &x_3082) {
+  WithOutFile(std::string("hn_type.out"), [&](const auto &x_3082) {
     PrintEndline(std::string("RUNNING DB_D"));
     return WithInFile(std::string("command.json"), [&](const auto &x_3083) {
       auto x_3084 = MakeRef(static_cast<int64_t>(0));
