@@ -4421,6 +4421,7 @@ Unit x_3217(const auto &x_3218) {
       [&](const auto &x_3223) {
         x_3218->last = x_3223.get();
         x_3223->parent = x_3218.get();
+        x_3217(x_3223);
         return MakeUnit();
       });
   return MakeUnit();
@@ -4554,6 +4555,7 @@ Unit x_3246(const auto &x_3247) {
       [&](const auto &x_3252) {
         x_3247->last = x_3252.get();
         x_3252->parent = x_3247.get();
+        x_3246(x_3252);
         return MakeUnit();
       });
   return MakeUnit();
@@ -4742,6 +4744,7 @@ Unit x_3282(const auto &x_3283) {
       [&](const auto &x_3288) {
         x_3283->last = x_3288.get();
         x_3288->parent = x_3283.get();
+        x_3282(x_3288);
         return MakeUnit();
       });
   return MakeUnit();
@@ -4787,6 +4790,7 @@ Unit x_3297(const auto &x_3298) {
       [&](const auto &x_3303) {
         x_3298->last = x_3303.get();
         x_3303->parent = x_3298.get();
+        x_3297(x_3303);
         return MakeUnit();
       });
   return MakeUnit();
@@ -4845,6 +4849,7 @@ Unit x_3309(const auto &x_3310) {
       [&](const auto &x_3315) {
         x_3310->last = x_3315.get();
         x_3315->parent = x_3310.get();
+        x_3309(x_3315);
         return MakeUnit();
       });
   return MakeUnit();
@@ -4879,8 +4884,8 @@ Node x_3329(const auto &x_3330) {
 }
 Node json_to_node_aux_x_3077(const auto &x_3330) { return x_3329(x_3330); }
 int main() {
-  WithOutFile(std::string("hn_type.out"), [&](const auto &x_3082) {
-    PrintEndline(std::string("RUNNING DB"));
+  WithOutFile(std::string("wikipedia_hover.out"), [&](const auto &x_3082) {
+    PrintEndline(std::string("RUNNING DB_D"));
     return WithInFile(std::string("command.json"), [&](const auto &x_3083) {
       auto x_3084 = MakeRef(static_cast<int64_t>(0));
       auto x_3085 = FreshMetric();
@@ -4910,7 +4915,7 @@ int main() {
       eval_stmts_x_3094(x_3091);
       JsonToChannel(x_3082, [&]() {
         auto x_6259 = FreshJson();
-        WriteJson(x_6259, std::string("name"), std::string("DB"));
+        WriteJson(x_6259, std::string("name"), std::string("DB_D"));
         WriteJson(x_6259, std::string("diff_num"), ReadRef(x_3084));
         WriteJson(x_6259, std::string("read_count"), MetricReadCount());
         WriteJson(x_6259, std::string("meta_read_count"), MetricMetaReadCount());
@@ -4959,7 +4964,7 @@ int main() {
           recalculate_internal_x_3107(x_3091);
           JsonToChannel(x_3082, [&]() {
             auto x_6260 = FreshJson();
-            WriteJson(x_6260, std::string("name"), std::string("DB"));
+            WriteJson(x_6260, std::string("name"), std::string("DB_D"));
             WriteJson(x_6260, std::string("diff_num"), ReadRef(x_3084));
             WriteJson(x_6260, std::string("read_count"), MetricReadCount());
             WriteJson(x_6260, std::string("meta_read_count"), MetricMetaReadCount());

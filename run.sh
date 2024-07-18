@@ -7,6 +7,7 @@ process(){
   dune exec megatron -- $1.out
 }
 
+rm *.out
 process discord_nologin
 process espn
 process google_hover

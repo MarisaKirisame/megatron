@@ -251,7 +251,7 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
   let json_of_string x = Yojson.Basic.from_string x
   let with_in_file name f = Stdio.In_channel.with_file name ~f
 
-  let with_out_file name f = Stdio.Out_channel.with_file name ~f
+  let with_out_file name f = Stdio.Out_channel.with_file name ~f ~append:true
 
   let ignore x = Core.ignore x
   let output_string c s = Stdio.Out_channel.output_string c s
@@ -501,7 +501,6 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let rec defs _ =
     let ret =
       List.map !global_defs (fun (ret_type, s, cl) ->
-          Stdio.print_endline s;
           (ret_type, s, Lazy.force cl))
     in
     if Int.equal (List.length ret) (List.length !global_defs) then (

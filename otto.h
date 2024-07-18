@@ -119,6 +119,7 @@ private:
     // (ii) relabel
     _l1_iter cur = lo;
     Label label = lo_label;
+    assert(range_count != 0);
     Label incr = (label_mask + 1) / range_count;
 
     // possibly overflowing check

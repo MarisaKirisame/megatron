@@ -2960,6 +2960,7 @@ Unit x_136(const auto &x_137) {
       [&](const auto &x_142) {
         x_137->last = x_142.get();
         x_142->parent = x_137.get();
+        x_136(x_142);
         return MakeUnit();
       });
   return MakeUnit();
@@ -3029,6 +3030,7 @@ Unit x_165(const auto &x_166) {
       [&](const auto &x_171) {
         x_166->last = x_171.get();
         x_171->parent = x_166.get();
+        x_165(x_171);
         return MakeUnit();
       });
   return MakeUnit();
@@ -3107,6 +3109,7 @@ Unit x_192(const auto &x_193) {
       [&](const auto &x_198) {
         x_193->last = x_198.get();
         x_198->parent = x_193.get();
+        x_192(x_198);
         return MakeUnit();
       });
   return MakeUnit();
@@ -3152,6 +3155,7 @@ Unit x_207(const auto &x_208) {
       [&](const auto &x_213) {
         x_208->last = x_213.get();
         x_213->parent = x_208.get();
+        x_207(x_213);
         return MakeUnit();
       });
   return MakeUnit();
@@ -3197,6 +3201,7 @@ Unit x_222(const auto &x_223) {
       [&](const auto &x_228) {
         x_223->last = x_228.get();
         x_228->parent = x_223.get();
+        x_222(x_228);
         return MakeUnit();
       });
   return MakeUnit();
@@ -3229,7 +3234,7 @@ Node x_242(const auto &x_243) {
 Node json_to_node_aux_x_0(const auto &x_243) { return x_242(x_243); }
 int main() {
   WithOutFile(std::string("hn_type.out"), [&](const auto &x_5) {
-    PrintEndline(std::string("RUNNING FS"));
+    PrintEndline(std::string("RUNNING FS_D"));
     return WithInFile(std::string("command.json"), [&](const auto &x_6) {
       auto x_7 = MakeRef(static_cast<int64_t>(0));
       auto x_8 = FreshMetric();
@@ -3255,7 +3260,7 @@ int main() {
       eval_stmts_x_17(x_14);
       JsonToChannel(x_5, [&]() {
         auto x_3074 = FreshJson();
-        WriteJson(x_3074, std::string("name"), std::string("FS"));
+        WriteJson(x_3074, std::string("name"), std::string("FS_D"));
         WriteJson(x_3074, std::string("diff_num"), ReadRef(x_7));
         WriteJson(x_3074, std::string("read_count"), MetricReadCount());
         WriteJson(x_3074, std::string("meta_read_count"), MetricMetaReadCount());
@@ -3304,7 +3309,7 @@ int main() {
           eval_stmts_x_17(x_14);
           JsonToChannel(x_5, [&]() {
             auto x_3075 = FreshJson();
-            WriteJson(x_3075, std::string("name"), std::string("FS"));
+            WriteJson(x_3075, std::string("name"), std::string("FS_D"));
             WriteJson(x_3075, std::string("diff_num"), ReadRef(x_7));
             WriteJson(x_3075, std::string("read_count"), MetricReadCount());
             WriteJson(x_3075, std::string("meta_read_count"), MetricMetaReadCount());

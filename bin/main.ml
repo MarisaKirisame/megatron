@@ -446,10 +446,11 @@ module Main (EVAL : Eval) = struct
       (m : metric sd) : unit sd =
     app3 (insert_value_aux m) path x (make_pair (make_pair type_ key) value)
 
+  let name : string = if is_static then EVAL.name ^ "_S" else EVAL.name ^ "_D"
   let main : unit sd =
     with_out_file (string out_file_path) (fun out_file ->
         seq
-          (print_endline (string ("RUNNING " ^ EVAL.name)))
+          (print_endline (string ("RUNNING " ^ name)))
           (fun _ ->
             with_in_file (string "command.json") (fun chan ->
                 let_
@@ -482,7 +483,7 @@ module Main (EVAL : Eval) = struct
                                                                (list
                                                                   [
                                                                     make_pair (string "name")
-                                                                      (string_to_json (string EVAL.name));
+                                                                      (string_to_json (string name));
                                                                     make_pair (string "diff_num")
                                                                       (int_to_json (read_ref diff_num));
                                                                     make_pair (string "read_count")
@@ -582,16 +583,17 @@ module Main (EVAL : Eval) = struct
     shell ("clang-format --style=file -i " ^ compiled_file_name);
     shell ("clang-format --style=file -i " ^ "header.h");
     shell ("clang-format --style=file -i " ^ "header_continued.h");
-    shell ("clang++ -std=c++23 " ^ compiled_file_name)
+    shell ("clang++ -O3 -fsanitize=undefined -std=c++23 " ^ compiled_file_name);
+    shell ("./a.out")
 
   let () = if is_static then () else run_dynamic ()
 end
 
 module MainFSI = Main (Megatron.EvalFS.EVAL (S))
-(*module MainFSC = Main (Megatron.EvalFS.EVAL (D))*)
+module MainFSC = Main (Megatron.EvalFS.EVAL (D))
 
 module MainDBI = Main (Megatron.EvalDB.EVAL (S))
-(*module MainDBC = Main (Megatron.EvalDB.EVAL (D))*)
+module MainDBC = Main (Megatron.EvalDB.EVAL (D))
 
 module MainPQI = Main (Megatron.EvalPQ.EVAL (S))
-(*module MainPQC = Main (Megatron.EvalPQ.EVAL (D))*)
+module MainPQC = Main (Megatron.EvalPQ.EVAL (D))

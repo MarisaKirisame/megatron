@@ -81,7 +81,7 @@ void WriteJson(json &j, const std::string &name, const std::string &value) { j[n
 void WriteJson(json &j, const std::string &name, const int64_t &value) { j[name] = value; }
 int64_t IntAdd(int64_t l, int64_t r) { return l + r; }
 auto WithOutFile(const std::string &path, const auto &f) {
-  std::ofstream s{path};
+  std::ofstream s{path, std::ios_base::app};
   return f(s);
 }
 auto WithInFile(const std::string &path, const auto &f) {
@@ -98,7 +98,7 @@ std::string InputLine(const std::ifstream &f) {
   return line;
 }
 json JsonOfString(const std::string &str) { return json::parse(str); }
-json JsonMember(const json &j, const std::string &f) { return j[f]; }
+json JsonMember(const std::string &f, const json &j) { return j[f]; }
 std::string JsonToString(const json &j) { return j.template get<std::string>(); }
 int64_t JsonToInt(const json &j) { return j.template get<int64_t>(); }
 bool StringEqual(const std::string &l, const std::string &r) { return l == r; }
@@ -373,7 +373,7 @@ std::string nth_by_sep(const std::string &str, const std::string &sep, int nth) 
   return *std::next(range.begin(), nth);
 }
 #include "otto.h"
-typedef total_order<1.4, uint8_t> TotalOrderS;
+typedef total_order<1.4, uint32_t> TotalOrderS;
 typedef TotalOrderS::node TotalOrder;
 TotalOrderS tos;
 auto current_time = MakeRef(tos.smallest());
