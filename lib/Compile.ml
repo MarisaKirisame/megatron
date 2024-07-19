@@ -283,7 +283,7 @@ and compile_expr c x =
       compile_expr c x;
       output_string c "->";
       output_string c y;
-      output_string c " != nullptr)"
+      output_string c " == nullptr)"
   | CApp (CPF "UnSome", [ CGetMember (x, (("parent" | "prev" | "next" | "first" | "last") as y)) ]) ->
       output_string c "(";
       compile_expr c x;

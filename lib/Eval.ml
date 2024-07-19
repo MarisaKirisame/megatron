@@ -223,6 +223,8 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                     let_ (list_tail_exn rhs_) (fun rhs ->
                         seqs
                           [
+                            (fun _ -> node_set_children x (list_append lhs rhs));
+                            (fun _ -> remove_meta (node_get_meta removed));
                             (fun _ ->
                               option_match (node_get_prev removed)
                                 (fun _ -> tt)
@@ -231,8 +233,6 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                               option_match (node_get_next removed)
                                 (fun _ -> tt)
                                 (fun next -> node_set_prev next (node_get_prev removed)));
-                            (fun _ -> remove_meta (node_get_meta removed));
-                            (fun _ -> node_set_children x (list_append lhs rhs));
                             (fun _ -> ite (list_is_empty lhs) (fun _ -> node_set_first x (list_hd rhs)) (fun _ -> tt));
                             (fun _ -> ite (list_is_empty rhs) (fun _ -> node_set_last x (list_last lhs)) (fun _ -> tt));
                             (fun _ ->

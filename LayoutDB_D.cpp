@@ -1193,7 +1193,7 @@ Unit var_modified_x_1944(const auto &x_2683) {
       return MetaWriteMetric();
     }
   };
-  if (x_2683->next != nullptr) {
+  if (x_2683->next == nullptr) {
     auto x_3327 = x_3325;
     OptionMatch(
         x_2683->parent, [&](const auto &x_2685) { return MakeUnit(); },
@@ -1245,7 +1245,7 @@ Unit var_modified_x_1939(const auto &x_2719) {
       return MetaWriteMetric();
     }
   };
-  if (x_2719->next != nullptr) {
+  if (x_2719->next == nullptr) {
     auto x_3332 = x_3330;
     OptionMatch(
         x_2719->parent, [&](const auto &x_2721) { return MakeUnit(); },
@@ -1304,7 +1304,7 @@ Unit var_modified_x_1934(const auto &x_2739) {
       return MetaWriteMetric();
     }
   };
-  if (x_2739->next != nullptr) {
+  if (x_2739->next == nullptr) {
     auto x_3338 = x_3336;
     OptionMatch(
         x_2739->parent, [&](const auto &x_2744) { return MakeUnit(); },
@@ -1549,7 +1549,7 @@ Unit var_modified_x_1904(const auto &x_2982) {
       return MetaWriteMetric();
     }
   };
-  if (x_2982->next != nullptr) {
+  if (x_2982->next == nullptr) {
     auto x_3350 = x_3348;
     OptionMatch(
         x_2982->parent, [&](const auto &x_2987) { return MakeUnit(); },
@@ -1574,7 +1574,7 @@ Unit var_modified_x_1899(const auto &x_2998) {
       return MetaWriteMetric();
     }
   };
-  if (x_2998->next != nullptr) {
+  if (x_2998->next == nullptr) {
     auto x_3354 = x_3352;
     OptionMatch(
         x_2998->parent, [&](const auto &x_3000) { return MakeUnit(); },
@@ -2979,6 +2979,7 @@ Unit x_1733(const auto &x_1734, const auto &x_1735, const auto &x_1736) {
     auto x_1741 = Fst(x_1739);
     auto x_1742 = ListHeadExn(x_1741);
     auto x_1743 = ListTailExn(x_1741);
+    x_1735->children = ListAppend(x_1740, x_1743);
     OptionMatch(
         x_1742->prev, [&](const auto &x_1745) { return MakeUnit(); },
         [&](const auto &x_1744) {
@@ -2991,7 +2992,6 @@ Unit x_1733(const auto &x_1734, const auto &x_1735, const auto &x_1736) {
           x_1746->prev = ToPath(x_1742->prev);
           return MakeUnit();
         });
-    x_1735->children = ListAppend(x_1740, x_1743);
     if (ListIsEmpty(x_1740)) {
       x_1735->first = ToPath(ListHead(x_1743));
     }
@@ -3214,6 +3214,7 @@ Unit x_1776(const auto &x_1777, const auto &x_1778, const auto &x_1779) {
     auto x_1784 = Fst(x_1782);
     auto x_1785 = ListHeadExn(x_1784);
     auto x_1786 = ListTailExn(x_1784);
+    x_1778->children = ListAppend(x_1783, x_1786);
     OptionMatch(
         x_1785->prev, [&](const auto &x_1788) { return MakeUnit(); },
         [&](const auto &x_1787) {
@@ -3226,7 +3227,6 @@ Unit x_1776(const auto &x_1777, const auto &x_1778, const auto &x_1779) {
           x_1789->prev = ToPath(x_1785->prev);
           return MakeUnit();
         });
-    x_1778->children = ListAppend(x_1783, x_1786);
     if (ListIsEmpty(x_1783)) {
       x_1778->first = ToPath(ListHead(x_1786));
     }

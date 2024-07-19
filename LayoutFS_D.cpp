@@ -1648,6 +1648,7 @@ Unit x_94(const auto &x_95, const auto &x_96, const auto &x_97) {
     auto x_102 = Fst(x_100);
     auto x_103 = ListHeadExn(x_102);
     auto x_104 = ListTailExn(x_102);
+    x_96->children = ListAppend(x_101, x_104);
     OptionMatch(
         x_103->prev, [&](const auto &x_106) { return MakeUnit(); },
         [&](const auto &x_105) {
@@ -1660,7 +1661,6 @@ Unit x_94(const auto &x_95, const auto &x_96, const auto &x_97) {
           x_107->prev = ToPath(x_103->prev);
           return MakeUnit();
         });
-    x_96->children = ListAppend(x_101, x_104);
     if (ListIsEmpty(x_101)) {
       x_96->first = ToPath(ListHead(x_104));
     }
@@ -1753,6 +1753,7 @@ Unit x_136(const auto &x_137, const auto &x_138, const auto &x_139) {
     auto x_144 = Fst(x_142);
     auto x_145 = ListHeadExn(x_144);
     auto x_146 = ListTailExn(x_144);
+    x_138->children = ListAppend(x_143, x_146);
     OptionMatch(
         x_145->prev, [&](const auto &x_148) { return MakeUnit(); },
         [&](const auto &x_147) {
@@ -1765,7 +1766,6 @@ Unit x_136(const auto &x_137, const auto &x_138, const auto &x_139) {
           x_149->prev = ToPath(x_145->prev);
           return MakeUnit();
         });
-    x_138->children = ListAppend(x_143, x_146);
     if (ListIsEmpty(x_143)) {
       x_138->first = ToPath(ListHead(x_146));
     }

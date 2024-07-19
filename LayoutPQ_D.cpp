@@ -896,7 +896,7 @@ Unit var_modified_x_3921(const auto &x_4378) {
       return MakeUnit();
     }
   };
-  if (x_4378->next != nullptr) {
+  if (x_4378->next == nullptr) {
     auto x_5384 = x_5382;
     OptionMatch(
         x_4378->parent, [&](const auto &x_4380) { return MakeUnit(); },
@@ -950,7 +950,7 @@ Unit var_modified_x_3916(const auto &x_4418) {
       return MakeUnit();
     }
   };
-  if (x_4418->next != nullptr) {
+  if (x_4418->next == nullptr) {
     auto x_5389 = x_5387;
     OptionMatch(
         x_4418->parent, [&](const auto &x_4420) { return MakeUnit(); },
@@ -1012,7 +1012,7 @@ Unit var_modified_x_3911(const auto &x_4442) {
       return MakeUnit();
     }
   };
-  if (x_4442->next != nullptr) {
+  if (x_4442->next == nullptr) {
     auto x_5395 = x_5393;
     OptionMatch(
         x_4442->parent, [&](const auto &x_4449) { return MakeUnit(); },
@@ -1266,7 +1266,7 @@ Unit var_modified_x_3881(const auto &x_4703) {
       return MakeUnit();
     }
   };
-  if (x_4703->next != nullptr) {
+  if (x_4703->next == nullptr) {
     auto x_5407 = x_5405;
     OptionMatch(
         x_4703->parent, [&](const auto &x_4710) { return MakeUnit(); },
@@ -1292,7 +1292,7 @@ Unit var_modified_x_3876(const auto &x_4723) {
       return MakeUnit();
     }
   };
-  if (x_4723->next != nullptr) {
+  if (x_4723->next == nullptr) {
     auto x_5411 = x_5409;
     OptionMatch(
         x_4723->parent, [&](const auto &x_4725) { return MakeUnit(); },
@@ -2986,6 +2986,8 @@ Unit x_3571(const auto &x_3572, const auto &x_3573, const auto &x_3574) {
     auto x_3579 = Fst(x_3577);
     auto x_3580 = ListHeadExn(x_3579);
     auto x_3581 = ListTailExn(x_3579);
+    x_3573->children = ListAppend(x_3578, x_3581);
+    x_3580->meta->alive = false;
     OptionMatch(
         x_3580->prev, [&](const auto &x_3583) { return MakeUnit(); },
         [&](const auto &x_3582) {
@@ -2998,8 +3000,6 @@ Unit x_3571(const auto &x_3572, const auto &x_3573, const auto &x_3574) {
           x_3584->prev = ToPath(x_3580->prev);
           return MakeUnit();
         });
-    x_3580->meta->alive = false;
-    x_3573->children = ListAppend(x_3578, x_3581);
     if (ListIsEmpty(x_3578)) {
       x_3573->first = ToPath(ListHead(x_3581));
     }
@@ -3244,6 +3244,8 @@ Unit x_3651(const auto &x_3652, const auto &x_3653, const auto &x_3654) {
     auto x_3659 = Fst(x_3657);
     auto x_3660 = ListHeadExn(x_3659);
     auto x_3661 = ListTailExn(x_3659);
+    x_3653->children = ListAppend(x_3658, x_3661);
+    x_3660->meta->alive = false;
     OptionMatch(
         x_3660->prev, [&](const auto &x_3663) { return MakeUnit(); },
         [&](const auto &x_3662) {
@@ -3256,8 +3258,6 @@ Unit x_3651(const auto &x_3652, const auto &x_3653, const auto &x_3654) {
           x_3664->prev = ToPath(x_3660->prev);
           return MakeUnit();
         });
-    x_3660->meta->alive = false;
-    x_3653->children = ListAppend(x_3658, x_3661);
     if (ListIsEmpty(x_3658)) {
       x_3653->first = ToPath(ListHead(x_3661));
     }
