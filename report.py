@@ -99,7 +99,9 @@ def get_time(js):
         if j["name"] in ["init", "recalculate"]:
             return j["time"]
     return ""
-  
+
+overhead_htbl = {}
+
 def per_trace(trace_out_path):
     default_count = {}
     j_by_diff = {}
@@ -133,6 +135,12 @@ def per_trace(trace_out_path):
                                 processed[k] = j[k]
                         tr(*[td(processed[h]) for h in header])
                         name = j["name"]
+
+                        overhead_key = trace_out_path + str(j["diff_num"])
+                        if overhead_key not in overhead_htbl:
+                            overhead_htbl[overhead_key] = {}
+                        overhead_htbl[overhead_key][name] = j["overhead_time"]
+
                         if name not in summary:
                             summary[name] = {"name": name, "diff_num": "total", "html": "NA", "command": "NA", "full_command": "NA", "time": "NA"}
                         for k in j.keys():
@@ -148,12 +156,36 @@ def per_trace(trace_out_path):
     return page_path
 
 outs = ["google_hover.out", "google_searchbar.out", "google_searchpage.out", "github_nologin.out", "wikipedia_idle.out", "wikipedia_hover.out", "hn_type.out", "espn.out", "discord_nologin.out"]
+
+def plot():
+    x = []
+    y = []
+    for k in overhead_htbl.values():
+        if k["DB_D"] != 0:
+            x.append(k["DB_D"])
+            y.append(k["PQ_D"])
+    min_value = min(min(*x), min(*y))
+    max_value = max(max(*x), max(*y))
+    import matplotlib.pyplot as plt
+    plt.scatter(x, y)
+    plt.plot([min_value, max_value], [min_value, max_value])
+    plt.xscale('log')
+    plt.yscale('log')
+    plt.xlabel('DB_overhead')
+    plt.ylabel('PQ_overhead')
+    plt.xlim(min_value / 2, max_value * 2)
+    plt.ylim(min_value / 2, max_value * 2)
+    pic_path = f"{count()}.jpg"
+    plt.savefig(out_path + pic_path)
+    return pic_path
+    
 doc = make_doc(title=out_path)
 with doc:
     for o in outs:
         a(o, href=per_trace(o))
         br()
-print(doc)
+    img(src=plot())
+
 write_to(out_path + "index.html", str(doc))
 
 if subprocess.run("command -v nightly-results", shell=True).returncode == 0:
