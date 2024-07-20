@@ -27,10 +27,16 @@ module EVAL (SD : SD) = MakeEval (struct
     if is_static then (n |> unstatic).recursive_proc_dirtied |> static
     else CGetMember (n |> undyn, "RecursiveProcDirtied") |> dyn
 
-  let meta_defs =
-    " std::unordered_map<std::string, bool> BBDirtied;\n\
-    \ std::unordered_map<std::string, Unit> ProcInited;\n\
-    \ std::unordered_map<std::string, bool> RecursiveProcDirtied;"
+  let meta_defs p =
+    String.concat
+      (List.map (Hashtbl.to_alist p.bbs) ~f:(fun (bb, _) ->
+           "bool " ^ bb ^ "_has_bb_dirtied = false;" ^ "bool " ^ bb ^ "_bb_dirtied;"))
+      ~sep:""
+    ^ String.concat
+        (List.map (Hashtbl.to_alist p.procs) ~f:(fun (proc, _) ->
+             "bool " ^ proc ^ "_proc_inited = false;" ^ "bool " ^ proc ^ "_has_recursive_proc_dirtied = false;"
+             ^ "bool " ^ proc ^ "_recursive_proc_dirtied;"))
+        ~sep:""
 
   let fresh_meta _ =
     {
@@ -70,7 +76,7 @@ module EVAL (SD : SD) = MakeEval (struct
           (fun _ -> set_recursive_proc_dirtied n proc_name m))
       (fun _ -> meta_write_metric m)
 
-  let register_todo_proc (p : prog) (y : meta node sd) (proc_name : string) (m : metric sd) : unit sd =
+  let register_todo_proc (_ : prog) (y : meta node sd) (proc_name : string) (m : metric sd) : unit sd =
     seq
       (hashtbl_add_exn (meta_get_recursive_proc_dirtied (node_get_meta y)) (string proc_name) (bool false))
       (fun _ -> set_recursive_proc_dirtied y proc_name m)

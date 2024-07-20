@@ -27,9 +27,15 @@ module EVAL (SD : SD) = MakeEval (struct
 
   let meta_get_alive m = if is_static then (m |> unstatic).alive |> static else CGetMember (m |> undyn, "alive") |> dyn
 
-  let meta_defs =
-    "std::unordered_map<std::string, TotalOrder> BBTimeTable;std::unordered_map<std::string, TotalOrder> \
-     ProcTimeTable;bool alive=true;"
+  let meta_defs (p : prog) =
+    String.concat
+      (List.map (Hashtbl.to_alist p.bbs) ~f:(fun (bb, _) -> "std::optional<TotalOrder> " ^ bb ^ "_bb_time_table;"))
+      ~sep:""
+    ^ String.concat
+        (List.map (Hashtbl.to_alist p.procs) ~f:(fun (proc, _) ->
+             "std::optional<TotalOrder> " ^ proc ^ "_proc_time_table;"))
+        ~sep:""
+    ^ "bool alive=true;"
 
   let meta_get_bb_time_table m =
     if is_static then (m |> unstatic).bb_time_table |> static else CGetMember (m |> undyn, "BBTimeTable") |> dyn
@@ -177,12 +183,16 @@ module EVAL (SD : SD) = MakeEval (struct
                                                      string_match proc
                                                        (List.map (Hashtbl.to_alist p.procs)
                                                           ~f:(fun (str, ProcessedProc (_, stmts)) ->
-                                                            (str, fun _ -> eval_stmts (key_get_node k) stmts)))
+                                                            ( str,
+                                                              fun _ ->
+                                                                seq
+                                                                  (eval_stmts (key_get_node k) stmts)
+                                                                  (fun _ ->
+                                                                    hashtbl_set
+                                                                      (meta_get_proc_time_table
+                                                                         (node_get_meta (key_get_node k)))
+                                                                      (string str) (read_ref current_time)) )))
                                                        (fun _ -> panic (string "unknown proc")));
-                                                   (fun _ ->
-                                                     hashtbl_set
-                                                       (meta_get_proc_time_table (node_get_meta (key_get_node k)))
-                                                       proc (read_ref current_time));
                                                    (fun _ -> write_ref current_time old_time);
                                                  ])))
                                      (fun _ -> tt));

@@ -589,7 +589,7 @@ module Main (EVAL : Eval) = struct
     let compiled_file_name = "Layout" ^ name ^ ".cpp" in
 
     let c = Stdio.Out_channel.create compiled_file_name in
-    compile prog (defs ()) (undyn main) EVAL.meta_defs c;
+    compile prog (defs ()) (undyn main) (EVAL.meta_defs prog) c;
     Stdio.Out_channel.close c;
 
     shell ("clang-format-18 --style=file -i " ^ compiled_file_name);
@@ -601,9 +601,11 @@ module Main (EVAL : Eval) = struct
   let () = if is_static then () else run_dynamic ()
 end
 
-module MainFSI = Main (Megatron.EvalFS.EVAL (S))
+(*module MainFSI = Main (Megatron.EvalFS.EVAL (S))*)
 module MainFSC = Main (Megatron.EvalFS.EVAL (D))
-module MainDBI = Main (Megatron.EvalDB.EVAL (S))
+
+(*module MainDBI = Main (Megatron.EvalDB.EVAL (S))*)
 module MainDBC = Main (Megatron.EvalDB.EVAL (D))
-module MainPQI = Main (Megatron.EvalPQ.EVAL (S))
+
+(*module MainPQI = Main (Megatron.EvalPQ.EVAL (S))*)
 module MainPQC = Main (Megatron.EvalPQ.EVAL (D))

@@ -80,6 +80,33 @@ let rec simplify (p : prog) x =
   | CApp (CPF "HashtblContain", [ CGetMember (x, "var"); CString f ]) -> CGetMember (x, "has_var_" ^ f)
   | CApp (CPF "HashtblSet", [ CGetMember (x, "var"); CString f; v ]) ->
       CSeq [ CSetMember (x, "has_var_" ^ f, CBool true); CSetMember (x, "var_" ^ f, v) ]
+  | CApp (CPF "HashtblContain", [ CGetMember (x, "BBTimeTable"); CString f ]) ->
+      CApp (CPF "IsSome", [ CGetMember (x, f ^ "_bb_time_table") ])
+  | CApp (CPF "HashtblFindExn", [ CGetMember (x, "BBTimeTable"); CString f ]) ->
+      CApp (CPF "UnSome", [ CGetMember (x, f ^ "_bb_time_table") ])
+  | CApp (CPF "HashtblAddExn", [ CGetMember (x, "BBTimeTable"); CString f; v ]) ->
+      CSetMember (x, f ^ "_bb_time_table", v)
+  | CApp (CPF "HashtblContain", [ CGetMember (x, "ProcTimeTable"); CString f ]) ->
+      CApp (CPF "IsSome", [ CGetMember (x, f ^ "_proc_time_table") ])
+  | CApp (CPF "HashtblFindExn", [ CGetMember (x, "ProcTimeTable"); CString f ]) ->
+      CApp (CPF "UnSome", [ CGetMember (x, f ^ "_proc_time_table") ])
+  | CApp (CPF "HashtblAddExn", [ CGetMember (x, "ProcTimeTable"); CString f; v ]) ->
+      CSetMember (x, f ^ "_proc_time_table", v)
+  | CApp (CPF "HashtblSet", [ CGetMember (x, "ProcTimeTable"); CString f; v ]) ->
+      CSetMember (x, f ^ "_proc_time_table", v)
+  | CApp (CPF "HashtblContain", [ CGetMember (x, "ProcInited"); CString f ]) -> CGetMember (x, f ^ "_proc_inited")
+  | CApp (CPF "HashtblAddExn", [ CGetMember (x, "ProcInited"); CString f; _ ]) ->
+      CSetMember (x, f ^ "_proc_inited", CBool true)
+  | CApp (CPF "HashtblFindExn", [ CGetMember (x, "RecursiveProcDirtied"); CString f ]) ->
+      CGetMember (x, f ^ "_recursive_proc_dirtied")
+  | CApp (CPF ("HashtblSet" | "HashtblAddExn"), [ CGetMember (x, "RecursiveProcDirtied"); CString f; v ]) ->
+      CSeq
+        [
+          CSetMember (x, f ^ "_has_recursive_proc_dirtied", CBool true); CSetMember (x, f ^ "_recursive_proc_dirtied", v);
+        ]
+  | CApp (CPF "HashtblFindExn", [ CGetMember (x, "BBDirtied"); CString f ]) -> CGetMember (x, f ^ "_bb_dirtied")
+  | CApp (CPF ("HashtblSet" | "HashtblAddExn"), [ CGetMember (x, "BBDirtied"); CString f; v ]) ->
+      CSeq [ CSetMember (x, f ^ "_has_bb_dirtied", CBool true); CSetMember (x, f ^ "_bb_dirtied", v) ]
   | CApp (CPF "HashtblFindExn", [ CGetMember (x, "prop"); CString f ]) ->
       CApp (CPF ("GetProp" ^ angle_bracket (compile_type_expr (prop_from_tyck_env p.tyck_env f))), [ x; CString f ])
   | CApp (CPF "IsSome", [ CApp (CPF "HashtblFind", [ x; y ]) ]) -> CApp (CPF "HashtblContain", [ x; y ])

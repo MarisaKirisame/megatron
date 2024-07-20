@@ -13,7 +13,7 @@ module EVAL (SD : SD) = MakeEval (struct
 
   type meta = unit
 
-  let meta_defs = ""
+  let meta_defs _ = ""
   let fresh_meta u = tt
   let remove_meta x = x
   let bracket_call_bb _ _ f = f ()

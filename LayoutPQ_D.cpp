@@ -1,7 +1,10 @@
 #include "header.h"
 struct MetaNode {
-  std::unordered_map<std::string, TotalOrder> BBTimeTable;
-  std::unordered_map<std::string, TotalOrder> ProcTimeTable;
+  std::optional<TotalOrder> bb_1_bb_time_table;
+  std::optional<TotalOrder> bb_0_bb_time_table;
+  std::optional<TotalOrder> bb_2_bb_time_table;
+  std::optional<TotalOrder> pass_0_proc_time_table;
+  std::optional<TotalOrder> pass_1_proc_time_table;
   bool alive = true;
 };
 using Meta = std::shared_ptr<MetaNode>;
@@ -239,8 +242,8 @@ Node x_3882(const auto &x_3883);
 Unit var_modified_x_4124(const auto &x_4126) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_4127) {
     auto x_5509 = [&](const auto &x_4128) {
-      if (HashtblContain(x_4128->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_4129 = HashtblFindExn(x_4128->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_4128->meta->bb_0_bb_time_table)) {
+        auto x_4129 = UnSome(x_4128->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4129, x_4128, MakeRecomputeBB(std::string("bb_0")));
       } else {
@@ -250,8 +253,8 @@ Unit var_modified_x_4124(const auto &x_4126) {
     x_5509(x_4126);
     MakeUnit();
     auto x_5510 = [&](const auto &x_4133) {
-      if (HashtblContain(x_4133->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_4134 = HashtblFindExn(x_4133->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_4133->meta->bb_0_bb_time_table)) {
+        auto x_4134 = UnSome(x_4133->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4134, x_4133, MakeRecomputeBB(std::string("bb_0")));
       } else {
@@ -266,8 +269,8 @@ Unit var_modified_x_4124(const auto &x_4126) {
           return MakeUnit();
         });
     auto x_5511 = [&](const auto &x_4136) {
-      if (HashtblContain(x_4136->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_4137 = HashtblFindExn(x_4136->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_4136->meta->bb_2_bb_time_table)) {
+        auto x_4137 = UnSome(x_4136->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4137, x_4136, MakeRecomputeBB(std::string("bb_2")));
       } else {
@@ -277,8 +280,8 @@ Unit var_modified_x_4124(const auto &x_4126) {
     x_5511(x_4126);
     MakeUnit();
     auto x_5512 = [&](const auto &x_4141) {
-      if (HashtblContain(x_4141->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_4142 = HashtblFindExn(x_4141->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_4141->meta->bb_2_bb_time_table)) {
+        auto x_4142 = UnSome(x_4141->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4142, x_4141, MakeRecomputeBB(std::string("bb_2")));
       } else {
@@ -367,8 +370,8 @@ auto eval_expr_x_4121(const auto &x_4144) {
 Unit var_modified_x_4119(const auto &x_4221) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_4222) {
     ListIter(x_4221->children, [&](const auto &x_4223) {
-      if (HashtblContain(x_4223->meta->BBTimeTable, std::string("bb_1"))) {
-        auto x_4224 = HashtblFindExn(x_4223->meta->BBTimeTable, std::string("bb_1"));
+      if (IsSome(x_4223->meta->bb_1_bb_time_table)) {
+        auto x_4224 = UnSome(x_4223->meta->bb_1_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4224, x_4223, MakeRecomputeBB(std::string("bb_1")));
       } else {
@@ -385,8 +388,8 @@ auto eval_expr_x_4116(const auto &x_4226) {
 Unit var_modified_x_4114(const auto &x_4243) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_4244) {
     auto x_5515 = [&](const auto &x_4245) {
-      if (HashtblContain(x_4245->meta->BBTimeTable, std::string("bb_1"))) {
-        auto x_4246 = HashtblFindExn(x_4245->meta->BBTimeTable, std::string("bb_1"));
+      if (IsSome(x_4245->meta->bb_1_bb_time_table)) {
+        auto x_4246 = UnSome(x_4245->meta->bb_1_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4246, x_4245, MakeRecomputeBB(std::string("bb_1")));
       } else {
@@ -396,8 +399,8 @@ Unit var_modified_x_4114(const auto &x_4243) {
     x_5515(x_4243);
     MakeUnit();
     ListIter(x_4243->children, [&](const auto &x_4248) {
-      if (HashtblContain(x_4248->meta->BBTimeTable, std::string("bb_1"))) {
-        auto x_4249 = HashtblFindExn(x_4248->meta->BBTimeTable, std::string("bb_1"));
+      if (IsSome(x_4248->meta->bb_1_bb_time_table)) {
+        auto x_4249 = UnSome(x_4248->meta->bb_1_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4249, x_4248, MakeRecomputeBB(std::string("bb_1")));
       } else {
@@ -405,8 +408,8 @@ Unit var_modified_x_4114(const auto &x_4243) {
       }
     });
     auto x_5516 = [&](const auto &x_4251) {
-      if (HashtblContain(x_4251->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_4252 = HashtblFindExn(x_4251->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_4251->meta->bb_0_bb_time_table)) {
+        auto x_4252 = UnSome(x_4251->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4252, x_4251, MakeRecomputeBB(std::string("bb_0")));
       } else {
@@ -428,8 +431,8 @@ auto eval_expr_x_4111(const auto &x_4254) {
 Unit var_modified_x_4109(const auto &x_4259) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_4260) {
     auto x_5517 = [&](const auto &x_4261) {
-      if (HashtblContain(x_4261->meta->BBTimeTable, std::string("bb_1"))) {
-        auto x_4262 = HashtblFindExn(x_4261->meta->BBTimeTable, std::string("bb_1"));
+      if (IsSome(x_4261->meta->bb_1_bb_time_table)) {
+        auto x_4262 = UnSome(x_4261->meta->bb_1_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4262, x_4261, MakeRecomputeBB(std::string("bb_1")));
       } else {
@@ -439,8 +442,8 @@ Unit var_modified_x_4109(const auto &x_4259) {
     x_5517(x_4259);
     MakeUnit();
     ListIter(x_4259->children, [&](const auto &x_4264) {
-      if (HashtblContain(x_4264->meta->BBTimeTable, std::string("bb_1"))) {
-        auto x_4265 = HashtblFindExn(x_4264->meta->BBTimeTable, std::string("bb_1"));
+      if (IsSome(x_4264->meta->bb_1_bb_time_table)) {
+        auto x_4265 = UnSome(x_4264->meta->bb_1_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4265, x_4264, MakeRecomputeBB(std::string("bb_1")));
       } else {
@@ -448,8 +451,8 @@ Unit var_modified_x_4109(const auto &x_4259) {
       }
     });
     auto x_5518 = [&](const auto &x_4267) {
-      if (HashtblContain(x_4267->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_4268 = HashtblFindExn(x_4267->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_4267->meta->bb_0_bb_time_table)) {
+        auto x_4268 = UnSome(x_4267->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4268, x_4267, MakeRecomputeBB(std::string("bb_0")));
       } else {
@@ -467,8 +470,8 @@ auto eval_expr_x_4106(const auto &x_4270) {
 Unit var_modified_x_4104(const auto &x_4279) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_4280) {
     ListIter(x_4279->children, [&](const auto &x_4281) {
-      if (HashtblContain(x_4281->meta->BBTimeTable, std::string("bb_1"))) {
-        auto x_4282 = HashtblFindExn(x_4281->meta->BBTimeTable, std::string("bb_1"));
+      if (IsSome(x_4281->meta->bb_1_bb_time_table)) {
+        auto x_4282 = UnSome(x_4281->meta->bb_1_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4282, x_4281, MakeRecomputeBB(std::string("bb_1")));
       } else {
@@ -482,8 +485,8 @@ auto eval_expr_x_4101(const auto &x_4284) { return eq(x_4284->name, std::string(
 Unit var_modified_x_4099(const auto &x_4285) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_4286) {
     auto x_5519 = [&](const auto &x_4287) {
-      if (HashtblContain(x_4287->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_4288 = HashtblFindExn(x_4287->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_4287->meta->bb_0_bb_time_table)) {
+        auto x_4288 = UnSome(x_4287->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4288, x_4287, MakeRecomputeBB(std::string("bb_0")));
       } else {
@@ -499,8 +502,8 @@ auto eval_expr_x_4096(const auto &x_4290) { return neq(x_4290->var_height_attr_e
 Unit var_modified_x_4094(const auto &x_4295) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_4296) {
     auto x_5520 = [&](const auto &x_4297) {
-      if (HashtblContain(x_4297->meta->BBTimeTable, std::string("bb_1"))) {
-        auto x_4298 = HashtblFindExn(x_4297->meta->BBTimeTable, std::string("bb_1"));
+      if (IsSome(x_4297->meta->bb_1_bb_time_table)) {
+        auto x_4298 = UnSome(x_4297->meta->bb_1_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4298, x_4297, MakeRecomputeBB(std::string("bb_1")));
       } else {
@@ -510,8 +513,8 @@ Unit var_modified_x_4094(const auto &x_4295) {
     x_5520(x_4295);
     MakeUnit();
     auto x_5521 = [&](const auto &x_4300) {
-      if (HashtblContain(x_4300->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_4301 = HashtblFindExn(x_4300->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_4300->meta->bb_0_bb_time_table)) {
+        auto x_4301 = UnSome(x_4300->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4301, x_4300, MakeRecomputeBB(std::string("bb_0")));
       } else {
@@ -538,8 +541,8 @@ auto eval_expr_x_4091(const auto &x_4303) {
 Unit var_modified_x_4089(const auto &x_4314) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_4315) {
     auto x_5522 = [&](const auto &x_4316) {
-      if (HashtblContain(x_4316->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_4317 = HashtblFindExn(x_4316->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_4316->meta->bb_0_bb_time_table)) {
+        auto x_4317 = UnSome(x_4316->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4317, x_4316, MakeRecomputeBB(std::string("bb_0")));
       } else {
@@ -555,8 +558,8 @@ auto eval_expr_x_4086(const auto &x_4319) { return neq(x_4319->var_width_attr_ex
 Unit var_modified_x_4084(const auto &x_4324) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_4325) {
     auto x_5523 = [&](const auto &x_4326) {
-      if (HashtblContain(x_4326->meta->BBTimeTable, std::string("bb_1"))) {
-        auto x_4327 = HashtblFindExn(x_4326->meta->BBTimeTable, std::string("bb_1"));
+      if (IsSome(x_4326->meta->bb_1_bb_time_table)) {
+        auto x_4327 = UnSome(x_4326->meta->bb_1_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4327, x_4326, MakeRecomputeBB(std::string("bb_1")));
       } else {
@@ -566,8 +569,8 @@ Unit var_modified_x_4084(const auto &x_4324) {
     x_5523(x_4324);
     MakeUnit();
     auto x_5524 = [&](const auto &x_4329) {
-      if (HashtblContain(x_4329->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_4330 = HashtblFindExn(x_4329->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_4329->meta->bb_0_bb_time_table)) {
+        auto x_4330 = UnSome(x_4329->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4330, x_4329, MakeRecomputeBB(std::string("bb_0")));
       } else {
@@ -594,8 +597,8 @@ auto eval_expr_x_4081(const auto &x_4332) {
 Unit var_modified_x_4079(const auto &x_4343) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_4344) {
     ListIter(x_4343->children, [&](const auto &x_4345) {
-      if (HashtblContain(x_4345->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_4346 = HashtblFindExn(x_4345->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_4345->meta->bb_0_bb_time_table)) {
+        auto x_4346 = UnSome(x_4345->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4346, x_4345, MakeRecomputeBB(std::string("bb_0")));
       } else {
@@ -603,8 +606,8 @@ Unit var_modified_x_4079(const auto &x_4343) {
       }
     });
     ListIter(x_4343->children, [&](const auto &x_4348) {
-      if (HashtblContain(x_4348->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_4349 = HashtblFindExn(x_4348->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_4348->meta->bb_2_bb_time_table)) {
+        auto x_4349 = UnSome(x_4348->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4349, x_4348, MakeRecomputeBB(std::string("bb_2")));
       } else {
@@ -631,8 +634,8 @@ auto eval_expr_x_4076(const auto &x_4351) {
 Unit var_modified_x_4074(const auto &x_4376) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_4377) {
     ListIter(x_4376->children, [&](const auto &x_4378) {
-      if (HashtblContain(x_4378->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_4379 = HashtblFindExn(x_4378->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_4378->meta->bb_0_bb_time_table)) {
+        auto x_4379 = UnSome(x_4378->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4379, x_4378, MakeRecomputeBB(std::string("bb_0")));
       } else {
@@ -640,8 +643,8 @@ Unit var_modified_x_4074(const auto &x_4376) {
       }
     });
     auto x_5525 = [&](const auto &x_4381) {
-      if (HashtblContain(x_4381->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_4382 = HashtblFindExn(x_4381->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_4381->meta->bb_2_bb_time_table)) {
+        auto x_4382 = UnSome(x_4381->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4382, x_4381, MakeRecomputeBB(std::string("bb_2")));
       } else {
@@ -651,8 +654,8 @@ Unit var_modified_x_4074(const auto &x_4376) {
     x_5525(x_4376);
     MakeUnit();
     ListIter(x_4376->children, [&](const auto &x_4384) {
-      if (HashtblContain(x_4384->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_4385 = HashtblFindExn(x_4384->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_4384->meta->bb_2_bb_time_table)) {
+        auto x_4385 = UnSome(x_4384->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4385, x_4384, MakeRecomputeBB(std::string("bb_2")));
       } else {
@@ -678,8 +681,8 @@ auto eval_expr_x_4071(const auto &x_4387) {
 Unit var_modified_x_4069(const auto &x_4412) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_4413) {
     ListIter(x_4412->children, [&](const auto &x_4414) {
-      if (HashtblContain(x_4414->meta->BBTimeTable, std::string("bb_1"))) {
-        auto x_4415 = HashtblFindExn(x_4414->meta->BBTimeTable, std::string("bb_1"));
+      if (IsSome(x_4414->meta->bb_1_bb_time_table)) {
+        auto x_4415 = UnSome(x_4414->meta->bb_1_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4415, x_4414, MakeRecomputeBB(std::string("bb_1")));
       } else {
@@ -699,8 +702,8 @@ auto eval_expr_x_4066(const auto &x_4417) {
 Unit var_modified_x_4064(const auto &x_4420) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_4421) {
     auto x_5526 = [&](const auto &x_4424) {
-      if (HashtblContain(x_4424->meta->BBTimeTable, std::string("bb_1"))) {
-        auto x_4425 = HashtblFindExn(x_4424->meta->BBTimeTable, std::string("bb_1"));
+      if (IsSome(x_4424->meta->bb_1_bb_time_table)) {
+        auto x_4425 = UnSome(x_4424->meta->bb_1_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4425, x_4424, MakeRecomputeBB(std::string("bb_1")));
       } else {
@@ -715,8 +718,8 @@ Unit var_modified_x_4064(const auto &x_4420) {
           return MakeUnit();
         });
     auto x_5527 = [&](const auto &x_4427) {
-      if (HashtblContain(x_4427->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_4428 = HashtblFindExn(x_4427->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_4427->meta->bb_2_bb_time_table)) {
+        auto x_4428 = UnSome(x_4427->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4428, x_4427, MakeRecomputeBB(std::string("bb_2")));
       } else {
@@ -734,8 +737,8 @@ auto eval_expr_x_4061(const auto &x_4430) {
 Unit var_modified_x_4059(const auto &x_4439) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_4440) {
     auto x_5529 = [&](const auto &x_4443) {
-      if (HashtblContain(x_4443->meta->BBTimeTable, std::string("bb_1"))) {
-        auto x_4444 = HashtblFindExn(x_4443->meta->BBTimeTable, std::string("bb_1"));
+      if (IsSome(x_4443->meta->bb_1_bb_time_table)) {
+        auto x_4444 = UnSome(x_4443->meta->bb_1_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4444, x_4443, MakeRecomputeBB(std::string("bb_1")));
       } else {
@@ -750,8 +753,8 @@ Unit var_modified_x_4059(const auto &x_4439) {
           return MakeUnit();
         });
     auto x_5530 = [&](const auto &x_4446) {
-      if (HashtblContain(x_4446->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_4447 = HashtblFindExn(x_4446->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_4446->meta->bb_2_bb_time_table)) {
+        auto x_4447 = UnSome(x_4446->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4447, x_4446, MakeRecomputeBB(std::string("bb_2")));
       } else {
@@ -769,8 +772,8 @@ auto eval_expr_x_4056(const auto &x_4449) {
 Unit var_modified_x_4054(const auto &x_4458) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_4459) {
     auto x_5532 = [&](const auto &x_4460) {
-      if (HashtblContain(x_4460->meta->BBTimeTable, std::string("bb_1"))) {
-        auto x_4461 = HashtblFindExn(x_4460->meta->BBTimeTable, std::string("bb_1"));
+      if (IsSome(x_4460->meta->bb_1_bb_time_table)) {
+        auto x_4461 = UnSome(x_4460->meta->bb_1_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4461, x_4460, MakeRecomputeBB(std::string("bb_1")));
       } else {
@@ -780,8 +783,8 @@ Unit var_modified_x_4054(const auto &x_4458) {
     x_5532(x_4458);
     MakeUnit();
     auto x_5533 = [&](const auto &x_4463) {
-      if (HashtblContain(x_4463->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_4464 = HashtblFindExn(x_4463->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_4463->meta->bb_2_bb_time_table)) {
+        auto x_4464 = UnSome(x_4463->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4464, x_4463, MakeRecomputeBB(std::string("bb_2")));
       } else {
@@ -803,8 +806,8 @@ auto eval_expr_x_4051(const auto &x_4466) {
 Unit var_modified_x_4049(const auto &x_4469) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_4470) {
     auto x_5534 = [&](const auto &x_4471) {
-      if (HashtblContain(x_4471->meta->BBTimeTable, std::string("bb_1"))) {
-        auto x_4472 = HashtblFindExn(x_4471->meta->BBTimeTable, std::string("bb_1"));
+      if (IsSome(x_4471->meta->bb_1_bb_time_table)) {
+        auto x_4472 = UnSome(x_4471->meta->bb_1_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4472, x_4471, MakeRecomputeBB(std::string("bb_1")));
       } else {
@@ -814,8 +817,8 @@ Unit var_modified_x_4049(const auto &x_4469) {
     x_5534(x_4469);
     MakeUnit();
     auto x_5535 = [&](const auto &x_4474) {
-      if (HashtblContain(x_4474->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_4475 = HashtblFindExn(x_4474->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_4474->meta->bb_2_bb_time_table)) {
+        auto x_4475 = UnSome(x_4474->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4475, x_4474, MakeRecomputeBB(std::string("bb_2")));
       } else {
@@ -837,8 +840,8 @@ auto eval_expr_x_4046(const auto &x_4477) {
 Unit var_modified_x_4044(const auto &x_4480) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_4481) {
     auto x_5536 = [&](const auto &x_4482) {
-      if (HashtblContain(x_4482->meta->BBTimeTable, std::string("bb_1"))) {
-        auto x_4483 = HashtblFindExn(x_4482->meta->BBTimeTable, std::string("bb_1"));
+      if (IsSome(x_4482->meta->bb_1_bb_time_table)) {
+        auto x_4483 = UnSome(x_4482->meta->bb_1_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4483, x_4482, MakeRecomputeBB(std::string("bb_1")));
       } else {
@@ -848,8 +851,8 @@ Unit var_modified_x_4044(const auto &x_4480) {
     x_5536(x_4480);
     MakeUnit();
     auto x_5537 = [&](const auto &x_4485) {
-      if (HashtblContain(x_4485->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_4486 = HashtblFindExn(x_4485->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_4485->meta->bb_0_bb_time_table)) {
+        auto x_4486 = UnSome(x_4485->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4486, x_4485, MakeRecomputeBB(std::string("bb_0")));
       } else {
@@ -859,8 +862,8 @@ Unit var_modified_x_4044(const auto &x_4480) {
     x_5537(x_4480);
     MakeUnit();
     auto x_5538 = [&](const auto &x_4488) {
-      if (HashtblContain(x_4488->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_4489 = HashtblFindExn(x_4488->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_4488->meta->bb_2_bb_time_table)) {
+        auto x_4489 = UnSome(x_4488->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4489, x_4488, MakeRecomputeBB(std::string("bb_2")));
       } else {
@@ -882,8 +885,8 @@ auto eval_expr_x_4041(const auto &x_4491) {
 Unit var_modified_x_4039(const auto &x_4494) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_4495) {
     auto x_5539 = [&](const auto &x_4496) {
-      if (HashtblContain(x_4496->meta->BBTimeTable, std::string("bb_1"))) {
-        auto x_4497 = HashtblFindExn(x_4496->meta->BBTimeTable, std::string("bb_1"));
+      if (IsSome(x_4496->meta->bb_1_bb_time_table)) {
+        auto x_4497 = UnSome(x_4496->meta->bb_1_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4497, x_4496, MakeRecomputeBB(std::string("bb_1")));
       } else {
@@ -893,8 +896,8 @@ Unit var_modified_x_4039(const auto &x_4494) {
     x_5539(x_4494);
     MakeUnit();
     ListIter(x_4494->children, [&](const auto &x_4499) {
-      if (HashtblContain(x_4499->meta->BBTimeTable, std::string("bb_1"))) {
-        auto x_4500 = HashtblFindExn(x_4499->meta->BBTimeTable, std::string("bb_1"));
+      if (IsSome(x_4499->meta->bb_1_bb_time_table)) {
+        auto x_4500 = UnSome(x_4499->meta->bb_1_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4500, x_4499, MakeRecomputeBB(std::string("bb_1")));
       } else {
@@ -902,8 +905,8 @@ Unit var_modified_x_4039(const auto &x_4494) {
       }
     });
     auto x_5540 = [&](const auto &x_4502) {
-      if (HashtblContain(x_4502->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_4503 = HashtblFindExn(x_4502->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_4502->meta->bb_0_bb_time_table)) {
+        auto x_4503 = UnSome(x_4502->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4503, x_4502, MakeRecomputeBB(std::string("bb_0")));
       } else {
@@ -925,8 +928,8 @@ auto eval_expr_x_4036(const auto &x_4505) {
 Unit var_modified_x_4032(const auto &x_4508) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_4509) {
     auto x_5541 = [&](const auto &x_4512) {
-      if (HashtblContain(x_4512->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_4513 = HashtblFindExn(x_4512->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_4512->meta->bb_0_bb_time_table)) {
+        auto x_4513 = UnSome(x_4512->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4513, x_4512, MakeRecomputeBB(std::string("bb_0")));
       } else {
@@ -944,8 +947,8 @@ Unit var_modified_x_4032(const auto &x_4508) {
           });
     }
     auto x_5542 = [&](const auto &x_4517) {
-      if (HashtblContain(x_4517->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_4518 = HashtblFindExn(x_4517->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_4517->meta->bb_0_bb_time_table)) {
+        auto x_4518 = UnSome(x_4517->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4518, x_4517, MakeRecomputeBB(std::string("bb_0")));
       } else {
@@ -981,8 +984,8 @@ auto eval_expr_x_4029(const auto &x_4520) {
 Unit var_modified_x_4027(const auto &x_4549) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_4550) {
     auto x_5546 = [&](const auto &x_4553) {
-      if (HashtblContain(x_4553->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_4554 = HashtblFindExn(x_4553->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_4553->meta->bb_0_bb_time_table)) {
+        auto x_4554 = UnSome(x_4553->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4554, x_4553, MakeRecomputeBB(std::string("bb_0")));
       } else {
@@ -1000,8 +1003,8 @@ Unit var_modified_x_4027(const auto &x_4549) {
           });
     }
     auto x_5547 = [&](const auto &x_4558) {
-      if (HashtblContain(x_4558->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_4559 = HashtblFindExn(x_4558->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_4558->meta->bb_0_bb_time_table)) {
+        auto x_4559 = UnSome(x_4558->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4559, x_4558, MakeRecomputeBB(std::string("bb_0")));
       } else {
@@ -1029,8 +1032,8 @@ auto eval_expr_x_4024(const auto &x_4561) {
 Unit var_modified_x_4022(const auto &x_4574) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_4575) {
     auto x_5551 = [&](const auto &x_4578) {
-      if (HashtblContain(x_4578->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_4579 = HashtblFindExn(x_4578->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_4578->meta->bb_0_bb_time_table)) {
+        auto x_4579 = UnSome(x_4578->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4579, x_4578, MakeRecomputeBB(std::string("bb_0")));
       } else {
@@ -1045,8 +1048,8 @@ Unit var_modified_x_4022(const auto &x_4574) {
           return MakeUnit();
         });
     auto x_5552 = [&](const auto &x_4583) {
-      if (HashtblContain(x_4583->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_4584 = HashtblFindExn(x_4583->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_4583->meta->bb_2_bb_time_table)) {
+        auto x_4584 = UnSome(x_4583->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4584, x_4583, MakeRecomputeBB(std::string("bb_2")));
       } else {
@@ -1073,8 +1076,8 @@ auto eval_expr_x_4019(const auto &x_4586) {
 Unit var_modified_x_4017(const auto &x_4595) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_4596) {
     auto x_5556 = [&](const auto &x_4597) {
-      if (HashtblContain(x_4597->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_4598 = HashtblFindExn(x_4597->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_4597->meta->bb_0_bb_time_table)) {
+        auto x_4598 = UnSome(x_4597->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4598, x_4597, MakeRecomputeBB(std::string("bb_0")));
       } else {
@@ -1096,8 +1099,8 @@ auto eval_expr_x_4014(const auto &x_4600) {
 Unit var_modified_x_4012(const auto &x_4609) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_4610) {
     auto x_5557 = [&](const auto &x_4611) {
-      if (HashtblContain(x_4611->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_4612 = HashtblFindExn(x_4611->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_4611->meta->bb_0_bb_time_table)) {
+        auto x_4612 = UnSome(x_4611->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4612, x_4611, MakeRecomputeBB(std::string("bb_0")));
       } else {
@@ -1107,8 +1110,8 @@ Unit var_modified_x_4012(const auto &x_4609) {
     x_5557(x_4609);
     MakeUnit();
     auto x_5558 = [&](const auto &x_4614) {
-      if (HashtblContain(x_4614->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_4615 = HashtblFindExn(x_4614->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_4614->meta->bb_2_bb_time_table)) {
+        auto x_4615 = UnSome(x_4614->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4615, x_4614, MakeRecomputeBB(std::string("bb_2")));
       } else {
@@ -1203,8 +1206,8 @@ auto eval_expr_x_4009(const auto &x_4617) {
 Unit var_modified_x_4007(const auto &x_4762) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_4763) {
     auto x_5559 = [&](const auto &x_4764) {
-      if (HashtblContain(x_4764->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_4765 = HashtblFindExn(x_4764->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_4764->meta->bb_2_bb_time_table)) {
+        auto x_4765 = UnSome(x_4764->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4765, x_4764, MakeRecomputeBB(std::string("bb_2")));
       } else {
@@ -1238,8 +1241,8 @@ auto eval_expr_x_4004(const auto &x_4767) {
 Unit var_modified_x_4002(const auto &x_4816) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_4817) {
     auto x_5560 = [&](const auto &x_4818) {
-      if (HashtblContain(x_4818->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_4819 = HashtblFindExn(x_4818->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_4818->meta->bb_0_bb_time_table)) {
+        auto x_4819 = UnSome(x_4818->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4819, x_4818, MakeRecomputeBB(std::string("bb_0")));
       } else {
@@ -1249,8 +1252,8 @@ Unit var_modified_x_4002(const auto &x_4816) {
     x_5560(x_4816);
     MakeUnit();
     auto x_5561 = [&](const auto &x_4821) {
-      if (HashtblContain(x_4821->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_4822 = HashtblFindExn(x_4821->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_4821->meta->bb_2_bb_time_table)) {
+        auto x_4822 = UnSome(x_4821->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4822, x_4821, MakeRecomputeBB(std::string("bb_2")));
       } else {
@@ -1272,8 +1275,8 @@ auto eval_expr_x_3999(const auto &x_4824) {
 Unit var_modified_x_3997(const auto &x_4827) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_4828) {
     auto x_5562 = [&](const auto &x_4829) {
-      if (HashtblContain(x_4829->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_4830 = HashtblFindExn(x_4829->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_4829->meta->bb_0_bb_time_table)) {
+        auto x_4830 = UnSome(x_4829->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4830, x_4829, MakeRecomputeBB(std::string("bb_0")));
       } else {
@@ -1295,8 +1298,8 @@ auto eval_expr_x_3994(const auto &x_4832) {
 Unit var_modified_x_3992(const auto &x_4841) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_4842) {
     auto x_5563 = [&](const auto &x_4845) {
-      if (HashtblContain(x_4845->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_4846 = HashtblFindExn(x_4845->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_4845->meta->bb_0_bb_time_table)) {
+        auto x_4846 = UnSome(x_4845->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4846, x_4845, MakeRecomputeBB(std::string("bb_0")));
       } else {
@@ -1311,8 +1314,8 @@ Unit var_modified_x_3992(const auto &x_4841) {
           return MakeUnit();
         });
     auto x_5564 = [&](const auto &x_4850) {
-      if (HashtblContain(x_4850->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_4851 = HashtblFindExn(x_4850->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_4850->meta->bb_2_bb_time_table)) {
+        auto x_4851 = UnSome(x_4850->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4851, x_4850, MakeRecomputeBB(std::string("bb_2")));
       } else {
@@ -1339,8 +1342,8 @@ auto eval_expr_x_3989(const auto &x_4853) {
 Unit var_modified_x_3987(const auto &x_4862) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_4863) {
     auto x_5568 = [&](const auto &x_4866) {
-      if (HashtblContain(x_4866->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_4867 = HashtblFindExn(x_4866->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_4866->meta->bb_0_bb_time_table)) {
+        auto x_4867 = UnSome(x_4866->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4867, x_4866, MakeRecomputeBB(std::string("bb_0")));
       } else {
@@ -1358,8 +1361,8 @@ Unit var_modified_x_3987(const auto &x_4862) {
           });
     }
     auto x_5569 = [&](const auto &x_4871) {
-      if (HashtblContain(x_4871->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_4872 = HashtblFindExn(x_4871->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_4871->meta->bb_0_bb_time_table)) {
+        auto x_4872 = UnSome(x_4871->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4872, x_4871, MakeRecomputeBB(std::string("bb_0")));
       } else {
@@ -1383,8 +1386,8 @@ auto eval_expr_x_3984(const auto &x_4874) {
 Unit var_modified_x_3982(const auto &x_4883) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_4884) {
     auto x_5573 = [&](const auto &x_4885) {
-      if (HashtblContain(x_4885->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_4886 = HashtblFindExn(x_4885->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_4885->meta->bb_0_bb_time_table)) {
+        auto x_4886 = UnSome(x_4885->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4886, x_4885, MakeRecomputeBB(std::string("bb_0")));
       } else {
@@ -1394,8 +1397,8 @@ Unit var_modified_x_3982(const auto &x_4883) {
     x_5573(x_4883);
     MakeUnit();
     auto x_5574 = [&](const auto &x_4890) {
-      if (HashtblContain(x_4890->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_4891 = HashtblFindExn(x_4890->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_4890->meta->bb_0_bb_time_table)) {
+        auto x_4891 = UnSome(x_4890->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4891, x_4890, MakeRecomputeBB(std::string("bb_0")));
       } else {
@@ -1421,8 +1424,8 @@ auto eval_expr_x_3979(const auto &x_4893) {
 Unit var_modified_x_3977(const auto &x_4906) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_4907) {
     auto x_5576 = [&](const auto &x_4908) {
-      if (HashtblContain(x_4908->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_4909 = HashtblFindExn(x_4908->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_4908->meta->bb_0_bb_time_table)) {
+        auto x_4909 = UnSome(x_4908->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4909, x_4908, MakeRecomputeBB(std::string("bb_0")));
       } else {
@@ -1444,8 +1447,8 @@ auto eval_expr_x_3974(const auto &x_4911) {
 Unit var_modified_x_3972(const auto &x_4920) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_4921) {
     auto x_5577 = [&](const auto &x_4922) {
-      if (HashtblContain(x_4922->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_4923 = HashtblFindExn(x_4922->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_4922->meta->bb_0_bb_time_table)) {
+        auto x_4923 = UnSome(x_4922->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4923, x_4922, MakeRecomputeBB(std::string("bb_0")));
       } else {
@@ -1455,8 +1458,8 @@ Unit var_modified_x_3972(const auto &x_4920) {
     x_5577(x_4920);
     MakeUnit();
     auto x_5578 = [&](const auto &x_4925) {
-      if (HashtblContain(x_4925->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_4926 = HashtblFindExn(x_4925->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_4925->meta->bb_2_bb_time_table)) {
+        auto x_4926 = UnSome(x_4925->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_4926, x_4925, MakeRecomputeBB(std::string("bb_2")));
       } else {
@@ -1550,8 +1553,8 @@ auto eval_expr_x_3969(const auto &x_4928) {
 Unit var_modified_x_3967(const auto &x_5081) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_5082) {
     auto x_5579 = [&](const auto &x_5083) {
-      if (HashtblContain(x_5083->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_5084 = HashtblFindExn(x_5083->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_5083->meta->bb_0_bb_time_table)) {
+        auto x_5084 = UnSome(x_5083->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_5084, x_5083, MakeRecomputeBB(std::string("bb_0")));
       } else {
@@ -1573,8 +1576,8 @@ auto eval_expr_x_3964(const auto &x_5086) {
 Unit var_modified_x_3962(const auto &x_5091) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_5092) {
     auto x_5580 = [&](const auto &x_5093) {
-      if (HashtblContain(x_5093->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_5094 = HashtblFindExn(x_5093->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_5093->meta->bb_2_bb_time_table)) {
+        auto x_5094 = UnSome(x_5093->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_5094, x_5093, MakeRecomputeBB(std::string("bb_2")));
       } else {
@@ -1608,8 +1611,8 @@ auto eval_expr_x_3959(const auto &x_5096) {
 Unit var_modified_x_3957(const auto &x_5145) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_5146) {
     auto x_5581 = [&](const auto &x_5147) {
-      if (HashtblContain(x_5147->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_5148 = HashtblFindExn(x_5147->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_5147->meta->bb_0_bb_time_table)) {
+        auto x_5148 = UnSome(x_5147->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_5148, x_5147, MakeRecomputeBB(std::string("bb_0")));
       } else {
@@ -1642,8 +1645,8 @@ auto eval_expr_x_3954(const auto &x_5150) {
 Unit var_modified_x_3952(const auto &x_5163) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_5164) {
     auto x_5582 = [&](const auto &x_5165) {
-      if (HashtblContain(x_5165->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_5166 = HashtblFindExn(x_5165->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_5165->meta->bb_0_bb_time_table)) {
+        auto x_5166 = UnSome(x_5165->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_5166, x_5165, MakeRecomputeBB(std::string("bb_0")));
       } else {
@@ -1653,8 +1656,8 @@ Unit var_modified_x_3952(const auto &x_5163) {
     x_5582(x_5163);
     MakeUnit();
     auto x_5583 = [&](const auto &x_5168) {
-      if (HashtblContain(x_5168->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_5169 = HashtblFindExn(x_5168->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_5168->meta->bb_2_bb_time_table)) {
+        auto x_5169 = UnSome(x_5168->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_5169, x_5168, MakeRecomputeBB(std::string("bb_2")));
       } else {
@@ -1676,8 +1679,8 @@ auto eval_expr_x_3949(const auto &x_5171) {
 Unit var_modified_x_3945(const auto &x_5174) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_5175) {
     auto x_5584 = [&](const auto &x_5178) {
-      if (HashtblContain(x_5178->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_5179 = HashtblFindExn(x_5178->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_5178->meta->bb_2_bb_time_table)) {
+        auto x_5179 = UnSome(x_5178->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_5179, x_5178, MakeRecomputeBB(std::string("bb_2")));
       } else {
@@ -1704,8 +1707,8 @@ auto eval_expr_x_3942(const auto &x_5181) {
 Unit var_modified_x_3940(const auto &x_5198) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_5199) {
     auto x_5586 = [&](const auto &x_5200) {
-      if (HashtblContain(x_5200->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_5201 = HashtblFindExn(x_5200->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_5200->meta->bb_2_bb_time_table)) {
+        auto x_5201 = UnSome(x_5200->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_5201, x_5200, MakeRecomputeBB(std::string("bb_2")));
       } else {
@@ -1727,8 +1730,8 @@ auto eval_expr_x_3937(const auto &x_5203) {
 Unit var_modified_x_3935(const auto &x_5212) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_5213) {
     auto x_5587 = [&](const auto &x_5214) {
-      if (HashtblContain(x_5214->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_5215 = HashtblFindExn(x_5214->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_5214->meta->bb_2_bb_time_table)) {
+        auto x_5215 = UnSome(x_5214->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_5215, x_5214, MakeRecomputeBB(std::string("bb_2")));
       } else {
@@ -1738,8 +1741,8 @@ Unit var_modified_x_3935(const auto &x_5212) {
     x_5587(x_5212);
     MakeUnit();
     ListIter(x_5212->children, [&](const auto &x_5217) {
-      if (HashtblContain(x_5217->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_5218 = HashtblFindExn(x_5217->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_5217->meta->bb_2_bb_time_table)) {
+        auto x_5218 = UnSome(x_5217->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_5218, x_5217, MakeRecomputeBB(std::string("bb_2")));
       } else {
@@ -1769,8 +1772,8 @@ auto eval_expr_x_3932(const auto &x_5220) {
 Unit var_modified_x_3930(const auto &x_5273) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_5274) {
     ListIter(x_5273->children, [&](const auto &x_5275) {
-      if (HashtblContain(x_5275->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_5276 = HashtblFindExn(x_5275->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_5275->meta->bb_2_bb_time_table)) {
+        auto x_5276 = UnSome(x_5275->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_5276, x_5275, MakeRecomputeBB(std::string("bb_2")));
       } else {
@@ -1778,8 +1781,8 @@ Unit var_modified_x_3930(const auto &x_5273) {
       }
     });
     auto x_5588 = [&](const auto &x_5280) {
-      if (HashtblContain(x_5280->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_5281 = HashtblFindExn(x_5280->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_5280->meta->bb_2_bb_time_table)) {
+        auto x_5281 = UnSome(x_5280->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_5281, x_5280, MakeRecomputeBB(std::string("bb_2")));
       } else {
@@ -1814,8 +1817,8 @@ auto eval_expr_x_3927(const auto &x_5283) {
 Unit var_modified_x_3925(const auto &x_5308) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_5309) {
     auto x_5590 = [&](const auto &x_5312) {
-      if (HashtblContain(x_5312->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_5313 = HashtblFindExn(x_5312->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_5312->meta->bb_2_bb_time_table)) {
+        auto x_5313 = UnSome(x_5312->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_5313, x_5312, MakeRecomputeBB(std::string("bb_2")));
       } else {
@@ -1842,8 +1845,8 @@ auto eval_expr_x_3922(const auto &x_5315) {
 Unit var_modified_x_3920(const auto &x_5324) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_5325) {
     auto x_5592 = [&](const auto &x_5326) {
-      if (HashtblContain(x_5326->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_5327 = HashtblFindExn(x_5326->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_5326->meta->bb_2_bb_time_table)) {
+        auto x_5327 = UnSome(x_5326->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_5327, x_5326, MakeRecomputeBB(std::string("bb_2")));
       } else {
@@ -1853,8 +1856,8 @@ Unit var_modified_x_3920(const auto &x_5324) {
     x_5592(x_5324);
     MakeUnit();
     ListIter(x_5324->children, [&](const auto &x_5329) {
-      if (HashtblContain(x_5329->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_5330 = HashtblFindExn(x_5329->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_5329->meta->bb_2_bb_time_table)) {
+        auto x_5330 = UnSome(x_5329->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_5330, x_5329, MakeRecomputeBB(std::string("bb_2")));
       } else {
@@ -1883,8 +1886,8 @@ auto eval_expr_x_3917(const auto &x_5332) {
 Unit var_modified_x_3915(const auto &x_5385) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_5386) {
     ListIter(x_5385->children, [&](const auto &x_5387) {
-      if (HashtblContain(x_5387->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_5388 = HashtblFindExn(x_5387->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_5387->meta->bb_2_bb_time_table)) {
+        auto x_5388 = UnSome(x_5387->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_5388, x_5387, MakeRecomputeBB(std::string("bb_2")));
       } else {
@@ -1892,8 +1895,8 @@ Unit var_modified_x_3915(const auto &x_5385) {
       }
     });
     auto x_5593 = [&](const auto &x_5392) {
-      if (HashtblContain(x_5392->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_5393 = HashtblFindExn(x_5392->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_5392->meta->bb_2_bb_time_table)) {
+        auto x_5393 = UnSome(x_5392->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_5393, x_5392, MakeRecomputeBB(std::string("bb_2")));
       } else {
@@ -1928,8 +1931,8 @@ auto eval_expr_x_3912(const auto &x_5395) {
 Unit var_modified_x_3910(const auto &x_5416) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_5417) {
     ListIter(x_5416->children, [&](const auto &x_5418) {
-      if (HashtblContain(x_5418->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_5419 = HashtblFindExn(x_5418->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_5418->meta->bb_2_bb_time_table)) {
+        auto x_5419 = UnSome(x_5418->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_5419, x_5418, MakeRecomputeBB(std::string("bb_2")));
       } else {
@@ -1949,8 +1952,8 @@ auto eval_expr_x_3907(const auto &x_5421) {
 Unit var_modified_x_3905(const auto &x_5442) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_5443) {
     auto x_5595 = [&](const auto &x_5444) {
-      if (HashtblContain(x_5444->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_5445 = HashtblFindExn(x_5444->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_5444->meta->bb_2_bb_time_table)) {
+        auto x_5445 = UnSome(x_5444->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_5445, x_5444, MakeRecomputeBB(std::string("bb_2")));
       } else {
@@ -1972,8 +1975,8 @@ auto eval_expr_x_3902(const auto &x_5447) {
 Unit var_modified_x_3900(const auto &x_5460) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_5461) {
     auto x_5596 = [&](const auto &x_5462) {
-      if (HashtblContain(x_5462->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_5463 = HashtblFindExn(x_5462->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_5462->meta->bb_2_bb_time_table)) {
+        auto x_5463 = UnSome(x_5462->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_5463, x_5462, MakeRecomputeBB(std::string("bb_2")));
       } else {
@@ -1983,8 +1986,8 @@ Unit var_modified_x_3900(const auto &x_5460) {
     x_5596(x_5460);
     MakeUnit();
     ListIter(x_5460->children, [&](const auto &x_5465) {
-      if (HashtblContain(x_5465->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_5466 = HashtblFindExn(x_5465->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_5465->meta->bb_2_bb_time_table)) {
+        auto x_5466 = UnSome(x_5465->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_5466, x_5465, MakeRecomputeBB(std::string("bb_2")));
       } else {
@@ -2004,8 +2007,8 @@ auto eval_expr_x_3897(const auto &x_5468) {
 Unit var_modified_x_3895(const auto &x_5489) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_5490) {
     auto x_5597 = [&](const auto &x_5491) {
-      if (HashtblContain(x_5491->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_5492 = HashtblFindExn(x_5491->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_5491->meta->bb_2_bb_time_table)) {
+        auto x_5492 = UnSome(x_5491->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_5492, x_5491, MakeRecomputeBB(std::string("bb_2")));
       } else {
@@ -2027,8 +2030,8 @@ auto eval_expr_x_3892(const auto &x_5494) {
 Unit var_modified_x_3890(const auto &x_5499) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_5500) {
     auto x_5598 = [&](const auto &x_5501) {
-      if (HashtblContain(x_5501->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_5502 = HashtblFindExn(x_5501->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_5501->meta->bb_2_bb_time_table)) {
+        auto x_5502 = UnSome(x_5501->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         return QueuePush(x_5502, x_5501, MakeRecomputeBB(std::string("bb_2")));
       } else {
@@ -2592,8 +2595,8 @@ Unit x_3551(const auto &x_3552, const auto &x_3553, const auto &x_3554) {
           if (x_5600 == "width") {
             WriteMetric();
             HashtblAddExn(x_3553->attr, std::string("width"), x_3561);
-            if (HashtblContain(x_3553->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3562 = HashtblFindExn(x_3553->meta->BBTimeTable, std::string("bb_1"));
+            if (IsSome(x_3553->meta->bb_1_bb_time_table)) {
+              auto x_3562 = UnSome(x_3553->meta->bb_1_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3562, x_3553, MakeRecomputeBB(std::string("bb_1")));
             }
@@ -2601,8 +2604,8 @@ Unit x_3551(const auto &x_3552, const auto &x_3553, const auto &x_3554) {
           } else if (x_5600 == "image_height") {
             WriteMetric();
             HashtblAddExn(x_3553->attr, std::string("image_height"), x_3561);
-            if (HashtblContain(x_3553->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3564 = HashtblFindExn(x_3553->meta->BBTimeTable, std::string("bb_0"));
+            if (IsSome(x_3553->meta->bb_0_bb_time_table)) {
+              auto x_3564 = UnSome(x_3553->meta->bb_0_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3564, x_3553, MakeRecomputeBB(std::string("bb_0")));
             }
@@ -2610,8 +2613,8 @@ Unit x_3551(const auto &x_3552, const auto &x_3553, const auto &x_3554) {
           } else if (x_5600 == "image_width") {
             WriteMetric();
             HashtblAddExn(x_3553->attr, std::string("image_width"), x_3561);
-            if (HashtblContain(x_3553->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3566 = HashtblFindExn(x_3553->meta->BBTimeTable, std::string("bb_0"));
+            if (IsSome(x_3553->meta->bb_0_bb_time_table)) {
+              auto x_3566 = UnSome(x_3553->meta->bb_0_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3566, x_3553, MakeRecomputeBB(std::string("bb_0")));
             }
@@ -2619,8 +2622,8 @@ Unit x_3551(const auto &x_3552, const auto &x_3553, const auto &x_3554) {
           } else if (x_5600 == "height") {
             WriteMetric();
             HashtblAddExn(x_3553->attr, std::string("height"), x_3561);
-            if (HashtblContain(x_3553->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3568 = HashtblFindExn(x_3553->meta->BBTimeTable, std::string("bb_1"));
+            if (IsSome(x_3553->meta->bb_1_bb_time_table)) {
+              auto x_3568 = UnSome(x_3553->meta->bb_1_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3568, x_3553, MakeRecomputeBB(std::string("bb_1")));
             }
@@ -2628,8 +2631,8 @@ Unit x_3551(const auto &x_3552, const auto &x_3553, const auto &x_3554) {
           } else if (x_5600 == "viewBox") {
             WriteMetric();
             HashtblAddExn(x_3553->attr, std::string("viewBox"), x_3561);
-            if (HashtblContain(x_3553->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3570 = HashtblFindExn(x_3553->meta->BBTimeTable, std::string("bb_0"));
+            if (IsSome(x_3553->meta->bb_0_bb_time_table)) {
+              auto x_3570 = UnSome(x_3553->meta->bb_0_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3570, x_3553, MakeRecomputeBB(std::string("bb_0")));
             }
@@ -2642,8 +2645,8 @@ Unit x_3551(const auto &x_3552, const auto &x_3553, const auto &x_3554) {
           if (x_5601 == "width") {
             WriteMetric();
             HashtblAddExn(x_3553->prop, std::string("width"), x_3561);
-            if (HashtblContain(x_3553->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3572 = HashtblFindExn(x_3553->meta->BBTimeTable, std::string("bb_0"));
+            if (IsSome(x_3553->meta->bb_0_bb_time_table)) {
+              auto x_3572 = UnSome(x_3553->meta->bb_0_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3572, x_3553, MakeRecomputeBB(std::string("bb_0")));
             }
@@ -2651,8 +2654,8 @@ Unit x_3551(const auto &x_3552, const auto &x_3553, const auto &x_3554) {
           } else if (x_5601 == "flex-grow") {
             WriteMetric();
             HashtblAddExn(x_3553->prop, std::string("flex-grow"), x_3561);
-            if (HashtblContain(x_3553->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3574 = HashtblFindExn(x_3553->meta->BBTimeTable, std::string("bb_1"));
+            if (IsSome(x_3553->meta->bb_1_bb_time_table)) {
+              auto x_3574 = UnSome(x_3553->meta->bb_1_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3574, x_3553, MakeRecomputeBB(std::string("bb_1")));
             }
@@ -2660,8 +2663,8 @@ Unit x_3551(const auto &x_3552, const auto &x_3553, const auto &x_3554) {
           } else if (x_5601 == "height") {
             WriteMetric();
             HashtblAddExn(x_3553->prop, std::string("height"), x_3561);
-            if (HashtblContain(x_3553->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3576 = HashtblFindExn(x_3553->meta->BBTimeTable, std::string("bb_0"));
+            if (IsSome(x_3553->meta->bb_0_bb_time_table)) {
+              auto x_3576 = UnSome(x_3553->meta->bb_0_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3576, x_3553, MakeRecomputeBB(std::string("bb_0")));
             }
@@ -2669,8 +2672,8 @@ Unit x_3551(const auto &x_3552, const auto &x_3553, const auto &x_3554) {
           } else if (x_5601 == "display") {
             WriteMetric();
             HashtblAddExn(x_3553->prop, std::string("display"), x_3561);
-            if (HashtblContain(x_3553->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3578 = HashtblFindExn(x_3553->meta->BBTimeTable, std::string("bb_1"));
+            if (IsSome(x_3553->meta->bb_1_bb_time_table)) {
+              auto x_3578 = UnSome(x_3553->meta->bb_1_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3578, x_3553, MakeRecomputeBB(std::string("bb_1")));
             }
@@ -2678,8 +2681,8 @@ Unit x_3551(const auto &x_3552, const auto &x_3553, const auto &x_3554) {
           } else if (x_5601 == "position") {
             WriteMetric();
             HashtblAddExn(x_3553->prop, std::string("position"), x_3561);
-            if (HashtblContain(x_3553->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3580 = HashtblFindExn(x_3553->meta->BBTimeTable, std::string("bb_1"));
+            if (IsSome(x_3553->meta->bb_1_bb_time_table)) {
+              auto x_3580 = UnSome(x_3553->meta->bb_1_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3580, x_3553, MakeRecomputeBB(std::string("bb_1")));
             }
@@ -2687,8 +2690,8 @@ Unit x_3551(const auto &x_3552, const auto &x_3553, const auto &x_3554) {
           } else if (x_5601 == "flex-shrink") {
             WriteMetric();
             HashtblAddExn(x_3553->prop, std::string("flex-shrink"), x_3561);
-            if (HashtblContain(x_3553->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3582 = HashtblFindExn(x_3553->meta->BBTimeTable, std::string("bb_1"));
+            if (IsSome(x_3553->meta->bb_1_bb_time_table)) {
+              auto x_3582 = UnSome(x_3553->meta->bb_1_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3582, x_3553, MakeRecomputeBB(std::string("bb_1")));
             }
@@ -2696,8 +2699,8 @@ Unit x_3551(const auto &x_3552, const auto &x_3553, const auto &x_3554) {
           } else if (x_5601 == "flex-direction") {
             WriteMetric();
             HashtblAddExn(x_3553->prop, std::string("flex-direction"), x_3561);
-            if (HashtblContain(x_3553->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3584 = HashtblFindExn(x_3553->meta->BBTimeTable, std::string("bb_1"));
+            if (IsSome(x_3553->meta->bb_1_bb_time_table)) {
+              auto x_3584 = UnSome(x_3553->meta->bb_1_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3584, x_3553, MakeRecomputeBB(std::string("bb_1")));
             }
@@ -2729,8 +2732,8 @@ Unit x_3586(const auto &x_3587, const auto &x_3588, const auto &x_3589) {
           if (x_5603 == "width") {
             WriteMetric();
             HashtblForceRemove(x_3588->attr, std::string("width"));
-            if (HashtblContain(x_3588->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3595 = HashtblFindExn(x_3588->meta->BBTimeTable, std::string("bb_1"));
+            if (IsSome(x_3588->meta->bb_1_bb_time_table)) {
+              auto x_3595 = UnSome(x_3588->meta->bb_1_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3595, x_3588, MakeRecomputeBB(std::string("bb_1")));
             }
@@ -2738,8 +2741,8 @@ Unit x_3586(const auto &x_3587, const auto &x_3588, const auto &x_3589) {
           } else if (x_5603 == "image_height") {
             WriteMetric();
             HashtblForceRemove(x_3588->attr, std::string("image_height"));
-            if (HashtblContain(x_3588->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3597 = HashtblFindExn(x_3588->meta->BBTimeTable, std::string("bb_0"));
+            if (IsSome(x_3588->meta->bb_0_bb_time_table)) {
+              auto x_3597 = UnSome(x_3588->meta->bb_0_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3597, x_3588, MakeRecomputeBB(std::string("bb_0")));
             }
@@ -2747,8 +2750,8 @@ Unit x_3586(const auto &x_3587, const auto &x_3588, const auto &x_3589) {
           } else if (x_5603 == "image_width") {
             WriteMetric();
             HashtblForceRemove(x_3588->attr, std::string("image_width"));
-            if (HashtblContain(x_3588->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3599 = HashtblFindExn(x_3588->meta->BBTimeTable, std::string("bb_0"));
+            if (IsSome(x_3588->meta->bb_0_bb_time_table)) {
+              auto x_3599 = UnSome(x_3588->meta->bb_0_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3599, x_3588, MakeRecomputeBB(std::string("bb_0")));
             }
@@ -2756,8 +2759,8 @@ Unit x_3586(const auto &x_3587, const auto &x_3588, const auto &x_3589) {
           } else if (x_5603 == "height") {
             WriteMetric();
             HashtblForceRemove(x_3588->attr, std::string("height"));
-            if (HashtblContain(x_3588->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3601 = HashtblFindExn(x_3588->meta->BBTimeTable, std::string("bb_1"));
+            if (IsSome(x_3588->meta->bb_1_bb_time_table)) {
+              auto x_3601 = UnSome(x_3588->meta->bb_1_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3601, x_3588, MakeRecomputeBB(std::string("bb_1")));
             }
@@ -2765,8 +2768,8 @@ Unit x_3586(const auto &x_3587, const auto &x_3588, const auto &x_3589) {
           } else if (x_5603 == "viewBox") {
             WriteMetric();
             HashtblForceRemove(x_3588->attr, std::string("viewBox"));
-            if (HashtblContain(x_3588->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3603 = HashtblFindExn(x_3588->meta->BBTimeTable, std::string("bb_0"));
+            if (IsSome(x_3588->meta->bb_0_bb_time_table)) {
+              auto x_3603 = UnSome(x_3588->meta->bb_0_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3603, x_3588, MakeRecomputeBB(std::string("bb_0")));
             }
@@ -2779,8 +2782,8 @@ Unit x_3586(const auto &x_3587, const auto &x_3588, const auto &x_3589) {
           if (x_5604 == "width") {
             WriteMetric();
             HashtblForceRemove(x_3588->prop, std::string("width"));
-            if (HashtblContain(x_3588->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3605 = HashtblFindExn(x_3588->meta->BBTimeTable, std::string("bb_0"));
+            if (IsSome(x_3588->meta->bb_0_bb_time_table)) {
+              auto x_3605 = UnSome(x_3588->meta->bb_0_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3605, x_3588, MakeRecomputeBB(std::string("bb_0")));
             }
@@ -2788,8 +2791,8 @@ Unit x_3586(const auto &x_3587, const auto &x_3588, const auto &x_3589) {
           } else if (x_5604 == "flex-grow") {
             WriteMetric();
             HashtblForceRemove(x_3588->prop, std::string("flex-grow"));
-            if (HashtblContain(x_3588->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3607 = HashtblFindExn(x_3588->meta->BBTimeTable, std::string("bb_1"));
+            if (IsSome(x_3588->meta->bb_1_bb_time_table)) {
+              auto x_3607 = UnSome(x_3588->meta->bb_1_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3607, x_3588, MakeRecomputeBB(std::string("bb_1")));
             }
@@ -2797,8 +2800,8 @@ Unit x_3586(const auto &x_3587, const auto &x_3588, const auto &x_3589) {
           } else if (x_5604 == "height") {
             WriteMetric();
             HashtblForceRemove(x_3588->prop, std::string("height"));
-            if (HashtblContain(x_3588->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3609 = HashtblFindExn(x_3588->meta->BBTimeTable, std::string("bb_0"));
+            if (IsSome(x_3588->meta->bb_0_bb_time_table)) {
+              auto x_3609 = UnSome(x_3588->meta->bb_0_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3609, x_3588, MakeRecomputeBB(std::string("bb_0")));
             }
@@ -2806,8 +2809,8 @@ Unit x_3586(const auto &x_3587, const auto &x_3588, const auto &x_3589) {
           } else if (x_5604 == "display") {
             WriteMetric();
             HashtblForceRemove(x_3588->prop, std::string("display"));
-            if (HashtblContain(x_3588->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3611 = HashtblFindExn(x_3588->meta->BBTimeTable, std::string("bb_1"));
+            if (IsSome(x_3588->meta->bb_1_bb_time_table)) {
+              auto x_3611 = UnSome(x_3588->meta->bb_1_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3611, x_3588, MakeRecomputeBB(std::string("bb_1")));
             }
@@ -2815,8 +2818,8 @@ Unit x_3586(const auto &x_3587, const auto &x_3588, const auto &x_3589) {
           } else if (x_5604 == "position") {
             WriteMetric();
             HashtblForceRemove(x_3588->prop, std::string("position"));
-            if (HashtblContain(x_3588->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3613 = HashtblFindExn(x_3588->meta->BBTimeTable, std::string("bb_1"));
+            if (IsSome(x_3588->meta->bb_1_bb_time_table)) {
+              auto x_3613 = UnSome(x_3588->meta->bb_1_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3613, x_3588, MakeRecomputeBB(std::string("bb_1")));
             }
@@ -2824,8 +2827,8 @@ Unit x_3586(const auto &x_3587, const auto &x_3588, const auto &x_3589) {
           } else if (x_5604 == "flex-shrink") {
             WriteMetric();
             HashtblForceRemove(x_3588->prop, std::string("flex-shrink"));
-            if (HashtblContain(x_3588->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3615 = HashtblFindExn(x_3588->meta->BBTimeTable, std::string("bb_1"));
+            if (IsSome(x_3588->meta->bb_1_bb_time_table)) {
+              auto x_3615 = UnSome(x_3588->meta->bb_1_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3615, x_3588, MakeRecomputeBB(std::string("bb_1")));
             }
@@ -2833,8 +2836,8 @@ Unit x_3586(const auto &x_3587, const auto &x_3588, const auto &x_3589) {
           } else if (x_5604 == "flex-direction") {
             WriteMetric();
             HashtblForceRemove(x_3588->prop, std::string("flex-direction"));
-            if (HashtblContain(x_3588->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3617 = HashtblFindExn(x_3588->meta->BBTimeTable, std::string("bb_1"));
+            if (IsSome(x_3588->meta->bb_1_bb_time_table)) {
+              auto x_3617 = UnSome(x_3588->meta->bb_1_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3617, x_3588, MakeRecomputeBB(std::string("bb_1")));
             }
@@ -2868,15 +2871,15 @@ Unit x_3619(const auto &x_3620, const auto &x_3621, const auto &x_3622) {
           if (x_5606 == "width") {
             WriteMetric();
             HashtblForceRemove(x_3621->attr, std::string("width"));
-            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3630 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_1"));
+            if (IsSome(x_3621->meta->bb_1_bb_time_table)) {
+              auto x_3630 = UnSome(x_3621->meta->bb_1_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3630, x_3621, MakeRecomputeBB(std::string("bb_1")));
             }
             WriteMetric();
             HashtblAddExn(x_3621->attr, std::string("width"), x_3629);
-            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3632 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_1"));
+            if (IsSome(x_3621->meta->bb_1_bb_time_table)) {
+              auto x_3632 = UnSome(x_3621->meta->bb_1_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3632, x_3621, MakeRecomputeBB(std::string("bb_1")));
             }
@@ -2884,15 +2887,15 @@ Unit x_3619(const auto &x_3620, const auto &x_3621, const auto &x_3622) {
           } else if (x_5606 == "image_height") {
             WriteMetric();
             HashtblForceRemove(x_3621->attr, std::string("image_height"));
-            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3634 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_0"));
+            if (IsSome(x_3621->meta->bb_0_bb_time_table)) {
+              auto x_3634 = UnSome(x_3621->meta->bb_0_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3634, x_3621, MakeRecomputeBB(std::string("bb_0")));
             }
             WriteMetric();
             HashtblAddExn(x_3621->attr, std::string("image_height"), x_3629);
-            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3636 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_0"));
+            if (IsSome(x_3621->meta->bb_0_bb_time_table)) {
+              auto x_3636 = UnSome(x_3621->meta->bb_0_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3636, x_3621, MakeRecomputeBB(std::string("bb_0")));
             }
@@ -2900,15 +2903,15 @@ Unit x_3619(const auto &x_3620, const auto &x_3621, const auto &x_3622) {
           } else if (x_5606 == "image_width") {
             WriteMetric();
             HashtblForceRemove(x_3621->attr, std::string("image_width"));
-            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3638 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_0"));
+            if (IsSome(x_3621->meta->bb_0_bb_time_table)) {
+              auto x_3638 = UnSome(x_3621->meta->bb_0_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3638, x_3621, MakeRecomputeBB(std::string("bb_0")));
             }
             WriteMetric();
             HashtblAddExn(x_3621->attr, std::string("image_width"), x_3629);
-            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3640 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_0"));
+            if (IsSome(x_3621->meta->bb_0_bb_time_table)) {
+              auto x_3640 = UnSome(x_3621->meta->bb_0_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3640, x_3621, MakeRecomputeBB(std::string("bb_0")));
             }
@@ -2916,15 +2919,15 @@ Unit x_3619(const auto &x_3620, const auto &x_3621, const auto &x_3622) {
           } else if (x_5606 == "height") {
             WriteMetric();
             HashtblForceRemove(x_3621->attr, std::string("height"));
-            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3642 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_1"));
+            if (IsSome(x_3621->meta->bb_1_bb_time_table)) {
+              auto x_3642 = UnSome(x_3621->meta->bb_1_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3642, x_3621, MakeRecomputeBB(std::string("bb_1")));
             }
             WriteMetric();
             HashtblAddExn(x_3621->attr, std::string("height"), x_3629);
-            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3644 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_1"));
+            if (IsSome(x_3621->meta->bb_1_bb_time_table)) {
+              auto x_3644 = UnSome(x_3621->meta->bb_1_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3644, x_3621, MakeRecomputeBB(std::string("bb_1")));
             }
@@ -2932,15 +2935,15 @@ Unit x_3619(const auto &x_3620, const auto &x_3621, const auto &x_3622) {
           } else if (x_5606 == "viewBox") {
             WriteMetric();
             HashtblForceRemove(x_3621->attr, std::string("viewBox"));
-            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3646 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_0"));
+            if (IsSome(x_3621->meta->bb_0_bb_time_table)) {
+              auto x_3646 = UnSome(x_3621->meta->bb_0_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3646, x_3621, MakeRecomputeBB(std::string("bb_0")));
             }
             WriteMetric();
             HashtblAddExn(x_3621->attr, std::string("viewBox"), x_3629);
-            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3648 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_0"));
+            if (IsSome(x_3621->meta->bb_0_bb_time_table)) {
+              auto x_3648 = UnSome(x_3621->meta->bb_0_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3648, x_3621, MakeRecomputeBB(std::string("bb_0")));
             }
@@ -2953,15 +2956,15 @@ Unit x_3619(const auto &x_3620, const auto &x_3621, const auto &x_3622) {
           if (x_5607 == "width") {
             WriteMetric();
             HashtblForceRemove(x_3621->prop, std::string("width"));
-            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3650 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_0"));
+            if (IsSome(x_3621->meta->bb_0_bb_time_table)) {
+              auto x_3650 = UnSome(x_3621->meta->bb_0_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3650, x_3621, MakeRecomputeBB(std::string("bb_0")));
             }
             WriteMetric();
             HashtblAddExn(x_3621->prop, std::string("width"), x_3629);
-            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3652 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_0"));
+            if (IsSome(x_3621->meta->bb_0_bb_time_table)) {
+              auto x_3652 = UnSome(x_3621->meta->bb_0_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3652, x_3621, MakeRecomputeBB(std::string("bb_0")));
             }
@@ -2969,15 +2972,15 @@ Unit x_3619(const auto &x_3620, const auto &x_3621, const auto &x_3622) {
           } else if (x_5607 == "flex-grow") {
             WriteMetric();
             HashtblForceRemove(x_3621->prop, std::string("flex-grow"));
-            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3654 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_1"));
+            if (IsSome(x_3621->meta->bb_1_bb_time_table)) {
+              auto x_3654 = UnSome(x_3621->meta->bb_1_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3654, x_3621, MakeRecomputeBB(std::string("bb_1")));
             }
             WriteMetric();
             HashtblAddExn(x_3621->prop, std::string("flex-grow"), x_3629);
-            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3656 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_1"));
+            if (IsSome(x_3621->meta->bb_1_bb_time_table)) {
+              auto x_3656 = UnSome(x_3621->meta->bb_1_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3656, x_3621, MakeRecomputeBB(std::string("bb_1")));
             }
@@ -2985,15 +2988,15 @@ Unit x_3619(const auto &x_3620, const auto &x_3621, const auto &x_3622) {
           } else if (x_5607 == "height") {
             WriteMetric();
             HashtblForceRemove(x_3621->prop, std::string("height"));
-            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3658 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_0"));
+            if (IsSome(x_3621->meta->bb_0_bb_time_table)) {
+              auto x_3658 = UnSome(x_3621->meta->bb_0_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3658, x_3621, MakeRecomputeBB(std::string("bb_0")));
             }
             WriteMetric();
             HashtblAddExn(x_3621->prop, std::string("height"), x_3629);
-            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3660 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_0"));
+            if (IsSome(x_3621->meta->bb_0_bb_time_table)) {
+              auto x_3660 = UnSome(x_3621->meta->bb_0_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3660, x_3621, MakeRecomputeBB(std::string("bb_0")));
             }
@@ -3001,15 +3004,15 @@ Unit x_3619(const auto &x_3620, const auto &x_3621, const auto &x_3622) {
           } else if (x_5607 == "display") {
             WriteMetric();
             HashtblForceRemove(x_3621->prop, std::string("display"));
-            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3662 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_1"));
+            if (IsSome(x_3621->meta->bb_1_bb_time_table)) {
+              auto x_3662 = UnSome(x_3621->meta->bb_1_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3662, x_3621, MakeRecomputeBB(std::string("bb_1")));
             }
             WriteMetric();
             HashtblAddExn(x_3621->prop, std::string("display"), x_3629);
-            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3664 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_1"));
+            if (IsSome(x_3621->meta->bb_1_bb_time_table)) {
+              auto x_3664 = UnSome(x_3621->meta->bb_1_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3664, x_3621, MakeRecomputeBB(std::string("bb_1")));
             }
@@ -3017,15 +3020,15 @@ Unit x_3619(const auto &x_3620, const auto &x_3621, const auto &x_3622) {
           } else if (x_5607 == "position") {
             WriteMetric();
             HashtblForceRemove(x_3621->prop, std::string("position"));
-            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3666 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_1"));
+            if (IsSome(x_3621->meta->bb_1_bb_time_table)) {
+              auto x_3666 = UnSome(x_3621->meta->bb_1_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3666, x_3621, MakeRecomputeBB(std::string("bb_1")));
             }
             WriteMetric();
             HashtblAddExn(x_3621->prop, std::string("position"), x_3629);
-            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3668 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_1"));
+            if (IsSome(x_3621->meta->bb_1_bb_time_table)) {
+              auto x_3668 = UnSome(x_3621->meta->bb_1_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3668, x_3621, MakeRecomputeBB(std::string("bb_1")));
             }
@@ -3033,15 +3036,15 @@ Unit x_3619(const auto &x_3620, const auto &x_3621, const auto &x_3622) {
           } else if (x_5607 == "flex-shrink") {
             WriteMetric();
             HashtblForceRemove(x_3621->prop, std::string("flex-shrink"));
-            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3670 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_1"));
+            if (IsSome(x_3621->meta->bb_1_bb_time_table)) {
+              auto x_3670 = UnSome(x_3621->meta->bb_1_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3670, x_3621, MakeRecomputeBB(std::string("bb_1")));
             }
             WriteMetric();
             HashtblAddExn(x_3621->prop, std::string("flex-shrink"), x_3629);
-            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3672 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_1"));
+            if (IsSome(x_3621->meta->bb_1_bb_time_table)) {
+              auto x_3672 = UnSome(x_3621->meta->bb_1_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3672, x_3621, MakeRecomputeBB(std::string("bb_1")));
             }
@@ -3049,15 +3052,15 @@ Unit x_3619(const auto &x_3620, const auto &x_3621, const auto &x_3622) {
           } else if (x_5607 == "flex-direction") {
             WriteMetric();
             HashtblForceRemove(x_3621->prop, std::string("flex-direction"));
-            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3674 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_1"));
+            if (IsSome(x_3621->meta->bb_1_bb_time_table)) {
+              auto x_3674 = UnSome(x_3621->meta->bb_1_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3674, x_3621, MakeRecomputeBB(std::string("bb_1")));
             }
             WriteMetric();
             HashtblAddExn(x_3621->prop, std::string("flex-direction"), x_3629);
-            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3676 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_1"));
+            if (IsSome(x_3621->meta->bb_1_bb_time_table)) {
+              auto x_3676 = UnSome(x_3621->meta->bb_1_bb_time_table);
               MetaWriteMetric();
               QueuePush(x_3676, x_3621, MakeRecomputeBB(std::string("bb_1")));
             }
@@ -3109,8 +3112,8 @@ Unit x_3678(const auto &x_3679, const auto &x_3680, const auto &x_3681) {
     OptionMatch(
         x_3687->next, [&](const auto &x_3696) { return MakeUnit(); },
         [&](const auto &x_3693) {
-          if (HashtblContain(x_3693->meta->BBTimeTable, std::string("bb_1"))) {
-            auto x_3694 = HashtblFindExn(x_3693->meta->BBTimeTable, std::string("bb_1"));
+          if (IsSome(x_3693->meta->bb_1_bb_time_table)) {
+            auto x_3694 = UnSome(x_3693->meta->bb_1_bb_time_table);
             MetaWriteMetric();
             return QueuePush(x_3694, x_3693, MakeRecomputeBB(std::string("bb_1")));
           } else {
@@ -3118,15 +3121,15 @@ Unit x_3678(const auto &x_3679, const auto &x_3680, const auto &x_3681) {
           }
         });
     if (ListIsEmpty(x_3680->children)) {
-      if (HashtblContain(x_3680->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_3697 = HashtblFindExn(x_3680->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_3680->meta->bb_0_bb_time_table)) {
+        auto x_3697 = UnSome(x_3680->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         QueuePush(x_3697, x_3680, MakeRecomputeBB(std::string("bb_0")));
       }
     }
     if (ListIsEmpty(x_3688)) {
-      if (HashtblContain(x_3680->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_3699 = HashtblFindExn(x_3680->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_3680->meta->bb_0_bb_time_table)) {
+        auto x_3699 = UnSome(x_3680->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         QueuePush(x_3699, x_3680, MakeRecomputeBB(std::string("bb_0")));
       }
@@ -3134,8 +3137,8 @@ Unit x_3678(const auto &x_3679, const auto &x_3680, const auto &x_3681) {
     OptionMatch(
         x_3687->next, [&](const auto &x_3704) { return MakeUnit(); },
         [&](const auto &x_3701) {
-          if (HashtblContain(x_3701->meta->BBTimeTable, std::string("bb_0"))) {
-            auto x_3702 = HashtblFindExn(x_3701->meta->BBTimeTable, std::string("bb_0"));
+          if (IsSome(x_3701->meta->bb_0_bb_time_table)) {
+            auto x_3702 = UnSome(x_3701->meta->bb_0_bb_time_table);
             MetaWriteMetric();
             return QueuePush(x_3702, x_3701, MakeRecomputeBB(std::string("bb_0")));
           } else {
@@ -3143,15 +3146,15 @@ Unit x_3678(const auto &x_3679, const auto &x_3680, const auto &x_3681) {
           }
         });
     if (ListIsEmpty(x_3680->children)) {
-      if (HashtblContain(x_3680->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_3705 = HashtblFindExn(x_3680->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_3680->meta->bb_2_bb_time_table)) {
+        auto x_3705 = UnSome(x_3680->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         QueuePush(x_3705, x_3680, MakeRecomputeBB(std::string("bb_2")));
       }
     }
     if (ListIsEmpty(x_3688)) {
-      if (HashtblContain(x_3680->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_3707 = HashtblFindExn(x_3680->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_3680->meta->bb_2_bb_time_table)) {
+        auto x_3707 = UnSome(x_3680->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         QueuePush(x_3707, x_3680, MakeRecomputeBB(std::string("bb_2")));
       }
@@ -3159,8 +3162,8 @@ Unit x_3678(const auto &x_3679, const auto &x_3680, const auto &x_3681) {
     OptionMatch(
         x_3687->next, [&](const auto &x_3712) { return MakeUnit(); },
         [&](const auto &x_3709) {
-          if (HashtblContain(x_3709->meta->BBTimeTable, std::string("bb_2"))) {
-            auto x_3710 = HashtblFindExn(x_3709->meta->BBTimeTable, std::string("bb_2"));
+          if (IsSome(x_3709->meta->bb_2_bb_time_table)) {
+            auto x_3710 = UnSome(x_3709->meta->bb_2_bb_time_table);
             MetaWriteMetric();
             return QueuePush(x_3710, x_3709, MakeRecomputeBB(std::string("bb_2")));
           } else {
@@ -3202,24 +3205,19 @@ Unit x_3678(const auto &x_3679, const auto &x_3680, const auto &x_3681) {
         });
     x_3681->parent = x_3680.get();
     auto x_3720 = (x_3681->parent);
-    if (HashtblContain(x_3720->meta->ProcTimeTable, std::string("pass_0"))) {
+    if (IsSome(x_3720->meta->pass_0_proc_time_table)) {
       auto x_3723 = OptionMatch(
-          x_3681->prev,
-          [&](const auto &x_3722) {
-            return NextTotalOrder(HashtblFindExn(x_3720->meta->BBTimeTable, std::string("bb_1")));
-          },
-          [&](const auto &x_3721) {
-            return NextTotalOrder(HashtblFindExn(x_3721->meta->ProcTimeTable, std::string("pass_0")));
-          });
-      HashtblAddExn(x_3681->meta->ProcTimeTable, std::string("pass_0"), x_3723);
+          x_3681->prev, [&](const auto &x_3722) { return NextTotalOrder(UnSome(x_3720->meta->bb_1_bb_time_table)); },
+          [&](const auto &x_3721) { return NextTotalOrder(UnSome(x_3721->meta->pass_0_proc_time_table)); });
+      x_3681->meta->pass_0_proc_time_table = x_3723;
       MetaWriteMetric();
       QueueForcePush(x_3723, x_3681, MakeRecomputeProc(std::string("pass_0")));
     }
     OptionMatch(
         x_3681->next, [&](const auto &x_3728) { return MakeUnit(); },
         [&](const auto &x_3725) {
-          if (HashtblContain(x_3725->meta->BBTimeTable, std::string("bb_1"))) {
-            auto x_3726 = HashtblFindExn(x_3725->meta->BBTimeTable, std::string("bb_1"));
+          if (IsSome(x_3725->meta->bb_1_bb_time_table)) {
+            auto x_3726 = UnSome(x_3725->meta->bb_1_bb_time_table);
             MetaWriteMetric();
             return QueuePush(x_3726, x_3725, MakeRecomputeBB(std::string("bb_1")));
           } else {
@@ -3227,15 +3225,15 @@ Unit x_3678(const auto &x_3679, const auto &x_3680, const auto &x_3681) {
           }
         });
     if (ListIsSingleton(x_3680->children)) {
-      if (HashtblContain(x_3680->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_3729 = HashtblFindExn(x_3680->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_3680->meta->bb_0_bb_time_table)) {
+        auto x_3729 = UnSome(x_3680->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         QueuePush(x_3729, x_3680, MakeRecomputeBB(std::string("bb_0")));
       }
     }
     if (ListIsEmpty(x_3715)) {
-      if (HashtblContain(x_3680->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_3731 = HashtblFindExn(x_3680->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_3680->meta->bb_0_bb_time_table)) {
+        auto x_3731 = UnSome(x_3680->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         QueuePush(x_3731, x_3680, MakeRecomputeBB(std::string("bb_0")));
       }
@@ -3243,8 +3241,8 @@ Unit x_3678(const auto &x_3679, const auto &x_3680, const auto &x_3681) {
     OptionMatch(
         x_3681->next, [&](const auto &x_3736) { return MakeUnit(); },
         [&](const auto &x_3733) {
-          if (HashtblContain(x_3733->meta->BBTimeTable, std::string("bb_0"))) {
-            auto x_3734 = HashtblFindExn(x_3733->meta->BBTimeTable, std::string("bb_0"));
+          if (IsSome(x_3733->meta->bb_0_bb_time_table)) {
+            auto x_3734 = UnSome(x_3733->meta->bb_0_bb_time_table);
             MetaWriteMetric();
             return QueuePush(x_3734, x_3733, MakeRecomputeBB(std::string("bb_0")));
           } else {
@@ -3252,29 +3250,24 @@ Unit x_3678(const auto &x_3679, const auto &x_3680, const auto &x_3681) {
           }
         });
     auto x_3737 = (x_3681->parent);
-    if (HashtblContain(x_3737->meta->ProcTimeTable, std::string("pass_1"))) {
+    if (IsSome(x_3737->meta->pass_1_proc_time_table)) {
       auto x_3740 = OptionMatch(
-          x_3681->prev,
-          [&](const auto &x_3739) {
-            return NextTotalOrder(HashtblFindExn(x_3737->meta->BBTimeTable, std::string("bb_2")));
-          },
-          [&](const auto &x_3738) {
-            return NextTotalOrder(HashtblFindExn(x_3738->meta->ProcTimeTable, std::string("pass_1")));
-          });
-      HashtblAddExn(x_3681->meta->ProcTimeTable, std::string("pass_1"), x_3740);
+          x_3681->prev, [&](const auto &x_3739) { return NextTotalOrder(UnSome(x_3737->meta->bb_2_bb_time_table)); },
+          [&](const auto &x_3738) { return NextTotalOrder(UnSome(x_3738->meta->pass_1_proc_time_table)); });
+      x_3681->meta->pass_1_proc_time_table = x_3740;
       MetaWriteMetric();
       QueueForcePush(x_3740, x_3681, MakeRecomputeProc(std::string("pass_1")));
     }
     if (ListIsSingleton(x_3680->children)) {
-      if (HashtblContain(x_3680->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_3742 = HashtblFindExn(x_3680->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_3680->meta->bb_2_bb_time_table)) {
+        auto x_3742 = UnSome(x_3680->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         QueuePush(x_3742, x_3680, MakeRecomputeBB(std::string("bb_2")));
       }
     }
     if (ListIsEmpty(x_3715)) {
-      if (HashtblContain(x_3680->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_3744 = HashtblFindExn(x_3680->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_3680->meta->bb_2_bb_time_table)) {
+        auto x_3744 = UnSome(x_3680->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         QueuePush(x_3744, x_3680, MakeRecomputeBB(std::string("bb_2")));
       }
@@ -3282,8 +3275,8 @@ Unit x_3678(const auto &x_3679, const auto &x_3680, const auto &x_3681) {
     OptionMatch(
         x_3681->next, [&](const auto &x_3749) { return MakeUnit(); },
         [&](const auto &x_3746) {
-          if (HashtblContain(x_3746->meta->BBTimeTable, std::string("bb_2"))) {
-            auto x_3747 = HashtblFindExn(x_3746->meta->BBTimeTable, std::string("bb_2"));
+          if (IsSome(x_3746->meta->bb_2_bb_time_table)) {
+            auto x_3747 = UnSome(x_3746->meta->bb_2_bb_time_table);
             MetaWriteMetric();
             return QueuePush(x_3747, x_3746, MakeRecomputeBB(std::string("bb_2")));
           } else {
@@ -3367,8 +3360,8 @@ Unit x_3758(const auto &x_3759, const auto &x_3760, const auto &x_3761) {
     OptionMatch(
         x_3767->next, [&](const auto &x_3776) { return MakeUnit(); },
         [&](const auto &x_3773) {
-          if (HashtblContain(x_3773->meta->BBTimeTable, std::string("bb_1"))) {
-            auto x_3774 = HashtblFindExn(x_3773->meta->BBTimeTable, std::string("bb_1"));
+          if (IsSome(x_3773->meta->bb_1_bb_time_table)) {
+            auto x_3774 = UnSome(x_3773->meta->bb_1_bb_time_table);
             MetaWriteMetric();
             return QueuePush(x_3774, x_3773, MakeRecomputeBB(std::string("bb_1")));
           } else {
@@ -3376,15 +3369,15 @@ Unit x_3758(const auto &x_3759, const auto &x_3760, const auto &x_3761) {
           }
         });
     if (ListIsEmpty(x_3760->children)) {
-      if (HashtblContain(x_3760->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_3777 = HashtblFindExn(x_3760->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_3760->meta->bb_0_bb_time_table)) {
+        auto x_3777 = UnSome(x_3760->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         QueuePush(x_3777, x_3760, MakeRecomputeBB(std::string("bb_0")));
       }
     }
     if (ListIsEmpty(x_3768)) {
-      if (HashtblContain(x_3760->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_3779 = HashtblFindExn(x_3760->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_3760->meta->bb_0_bb_time_table)) {
+        auto x_3779 = UnSome(x_3760->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         QueuePush(x_3779, x_3760, MakeRecomputeBB(std::string("bb_0")));
       }
@@ -3392,8 +3385,8 @@ Unit x_3758(const auto &x_3759, const auto &x_3760, const auto &x_3761) {
     OptionMatch(
         x_3767->next, [&](const auto &x_3784) { return MakeUnit(); },
         [&](const auto &x_3781) {
-          if (HashtblContain(x_3781->meta->BBTimeTable, std::string("bb_0"))) {
-            auto x_3782 = HashtblFindExn(x_3781->meta->BBTimeTable, std::string("bb_0"));
+          if (IsSome(x_3781->meta->bb_0_bb_time_table)) {
+            auto x_3782 = UnSome(x_3781->meta->bb_0_bb_time_table);
             MetaWriteMetric();
             return QueuePush(x_3782, x_3781, MakeRecomputeBB(std::string("bb_0")));
           } else {
@@ -3401,15 +3394,15 @@ Unit x_3758(const auto &x_3759, const auto &x_3760, const auto &x_3761) {
           }
         });
     if (ListIsEmpty(x_3760->children)) {
-      if (HashtblContain(x_3760->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_3785 = HashtblFindExn(x_3760->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_3760->meta->bb_2_bb_time_table)) {
+        auto x_3785 = UnSome(x_3760->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         QueuePush(x_3785, x_3760, MakeRecomputeBB(std::string("bb_2")));
       }
     }
     if (ListIsEmpty(x_3768)) {
-      if (HashtblContain(x_3760->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_3787 = HashtblFindExn(x_3760->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_3760->meta->bb_2_bb_time_table)) {
+        auto x_3787 = UnSome(x_3760->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         QueuePush(x_3787, x_3760, MakeRecomputeBB(std::string("bb_2")));
       }
@@ -3417,8 +3410,8 @@ Unit x_3758(const auto &x_3759, const auto &x_3760, const auto &x_3761) {
     OptionMatch(
         x_3767->next, [&](const auto &x_3792) { return MakeUnit(); },
         [&](const auto &x_3789) {
-          if (HashtblContain(x_3789->meta->BBTimeTable, std::string("bb_2"))) {
-            auto x_3790 = HashtblFindExn(x_3789->meta->BBTimeTable, std::string("bb_2"));
+          if (IsSome(x_3789->meta->bb_2_bb_time_table)) {
+            auto x_3790 = UnSome(x_3789->meta->bb_2_bb_time_table);
             MetaWriteMetric();
             return QueuePush(x_3790, x_3789, MakeRecomputeBB(std::string("bb_2")));
           } else {
@@ -3461,14 +3454,17 @@ Unit x_3793(const auto &x_3794) {
             [&]() {
               std::string x_5609 = x_3798;
               if (x_5609 == "pass_0") {
-                return eval_stmts_x_3502(x_3797.n);
+                eval_stmts_x_3502(x_3797.n);
+                x_3797.n->meta->pass_0_proc_time_table = ReadRef(current_time);
+                return MakeUnit();
               } else if (x_5609 == "pass_1") {
-                return eval_stmts_x_3503(x_3797.n);
+                eval_stmts_x_3503(x_3797.n);
+                x_3797.n->meta->pass_1_proc_time_table = ReadRef(current_time);
+                return MakeUnit();
               } else {
                 Panic();
               }
             }();
-            HashtblSet(x_3797.n->meta->ProcTimeTable, x_3798, ReadRef(current_time));
             WriteRef(current_time, x_3799);
             return MakeUnit();
           });
@@ -3520,24 +3516,19 @@ Unit x_3805(const auto &x_3806, const auto &x_3807, const auto &x_3808) {
         });
     x_3808->parent = x_3807.get();
     auto x_3818 = (x_3808->parent);
-    if (HashtblContain(x_3818->meta->ProcTimeTable, std::string("pass_0"))) {
+    if (IsSome(x_3818->meta->pass_0_proc_time_table)) {
       auto x_3821 = OptionMatch(
-          x_3808->prev,
-          [&](const auto &x_3820) {
-            return NextTotalOrder(HashtblFindExn(x_3818->meta->BBTimeTable, std::string("bb_1")));
-          },
-          [&](const auto &x_3819) {
-            return NextTotalOrder(HashtblFindExn(x_3819->meta->ProcTimeTable, std::string("pass_0")));
-          });
-      HashtblAddExn(x_3808->meta->ProcTimeTable, std::string("pass_0"), x_3821);
+          x_3808->prev, [&](const auto &x_3820) { return NextTotalOrder(UnSome(x_3818->meta->bb_1_bb_time_table)); },
+          [&](const auto &x_3819) { return NextTotalOrder(UnSome(x_3819->meta->pass_0_proc_time_table)); });
+      x_3808->meta->pass_0_proc_time_table = x_3821;
       MetaWriteMetric();
       QueueForcePush(x_3821, x_3808, MakeRecomputeProc(std::string("pass_0")));
     }
     OptionMatch(
         x_3808->next, [&](const auto &x_3826) { return MakeUnit(); },
         [&](const auto &x_3823) {
-          if (HashtblContain(x_3823->meta->BBTimeTable, std::string("bb_1"))) {
-            auto x_3824 = HashtblFindExn(x_3823->meta->BBTimeTable, std::string("bb_1"));
+          if (IsSome(x_3823->meta->bb_1_bb_time_table)) {
+            auto x_3824 = UnSome(x_3823->meta->bb_1_bb_time_table);
             MetaWriteMetric();
             return QueuePush(x_3824, x_3823, MakeRecomputeBB(std::string("bb_1")));
           } else {
@@ -3545,15 +3536,15 @@ Unit x_3805(const auto &x_3806, const auto &x_3807, const auto &x_3808) {
           }
         });
     if (ListIsSingleton(x_3807->children)) {
-      if (HashtblContain(x_3807->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_3827 = HashtblFindExn(x_3807->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_3807->meta->bb_0_bb_time_table)) {
+        auto x_3827 = UnSome(x_3807->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         QueuePush(x_3827, x_3807, MakeRecomputeBB(std::string("bb_0")));
       }
     }
     if (ListIsEmpty(x_3813)) {
-      if (HashtblContain(x_3807->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_3829 = HashtblFindExn(x_3807->meta->BBTimeTable, std::string("bb_0"));
+      if (IsSome(x_3807->meta->bb_0_bb_time_table)) {
+        auto x_3829 = UnSome(x_3807->meta->bb_0_bb_time_table);
         MetaWriteMetric();
         QueuePush(x_3829, x_3807, MakeRecomputeBB(std::string("bb_0")));
       }
@@ -3561,8 +3552,8 @@ Unit x_3805(const auto &x_3806, const auto &x_3807, const auto &x_3808) {
     OptionMatch(
         x_3808->next, [&](const auto &x_3834) { return MakeUnit(); },
         [&](const auto &x_3831) {
-          if (HashtblContain(x_3831->meta->BBTimeTable, std::string("bb_0"))) {
-            auto x_3832 = HashtblFindExn(x_3831->meta->BBTimeTable, std::string("bb_0"));
+          if (IsSome(x_3831->meta->bb_0_bb_time_table)) {
+            auto x_3832 = UnSome(x_3831->meta->bb_0_bb_time_table);
             MetaWriteMetric();
             return QueuePush(x_3832, x_3831, MakeRecomputeBB(std::string("bb_0")));
           } else {
@@ -3570,29 +3561,24 @@ Unit x_3805(const auto &x_3806, const auto &x_3807, const auto &x_3808) {
           }
         });
     auto x_3835 = (x_3808->parent);
-    if (HashtblContain(x_3835->meta->ProcTimeTable, std::string("pass_1"))) {
+    if (IsSome(x_3835->meta->pass_1_proc_time_table)) {
       auto x_3838 = OptionMatch(
-          x_3808->prev,
-          [&](const auto &x_3837) {
-            return NextTotalOrder(HashtblFindExn(x_3835->meta->BBTimeTable, std::string("bb_2")));
-          },
-          [&](const auto &x_3836) {
-            return NextTotalOrder(HashtblFindExn(x_3836->meta->ProcTimeTable, std::string("pass_1")));
-          });
-      HashtblAddExn(x_3808->meta->ProcTimeTable, std::string("pass_1"), x_3838);
+          x_3808->prev, [&](const auto &x_3837) { return NextTotalOrder(UnSome(x_3835->meta->bb_2_bb_time_table)); },
+          [&](const auto &x_3836) { return NextTotalOrder(UnSome(x_3836->meta->pass_1_proc_time_table)); });
+      x_3808->meta->pass_1_proc_time_table = x_3838;
       MetaWriteMetric();
       QueueForcePush(x_3838, x_3808, MakeRecomputeProc(std::string("pass_1")));
     }
     if (ListIsSingleton(x_3807->children)) {
-      if (HashtblContain(x_3807->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_3840 = HashtblFindExn(x_3807->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_3807->meta->bb_2_bb_time_table)) {
+        auto x_3840 = UnSome(x_3807->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         QueuePush(x_3840, x_3807, MakeRecomputeBB(std::string("bb_2")));
       }
     }
     if (ListIsEmpty(x_3813)) {
-      if (HashtblContain(x_3807->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_3842 = HashtblFindExn(x_3807->meta->BBTimeTable, std::string("bb_2"));
+      if (IsSome(x_3807->meta->bb_2_bb_time_table)) {
+        auto x_3842 = UnSome(x_3807->meta->bb_2_bb_time_table);
         MetaWriteMetric();
         QueuePush(x_3842, x_3807, MakeRecomputeBB(std::string("bb_2")));
       }
@@ -3600,8 +3586,8 @@ Unit x_3805(const auto &x_3806, const auto &x_3807, const auto &x_3808) {
     OptionMatch(
         x_3808->next, [&](const auto &x_3847) { return MakeUnit(); },
         [&](const auto &x_3844) {
-          if (HashtblContain(x_3844->meta->BBTimeTable, std::string("bb_2"))) {
-            auto x_3845 = HashtblFindExn(x_3844->meta->BBTimeTable, std::string("bb_2"));
+          if (IsSome(x_3844->meta->bb_2_bb_time_table)) {
+            auto x_3845 = UnSome(x_3844->meta->bb_2_bb_time_table);
             MetaWriteMetric();
             return QueuePush(x_3845, x_3844, MakeRecomputeBB(std::string("bb_2")));
           } else {
@@ -3654,12 +3640,13 @@ Unit set_children_relation_x_3507(const auto &x_3849) { return x_3848(x_3849); }
 Unit eval_stmts_x_3503(const auto &x_3856) {
   return MetricRecordEval(Zro(Timed([&](const auto &x_3857) {
     WriteRef(current_time, NextTotalOrder(ReadRef(current_time)));
-    HashtblAddExn(x_3856->meta->BBTimeTable, std::string("bb_2"), ReadRef(current_time));
+    x_3856->meta->bb_2_bb_time_table = ReadRef(current_time);
     eval_stmts_x_3803(x_3856);
     ListIter(x_3856->children, [&](const auto &x_3858) {
       WriteRef(current_time, NextTotalOrder(ReadRef(current_time)));
       eval_stmts_x_3503(x_3858);
-      return HashtblAddExn(x_3858->meta->ProcTimeTable, std::string("pass_1"), ReadRef(current_time));
+      x_3858->meta->pass_1_proc_time_table = ReadRef(current_time);
+      return MakeUnit();
     });
     return MakeUnit();
   })));
@@ -3667,15 +3654,16 @@ Unit eval_stmts_x_3503(const auto &x_3856) {
 Unit eval_stmts_x_3502(const auto &x_3859) {
   return MetricRecordEval(Zro(Timed([&](const auto &x_3860) {
     WriteRef(current_time, NextTotalOrder(ReadRef(current_time)));
-    HashtblAddExn(x_3859->meta->BBTimeTable, std::string("bb_1"), ReadRef(current_time));
+    x_3859->meta->bb_1_bb_time_table = ReadRef(current_time);
     eval_stmts_x_3801(x_3859);
     ListIter(x_3859->children, [&](const auto &x_3861) {
       WriteRef(current_time, NextTotalOrder(ReadRef(current_time)));
       eval_stmts_x_3502(x_3861);
-      return HashtblAddExn(x_3861->meta->ProcTimeTable, std::string("pass_0"), ReadRef(current_time));
+      x_3861->meta->pass_0_proc_time_table = ReadRef(current_time);
+      return MakeUnit();
     });
     WriteRef(current_time, NextTotalOrder(ReadRef(current_time)));
-    HashtblAddExn(x_3859->meta->BBTimeTable, std::string("bb_0"), ReadRef(current_time));
+    x_3859->meta->bb_0_bb_time_table = ReadRef(current_time);
     eval_stmts_x_3802(x_3859);
     return MakeUnit();
   })));
@@ -3769,10 +3757,10 @@ int main() {
       InputChangeMetric(node_size_x_3490(x_3500));
       WriteRef(current_time, NextTotalOrder(ReadRef(current_time)));
       eval_stmts_x_3502(x_3500);
-      HashtblAddExn(x_3500->meta->ProcTimeTable, std::string("pass_0"), ReadRef(current_time));
+      x_3500->meta->pass_0_proc_time_table = ReadRef(current_time);
       WriteRef(current_time, NextTotalOrder(ReadRef(current_time)));
       eval_stmts_x_3503(x_3500);
-      HashtblAddExn(x_3500->meta->ProcTimeTable, std::string("pass_1"), ReadRef(current_time));
+      x_3500->meta->pass_1_proc_time_table = ReadRef(current_time);
       JsonToChannel(x_3491, [&]() {
         auto x_5610 = FreshJson();
         WriteJson(x_5610, std::string("name"), std::string("PQ_D"));

@@ -244,6 +244,8 @@ template <typename X> std::optional<X> ListLast(const List<X> &l) {
       [&](const X &x, const List<X> &l_) { return std::optional<X>(ListLastDefault(l_, x)); });
 }
 
+template <typename X> bool IsSome(const std::optional<X> &opt) { return opt.has_value(); }
+template <typename X> X UnSome(const std::optional<X> &opt) { return opt.value(); }
 template <typename X> auto OptionMatch(const std::optional<X> &opt, const auto &n, const auto &s) {
   if (!opt.has_value()) {
     return n(Unit{});

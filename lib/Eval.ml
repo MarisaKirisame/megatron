@@ -26,7 +26,7 @@ module type EvalIn = sig
 
   type meta
 
-  val meta_defs : string
+  val meta_defs : prog -> string
   val fresh_meta : unit sd -> meta sd
   val remove_meta : meta sd -> unit sd
   val register_todo_proc : prog -> meta node sd -> string -> metric sd -> unit sd

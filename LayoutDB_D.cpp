@@ -1,8 +1,17 @@
 #include "header.h"
 struct MetaNode {
-  std::unordered_map<std::string, bool> BBDirtied;
-  std::unordered_map<std::string, Unit> ProcInited;
-  std::unordered_map<std::string, bool> RecursiveProcDirtied;
+  bool bb_1_has_bb_dirtied = false;
+  bool bb_1_bb_dirtied;
+  bool bb_0_has_bb_dirtied = false;
+  bool bb_0_bb_dirtied;
+  bool bb_2_has_bb_dirtied = false;
+  bool bb_2_bb_dirtied;
+  bool pass_0_proc_inited = false;
+  bool pass_0_has_recursive_proc_dirtied = false;
+  bool pass_0_recursive_proc_dirtied;
+  bool pass_1_proc_inited = false;
+  bool pass_1_has_recursive_proc_dirtied = false;
+  bool pass_1_recursive_proc_dirtied;
 };
 using Meta = std::shared_ptr<MetaNode>;
 struct Content : std::enable_shared_from_this<Content> {
@@ -242,8 +251,9 @@ Node x_1913(const auto &x_1914);
 Unit var_modified_x_2155(const auto &x_2165) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_2166) {
     auto x_3384 = [&](const auto &x_2169) {
-      if (HashtblContain(x_2169->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_2169->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_2169->meta->pass_1_proc_inited) {
+        x_2169->meta->bb_2_has_bb_dirtied = true;
+        x_2169->meta->bb_2_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1806(x_2169);
       } else {
         return MetaWriteMetric();
@@ -269,8 +279,9 @@ auto eval_expr_x_2152(const auto &x_2170) {
 Unit var_modified_x_2150(const auto &x_2187) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_2188) {
     auto x_3386 = [&](const auto &x_2189) {
-      if (HashtblContain(x_2189->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_2189->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_2189->meta->pass_1_proc_inited) {
+        x_2189->meta->bb_2_has_bb_dirtied = true;
+        x_2189->meta->bb_2_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1806(x_2189);
       } else {
         return MetaWriteMetric();
@@ -291,8 +302,9 @@ auto eval_expr_x_2147(const auto &x_2190) {
 Unit var_modified_x_2145(const auto &x_2199) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_2200) {
     auto x_3387 = [&](const auto &x_2201) {
-      if (HashtblContain(x_2201->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_2201->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_2201->meta->pass_1_proc_inited) {
+        x_2201->meta->bb_2_has_bb_dirtied = true;
+        x_2201->meta->bb_2_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1806(x_2201);
       } else {
         return MetaWriteMetric();
@@ -301,8 +313,9 @@ Unit var_modified_x_2145(const auto &x_2199) {
     x_3387(x_2199);
     MakeUnit();
     ListIter(x_2199->children, [&](const auto &x_2202) {
-      if (HashtblContain(x_2202->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_2202->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_2202->meta->pass_1_proc_inited) {
+        x_2202->meta->bb_2_has_bb_dirtied = true;
+        x_2202->meta->bb_2_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1806(x_2202);
       } else {
         return MetaWriteMetric();
@@ -331,16 +344,18 @@ auto eval_expr_x_2142(const auto &x_2203) {
 Unit var_modified_x_2140(const auto &x_2256) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_2257) {
     ListIter(x_2256->children, [&](const auto &x_2258) {
-      if (HashtblContain(x_2258->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_2258->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_2258->meta->pass_1_proc_inited) {
+        x_2258->meta->bb_2_has_bb_dirtied = true;
+        x_2258->meta->bb_2_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1806(x_2258);
       } else {
         return MetaWriteMetric();
       }
     });
     auto x_3388 = [&](const auto &x_2261) {
-      if (HashtblContain(x_2261->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_2261->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_2261->meta->pass_1_proc_inited) {
+        x_2261->meta->bb_2_has_bb_dirtied = true;
+        x_2261->meta->bb_2_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1806(x_2261);
       } else {
         return MetaWriteMetric();
@@ -374,8 +389,9 @@ auto eval_expr_x_2137(const auto &x_2262) {
 Unit var_modified_x_2135(const auto &x_2287) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_2288) {
     auto x_3390 = [&](const auto &x_2291) {
-      if (HashtblContain(x_2291->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_2291->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_2291->meta->pass_1_proc_inited) {
+        x_2291->meta->bb_2_has_bb_dirtied = true;
+        x_2291->meta->bb_2_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1806(x_2291);
       } else {
         return MetaWriteMetric();
@@ -401,8 +417,9 @@ auto eval_expr_x_2132(const auto &x_2292) {
 Unit var_modified_x_2130(const auto &x_2301) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_2302) {
     auto x_3392 = [&](const auto &x_2303) {
-      if (HashtblContain(x_2303->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_2303->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_2303->meta->pass_1_proc_inited) {
+        x_2303->meta->bb_2_has_bb_dirtied = true;
+        x_2303->meta->bb_2_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1806(x_2303);
       } else {
         return MetaWriteMetric();
@@ -411,8 +428,9 @@ Unit var_modified_x_2130(const auto &x_2301) {
     x_3392(x_2301);
     MakeUnit();
     ListIter(x_2301->children, [&](const auto &x_2304) {
-      if (HashtblContain(x_2304->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_2304->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_2304->meta->pass_1_proc_inited) {
+        x_2304->meta->bb_2_has_bb_dirtied = true;
+        x_2304->meta->bb_2_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1806(x_2304);
       } else {
         return MetaWriteMetric();
@@ -440,16 +458,18 @@ auto eval_expr_x_2127(const auto &x_2305) {
 Unit var_modified_x_2125(const auto &x_2358) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_2359) {
     ListIter(x_2358->children, [&](const auto &x_2360) {
-      if (HashtblContain(x_2360->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_2360->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_2360->meta->pass_1_proc_inited) {
+        x_2360->meta->bb_2_has_bb_dirtied = true;
+        x_2360->meta->bb_2_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1806(x_2360);
       } else {
         return MetaWriteMetric();
       }
     });
     auto x_3393 = [&](const auto &x_2363) {
-      if (HashtblContain(x_2363->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_2363->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_2363->meta->pass_1_proc_inited) {
+        x_2363->meta->bb_2_has_bb_dirtied = true;
+        x_2363->meta->bb_2_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1806(x_2363);
       } else {
         return MetaWriteMetric();
@@ -483,8 +503,9 @@ auto eval_expr_x_2122(const auto &x_2364) {
 Unit var_modified_x_2120(const auto &x_2385) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_2386) {
     ListIter(x_2385->children, [&](const auto &x_2387) {
-      if (HashtblContain(x_2387->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_2387->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_2387->meta->pass_1_proc_inited) {
+        x_2387->meta->bb_2_has_bb_dirtied = true;
+        x_2387->meta->bb_2_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1806(x_2387);
       } else {
         return MetaWriteMetric();
@@ -503,8 +524,9 @@ auto eval_expr_x_2117(const auto &x_2388) {
 Unit var_modified_x_2115(const auto &x_2409) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_2410) {
     auto x_3395 = [&](const auto &x_2411) {
-      if (HashtblContain(x_2411->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_2411->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_2411->meta->pass_1_proc_inited) {
+        x_2411->meta->bb_2_has_bb_dirtied = true;
+        x_2411->meta->bb_2_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1806(x_2411);
       } else {
         return MetaWriteMetric();
@@ -525,8 +547,9 @@ auto eval_expr_x_2112(const auto &x_2412) {
 Unit var_modified_x_2110(const auto &x_2425) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_2426) {
     auto x_3396 = [&](const auto &x_2427) {
-      if (HashtblContain(x_2427->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_2427->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_2427->meta->pass_1_proc_inited) {
+        x_2427->meta->bb_2_has_bb_dirtied = true;
+        x_2427->meta->bb_2_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1806(x_2427);
       } else {
         return MetaWriteMetric();
@@ -535,8 +558,9 @@ Unit var_modified_x_2110(const auto &x_2425) {
     x_3396(x_2425);
     MakeUnit();
     ListIter(x_2425->children, [&](const auto &x_2428) {
-      if (HashtblContain(x_2428->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_2428->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_2428->meta->pass_1_proc_inited) {
+        x_2428->meta->bb_2_has_bb_dirtied = true;
+        x_2428->meta->bb_2_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1806(x_2428);
       } else {
         return MetaWriteMetric();
@@ -555,8 +579,9 @@ auto eval_expr_x_2107(const auto &x_2429) {
 Unit var_modified_x_2105(const auto &x_2450) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_2451) {
     auto x_3397 = [&](const auto &x_2452) {
-      if (HashtblContain(x_2452->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_2452->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_2452->meta->pass_1_proc_inited) {
+        x_2452->meta->bb_2_has_bb_dirtied = true;
+        x_2452->meta->bb_2_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1806(x_2452);
       } else {
         return MetaWriteMetric();
@@ -577,8 +602,9 @@ auto eval_expr_x_2102(const auto &x_2453) {
 Unit var_modified_x_2100(const auto &x_2458) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_2459) {
     auto x_3398 = [&](const auto &x_2460) {
-      if (HashtblContain(x_2460->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_2460->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_2460->meta->pass_1_proc_inited) {
+        x_2460->meta->bb_2_has_bb_dirtied = true;
+        x_2460->meta->bb_2_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1806(x_2460);
       } else {
         return MetaWriteMetric();
@@ -599,8 +625,9 @@ auto eval_expr_x_2097(const auto &x_2461) {
 Unit var_modified_x_2093(const auto &x_2466) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_2467) {
     auto x_3399 = [&](const auto &x_2468) {
-      if (HashtblContain(x_2468->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_2468->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_2468->meta->pass_0_proc_inited) {
+        x_2468->meta->bb_0_has_bb_dirtied = true;
+        x_2468->meta->bb_0_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_2468);
       } else {
         return MetaWriteMetric();
@@ -609,8 +636,9 @@ Unit var_modified_x_2093(const auto &x_2466) {
     x_3399(x_2466);
     MakeUnit();
     auto x_3400 = [&](const auto &x_2471) {
-      if (HashtblContain(x_2471->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_2471->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_2471->meta->pass_0_proc_inited) {
+        x_2471->meta->bb_0_has_bb_dirtied = true;
+        x_2471->meta->bb_0_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_2471);
       } else {
         return MetaWriteMetric();
@@ -624,8 +652,9 @@ Unit var_modified_x_2093(const auto &x_2466) {
           return MakeUnit();
         });
     auto x_3401 = [&](const auto &x_2472) {
-      if (HashtblContain(x_2472->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_2472->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_2472->meta->pass_1_proc_inited) {
+        x_2472->meta->bb_2_has_bb_dirtied = true;
+        x_2472->meta->bb_2_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1806(x_2472);
       } else {
         return MetaWriteMetric();
@@ -634,8 +663,9 @@ Unit var_modified_x_2093(const auto &x_2466) {
     x_3401(x_2466);
     MakeUnit();
     auto x_3402 = [&](const auto &x_2475) {
-      if (HashtblContain(x_2475->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_2475->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_2475->meta->pass_1_proc_inited) {
+        x_2475->meta->bb_2_has_bb_dirtied = true;
+        x_2475->meta->bb_2_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1806(x_2475);
       } else {
         return MetaWriteMetric();
@@ -723,8 +753,9 @@ auto eval_expr_x_2090(const auto &x_2476) {
 Unit var_modified_x_2088(const auto &x_2553) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_2554) {
     ListIter(x_2553->children, [&](const auto &x_2555) {
-      if (HashtblContain(x_2555->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_2555->meta->BBDirtied, std::string("bb_1"), true);
+      if (x_2555->meta->pass_0_proc_inited) {
+        x_2555->meta->bb_1_has_bb_dirtied = true;
+        x_2555->meta->bb_1_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_2555);
       } else {
         return MetaWriteMetric();
@@ -740,8 +771,9 @@ auto eval_expr_x_2085(const auto &x_2556) {
 Unit var_modified_x_2083(const auto &x_2573) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_2574) {
     auto x_3405 = [&](const auto &x_2575) {
-      if (HashtblContain(x_2575->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_2575->meta->BBDirtied, std::string("bb_1"), true);
+      if (x_2575->meta->pass_0_proc_inited) {
+        x_2575->meta->bb_1_has_bb_dirtied = true;
+        x_2575->meta->bb_1_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_2575);
       } else {
         return MetaWriteMetric();
@@ -750,16 +782,18 @@ Unit var_modified_x_2083(const auto &x_2573) {
     x_3405(x_2573);
     MakeUnit();
     ListIter(x_2573->children, [&](const auto &x_2576) {
-      if (HashtblContain(x_2576->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_2576->meta->BBDirtied, std::string("bb_1"), true);
+      if (x_2576->meta->pass_0_proc_inited) {
+        x_2576->meta->bb_1_has_bb_dirtied = true;
+        x_2576->meta->bb_1_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_2576);
       } else {
         return MetaWriteMetric();
       }
     });
     auto x_3406 = [&](const auto &x_2577) {
-      if (HashtblContain(x_2577->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_2577->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_2577->meta->pass_0_proc_inited) {
+        x_2577->meta->bb_0_has_bb_dirtied = true;
+        x_2577->meta->bb_0_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_2577);
       } else {
         return MetaWriteMetric();
@@ -780,8 +814,9 @@ auto eval_expr_x_2080(const auto &x_2578) {
 Unit var_modified_x_2078(const auto &x_2583) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_2584) {
     auto x_3407 = [&](const auto &x_2585) {
-      if (HashtblContain(x_2585->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_2585->meta->BBDirtied, std::string("bb_1"), true);
+      if (x_2585->meta->pass_0_proc_inited) {
+        x_2585->meta->bb_1_has_bb_dirtied = true;
+        x_2585->meta->bb_1_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_2585);
       } else {
         return MetaWriteMetric();
@@ -790,16 +825,18 @@ Unit var_modified_x_2078(const auto &x_2583) {
     x_3407(x_2583);
     MakeUnit();
     ListIter(x_2583->children, [&](const auto &x_2586) {
-      if (HashtblContain(x_2586->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_2586->meta->BBDirtied, std::string("bb_1"), true);
+      if (x_2586->meta->pass_0_proc_inited) {
+        x_2586->meta->bb_1_has_bb_dirtied = true;
+        x_2586->meta->bb_1_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_2586);
       } else {
         return MetaWriteMetric();
       }
     });
     auto x_3408 = [&](const auto &x_2587) {
-      if (HashtblContain(x_2587->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_2587->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_2587->meta->pass_0_proc_inited) {
+        x_2587->meta->bb_0_has_bb_dirtied = true;
+        x_2587->meta->bb_0_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_2587);
       } else {
         return MetaWriteMetric();
@@ -816,8 +853,9 @@ auto eval_expr_x_2075(const auto &x_2588) {
 Unit var_modified_x_2073(const auto &x_2597) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_2598) {
     ListIter(x_2597->children, [&](const auto &x_2599) {
-      if (HashtblContain(x_2599->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_2599->meta->BBDirtied, std::string("bb_1"), true);
+      if (x_2599->meta->pass_0_proc_inited) {
+        x_2599->meta->bb_1_has_bb_dirtied = true;
+        x_2599->meta->bb_1_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_2599);
       } else {
         return MetaWriteMetric();
@@ -830,8 +868,9 @@ auto eval_expr_x_2070(const auto &x_2600) { return eq(x_2600->name, std::string(
 Unit var_modified_x_2068(const auto &x_2601) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_2602) {
     auto x_3409 = [&](const auto &x_2603) {
-      if (HashtblContain(x_2603->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_2603->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_2603->meta->pass_0_proc_inited) {
+        x_2603->meta->bb_0_has_bb_dirtied = true;
+        x_2603->meta->bb_0_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_2603);
       } else {
         return MetaWriteMetric();
@@ -846,8 +885,9 @@ auto eval_expr_x_2065(const auto &x_2604) { return neq(x_2604->var_height_attr_e
 Unit var_modified_x_2063(const auto &x_2609) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_2610) {
     auto x_3410 = [&](const auto &x_2611) {
-      if (HashtblContain(x_2611->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_2611->meta->BBDirtied, std::string("bb_1"), true);
+      if (x_2611->meta->pass_0_proc_inited) {
+        x_2611->meta->bb_1_has_bb_dirtied = true;
+        x_2611->meta->bb_1_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_2611);
       } else {
         return MetaWriteMetric();
@@ -856,8 +896,9 @@ Unit var_modified_x_2063(const auto &x_2609) {
     x_3410(x_2609);
     MakeUnit();
     auto x_3411 = [&](const auto &x_2612) {
-      if (HashtblContain(x_2612->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_2612->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_2612->meta->pass_0_proc_inited) {
+        x_2612->meta->bb_0_has_bb_dirtied = true;
+        x_2612->meta->bb_0_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_2612);
       } else {
         return MetaWriteMetric();
@@ -883,8 +924,9 @@ auto eval_expr_x_2060(const auto &x_2613) {
 Unit var_modified_x_2058(const auto &x_2624) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_2625) {
     auto x_3412 = [&](const auto &x_2626) {
-      if (HashtblContain(x_2626->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_2626->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_2626->meta->pass_0_proc_inited) {
+        x_2626->meta->bb_0_has_bb_dirtied = true;
+        x_2626->meta->bb_0_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_2626);
       } else {
         return MetaWriteMetric();
@@ -899,8 +941,9 @@ auto eval_expr_x_2055(const auto &x_2627) { return neq(x_2627->var_width_attr_ex
 Unit var_modified_x_2053(const auto &x_2632) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_2633) {
     auto x_3413 = [&](const auto &x_2634) {
-      if (HashtblContain(x_2634->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_2634->meta->BBDirtied, std::string("bb_1"), true);
+      if (x_2634->meta->pass_0_proc_inited) {
+        x_2634->meta->bb_1_has_bb_dirtied = true;
+        x_2634->meta->bb_1_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_2634);
       } else {
         return MetaWriteMetric();
@@ -909,8 +952,9 @@ Unit var_modified_x_2053(const auto &x_2632) {
     x_3413(x_2632);
     MakeUnit();
     auto x_3414 = [&](const auto &x_2635) {
-      if (HashtblContain(x_2635->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_2635->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_2635->meta->pass_0_proc_inited) {
+        x_2635->meta->bb_0_has_bb_dirtied = true;
+        x_2635->meta->bb_0_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_2635);
       } else {
         return MetaWriteMetric();
@@ -936,16 +980,18 @@ auto eval_expr_x_2050(const auto &x_2636) {
 Unit var_modified_x_2048(const auto &x_2647) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_2648) {
     ListIter(x_2647->children, [&](const auto &x_2649) {
-      if (HashtblContain(x_2649->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_2649->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_2649->meta->pass_0_proc_inited) {
+        x_2649->meta->bb_0_has_bb_dirtied = true;
+        x_2649->meta->bb_0_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_2649);
       } else {
         return MetaWriteMetric();
       }
     });
     ListIter(x_2647->children, [&](const auto &x_2650) {
-      if (HashtblContain(x_2650->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_2650->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_2650->meta->pass_1_proc_inited) {
+        x_2650->meta->bb_2_has_bb_dirtied = true;
+        x_2650->meta->bb_2_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1806(x_2650);
       } else {
         return MetaWriteMetric();
@@ -971,16 +1017,18 @@ auto eval_expr_x_2045(const auto &x_2651) {
 Unit var_modified_x_2043(const auto &x_2676) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_2677) {
     ListIter(x_2676->children, [&](const auto &x_2678) {
-      if (HashtblContain(x_2678->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_2678->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_2678->meta->pass_0_proc_inited) {
+        x_2678->meta->bb_0_has_bb_dirtied = true;
+        x_2678->meta->bb_0_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_2678);
       } else {
         return MetaWriteMetric();
       }
     });
     auto x_3415 = [&](const auto &x_2679) {
-      if (HashtblContain(x_2679->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_2679->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_2679->meta->pass_1_proc_inited) {
+        x_2679->meta->bb_2_has_bb_dirtied = true;
+        x_2679->meta->bb_2_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1806(x_2679);
       } else {
         return MetaWriteMetric();
@@ -989,8 +1037,9 @@ Unit var_modified_x_2043(const auto &x_2676) {
     x_3415(x_2676);
     MakeUnit();
     ListIter(x_2676->children, [&](const auto &x_2680) {
-      if (HashtblContain(x_2680->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_2680->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_2680->meta->pass_1_proc_inited) {
+        x_2680->meta->bb_2_has_bb_dirtied = true;
+        x_2680->meta->bb_2_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1806(x_2680);
       } else {
         return MetaWriteMetric();
@@ -1015,8 +1064,9 @@ auto eval_expr_x_2040(const auto &x_2681) {
 Unit var_modified_x_2038(const auto &x_2706) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_2707) {
     ListIter(x_2706->children, [&](const auto &x_2708) {
-      if (HashtblContain(x_2708->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_2708->meta->BBDirtied, std::string("bb_1"), true);
+      if (x_2708->meta->pass_0_proc_inited) {
+        x_2708->meta->bb_1_has_bb_dirtied = true;
+        x_2708->meta->bb_1_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_2708);
       } else {
         return MetaWriteMetric();
@@ -1035,8 +1085,9 @@ auto eval_expr_x_2035(const auto &x_2709) {
 Unit var_modified_x_2033(const auto &x_2712) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_2713) {
     auto x_3416 = [&](const auto &x_2716) {
-      if (HashtblContain(x_2716->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_2716->meta->BBDirtied, std::string("bb_1"), true);
+      if (x_2716->meta->pass_0_proc_inited) {
+        x_2716->meta->bb_1_has_bb_dirtied = true;
+        x_2716->meta->bb_1_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_2716);
       } else {
         return MetaWriteMetric();
@@ -1050,8 +1101,9 @@ Unit var_modified_x_2033(const auto &x_2712) {
           return MakeUnit();
         });
     auto x_3417 = [&](const auto &x_2717) {
-      if (HashtblContain(x_2717->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_2717->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_2717->meta->pass_1_proc_inited) {
+        x_2717->meta->bb_2_has_bb_dirtied = true;
+        x_2717->meta->bb_2_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1806(x_2717);
       } else {
         return MetaWriteMetric();
@@ -1068,8 +1120,9 @@ auto eval_expr_x_2030(const auto &x_2718) {
 Unit var_modified_x_2028(const auto &x_2727) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_2728) {
     auto x_3419 = [&](const auto &x_2731) {
-      if (HashtblContain(x_2731->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_2731->meta->BBDirtied, std::string("bb_1"), true);
+      if (x_2731->meta->pass_0_proc_inited) {
+        x_2731->meta->bb_1_has_bb_dirtied = true;
+        x_2731->meta->bb_1_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_2731);
       } else {
         return MetaWriteMetric();
@@ -1083,8 +1136,9 @@ Unit var_modified_x_2028(const auto &x_2727) {
           return MakeUnit();
         });
     auto x_3420 = [&](const auto &x_2732) {
-      if (HashtblContain(x_2732->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_2732->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_2732->meta->pass_1_proc_inited) {
+        x_2732->meta->bb_2_has_bb_dirtied = true;
+        x_2732->meta->bb_2_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1806(x_2732);
       } else {
         return MetaWriteMetric();
@@ -1101,8 +1155,9 @@ auto eval_expr_x_2025(const auto &x_2733) {
 Unit var_modified_x_2023(const auto &x_2742) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_2743) {
     auto x_3422 = [&](const auto &x_2744) {
-      if (HashtblContain(x_2744->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_2744->meta->BBDirtied, std::string("bb_1"), true);
+      if (x_2744->meta->pass_0_proc_inited) {
+        x_2744->meta->bb_1_has_bb_dirtied = true;
+        x_2744->meta->bb_1_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_2744);
       } else {
         return MetaWriteMetric();
@@ -1111,8 +1166,9 @@ Unit var_modified_x_2023(const auto &x_2742) {
     x_3422(x_2742);
     MakeUnit();
     auto x_3423 = [&](const auto &x_2745) {
-      if (HashtblContain(x_2745->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_2745->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_2745->meta->pass_1_proc_inited) {
+        x_2745->meta->bb_2_has_bb_dirtied = true;
+        x_2745->meta->bb_2_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1806(x_2745);
       } else {
         return MetaWriteMetric();
@@ -1133,8 +1189,9 @@ auto eval_expr_x_2020(const auto &x_2746) {
 Unit var_modified_x_2018(const auto &x_2749) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_2750) {
     auto x_3424 = [&](const auto &x_2751) {
-      if (HashtblContain(x_2751->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_2751->meta->BBDirtied, std::string("bb_1"), true);
+      if (x_2751->meta->pass_0_proc_inited) {
+        x_2751->meta->bb_1_has_bb_dirtied = true;
+        x_2751->meta->bb_1_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_2751);
       } else {
         return MetaWriteMetric();
@@ -1143,8 +1200,9 @@ Unit var_modified_x_2018(const auto &x_2749) {
     x_3424(x_2749);
     MakeUnit();
     auto x_3425 = [&](const auto &x_2752) {
-      if (HashtblContain(x_2752->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_2752->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_2752->meta->pass_1_proc_inited) {
+        x_2752->meta->bb_2_has_bb_dirtied = true;
+        x_2752->meta->bb_2_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1806(x_2752);
       } else {
         return MetaWriteMetric();
@@ -1165,8 +1223,9 @@ auto eval_expr_x_2015(const auto &x_2753) {
 Unit var_modified_x_2013(const auto &x_2756) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_2757) {
     auto x_3426 = [&](const auto &x_2758) {
-      if (HashtblContain(x_2758->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_2758->meta->BBDirtied, std::string("bb_1"), true);
+      if (x_2758->meta->pass_0_proc_inited) {
+        x_2758->meta->bb_1_has_bb_dirtied = true;
+        x_2758->meta->bb_1_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_2758);
       } else {
         return MetaWriteMetric();
@@ -1175,8 +1234,9 @@ Unit var_modified_x_2013(const auto &x_2756) {
     x_3426(x_2756);
     MakeUnit();
     auto x_3427 = [&](const auto &x_2759) {
-      if (HashtblContain(x_2759->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_2759->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_2759->meta->pass_0_proc_inited) {
+        x_2759->meta->bb_0_has_bb_dirtied = true;
+        x_2759->meta->bb_0_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_2759);
       } else {
         return MetaWriteMetric();
@@ -1185,8 +1245,9 @@ Unit var_modified_x_2013(const auto &x_2756) {
     x_3427(x_2756);
     MakeUnit();
     auto x_3428 = [&](const auto &x_2760) {
-      if (HashtblContain(x_2760->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_2760->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_2760->meta->pass_1_proc_inited) {
+        x_2760->meta->bb_2_has_bb_dirtied = true;
+        x_2760->meta->bb_2_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1806(x_2760);
       } else {
         return MetaWriteMetric();
@@ -1207,8 +1268,9 @@ auto eval_expr_x_2010(const auto &x_2761) {
 Unit var_modified_x_2008(const auto &x_2764) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_2765) {
     auto x_3429 = [&](const auto &x_2766) {
-      if (HashtblContain(x_2766->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_2766->meta->BBDirtied, std::string("bb_1"), true);
+      if (x_2766->meta->pass_0_proc_inited) {
+        x_2766->meta->bb_1_has_bb_dirtied = true;
+        x_2766->meta->bb_1_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_2766);
       } else {
         return MetaWriteMetric();
@@ -1217,16 +1279,18 @@ Unit var_modified_x_2008(const auto &x_2764) {
     x_3429(x_2764);
     MakeUnit();
     ListIter(x_2764->children, [&](const auto &x_2767) {
-      if (HashtblContain(x_2767->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_2767->meta->BBDirtied, std::string("bb_1"), true);
+      if (x_2767->meta->pass_0_proc_inited) {
+        x_2767->meta->bb_1_has_bb_dirtied = true;
+        x_2767->meta->bb_1_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_2767);
       } else {
         return MetaWriteMetric();
       }
     });
     auto x_3430 = [&](const auto &x_2768) {
-      if (HashtblContain(x_2768->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_2768->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_2768->meta->pass_0_proc_inited) {
+        x_2768->meta->bb_0_has_bb_dirtied = true;
+        x_2768->meta->bb_0_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_2768);
       } else {
         return MetaWriteMetric();
@@ -1247,8 +1311,9 @@ auto eval_expr_x_2005(const auto &x_2769) {
 Unit var_modified_x_2001(const auto &x_2772) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_2773) {
     auto x_3431 = [&](const auto &x_2776) {
-      if (HashtblContain(x_2776->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_2776->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_2776->meta->pass_0_proc_inited) {
+        x_2776->meta->bb_0_has_bb_dirtied = true;
+        x_2776->meta->bb_0_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_2776);
       } else {
         return MetaWriteMetric();
@@ -1265,8 +1330,9 @@ Unit var_modified_x_2001(const auto &x_2772) {
           });
     }
     auto x_3432 = [&](const auto &x_2779) {
-      if (HashtblContain(x_2779->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_2779->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_2779->meta->pass_0_proc_inited) {
+        x_2779->meta->bb_0_has_bb_dirtied = true;
+        x_2779->meta->bb_0_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_2779);
       } else {
         return MetaWriteMetric();
@@ -1301,8 +1367,9 @@ auto eval_expr_x_1998(const auto &x_2780) {
 Unit var_modified_x_1996(const auto &x_2809) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_2810) {
     auto x_3436 = [&](const auto &x_2813) {
-      if (HashtblContain(x_2813->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_2813->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_2813->meta->pass_0_proc_inited) {
+        x_2813->meta->bb_0_has_bb_dirtied = true;
+        x_2813->meta->bb_0_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_2813);
       } else {
         return MetaWriteMetric();
@@ -1319,8 +1386,9 @@ Unit var_modified_x_1996(const auto &x_2809) {
           });
     }
     auto x_3437 = [&](const auto &x_2816) {
-      if (HashtblContain(x_2816->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_2816->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_2816->meta->pass_0_proc_inited) {
+        x_2816->meta->bb_0_has_bb_dirtied = true;
+        x_2816->meta->bb_0_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_2816);
       } else {
         return MetaWriteMetric();
@@ -1347,8 +1415,9 @@ auto eval_expr_x_1993(const auto &x_2817) {
 Unit var_modified_x_1991(const auto &x_2830) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_2831) {
     auto x_3441 = [&](const auto &x_2834) {
-      if (HashtblContain(x_2834->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_2834->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_2834->meta->pass_0_proc_inited) {
+        x_2834->meta->bb_0_has_bb_dirtied = true;
+        x_2834->meta->bb_0_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_2834);
       } else {
         return MetaWriteMetric();
@@ -1362,8 +1431,9 @@ Unit var_modified_x_1991(const auto &x_2830) {
           return MakeUnit();
         });
     auto x_3442 = [&](const auto &x_2837) {
-      if (HashtblContain(x_2837->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_2837->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_2837->meta->pass_1_proc_inited) {
+        x_2837->meta->bb_2_has_bb_dirtied = true;
+        x_2837->meta->bb_2_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1806(x_2837);
       } else {
         return MetaWriteMetric();
@@ -1389,8 +1459,9 @@ auto eval_expr_x_1988(const auto &x_2838) {
 Unit var_modified_x_1986(const auto &x_2847) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_2848) {
     auto x_3446 = [&](const auto &x_2849) {
-      if (HashtblContain(x_2849->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_2849->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_2849->meta->pass_0_proc_inited) {
+        x_2849->meta->bb_0_has_bb_dirtied = true;
+        x_2849->meta->bb_0_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_2849);
       } else {
         return MetaWriteMetric();
@@ -1411,8 +1482,9 @@ auto eval_expr_x_1983(const auto &x_2850) {
 Unit var_modified_x_1981(const auto &x_2859) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_2860) {
     auto x_3447 = [&](const auto &x_2861) {
-      if (HashtblContain(x_2861->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_2861->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_2861->meta->pass_0_proc_inited) {
+        x_2861->meta->bb_0_has_bb_dirtied = true;
+        x_2861->meta->bb_0_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_2861);
       } else {
         return MetaWriteMetric();
@@ -1421,8 +1493,9 @@ Unit var_modified_x_1981(const auto &x_2859) {
     x_3447(x_2859);
     MakeUnit();
     auto x_3448 = [&](const auto &x_2862) {
-      if (HashtblContain(x_2862->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_2862->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_2862->meta->pass_1_proc_inited) {
+        x_2862->meta->bb_2_has_bb_dirtied = true;
+        x_2862->meta->bb_2_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1806(x_2862);
       } else {
         return MetaWriteMetric();
@@ -1516,8 +1589,9 @@ auto eval_expr_x_1978(const auto &x_2863) {
 Unit var_modified_x_1976(const auto &x_3008) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_3009) {
     auto x_3449 = [&](const auto &x_3010) {
-      if (HashtblContain(x_3010->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_3010->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_3010->meta->pass_1_proc_inited) {
+        x_3010->meta->bb_2_has_bb_dirtied = true;
+        x_3010->meta->bb_2_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1806(x_3010);
       } else {
         return MetaWriteMetric();
@@ -1550,8 +1624,9 @@ auto eval_expr_x_1973(const auto &x_3011) {
 Unit var_modified_x_1971(const auto &x_3060) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_3061) {
     auto x_3450 = [&](const auto &x_3062) {
-      if (HashtblContain(x_3062->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_3062->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_3062->meta->pass_0_proc_inited) {
+        x_3062->meta->bb_0_has_bb_dirtied = true;
+        x_3062->meta->bb_0_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_3062);
       } else {
         return MetaWriteMetric();
@@ -1560,8 +1635,9 @@ Unit var_modified_x_1971(const auto &x_3060) {
     x_3450(x_3060);
     MakeUnit();
     auto x_3451 = [&](const auto &x_3063) {
-      if (HashtblContain(x_3063->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_3063->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_3063->meta->pass_1_proc_inited) {
+        x_3063->meta->bb_2_has_bb_dirtied = true;
+        x_3063->meta->bb_2_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1806(x_3063);
       } else {
         return MetaWriteMetric();
@@ -1582,8 +1658,9 @@ auto eval_expr_x_1968(const auto &x_3064) {
 Unit var_modified_x_1966(const auto &x_3067) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_3068) {
     auto x_3452 = [&](const auto &x_3069) {
-      if (HashtblContain(x_3069->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_3069->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_3069->meta->pass_0_proc_inited) {
+        x_3069->meta->bb_0_has_bb_dirtied = true;
+        x_3069->meta->bb_0_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_3069);
       } else {
         return MetaWriteMetric();
@@ -1604,8 +1681,9 @@ auto eval_expr_x_1963(const auto &x_3070) {
 Unit var_modified_x_1961(const auto &x_3079) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_3080) {
     auto x_3453 = [&](const auto &x_3083) {
-      if (HashtblContain(x_3083->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_3083->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_3083->meta->pass_0_proc_inited) {
+        x_3083->meta->bb_0_has_bb_dirtied = true;
+        x_3083->meta->bb_0_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_3083);
       } else {
         return MetaWriteMetric();
@@ -1619,8 +1697,9 @@ Unit var_modified_x_1961(const auto &x_3079) {
           return MakeUnit();
         });
     auto x_3454 = [&](const auto &x_3086) {
-      if (HashtblContain(x_3086->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_3086->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_3086->meta->pass_1_proc_inited) {
+        x_3086->meta->bb_2_has_bb_dirtied = true;
+        x_3086->meta->bb_2_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1806(x_3086);
       } else {
         return MetaWriteMetric();
@@ -1646,8 +1725,9 @@ auto eval_expr_x_1958(const auto &x_3087) {
 Unit var_modified_x_1956(const auto &x_3096) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_3097) {
     auto x_3458 = [&](const auto &x_3100) {
-      if (HashtblContain(x_3100->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_3100->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_3100->meta->pass_0_proc_inited) {
+        x_3100->meta->bb_0_has_bb_dirtied = true;
+        x_3100->meta->bb_0_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_3100);
       } else {
         return MetaWriteMetric();
@@ -1664,8 +1744,9 @@ Unit var_modified_x_1956(const auto &x_3096) {
           });
     }
     auto x_3459 = [&](const auto &x_3103) {
-      if (HashtblContain(x_3103->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_3103->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_3103->meta->pass_0_proc_inited) {
+        x_3103->meta->bb_0_has_bb_dirtied = true;
+        x_3103->meta->bb_0_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_3103);
       } else {
         return MetaWriteMetric();
@@ -1688,8 +1769,9 @@ auto eval_expr_x_1953(const auto &x_3104) {
 Unit var_modified_x_1951(const auto &x_3113) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_3114) {
     auto x_3463 = [&](const auto &x_3115) {
-      if (HashtblContain(x_3115->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_3115->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_3115->meta->pass_0_proc_inited) {
+        x_3115->meta->bb_0_has_bb_dirtied = true;
+        x_3115->meta->bb_0_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_3115);
       } else {
         return MetaWriteMetric();
@@ -1698,8 +1780,9 @@ Unit var_modified_x_1951(const auto &x_3113) {
     x_3463(x_3113);
     MakeUnit();
     auto x_3464 = [&](const auto &x_3118) {
-      if (HashtblContain(x_3118->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_3118->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_3118->meta->pass_0_proc_inited) {
+        x_3118->meta->bb_0_has_bb_dirtied = true;
+        x_3118->meta->bb_0_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_3118);
       } else {
         return MetaWriteMetric();
@@ -1724,8 +1807,9 @@ auto eval_expr_x_1948(const auto &x_3119) {
 Unit var_modified_x_1946(const auto &x_3132) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_3133) {
     auto x_3466 = [&](const auto &x_3134) {
-      if (HashtblContain(x_3134->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_3134->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_3134->meta->pass_0_proc_inited) {
+        x_3134->meta->bb_0_has_bb_dirtied = true;
+        x_3134->meta->bb_0_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_3134);
       } else {
         return MetaWriteMetric();
@@ -1746,8 +1830,9 @@ auto eval_expr_x_1943(const auto &x_3135) {
 Unit var_modified_x_1941(const auto &x_3144) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_3145) {
     auto x_3467 = [&](const auto &x_3146) {
-      if (HashtblContain(x_3146->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_3146->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_3146->meta->pass_0_proc_inited) {
+        x_3146->meta->bb_0_has_bb_dirtied = true;
+        x_3146->meta->bb_0_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_3146);
       } else {
         return MetaWriteMetric();
@@ -1756,8 +1841,9 @@ Unit var_modified_x_1941(const auto &x_3144) {
     x_3467(x_3144);
     MakeUnit();
     auto x_3468 = [&](const auto &x_3147) {
-      if (HashtblContain(x_3147->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_3147->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_3147->meta->pass_1_proc_inited) {
+        x_3147->meta->bb_2_has_bb_dirtied = true;
+        x_3147->meta->bb_2_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1806(x_3147);
       } else {
         return MetaWriteMetric();
@@ -1850,8 +1936,9 @@ auto eval_expr_x_1938(const auto &x_3148) {
 Unit var_modified_x_1936(const auto &x_3301) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_3302) {
     auto x_3469 = [&](const auto &x_3303) {
-      if (HashtblContain(x_3303->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_3303->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_3303->meta->pass_0_proc_inited) {
+        x_3303->meta->bb_0_has_bb_dirtied = true;
+        x_3303->meta->bb_0_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_3303);
       } else {
         return MetaWriteMetric();
@@ -1872,8 +1959,9 @@ auto eval_expr_x_1933(const auto &x_3304) {
 Unit var_modified_x_1931(const auto &x_3309) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_3310) {
     auto x_3470 = [&](const auto &x_3311) {
-      if (HashtblContain(x_3311->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_3311->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_3311->meta->pass_1_proc_inited) {
+        x_3311->meta->bb_2_has_bb_dirtied = true;
+        x_3311->meta->bb_2_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1806(x_3311);
       } else {
         return MetaWriteMetric();
@@ -1906,8 +1994,9 @@ auto eval_expr_x_1928(const auto &x_3312) {
 Unit var_modified_x_1926(const auto &x_3361) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_3362) {
     auto x_3471 = [&](const auto &x_3363) {
-      if (HashtblContain(x_3363->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_3363->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_3363->meta->pass_0_proc_inited) {
+        x_3363->meta->bb_0_has_bb_dirtied = true;
+        x_3363->meta->bb_0_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_3363);
       } else {
         return MetaWriteMetric();
@@ -1939,8 +2028,9 @@ auto eval_expr_x_1923(const auto &x_3364) {
 Unit var_modified_x_1921(const auto &x_3377) {
   return MetricRecordOverhead(Zro(Timed([&](const auto &x_3378) {
     auto x_3472 = [&](const auto &x_3379) {
-      if (HashtblContain(x_3379->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_3379->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_3379->meta->pass_0_proc_inited) {
+        x_3379->meta->bb_0_has_bb_dirtied = true;
+        x_3379->meta->bb_0_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1766(x_3379);
       } else {
         return MetaWriteMetric();
@@ -1949,8 +2039,9 @@ Unit var_modified_x_1921(const auto &x_3377) {
     x_3472(x_3377);
     MakeUnit();
     auto x_3473 = [&](const auto &x_3380) {
-      if (HashtblContain(x_3380->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_3380->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_3380->meta->pass_1_proc_inited) {
+        x_3380->meta->bb_2_has_bb_dirtied = true;
+        x_3380->meta->bb_2_bb_dirtied = true;
         return set_recursive_proc_dirtied_x_1806(x_3380);
       } else {
         return MetaWriteMetric();
@@ -2455,8 +2546,9 @@ Unit eval_stmts_x_1853(const auto &x_2095) {
 }
 Unit x_2157(const auto &x_2158) {
   MetaWriteMetric();
-  if (!HashtblFindExn(x_2158->meta->RecursiveProcDirtied, std::string("pass_1"))) {
-    HashtblSet(x_2158->meta->RecursiveProcDirtied, std::string("pass_1"), true);
+  if (!x_2158->meta->pass_1_recursive_proc_dirtied) {
+    x_2158->meta->pass_1_has_recursive_proc_dirtied = true;
+    x_2158->meta->pass_1_recursive_proc_dirtied = true;
     return OptionMatch(
         x_2158->parent, [&](const auto &x_2160) { return MakeUnit(); },
         [&](const auto &x_2159) { return x_2157(x_2159); });
@@ -2467,8 +2559,9 @@ Unit x_2157(const auto &x_2158) {
 Unit set_recursive_proc_dirtied_x_1806(const auto &x_2158) { return x_2157(x_2158); }
 Unit x_2161(const auto &x_2162) {
   MetaWriteMetric();
-  if (!HashtblFindExn(x_2162->meta->RecursiveProcDirtied, std::string("pass_0"))) {
-    HashtblSet(x_2162->meta->RecursiveProcDirtied, std::string("pass_0"), true);
+  if (!x_2162->meta->pass_0_recursive_proc_dirtied) {
+    x_2162->meta->pass_0_has_recursive_proc_dirtied = true;
+    x_2162->meta->pass_0_recursive_proc_dirtied = true;
     return OptionMatch(
         x_2162->parent, [&](const auto &x_2164) { return MakeUnit(); },
         [&](const auto &x_2163) { return x_2161(x_2163); });
@@ -2537,8 +2630,9 @@ Unit x_1755(const auto &x_1756, const auto &x_1757, const auto &x_1758) {
           if (x_3475 == "width") {
             WriteMetric();
             HashtblAddExn(x_1757->attr, std::string("width"), x_1765);
-            if (HashtblContain(x_1757->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1757->meta->BBDirtied, std::string("bb_1"), true);
+            if (x_1757->meta->pass_0_proc_inited) {
+              x_1757->meta->bb_1_has_bb_dirtied = true;
+              x_1757->meta->bb_1_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1757);
             } else {
               MetaWriteMetric();
@@ -2547,8 +2641,9 @@ Unit x_1755(const auto &x_1756, const auto &x_1757, const auto &x_1758) {
           } else if (x_3475 == "image_height") {
             WriteMetric();
             HashtblAddExn(x_1757->attr, std::string("image_height"), x_1765);
-            if (HashtblContain(x_1757->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1757->meta->BBDirtied, std::string("bb_0"), true);
+            if (x_1757->meta->pass_0_proc_inited) {
+              x_1757->meta->bb_0_has_bb_dirtied = true;
+              x_1757->meta->bb_0_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1757);
             } else {
               MetaWriteMetric();
@@ -2557,8 +2652,9 @@ Unit x_1755(const auto &x_1756, const auto &x_1757, const auto &x_1758) {
           } else if (x_3475 == "image_width") {
             WriteMetric();
             HashtblAddExn(x_1757->attr, std::string("image_width"), x_1765);
-            if (HashtblContain(x_1757->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1757->meta->BBDirtied, std::string("bb_0"), true);
+            if (x_1757->meta->pass_0_proc_inited) {
+              x_1757->meta->bb_0_has_bb_dirtied = true;
+              x_1757->meta->bb_0_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1757);
             } else {
               MetaWriteMetric();
@@ -2567,8 +2663,9 @@ Unit x_1755(const auto &x_1756, const auto &x_1757, const auto &x_1758) {
           } else if (x_3475 == "height") {
             WriteMetric();
             HashtblAddExn(x_1757->attr, std::string("height"), x_1765);
-            if (HashtblContain(x_1757->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1757->meta->BBDirtied, std::string("bb_1"), true);
+            if (x_1757->meta->pass_0_proc_inited) {
+              x_1757->meta->bb_1_has_bb_dirtied = true;
+              x_1757->meta->bb_1_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1757);
             } else {
               MetaWriteMetric();
@@ -2577,8 +2674,9 @@ Unit x_1755(const auto &x_1756, const auto &x_1757, const auto &x_1758) {
           } else if (x_3475 == "viewBox") {
             WriteMetric();
             HashtblAddExn(x_1757->attr, std::string("viewBox"), x_1765);
-            if (HashtblContain(x_1757->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1757->meta->BBDirtied, std::string("bb_0"), true);
+            if (x_1757->meta->pass_0_proc_inited) {
+              x_1757->meta->bb_0_has_bb_dirtied = true;
+              x_1757->meta->bb_0_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1757);
             } else {
               MetaWriteMetric();
@@ -2592,8 +2690,9 @@ Unit x_1755(const auto &x_1756, const auto &x_1757, const auto &x_1758) {
           if (x_3476 == "width") {
             WriteMetric();
             HashtblAddExn(x_1757->prop, std::string("width"), x_1765);
-            if (HashtblContain(x_1757->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1757->meta->BBDirtied, std::string("bb_0"), true);
+            if (x_1757->meta->pass_0_proc_inited) {
+              x_1757->meta->bb_0_has_bb_dirtied = true;
+              x_1757->meta->bb_0_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1757);
             } else {
               MetaWriteMetric();
@@ -2602,8 +2701,9 @@ Unit x_1755(const auto &x_1756, const auto &x_1757, const auto &x_1758) {
           } else if (x_3476 == "flex-grow") {
             WriteMetric();
             HashtblAddExn(x_1757->prop, std::string("flex-grow"), x_1765);
-            if (HashtblContain(x_1757->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1757->meta->BBDirtied, std::string("bb_1"), true);
+            if (x_1757->meta->pass_0_proc_inited) {
+              x_1757->meta->bb_1_has_bb_dirtied = true;
+              x_1757->meta->bb_1_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1757);
             } else {
               MetaWriteMetric();
@@ -2612,8 +2712,9 @@ Unit x_1755(const auto &x_1756, const auto &x_1757, const auto &x_1758) {
           } else if (x_3476 == "height") {
             WriteMetric();
             HashtblAddExn(x_1757->prop, std::string("height"), x_1765);
-            if (HashtblContain(x_1757->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1757->meta->BBDirtied, std::string("bb_0"), true);
+            if (x_1757->meta->pass_0_proc_inited) {
+              x_1757->meta->bb_0_has_bb_dirtied = true;
+              x_1757->meta->bb_0_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1757);
             } else {
               MetaWriteMetric();
@@ -2622,8 +2723,9 @@ Unit x_1755(const auto &x_1756, const auto &x_1757, const auto &x_1758) {
           } else if (x_3476 == "display") {
             WriteMetric();
             HashtblAddExn(x_1757->prop, std::string("display"), x_1765);
-            if (HashtblContain(x_1757->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1757->meta->BBDirtied, std::string("bb_1"), true);
+            if (x_1757->meta->pass_0_proc_inited) {
+              x_1757->meta->bb_1_has_bb_dirtied = true;
+              x_1757->meta->bb_1_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1757);
             } else {
               MetaWriteMetric();
@@ -2632,8 +2734,9 @@ Unit x_1755(const auto &x_1756, const auto &x_1757, const auto &x_1758) {
           } else if (x_3476 == "position") {
             WriteMetric();
             HashtblAddExn(x_1757->prop, std::string("position"), x_1765);
-            if (HashtblContain(x_1757->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1757->meta->BBDirtied, std::string("bb_1"), true);
+            if (x_1757->meta->pass_0_proc_inited) {
+              x_1757->meta->bb_1_has_bb_dirtied = true;
+              x_1757->meta->bb_1_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1757);
             } else {
               MetaWriteMetric();
@@ -2642,8 +2745,9 @@ Unit x_1755(const auto &x_1756, const auto &x_1757, const auto &x_1758) {
           } else if (x_3476 == "flex-shrink") {
             WriteMetric();
             HashtblAddExn(x_1757->prop, std::string("flex-shrink"), x_1765);
-            if (HashtblContain(x_1757->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1757->meta->BBDirtied, std::string("bb_1"), true);
+            if (x_1757->meta->pass_0_proc_inited) {
+              x_1757->meta->bb_1_has_bb_dirtied = true;
+              x_1757->meta->bb_1_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1757);
             } else {
               MetaWriteMetric();
@@ -2652,8 +2756,9 @@ Unit x_1755(const auto &x_1756, const auto &x_1757, const auto &x_1758) {
           } else if (x_3476 == "flex-direction") {
             WriteMetric();
             HashtblAddExn(x_1757->prop, std::string("flex-direction"), x_1765);
-            if (HashtblContain(x_1757->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1757->meta->BBDirtied, std::string("bb_1"), true);
+            if (x_1757->meta->pass_0_proc_inited) {
+              x_1757->meta->bb_1_has_bb_dirtied = true;
+              x_1757->meta->bb_1_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1757);
             } else {
               MetaWriteMetric();
@@ -2686,8 +2791,9 @@ Unit x_1767(const auto &x_1768, const auto &x_1769, const auto &x_1770) {
           if (x_3478 == "width") {
             WriteMetric();
             HashtblForceRemove(x_1769->attr, std::string("width"));
-            if (HashtblContain(x_1769->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1769->meta->BBDirtied, std::string("bb_1"), true);
+            if (x_1769->meta->pass_0_proc_inited) {
+              x_1769->meta->bb_1_has_bb_dirtied = true;
+              x_1769->meta->bb_1_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1769);
             } else {
               MetaWriteMetric();
@@ -2696,8 +2802,9 @@ Unit x_1767(const auto &x_1768, const auto &x_1769, const auto &x_1770) {
           } else if (x_3478 == "image_height") {
             WriteMetric();
             HashtblForceRemove(x_1769->attr, std::string("image_height"));
-            if (HashtblContain(x_1769->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1769->meta->BBDirtied, std::string("bb_0"), true);
+            if (x_1769->meta->pass_0_proc_inited) {
+              x_1769->meta->bb_0_has_bb_dirtied = true;
+              x_1769->meta->bb_0_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1769);
             } else {
               MetaWriteMetric();
@@ -2706,8 +2813,9 @@ Unit x_1767(const auto &x_1768, const auto &x_1769, const auto &x_1770) {
           } else if (x_3478 == "image_width") {
             WriteMetric();
             HashtblForceRemove(x_1769->attr, std::string("image_width"));
-            if (HashtblContain(x_1769->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1769->meta->BBDirtied, std::string("bb_0"), true);
+            if (x_1769->meta->pass_0_proc_inited) {
+              x_1769->meta->bb_0_has_bb_dirtied = true;
+              x_1769->meta->bb_0_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1769);
             } else {
               MetaWriteMetric();
@@ -2716,8 +2824,9 @@ Unit x_1767(const auto &x_1768, const auto &x_1769, const auto &x_1770) {
           } else if (x_3478 == "height") {
             WriteMetric();
             HashtblForceRemove(x_1769->attr, std::string("height"));
-            if (HashtblContain(x_1769->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1769->meta->BBDirtied, std::string("bb_1"), true);
+            if (x_1769->meta->pass_0_proc_inited) {
+              x_1769->meta->bb_1_has_bb_dirtied = true;
+              x_1769->meta->bb_1_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1769);
             } else {
               MetaWriteMetric();
@@ -2726,8 +2835,9 @@ Unit x_1767(const auto &x_1768, const auto &x_1769, const auto &x_1770) {
           } else if (x_3478 == "viewBox") {
             WriteMetric();
             HashtblForceRemove(x_1769->attr, std::string("viewBox"));
-            if (HashtblContain(x_1769->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1769->meta->BBDirtied, std::string("bb_0"), true);
+            if (x_1769->meta->pass_0_proc_inited) {
+              x_1769->meta->bb_0_has_bb_dirtied = true;
+              x_1769->meta->bb_0_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1769);
             } else {
               MetaWriteMetric();
@@ -2741,8 +2851,9 @@ Unit x_1767(const auto &x_1768, const auto &x_1769, const auto &x_1770) {
           if (x_3479 == "width") {
             WriteMetric();
             HashtblForceRemove(x_1769->prop, std::string("width"));
-            if (HashtblContain(x_1769->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1769->meta->BBDirtied, std::string("bb_0"), true);
+            if (x_1769->meta->pass_0_proc_inited) {
+              x_1769->meta->bb_0_has_bb_dirtied = true;
+              x_1769->meta->bb_0_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1769);
             } else {
               MetaWriteMetric();
@@ -2751,8 +2862,9 @@ Unit x_1767(const auto &x_1768, const auto &x_1769, const auto &x_1770) {
           } else if (x_3479 == "flex-grow") {
             WriteMetric();
             HashtblForceRemove(x_1769->prop, std::string("flex-grow"));
-            if (HashtblContain(x_1769->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1769->meta->BBDirtied, std::string("bb_1"), true);
+            if (x_1769->meta->pass_0_proc_inited) {
+              x_1769->meta->bb_1_has_bb_dirtied = true;
+              x_1769->meta->bb_1_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1769);
             } else {
               MetaWriteMetric();
@@ -2761,8 +2873,9 @@ Unit x_1767(const auto &x_1768, const auto &x_1769, const auto &x_1770) {
           } else if (x_3479 == "height") {
             WriteMetric();
             HashtblForceRemove(x_1769->prop, std::string("height"));
-            if (HashtblContain(x_1769->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1769->meta->BBDirtied, std::string("bb_0"), true);
+            if (x_1769->meta->pass_0_proc_inited) {
+              x_1769->meta->bb_0_has_bb_dirtied = true;
+              x_1769->meta->bb_0_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1769);
             } else {
               MetaWriteMetric();
@@ -2771,8 +2884,9 @@ Unit x_1767(const auto &x_1768, const auto &x_1769, const auto &x_1770) {
           } else if (x_3479 == "display") {
             WriteMetric();
             HashtblForceRemove(x_1769->prop, std::string("display"));
-            if (HashtblContain(x_1769->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1769->meta->BBDirtied, std::string("bb_1"), true);
+            if (x_1769->meta->pass_0_proc_inited) {
+              x_1769->meta->bb_1_has_bb_dirtied = true;
+              x_1769->meta->bb_1_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1769);
             } else {
               MetaWriteMetric();
@@ -2781,8 +2895,9 @@ Unit x_1767(const auto &x_1768, const auto &x_1769, const auto &x_1770) {
           } else if (x_3479 == "position") {
             WriteMetric();
             HashtblForceRemove(x_1769->prop, std::string("position"));
-            if (HashtblContain(x_1769->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1769->meta->BBDirtied, std::string("bb_1"), true);
+            if (x_1769->meta->pass_0_proc_inited) {
+              x_1769->meta->bb_1_has_bb_dirtied = true;
+              x_1769->meta->bb_1_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1769);
             } else {
               MetaWriteMetric();
@@ -2791,8 +2906,9 @@ Unit x_1767(const auto &x_1768, const auto &x_1769, const auto &x_1770) {
           } else if (x_3479 == "flex-shrink") {
             WriteMetric();
             HashtblForceRemove(x_1769->prop, std::string("flex-shrink"));
-            if (HashtblContain(x_1769->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1769->meta->BBDirtied, std::string("bb_1"), true);
+            if (x_1769->meta->pass_0_proc_inited) {
+              x_1769->meta->bb_1_has_bb_dirtied = true;
+              x_1769->meta->bb_1_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1769);
             } else {
               MetaWriteMetric();
@@ -2801,8 +2917,9 @@ Unit x_1767(const auto &x_1768, const auto &x_1769, const auto &x_1770) {
           } else if (x_3479 == "flex-direction") {
             WriteMetric();
             HashtblForceRemove(x_1769->prop, std::string("flex-direction"));
-            if (HashtblContain(x_1769->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1769->meta->BBDirtied, std::string("bb_1"), true);
+            if (x_1769->meta->pass_0_proc_inited) {
+              x_1769->meta->bb_1_has_bb_dirtied = true;
+              x_1769->meta->bb_1_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1769);
             } else {
               MetaWriteMetric();
@@ -2837,16 +2954,18 @@ Unit x_1776(const auto &x_1777, const auto &x_1778, const auto &x_1779) {
           if (x_3481 == "width") {
             WriteMetric();
             HashtblForceRemove(x_1778->attr, std::string("width"));
-            if (HashtblContain(x_1778->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1778->meta->BBDirtied, std::string("bb_1"), true);
+            if (x_1778->meta->pass_0_proc_inited) {
+              x_1778->meta->bb_1_has_bb_dirtied = true;
+              x_1778->meta->bb_1_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1778);
             } else {
               MetaWriteMetric();
             }
             WriteMetric();
             HashtblAddExn(x_1778->attr, std::string("width"), x_1786);
-            if (HashtblContain(x_1778->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1778->meta->BBDirtied, std::string("bb_1"), true);
+            if (x_1778->meta->pass_0_proc_inited) {
+              x_1778->meta->bb_1_has_bb_dirtied = true;
+              x_1778->meta->bb_1_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1778);
             } else {
               MetaWriteMetric();
@@ -2855,16 +2974,18 @@ Unit x_1776(const auto &x_1777, const auto &x_1778, const auto &x_1779) {
           } else if (x_3481 == "image_height") {
             WriteMetric();
             HashtblForceRemove(x_1778->attr, std::string("image_height"));
-            if (HashtblContain(x_1778->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1778->meta->BBDirtied, std::string("bb_0"), true);
+            if (x_1778->meta->pass_0_proc_inited) {
+              x_1778->meta->bb_0_has_bb_dirtied = true;
+              x_1778->meta->bb_0_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1778);
             } else {
               MetaWriteMetric();
             }
             WriteMetric();
             HashtblAddExn(x_1778->attr, std::string("image_height"), x_1786);
-            if (HashtblContain(x_1778->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1778->meta->BBDirtied, std::string("bb_0"), true);
+            if (x_1778->meta->pass_0_proc_inited) {
+              x_1778->meta->bb_0_has_bb_dirtied = true;
+              x_1778->meta->bb_0_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1778);
             } else {
               MetaWriteMetric();
@@ -2873,16 +2994,18 @@ Unit x_1776(const auto &x_1777, const auto &x_1778, const auto &x_1779) {
           } else if (x_3481 == "image_width") {
             WriteMetric();
             HashtblForceRemove(x_1778->attr, std::string("image_width"));
-            if (HashtblContain(x_1778->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1778->meta->BBDirtied, std::string("bb_0"), true);
+            if (x_1778->meta->pass_0_proc_inited) {
+              x_1778->meta->bb_0_has_bb_dirtied = true;
+              x_1778->meta->bb_0_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1778);
             } else {
               MetaWriteMetric();
             }
             WriteMetric();
             HashtblAddExn(x_1778->attr, std::string("image_width"), x_1786);
-            if (HashtblContain(x_1778->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1778->meta->BBDirtied, std::string("bb_0"), true);
+            if (x_1778->meta->pass_0_proc_inited) {
+              x_1778->meta->bb_0_has_bb_dirtied = true;
+              x_1778->meta->bb_0_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1778);
             } else {
               MetaWriteMetric();
@@ -2891,16 +3014,18 @@ Unit x_1776(const auto &x_1777, const auto &x_1778, const auto &x_1779) {
           } else if (x_3481 == "height") {
             WriteMetric();
             HashtblForceRemove(x_1778->attr, std::string("height"));
-            if (HashtblContain(x_1778->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1778->meta->BBDirtied, std::string("bb_1"), true);
+            if (x_1778->meta->pass_0_proc_inited) {
+              x_1778->meta->bb_1_has_bb_dirtied = true;
+              x_1778->meta->bb_1_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1778);
             } else {
               MetaWriteMetric();
             }
             WriteMetric();
             HashtblAddExn(x_1778->attr, std::string("height"), x_1786);
-            if (HashtblContain(x_1778->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1778->meta->BBDirtied, std::string("bb_1"), true);
+            if (x_1778->meta->pass_0_proc_inited) {
+              x_1778->meta->bb_1_has_bb_dirtied = true;
+              x_1778->meta->bb_1_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1778);
             } else {
               MetaWriteMetric();
@@ -2909,16 +3034,18 @@ Unit x_1776(const auto &x_1777, const auto &x_1778, const auto &x_1779) {
           } else if (x_3481 == "viewBox") {
             WriteMetric();
             HashtblForceRemove(x_1778->attr, std::string("viewBox"));
-            if (HashtblContain(x_1778->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1778->meta->BBDirtied, std::string("bb_0"), true);
+            if (x_1778->meta->pass_0_proc_inited) {
+              x_1778->meta->bb_0_has_bb_dirtied = true;
+              x_1778->meta->bb_0_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1778);
             } else {
               MetaWriteMetric();
             }
             WriteMetric();
             HashtblAddExn(x_1778->attr, std::string("viewBox"), x_1786);
-            if (HashtblContain(x_1778->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1778->meta->BBDirtied, std::string("bb_0"), true);
+            if (x_1778->meta->pass_0_proc_inited) {
+              x_1778->meta->bb_0_has_bb_dirtied = true;
+              x_1778->meta->bb_0_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1778);
             } else {
               MetaWriteMetric();
@@ -2932,16 +3059,18 @@ Unit x_1776(const auto &x_1777, const auto &x_1778, const auto &x_1779) {
           if (x_3482 == "width") {
             WriteMetric();
             HashtblForceRemove(x_1778->prop, std::string("width"));
-            if (HashtblContain(x_1778->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1778->meta->BBDirtied, std::string("bb_0"), true);
+            if (x_1778->meta->pass_0_proc_inited) {
+              x_1778->meta->bb_0_has_bb_dirtied = true;
+              x_1778->meta->bb_0_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1778);
             } else {
               MetaWriteMetric();
             }
             WriteMetric();
             HashtblAddExn(x_1778->prop, std::string("width"), x_1786);
-            if (HashtblContain(x_1778->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1778->meta->BBDirtied, std::string("bb_0"), true);
+            if (x_1778->meta->pass_0_proc_inited) {
+              x_1778->meta->bb_0_has_bb_dirtied = true;
+              x_1778->meta->bb_0_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1778);
             } else {
               MetaWriteMetric();
@@ -2950,16 +3079,18 @@ Unit x_1776(const auto &x_1777, const auto &x_1778, const auto &x_1779) {
           } else if (x_3482 == "flex-grow") {
             WriteMetric();
             HashtblForceRemove(x_1778->prop, std::string("flex-grow"));
-            if (HashtblContain(x_1778->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1778->meta->BBDirtied, std::string("bb_1"), true);
+            if (x_1778->meta->pass_0_proc_inited) {
+              x_1778->meta->bb_1_has_bb_dirtied = true;
+              x_1778->meta->bb_1_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1778);
             } else {
               MetaWriteMetric();
             }
             WriteMetric();
             HashtblAddExn(x_1778->prop, std::string("flex-grow"), x_1786);
-            if (HashtblContain(x_1778->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1778->meta->BBDirtied, std::string("bb_1"), true);
+            if (x_1778->meta->pass_0_proc_inited) {
+              x_1778->meta->bb_1_has_bb_dirtied = true;
+              x_1778->meta->bb_1_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1778);
             } else {
               MetaWriteMetric();
@@ -2968,16 +3099,18 @@ Unit x_1776(const auto &x_1777, const auto &x_1778, const auto &x_1779) {
           } else if (x_3482 == "height") {
             WriteMetric();
             HashtblForceRemove(x_1778->prop, std::string("height"));
-            if (HashtblContain(x_1778->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1778->meta->BBDirtied, std::string("bb_0"), true);
+            if (x_1778->meta->pass_0_proc_inited) {
+              x_1778->meta->bb_0_has_bb_dirtied = true;
+              x_1778->meta->bb_0_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1778);
             } else {
               MetaWriteMetric();
             }
             WriteMetric();
             HashtblAddExn(x_1778->prop, std::string("height"), x_1786);
-            if (HashtblContain(x_1778->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1778->meta->BBDirtied, std::string("bb_0"), true);
+            if (x_1778->meta->pass_0_proc_inited) {
+              x_1778->meta->bb_0_has_bb_dirtied = true;
+              x_1778->meta->bb_0_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1778);
             } else {
               MetaWriteMetric();
@@ -2986,16 +3119,18 @@ Unit x_1776(const auto &x_1777, const auto &x_1778, const auto &x_1779) {
           } else if (x_3482 == "display") {
             WriteMetric();
             HashtblForceRemove(x_1778->prop, std::string("display"));
-            if (HashtblContain(x_1778->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1778->meta->BBDirtied, std::string("bb_1"), true);
+            if (x_1778->meta->pass_0_proc_inited) {
+              x_1778->meta->bb_1_has_bb_dirtied = true;
+              x_1778->meta->bb_1_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1778);
             } else {
               MetaWriteMetric();
             }
             WriteMetric();
             HashtblAddExn(x_1778->prop, std::string("display"), x_1786);
-            if (HashtblContain(x_1778->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1778->meta->BBDirtied, std::string("bb_1"), true);
+            if (x_1778->meta->pass_0_proc_inited) {
+              x_1778->meta->bb_1_has_bb_dirtied = true;
+              x_1778->meta->bb_1_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1778);
             } else {
               MetaWriteMetric();
@@ -3004,16 +3139,18 @@ Unit x_1776(const auto &x_1777, const auto &x_1778, const auto &x_1779) {
           } else if (x_3482 == "position") {
             WriteMetric();
             HashtblForceRemove(x_1778->prop, std::string("position"));
-            if (HashtblContain(x_1778->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1778->meta->BBDirtied, std::string("bb_1"), true);
+            if (x_1778->meta->pass_0_proc_inited) {
+              x_1778->meta->bb_1_has_bb_dirtied = true;
+              x_1778->meta->bb_1_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1778);
             } else {
               MetaWriteMetric();
             }
             WriteMetric();
             HashtblAddExn(x_1778->prop, std::string("position"), x_1786);
-            if (HashtblContain(x_1778->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1778->meta->BBDirtied, std::string("bb_1"), true);
+            if (x_1778->meta->pass_0_proc_inited) {
+              x_1778->meta->bb_1_has_bb_dirtied = true;
+              x_1778->meta->bb_1_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1778);
             } else {
               MetaWriteMetric();
@@ -3022,16 +3159,18 @@ Unit x_1776(const auto &x_1777, const auto &x_1778, const auto &x_1779) {
           } else if (x_3482 == "flex-shrink") {
             WriteMetric();
             HashtblForceRemove(x_1778->prop, std::string("flex-shrink"));
-            if (HashtblContain(x_1778->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1778->meta->BBDirtied, std::string("bb_1"), true);
+            if (x_1778->meta->pass_0_proc_inited) {
+              x_1778->meta->bb_1_has_bb_dirtied = true;
+              x_1778->meta->bb_1_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1778);
             } else {
               MetaWriteMetric();
             }
             WriteMetric();
             HashtblAddExn(x_1778->prop, std::string("flex-shrink"), x_1786);
-            if (HashtblContain(x_1778->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1778->meta->BBDirtied, std::string("bb_1"), true);
+            if (x_1778->meta->pass_0_proc_inited) {
+              x_1778->meta->bb_1_has_bb_dirtied = true;
+              x_1778->meta->bb_1_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1778);
             } else {
               MetaWriteMetric();
@@ -3040,16 +3179,18 @@ Unit x_1776(const auto &x_1777, const auto &x_1778, const auto &x_1779) {
           } else if (x_3482 == "flex-direction") {
             WriteMetric();
             HashtblForceRemove(x_1778->prop, std::string("flex-direction"));
-            if (HashtblContain(x_1778->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1778->meta->BBDirtied, std::string("bb_1"), true);
+            if (x_1778->meta->pass_0_proc_inited) {
+              x_1778->meta->bb_1_has_bb_dirtied = true;
+              x_1778->meta->bb_1_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1778);
             } else {
               MetaWriteMetric();
             }
             WriteMetric();
             HashtblAddExn(x_1778->prop, std::string("flex-direction"), x_1786);
-            if (HashtblContain(x_1778->meta->ProcInited, std::string("pass_0"))) {
-              HashtblSet(x_1778->meta->BBDirtied, std::string("bb_1"), true);
+            if (x_1778->meta->pass_0_proc_inited) {
+              x_1778->meta->bb_1_has_bb_dirtied = true;
+              x_1778->meta->bb_1_bb_dirtied = true;
               set_recursive_proc_dirtied_x_1766(x_1778);
             } else {
               MetaWriteMetric();
@@ -3101,24 +3242,27 @@ Unit x_1787(const auto &x_1788, const auto &x_1789, const auto &x_1790) {
     OptionMatch(
         x_1796->next, [&](const auto &x_1803) { return MakeUnit(); },
         [&](const auto &x_1802) {
-          if (HashtblContain(x_1802->meta->ProcInited, std::string("pass_0"))) {
-            HashtblSet(x_1802->meta->BBDirtied, std::string("bb_1"), true);
+          if (x_1802->meta->pass_0_proc_inited) {
+            x_1802->meta->bb_1_has_bb_dirtied = true;
+            x_1802->meta->bb_1_bb_dirtied = true;
             return set_recursive_proc_dirtied_x_1766(x_1802);
           } else {
             return MetaWriteMetric();
           }
         });
     if (ListIsEmpty(x_1789->children)) {
-      if (HashtblContain(x_1789->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_1789->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_1789->meta->pass_0_proc_inited) {
+        x_1789->meta->bb_0_has_bb_dirtied = true;
+        x_1789->meta->bb_0_bb_dirtied = true;
         set_recursive_proc_dirtied_x_1766(x_1789);
       } else {
         MetaWriteMetric();
       }
     }
     if (ListIsEmpty(x_1797)) {
-      if (HashtblContain(x_1789->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_1789->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_1789->meta->pass_0_proc_inited) {
+        x_1789->meta->bb_0_has_bb_dirtied = true;
+        x_1789->meta->bb_0_bb_dirtied = true;
         set_recursive_proc_dirtied_x_1766(x_1789);
       } else {
         MetaWriteMetric();
@@ -3127,24 +3271,27 @@ Unit x_1787(const auto &x_1788, const auto &x_1789, const auto &x_1790) {
     OptionMatch(
         x_1796->next, [&](const auto &x_1805) { return MakeUnit(); },
         [&](const auto &x_1804) {
-          if (HashtblContain(x_1804->meta->ProcInited, std::string("pass_0"))) {
-            HashtblSet(x_1804->meta->BBDirtied, std::string("bb_0"), true);
+          if (x_1804->meta->pass_0_proc_inited) {
+            x_1804->meta->bb_0_has_bb_dirtied = true;
+            x_1804->meta->bb_0_bb_dirtied = true;
             return set_recursive_proc_dirtied_x_1766(x_1804);
           } else {
             return MetaWriteMetric();
           }
         });
     if (ListIsEmpty(x_1789->children)) {
-      if (HashtblContain(x_1789->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_1789->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_1789->meta->pass_1_proc_inited) {
+        x_1789->meta->bb_2_has_bb_dirtied = true;
+        x_1789->meta->bb_2_bb_dirtied = true;
         set_recursive_proc_dirtied_x_1806(x_1789);
       } else {
         MetaWriteMetric();
       }
     }
     if (ListIsEmpty(x_1797)) {
-      if (HashtblContain(x_1789->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_1789->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_1789->meta->pass_1_proc_inited) {
+        x_1789->meta->bb_2_has_bb_dirtied = true;
+        x_1789->meta->bb_2_bb_dirtied = true;
         set_recursive_proc_dirtied_x_1806(x_1789);
       } else {
         MetaWriteMetric();
@@ -3153,8 +3300,9 @@ Unit x_1787(const auto &x_1788, const auto &x_1789, const auto &x_1790) {
     OptionMatch(
         x_1796->next, [&](const auto &x_1808) { return MakeUnit(); },
         [&](const auto &x_1807) {
-          if (HashtblContain(x_1807->meta->ProcInited, std::string("pass_1"))) {
-            HashtblSet(x_1807->meta->BBDirtied, std::string("bb_2"), true);
+          if (x_1807->meta->pass_1_proc_inited) {
+            x_1807->meta->bb_2_has_bb_dirtied = true;
+            x_1807->meta->bb_2_bb_dirtied = true;
             return set_recursive_proc_dirtied_x_1806(x_1807);
           } else {
             return MetaWriteMetric();
@@ -3194,29 +3342,33 @@ Unit x_1787(const auto &x_1788, const auto &x_1789, const auto &x_1790) {
           return MakeUnit();
         });
     x_1790->parent = x_1789.get();
-    HashtblAddExn(x_1790->meta->RecursiveProcDirtied, std::string("pass_0"), false);
+    x_1790->meta->pass_0_has_recursive_proc_dirtied = true;
+    x_1790->meta->pass_0_recursive_proc_dirtied = false;
     set_recursive_proc_dirtied_x_1766(x_1790);
     OptionMatch(
         x_1790->next, [&](const auto &x_1817) { return MakeUnit(); },
         [&](const auto &x_1816) {
-          if (HashtblContain(x_1816->meta->ProcInited, std::string("pass_0"))) {
-            HashtblSet(x_1816->meta->BBDirtied, std::string("bb_1"), true);
+          if (x_1816->meta->pass_0_proc_inited) {
+            x_1816->meta->bb_1_has_bb_dirtied = true;
+            x_1816->meta->bb_1_bb_dirtied = true;
             return set_recursive_proc_dirtied_x_1766(x_1816);
           } else {
             return MetaWriteMetric();
           }
         });
     if (ListIsSingleton(x_1789->children)) {
-      if (HashtblContain(x_1789->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_1789->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_1789->meta->pass_0_proc_inited) {
+        x_1789->meta->bb_0_has_bb_dirtied = true;
+        x_1789->meta->bb_0_bb_dirtied = true;
         set_recursive_proc_dirtied_x_1766(x_1789);
       } else {
         MetaWriteMetric();
       }
     }
     if (ListIsEmpty(x_1811)) {
-      if (HashtblContain(x_1789->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_1789->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_1789->meta->pass_0_proc_inited) {
+        x_1789->meta->bb_0_has_bb_dirtied = true;
+        x_1789->meta->bb_0_bb_dirtied = true;
         set_recursive_proc_dirtied_x_1766(x_1789);
       } else {
         MetaWriteMetric();
@@ -3225,26 +3377,30 @@ Unit x_1787(const auto &x_1788, const auto &x_1789, const auto &x_1790) {
     OptionMatch(
         x_1790->next, [&](const auto &x_1819) { return MakeUnit(); },
         [&](const auto &x_1818) {
-          if (HashtblContain(x_1818->meta->ProcInited, std::string("pass_0"))) {
-            HashtblSet(x_1818->meta->BBDirtied, std::string("bb_0"), true);
+          if (x_1818->meta->pass_0_proc_inited) {
+            x_1818->meta->bb_0_has_bb_dirtied = true;
+            x_1818->meta->bb_0_bb_dirtied = true;
             return set_recursive_proc_dirtied_x_1766(x_1818);
           } else {
             return MetaWriteMetric();
           }
         });
-    HashtblAddExn(x_1790->meta->RecursiveProcDirtied, std::string("pass_1"), false);
+    x_1790->meta->pass_1_has_recursive_proc_dirtied = true;
+    x_1790->meta->pass_1_recursive_proc_dirtied = false;
     set_recursive_proc_dirtied_x_1806(x_1790);
     if (ListIsSingleton(x_1789->children)) {
-      if (HashtblContain(x_1789->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_1789->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_1789->meta->pass_1_proc_inited) {
+        x_1789->meta->bb_2_has_bb_dirtied = true;
+        x_1789->meta->bb_2_bb_dirtied = true;
         set_recursive_proc_dirtied_x_1806(x_1789);
       } else {
         MetaWriteMetric();
       }
     }
     if (ListIsEmpty(x_1811)) {
-      if (HashtblContain(x_1789->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_1789->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_1789->meta->pass_1_proc_inited) {
+        x_1789->meta->bb_2_has_bb_dirtied = true;
+        x_1789->meta->bb_2_bb_dirtied = true;
         set_recursive_proc_dirtied_x_1806(x_1789);
       } else {
         MetaWriteMetric();
@@ -3253,8 +3409,9 @@ Unit x_1787(const auto &x_1788, const auto &x_1789, const auto &x_1790) {
     OptionMatch(
         x_1790->next, [&](const auto &x_1821) { return MakeUnit(); },
         [&](const auto &x_1820) {
-          if (HashtblContain(x_1820->meta->ProcInited, std::string("pass_1"))) {
-            HashtblSet(x_1820->meta->BBDirtied, std::string("bb_2"), true);
+          if (x_1820->meta->pass_1_proc_inited) {
+            x_1820->meta->bb_2_has_bb_dirtied = true;
+            x_1820->meta->bb_2_bb_dirtied = true;
             return set_recursive_proc_dirtied_x_1806(x_1820);
           } else {
             return MetaWriteMetric();
@@ -3336,24 +3493,27 @@ Unit x_1830(const auto &x_1831, const auto &x_1832, const auto &x_1833) {
     OptionMatch(
         x_1839->next, [&](const auto &x_1846) { return MakeUnit(); },
         [&](const auto &x_1845) {
-          if (HashtblContain(x_1845->meta->ProcInited, std::string("pass_0"))) {
-            HashtblSet(x_1845->meta->BBDirtied, std::string("bb_1"), true);
+          if (x_1845->meta->pass_0_proc_inited) {
+            x_1845->meta->bb_1_has_bb_dirtied = true;
+            x_1845->meta->bb_1_bb_dirtied = true;
             return set_recursive_proc_dirtied_x_1766(x_1845);
           } else {
             return MetaWriteMetric();
           }
         });
     if (ListIsEmpty(x_1832->children)) {
-      if (HashtblContain(x_1832->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_1832->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_1832->meta->pass_0_proc_inited) {
+        x_1832->meta->bb_0_has_bb_dirtied = true;
+        x_1832->meta->bb_0_bb_dirtied = true;
         set_recursive_proc_dirtied_x_1766(x_1832);
       } else {
         MetaWriteMetric();
       }
     }
     if (ListIsEmpty(x_1840)) {
-      if (HashtblContain(x_1832->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_1832->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_1832->meta->pass_0_proc_inited) {
+        x_1832->meta->bb_0_has_bb_dirtied = true;
+        x_1832->meta->bb_0_bb_dirtied = true;
         set_recursive_proc_dirtied_x_1766(x_1832);
       } else {
         MetaWriteMetric();
@@ -3362,24 +3522,27 @@ Unit x_1830(const auto &x_1831, const auto &x_1832, const auto &x_1833) {
     OptionMatch(
         x_1839->next, [&](const auto &x_1848) { return MakeUnit(); },
         [&](const auto &x_1847) {
-          if (HashtblContain(x_1847->meta->ProcInited, std::string("pass_0"))) {
-            HashtblSet(x_1847->meta->BBDirtied, std::string("bb_0"), true);
+          if (x_1847->meta->pass_0_proc_inited) {
+            x_1847->meta->bb_0_has_bb_dirtied = true;
+            x_1847->meta->bb_0_bb_dirtied = true;
             return set_recursive_proc_dirtied_x_1766(x_1847);
           } else {
             return MetaWriteMetric();
           }
         });
     if (ListIsEmpty(x_1832->children)) {
-      if (HashtblContain(x_1832->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_1832->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_1832->meta->pass_1_proc_inited) {
+        x_1832->meta->bb_2_has_bb_dirtied = true;
+        x_1832->meta->bb_2_bb_dirtied = true;
         set_recursive_proc_dirtied_x_1806(x_1832);
       } else {
         MetaWriteMetric();
       }
     }
     if (ListIsEmpty(x_1840)) {
-      if (HashtblContain(x_1832->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_1832->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_1832->meta->pass_1_proc_inited) {
+        x_1832->meta->bb_2_has_bb_dirtied = true;
+        x_1832->meta->bb_2_bb_dirtied = true;
         set_recursive_proc_dirtied_x_1806(x_1832);
       } else {
         MetaWriteMetric();
@@ -3388,8 +3551,9 @@ Unit x_1830(const auto &x_1831, const auto &x_1832, const auto &x_1833) {
     OptionMatch(
         x_1839->next, [&](const auto &x_1850) { return MakeUnit(); },
         [&](const auto &x_1849) {
-          if (HashtblContain(x_1849->meta->ProcInited, std::string("pass_1"))) {
-            HashtblSet(x_1849->meta->BBDirtied, std::string("bb_2"), true);
+          if (x_1849->meta->pass_1_proc_inited) {
+            x_1849->meta->bb_2_has_bb_dirtied = true;
+            x_1849->meta->bb_2_bb_dirtied = true;
             return set_recursive_proc_dirtied_x_1806(x_1849);
           } else {
             return MetaWriteMetric();
@@ -3405,43 +3569,48 @@ Unit remove_node_x_1717(const auto &x_1831, const auto &x_1832, const auto &x_18
 }
 Unit x_1851(const auto &x_1852) {
   MetaReadMetric();
-  if (HashtblFindExn(x_1852->meta->RecursiveProcDirtied, std::string("pass_1"))) {
-    if (HashtblContain(x_1852->meta->ProcInited, std::string("pass_1"))) {
-      if (HashtblFindExn(x_1852->meta->BBDirtied, std::string("bb_2"))) {
+  if (x_1852->meta->pass_1_recursive_proc_dirtied) {
+    if (x_1852->meta->pass_1_proc_inited) {
+      if (x_1852->meta->bb_2_bb_dirtied) {
         eval_stmts_x_1853(x_1852);
-        HashtblSet(x_1852->meta->BBDirtied, std::string("bb_2"), false);
+        x_1852->meta->bb_2_has_bb_dirtied = true;
+        x_1852->meta->bb_2_bb_dirtied = false;
       }
       ListIter(x_1852->children, [&](const auto &x_1854) { return x_1851(x_1854); });
       MakeUnit();
     } else {
-      HashtblAddExn(x_1852->meta->ProcInited, std::string("pass_1"), MakeUnit());
+      x_1852->meta->pass_1_proc_inited = true;
       eval_stmts_x_1706(x_1852);
     }
   }
-  HashtblSet(x_1852->meta->RecursiveProcDirtied, std::string("pass_1"), false);
+  x_1852->meta->pass_1_has_recursive_proc_dirtied = true;
+  x_1852->meta->pass_1_recursive_proc_dirtied = false;
   return MakeUnit();
 }
 Unit recalculate_internal_x_1715(const auto &x_1852) { return x_1851(x_1852); }
 Unit x_1855(const auto &x_1856) {
   MetaReadMetric();
-  if (HashtblFindExn(x_1856->meta->RecursiveProcDirtied, std::string("pass_0"))) {
-    if (HashtblContain(x_1856->meta->ProcInited, std::string("pass_0"))) {
-      if (HashtblFindExn(x_1856->meta->BBDirtied, std::string("bb_1"))) {
+  if (x_1856->meta->pass_0_recursive_proc_dirtied) {
+    if (x_1856->meta->pass_0_proc_inited) {
+      if (x_1856->meta->bb_1_bb_dirtied) {
         eval_stmts_x_1857(x_1856);
-        HashtblSet(x_1856->meta->BBDirtied, std::string("bb_1"), false);
+        x_1856->meta->bb_1_has_bb_dirtied = true;
+        x_1856->meta->bb_1_bb_dirtied = false;
       }
       ListIter(x_1856->children, [&](const auto &x_1858) { return x_1855(x_1858); });
-      if (HashtblFindExn(x_1856->meta->BBDirtied, std::string("bb_0"))) {
+      if (x_1856->meta->bb_0_bb_dirtied) {
         eval_stmts_x_1859(x_1856);
-        HashtblSet(x_1856->meta->BBDirtied, std::string("bb_0"), false);
+        x_1856->meta->bb_0_has_bb_dirtied = true;
+        x_1856->meta->bb_0_bb_dirtied = false;
       }
       MakeUnit();
     } else {
-      HashtblAddExn(x_1856->meta->ProcInited, std::string("pass_0"), MakeUnit());
+      x_1856->meta->pass_0_proc_inited = true;
       eval_stmts_x_1705(x_1856);
     }
   }
-  HashtblSet(x_1856->meta->RecursiveProcDirtied, std::string("pass_0"), false);
+  x_1856->meta->pass_0_has_recursive_proc_dirtied = true;
+  x_1856->meta->pass_0_recursive_proc_dirtied = false;
   return MakeUnit();
 }
 Unit recalculate_internal_x_1714(const auto &x_1856) { return x_1855(x_1856); }
@@ -3483,29 +3652,33 @@ Unit x_1860(const auto &x_1861, const auto &x_1862, const auto &x_1863) {
           return MakeUnit();
         });
     x_1863->parent = x_1862.get();
-    HashtblAddExn(x_1863->meta->RecursiveProcDirtied, std::string("pass_0"), false);
+    x_1863->meta->pass_0_has_recursive_proc_dirtied = true;
+    x_1863->meta->pass_0_recursive_proc_dirtied = false;
     set_recursive_proc_dirtied_x_1766(x_1863);
     OptionMatch(
         x_1863->next, [&](const auto &x_1874) { return MakeUnit(); },
         [&](const auto &x_1873) {
-          if (HashtblContain(x_1873->meta->ProcInited, std::string("pass_0"))) {
-            HashtblSet(x_1873->meta->BBDirtied, std::string("bb_1"), true);
+          if (x_1873->meta->pass_0_proc_inited) {
+            x_1873->meta->bb_1_has_bb_dirtied = true;
+            x_1873->meta->bb_1_bb_dirtied = true;
             return set_recursive_proc_dirtied_x_1766(x_1873);
           } else {
             return MetaWriteMetric();
           }
         });
     if (ListIsSingleton(x_1862->children)) {
-      if (HashtblContain(x_1862->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_1862->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_1862->meta->pass_0_proc_inited) {
+        x_1862->meta->bb_0_has_bb_dirtied = true;
+        x_1862->meta->bb_0_bb_dirtied = true;
         set_recursive_proc_dirtied_x_1766(x_1862);
       } else {
         MetaWriteMetric();
       }
     }
     if (ListIsEmpty(x_1868)) {
-      if (HashtblContain(x_1862->meta->ProcInited, std::string("pass_0"))) {
-        HashtblSet(x_1862->meta->BBDirtied, std::string("bb_0"), true);
+      if (x_1862->meta->pass_0_proc_inited) {
+        x_1862->meta->bb_0_has_bb_dirtied = true;
+        x_1862->meta->bb_0_bb_dirtied = true;
         set_recursive_proc_dirtied_x_1766(x_1862);
       } else {
         MetaWriteMetric();
@@ -3514,26 +3687,30 @@ Unit x_1860(const auto &x_1861, const auto &x_1862, const auto &x_1863) {
     OptionMatch(
         x_1863->next, [&](const auto &x_1876) { return MakeUnit(); },
         [&](const auto &x_1875) {
-          if (HashtblContain(x_1875->meta->ProcInited, std::string("pass_0"))) {
-            HashtblSet(x_1875->meta->BBDirtied, std::string("bb_0"), true);
+          if (x_1875->meta->pass_0_proc_inited) {
+            x_1875->meta->bb_0_has_bb_dirtied = true;
+            x_1875->meta->bb_0_bb_dirtied = true;
             return set_recursive_proc_dirtied_x_1766(x_1875);
           } else {
             return MetaWriteMetric();
           }
         });
-    HashtblAddExn(x_1863->meta->RecursiveProcDirtied, std::string("pass_1"), false);
+    x_1863->meta->pass_1_has_recursive_proc_dirtied = true;
+    x_1863->meta->pass_1_recursive_proc_dirtied = false;
     set_recursive_proc_dirtied_x_1806(x_1863);
     if (ListIsSingleton(x_1862->children)) {
-      if (HashtblContain(x_1862->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_1862->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_1862->meta->pass_1_proc_inited) {
+        x_1862->meta->bb_2_has_bb_dirtied = true;
+        x_1862->meta->bb_2_bb_dirtied = true;
         set_recursive_proc_dirtied_x_1806(x_1862);
       } else {
         MetaWriteMetric();
       }
     }
     if (ListIsEmpty(x_1868)) {
-      if (HashtblContain(x_1862->meta->ProcInited, std::string("pass_1"))) {
-        HashtblSet(x_1862->meta->BBDirtied, std::string("bb_2"), true);
+      if (x_1862->meta->pass_1_proc_inited) {
+        x_1862->meta->bb_2_has_bb_dirtied = true;
+        x_1862->meta->bb_2_bb_dirtied = true;
         set_recursive_proc_dirtied_x_1806(x_1862);
       } else {
         MetaWriteMetric();
@@ -3542,8 +3719,9 @@ Unit x_1860(const auto &x_1861, const auto &x_1862, const auto &x_1863) {
     OptionMatch(
         x_1863->next, [&](const auto &x_1878) { return MakeUnit(); },
         [&](const auto &x_1877) {
-          if (HashtblContain(x_1877->meta->ProcInited, std::string("pass_1"))) {
-            HashtblSet(x_1877->meta->BBDirtied, std::string("bb_2"), true);
+          if (x_1877->meta->pass_1_proc_inited) {
+            x_1877->meta->bb_2_has_bb_dirtied = true;
+            x_1877->meta->bb_2_bb_dirtied = true;
             return set_recursive_proc_dirtied_x_1806(x_1877);
           } else {
             return MetaWriteMetric();
@@ -3594,11 +3772,13 @@ Unit x_1879(const auto &x_1880) {
 Unit set_children_relation_x_1710(const auto &x_1880) { return x_1879(x_1880); }
 Unit eval_stmts_x_1706(const auto &x_1887) {
   return MetricRecordEval(Zro(Timed([&](const auto &x_1888) {
-    HashtblSet(x_1887->meta->BBDirtied, std::string("bb_2"), false);
+    x_1887->meta->bb_2_has_bb_dirtied = true;
+    x_1887->meta->bb_2_bb_dirtied = false;
     eval_stmts_x_1853(x_1887);
     ListIter(x_1887->children, [&](const auto &x_1889) {
-      HashtblAddExn(x_1889->meta->ProcInited, std::string("pass_1"), MakeUnit());
-      HashtblAddExn(x_1889->meta->RecursiveProcDirtied, std::string("pass_1"), false);
+      x_1889->meta->pass_1_proc_inited = true;
+      x_1889->meta->pass_1_has_recursive_proc_dirtied = true;
+      x_1889->meta->pass_1_recursive_proc_dirtied = false;
       eval_stmts_x_1706(x_1889);
       return MakeUnit();
     });
@@ -3607,15 +3787,18 @@ Unit eval_stmts_x_1706(const auto &x_1887) {
 }
 Unit eval_stmts_x_1705(const auto &x_1890) {
   return MetricRecordEval(Zro(Timed([&](const auto &x_1891) {
-    HashtblSet(x_1890->meta->BBDirtied, std::string("bb_1"), false);
+    x_1890->meta->bb_1_has_bb_dirtied = true;
+    x_1890->meta->bb_1_bb_dirtied = false;
     eval_stmts_x_1857(x_1890);
     ListIter(x_1890->children, [&](const auto &x_1892) {
-      HashtblAddExn(x_1892->meta->ProcInited, std::string("pass_0"), MakeUnit());
-      HashtblAddExn(x_1892->meta->RecursiveProcDirtied, std::string("pass_0"), false);
+      x_1892->meta->pass_0_proc_inited = true;
+      x_1892->meta->pass_0_has_recursive_proc_dirtied = true;
+      x_1892->meta->pass_0_recursive_proc_dirtied = false;
       eval_stmts_x_1705(x_1892);
       return MakeUnit();
     });
-    HashtblSet(x_1890->meta->BBDirtied, std::string("bb_0"), false);
+    x_1890->meta->bb_0_has_bb_dirtied = true;
+    x_1890->meta->bb_0_bb_dirtied = false;
     eval_stmts_x_1859(x_1890);
     return MakeUnit();
   })));
@@ -3707,11 +3890,13 @@ int main() {
       auto x_1704 = json_to_layout_node_x_1691(JsonMember(std::string("node"), x_1699));
       OutputChangeMetric(layout_size_x_1692(x_1704));
       InputChangeMetric(node_size_x_1693(x_1703));
-      HashtblAddExn(x_1703->meta->ProcInited, std::string("pass_0"), MakeUnit());
-      HashtblAddExn(x_1703->meta->RecursiveProcDirtied, std::string("pass_0"), false);
+      x_1703->meta->pass_0_proc_inited = true;
+      x_1703->meta->pass_0_has_recursive_proc_dirtied = true;
+      x_1703->meta->pass_0_recursive_proc_dirtied = false;
       eval_stmts_x_1705(x_1703);
-      HashtblAddExn(x_1703->meta->ProcInited, std::string("pass_1"), MakeUnit());
-      HashtblAddExn(x_1703->meta->RecursiveProcDirtied, std::string("pass_1"), false);
+      x_1703->meta->pass_1_proc_inited = true;
+      x_1703->meta->pass_1_has_recursive_proc_dirtied = true;
+      x_1703->meta->pass_1_recursive_proc_dirtied = false;
       eval_stmts_x_1706(x_1703);
       JsonToChannel(x_1694, [&]() {
         auto x_3483 = FreshJson();
