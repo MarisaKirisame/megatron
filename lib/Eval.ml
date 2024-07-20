@@ -96,26 +96,30 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
 
   let var_modified_aux (p : prog) (var_name : string) m : (meta node -> unit) sd =
     lam (fun n ->
-        seqs
-          (List.map (Hashtbl.to_alist p.procs) ~f:(fun (proc_name, _) _ ->
-               let down, up = get_bb_from_proc p proc_name in
-               let work bb_name : unit sd =
-                 let (BasicBlock (_, stmts)) = Hashtbl.find_exn p.bbs bb_name in
-                 let reads = reads_of_stmts stmts in
-                 let dirty read : path Option.t =
-                   match read with
-                   | ReadVar (path, read_var_name) -> if String.equal var_name read_var_name then Some path else None
-                   | ReadHasPath _ -> None (*property being changed cannot change haspath status*)
-                   | ReadProp _ | ReadAttr _ -> None
-                 in
-                 seqs
-                   (List.map
-                      (List.dedup_and_sort (List.filter_map reads ~f:dirty) ~compare:compare_path)
-                      ~f:(fun path _ ->
-                        list_iter (reversed_path path n) (fun dirtied_node ->
-                            bb_dirtied dirtied_node ~proc_name ~bb_name m)))
-               in
-               seqs (List.map (List.append (Option.to_list down) (Option.to_list up)) ~f:(fun n () -> work n)))))
+        metric_record_overhead m
+          (zro
+             (timed (fun _ ->
+                  seqs
+                    (List.map (Hashtbl.to_alist p.procs) ~f:(fun (proc_name, _) _ ->
+                         let down, up = get_bb_from_proc p proc_name in
+                         let work bb_name : unit sd =
+                           let (BasicBlock (_, stmts)) = Hashtbl.find_exn p.bbs bb_name in
+                           let reads = reads_of_stmts stmts in
+                           let dirty read : path Option.t =
+                             match read with
+                             | ReadVar (path, read_var_name) ->
+                                 if String.equal var_name read_var_name then Some path else None
+                             | ReadHasPath _ -> None (*property being changed cannot change haspath status*)
+                             | ReadProp _ | ReadAttr _ -> None
+                           in
+                           seqs
+                             (List.map
+                                (List.dedup_and_sort (List.filter_map reads ~f:dirty) ~compare:compare_path)
+                                ~f:(fun path _ ->
+                                  list_iter (reversed_path path n) (fun dirtied_node ->
+                                      bb_dirtied dirtied_node ~proc_name ~bb_name m)))
+                         in
+                         seqs (List.map (List.append (Option.to_list down) (Option.to_list up)) ~f:(fun n () -> work n))))))))
 
   let var_modified (p : prog) (n : meta node sd) (var_name : string) (m : metric sd) : unit sd =
     if Option.is_none (Hashtbl.find var_modified_hash var_name) then
@@ -198,7 +202,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                 eval_stmts p new_node (stmts_of_processed_proc p proc_name) m))
 
   and eval_stmts_aux (p : prog) (n : meta node sd) (s : stmts) (m : metric sd) : unit sd =
-    seqs (List.map s ~f:(fun stmt _ -> eval_stmt_aux p n stmt m))
+    metric_record_eval m (zro (timed (fun _ -> seqs (List.map s ~f:(fun stmt _ -> eval_stmt_aux p n stmt m)))))
 
   and eval_stmts_hash : (stmts, (meta node -> unit) sd) Hashtbl.t = Hashtbl.create (module STMTS)
 
@@ -471,7 +475,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
       ]
 
   let recalculate (p : prog) (n : meta node sd) (m : metric sd) : unit sd =
-    recalculate_internal p n m (fun n stmts -> eval_stmts p n stmts m)
+    metric_record_overhead m (zro (timed (fun _ -> recalculate_internal p n m (fun n stmts -> eval_stmts p n stmts m))))
 
   let rec assert_node_value_equal (l : _ node sd) (r : _ node sd) : unit sd =
     if is_static then (

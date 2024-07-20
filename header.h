@@ -20,6 +20,8 @@ struct Metric {
   int64_t queue_size_acc = 0;
   int64_t meta_read_count = 0;
   int64_t meta_write_count = 0;
+  int64_t eval_time = 0;
+  int64_t overhead_time = 0;
 } m;
 Unit ResetMetric() {
   m = Metric{};
@@ -57,6 +59,16 @@ int64_t MetricReadCount() { return m.read_count; }
 int64_t MetricMetaReadCount() { return m.meta_read_count; }
 int64_t MetricOutputChangeCount() { return m.output_change_count; }
 int64_t MetricInputChangeCount() { return m.input_change_count; }
+int64_t MetricEvalCount() { return m.eval_time; }
+int64_t MetricOverheadCount() { return m.overhead_time; }
+Unit MetricRecordEval(int64_t i) {
+  m.eval_time += i;
+  return Unit{};
+}
+Unit MetricRecordOverhead(int64_t i) {
+  m.overhead_time += i;
+  return Unit{};
+}
 #define Panic() assert(false)
 void PrintEndline(const std::string &str) { std::cout << str << std::endl; }
 Unit MakeUnit() { return Unit{}; }
@@ -382,6 +394,37 @@ std::string nth_by_sep(const std::string &str, const std::string &sep, int64_t n
 #include "otto.h"
 typedef total_order<1.4, uint32_t> TotalOrderS;
 typedef TotalOrderS::node TotalOrder;
-TotalOrderS tos;
-auto current_time = MakeRef(tos.smallest());
-TotalOrder NextTotalOrder(const TotalOrder &to) { return tos.insert(to); }
+TotalOrderS *tos = new TotalOrderS();
+auto current_time = MakeRef(tos->smallest());
+TotalOrder NextTotalOrder(const TotalOrder &to) { return tos->insert(to); }
+
+#include <x86intrin.h>
+// optional wrapper if you don't want to just use __rdtsc() everywhere
+inline unsigned long long readTSC() {
+  // _mm_lfence();  // optionally wait for earlier insns to retire before reading the clock
+  return __rdtsc();
+  // _mm_lfence();  // optionally block later instructions until rdtsc retires
+}
+using rdtsc_type = decltype(readTSC());
+
+// a timer that allow recursive measuring. however, the outer level does not contain the inner level time.
+struct Timer {
+  struct Node {
+    rdtsc_type skipped = 0;
+    rdtsc_type start_time = 0;
+  };
+  std::vector<Node> v;
+} t;
+
+auto Timed(const auto &f) {
+  t.v.push_back(Timer::Node{0, readTSC()});
+  auto val = f(Unit{});
+  rdtsc_type end_time = readTSC();
+  auto frame = t.v.back();
+  t.v.pop_back();
+  auto time_taken = end_time - frame.start_time;
+  if (!t.v.empty()) {
+    t.v.back().skipped += time_taken;
+  }
+  return std::make_pair(static_cast<int64_t>(time_taken - frame.skipped), std::move(val));
+}

@@ -154,6 +154,10 @@ module type SDIN = sig
   val metric_output_change_count : metric sd -> int sd
   val queue_size_metric : metric sd -> int sd -> unit sd
   val metric_queue_size_acc : metric sd -> int sd
+  val metric_record_overhead : metric sd -> int sd -> unit sd
+  val metric_overhead_count : metric sd -> int sd
+  val metric_record_eval : metric sd -> int sd -> unit sd
+  val metric_eval_count : metric sd -> int sd
   val vbool : bool sd -> value sd
   val vint : int sd -> value sd
   val vfloat : float sd -> value sd
@@ -186,6 +190,7 @@ module type SDIN = sig
   val unsome : 'a option sd -> 'a sd
   val and_ : bool sd -> (unit -> bool sd) -> bool sd
   val or_ : bool sd -> (unit -> bool sd) -> bool sd
+  val timed : (unit -> 'a sd) -> (int * 'a) sd
 end
 
 module type SD = sig
@@ -270,6 +275,8 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
       queue_size_acc = 0;
       input_change_count = 0;
       output_change_count = 0;
+      overhead_time = 0;
+      eval_time = 0;
     }
 
   let make_stack = Stack.make
@@ -383,7 +390,9 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
     m.meta_write_count <- 0;
     m.queue_size_acc <- 0;
     m.input_change_count <- 0;
-    m.output_change_count <- 0
+    m.output_change_count <- 0;
+    m.eval_time <- 0;
+    m.overhead_time <- 0
 
   let read_metric (m : metric) : unit = m.read_count <- m.read_count + 1
   let meta_read_metric (m : metric) : unit = m.meta_read_count <- m.meta_read_count + 1
@@ -399,6 +408,11 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
   let metric_output_change_count m = m.output_change_count
   let queue_size_metric m i = m.queue_size_acc <- m.queue_size_acc + i
   let metric_queue_size_acc m = m.queue_size_acc
+  let metric_eval_count m = m.eval_time
+  let metric_record_eval m i = m.eval_time <- m.eval_time + i
+  let metric_overhead_count m = m.overhead_time
+  let metric_record_overhead m i = m.overhead_time <- m.overhead_time + i
+  let timed f = (0, f ())
   let vbool b = VBool b
   let vint i = VInt i
   let vstring x = VString x
@@ -668,6 +682,10 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let metric_output_change_count m = CApp (CPF "MetricOutputChangeCount", [ m ])
   let queue_size_metric m i = CApp (CPF "MetricQueueSize", [ m; i ])
   let metric_queue_size_acc m = CApp (CPF "MetricQueueSizeAcc", [ m ])
+  let metric_eval_count m = CApp (CPF "MetricEvalCount", [ m ])
+  let metric_record_eval m i = CApp (CPF "MetricRecordEval", [ m; i ])
+  let metric_overhead_count m = CApp (CPF "MetricOverheadCount", [ m ])
+  let metric_record_overhead m i = CApp (CPF "MetricRecordOverhead", [ m; i ])
   let vbool b = CApp (CPF "VBool", [ b ])
   let vint i = CApp (CPF "VInt", [ i ])
   let vstring s = CApp (CPF "VString", [ s ])
@@ -690,4 +708,5 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let list_is_singleton l = CApp (CPF "ListIsSingleton", [ l ])
   let and_ l r = CAnd (l, r ())
   let or_ l r = COr (l, r ())
+  let timed f = CApp (CPF "Timed", [ lam (fun _ -> f ()) ])
 end)

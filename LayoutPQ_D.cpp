@@ -119,231 +119,233 @@ struct Content : std::enable_shared_from_this<Content> {
   bool has_var_intrinsic_width_internal = false;
 };
 #include "header_continued.h"
-Unit var_modified_x_4012(const auto &x_4014);
-auto eval_expr_x_4009(const auto &x_4031);
-Unit var_modified_x_4007(const auto &x_4108);
-auto eval_expr_x_4004(const auto &x_4112);
-Unit var_modified_x_4002(const auto &x_4129);
-auto eval_expr_x_3999(const auto &x_4139);
-Unit var_modified_x_3997(const auto &x_4144);
-auto eval_expr_x_3994(const auto &x_4154);
-Unit var_modified_x_3992(const auto &x_4163);
-auto eval_expr_x_3989(const auto &x_4167);
-Unit var_modified_x_3987(const auto &x_4168);
-auto eval_expr_x_3984(const auto &x_4172);
-Unit var_modified_x_3982(const auto &x_4177);
-auto eval_expr_x_3979(const auto &x_4184);
-Unit var_modified_x_3977(const auto &x_4195);
-auto eval_expr_x_3974(const auto &x_4199);
-Unit var_modified_x_3972(const auto &x_4204);
-auto eval_expr_x_3969(const auto &x_4211);
-Unit var_modified_x_3967(const auto &x_4222);
-auto eval_expr_x_3964(const auto &x_4229);
-Unit var_modified_x_3962(const auto &x_4254);
-auto eval_expr_x_3959(const auto &x_4264);
-Unit var_modified_x_3957(const auto &x_4289);
-auto eval_expr_x_3954(const auto &x_4293);
-Unit var_modified_x_3952(const auto &x_4296);
-auto eval_expr_x_3949(const auto &x_4305);
-Unit var_modified_x_3947(const auto &x_4314);
-auto eval_expr_x_3944(const auto &x_4323);
-Unit var_modified_x_3942(const auto &x_4332);
-auto eval_expr_x_3939(const auto &x_4339);
-Unit var_modified_x_3937(const auto &x_4342);
-auto eval_expr_x_3934(const auto &x_4349);
-Unit var_modified_x_3932(const auto &x_4352);
-auto eval_expr_x_3929(const auto &x_4362);
-Unit var_modified_x_3927(const auto &x_4365);
-auto eval_expr_x_3924(const auto &x_4375);
-Unit var_modified_x_3921(const auto &x_4378);
-auto eval_expr_x_3918(const auto &x_4389);
-Unit var_modified_x_3916(const auto &x_4418);
-auto eval_expr_x_3913(const auto &x_4429);
-Unit var_modified_x_3911(const auto &x_4442);
-auto eval_expr_x_3908(const auto &x_4453);
-Unit var_modified_x_3906(const auto &x_4462);
-auto eval_expr_x_3903(const auto &x_4466);
-Unit var_modified_x_3901(const auto &x_4475);
-auto eval_expr_x_3898(const auto &x_4482);
-Unit var_modified_x_3896(const auto &x_4627);
-auto eval_expr_x_3893(const auto &x_4631);
-Unit var_modified_x_3891(const auto &x_4680);
-auto eval_expr_x_3888(const auto &x_4687);
-Unit var_modified_x_3886(const auto &x_4690);
-auto eval_expr_x_3883(const auto &x_4694);
-Unit var_modified_x_3881(const auto &x_4703);
-auto eval_expr_x_3878(const auto &x_4714);
-Unit var_modified_x_3876(const auto &x_4723);
-auto eval_expr_x_3873(const auto &x_4734);
-Unit var_modified_x_3871(const auto &x_4743);
-auto eval_expr_x_3868(const auto &x_4752);
-Unit var_modified_x_3866(const auto &x_4765);
-auto eval_expr_x_3863(const auto &x_4769);
-Unit var_modified_x_3861(const auto &x_4778);
-auto eval_expr_x_3858(const auto &x_4785);
-Unit var_modified_x_3856(const auto &x_4938);
-auto eval_expr_x_3853(const auto &x_4942);
-Unit var_modified_x_3851(const auto &x_4947);
-auto eval_expr_x_3848(const auto &x_4951);
-Unit var_modified_x_3846(const auto &x_5000);
-auto eval_expr_x_3843(const auto &x_5004);
-Unit var_modified_x_3841(const auto &x_5017);
-auto eval_expr_x_3838(const auto &x_5024);
-Unit var_modified_x_3835(const auto &x_5027);
-auto eval_expr_x_3832(const auto &x_5033);
-Unit var_modified_x_3830(const auto &x_5050);
-auto eval_expr_x_3827(const auto &x_5054);
-Unit var_modified_x_3825(const auto &x_5063);
-auto eval_expr_x_3822(const auto &x_5070);
-Unit var_modified_x_3820(const auto &x_5123);
-auto eval_expr_x_3817(const auto &x_5132);
-Unit var_modified_x_3815(const auto &x_5157);
-auto eval_expr_x_3812(const auto &x_5163);
-Unit var_modified_x_3810(const auto &x_5172);
-auto eval_expr_x_3807(const auto &x_5179);
-Unit var_modified_x_3805(const auto &x_5232);
-auto eval_expr_x_3802(const auto &x_5241);
-Unit var_modified_x_3800(const auto &x_5262);
-auto eval_expr_x_3797(const auto &x_5266);
-Unit var_modified_x_3795(const auto &x_5287);
-auto eval_expr_x_3792(const auto &x_5291);
-Unit var_modified_x_3790(const auto &x_5304);
-auto eval_expr_x_3787(const auto &x_5311);
-Unit var_modified_x_3785(const auto &x_5332);
-auto eval_expr_x_3782(const auto &x_5336);
-Unit var_modified_x_3780(const auto &x_5341);
-auto eval_expr_x_3777(const auto &x_5345);
-Unit eval_stmts_x_3696(const auto &x_3776);
-Unit eval_stmts_x_3695(const auto &x_3837);
-Unit eval_stmts_x_3694(const auto &x_3923);
-Unit x_3423(const auto &x_3424, const auto &x_3425, const auto &x_3426);
-Unit x_3430(const auto &x_3431, const auto &x_3432, const auto &x_3433);
-Unit x_3437(const auto &x_3438, const auto &x_3439, const auto &x_3440);
-Unit x_3444(const auto &x_3445, const auto &x_3446, const auto &x_3447);
-Unit x_3479(const auto &x_3480, const auto &x_3481, const auto &x_3482);
-Unit x_3512(const auto &x_3513, const auto &x_3514, const auto &x_3515);
-Unit x_3571(const auto &x_3572, const auto &x_3573, const auto &x_3574);
-Unit x_3643(const auto &x_3644);
-Unit x_3651(const auto &x_3652, const auto &x_3653, const auto &x_3654);
-Unit x_3686(const auto &x_3687);
-Unit x_3698(const auto &x_3699, const auto &x_3700, const auto &x_3701);
-Unit x_3741(const auto &x_3742);
-Unit eval_stmts_x_3397(const auto &x_3749);
-Unit eval_stmts_x_3396(const auto &x_3751);
-Unit x_3753(const auto &x_3754);
-int64_t x_3761(const auto &x_3762);
-int64_t x_3764(const auto &x_3765);
-LayoutNode x_3767(const auto &x_3768);
-Node x_3770(const auto &x_3771);
-Node x_3773(const auto &x_3774);
-Unit var_modified_x_4012(const auto &x_4014) {
-  auto x_5350 = [&](const auto &x_4015) {
-    if (HashtblContain(x_4015->meta->BBTimeTable, std::string("bb_0"))) {
-      auto x_4016 = HashtblFindExn(x_4015->meta->BBTimeTable, std::string("bb_0"));
-      MetaWriteMetric();
-      return QueuePush(x_4016, x_4015, MakeRecomputeBB(std::string("bb_0")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5350(x_4014);
-  MakeUnit();
-  auto x_5351 = [&](const auto &x_4020) {
-    if (HashtblContain(x_4020->meta->BBTimeTable, std::string("bb_0"))) {
-      auto x_4021 = HashtblFindExn(x_4020->meta->BBTimeTable, std::string("bb_0"));
-      MetaWriteMetric();
-      return QueuePush(x_4021, x_4020, MakeRecomputeBB(std::string("bb_0")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  OptionMatch(
-      x_4014->next, [&](const auto &x_4019) { return MakeUnit(); },
-      [&](const auto &x_4018) {
-        auto x_5354 = x_5351;
-        x_5354(x_4018);
+Unit var_modified_x_4124(const auto &x_4126);
+auto eval_expr_x_4121(const auto &x_4144);
+Unit var_modified_x_4119(const auto &x_4221);
+auto eval_expr_x_4116(const auto &x_4226);
+Unit var_modified_x_4114(const auto &x_4243);
+auto eval_expr_x_4111(const auto &x_4254);
+Unit var_modified_x_4109(const auto &x_4259);
+auto eval_expr_x_4106(const auto &x_4270);
+Unit var_modified_x_4104(const auto &x_4279);
+auto eval_expr_x_4101(const auto &x_4284);
+Unit var_modified_x_4099(const auto &x_4285);
+auto eval_expr_x_4096(const auto &x_4290);
+Unit var_modified_x_4094(const auto &x_4295);
+auto eval_expr_x_4091(const auto &x_4303);
+Unit var_modified_x_4089(const auto &x_4314);
+auto eval_expr_x_4086(const auto &x_4319);
+Unit var_modified_x_4084(const auto &x_4324);
+auto eval_expr_x_4081(const auto &x_4332);
+Unit var_modified_x_4079(const auto &x_4343);
+auto eval_expr_x_4076(const auto &x_4351);
+Unit var_modified_x_4074(const auto &x_4376);
+auto eval_expr_x_4071(const auto &x_4387);
+Unit var_modified_x_4069(const auto &x_4412);
+auto eval_expr_x_4066(const auto &x_4417);
+Unit var_modified_x_4064(const auto &x_4420);
+auto eval_expr_x_4061(const auto &x_4430);
+Unit var_modified_x_4059(const auto &x_4439);
+auto eval_expr_x_4056(const auto &x_4449);
+Unit var_modified_x_4054(const auto &x_4458);
+auto eval_expr_x_4051(const auto &x_4466);
+Unit var_modified_x_4049(const auto &x_4469);
+auto eval_expr_x_4046(const auto &x_4477);
+Unit var_modified_x_4044(const auto &x_4480);
+auto eval_expr_x_4041(const auto &x_4491);
+Unit var_modified_x_4039(const auto &x_4494);
+auto eval_expr_x_4036(const auto &x_4505);
+Unit var_modified_x_4032(const auto &x_4508);
+auto eval_expr_x_4029(const auto &x_4520);
+Unit var_modified_x_4027(const auto &x_4549);
+auto eval_expr_x_4024(const auto &x_4561);
+Unit var_modified_x_4022(const auto &x_4574);
+auto eval_expr_x_4019(const auto &x_4586);
+Unit var_modified_x_4017(const auto &x_4595);
+auto eval_expr_x_4014(const auto &x_4600);
+Unit var_modified_x_4012(const auto &x_4609);
+auto eval_expr_x_4009(const auto &x_4617);
+Unit var_modified_x_4007(const auto &x_4762);
+auto eval_expr_x_4004(const auto &x_4767);
+Unit var_modified_x_4002(const auto &x_4816);
+auto eval_expr_x_3999(const auto &x_4824);
+Unit var_modified_x_3997(const auto &x_4827);
+auto eval_expr_x_3994(const auto &x_4832);
+Unit var_modified_x_3992(const auto &x_4841);
+auto eval_expr_x_3989(const auto &x_4853);
+Unit var_modified_x_3987(const auto &x_4862);
+auto eval_expr_x_3984(const auto &x_4874);
+Unit var_modified_x_3982(const auto &x_4883);
+auto eval_expr_x_3979(const auto &x_4893);
+Unit var_modified_x_3977(const auto &x_4906);
+auto eval_expr_x_3974(const auto &x_4911);
+Unit var_modified_x_3972(const auto &x_4920);
+auto eval_expr_x_3969(const auto &x_4928);
+Unit var_modified_x_3967(const auto &x_5081);
+auto eval_expr_x_3964(const auto &x_5086);
+Unit var_modified_x_3962(const auto &x_5091);
+auto eval_expr_x_3959(const auto &x_5096);
+Unit var_modified_x_3957(const auto &x_5145);
+auto eval_expr_x_3954(const auto &x_5150);
+Unit var_modified_x_3952(const auto &x_5163);
+auto eval_expr_x_3949(const auto &x_5171);
+Unit var_modified_x_3945(const auto &x_5174);
+auto eval_expr_x_3942(const auto &x_5181);
+Unit var_modified_x_3940(const auto &x_5198);
+auto eval_expr_x_3937(const auto &x_5203);
+Unit var_modified_x_3935(const auto &x_5212);
+auto eval_expr_x_3932(const auto &x_5220);
+Unit var_modified_x_3930(const auto &x_5273);
+auto eval_expr_x_3927(const auto &x_5283);
+Unit var_modified_x_3925(const auto &x_5308);
+auto eval_expr_x_3922(const auto &x_5315);
+Unit var_modified_x_3920(const auto &x_5324);
+auto eval_expr_x_3917(const auto &x_5332);
+Unit var_modified_x_3915(const auto &x_5385);
+auto eval_expr_x_3912(const auto &x_5395);
+Unit var_modified_x_3910(const auto &x_5416);
+auto eval_expr_x_3907(const auto &x_5421);
+Unit var_modified_x_3905(const auto &x_5442);
+auto eval_expr_x_3902(const auto &x_5447);
+Unit var_modified_x_3900(const auto &x_5460);
+auto eval_expr_x_3897(const auto &x_5468);
+Unit var_modified_x_3895(const auto &x_5489);
+auto eval_expr_x_3892(const auto &x_5494);
+Unit var_modified_x_3890(const auto &x_5499);
+auto eval_expr_x_3887(const auto &x_5504);
+Unit eval_stmts_x_3803(const auto &x_3885);
+Unit eval_stmts_x_3802(const auto &x_3947);
+Unit eval_stmts_x_3801(const auto &x_4034);
+Unit x_3530(const auto &x_3531, const auto &x_3532, const auto &x_3533);
+Unit x_3537(const auto &x_3538, const auto &x_3539, const auto &x_3540);
+Unit x_3544(const auto &x_3545, const auto &x_3546, const auto &x_3547);
+Unit x_3551(const auto &x_3552, const auto &x_3553, const auto &x_3554);
+Unit x_3586(const auto &x_3587, const auto &x_3588, const auto &x_3589);
+Unit x_3619(const auto &x_3620, const auto &x_3621, const auto &x_3622);
+Unit x_3678(const auto &x_3679, const auto &x_3680, const auto &x_3681);
+Unit x_3750(const auto &x_3751);
+Unit x_3758(const auto &x_3759, const auto &x_3760, const auto &x_3761);
+Unit x_3793(const auto &x_3794);
+Unit x_3805(const auto &x_3806, const auto &x_3807, const auto &x_3808);
+Unit x_3848(const auto &x_3849);
+Unit eval_stmts_x_3503(const auto &x_3856);
+Unit eval_stmts_x_3502(const auto &x_3859);
+Unit x_3862(const auto &x_3863);
+int64_t x_3870(const auto &x_3871);
+int64_t x_3873(const auto &x_3874);
+LayoutNode x_3876(const auto &x_3877);
+Node x_3879(const auto &x_3880);
+Node x_3882(const auto &x_3883);
+Unit var_modified_x_4124(const auto &x_4126) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_4127) {
+    auto x_5509 = [&](const auto &x_4128) {
+      if (HashtblContain(x_4128->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_4129 = HashtblFindExn(x_4128->meta->BBTimeTable, std::string("bb_0"));
+        MetaWriteMetric();
+        return QueuePush(x_4129, x_4128, MakeRecomputeBB(std::string("bb_0")));
+      } else {
         return MakeUnit();
-      });
-  auto x_5352 = [&](const auto &x_4023) {
-    if (HashtblContain(x_4023->meta->BBTimeTable, std::string("bb_2"))) {
-      auto x_4024 = HashtblFindExn(x_4023->meta->BBTimeTable, std::string("bb_2"));
-      MetaWriteMetric();
-      return QueuePush(x_4024, x_4023, MakeRecomputeBB(std::string("bb_2")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5352(x_4014);
-  MakeUnit();
-  auto x_5353 = [&](const auto &x_4028) {
-    if (HashtblContain(x_4028->meta->BBTimeTable, std::string("bb_2"))) {
-      auto x_4029 = HashtblFindExn(x_4028->meta->BBTimeTable, std::string("bb_2"));
-      MetaWriteMetric();
-      return QueuePush(x_4029, x_4028, MakeRecomputeBB(std::string("bb_2")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  OptionMatch(
-      x_4014->next, [&](const auto &x_4027) { return MakeUnit(); },
-      [&](const auto &x_4026) {
-        auto x_5355 = x_5353;
-        x_5355(x_4026);
+      }
+    };
+    x_5509(x_4126);
+    MakeUnit();
+    auto x_5510 = [&](const auto &x_4133) {
+      if (HashtblContain(x_4133->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_4134 = HashtblFindExn(x_4133->meta->BBTimeTable, std::string("bb_0"));
+        MetaWriteMetric();
+        return QueuePush(x_4134, x_4133, MakeRecomputeBB(std::string("bb_0")));
+      } else {
         return MakeUnit();
-      });
-  return MakeUnit();
+      }
+    };
+    OptionMatch(
+        x_4126->next, [&](const auto &x_4132) { return MakeUnit(); },
+        [&](const auto &x_4131) {
+          auto x_5513 = x_5510;
+          x_5513(x_4131);
+          return MakeUnit();
+        });
+    auto x_5511 = [&](const auto &x_4136) {
+      if (HashtblContain(x_4136->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_4137 = HashtblFindExn(x_4136->meta->BBTimeTable, std::string("bb_2"));
+        MetaWriteMetric();
+        return QueuePush(x_4137, x_4136, MakeRecomputeBB(std::string("bb_2")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5511(x_4126);
+    MakeUnit();
+    auto x_5512 = [&](const auto &x_4141) {
+      if (HashtblContain(x_4141->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_4142 = HashtblFindExn(x_4141->meta->BBTimeTable, std::string("bb_2"));
+        MetaWriteMetric();
+        return QueuePush(x_4142, x_4141, MakeRecomputeBB(std::string("bb_2")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    OptionMatch(
+        x_4126->next, [&](const auto &x_4140) { return MakeUnit(); },
+        [&](const auto &x_4139) {
+          auto x_5514 = x_5512;
+          x_5514(x_4139);
+          return MakeUnit();
+        });
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_4009(const auto &x_4031) {
-  if (eq(x_4031->var_display, std::string("none"))) {
+auto eval_expr_x_4121(const auto &x_4144) {
+  if (eq(x_4144->var_display, std::string("none"))) {
     return false;
   } else {
-    if (eq(x_4031->var_position, std::string("absolute"))) {
+    if (eq(x_4144->var_position, std::string("absolute"))) {
       return false;
     } else {
-      if ((x_4031->parent != nullptr) &&
-          (eq((x_4031->parent)->var_display, std::string("flex")) ||
-           eq((x_4031->parent)->var_display, std::string("inline-flex")))) {
+      if ((x_4144->parent != nullptr) &&
+          (eq((x_4144->parent)->var_display, std::string("flex")) ||
+           eq((x_4144->parent)->var_display, std::string("inline-flex")))) {
         return true;
       } else {
-        if (eq(x_4031->var_display, std::string("block"))) {
+        if (eq(x_4144->var_display, std::string("block"))) {
           return true;
         } else {
-          if (eq(x_4031->var_display, std::string("inline"))) {
+          if (eq(x_4144->var_display, std::string("inline"))) {
             return false;
           } else {
-            if (eq(x_4031->var_display, std::string("inline-block"))) {
+            if (eq(x_4144->var_display, std::string("inline-block"))) {
               return false;
             } else {
-              if (eq(x_4031->var_display, std::string("flex"))) {
-                if (eq(GetProp<std::string>(x_4031, std::string("flex-direction")), std::string("row"))) {
+              if (eq(x_4144->var_display, std::string("flex"))) {
+                if (eq(GetProp<std::string>(x_4144, std::string("flex-direction")), std::string("row"))) {
                   return false;
                 } else {
-                  if (eq(GetProp<std::string>(x_4031, std::string("flex-direction")), std::string("column"))) {
+                  if (eq(GetProp<std::string>(x_4144, std::string("flex-direction")), std::string("column"))) {
                     return true;
                   } else {
                     return true;
                   }
                 }
               } else {
-                if (eq(x_4031->var_display, std::string("inline-flex"))) {
+                if (eq(x_4144->var_display, std::string("inline-flex"))) {
                   return false;
                 } else {
-                  if (eq(x_4031->var_display, std::string("contents"))) {
+                  if (eq(x_4144->var_display, std::string("contents"))) {
                     return false;
                   } else {
-                    if (eq(x_4031->var_display, std::string("table"))) {
+                    if (eq(x_4144->var_display, std::string("table"))) {
                       return true;
                     } else {
-                      if (eq(x_4031->var_display, std::string("table-row-group"))) {
+                      if (eq(x_4144->var_display, std::string("table-row-group"))) {
                         return true;
                       } else {
-                        if (eq(x_4031->var_display, std::string("table-row"))) {
+                        if (eq(x_4144->var_display, std::string("table-row"))) {
                           return true;
                         } else {
-                          if (eq(x_4031->var_display, std::string("table-cell"))) {
+                          if (eq(x_4144->var_display, std::string("table-cell"))) {
                             return false;
                           } else {
-                            if (eq(x_4031->var_display, std::string("list-item"))) {
+                            if (eq(x_4144->var_display, std::string("list-item"))) {
                               return true;
                             } else {
                               return true;
@@ -362,244 +364,262 @@ auto eval_expr_x_4009(const auto &x_4031) {
     }
   }
 }
-Unit var_modified_x_4007(const auto &x_4108) {
-  ListIter(x_4108->children, [&](const auto &x_4109) {
-    if (HashtblContain(x_4109->meta->BBTimeTable, std::string("bb_1"))) {
-      auto x_4110 = HashtblFindExn(x_4109->meta->BBTimeTable, std::string("bb_1"));
-      MetaWriteMetric();
-      return QueuePush(x_4110, x_4109, MakeRecomputeBB(std::string("bb_1")));
-    } else {
-      return MakeUnit();
-    }
-  });
-  return MakeUnit();
+Unit var_modified_x_4119(const auto &x_4221) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_4222) {
+    ListIter(x_4221->children, [&](const auto &x_4223) {
+      if (HashtblContain(x_4223->meta->BBTimeTable, std::string("bb_1"))) {
+        auto x_4224 = HashtblFindExn(x_4223->meta->BBTimeTable, std::string("bb_1"));
+        MetaWriteMetric();
+        return QueuePush(x_4224, x_4223, MakeRecomputeBB(std::string("bb_1")));
+      } else {
+        return MakeUnit();
+      }
+    });
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_4004(const auto &x_4112) {
-  return (((!(x_4112->parent != nullptr)) || (x_4112->parent)->var_visible) &&
-          (neq(x_4112->var_display, std::string("none")) && ((!x_4112->var_inside_svg) && (!x_4112->var_disabled))));
+auto eval_expr_x_4116(const auto &x_4226) {
+  return (((!(x_4226->parent != nullptr)) || (x_4226->parent)->var_visible) &&
+          (neq(x_4226->var_display, std::string("none")) && ((!x_4226->var_inside_svg) && (!x_4226->var_disabled))));
 }
-Unit var_modified_x_4002(const auto &x_4129) {
-  auto x_5356 = [&](const auto &x_4130) {
-    if (HashtblContain(x_4130->meta->BBTimeTable, std::string("bb_1"))) {
-      auto x_4131 = HashtblFindExn(x_4130->meta->BBTimeTable, std::string("bb_1"));
-      MetaWriteMetric();
-      return QueuePush(x_4131, x_4130, MakeRecomputeBB(std::string("bb_1")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5356(x_4129);
-  MakeUnit();
-  ListIter(x_4129->children, [&](const auto &x_4133) {
-    if (HashtblContain(x_4133->meta->BBTimeTable, std::string("bb_1"))) {
-      auto x_4134 = HashtblFindExn(x_4133->meta->BBTimeTable, std::string("bb_1"));
-      MetaWriteMetric();
-      return QueuePush(x_4134, x_4133, MakeRecomputeBB(std::string("bb_1")));
-    } else {
-      return MakeUnit();
-    }
-  });
-  auto x_5357 = [&](const auto &x_4136) {
-    if (HashtblContain(x_4136->meta->BBTimeTable, std::string("bb_0"))) {
-      auto x_4137 = HashtblFindExn(x_4136->meta->BBTimeTable, std::string("bb_0"));
-      MetaWriteMetric();
-      return QueuePush(x_4137, x_4136, MakeRecomputeBB(std::string("bb_0")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5357(x_4129);
-  MakeUnit();
-  return MakeUnit();
+Unit var_modified_x_4114(const auto &x_4243) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_4244) {
+    auto x_5515 = [&](const auto &x_4245) {
+      if (HashtblContain(x_4245->meta->BBTimeTable, std::string("bb_1"))) {
+        auto x_4246 = HashtblFindExn(x_4245->meta->BBTimeTable, std::string("bb_1"));
+        MetaWriteMetric();
+        return QueuePush(x_4246, x_4245, MakeRecomputeBB(std::string("bb_1")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5515(x_4243);
+    MakeUnit();
+    ListIter(x_4243->children, [&](const auto &x_4248) {
+      if (HashtblContain(x_4248->meta->BBTimeTable, std::string("bb_1"))) {
+        auto x_4249 = HashtblFindExn(x_4248->meta->BBTimeTable, std::string("bb_1"));
+        MetaWriteMetric();
+        return QueuePush(x_4249, x_4248, MakeRecomputeBB(std::string("bb_1")));
+      } else {
+        return MakeUnit();
+      }
+    });
+    auto x_5516 = [&](const auto &x_4251) {
+      if (HashtblContain(x_4251->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_4252 = HashtblFindExn(x_4251->meta->BBTimeTable, std::string("bb_0"));
+        MetaWriteMetric();
+        return QueuePush(x_4252, x_4251, MakeRecomputeBB(std::string("bb_0")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5516(x_4243);
+    MakeUnit();
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3999(const auto &x_4139) {
-  if (eq(x_4139->name, std::string("NOSCRIPT"))) {
+auto eval_expr_x_4111(const auto &x_4254) {
+  if (eq(x_4254->name, std::string("NOSCRIPT"))) {
     return true;
   } else {
-    return ((x_4139->parent != nullptr) && (x_4139->parent)->var_disabled);
+    return ((x_4254->parent != nullptr) && (x_4254->parent)->var_disabled);
   }
 }
-Unit var_modified_x_3997(const auto &x_4144) {
-  auto x_5358 = [&](const auto &x_4145) {
-    if (HashtblContain(x_4145->meta->BBTimeTable, std::string("bb_1"))) {
-      auto x_4146 = HashtblFindExn(x_4145->meta->BBTimeTable, std::string("bb_1"));
-      MetaWriteMetric();
-      return QueuePush(x_4146, x_4145, MakeRecomputeBB(std::string("bb_1")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5358(x_4144);
-  MakeUnit();
-  ListIter(x_4144->children, [&](const auto &x_4148) {
-    if (HashtblContain(x_4148->meta->BBTimeTable, std::string("bb_1"))) {
-      auto x_4149 = HashtblFindExn(x_4148->meta->BBTimeTable, std::string("bb_1"));
-      MetaWriteMetric();
-      return QueuePush(x_4149, x_4148, MakeRecomputeBB(std::string("bb_1")));
-    } else {
-      return MakeUnit();
-    }
-  });
-  auto x_5359 = [&](const auto &x_4151) {
-    if (HashtblContain(x_4151->meta->BBTimeTable, std::string("bb_0"))) {
-      auto x_4152 = HashtblFindExn(x_4151->meta->BBTimeTable, std::string("bb_0"));
-      MetaWriteMetric();
-      return QueuePush(x_4152, x_4151, MakeRecomputeBB(std::string("bb_0")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5359(x_4144);
-  MakeUnit();
-  return MakeUnit();
+Unit var_modified_x_4109(const auto &x_4259) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_4260) {
+    auto x_5517 = [&](const auto &x_4261) {
+      if (HashtblContain(x_4261->meta->BBTimeTable, std::string("bb_1"))) {
+        auto x_4262 = HashtblFindExn(x_4261->meta->BBTimeTable, std::string("bb_1"));
+        MetaWriteMetric();
+        return QueuePush(x_4262, x_4261, MakeRecomputeBB(std::string("bb_1")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5517(x_4259);
+    MakeUnit();
+    ListIter(x_4259->children, [&](const auto &x_4264) {
+      if (HashtblContain(x_4264->meta->BBTimeTable, std::string("bb_1"))) {
+        auto x_4265 = HashtblFindExn(x_4264->meta->BBTimeTable, std::string("bb_1"));
+        MetaWriteMetric();
+        return QueuePush(x_4265, x_4264, MakeRecomputeBB(std::string("bb_1")));
+      } else {
+        return MakeUnit();
+      }
+    });
+    auto x_5518 = [&](const auto &x_4267) {
+      if (HashtblContain(x_4267->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_4268 = HashtblFindExn(x_4267->meta->BBTimeTable, std::string("bb_0"));
+        MetaWriteMetric();
+        return QueuePush(x_4268, x_4267, MakeRecomputeBB(std::string("bb_0")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5518(x_4259);
+    MakeUnit();
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3994(const auto &x_4154) {
-  return ((x_4154->parent != nullptr) && ((x_4154->parent)->var_is_svg_block || (x_4154->parent)->var_inside_svg));
+auto eval_expr_x_4106(const auto &x_4270) {
+  return ((x_4270->parent != nullptr) && ((x_4270->parent)->var_is_svg_block || (x_4270->parent)->var_inside_svg));
 }
-Unit var_modified_x_3992(const auto &x_4163) {
-  ListIter(x_4163->children, [&](const auto &x_4164) {
-    if (HashtblContain(x_4164->meta->BBTimeTable, std::string("bb_1"))) {
-      auto x_4165 = HashtblFindExn(x_4164->meta->BBTimeTable, std::string("bb_1"));
-      MetaWriteMetric();
-      return QueuePush(x_4165, x_4164, MakeRecomputeBB(std::string("bb_1")));
-    } else {
-      return MakeUnit();
-    }
-  });
-  return MakeUnit();
+Unit var_modified_x_4104(const auto &x_4279) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_4280) {
+    ListIter(x_4279->children, [&](const auto &x_4281) {
+      if (HashtblContain(x_4281->meta->BBTimeTable, std::string("bb_1"))) {
+        auto x_4282 = HashtblFindExn(x_4281->meta->BBTimeTable, std::string("bb_1"));
+        MetaWriteMetric();
+        return QueuePush(x_4282, x_4281, MakeRecomputeBB(std::string("bb_1")));
+      } else {
+        return MakeUnit();
+      }
+    });
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3989(const auto &x_4167) { return eq(x_4167->name, std::string("svg")); }
-Unit var_modified_x_3987(const auto &x_4168) {
-  auto x_5360 = [&](const auto &x_4169) {
-    if (HashtblContain(x_4169->meta->BBTimeTable, std::string("bb_0"))) {
-      auto x_4170 = HashtblFindExn(x_4169->meta->BBTimeTable, std::string("bb_0"));
-      MetaWriteMetric();
-      return QueuePush(x_4170, x_4169, MakeRecomputeBB(std::string("bb_0")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5360(x_4168);
-  MakeUnit();
-  return MakeUnit();
+auto eval_expr_x_4101(const auto &x_4284) { return eq(x_4284->name, std::string("svg")); }
+Unit var_modified_x_4099(const auto &x_4285) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_4286) {
+    auto x_5519 = [&](const auto &x_4287) {
+      if (HashtblContain(x_4287->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_4288 = HashtblFindExn(x_4287->meta->BBTimeTable, std::string("bb_0"));
+        MetaWriteMetric();
+        return QueuePush(x_4288, x_4287, MakeRecomputeBB(std::string("bb_0")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5519(x_4285);
+    MakeUnit();
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3984(const auto &x_4172) { return neq(x_4172->var_height_attr_expr, std::string("auto")); }
-Unit var_modified_x_3982(const auto &x_4177) {
-  auto x_5361 = [&](const auto &x_4178) {
-    if (HashtblContain(x_4178->meta->BBTimeTable, std::string("bb_1"))) {
-      auto x_4179 = HashtblFindExn(x_4178->meta->BBTimeTable, std::string("bb_1"));
-      MetaWriteMetric();
-      return QueuePush(x_4179, x_4178, MakeRecomputeBB(std::string("bb_1")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5361(x_4177);
-  MakeUnit();
-  auto x_5362 = [&](const auto &x_4181) {
-    if (HashtblContain(x_4181->meta->BBTimeTable, std::string("bb_0"))) {
-      auto x_4182 = HashtblFindExn(x_4181->meta->BBTimeTable, std::string("bb_0"));
-      MetaWriteMetric();
-      return QueuePush(x_4182, x_4181, MakeRecomputeBB(std::string("bb_0")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5362(x_4177);
-  MakeUnit();
-  return MakeUnit();
+auto eval_expr_x_4096(const auto &x_4290) { return neq(x_4290->var_height_attr_expr, std::string("auto")); }
+Unit var_modified_x_4094(const auto &x_4295) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_4296) {
+    auto x_5520 = [&](const auto &x_4297) {
+      if (HashtblContain(x_4297->meta->BBTimeTable, std::string("bb_1"))) {
+        auto x_4298 = HashtblFindExn(x_4297->meta->BBTimeTable, std::string("bb_1"));
+        MetaWriteMetric();
+        return QueuePush(x_4298, x_4297, MakeRecomputeBB(std::string("bb_1")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5520(x_4295);
+    MakeUnit();
+    auto x_5521 = [&](const auto &x_4300) {
+      if (HashtblContain(x_4300->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_4301 = HashtblFindExn(x_4300->meta->BBTimeTable, std::string("bb_0"));
+        MetaWriteMetric();
+        return QueuePush(x_4301, x_4300, MakeRecomputeBB(std::string("bb_0")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5521(x_4295);
+    MakeUnit();
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3979(const auto &x_4184) {
-  if (!HasAttr(x_4184, std::string("height"))) {
+auto eval_expr_x_4091(const auto &x_4303) {
+  if (!HasAttr(x_4303, std::string("height"))) {
     return std::string("auto");
   } else {
-    if (string_is_float(GetAttr<std::string>(x_4184, std::string("height"))) ||
-        has_suffix(GetAttr<std::string>(x_4184, std::string("height")), std::string("%"))) {
-      return GetAttr<std::string>(x_4184, std::string("height"));
+    if (string_is_float(GetAttr<std::string>(x_4303, std::string("height"))) ||
+        has_suffix(GetAttr<std::string>(x_4303, std::string("height")), std::string("%"))) {
+      return GetAttr<std::string>(x_4303, std::string("height"));
     } else {
       return std::string("auto");
     }
   }
 }
-Unit var_modified_x_3977(const auto &x_4195) {
-  auto x_5363 = [&](const auto &x_4196) {
-    if (HashtblContain(x_4196->meta->BBTimeTable, std::string("bb_0"))) {
-      auto x_4197 = HashtblFindExn(x_4196->meta->BBTimeTable, std::string("bb_0"));
-      MetaWriteMetric();
-      return QueuePush(x_4197, x_4196, MakeRecomputeBB(std::string("bb_0")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5363(x_4195);
-  MakeUnit();
-  return MakeUnit();
+Unit var_modified_x_4089(const auto &x_4314) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_4315) {
+    auto x_5522 = [&](const auto &x_4316) {
+      if (HashtblContain(x_4316->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_4317 = HashtblFindExn(x_4316->meta->BBTimeTable, std::string("bb_0"));
+        MetaWriteMetric();
+        return QueuePush(x_4317, x_4316, MakeRecomputeBB(std::string("bb_0")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5522(x_4314);
+    MakeUnit();
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3974(const auto &x_4199) { return neq(x_4199->var_width_attr_expr, std::string("auto")); }
-Unit var_modified_x_3972(const auto &x_4204) {
-  auto x_5364 = [&](const auto &x_4205) {
-    if (HashtblContain(x_4205->meta->BBTimeTable, std::string("bb_1"))) {
-      auto x_4206 = HashtblFindExn(x_4205->meta->BBTimeTable, std::string("bb_1"));
-      MetaWriteMetric();
-      return QueuePush(x_4206, x_4205, MakeRecomputeBB(std::string("bb_1")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5364(x_4204);
-  MakeUnit();
-  auto x_5365 = [&](const auto &x_4208) {
-    if (HashtblContain(x_4208->meta->BBTimeTable, std::string("bb_0"))) {
-      auto x_4209 = HashtblFindExn(x_4208->meta->BBTimeTable, std::string("bb_0"));
-      MetaWriteMetric();
-      return QueuePush(x_4209, x_4208, MakeRecomputeBB(std::string("bb_0")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5365(x_4204);
-  MakeUnit();
-  return MakeUnit();
+auto eval_expr_x_4086(const auto &x_4319) { return neq(x_4319->var_width_attr_expr, std::string("auto")); }
+Unit var_modified_x_4084(const auto &x_4324) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_4325) {
+    auto x_5523 = [&](const auto &x_4326) {
+      if (HashtblContain(x_4326->meta->BBTimeTable, std::string("bb_1"))) {
+        auto x_4327 = HashtblFindExn(x_4326->meta->BBTimeTable, std::string("bb_1"));
+        MetaWriteMetric();
+        return QueuePush(x_4327, x_4326, MakeRecomputeBB(std::string("bb_1")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5523(x_4324);
+    MakeUnit();
+    auto x_5524 = [&](const auto &x_4329) {
+      if (HashtblContain(x_4329->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_4330 = HashtblFindExn(x_4329->meta->BBTimeTable, std::string("bb_0"));
+        MetaWriteMetric();
+        return QueuePush(x_4330, x_4329, MakeRecomputeBB(std::string("bb_0")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5524(x_4324);
+    MakeUnit();
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3969(const auto &x_4211) {
-  if (!HasAttr(x_4211, std::string("width"))) {
+auto eval_expr_x_4081(const auto &x_4332) {
+  if (!HasAttr(x_4332, std::string("width"))) {
     return std::string("auto");
   } else {
-    if (string_is_float(GetAttr<std::string>(x_4211, std::string("width"))) ||
-        has_suffix(GetAttr<std::string>(x_4211, std::string("width")), std::string("%"))) {
-      return GetAttr<std::string>(x_4211, std::string("width"));
+    if (string_is_float(GetAttr<std::string>(x_4332, std::string("width"))) ||
+        has_suffix(GetAttr<std::string>(x_4332, std::string("width")), std::string("%"))) {
+      return GetAttr<std::string>(x_4332, std::string("width"));
     } else {
       return std::string("auto");
     }
   }
 }
-Unit var_modified_x_3967(const auto &x_4222) {
-  ListIter(x_4222->children, [&](const auto &x_4223) {
-    if (HashtblContain(x_4223->meta->BBTimeTable, std::string("bb_0"))) {
-      auto x_4224 = HashtblFindExn(x_4223->meta->BBTimeTable, std::string("bb_0"));
-      MetaWriteMetric();
-      return QueuePush(x_4224, x_4223, MakeRecomputeBB(std::string("bb_0")));
-    } else {
-      return MakeUnit();
-    }
-  });
-  ListIter(x_4222->children, [&](const auto &x_4226) {
-    if (HashtblContain(x_4226->meta->BBTimeTable, std::string("bb_2"))) {
-      auto x_4227 = HashtblFindExn(x_4226->meta->BBTimeTable, std::string("bb_2"));
-      MetaWriteMetric();
-      return QueuePush(x_4227, x_4226, MakeRecomputeBB(std::string("bb_2")));
-    } else {
-      return MakeUnit();
-    }
-  });
-  return MakeUnit();
+Unit var_modified_x_4079(const auto &x_4343) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_4344) {
+    ListIter(x_4343->children, [&](const auto &x_4345) {
+      if (HashtblContain(x_4345->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_4346 = HashtblFindExn(x_4345->meta->BBTimeTable, std::string("bb_0"));
+        MetaWriteMetric();
+        return QueuePush(x_4346, x_4345, MakeRecomputeBB(std::string("bb_0")));
+      } else {
+        return MakeUnit();
+      }
+    });
+    ListIter(x_4343->children, [&](const auto &x_4348) {
+      if (HashtblContain(x_4348->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_4349 = HashtblFindExn(x_4348->meta->BBTimeTable, std::string("bb_2"));
+        MetaWriteMetric();
+        return QueuePush(x_4349, x_4348, MakeRecomputeBB(std::string("bb_2")));
+      } else {
+        return MakeUnit();
+      }
+    });
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3964(const auto &x_4229) {
-  if ((x_4229->parent != nullptr) &&
-      (eq((x_4229->parent)->var_display, std::string("flex")) ||
-       eq((x_4229->parent)->var_display, std::string("inline-flex")))) {
-    if (eq((x_4229->parent)->var_flex_direction, std::string("column")) ||
-        eq((x_4229->parent)->var_flex_direction, std::string("column-reverse"))) {
+auto eval_expr_x_4076(const auto &x_4351) {
+  if ((x_4351->parent != nullptr) &&
+      (eq((x_4351->parent)->var_display, std::string("flex")) ||
+       eq((x_4351->parent)->var_display, std::string("inline-flex")))) {
+    if (eq((x_4351->parent)->var_flex_direction, std::string("column")) ||
+        eq((x_4351->parent)->var_flex_direction, std::string("column-reverse"))) {
       return true;
     } else {
       return false;
@@ -608,43 +628,45 @@ auto eval_expr_x_3964(const auto &x_4229) {
     return false;
   }
 }
-Unit var_modified_x_3962(const auto &x_4254) {
-  ListIter(x_4254->children, [&](const auto &x_4255) {
-    if (HashtblContain(x_4255->meta->BBTimeTable, std::string("bb_0"))) {
-      auto x_4256 = HashtblFindExn(x_4255->meta->BBTimeTable, std::string("bb_0"));
-      MetaWriteMetric();
-      return QueuePush(x_4256, x_4255, MakeRecomputeBB(std::string("bb_0")));
-    } else {
-      return MakeUnit();
-    }
-  });
-  auto x_5366 = [&](const auto &x_4258) {
-    if (HashtblContain(x_4258->meta->BBTimeTable, std::string("bb_2"))) {
-      auto x_4259 = HashtblFindExn(x_4258->meta->BBTimeTable, std::string("bb_2"));
-      MetaWriteMetric();
-      return QueuePush(x_4259, x_4258, MakeRecomputeBB(std::string("bb_2")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5366(x_4254);
-  MakeUnit();
-  ListIter(x_4254->children, [&](const auto &x_4261) {
-    if (HashtblContain(x_4261->meta->BBTimeTable, std::string("bb_2"))) {
-      auto x_4262 = HashtblFindExn(x_4261->meta->BBTimeTable, std::string("bb_2"));
-      MetaWriteMetric();
-      return QueuePush(x_4262, x_4261, MakeRecomputeBB(std::string("bb_2")));
-    } else {
-      return MakeUnit();
-    }
-  });
-  return MakeUnit();
+Unit var_modified_x_4074(const auto &x_4376) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_4377) {
+    ListIter(x_4376->children, [&](const auto &x_4378) {
+      if (HashtblContain(x_4378->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_4379 = HashtblFindExn(x_4378->meta->BBTimeTable, std::string("bb_0"));
+        MetaWriteMetric();
+        return QueuePush(x_4379, x_4378, MakeRecomputeBB(std::string("bb_0")));
+      } else {
+        return MakeUnit();
+      }
+    });
+    auto x_5525 = [&](const auto &x_4381) {
+      if (HashtblContain(x_4381->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_4382 = HashtblFindExn(x_4381->meta->BBTimeTable, std::string("bb_2"));
+        MetaWriteMetric();
+        return QueuePush(x_4382, x_4381, MakeRecomputeBB(std::string("bb_2")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5525(x_4376);
+    MakeUnit();
+    ListIter(x_4376->children, [&](const auto &x_4384) {
+      if (HashtblContain(x_4384->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_4385 = HashtblFindExn(x_4384->meta->BBTimeTable, std::string("bb_2"));
+        MetaWriteMetric();
+        return QueuePush(x_4385, x_4384, MakeRecomputeBB(std::string("bb_2")));
+      } else {
+        return MakeUnit();
+      }
+    });
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3959(const auto &x_4264) {
-  if ((x_4264->parent != nullptr) &&
-      (eq((x_4264->parent)->var_display, std::string("flex")) ||
-       eq((x_4264->parent)->var_display, std::string("inline-flex")))) {
-    if (eq((x_4264->parent)->var_flex_direction, std::string("row"))) {
+auto eval_expr_x_4071(const auto &x_4387) {
+  if ((x_4387->parent != nullptr) &&
+      (eq((x_4387->parent)->var_display, std::string("flex")) ||
+       eq((x_4387->parent)->var_display, std::string("inline-flex")))) {
+    if (eq((x_4387->parent)->var_flex_direction, std::string("row"))) {
       return true;
     } else {
       return false;
@@ -653,500 +675,524 @@ auto eval_expr_x_3959(const auto &x_4264) {
     return false;
   }
 }
-Unit var_modified_x_3957(const auto &x_4289) {
-  ListIter(x_4289->children, [&](const auto &x_4290) {
-    if (HashtblContain(x_4290->meta->BBTimeTable, std::string("bb_1"))) {
-      auto x_4291 = HashtblFindExn(x_4290->meta->BBTimeTable, std::string("bb_1"));
-      MetaWriteMetric();
-      return QueuePush(x_4291, x_4290, MakeRecomputeBB(std::string("bb_1")));
-    } else {
-      return MakeUnit();
-    }
-  });
-  return MakeUnit();
+Unit var_modified_x_4069(const auto &x_4412) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_4413) {
+    ListIter(x_4412->children, [&](const auto &x_4414) {
+      if (HashtblContain(x_4414->meta->BBTimeTable, std::string("bb_1"))) {
+        auto x_4415 = HashtblFindExn(x_4414->meta->BBTimeTable, std::string("bb_1"));
+        MetaWriteMetric();
+        return QueuePush(x_4415, x_4414, MakeRecomputeBB(std::string("bb_1")));
+      } else {
+        return MakeUnit();
+      }
+    });
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3954(const auto &x_4293) {
-  if (HasProp(x_4293, std::string("flex-direction"))) {
-    return GetProp<std::string>(x_4293, std::string("flex-direction"));
+auto eval_expr_x_4066(const auto &x_4417) {
+  if (HasProp(x_4417, std::string("flex-direction"))) {
+    return GetProp<std::string>(x_4417, std::string("flex-direction"));
   } else {
     return std::string("");
   }
 }
-Unit var_modified_x_3952(const auto &x_4296) {
-  auto x_5367 = [&](const auto &x_4299) {
-    if (HashtblContain(x_4299->meta->BBTimeTable, std::string("bb_1"))) {
-      auto x_4300 = HashtblFindExn(x_4299->meta->BBTimeTable, std::string("bb_1"));
-      MetaWriteMetric();
-      return QueuePush(x_4300, x_4299, MakeRecomputeBB(std::string("bb_1")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  OptionMatch(
-      x_4296->next, [&](const auto &x_4298) { return MakeUnit(); },
-      [&](const auto &x_4297) {
-        auto x_5369 = x_5367;
-        x_5369(x_4297);
+Unit var_modified_x_4064(const auto &x_4420) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_4421) {
+    auto x_5526 = [&](const auto &x_4424) {
+      if (HashtblContain(x_4424->meta->BBTimeTable, std::string("bb_1"))) {
+        auto x_4425 = HashtblFindExn(x_4424->meta->BBTimeTable, std::string("bb_1"));
+        MetaWriteMetric();
+        return QueuePush(x_4425, x_4424, MakeRecomputeBB(std::string("bb_1")));
+      } else {
         return MakeUnit();
-      });
-  auto x_5368 = [&](const auto &x_4302) {
-    if (HashtblContain(x_4302->meta->BBTimeTable, std::string("bb_2"))) {
-      auto x_4303 = HashtblFindExn(x_4302->meta->BBTimeTable, std::string("bb_2"));
-      MetaWriteMetric();
-      return QueuePush(x_4303, x_4302, MakeRecomputeBB(std::string("bb_2")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5368(x_4296);
-  MakeUnit();
-  return MakeUnit();
-}
-auto eval_expr_x_3949(const auto &x_4305) {
-  return plus((x_4305->prev != nullptr) ? ((x_4305->prev)->var_flex_shrink_sum) : (0.), x_4305->var_flex_shrink);
-}
-Unit var_modified_x_3947(const auto &x_4314) {
-  auto x_5370 = [&](const auto &x_4317) {
-    if (HashtblContain(x_4317->meta->BBTimeTable, std::string("bb_1"))) {
-      auto x_4318 = HashtblFindExn(x_4317->meta->BBTimeTable, std::string("bb_1"));
-      MetaWriteMetric();
-      return QueuePush(x_4318, x_4317, MakeRecomputeBB(std::string("bb_1")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  OptionMatch(
-      x_4314->next, [&](const auto &x_4316) { return MakeUnit(); },
-      [&](const auto &x_4315) {
-        auto x_5372 = x_5370;
-        x_5372(x_4315);
+      }
+    };
+    OptionMatch(
+        x_4420->next, [&](const auto &x_4423) { return MakeUnit(); },
+        [&](const auto &x_4422) {
+          auto x_5528 = x_5526;
+          x_5528(x_4422);
+          return MakeUnit();
+        });
+    auto x_5527 = [&](const auto &x_4427) {
+      if (HashtblContain(x_4427->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_4428 = HashtblFindExn(x_4427->meta->BBTimeTable, std::string("bb_2"));
+        MetaWriteMetric();
+        return QueuePush(x_4428, x_4427, MakeRecomputeBB(std::string("bb_2")));
+      } else {
         return MakeUnit();
-      });
-  auto x_5371 = [&](const auto &x_4320) {
-    if (HashtblContain(x_4320->meta->BBTimeTable, std::string("bb_2"))) {
-      auto x_4321 = HashtblFindExn(x_4320->meta->BBTimeTable, std::string("bb_2"));
-      MetaWriteMetric();
-      return QueuePush(x_4321, x_4320, MakeRecomputeBB(std::string("bb_2")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5371(x_4314);
-  MakeUnit();
-  return MakeUnit();
+      }
+    };
+    x_5527(x_4420);
+    MakeUnit();
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3944(const auto &x_4323) {
-  return plus((x_4323->prev != nullptr) ? ((x_4323->prev)->var_flex_grow_sum) : (0.), x_4323->var_flex_grow);
+auto eval_expr_x_4061(const auto &x_4430) {
+  return plus((x_4430->prev != nullptr) ? ((x_4430->prev)->var_flex_shrink_sum) : (0.), x_4430->var_flex_shrink);
 }
-Unit var_modified_x_3942(const auto &x_4332) {
-  auto x_5373 = [&](const auto &x_4333) {
-    if (HashtblContain(x_4333->meta->BBTimeTable, std::string("bb_1"))) {
-      auto x_4334 = HashtblFindExn(x_4333->meta->BBTimeTable, std::string("bb_1"));
-      MetaWriteMetric();
-      return QueuePush(x_4334, x_4333, MakeRecomputeBB(std::string("bb_1")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5373(x_4332);
-  MakeUnit();
-  auto x_5374 = [&](const auto &x_4336) {
-    if (HashtblContain(x_4336->meta->BBTimeTable, std::string("bb_2"))) {
-      auto x_4337 = HashtblFindExn(x_4336->meta->BBTimeTable, std::string("bb_2"));
-      MetaWriteMetric();
-      return QueuePush(x_4337, x_4336, MakeRecomputeBB(std::string("bb_2")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5374(x_4332);
-  MakeUnit();
-  return MakeUnit();
+Unit var_modified_x_4059(const auto &x_4439) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_4440) {
+    auto x_5529 = [&](const auto &x_4443) {
+      if (HashtblContain(x_4443->meta->BBTimeTable, std::string("bb_1"))) {
+        auto x_4444 = HashtblFindExn(x_4443->meta->BBTimeTable, std::string("bb_1"));
+        MetaWriteMetric();
+        return QueuePush(x_4444, x_4443, MakeRecomputeBB(std::string("bb_1")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    OptionMatch(
+        x_4439->next, [&](const auto &x_4442) { return MakeUnit(); },
+        [&](const auto &x_4441) {
+          auto x_5531 = x_5529;
+          x_5531(x_4441);
+          return MakeUnit();
+        });
+    auto x_5530 = [&](const auto &x_4446) {
+      if (HashtblContain(x_4446->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_4447 = HashtblFindExn(x_4446->meta->BBTimeTable, std::string("bb_2"));
+        MetaWriteMetric();
+        return QueuePush(x_4447, x_4446, MakeRecomputeBB(std::string("bb_2")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5530(x_4439);
+    MakeUnit();
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3939(const auto &x_4339) {
-  if (HasProp(x_4339, std::string("flex-shrink"))) {
-    return string_to_float(GetProp<std::string>(x_4339, std::string("flex-shrink")));
+auto eval_expr_x_4056(const auto &x_4449) {
+  return plus((x_4449->prev != nullptr) ? ((x_4449->prev)->var_flex_grow_sum) : (0.), x_4449->var_flex_grow);
+}
+Unit var_modified_x_4054(const auto &x_4458) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_4459) {
+    auto x_5532 = [&](const auto &x_4460) {
+      if (HashtblContain(x_4460->meta->BBTimeTable, std::string("bb_1"))) {
+        auto x_4461 = HashtblFindExn(x_4460->meta->BBTimeTable, std::string("bb_1"));
+        MetaWriteMetric();
+        return QueuePush(x_4461, x_4460, MakeRecomputeBB(std::string("bb_1")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5532(x_4458);
+    MakeUnit();
+    auto x_5533 = [&](const auto &x_4463) {
+      if (HashtblContain(x_4463->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_4464 = HashtblFindExn(x_4463->meta->BBTimeTable, std::string("bb_2"));
+        MetaWriteMetric();
+        return QueuePush(x_4464, x_4463, MakeRecomputeBB(std::string("bb_2")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5533(x_4458);
+    MakeUnit();
+    return MakeUnit();
+  })));
+}
+auto eval_expr_x_4051(const auto &x_4466) {
+  if (HasProp(x_4466, std::string("flex-shrink"))) {
+    return string_to_float(GetProp<std::string>(x_4466, std::string("flex-shrink")));
   } else {
     return 0.;
   }
 }
-Unit var_modified_x_3937(const auto &x_4342) {
-  auto x_5375 = [&](const auto &x_4343) {
-    if (HashtblContain(x_4343->meta->BBTimeTable, std::string("bb_1"))) {
-      auto x_4344 = HashtblFindExn(x_4343->meta->BBTimeTable, std::string("bb_1"));
-      MetaWriteMetric();
-      return QueuePush(x_4344, x_4343, MakeRecomputeBB(std::string("bb_1")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5375(x_4342);
-  MakeUnit();
-  auto x_5376 = [&](const auto &x_4346) {
-    if (HashtblContain(x_4346->meta->BBTimeTable, std::string("bb_2"))) {
-      auto x_4347 = HashtblFindExn(x_4346->meta->BBTimeTable, std::string("bb_2"));
-      MetaWriteMetric();
-      return QueuePush(x_4347, x_4346, MakeRecomputeBB(std::string("bb_2")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5376(x_4342);
-  MakeUnit();
-  return MakeUnit();
+Unit var_modified_x_4049(const auto &x_4469) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_4470) {
+    auto x_5534 = [&](const auto &x_4471) {
+      if (HashtblContain(x_4471->meta->BBTimeTable, std::string("bb_1"))) {
+        auto x_4472 = HashtblFindExn(x_4471->meta->BBTimeTable, std::string("bb_1"));
+        MetaWriteMetric();
+        return QueuePush(x_4472, x_4471, MakeRecomputeBB(std::string("bb_1")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5534(x_4469);
+    MakeUnit();
+    auto x_5535 = [&](const auto &x_4474) {
+      if (HashtblContain(x_4474->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_4475 = HashtblFindExn(x_4474->meta->BBTimeTable, std::string("bb_2"));
+        MetaWriteMetric();
+        return QueuePush(x_4475, x_4474, MakeRecomputeBB(std::string("bb_2")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5535(x_4469);
+    MakeUnit();
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3934(const auto &x_4349) {
-  if (HasProp(x_4349, std::string("flex-grow"))) {
-    return string_to_float(GetProp<std::string>(x_4349, std::string("flex-grow")));
+auto eval_expr_x_4046(const auto &x_4477) {
+  if (HasProp(x_4477, std::string("flex-grow"))) {
+    return string_to_float(GetProp<std::string>(x_4477, std::string("flex-grow")));
   } else {
     return 0.;
   }
 }
-Unit var_modified_x_3932(const auto &x_4352) {
-  auto x_5377 = [&](const auto &x_4353) {
-    if (HashtblContain(x_4353->meta->BBTimeTable, std::string("bb_1"))) {
-      auto x_4354 = HashtblFindExn(x_4353->meta->BBTimeTable, std::string("bb_1"));
-      MetaWriteMetric();
-      return QueuePush(x_4354, x_4353, MakeRecomputeBB(std::string("bb_1")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5377(x_4352);
-  MakeUnit();
-  auto x_5378 = [&](const auto &x_4356) {
-    if (HashtblContain(x_4356->meta->BBTimeTable, std::string("bb_0"))) {
-      auto x_4357 = HashtblFindExn(x_4356->meta->BBTimeTable, std::string("bb_0"));
-      MetaWriteMetric();
-      return QueuePush(x_4357, x_4356, MakeRecomputeBB(std::string("bb_0")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5378(x_4352);
-  MakeUnit();
-  auto x_5379 = [&](const auto &x_4359) {
-    if (HashtblContain(x_4359->meta->BBTimeTable, std::string("bb_2"))) {
-      auto x_4360 = HashtblFindExn(x_4359->meta->BBTimeTable, std::string("bb_2"));
-      MetaWriteMetric();
-      return QueuePush(x_4360, x_4359, MakeRecomputeBB(std::string("bb_2")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5379(x_4352);
-  MakeUnit();
-  return MakeUnit();
+Unit var_modified_x_4044(const auto &x_4480) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_4481) {
+    auto x_5536 = [&](const auto &x_4482) {
+      if (HashtblContain(x_4482->meta->BBTimeTable, std::string("bb_1"))) {
+        auto x_4483 = HashtblFindExn(x_4482->meta->BBTimeTable, std::string("bb_1"));
+        MetaWriteMetric();
+        return QueuePush(x_4483, x_4482, MakeRecomputeBB(std::string("bb_1")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5536(x_4480);
+    MakeUnit();
+    auto x_5537 = [&](const auto &x_4485) {
+      if (HashtblContain(x_4485->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_4486 = HashtblFindExn(x_4485->meta->BBTimeTable, std::string("bb_0"));
+        MetaWriteMetric();
+        return QueuePush(x_4486, x_4485, MakeRecomputeBB(std::string("bb_0")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5537(x_4480);
+    MakeUnit();
+    auto x_5538 = [&](const auto &x_4488) {
+      if (HashtblContain(x_4488->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_4489 = HashtblFindExn(x_4488->meta->BBTimeTable, std::string("bb_2"));
+        MetaWriteMetric();
+        return QueuePush(x_4489, x_4488, MakeRecomputeBB(std::string("bb_2")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5538(x_4480);
+    MakeUnit();
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3929(const auto &x_4362) {
-  if (HasProp(x_4362, std::string("position"))) {
-    return GetProp<std::string>(x_4362, std::string("position"));
+auto eval_expr_x_4041(const auto &x_4491) {
+  if (HasProp(x_4491, std::string("position"))) {
+    return GetProp<std::string>(x_4491, std::string("position"));
   } else {
     return std::string("static");
   }
 }
-Unit var_modified_x_3927(const auto &x_4365) {
-  auto x_5380 = [&](const auto &x_4366) {
-    if (HashtblContain(x_4366->meta->BBTimeTable, std::string("bb_1"))) {
-      auto x_4367 = HashtblFindExn(x_4366->meta->BBTimeTable, std::string("bb_1"));
-      MetaWriteMetric();
-      return QueuePush(x_4367, x_4366, MakeRecomputeBB(std::string("bb_1")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5380(x_4365);
-  MakeUnit();
-  ListIter(x_4365->children, [&](const auto &x_4369) {
-    if (HashtblContain(x_4369->meta->BBTimeTable, std::string("bb_1"))) {
-      auto x_4370 = HashtblFindExn(x_4369->meta->BBTimeTable, std::string("bb_1"));
-      MetaWriteMetric();
-      return QueuePush(x_4370, x_4369, MakeRecomputeBB(std::string("bb_1")));
-    } else {
-      return MakeUnit();
-    }
-  });
-  auto x_5381 = [&](const auto &x_4372) {
-    if (HashtblContain(x_4372->meta->BBTimeTable, std::string("bb_0"))) {
-      auto x_4373 = HashtblFindExn(x_4372->meta->BBTimeTable, std::string("bb_0"));
-      MetaWriteMetric();
-      return QueuePush(x_4373, x_4372, MakeRecomputeBB(std::string("bb_0")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5381(x_4365);
-  MakeUnit();
-  return MakeUnit();
+Unit var_modified_x_4039(const auto &x_4494) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_4495) {
+    auto x_5539 = [&](const auto &x_4496) {
+      if (HashtblContain(x_4496->meta->BBTimeTable, std::string("bb_1"))) {
+        auto x_4497 = HashtblFindExn(x_4496->meta->BBTimeTable, std::string("bb_1"));
+        MetaWriteMetric();
+        return QueuePush(x_4497, x_4496, MakeRecomputeBB(std::string("bb_1")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5539(x_4494);
+    MakeUnit();
+    ListIter(x_4494->children, [&](const auto &x_4499) {
+      if (HashtblContain(x_4499->meta->BBTimeTable, std::string("bb_1"))) {
+        auto x_4500 = HashtblFindExn(x_4499->meta->BBTimeTable, std::string("bb_1"));
+        MetaWriteMetric();
+        return QueuePush(x_4500, x_4499, MakeRecomputeBB(std::string("bb_1")));
+      } else {
+        return MakeUnit();
+      }
+    });
+    auto x_5540 = [&](const auto &x_4502) {
+      if (HashtblContain(x_4502->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_4503 = HashtblFindExn(x_4502->meta->BBTimeTable, std::string("bb_0"));
+        MetaWriteMetric();
+        return QueuePush(x_4503, x_4502, MakeRecomputeBB(std::string("bb_0")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5540(x_4494);
+    MakeUnit();
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3924(const auto &x_4375) {
-  if (HasProp(x_4375, std::string("display"))) {
-    return GetProp<std::string>(x_4375, std::string("display"));
+auto eval_expr_x_4036(const auto &x_4505) {
+  if (HasProp(x_4505, std::string("display"))) {
+    return GetProp<std::string>(x_4505, std::string("display"));
   } else {
     return std::string("block");
   }
 }
-Unit var_modified_x_3921(const auto &x_4378) {
-  auto x_5382 = [&](const auto &x_4381) {
-    if (HashtblContain(x_4381->meta->BBTimeTable, std::string("bb_0"))) {
-      auto x_4382 = HashtblFindExn(x_4381->meta->BBTimeTable, std::string("bb_0"));
-      MetaWriteMetric();
-      return QueuePush(x_4382, x_4381, MakeRecomputeBB(std::string("bb_0")));
-    } else {
-      return MakeUnit();
+Unit var_modified_x_4032(const auto &x_4508) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_4509) {
+    auto x_5541 = [&](const auto &x_4512) {
+      if (HashtblContain(x_4512->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_4513 = HashtblFindExn(x_4512->meta->BBTimeTable, std::string("bb_0"));
+        MetaWriteMetric();
+        return QueuePush(x_4513, x_4512, MakeRecomputeBB(std::string("bb_0")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    if (x_4508->next == nullptr) {
+      auto x_5543 = x_5541;
+      OptionMatch(
+          x_4508->parent, [&](const auto &x_4511) { return MakeUnit(); },
+          [&](const auto &x_4510) {
+            auto x_5545 = x_5543;
+            x_5545(x_4510);
+            return MakeUnit();
+          });
     }
-  };
-  if (x_4378->next == nullptr) {
-    auto x_5384 = x_5382;
+    auto x_5542 = [&](const auto &x_4517) {
+      if (HashtblContain(x_4517->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_4518 = HashtblFindExn(x_4517->meta->BBTimeTable, std::string("bb_0"));
+        MetaWriteMetric();
+        return QueuePush(x_4518, x_4517, MakeRecomputeBB(std::string("bb_0")));
+      } else {
+        return MakeUnit();
+      }
+    };
     OptionMatch(
-        x_4378->parent, [&](const auto &x_4380) { return MakeUnit(); },
-        [&](const auto &x_4379) {
-          auto x_5386 = x_5384;
-          x_5386(x_4379);
+        x_4508->next, [&](const auto &x_4516) { return MakeUnit(); },
+        [&](const auto &x_4515) {
+          auto x_5544 = x_5542;
+          x_5544(x_4515);
           return MakeUnit();
         });
-  }
-  auto x_5383 = [&](const auto &x_4386) {
-    if (HashtblContain(x_4386->meta->BBTimeTable, std::string("bb_0"))) {
-      auto x_4387 = HashtblFindExn(x_4386->meta->BBTimeTable, std::string("bb_0"));
-      MetaWriteMetric();
-      return QueuePush(x_4387, x_4386, MakeRecomputeBB(std::string("bb_0")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  OptionMatch(
-      x_4378->next, [&](const auto &x_4385) { return MakeUnit(); },
-      [&](const auto &x_4384) {
-        auto x_5385 = x_5383;
-        x_5385(x_4384);
-        return MakeUnit();
-      });
-  return MakeUnit();
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3918(const auto &x_4389) {
-  if (x_4389->prev != nullptr) {
-    if (x_4389->var_line_break) {
-      return plus((x_4389->prev)->var_finished_intrinsic_height_sum,
-                  plus((x_4389->prev)->var_intrinsic_current_line_height, x_4389->var_intrinsic_height_external));
+auto eval_expr_x_4029(const auto &x_4520) {
+  if (x_4520->prev != nullptr) {
+    if (x_4520->var_line_break) {
+      return plus((x_4520->prev)->var_finished_intrinsic_height_sum,
+                  plus((x_4520->prev)->var_intrinsic_current_line_height, x_4520->var_intrinsic_height_external));
     } else {
-      return (x_4389->prev)->var_finished_intrinsic_height_sum;
+      return (x_4520->prev)->var_finished_intrinsic_height_sum;
     }
   } else {
-    if (x_4389->var_line_break) {
-      return x_4389->var_intrinsic_height_external;
+    if (x_4520->var_line_break) {
+      return x_4520->var_intrinsic_height_external;
     } else {
       return 0.;
     }
   }
 }
-Unit var_modified_x_3916(const auto &x_4418) {
-  auto x_5387 = [&](const auto &x_4421) {
-    if (HashtblContain(x_4421->meta->BBTimeTable, std::string("bb_0"))) {
-      auto x_4422 = HashtblFindExn(x_4421->meta->BBTimeTable, std::string("bb_0"));
-      MetaWriteMetric();
-      return QueuePush(x_4422, x_4421, MakeRecomputeBB(std::string("bb_0")));
-    } else {
-      return MakeUnit();
+Unit var_modified_x_4027(const auto &x_4549) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_4550) {
+    auto x_5546 = [&](const auto &x_4553) {
+      if (HashtblContain(x_4553->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_4554 = HashtblFindExn(x_4553->meta->BBTimeTable, std::string("bb_0"));
+        MetaWriteMetric();
+        return QueuePush(x_4554, x_4553, MakeRecomputeBB(std::string("bb_0")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    if (x_4549->next == nullptr) {
+      auto x_5548 = x_5546;
+      OptionMatch(
+          x_4549->parent, [&](const auto &x_4552) { return MakeUnit(); },
+          [&](const auto &x_4551) {
+            auto x_5550 = x_5548;
+            x_5550(x_4551);
+            return MakeUnit();
+          });
     }
-  };
-  if (x_4418->next == nullptr) {
-    auto x_5389 = x_5387;
+    auto x_5547 = [&](const auto &x_4558) {
+      if (HashtblContain(x_4558->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_4559 = HashtblFindExn(x_4558->meta->BBTimeTable, std::string("bb_0"));
+        MetaWriteMetric();
+        return QueuePush(x_4559, x_4558, MakeRecomputeBB(std::string("bb_0")));
+      } else {
+        return MakeUnit();
+      }
+    };
     OptionMatch(
-        x_4418->parent, [&](const auto &x_4420) { return MakeUnit(); },
-        [&](const auto &x_4419) {
-          auto x_5391 = x_5389;
-          x_5391(x_4419);
+        x_4549->next, [&](const auto &x_4557) { return MakeUnit(); },
+        [&](const auto &x_4556) {
+          auto x_5549 = x_5547;
+          x_5549(x_4556);
           return MakeUnit();
         });
-  }
-  auto x_5388 = [&](const auto &x_4426) {
-    if (HashtblContain(x_4426->meta->BBTimeTable, std::string("bb_0"))) {
-      auto x_4427 = HashtblFindExn(x_4426->meta->BBTimeTable, std::string("bb_0"));
-      MetaWriteMetric();
-      return QueuePush(x_4427, x_4426, MakeRecomputeBB(std::string("bb_0")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  OptionMatch(
-      x_4418->next, [&](const auto &x_4425) { return MakeUnit(); },
-      [&](const auto &x_4424) {
-        auto x_5390 = x_5388;
-        x_5390(x_4424);
-        return MakeUnit();
-      });
-  return MakeUnit();
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3913(const auto &x_4429) {
-  if (x_4429->var_line_break) {
+auto eval_expr_x_4024(const auto &x_4561) {
+  if (x_4561->var_line_break) {
     return 0.;
   } else {
-    return max(x_4429->var_intrinsic_height_external,
-               (x_4429->prev != nullptr) ? ((x_4429->prev)->var_intrinsic_current_line_height) : (0.));
+    return max(x_4561->var_intrinsic_height_external,
+               (x_4561->prev != nullptr) ? ((x_4561->prev)->var_intrinsic_current_line_height) : (0.));
   }
 }
-Unit var_modified_x_3911(const auto &x_4442) {
-  auto x_5392 = [&](const auto &x_4445) {
-    if (HashtblContain(x_4445->meta->BBTimeTable, std::string("bb_0"))) {
-      auto x_4446 = HashtblFindExn(x_4445->meta->BBTimeTable, std::string("bb_0"));
-      MetaWriteMetric();
-      return QueuePush(x_4446, x_4445, MakeRecomputeBB(std::string("bb_0")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  OptionMatch(
-      x_4442->next, [&](const auto &x_4444) { return MakeUnit(); },
-      [&](const auto &x_4443) {
-        auto x_5394 = x_5392;
-        x_5394(x_4443);
+Unit var_modified_x_4022(const auto &x_4574) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_4575) {
+    auto x_5551 = [&](const auto &x_4578) {
+      if (HashtblContain(x_4578->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_4579 = HashtblFindExn(x_4578->meta->BBTimeTable, std::string("bb_0"));
+        MetaWriteMetric();
+        return QueuePush(x_4579, x_4578, MakeRecomputeBB(std::string("bb_0")));
+      } else {
         return MakeUnit();
-      });
-  auto x_5393 = [&](const auto &x_4450) {
-    if (HashtblContain(x_4450->meta->BBTimeTable, std::string("bb_2"))) {
-      auto x_4451 = HashtblFindExn(x_4450->meta->BBTimeTable, std::string("bb_2"));
-      MetaWriteMetric();
-      return QueuePush(x_4451, x_4450, MakeRecomputeBB(std::string("bb_2")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  if (x_4442->next == nullptr) {
-    auto x_5395 = x_5393;
+      }
+    };
     OptionMatch(
-        x_4442->parent, [&](const auto &x_4449) { return MakeUnit(); },
-        [&](const auto &x_4448) {
-          auto x_5396 = x_5395;
-          x_5396(x_4448);
+        x_4574->next, [&](const auto &x_4577) { return MakeUnit(); },
+        [&](const auto &x_4576) {
+          auto x_5553 = x_5551;
+          x_5553(x_4576);
           return MakeUnit();
         });
-  }
-  return MakeUnit();
-}
-auto eval_expr_x_3908(const auto &x_4453) {
-  return plus((x_4453->prev != nullptr) ? ((x_4453->prev)->var_intrinsic_height_sum) : (0.),
-              x_4453->var_intrinsic_height_external);
-}
-Unit var_modified_x_3906(const auto &x_4462) {
-  auto x_5397 = [&](const auto &x_4463) {
-    if (HashtblContain(x_4463->meta->BBTimeTable, std::string("bb_0"))) {
-      auto x_4464 = HashtblFindExn(x_4463->meta->BBTimeTable, std::string("bb_0"));
-      MetaWriteMetric();
-      return QueuePush(x_4464, x_4463, MakeRecomputeBB(std::string("bb_0")));
-    } else {
-      return MakeUnit();
+    auto x_5552 = [&](const auto &x_4583) {
+      if (HashtblContain(x_4583->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_4584 = HashtblFindExn(x_4583->meta->BBTimeTable, std::string("bb_2"));
+        MetaWriteMetric();
+        return QueuePush(x_4584, x_4583, MakeRecomputeBB(std::string("bb_2")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    if (x_4574->next == nullptr) {
+      auto x_5554 = x_5552;
+      OptionMatch(
+          x_4574->parent, [&](const auto &x_4582) { return MakeUnit(); },
+          [&](const auto &x_4581) {
+            auto x_5555 = x_5554;
+            x_5555(x_4581);
+            return MakeUnit();
+          });
     }
-  };
-  x_5397(x_4462);
-  MakeUnit();
-  return MakeUnit();
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3903(const auto &x_4466) {
-  if (eq(x_4466->var_position, std::string("absolute"))) {
+auto eval_expr_x_4019(const auto &x_4586) {
+  return plus((x_4586->prev != nullptr) ? ((x_4586->prev)->var_intrinsic_height_sum) : (0.),
+              x_4586->var_intrinsic_height_external);
+}
+Unit var_modified_x_4017(const auto &x_4595) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_4596) {
+    auto x_5556 = [&](const auto &x_4597) {
+      if (HashtblContain(x_4597->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_4598 = HashtblFindExn(x_4597->meta->BBTimeTable, std::string("bb_0"));
+        MetaWriteMetric();
+        return QueuePush(x_4598, x_4597, MakeRecomputeBB(std::string("bb_0")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5556(x_4595);
+    MakeUnit();
+    return MakeUnit();
+  })));
+}
+auto eval_expr_x_4014(const auto &x_4600) {
+  if (eq(x_4600->var_position, std::string("absolute"))) {
     return 0.;
   } else {
-    return x_4466->var_intrinsic_height_internal;
+    return x_4600->var_intrinsic_height_internal;
   }
 }
-Unit var_modified_x_3901(const auto &x_4475) {
-  auto x_5398 = [&](const auto &x_4476) {
-    if (HashtblContain(x_4476->meta->BBTimeTable, std::string("bb_0"))) {
-      auto x_4477 = HashtblFindExn(x_4476->meta->BBTimeTable, std::string("bb_0"));
-      MetaWriteMetric();
-      return QueuePush(x_4477, x_4476, MakeRecomputeBB(std::string("bb_0")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5398(x_4475);
-  MakeUnit();
-  auto x_5399 = [&](const auto &x_4479) {
-    if (HashtblContain(x_4479->meta->BBTimeTable, std::string("bb_2"))) {
-      auto x_4480 = HashtblFindExn(x_4479->meta->BBTimeTable, std::string("bb_2"));
-      MetaWriteMetric();
-      return QueuePush(x_4480, x_4479, MakeRecomputeBB(std::string("bb_2")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5399(x_4475);
-  MakeUnit();
-  return MakeUnit();
+Unit var_modified_x_4012(const auto &x_4609) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_4610) {
+    auto x_5557 = [&](const auto &x_4611) {
+      if (HashtblContain(x_4611->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_4612 = HashtblFindExn(x_4611->meta->BBTimeTable, std::string("bb_0"));
+        MetaWriteMetric();
+        return QueuePush(x_4612, x_4611, MakeRecomputeBB(std::string("bb_0")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5557(x_4609);
+    MakeUnit();
+    auto x_5558 = [&](const auto &x_4614) {
+      if (HashtblContain(x_4614->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_4615 = HashtblFindExn(x_4614->meta->BBTimeTable, std::string("bb_2"));
+        MetaWriteMetric();
+        return QueuePush(x_4615, x_4614, MakeRecomputeBB(std::string("bb_2")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5558(x_4609);
+    MakeUnit();
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3898(const auto &x_4482) {
-  if (eq(x_4482->var_display, std::string("none"))) {
+auto eval_expr_x_4009(const auto &x_4617) {
+  if (eq(x_4617->var_display, std::string("none"))) {
     return 0.;
   } else {
-    if (x_4482->var_inside_svg) {
+    if (x_4617->var_inside_svg) {
       return 0.;
     } else {
-      if (x_4482->var_disabled) {
+      if (x_4617->var_disabled) {
         return 0.;
       } else {
-        if (neq(x_4482->var_height_expr, std::string("auto")) &&
-            ((!has_suffix(x_4482->var_height_expr, std::string("%"))) &&
-             neq(x_4482->var_height_expr, std::string("fit-content")))) {
-          if (has_suffix(x_4482->var_height_expr, std::string("px"))) {
-            return string_to_float(strip_suffix(x_4482->var_height_expr, std::string("px")));
+        if (neq(x_4617->var_height_expr, std::string("auto")) &&
+            ((!has_suffix(x_4617->var_height_expr, std::string("%"))) &&
+             neq(x_4617->var_height_expr, std::string("fit-content")))) {
+          if (has_suffix(x_4617->var_height_expr, std::string("px"))) {
+            return string_to_float(strip_suffix(x_4617->var_height_expr, std::string("px")));
           } else {
-            if (has_suffix(x_4482->var_height_expr, std::string("ch"))) {
-              return string_to_float(strip_suffix(x_4482->var_height_expr, std::string("ch")));
+            if (has_suffix(x_4617->var_height_expr, std::string("ch"))) {
+              return string_to_float(strip_suffix(x_4617->var_height_expr, std::string("ch")));
             } else {
-              return string_to_float(strip_suffix(x_4482->var_height_expr, std::string("lh")));
+              return string_to_float(strip_suffix(x_4617->var_height_expr, std::string("lh")));
             }
           }
         } else {
           return plus(
-              x_4482->var_children_intrinsic_height,
-              (eq(x_4482->name, std::string("#text")))
+              x_4617->var_children_intrinsic_height,
+              (eq(x_4617->name, std::string("#text")))
                   ? (10.)
-                  : ((x_4482->var_is_default_case)
+                  : ((x_4617->var_is_default_case)
                          ? (0.)
-                         : ((eq(x_4482->name, std::string("BR")))
+                         : ((eq(x_4617->name, std::string("BR")))
                                 ? (0.)
-                                : ((eq(x_4482->name, std::string("INPUT")))
+                                : ((eq(x_4617->name, std::string("INPUT")))
                                        ? (10.)
-                                       : ((eq(x_4482->name, std::string("svg")))
-                                              ? ((x_4482->var_has_height_attr &&
-                                                  string_is_float(x_4482->var_height_attr_expr))
-                                                     ? (string_to_float(x_4482->var_height_attr_expr))
-                                                     : ((HasAttr(x_4482, std::string("viewBox")))
+                                       : ((eq(x_4617->name, std::string("svg")))
+                                              ? ((x_4617->var_has_height_attr &&
+                                                  string_is_float(x_4617->var_height_attr_expr))
+                                                     ? (string_to_float(x_4617->var_height_attr_expr))
+                                                     : ((HasAttr(x_4617, std::string("viewBox")))
                                                             ? (string_to_float(nth_by_sep(
-                                                                  GetAttr<std::string>(x_4482, std::string("viewBox")),
+                                                                  GetAttr<std::string>(x_4617, std::string("viewBox")),
                                                                   std::string(" "), static_cast<int64_t>(3))))
                                                             : (mult(string_to_float(nth_by_sep(
-                                                                        GetAttr<std::string>(x_4482,
+                                                                        GetAttr<std::string>(x_4617,
                                                                                              std::string("viewBox")),
                                                                         std::string(" "), static_cast<int64_t>(3))),
                                                                     divide(string_to_float(strip_suffix(
-                                                                               x_4482->var_height_attr_expr,
+                                                                               x_4617->var_height_attr_expr,
                                                                                std::string("%"))),
                                                                            100.)))))
-                                              : ((eq(x_4482->name, std::string("IMG")))
-                                                     ? ((x_4482->var_has_height_attr)
-                                                            ? (string_to_float(x_4482->var_height_attr_expr))
-                                                            : ((HasAttr(x_4482, std::string("image_height")) &&
-                                                                (!x_4482->var_has_width_attr))
+                                              : ((eq(x_4617->name, std::string("IMG")))
+                                                     ? ((x_4617->var_has_height_attr)
+                                                            ? (string_to_float(x_4617->var_height_attr_expr))
+                                                            : ((HasAttr(x_4617, std::string("image_height")) &&
+                                                                (!x_4617->var_has_width_attr))
                                                                    ? (int_to_float(GetAttr<int64_t>(
-                                                                         x_4482, std::string("image_height"))))
-                                                                   : ((neq(GetAttr<int64_t>(x_4482,
+                                                                         x_4617, std::string("image_height"))))
+                                                                   : ((neq(GetAttr<int64_t>(x_4617,
                                                                                             std::string("image_width")),
                                                                            static_cast<int64_t>(0)))
                                                                           ? (mult(
                                                                                 string_to_float(
-                                                                                    x_4482->var_width_attr_expr),
+                                                                                    x_4617->var_width_attr_expr),
                                                                                 divide(
                                                                                     int_to_float(GetAttr<int64_t>(
-                                                                                        x_4482,
+                                                                                        x_4617,
                                                                                         std::string("image_height"))),
                                                                                     int_to_float(GetAttr<int64_t>(
-                                                                                        x_4482,
+                                                                                        x_4617,
                                                                                         std::string("image_width"))))))
                                                                           : (0.))))
-                                                     : ((eq(x_4482->name, std::string("IFRAME")))
+                                                     : ((eq(x_4617->name, std::string("IFRAME")))
                                                             ? (150.)
-                                                            : ((eq(x_4482->name, std::string("TEXTAREA")))
+                                                            : ((eq(x_4617->name, std::string("TEXTAREA")))
                                                                    ? (100.)
                                                                    : (150.)))))))));
         }
@@ -1154,32 +1200,34 @@ auto eval_expr_x_3898(const auto &x_4482) {
     }
   }
 }
-Unit var_modified_x_3896(const auto &x_4627) {
-  auto x_5400 = [&](const auto &x_4628) {
-    if (HashtblContain(x_4628->meta->BBTimeTable, std::string("bb_2"))) {
-      auto x_4629 = HashtblFindExn(x_4628->meta->BBTimeTable, std::string("bb_2"));
-      MetaWriteMetric();
-      return QueuePush(x_4629, x_4628, MakeRecomputeBB(std::string("bb_2")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5400(x_4627);
-  MakeUnit();
-  return MakeUnit();
+Unit var_modified_x_4007(const auto &x_4762) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_4763) {
+    auto x_5559 = [&](const auto &x_4764) {
+      if (HashtblContain(x_4764->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_4765 = HashtblFindExn(x_4764->meta->BBTimeTable, std::string("bb_2"));
+        MetaWriteMetric();
+        return QueuePush(x_4765, x_4764, MakeRecomputeBB(std::string("bb_2")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5559(x_4762);
+    MakeUnit();
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3893(const auto &x_4631) {
-  if (eq(x_4631->var_display, std::string("none")) || (x_4631->var_inside_svg || x_4631->var_disabled)) {
+auto eval_expr_x_4004(const auto &x_4767) {
+  if (eq(x_4767->var_display, std::string("none")) || (x_4767->var_inside_svg || x_4767->var_disabled)) {
     return true;
   } else {
-    if ((x_4631->parent != nullptr) && (x_4631->parent)->var_is_flex_column) {
+    if ((x_4767->parent != nullptr) && (x_4767->parent)->var_is_flex_column) {
       return false;
     } else {
-      if (eq(x_4631->var_height_expr, std::string("auto")) ||
-          (has_suffix(x_4631->var_height_expr, std::string("px")) ||
-           (has_suffix(x_4631->var_height_expr, std::string("ch")) ||
-            (has_suffix(x_4631->var_height_expr, std::string("lh")) ||
-             eq(x_4631->var_height_expr, std::string("max-content")))))) {
+      if (eq(x_4767->var_height_expr, std::string("auto")) ||
+          (has_suffix(x_4767->var_height_expr, std::string("px")) ||
+           (has_suffix(x_4767->var_height_expr, std::string("ch")) ||
+            (has_suffix(x_4767->var_height_expr, std::string("lh")) ||
+             eq(x_4767->var_height_expr, std::string("max-content")))))) {
         return true;
       } else {
         return false;
@@ -1187,297 +1235,311 @@ auto eval_expr_x_3893(const auto &x_4631) {
     }
   }
 }
-Unit var_modified_x_3891(const auto &x_4680) {
-  auto x_5401 = [&](const auto &x_4681) {
-    if (HashtblContain(x_4681->meta->BBTimeTable, std::string("bb_0"))) {
-      auto x_4682 = HashtblFindExn(x_4681->meta->BBTimeTable, std::string("bb_0"));
-      MetaWriteMetric();
-      return QueuePush(x_4682, x_4681, MakeRecomputeBB(std::string("bb_0")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5401(x_4680);
-  MakeUnit();
-  auto x_5402 = [&](const auto &x_4684) {
-    if (HashtblContain(x_4684->meta->BBTimeTable, std::string("bb_2"))) {
-      auto x_4685 = HashtblFindExn(x_4684->meta->BBTimeTable, std::string("bb_2"));
-      MetaWriteMetric();
-      return QueuePush(x_4685, x_4684, MakeRecomputeBB(std::string("bb_2")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5402(x_4680);
-  MakeUnit();
-  return MakeUnit();
+Unit var_modified_x_4002(const auto &x_4816) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_4817) {
+    auto x_5560 = [&](const auto &x_4818) {
+      if (HashtblContain(x_4818->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_4819 = HashtblFindExn(x_4818->meta->BBTimeTable, std::string("bb_0"));
+        MetaWriteMetric();
+        return QueuePush(x_4819, x_4818, MakeRecomputeBB(std::string("bb_0")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5560(x_4816);
+    MakeUnit();
+    auto x_5561 = [&](const auto &x_4821) {
+      if (HashtblContain(x_4821->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_4822 = HashtblFindExn(x_4821->meta->BBTimeTable, std::string("bb_2"));
+        MetaWriteMetric();
+        return QueuePush(x_4822, x_4821, MakeRecomputeBB(std::string("bb_2")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5561(x_4816);
+    MakeUnit();
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3888(const auto &x_4687) {
-  if (HasProp(x_4687, std::string("height"))) {
-    return GetProp<std::string>(x_4687, std::string("height"));
+auto eval_expr_x_3999(const auto &x_4824) {
+  if (HasProp(x_4824, std::string("height"))) {
+    return GetProp<std::string>(x_4824, std::string("height"));
   } else {
     return std::string("auto");
   }
 }
-Unit var_modified_x_3886(const auto &x_4690) {
-  auto x_5403 = [&](const auto &x_4691) {
-    if (HashtblContain(x_4691->meta->BBTimeTable, std::string("bb_0"))) {
-      auto x_4692 = HashtblFindExn(x_4691->meta->BBTimeTable, std::string("bb_0"));
-      MetaWriteMetric();
-      return QueuePush(x_4692, x_4691, MakeRecomputeBB(std::string("bb_0")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5403(x_4690);
-  MakeUnit();
-  return MakeUnit();
+Unit var_modified_x_3997(const auto &x_4827) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_4828) {
+    auto x_5562 = [&](const auto &x_4829) {
+      if (HashtblContain(x_4829->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_4830 = HashtblFindExn(x_4829->meta->BBTimeTable, std::string("bb_0"));
+        MetaWriteMetric();
+        return QueuePush(x_4830, x_4829, MakeRecomputeBB(std::string("bb_0")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5562(x_4827);
+    MakeUnit();
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3883(const auto &x_4694) {
-  if (x_4694->last != nullptr) {
-    return plus((x_4694->last)->var_finished_intrinsic_height_sum, (x_4694->last)->var_intrinsic_current_line_height);
+auto eval_expr_x_3994(const auto &x_4832) {
+  if (x_4832->last != nullptr) {
+    return plus((x_4832->last)->var_finished_intrinsic_height_sum, (x_4832->last)->var_intrinsic_current_line_height);
   } else {
     return 0.;
   }
 }
-Unit var_modified_x_3881(const auto &x_4703) {
-  auto x_5404 = [&](const auto &x_4706) {
-    if (HashtblContain(x_4706->meta->BBTimeTable, std::string("bb_0"))) {
-      auto x_4707 = HashtblFindExn(x_4706->meta->BBTimeTable, std::string("bb_0"));
-      MetaWriteMetric();
-      return QueuePush(x_4707, x_4706, MakeRecomputeBB(std::string("bb_0")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  OptionMatch(
-      x_4703->next, [&](const auto &x_4705) { return MakeUnit(); },
-      [&](const auto &x_4704) {
-        auto x_5406 = x_5404;
-        x_5406(x_4704);
+Unit var_modified_x_3992(const auto &x_4841) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_4842) {
+    auto x_5563 = [&](const auto &x_4845) {
+      if (HashtblContain(x_4845->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_4846 = HashtblFindExn(x_4845->meta->BBTimeTable, std::string("bb_0"));
+        MetaWriteMetric();
+        return QueuePush(x_4846, x_4845, MakeRecomputeBB(std::string("bb_0")));
+      } else {
         return MakeUnit();
-      });
-  auto x_5405 = [&](const auto &x_4711) {
-    if (HashtblContain(x_4711->meta->BBTimeTable, std::string("bb_2"))) {
-      auto x_4712 = HashtblFindExn(x_4711->meta->BBTimeTable, std::string("bb_2"));
-      MetaWriteMetric();
-      return QueuePush(x_4712, x_4711, MakeRecomputeBB(std::string("bb_2")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  if (x_4703->next == nullptr) {
-    auto x_5407 = x_5405;
+      }
+    };
     OptionMatch(
-        x_4703->parent, [&](const auto &x_4710) { return MakeUnit(); },
-        [&](const auto &x_4709) {
-          auto x_5408 = x_5407;
-          x_5408(x_4709);
+        x_4841->next, [&](const auto &x_4844) { return MakeUnit(); },
+        [&](const auto &x_4843) {
+          auto x_5565 = x_5563;
+          x_5565(x_4843);
           return MakeUnit();
         });
-  }
-  return MakeUnit();
-}
-auto eval_expr_x_3878(const auto &x_4714) {
-  return plus((x_4714->prev != nullptr) ? ((x_4714->prev)->var_intrinsic_width_sum) : (0.),
-              x_4714->var_intrinsic_width_external);
-}
-Unit var_modified_x_3876(const auto &x_4723) {
-  auto x_5409 = [&](const auto &x_4726) {
-    if (HashtblContain(x_4726->meta->BBTimeTable, std::string("bb_0"))) {
-      auto x_4727 = HashtblFindExn(x_4726->meta->BBTimeTable, std::string("bb_0"));
-      MetaWriteMetric();
-      return QueuePush(x_4727, x_4726, MakeRecomputeBB(std::string("bb_0")));
-    } else {
-      return MakeUnit();
+    auto x_5564 = [&](const auto &x_4850) {
+      if (HashtblContain(x_4850->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_4851 = HashtblFindExn(x_4850->meta->BBTimeTable, std::string("bb_2"));
+        MetaWriteMetric();
+        return QueuePush(x_4851, x_4850, MakeRecomputeBB(std::string("bb_2")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    if (x_4841->next == nullptr) {
+      auto x_5566 = x_5564;
+      OptionMatch(
+          x_4841->parent, [&](const auto &x_4849) { return MakeUnit(); },
+          [&](const auto &x_4848) {
+            auto x_5567 = x_5566;
+            x_5567(x_4848);
+            return MakeUnit();
+          });
     }
-  };
-  if (x_4723->next == nullptr) {
-    auto x_5411 = x_5409;
+    return MakeUnit();
+  })));
+}
+auto eval_expr_x_3989(const auto &x_4853) {
+  return plus((x_4853->prev != nullptr) ? ((x_4853->prev)->var_intrinsic_width_sum) : (0.),
+              x_4853->var_intrinsic_width_external);
+}
+Unit var_modified_x_3987(const auto &x_4862) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_4863) {
+    auto x_5568 = [&](const auto &x_4866) {
+      if (HashtblContain(x_4866->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_4867 = HashtblFindExn(x_4866->meta->BBTimeTable, std::string("bb_0"));
+        MetaWriteMetric();
+        return QueuePush(x_4867, x_4866, MakeRecomputeBB(std::string("bb_0")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    if (x_4862->next == nullptr) {
+      auto x_5570 = x_5568;
+      OptionMatch(
+          x_4862->parent, [&](const auto &x_4865) { return MakeUnit(); },
+          [&](const auto &x_4864) {
+            auto x_5572 = x_5570;
+            x_5572(x_4864);
+            return MakeUnit();
+          });
+    }
+    auto x_5569 = [&](const auto &x_4871) {
+      if (HashtblContain(x_4871->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_4872 = HashtblFindExn(x_4871->meta->BBTimeTable, std::string("bb_0"));
+        MetaWriteMetric();
+        return QueuePush(x_4872, x_4871, MakeRecomputeBB(std::string("bb_0")));
+      } else {
+        return MakeUnit();
+      }
+    };
     OptionMatch(
-        x_4723->parent, [&](const auto &x_4725) { return MakeUnit(); },
-        [&](const auto &x_4724) {
-          auto x_5413 = x_5411;
-          x_5413(x_4724);
+        x_4862->next, [&](const auto &x_4870) { return MakeUnit(); },
+        [&](const auto &x_4869) {
+          auto x_5571 = x_5569;
+          x_5571(x_4869);
           return MakeUnit();
         });
-  }
-  auto x_5410 = [&](const auto &x_4731) {
-    if (HashtblContain(x_4731->meta->BBTimeTable, std::string("bb_0"))) {
-      auto x_4732 = HashtblFindExn(x_4731->meta->BBTimeTable, std::string("bb_0"));
-      MetaWriteMetric();
-      return QueuePush(x_4732, x_4731, MakeRecomputeBB(std::string("bb_0")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  OptionMatch(
-      x_4723->next, [&](const auto &x_4730) { return MakeUnit(); },
-      [&](const auto &x_4729) {
-        auto x_5412 = x_5410;
-        x_5412(x_4729);
+    return MakeUnit();
+  })));
+}
+auto eval_expr_x_3984(const auto &x_4874) {
+  return max(x_4874->var_intrinsic_current_line_width,
+             (x_4874->prev != nullptr) ? ((x_4874->prev)->var_intrinsic_width_max) : (0.));
+}
+Unit var_modified_x_3982(const auto &x_4883) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_4884) {
+    auto x_5573 = [&](const auto &x_4885) {
+      if (HashtblContain(x_4885->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_4886 = HashtblFindExn(x_4885->meta->BBTimeTable, std::string("bb_0"));
+        MetaWriteMetric();
+        return QueuePush(x_4886, x_4885, MakeRecomputeBB(std::string("bb_0")));
+      } else {
         return MakeUnit();
-      });
-  return MakeUnit();
-}
-auto eval_expr_x_3873(const auto &x_4734) {
-  return max(x_4734->var_intrinsic_current_line_width,
-             (x_4734->prev != nullptr) ? ((x_4734->prev)->var_intrinsic_width_max) : (0.));
-}
-Unit var_modified_x_3871(const auto &x_4743) {
-  auto x_5414 = [&](const auto &x_4744) {
-    if (HashtblContain(x_4744->meta->BBTimeTable, std::string("bb_0"))) {
-      auto x_4745 = HashtblFindExn(x_4744->meta->BBTimeTable, std::string("bb_0"));
-      MetaWriteMetric();
-      return QueuePush(x_4745, x_4744, MakeRecomputeBB(std::string("bb_0")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5414(x_4743);
-  MakeUnit();
-  auto x_5415 = [&](const auto &x_4749) {
-    if (HashtblContain(x_4749->meta->BBTimeTable, std::string("bb_0"))) {
-      auto x_4750 = HashtblFindExn(x_4749->meta->BBTimeTable, std::string("bb_0"));
-      MetaWriteMetric();
-      return QueuePush(x_4750, x_4749, MakeRecomputeBB(std::string("bb_0")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  OptionMatch(
-      x_4743->next, [&](const auto &x_4748) { return MakeUnit(); },
-      [&](const auto &x_4747) {
-        auto x_5416 = x_5415;
-        x_5416(x_4747);
+      }
+    };
+    x_5573(x_4883);
+    MakeUnit();
+    auto x_5574 = [&](const auto &x_4890) {
+      if (HashtblContain(x_4890->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_4891 = HashtblFindExn(x_4890->meta->BBTimeTable, std::string("bb_0"));
+        MetaWriteMetric();
+        return QueuePush(x_4891, x_4890, MakeRecomputeBB(std::string("bb_0")));
+      } else {
         return MakeUnit();
-      });
-  return MakeUnit();
+      }
+    };
+    OptionMatch(
+        x_4883->next, [&](const auto &x_4889) { return MakeUnit(); },
+        [&](const auto &x_4888) {
+          auto x_5575 = x_5574;
+          x_5575(x_4888);
+          return MakeUnit();
+        });
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3868(const auto &x_4752) {
-  return plus(x_4752->var_intrinsic_width_external,
-              ((x_4752->prev != nullptr) && (!(x_4752->prev)->var_line_break))
-                  ? ((x_4752->prev)->var_intrinsic_current_line_width)
+auto eval_expr_x_3979(const auto &x_4893) {
+  return plus(x_4893->var_intrinsic_width_external,
+              ((x_4893->prev != nullptr) && (!(x_4893->prev)->var_line_break))
+                  ? ((x_4893->prev)->var_intrinsic_current_line_width)
                   : (0.));
 }
-Unit var_modified_x_3866(const auto &x_4765) {
-  auto x_5417 = [&](const auto &x_4766) {
-    if (HashtblContain(x_4766->meta->BBTimeTable, std::string("bb_0"))) {
-      auto x_4767 = HashtblFindExn(x_4766->meta->BBTimeTable, std::string("bb_0"));
-      MetaWriteMetric();
-      return QueuePush(x_4767, x_4766, MakeRecomputeBB(std::string("bb_0")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5417(x_4765);
-  MakeUnit();
-  return MakeUnit();
+Unit var_modified_x_3977(const auto &x_4906) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_4907) {
+    auto x_5576 = [&](const auto &x_4908) {
+      if (HashtblContain(x_4908->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_4909 = HashtblFindExn(x_4908->meta->BBTimeTable, std::string("bb_0"));
+        MetaWriteMetric();
+        return QueuePush(x_4909, x_4908, MakeRecomputeBB(std::string("bb_0")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5576(x_4906);
+    MakeUnit();
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3863(const auto &x_4769) {
-  if (eq(x_4769->var_position, std::string("absolute"))) {
+auto eval_expr_x_3974(const auto &x_4911) {
+  if (eq(x_4911->var_position, std::string("absolute"))) {
     return 0.;
   } else {
-    return x_4769->var_intrinsic_width_internal;
+    return x_4911->var_intrinsic_width_internal;
   }
 }
-Unit var_modified_x_3861(const auto &x_4778) {
-  auto x_5418 = [&](const auto &x_4779) {
-    if (HashtblContain(x_4779->meta->BBTimeTable, std::string("bb_0"))) {
-      auto x_4780 = HashtblFindExn(x_4779->meta->BBTimeTable, std::string("bb_0"));
-      MetaWriteMetric();
-      return QueuePush(x_4780, x_4779, MakeRecomputeBB(std::string("bb_0")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5418(x_4778);
-  MakeUnit();
-  auto x_5419 = [&](const auto &x_4782) {
-    if (HashtblContain(x_4782->meta->BBTimeTable, std::string("bb_2"))) {
-      auto x_4783 = HashtblFindExn(x_4782->meta->BBTimeTable, std::string("bb_2"));
-      MetaWriteMetric();
-      return QueuePush(x_4783, x_4782, MakeRecomputeBB(std::string("bb_2")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5419(x_4778);
-  MakeUnit();
-  return MakeUnit();
+Unit var_modified_x_3972(const auto &x_4920) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_4921) {
+    auto x_5577 = [&](const auto &x_4922) {
+      if (HashtblContain(x_4922->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_4923 = HashtblFindExn(x_4922->meta->BBTimeTable, std::string("bb_0"));
+        MetaWriteMetric();
+        return QueuePush(x_4923, x_4922, MakeRecomputeBB(std::string("bb_0")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5577(x_4920);
+    MakeUnit();
+    auto x_5578 = [&](const auto &x_4925) {
+      if (HashtblContain(x_4925->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_4926 = HashtblFindExn(x_4925->meta->BBTimeTable, std::string("bb_2"));
+        MetaWriteMetric();
+        return QueuePush(x_4926, x_4925, MakeRecomputeBB(std::string("bb_2")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5578(x_4920);
+    MakeUnit();
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3858(const auto &x_4785) {
-  if (eq(x_4785->var_display, std::string("none"))) {
+auto eval_expr_x_3969(const auto &x_4928) {
+  if (eq(x_4928->var_display, std::string("none"))) {
     return 0.;
   } else {
-    if (x_4785->var_inside_svg) {
+    if (x_4928->var_inside_svg) {
       return 0.;
     } else {
-      if (x_4785->var_disabled) {
+      if (x_4928->var_disabled) {
         return 0.;
       } else {
-        if (neq(x_4785->var_width_expr, std::string("auto")) &&
-            ((!has_suffix(x_4785->var_width_expr, std::string("%"))) &&
-             (neq(x_4785->var_width_expr, std::string("fit-content")) &&
-              (neq(x_4785->var_width_expr, std::string("max-content")) &&
-               (!has_prefix(x_4785->var_width_expr, std::string("calc"))))))) {
-          if (has_suffix(x_4785->var_width_expr, std::string("px"))) {
-            return string_to_float(strip_suffix(x_4785->var_width_expr, std::string("px")));
+        if (neq(x_4928->var_width_expr, std::string("auto")) &&
+            ((!has_suffix(x_4928->var_width_expr, std::string("%"))) &&
+             (neq(x_4928->var_width_expr, std::string("fit-content")) &&
+              (neq(x_4928->var_width_expr, std::string("max-content")) &&
+               (!has_prefix(x_4928->var_width_expr, std::string("calc"))))))) {
+          if (has_suffix(x_4928->var_width_expr, std::string("px"))) {
+            return string_to_float(strip_suffix(x_4928->var_width_expr, std::string("px")));
           } else {
-            return string_to_float(strip_suffix(x_4785->var_width_expr, std::string("ch")));
+            return string_to_float(strip_suffix(x_4928->var_width_expr, std::string("ch")));
           }
         } else {
           return plus(
-              x_4785->var_children_intrinsic_width,
-              (eq(x_4785->name, std::string("#text")))
+              x_4928->var_children_intrinsic_width,
+              (eq(x_4928->name, std::string("#text")))
                   ? (100.)
-                  : ((x_4785->var_is_default_case)
+                  : ((x_4928->var_is_default_case)
                          ? (0.)
-                         : ((eq(x_4785->name, std::string("BR")))
+                         : ((eq(x_4928->name, std::string("BR")))
                                 ? (0.)
-                                : ((eq(x_4785->name, std::string("INPUT")))
+                                : ((eq(x_4928->name, std::string("INPUT")))
                                        ? (100.)
-                                       : ((eq(x_4785->name, std::string("svg")))
-                                              ? ((x_4785->var_has_width_attr &&
-                                                  string_is_float(x_4785->var_width_attr_expr))
-                                                     ? (string_to_float(x_4785->var_width_attr_expr))
-                                                     : (((!x_4785->var_has_width_attr) &&
-                                                         HasAttr(x_4785, std::string("viewBox")))
+                                       : ((eq(x_4928->name, std::string("svg")))
+                                              ? ((x_4928->var_has_width_attr &&
+                                                  string_is_float(x_4928->var_width_attr_expr))
+                                                     ? (string_to_float(x_4928->var_width_attr_expr))
+                                                     : (((!x_4928->var_has_width_attr) &&
+                                                         HasAttr(x_4928, std::string("viewBox")))
                                                             ? (string_to_float(nth_by_sep(
-                                                                  GetAttr<std::string>(x_4785, std::string("viewBox")),
+                                                                  GetAttr<std::string>(x_4928, std::string("viewBox")),
                                                                   std::string(" "), static_cast<int64_t>(2))))
                                                             : (mult(string_to_float(nth_by_sep(
-                                                                        GetAttr<std::string>(x_4785,
+                                                                        GetAttr<std::string>(x_4928,
                                                                                              std::string("viewBox")),
                                                                         std::string(" "), static_cast<int64_t>(2))),
                                                                     divide(string_to_float(
-                                                                               strip_suffix(x_4785->var_width_attr_expr,
+                                                                               strip_suffix(x_4928->var_width_attr_expr,
                                                                                             std::string("%"))),
                                                                            100.)))))
-                                              : ((eq(x_4785->name, std::string("IMG")))
-                                                     ? ((x_4785->var_has_width_attr)
-                                                            ? (string_to_float(x_4785->var_width_attr_expr))
-                                                            : ((HasAttr(x_4785, std::string("image_width")) &&
-                                                                (!x_4785->var_has_height_attr))
+                                              : ((eq(x_4928->name, std::string("IMG")))
+                                                     ? ((x_4928->var_has_width_attr)
+                                                            ? (string_to_float(x_4928->var_width_attr_expr))
+                                                            : ((HasAttr(x_4928, std::string("image_width")) &&
+                                                                (!x_4928->var_has_height_attr))
                                                                    ? (int_to_float(GetAttr<int64_t>(
-                                                                         x_4785, std::string("image_width"))))
+                                                                         x_4928, std::string("image_width"))))
                                                                    : ((neq(GetAttr<int64_t>(
-                                                                               x_4785, std::string("image_height")),
+                                                                               x_4928, std::string("image_height")),
                                                                            static_cast<int64_t>(0)))
                                                                           ? (mult(
                                                                                 string_to_float(
-                                                                                    x_4785->var_height_attr_expr),
+                                                                                    x_4928->var_height_attr_expr),
                                                                                 divide(
                                                                                     int_to_float(GetAttr<int64_t>(
-                                                                                        x_4785,
+                                                                                        x_4928,
                                                                                         std::string("image_width"))),
                                                                                     int_to_float(GetAttr<int64_t>(
-                                                                                        x_4785,
+                                                                                        x_4928,
                                                                                         std::string("image_height"))))))
                                                                           : (0.))))
-                                                     : ((eq(x_4785->name, std::string("IFRAME")))
+                                                     : ((eq(x_4928->name, std::string("IFRAME")))
                                                             ? (300.)
-                                                            : ((eq(x_4785->name, std::string("TEXTAREA")))
+                                                            : ((eq(x_4928->name, std::string("TEXTAREA")))
                                                                    ? (100.)
                                                                    : (300.)))))))));
         }
@@ -1485,53 +1547,57 @@ auto eval_expr_x_3858(const auto &x_4785) {
     }
   }
 }
-Unit var_modified_x_3856(const auto &x_4938) {
-  auto x_5420 = [&](const auto &x_4939) {
-    if (HashtblContain(x_4939->meta->BBTimeTable, std::string("bb_0"))) {
-      auto x_4940 = HashtblFindExn(x_4939->meta->BBTimeTable, std::string("bb_0"));
-      MetaWriteMetric();
-      return QueuePush(x_4940, x_4939, MakeRecomputeBB(std::string("bb_0")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5420(x_4938);
-  MakeUnit();
-  return MakeUnit();
+Unit var_modified_x_3967(const auto &x_5081) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_5082) {
+    auto x_5579 = [&](const auto &x_5083) {
+      if (HashtblContain(x_5083->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_5084 = HashtblFindExn(x_5083->meta->BBTimeTable, std::string("bb_0"));
+        MetaWriteMetric();
+        return QueuePush(x_5084, x_5083, MakeRecomputeBB(std::string("bb_0")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5579(x_5081);
+    MakeUnit();
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3853(const auto &x_4942) {
-  if (x_4942->last != nullptr) {
-    return (x_4942->last)->var_intrinsic_width_max;
+auto eval_expr_x_3964(const auto &x_5086) {
+  if (x_5086->last != nullptr) {
+    return (x_5086->last)->var_intrinsic_width_max;
   } else {
     return 0.;
   }
 }
-Unit var_modified_x_3851(const auto &x_4947) {
-  auto x_5421 = [&](const auto &x_4948) {
-    if (HashtblContain(x_4948->meta->BBTimeTable, std::string("bb_2"))) {
-      auto x_4949 = HashtblFindExn(x_4948->meta->BBTimeTable, std::string("bb_2"));
-      MetaWriteMetric();
-      return QueuePush(x_4949, x_4948, MakeRecomputeBB(std::string("bb_2")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5421(x_4947);
-  MakeUnit();
-  return MakeUnit();
+Unit var_modified_x_3962(const auto &x_5091) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_5092) {
+    auto x_5580 = [&](const auto &x_5093) {
+      if (HashtblContain(x_5093->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_5094 = HashtblFindExn(x_5093->meta->BBTimeTable, std::string("bb_2"));
+        MetaWriteMetric();
+        return QueuePush(x_5094, x_5093, MakeRecomputeBB(std::string("bb_2")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5580(x_5091);
+    MakeUnit();
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3848(const auto &x_4951) {
-  if (eq(x_4951->var_display, std::string("none")) || (x_4951->var_inside_svg || x_4951->var_disabled)) {
+auto eval_expr_x_3959(const auto &x_5096) {
+  if (eq(x_5096->var_display, std::string("none")) || (x_5096->var_inside_svg || x_5096->var_disabled)) {
     return true;
   } else {
-    if ((x_4951->parent != nullptr) && (x_4951->parent)->var_is_flex_row) {
+    if ((x_5096->parent != nullptr) && (x_5096->parent)->var_is_flex_row) {
       return false;
     } else {
-      if (eq(x_4951->var_width_expr, std::string("auto")) ||
-          (has_suffix(x_4951->var_width_expr, std::string("px")) ||
-           (has_suffix(x_4951->var_width_expr, std::string("ch")) ||
-            (has_prefix(x_4951->var_width_expr, std::string("calc(")) ||
-             eq(x_4951->var_width_expr, std::string("max-content")))))) {
+      if (eq(x_5096->var_width_expr, std::string("auto")) ||
+          (has_suffix(x_5096->var_width_expr, std::string("px")) ||
+           (has_suffix(x_5096->var_width_expr, std::string("ch")) ||
+            (has_prefix(x_5096->var_width_expr, std::string("calc(")) ||
+             eq(x_5096->var_width_expr, std::string("max-content")))))) {
         return true;
       } else {
         return false;
@@ -1539,30 +1605,32 @@ auto eval_expr_x_3848(const auto &x_4951) {
     }
   }
 }
-Unit var_modified_x_3846(const auto &x_5000) {
-  auto x_5422 = [&](const auto &x_5001) {
-    if (HashtblContain(x_5001->meta->BBTimeTable, std::string("bb_0"))) {
-      auto x_5002 = HashtblFindExn(x_5001->meta->BBTimeTable, std::string("bb_0"));
-      MetaWriteMetric();
-      return QueuePush(x_5002, x_5001, MakeRecomputeBB(std::string("bb_0")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5422(x_5000);
-  MakeUnit();
-  return MakeUnit();
+Unit var_modified_x_3957(const auto &x_5145) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_5146) {
+    auto x_5581 = [&](const auto &x_5147) {
+      if (HashtblContain(x_5147->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_5148 = HashtblFindExn(x_5147->meta->BBTimeTable, std::string("bb_0"));
+        MetaWriteMetric();
+        return QueuePush(x_5148, x_5147, MakeRecomputeBB(std::string("bb_0")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5581(x_5145);
+    MakeUnit();
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3843(const auto &x_5004) {
-  if (eq(x_5004->var_display, std::string("none"))) {
+auto eval_expr_x_3954(const auto &x_5150) {
+  if (eq(x_5150->var_display, std::string("none"))) {
     return true;
   } else {
-    if (x_5004->var_inside_svg) {
+    if (x_5150->var_inside_svg) {
       return true;
     } else {
-      if (x_5004->var_disabled) {
+      if (x_5150->var_disabled) {
         return true;
-      } else {if ( eq(x_5004->name,std::string("#document")) || (eq(x_5004->name,std::string("#shadow-root")) || (eq(x_5004->name,std::string("DIV")) || (eq(x_5004->name,std::string("HTML")) || (eq(x_5004->name,std::string("BODY")) || (eq(x_5004->name,std::string("BUTTON")) || (eq(x_5004->name,std::string("FOOTER")) || (eq(x_5004->name,std::string("SELECT")) || (eq(x_5004->name,std::string("SECTION")) || (eq(x_5004->name,std::string("FORM")) || (eq(x_5004->name,std::string("CENTER")) || (eq(x_5004->name,std::string("TD")) || (eq(x_5004->name,std::string("TR")) || (eq(x_5004->name,std::string("TBODY")) || (eq(x_5004->name,std::string("TABLE")) || (eq(x_5004->name,std::string("SPAN")) || (eq(x_5004->name,std::string("FONT")) || (eq(x_5004->name,std::string("A")) || (eq(x_5004->name,std::string("ARTICLE")) || (eq(x_5004->name,std::string("P")) || (eq(x_5004->name,std::string("U")) || (eq(x_5004->name,std::string("UL")) || (eq(x_5004->name,std::string("B")) || (eq(x_5004->name,std::string("H1")) || (eq(x_5004->name,std::string("H2")) || (eq(x_5004->name,std::string("H3")) || (eq(x_5004->name,std::string("H4")) || (eq(x_5004->name,std::string("DT")) || (eq(x_5004->name,std::string("DD")) || (eq(x_5004->name,std::string("DL")) || (eq(x_5004->name,std::string("LI")) || (eq(x_5004->name,std::string("LABEL")) || (eq(x_5004->name,std::string("OL")) || (eq(x_5004->name,std::string("NAV")) || (eq(x_5004->name,std::string("HEADER")) || (eq(x_5004->name,std::string("HEAD")) || (eq(x_5004->name,std::string("SOURCE")) || (eq(x_5004->name,std::string("PICTURE")) || (eq(x_5004->name,std::string("FIGURE")) || (eq(x_5004->name,std::string("FIGCAPTION")) || (eq(x_5004->name,std::string("MAIN")) || (eq(x_5004->name,std::string("REACT-PARTIAL")) || (eq(x_5004->name,std::string("QUERY-BUILDER")) || (eq(x_5004->name,std::string("MODAL-DIALOG")) || (eq(x_5004->name,std::string("SCROLLABLE-REGION")) || (eq(x_5004->name,std::string("DIALOG-HELPER")) || (eq(x_5004->name,std::string("AUTO-CHECK")) || (eq(x_5004->name,std::string("TOOL-TIP")) || (eq(x_5004->name,std::string("CUSTOM-SCOPES")) || (eq(x_5004->name,std::string("QBSEARCH-INPUT")) || (eq(x_5004->name,std::string("INCLUDE-FRAGMENT")) || (eq(x_5004->name,std::string("COOKIE-CONSENT-LINK")) || (eq(x_5004->name,std::string("FULLSTORY-CAPTURE")) || (eq(x_5004->name,std::string("GHCC-CONSENT")) || (eq(x_5004->name,std::string("GLOBAL-BANNER")) || (eq(x_5004->name,std::string("ACTIVE-GLOBAL-BANNERS")) || (eq(x_5004->name,std::string("CARD-SKEW")) || (eq(x_5004->name,std::string("EM")) || (eq(x_5004->name,std::string("ASIDE")) || (eq(x_5004->name,std::string("AUDIO")) || (eq(x_5004->name,std::string("SUP")) || (eq(x_5004->name,std::string("TIME")) || (eq(x_5004->name,std::string("ABBR")) || (eq(x_5004->name,std::string("SMALL")) || (eq(x_5004->name,std::string("SLOT")) || eq(x_5004->name,std::string("I")))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))) ){
+      } else {if ( eq(x_5150->name,std::string("#document")) || (eq(x_5150->name,std::string("#shadow-root")) || (eq(x_5150->name,std::string("DIV")) || (eq(x_5150->name,std::string("HTML")) || (eq(x_5150->name,std::string("BODY")) || (eq(x_5150->name,std::string("BUTTON")) || (eq(x_5150->name,std::string("FOOTER")) || (eq(x_5150->name,std::string("SELECT")) || (eq(x_5150->name,std::string("SECTION")) || (eq(x_5150->name,std::string("FORM")) || (eq(x_5150->name,std::string("CENTER")) || (eq(x_5150->name,std::string("TD")) || (eq(x_5150->name,std::string("TR")) || (eq(x_5150->name,std::string("TBODY")) || (eq(x_5150->name,std::string("TABLE")) || (eq(x_5150->name,std::string("SPAN")) || (eq(x_5150->name,std::string("FONT")) || (eq(x_5150->name,std::string("A")) || (eq(x_5150->name,std::string("ARTICLE")) || (eq(x_5150->name,std::string("P")) || (eq(x_5150->name,std::string("U")) || (eq(x_5150->name,std::string("UL")) || (eq(x_5150->name,std::string("B")) || (eq(x_5150->name,std::string("H1")) || (eq(x_5150->name,std::string("H2")) || (eq(x_5150->name,std::string("H3")) || (eq(x_5150->name,std::string("H4")) || (eq(x_5150->name,std::string("DT")) || (eq(x_5150->name,std::string("DD")) || (eq(x_5150->name,std::string("DL")) || (eq(x_5150->name,std::string("LI")) || (eq(x_5150->name,std::string("LABEL")) || (eq(x_5150->name,std::string("OL")) || (eq(x_5150->name,std::string("NAV")) || (eq(x_5150->name,std::string("HEADER")) || (eq(x_5150->name,std::string("HEAD")) || (eq(x_5150->name,std::string("SOURCE")) || (eq(x_5150->name,std::string("PICTURE")) || (eq(x_5150->name,std::string("FIGURE")) || (eq(x_5150->name,std::string("FIGCAPTION")) || (eq(x_5150->name,std::string("MAIN")) || (eq(x_5150->name,std::string("REACT-PARTIAL")) || (eq(x_5150->name,std::string("QUERY-BUILDER")) || (eq(x_5150->name,std::string("MODAL-DIALOG")) || (eq(x_5150->name,std::string("SCROLLABLE-REGION")) || (eq(x_5150->name,std::string("DIALOG-HELPER")) || (eq(x_5150->name,std::string("AUTO-CHECK")) || (eq(x_5150->name,std::string("TOOL-TIP")) || (eq(x_5150->name,std::string("CUSTOM-SCOPES")) || (eq(x_5150->name,std::string("QBSEARCH-INPUT")) || (eq(x_5150->name,std::string("INCLUDE-FRAGMENT")) || (eq(x_5150->name,std::string("COOKIE-CONSENT-LINK")) || (eq(x_5150->name,std::string("FULLSTORY-CAPTURE")) || (eq(x_5150->name,std::string("GHCC-CONSENT")) || (eq(x_5150->name,std::string("GLOBAL-BANNER")) || (eq(x_5150->name,std::string("ACTIVE-GLOBAL-BANNERS")) || (eq(x_5150->name,std::string("CARD-SKEW")) || (eq(x_5150->name,std::string("EM")) || (eq(x_5150->name,std::string("ASIDE")) || (eq(x_5150->name,std::string("AUDIO")) || (eq(x_5150->name,std::string("SUP")) || (eq(x_5150->name,std::string("TIME")) || (eq(x_5150->name,std::string("ABBR")) || (eq(x_5150->name,std::string("SMALL")) || (eq(x_5150->name,std::string("SLOT")) || eq(x_5150->name,std::string("I")))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))) ){
           return true;
         } else {
           return false;
@@ -1571,1035 +1639,1067 @@ auto eval_expr_x_3843(const auto &x_5004) {
     }
   }
 }
-Unit var_modified_x_3841(const auto &x_5017) {
-  auto x_5423 = [&](const auto &x_5018) {
-    if (HashtblContain(x_5018->meta->BBTimeTable, std::string("bb_0"))) {
-      auto x_5019 = HashtblFindExn(x_5018->meta->BBTimeTable, std::string("bb_0"));
-      MetaWriteMetric();
-      return QueuePush(x_5019, x_5018, MakeRecomputeBB(std::string("bb_0")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5423(x_5017);
-  MakeUnit();
-  auto x_5424 = [&](const auto &x_5021) {
-    if (HashtblContain(x_5021->meta->BBTimeTable, std::string("bb_2"))) {
-      auto x_5022 = HashtblFindExn(x_5021->meta->BBTimeTable, std::string("bb_2"));
-      MetaWriteMetric();
-      return QueuePush(x_5022, x_5021, MakeRecomputeBB(std::string("bb_2")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5424(x_5017);
-  MakeUnit();
-  return MakeUnit();
+Unit var_modified_x_3952(const auto &x_5163) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_5164) {
+    auto x_5582 = [&](const auto &x_5165) {
+      if (HashtblContain(x_5165->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_5166 = HashtblFindExn(x_5165->meta->BBTimeTable, std::string("bb_0"));
+        MetaWriteMetric();
+        return QueuePush(x_5166, x_5165, MakeRecomputeBB(std::string("bb_0")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5582(x_5163);
+    MakeUnit();
+    auto x_5583 = [&](const auto &x_5168) {
+      if (HashtblContain(x_5168->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_5169 = HashtblFindExn(x_5168->meta->BBTimeTable, std::string("bb_2"));
+        MetaWriteMetric();
+        return QueuePush(x_5169, x_5168, MakeRecomputeBB(std::string("bb_2")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5583(x_5163);
+    MakeUnit();
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3838(const auto &x_5024) {
-  if (HasProp(x_5024, std::string("width"))) {
-    return GetProp<std::string>(x_5024, std::string("width"));
+auto eval_expr_x_3949(const auto &x_5171) {
+  if (HasProp(x_5171, std::string("width"))) {
+    return GetProp<std::string>(x_5171, std::string("width"));
   } else {
     return std::string("auto");
   }
 }
-Unit var_modified_x_3835(const auto &x_5027) {
-  auto x_5425 = [&](const auto &x_5030) {
-    if (HashtblContain(x_5030->meta->BBTimeTable, std::string("bb_2"))) {
-      auto x_5031 = HashtblFindExn(x_5030->meta->BBTimeTable, std::string("bb_2"));
-      MetaWriteMetric();
-      return QueuePush(x_5031, x_5030, MakeRecomputeBB(std::string("bb_2")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  OptionMatch(
-      x_5027->next, [&](const auto &x_5029) { return MakeUnit(); },
-      [&](const auto &x_5028) {
-        auto x_5426 = x_5425;
-        x_5426(x_5028);
+Unit var_modified_x_3945(const auto &x_5174) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_5175) {
+    auto x_5584 = [&](const auto &x_5178) {
+      if (HashtblContain(x_5178->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_5179 = HashtblFindExn(x_5178->meta->BBTimeTable, std::string("bb_2"));
+        MetaWriteMetric();
+        return QueuePush(x_5179, x_5178, MakeRecomputeBB(std::string("bb_2")));
+      } else {
         return MakeUnit();
-      });
-  return MakeUnit();
+      }
+    };
+    OptionMatch(
+        x_5174->next, [&](const auto &x_5177) { return MakeUnit(); },
+        [&](const auto &x_5176) {
+          auto x_5585 = x_5584;
+          x_5585(x_5176);
+          return MakeUnit();
+        });
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3832(const auto &x_5033) {
-  if ((x_5033->prev != nullptr) && (!(x_5033->prev)->var_line_break)) {
-    return max(x_5033->var_height_external, (x_5033->prev)->var_line_height);
+auto eval_expr_x_3942(const auto &x_5181) {
+  if ((x_5181->prev != nullptr) && (!(x_5181->prev)->var_line_break)) {
+    return max(x_5181->var_height_external, (x_5181->prev)->var_line_height);
   } else {
-    return x_5033->var_height_external;
+    return x_5181->var_height_external;
   }
 }
-Unit var_modified_x_3830(const auto &x_5050) {
-  auto x_5427 = [&](const auto &x_5051) {
-    if (HashtblContain(x_5051->meta->BBTimeTable, std::string("bb_2"))) {
-      auto x_5052 = HashtblFindExn(x_5051->meta->BBTimeTable, std::string("bb_2"));
-      MetaWriteMetric();
-      return QueuePush(x_5052, x_5051, MakeRecomputeBB(std::string("bb_2")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5427(x_5050);
-  MakeUnit();
-  return MakeUnit();
+Unit var_modified_x_3940(const auto &x_5198) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_5199) {
+    auto x_5586 = [&](const auto &x_5200) {
+      if (HashtblContain(x_5200->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_5201 = HashtblFindExn(x_5200->meta->BBTimeTable, std::string("bb_2"));
+        MetaWriteMetric();
+        return QueuePush(x_5201, x_5200, MakeRecomputeBB(std::string("bb_2")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5586(x_5198);
+    MakeUnit();
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3827(const auto &x_5054) {
-  if (eq(x_5054->var_position, std::string("absolute"))) {
+auto eval_expr_x_3937(const auto &x_5203) {
+  if (eq(x_5203->var_position, std::string("absolute"))) {
     return 0.;
   } else {
-    return x_5054->var_height_internal;
+    return x_5203->var_height_internal;
   }
 }
-Unit var_modified_x_3825(const auto &x_5063) {
-  auto x_5428 = [&](const auto &x_5064) {
-    if (HashtblContain(x_5064->meta->BBTimeTable, std::string("bb_2"))) {
-      auto x_5065 = HashtblFindExn(x_5064->meta->BBTimeTable, std::string("bb_2"));
-      MetaWriteMetric();
-      return QueuePush(x_5065, x_5064, MakeRecomputeBB(std::string("bb_2")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5428(x_5063);
-  MakeUnit();
-  ListIter(x_5063->children, [&](const auto &x_5067) {
-    if (HashtblContain(x_5067->meta->BBTimeTable, std::string("bb_2"))) {
-      auto x_5068 = HashtblFindExn(x_5067->meta->BBTimeTable, std::string("bb_2"));
-      MetaWriteMetric();
-      return QueuePush(x_5068, x_5067, MakeRecomputeBB(std::string("bb_2")));
-    } else {
-      return MakeUnit();
-    }
-  });
-  return MakeUnit();
-}
-auto eval_expr_x_3822(const auto &x_5070) {
-  if (x_5070->var_intrinsic_height_is_height) {
-    return x_5070->var_intrinsic_height_internal;
-  } else {
-    if ((x_5070->parent != nullptr) && (x_5070->parent)->var_is_flex_column) {
-      return plus(x_5070->var_intrinsic_height_internal,
-                  mult(x_5070->var_flex_amount, (x_5070->parent)->var_flex_unit));
-    } else {
-      if (has_suffix(x_5070->var_height_expr, std::string("%"))) {
-        return mult(x_5070->var_box_height,
-                    divide(string_to_float(strip_suffix(x_5070->var_height_expr, std::string("%"))), 100.));
+Unit var_modified_x_3935(const auto &x_5212) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_5213) {
+    auto x_5587 = [&](const auto &x_5214) {
+      if (HashtblContain(x_5214->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_5215 = HashtblFindExn(x_5214->meta->BBTimeTable, std::string("bb_2"));
+        MetaWriteMetric();
+        return QueuePush(x_5215, x_5214, MakeRecomputeBB(std::string("bb_2")));
       } else {
-        return max(x_5070->var_box_height, x_5070->var_intrinsic_height_internal);
+        return MakeUnit();
+      }
+    };
+    x_5587(x_5212);
+    MakeUnit();
+    ListIter(x_5212->children, [&](const auto &x_5217) {
+      if (HashtblContain(x_5217->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_5218 = HashtblFindExn(x_5217->meta->BBTimeTable, std::string("bb_2"));
+        MetaWriteMetric();
+        return QueuePush(x_5218, x_5217, MakeRecomputeBB(std::string("bb_2")));
+      } else {
+        return MakeUnit();
+      }
+    });
+    return MakeUnit();
+  })));
+}
+auto eval_expr_x_3932(const auto &x_5220) {
+  if (x_5220->var_intrinsic_height_is_height) {
+    return x_5220->var_intrinsic_height_internal;
+  } else {
+    if ((x_5220->parent != nullptr) && (x_5220->parent)->var_is_flex_column) {
+      return plus(x_5220->var_intrinsic_height_internal,
+                  mult(x_5220->var_flex_amount, (x_5220->parent)->var_flex_unit));
+    } else {
+      if (has_suffix(x_5220->var_height_expr, std::string("%"))) {
+        return mult(x_5220->var_box_height,
+                    divide(string_to_float(strip_suffix(x_5220->var_height_expr, std::string("%"))), 100.));
+      } else {
+        return max(x_5220->var_box_height, x_5220->var_intrinsic_height_internal);
       }
     }
   }
 }
-Unit var_modified_x_3820(const auto &x_5123) {
-  ListIter(x_5123->children, [&](const auto &x_5124) {
-    if (HashtblContain(x_5124->meta->BBTimeTable, std::string("bb_2"))) {
-      auto x_5125 = HashtblFindExn(x_5124->meta->BBTimeTable, std::string("bb_2"));
-      MetaWriteMetric();
-      return QueuePush(x_5125, x_5124, MakeRecomputeBB(std::string("bb_2")));
-    } else {
-      return MakeUnit();
-    }
-  });
-  auto x_5429 = [&](const auto &x_5129) {
-    if (HashtblContain(x_5129->meta->BBTimeTable, std::string("bb_2"))) {
-      auto x_5130 = HashtblFindExn(x_5129->meta->BBTimeTable, std::string("bb_2"));
-      MetaWriteMetric();
-      return QueuePush(x_5130, x_5129, MakeRecomputeBB(std::string("bb_2")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  OptionMatch(
-      x_5123->next, [&](const auto &x_5128) { return MakeUnit(); },
-      [&](const auto &x_5127) {
-        auto x_5430 = x_5429;
-        x_5430(x_5127);
+Unit var_modified_x_3930(const auto &x_5273) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_5274) {
+    ListIter(x_5273->children, [&](const auto &x_5275) {
+      if (HashtblContain(x_5275->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_5276 = HashtblFindExn(x_5275->meta->BBTimeTable, std::string("bb_2"));
+        MetaWriteMetric();
+        return QueuePush(x_5276, x_5275, MakeRecomputeBB(std::string("bb_2")));
+      } else {
         return MakeUnit();
-      });
-  return MakeUnit();
+      }
+    });
+    auto x_5588 = [&](const auto &x_5280) {
+      if (HashtblContain(x_5280->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_5281 = HashtblFindExn(x_5280->meta->BBTimeTable, std::string("bb_2"));
+        MetaWriteMetric();
+        return QueuePush(x_5281, x_5280, MakeRecomputeBB(std::string("bb_2")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    OptionMatch(
+        x_5273->next, [&](const auto &x_5279) { return MakeUnit(); },
+        [&](const auto &x_5278) {
+          auto x_5589 = x_5588;
+          x_5589(x_5278);
+          return MakeUnit();
+        });
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3817(const auto &x_5132) {
-  if (x_5132->prev != nullptr) {
-    if (x_5132->var_line_break || (x_5132->prev)->var_line_break) {
-      return plus((x_5132->prev)->var_y, (x_5132->prev)->var_line_height);
+auto eval_expr_x_3927(const auto &x_5283) {
+  if (x_5283->prev != nullptr) {
+    if (x_5283->var_line_break || (x_5283->prev)->var_line_break) {
+      return plus((x_5283->prev)->var_y, (x_5283->prev)->var_line_height);
     } else {
-      return (x_5132->prev)->var_y;
+      return (x_5283->prev)->var_y;
     }
   } else {
-    if (x_5132->parent != nullptr) {
-      return (x_5132->parent)->var_y;
+    if (x_5283->parent != nullptr) {
+      return (x_5283->parent)->var_y;
     } else {
       return 0.;
     }
   }
 }
-Unit var_modified_x_3815(const auto &x_5157) {
-  auto x_5431 = [&](const auto &x_5160) {
-    if (HashtblContain(x_5160->meta->BBTimeTable, std::string("bb_2"))) {
-      auto x_5161 = HashtblFindExn(x_5160->meta->BBTimeTable, std::string("bb_2"));
-      MetaWriteMetric();
-      return QueuePush(x_5161, x_5160, MakeRecomputeBB(std::string("bb_2")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  OptionMatch(
-      x_5157->next, [&](const auto &x_5159) { return MakeUnit(); },
-      [&](const auto &x_5158) {
-        auto x_5432 = x_5431;
-        x_5432(x_5158);
+Unit var_modified_x_3925(const auto &x_5308) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_5309) {
+    auto x_5590 = [&](const auto &x_5312) {
+      if (HashtblContain(x_5312->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_5313 = HashtblFindExn(x_5312->meta->BBTimeTable, std::string("bb_2"));
+        MetaWriteMetric();
+        return QueuePush(x_5313, x_5312, MakeRecomputeBB(std::string("bb_2")));
+      } else {
         return MakeUnit();
-      });
-  return MakeUnit();
+      }
+    };
+    OptionMatch(
+        x_5308->next, [&](const auto &x_5311) { return MakeUnit(); },
+        [&](const auto &x_5310) {
+          auto x_5591 = x_5590;
+          x_5591(x_5310);
+          return MakeUnit();
+        });
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3812(const auto &x_5163) {
-  if (eq(x_5163->var_position, std::string("absolute"))) {
+auto eval_expr_x_3922(const auto &x_5315) {
+  if (eq(x_5315->var_position, std::string("absolute"))) {
     return 0.;
   } else {
-    return x_5163->var_width_internal;
+    return x_5315->var_width_internal;
   }
 }
-Unit var_modified_x_3810(const auto &x_5172) {
-  auto x_5433 = [&](const auto &x_5173) {
-    if (HashtblContain(x_5173->meta->BBTimeTable, std::string("bb_2"))) {
-      auto x_5174 = HashtblFindExn(x_5173->meta->BBTimeTable, std::string("bb_2"));
-      MetaWriteMetric();
-      return QueuePush(x_5174, x_5173, MakeRecomputeBB(std::string("bb_2")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5433(x_5172);
-  MakeUnit();
-  ListIter(x_5172->children, [&](const auto &x_5176) {
-    if (HashtblContain(x_5176->meta->BBTimeTable, std::string("bb_2"))) {
-      auto x_5177 = HashtblFindExn(x_5176->meta->BBTimeTable, std::string("bb_2"));
-      MetaWriteMetric();
-      return QueuePush(x_5177, x_5176, MakeRecomputeBB(std::string("bb_2")));
-    } else {
-      return MakeUnit();
-    }
-  });
-  return MakeUnit();
-}
-auto eval_expr_x_3807(const auto &x_5179) {
-  if (x_5179->var_intrinsic_width_is_width) {
-    return x_5179->var_intrinsic_width_internal;
-  } else {
-    if ((x_5179->parent != nullptr) && (x_5179->parent)->var_is_flex_row) {
-      return plus(x_5179->var_intrinsic_width_internal, mult(x_5179->var_flex_amount, (x_5179->parent)->var_flex_unit));
-    } else {
-      if (has_suffix(x_5179->var_width_expr, std::string("%"))) {
-        return mult(x_5179->var_box_width,
-                    divide(string_to_float(strip_suffix(x_5179->var_width_expr, std::string("%"))), 100.));
+Unit var_modified_x_3920(const auto &x_5324) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_5325) {
+    auto x_5592 = [&](const auto &x_5326) {
+      if (HashtblContain(x_5326->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_5327 = HashtblFindExn(x_5326->meta->BBTimeTable, std::string("bb_2"));
+        MetaWriteMetric();
+        return QueuePush(x_5327, x_5326, MakeRecomputeBB(std::string("bb_2")));
       } else {
-        return max(x_5179->var_box_width, x_5179->var_intrinsic_width_internal);
+        return MakeUnit();
+      }
+    };
+    x_5592(x_5324);
+    MakeUnit();
+    ListIter(x_5324->children, [&](const auto &x_5329) {
+      if (HashtblContain(x_5329->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_5330 = HashtblFindExn(x_5329->meta->BBTimeTable, std::string("bb_2"));
+        MetaWriteMetric();
+        return QueuePush(x_5330, x_5329, MakeRecomputeBB(std::string("bb_2")));
+      } else {
+        return MakeUnit();
+      }
+    });
+    return MakeUnit();
+  })));
+}
+auto eval_expr_x_3917(const auto &x_5332) {
+  if (x_5332->var_intrinsic_width_is_width) {
+    return x_5332->var_intrinsic_width_internal;
+  } else {
+    if ((x_5332->parent != nullptr) && (x_5332->parent)->var_is_flex_row) {
+      return plus(x_5332->var_intrinsic_width_internal, mult(x_5332->var_flex_amount, (x_5332->parent)->var_flex_unit));
+    } else {
+      if (has_suffix(x_5332->var_width_expr, std::string("%"))) {
+        return mult(x_5332->var_box_width,
+                    divide(string_to_float(strip_suffix(x_5332->var_width_expr, std::string("%"))), 100.));
+      } else {
+        return max(x_5332->var_box_width, x_5332->var_intrinsic_width_internal);
       }
     }
   }
 }
-Unit var_modified_x_3805(const auto &x_5232) {
-  ListIter(x_5232->children, [&](const auto &x_5233) {
-    if (HashtblContain(x_5233->meta->BBTimeTable, std::string("bb_2"))) {
-      auto x_5234 = HashtblFindExn(x_5233->meta->BBTimeTable, std::string("bb_2"));
-      MetaWriteMetric();
-      return QueuePush(x_5234, x_5233, MakeRecomputeBB(std::string("bb_2")));
-    } else {
-      return MakeUnit();
-    }
-  });
-  auto x_5434 = [&](const auto &x_5238) {
-    if (HashtblContain(x_5238->meta->BBTimeTable, std::string("bb_2"))) {
-      auto x_5239 = HashtblFindExn(x_5238->meta->BBTimeTable, std::string("bb_2"));
-      MetaWriteMetric();
-      return QueuePush(x_5239, x_5238, MakeRecomputeBB(std::string("bb_2")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  OptionMatch(
-      x_5232->next, [&](const auto &x_5237) { return MakeUnit(); },
-      [&](const auto &x_5236) {
-        auto x_5435 = x_5434;
-        x_5435(x_5236);
+Unit var_modified_x_3915(const auto &x_5385) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_5386) {
+    ListIter(x_5385->children, [&](const auto &x_5387) {
+      if (HashtblContain(x_5387->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_5388 = HashtblFindExn(x_5387->meta->BBTimeTable, std::string("bb_2"));
+        MetaWriteMetric();
+        return QueuePush(x_5388, x_5387, MakeRecomputeBB(std::string("bb_2")));
+      } else {
         return MakeUnit();
-      });
-  return MakeUnit();
+      }
+    });
+    auto x_5593 = [&](const auto &x_5392) {
+      if (HashtblContain(x_5392->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_5393 = HashtblFindExn(x_5392->meta->BBTimeTable, std::string("bb_2"));
+        MetaWriteMetric();
+        return QueuePush(x_5393, x_5392, MakeRecomputeBB(std::string("bb_2")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    OptionMatch(
+        x_5385->next, [&](const auto &x_5391) { return MakeUnit(); },
+        [&](const auto &x_5390) {
+          auto x_5594 = x_5593;
+          x_5594(x_5390);
+          return MakeUnit();
+        });
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3802(const auto &x_5241) {
-  if (x_5241->prev != nullptr) {
-    if (x_5241->var_line_break || (x_5241->prev)->var_line_break) {
+auto eval_expr_x_3912(const auto &x_5395) {
+  if (x_5395->prev != nullptr) {
+    if (x_5395->var_line_break || (x_5395->prev)->var_line_break) {
       return 0.;
     } else {
-      return plus((x_5241->prev)->var_x, (x_5241->prev)->var_width_external);
+      return plus((x_5395->prev)->var_x, (x_5395->prev)->var_width_external);
     }
   } else {
-    if (x_5241->parent != nullptr) {
-      return (x_5241->parent)->var_x;
+    if (x_5395->parent != nullptr) {
+      return (x_5395->parent)->var_x;
     } else {
       return 0.;
     }
   }
 }
-Unit var_modified_x_3800(const auto &x_5262) {
-  ListIter(x_5262->children, [&](const auto &x_5263) {
-    if (HashtblContain(x_5263->meta->BBTimeTable, std::string("bb_2"))) {
-      auto x_5264 = HashtblFindExn(x_5263->meta->BBTimeTable, std::string("bb_2"));
-      MetaWriteMetric();
-      return QueuePush(x_5264, x_5263, MakeRecomputeBB(std::string("bb_2")));
-    } else {
-      return MakeUnit();
-    }
-  });
-  return MakeUnit();
+Unit var_modified_x_3910(const auto &x_5416) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_5417) {
+    ListIter(x_5416->children, [&](const auto &x_5418) {
+      if (HashtblContain(x_5418->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_5419 = HashtblFindExn(x_5418->meta->BBTimeTable, std::string("bb_2"));
+        MetaWriteMetric();
+        return QueuePush(x_5419, x_5418, MakeRecomputeBB(std::string("bb_2")));
+      } else {
+        return MakeUnit();
+      }
+    });
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3797(const auto &x_5266) {
-  if (gt(x_5266->var_left_over, 0.)) {
-    return divide(x_5266->var_left_over, x_5266->var_flex_grow_sum);
+auto eval_expr_x_3907(const auto &x_5421) {
+  if (gt(x_5421->var_left_over, 0.)) {
+    return divide(x_5421->var_left_over, x_5421->var_flex_grow_sum);
   } else {
-    return divide(x_5266->var_left_over, x_5266->var_flex_shrink_sum);
+    return divide(x_5421->var_left_over, x_5421->var_flex_shrink_sum);
   }
 }
-Unit var_modified_x_3795(const auto &x_5287) {
-  auto x_5436 = [&](const auto &x_5288) {
-    if (HashtblContain(x_5288->meta->BBTimeTable, std::string("bb_2"))) {
-      auto x_5289 = HashtblFindExn(x_5288->meta->BBTimeTable, std::string("bb_2"));
-      MetaWriteMetric();
-      return QueuePush(x_5289, x_5288, MakeRecomputeBB(std::string("bb_2")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5436(x_5287);
-  MakeUnit();
-  return MakeUnit();
+Unit var_modified_x_3905(const auto &x_5442) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_5443) {
+    auto x_5595 = [&](const auto &x_5444) {
+      if (HashtblContain(x_5444->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_5445 = HashtblFindExn(x_5444->meta->BBTimeTable, std::string("bb_2"));
+        MetaWriteMetric();
+        return QueuePush(x_5445, x_5444, MakeRecomputeBB(std::string("bb_2")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5595(x_5442);
+    MakeUnit();
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3792(const auto &x_5291) {
-  if ((x_5291->parent != nullptr) && gt((x_5291->parent)->var_left_over, 0.)) {
-    return x_5291->var_flex_grow;
+auto eval_expr_x_3902(const auto &x_5447) {
+  if ((x_5447->parent != nullptr) && gt((x_5447->parent)->var_left_over, 0.)) {
+    return x_5447->var_flex_grow;
   } else {
-    return x_5291->var_flex_shrink;
+    return x_5447->var_flex_shrink;
   }
 }
-Unit var_modified_x_3790(const auto &x_5304) {
-  auto x_5437 = [&](const auto &x_5305) {
-    if (HashtblContain(x_5305->meta->BBTimeTable, std::string("bb_2"))) {
-      auto x_5306 = HashtblFindExn(x_5305->meta->BBTimeTable, std::string("bb_2"));
-      MetaWriteMetric();
-      return QueuePush(x_5306, x_5305, MakeRecomputeBB(std::string("bb_2")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5437(x_5304);
-  MakeUnit();
-  ListIter(x_5304->children, [&](const auto &x_5308) {
-    if (HashtblContain(x_5308->meta->BBTimeTable, std::string("bb_2"))) {
-      auto x_5309 = HashtblFindExn(x_5308->meta->BBTimeTable, std::string("bb_2"));
-      MetaWriteMetric();
-      return QueuePush(x_5309, x_5308, MakeRecomputeBB(std::string("bb_2")));
-    } else {
-      return MakeUnit();
-    }
-  });
-  return MakeUnit();
+Unit var_modified_x_3900(const auto &x_5460) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_5461) {
+    auto x_5596 = [&](const auto &x_5462) {
+      if (HashtblContain(x_5462->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_5463 = HashtblFindExn(x_5462->meta->BBTimeTable, std::string("bb_2"));
+        MetaWriteMetric();
+        return QueuePush(x_5463, x_5462, MakeRecomputeBB(std::string("bb_2")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5596(x_5460);
+    MakeUnit();
+    ListIter(x_5460->children, [&](const auto &x_5465) {
+      if (HashtblContain(x_5465->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_5466 = HashtblFindExn(x_5465->meta->BBTimeTable, std::string("bb_2"));
+        MetaWriteMetric();
+        return QueuePush(x_5466, x_5465, MakeRecomputeBB(std::string("bb_2")));
+      } else {
+        return MakeUnit();
+      }
+    });
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3787(const auto &x_5311) {
-  if (x_5311->var_is_flex_row) {
-    return minus(x_5311->var_box_width, (x_5311->last != nullptr) ? ((x_5311->last)->var_intrinsic_width_sum) : (0.));
+auto eval_expr_x_3897(const auto &x_5468) {
+  if (x_5468->var_is_flex_row) {
+    return minus(x_5468->var_box_width, (x_5468->last != nullptr) ? ((x_5468->last)->var_intrinsic_width_sum) : (0.));
   } else {
-    return minus(x_5311->var_box_height, (x_5311->last != nullptr) ? ((x_5311->last)->var_intrinsic_height_sum) : (0.));
+    return minus(x_5468->var_box_height, (x_5468->last != nullptr) ? ((x_5468->last)->var_intrinsic_height_sum) : (0.));
   }
 }
-Unit var_modified_x_3785(const auto &x_5332) {
-  auto x_5438 = [&](const auto &x_5333) {
-    if (HashtblContain(x_5333->meta->BBTimeTable, std::string("bb_2"))) {
-      auto x_5334 = HashtblFindExn(x_5333->meta->BBTimeTable, std::string("bb_2"));
-      MetaWriteMetric();
-      return QueuePush(x_5334, x_5333, MakeRecomputeBB(std::string("bb_2")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5438(x_5332);
-  MakeUnit();
-  return MakeUnit();
+Unit var_modified_x_3895(const auto &x_5489) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_5490) {
+    auto x_5597 = [&](const auto &x_5491) {
+      if (HashtblContain(x_5491->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_5492 = HashtblFindExn(x_5491->meta->BBTimeTable, std::string("bb_2"));
+        MetaWriteMetric();
+        return QueuePush(x_5492, x_5491, MakeRecomputeBB(std::string("bb_2")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5597(x_5489);
+    MakeUnit();
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3782(const auto &x_5336) {
-  if (x_5336->parent != nullptr) {
-    return (x_5336->parent)->var_height_internal;
+auto eval_expr_x_3892(const auto &x_5494) {
+  if (x_5494->parent != nullptr) {
+    return (x_5494->parent)->var_height_internal;
   } else {
     return 1080.;
   }
 }
-Unit var_modified_x_3780(const auto &x_5341) {
-  auto x_5439 = [&](const auto &x_5342) {
-    if (HashtblContain(x_5342->meta->BBTimeTable, std::string("bb_2"))) {
-      auto x_5343 = HashtblFindExn(x_5342->meta->BBTimeTable, std::string("bb_2"));
-      MetaWriteMetric();
-      return QueuePush(x_5343, x_5342, MakeRecomputeBB(std::string("bb_2")));
-    } else {
-      return MakeUnit();
-    }
-  };
-  x_5439(x_5341);
-  MakeUnit();
-  return MakeUnit();
+Unit var_modified_x_3890(const auto &x_5499) {
+  return MetricRecordOverhead(Zro(Timed([&](const auto &x_5500) {
+    auto x_5598 = [&](const auto &x_5501) {
+      if (HashtblContain(x_5501->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_5502 = HashtblFindExn(x_5501->meta->BBTimeTable, std::string("bb_2"));
+        MetaWriteMetric();
+        return QueuePush(x_5502, x_5501, MakeRecomputeBB(std::string("bb_2")));
+      } else {
+        return MakeUnit();
+      }
+    };
+    x_5598(x_5499);
+    MakeUnit();
+    return MakeUnit();
+  })));
 }
-auto eval_expr_x_3777(const auto &x_5345) {
-  if (x_5345->parent != nullptr) {
-    return (x_5345->parent)->var_width_internal;
+auto eval_expr_x_3887(const auto &x_5504) {
+  if (x_5504->parent != nullptr) {
+    return (x_5504->parent)->var_width_internal;
   } else {
     return 1920.;
   }
 }
-Unit eval_stmts_x_3696(const auto &x_3776) {
-  WriteMetric();
-  auto x_3778 = eval_expr_x_3777(x_3776);
-  if (x_3776->has_var_box_width) {
-    auto x_3779 = x_3776->var_box_width;
-    if (!EqualValue(x_3779, x_3778)) {
-      var_modified_x_3780(x_3776);
+Unit eval_stmts_x_3803(const auto &x_3885) {
+  return MetricRecordEval(Zro(Timed([&](const auto &x_3886) {
+    WriteMetric();
+    auto x_3888 = eval_expr_x_3887(x_3885);
+    if (x_3885->has_var_box_width) {
+      auto x_3889 = x_3885->var_box_width;
+      if (!EqualValue(x_3889, x_3888)) {
+        var_modified_x_3890(x_3885);
+      }
     }
-  }
-  x_3776->has_var_box_width = true;
-  x_3776->var_box_width = x_3778;
-  WriteMetric();
-  auto x_3783 = eval_expr_x_3782(x_3776);
-  if (x_3776->has_var_box_height) {
-    auto x_3784 = x_3776->var_box_height;
-    if (!EqualValue(x_3784, x_3783)) {
-      var_modified_x_3785(x_3776);
+    x_3885->has_var_box_width = true;
+    x_3885->var_box_width = x_3888;
+    WriteMetric();
+    auto x_3893 = eval_expr_x_3892(x_3885);
+    if (x_3885->has_var_box_height) {
+      auto x_3894 = x_3885->var_box_height;
+      if (!EqualValue(x_3894, x_3893)) {
+        var_modified_x_3895(x_3885);
+      }
     }
-  }
-  x_3776->has_var_box_height = true;
-  x_3776->var_box_height = x_3783;
-  WriteMetric();
-  auto x_3788 = eval_expr_x_3787(x_3776);
-  if (x_3776->has_var_left_over) {
-    auto x_3789 = x_3776->var_left_over;
-    if (!EqualValue(x_3789, x_3788)) {
-      var_modified_x_3790(x_3776);
+    x_3885->has_var_box_height = true;
+    x_3885->var_box_height = x_3893;
+    WriteMetric();
+    auto x_3898 = eval_expr_x_3897(x_3885);
+    if (x_3885->has_var_left_over) {
+      auto x_3899 = x_3885->var_left_over;
+      if (!EqualValue(x_3899, x_3898)) {
+        var_modified_x_3900(x_3885);
+      }
     }
-  }
-  x_3776->has_var_left_over = true;
-  x_3776->var_left_over = x_3788;
-  WriteMetric();
-  auto x_3793 = eval_expr_x_3792(x_3776);
-  if (x_3776->has_var_flex_amount) {
-    auto x_3794 = x_3776->var_flex_amount;
-    if (!EqualValue(x_3794, x_3793)) {
-      var_modified_x_3795(x_3776);
+    x_3885->has_var_left_over = true;
+    x_3885->var_left_over = x_3898;
+    WriteMetric();
+    auto x_3903 = eval_expr_x_3902(x_3885);
+    if (x_3885->has_var_flex_amount) {
+      auto x_3904 = x_3885->var_flex_amount;
+      if (!EqualValue(x_3904, x_3903)) {
+        var_modified_x_3905(x_3885);
+      }
     }
-  }
-  x_3776->has_var_flex_amount = true;
-  x_3776->var_flex_amount = x_3793;
-  WriteMetric();
-  auto x_3798 = eval_expr_x_3797(x_3776);
-  if (x_3776->has_var_flex_unit) {
-    auto x_3799 = x_3776->var_flex_unit;
-    if (!EqualValue(x_3799, x_3798)) {
-      var_modified_x_3800(x_3776);
+    x_3885->has_var_flex_amount = true;
+    x_3885->var_flex_amount = x_3903;
+    WriteMetric();
+    auto x_3908 = eval_expr_x_3907(x_3885);
+    if (x_3885->has_var_flex_unit) {
+      auto x_3909 = x_3885->var_flex_unit;
+      if (!EqualValue(x_3909, x_3908)) {
+        var_modified_x_3910(x_3885);
+      }
     }
-  }
-  x_3776->has_var_flex_unit = true;
-  x_3776->var_flex_unit = x_3798;
-  WriteMetric();
-  auto x_3803 = eval_expr_x_3802(x_3776);
-  if (x_3776->has_var_x) {
-    auto x_3804 = x_3776->var_x;
-    if (!EqualValue(x_3804, x_3803)) {
-      var_modified_x_3805(x_3776);
+    x_3885->has_var_flex_unit = true;
+    x_3885->var_flex_unit = x_3908;
+    WriteMetric();
+    auto x_3913 = eval_expr_x_3912(x_3885);
+    if (x_3885->has_var_x) {
+      auto x_3914 = x_3885->var_x;
+      if (!EqualValue(x_3914, x_3913)) {
+        var_modified_x_3915(x_3885);
+      }
     }
-  }
-  x_3776->has_var_x = true;
-  x_3776->var_x = x_3803;
-  WriteMetric();
-  auto x_3808 = eval_expr_x_3807(x_3776);
-  if (x_3776->has_var_width_internal) {
-    auto x_3809 = x_3776->var_width_internal;
-    if (!EqualValue(x_3809, x_3808)) {
-      var_modified_x_3810(x_3776);
+    x_3885->has_var_x = true;
+    x_3885->var_x = x_3913;
+    WriteMetric();
+    auto x_3918 = eval_expr_x_3917(x_3885);
+    if (x_3885->has_var_width_internal) {
+      auto x_3919 = x_3885->var_width_internal;
+      if (!EqualValue(x_3919, x_3918)) {
+        var_modified_x_3920(x_3885);
+      }
     }
-  }
-  x_3776->has_var_width_internal = true;
-  x_3776->var_width_internal = x_3808;
-  WriteMetric();
-  auto x_3813 = eval_expr_x_3812(x_3776);
-  if (x_3776->has_var_width_external) {
-    auto x_3814 = x_3776->var_width_external;
-    if (!EqualValue(x_3814, x_3813)) {
-      var_modified_x_3815(x_3776);
+    x_3885->has_var_width_internal = true;
+    x_3885->var_width_internal = x_3918;
+    WriteMetric();
+    auto x_3923 = eval_expr_x_3922(x_3885);
+    if (x_3885->has_var_width_external) {
+      auto x_3924 = x_3885->var_width_external;
+      if (!EqualValue(x_3924, x_3923)) {
+        var_modified_x_3925(x_3885);
+      }
     }
-  }
-  x_3776->has_var_width_external = true;
-  x_3776->var_width_external = x_3813;
-  WriteMetric();
-  auto x_3818 = eval_expr_x_3817(x_3776);
-  if (x_3776->has_var_y) {
-    auto x_3819 = x_3776->var_y;
-    if (!EqualValue(x_3819, x_3818)) {
-      var_modified_x_3820(x_3776);
+    x_3885->has_var_width_external = true;
+    x_3885->var_width_external = x_3923;
+    WriteMetric();
+    auto x_3928 = eval_expr_x_3927(x_3885);
+    if (x_3885->has_var_y) {
+      auto x_3929 = x_3885->var_y;
+      if (!EqualValue(x_3929, x_3928)) {
+        var_modified_x_3930(x_3885);
+      }
     }
-  }
-  x_3776->has_var_y = true;
-  x_3776->var_y = x_3818;
-  WriteMetric();
-  auto x_3823 = eval_expr_x_3822(x_3776);
-  if (x_3776->has_var_height_internal) {
-    auto x_3824 = x_3776->var_height_internal;
-    if (!EqualValue(x_3824, x_3823)) {
-      var_modified_x_3825(x_3776);
+    x_3885->has_var_y = true;
+    x_3885->var_y = x_3928;
+    WriteMetric();
+    auto x_3933 = eval_expr_x_3932(x_3885);
+    if (x_3885->has_var_height_internal) {
+      auto x_3934 = x_3885->var_height_internal;
+      if (!EqualValue(x_3934, x_3933)) {
+        var_modified_x_3935(x_3885);
+      }
     }
-  }
-  x_3776->has_var_height_internal = true;
-  x_3776->var_height_internal = x_3823;
-  WriteMetric();
-  auto x_3828 = eval_expr_x_3827(x_3776);
-  if (x_3776->has_var_height_external) {
-    auto x_3829 = x_3776->var_height_external;
-    if (!EqualValue(x_3829, x_3828)) {
-      var_modified_x_3830(x_3776);
+    x_3885->has_var_height_internal = true;
+    x_3885->var_height_internal = x_3933;
+    WriteMetric();
+    auto x_3938 = eval_expr_x_3937(x_3885);
+    if (x_3885->has_var_height_external) {
+      auto x_3939 = x_3885->var_height_external;
+      if (!EqualValue(x_3939, x_3938)) {
+        var_modified_x_3940(x_3885);
+      }
     }
-  }
-  x_3776->has_var_height_external = true;
-  x_3776->var_height_external = x_3828;
-  WriteMetric();
-  auto x_3833 = eval_expr_x_3832(x_3776);
-  if (x_3776->has_var_line_height) {
-    auto x_3834 = x_3776->var_line_height;
-    if (!EqualValue(x_3834, x_3833)) {
-      var_modified_x_3835(x_3776);
+    x_3885->has_var_height_external = true;
+    x_3885->var_height_external = x_3938;
+    WriteMetric();
+    auto x_3943 = eval_expr_x_3942(x_3885);
+    if (x_3885->has_var_line_height) {
+      auto x_3944 = x_3885->var_line_height;
+      if (!EqualValue(x_3944, x_3943)) {
+        var_modified_x_3945(x_3885);
+      }
     }
-  }
-  x_3776->has_var_line_height = true;
-  x_3776->var_line_height = x_3833;
-  return MakeUnit();
+    x_3885->has_var_line_height = true;
+    x_3885->var_line_height = x_3943;
+    return MakeUnit();
+  })));
 }
-Unit eval_stmts_x_3695(const auto &x_3837) {
-  WriteMetric();
-  auto x_3839 = eval_expr_x_3838(x_3837);
-  if (x_3837->has_var_width_expr) {
-    auto x_3840 = x_3837->var_width_expr;
-    if (!EqualValue(x_3840, x_3839)) {
-      var_modified_x_3841(x_3837);
+Unit eval_stmts_x_3802(const auto &x_3947) {
+  return MetricRecordEval(Zro(Timed([&](const auto &x_3948) {
+    WriteMetric();
+    auto x_3950 = eval_expr_x_3949(x_3947);
+    if (x_3947->has_var_width_expr) {
+      auto x_3951 = x_3947->var_width_expr;
+      if (!EqualValue(x_3951, x_3950)) {
+        var_modified_x_3952(x_3947);
+      }
     }
-  }
-  x_3837->has_var_width_expr = true;
-  x_3837->var_width_expr = x_3839;
-  WriteMetric();
-  auto x_3844 = eval_expr_x_3843(x_3837);
-  if (x_3837->has_var_is_default_case) {
-    auto x_3845 = x_3837->var_is_default_case;
-    if (!EqualValue(x_3845, x_3844)) {
-      var_modified_x_3846(x_3837);
+    x_3947->has_var_width_expr = true;
+    x_3947->var_width_expr = x_3950;
+    WriteMetric();
+    auto x_3955 = eval_expr_x_3954(x_3947);
+    if (x_3947->has_var_is_default_case) {
+      auto x_3956 = x_3947->var_is_default_case;
+      if (!EqualValue(x_3956, x_3955)) {
+        var_modified_x_3957(x_3947);
+      }
     }
-  }
-  x_3837->has_var_is_default_case = true;
-  x_3837->var_is_default_case = x_3844;
-  WriteMetric();
-  auto x_3849 = eval_expr_x_3848(x_3837);
-  if (x_3837->has_var_intrinsic_width_is_width) {
-    auto x_3850 = x_3837->var_intrinsic_width_is_width;
-    if (!EqualValue(x_3850, x_3849)) {
-      var_modified_x_3851(x_3837);
+    x_3947->has_var_is_default_case = true;
+    x_3947->var_is_default_case = x_3955;
+    WriteMetric();
+    auto x_3960 = eval_expr_x_3959(x_3947);
+    if (x_3947->has_var_intrinsic_width_is_width) {
+      auto x_3961 = x_3947->var_intrinsic_width_is_width;
+      if (!EqualValue(x_3961, x_3960)) {
+        var_modified_x_3962(x_3947);
+      }
     }
-  }
-  x_3837->has_var_intrinsic_width_is_width = true;
-  x_3837->var_intrinsic_width_is_width = x_3849;
-  WriteMetric();
-  auto x_3854 = eval_expr_x_3853(x_3837);
-  if (x_3837->has_var_children_intrinsic_width) {
-    auto x_3855 = x_3837->var_children_intrinsic_width;
-    if (!EqualValue(x_3855, x_3854)) {
-      var_modified_x_3856(x_3837);
+    x_3947->has_var_intrinsic_width_is_width = true;
+    x_3947->var_intrinsic_width_is_width = x_3960;
+    WriteMetric();
+    auto x_3965 = eval_expr_x_3964(x_3947);
+    if (x_3947->has_var_children_intrinsic_width) {
+      auto x_3966 = x_3947->var_children_intrinsic_width;
+      if (!EqualValue(x_3966, x_3965)) {
+        var_modified_x_3967(x_3947);
+      }
     }
-  }
-  x_3837->has_var_children_intrinsic_width = true;
-  x_3837->var_children_intrinsic_width = x_3854;
-  WriteMetric();
-  auto x_3859 = eval_expr_x_3858(x_3837);
-  if (x_3837->has_var_intrinsic_width_internal) {
-    auto x_3860 = x_3837->var_intrinsic_width_internal;
-    if (!EqualValue(x_3860, x_3859)) {
-      var_modified_x_3861(x_3837);
+    x_3947->has_var_children_intrinsic_width = true;
+    x_3947->var_children_intrinsic_width = x_3965;
+    WriteMetric();
+    auto x_3970 = eval_expr_x_3969(x_3947);
+    if (x_3947->has_var_intrinsic_width_internal) {
+      auto x_3971 = x_3947->var_intrinsic_width_internal;
+      if (!EqualValue(x_3971, x_3970)) {
+        var_modified_x_3972(x_3947);
+      }
     }
-  }
-  x_3837->has_var_intrinsic_width_internal = true;
-  x_3837->var_intrinsic_width_internal = x_3859;
-  WriteMetric();
-  auto x_3864 = eval_expr_x_3863(x_3837);
-  if (x_3837->has_var_intrinsic_width_external) {
-    auto x_3865 = x_3837->var_intrinsic_width_external;
-    if (!EqualValue(x_3865, x_3864)) {
-      var_modified_x_3866(x_3837);
+    x_3947->has_var_intrinsic_width_internal = true;
+    x_3947->var_intrinsic_width_internal = x_3970;
+    WriteMetric();
+    auto x_3975 = eval_expr_x_3974(x_3947);
+    if (x_3947->has_var_intrinsic_width_external) {
+      auto x_3976 = x_3947->var_intrinsic_width_external;
+      if (!EqualValue(x_3976, x_3975)) {
+        var_modified_x_3977(x_3947);
+      }
     }
-  }
-  x_3837->has_var_intrinsic_width_external = true;
-  x_3837->var_intrinsic_width_external = x_3864;
-  WriteMetric();
-  auto x_3869 = eval_expr_x_3868(x_3837);
-  if (x_3837->has_var_intrinsic_current_line_width) {
-    auto x_3870 = x_3837->var_intrinsic_current_line_width;
-    if (!EqualValue(x_3870, x_3869)) {
-      var_modified_x_3871(x_3837);
+    x_3947->has_var_intrinsic_width_external = true;
+    x_3947->var_intrinsic_width_external = x_3975;
+    WriteMetric();
+    auto x_3980 = eval_expr_x_3979(x_3947);
+    if (x_3947->has_var_intrinsic_current_line_width) {
+      auto x_3981 = x_3947->var_intrinsic_current_line_width;
+      if (!EqualValue(x_3981, x_3980)) {
+        var_modified_x_3982(x_3947);
+      }
     }
-  }
-  x_3837->has_var_intrinsic_current_line_width = true;
-  x_3837->var_intrinsic_current_line_width = x_3869;
-  WriteMetric();
-  auto x_3874 = eval_expr_x_3873(x_3837);
-  if (x_3837->has_var_intrinsic_width_max) {
-    auto x_3875 = x_3837->var_intrinsic_width_max;
-    if (!EqualValue(x_3875, x_3874)) {
-      var_modified_x_3876(x_3837);
+    x_3947->has_var_intrinsic_current_line_width = true;
+    x_3947->var_intrinsic_current_line_width = x_3980;
+    WriteMetric();
+    auto x_3985 = eval_expr_x_3984(x_3947);
+    if (x_3947->has_var_intrinsic_width_max) {
+      auto x_3986 = x_3947->var_intrinsic_width_max;
+      if (!EqualValue(x_3986, x_3985)) {
+        var_modified_x_3987(x_3947);
+      }
     }
-  }
-  x_3837->has_var_intrinsic_width_max = true;
-  x_3837->var_intrinsic_width_max = x_3874;
-  WriteMetric();
-  auto x_3879 = eval_expr_x_3878(x_3837);
-  if (x_3837->has_var_intrinsic_width_sum) {
-    auto x_3880 = x_3837->var_intrinsic_width_sum;
-    if (!EqualValue(x_3880, x_3879)) {
-      var_modified_x_3881(x_3837);
+    x_3947->has_var_intrinsic_width_max = true;
+    x_3947->var_intrinsic_width_max = x_3985;
+    WriteMetric();
+    auto x_3990 = eval_expr_x_3989(x_3947);
+    if (x_3947->has_var_intrinsic_width_sum) {
+      auto x_3991 = x_3947->var_intrinsic_width_sum;
+      if (!EqualValue(x_3991, x_3990)) {
+        var_modified_x_3992(x_3947);
+      }
     }
-  }
-  x_3837->has_var_intrinsic_width_sum = true;
-  x_3837->var_intrinsic_width_sum = x_3879;
-  WriteMetric();
-  auto x_3884 = eval_expr_x_3883(x_3837);
-  if (x_3837->has_var_children_intrinsic_height) {
-    auto x_3885 = x_3837->var_children_intrinsic_height;
-    if (!EqualValue(x_3885, x_3884)) {
-      var_modified_x_3886(x_3837);
+    x_3947->has_var_intrinsic_width_sum = true;
+    x_3947->var_intrinsic_width_sum = x_3990;
+    WriteMetric();
+    auto x_3995 = eval_expr_x_3994(x_3947);
+    if (x_3947->has_var_children_intrinsic_height) {
+      auto x_3996 = x_3947->var_children_intrinsic_height;
+      if (!EqualValue(x_3996, x_3995)) {
+        var_modified_x_3997(x_3947);
+      }
     }
-  }
-  x_3837->has_var_children_intrinsic_height = true;
-  x_3837->var_children_intrinsic_height = x_3884;
-  WriteMetric();
-  auto x_3889 = eval_expr_x_3888(x_3837);
-  if (x_3837->has_var_height_expr) {
-    auto x_3890 = x_3837->var_height_expr;
-    if (!EqualValue(x_3890, x_3889)) {
-      var_modified_x_3891(x_3837);
+    x_3947->has_var_children_intrinsic_height = true;
+    x_3947->var_children_intrinsic_height = x_3995;
+    WriteMetric();
+    auto x_4000 = eval_expr_x_3999(x_3947);
+    if (x_3947->has_var_height_expr) {
+      auto x_4001 = x_3947->var_height_expr;
+      if (!EqualValue(x_4001, x_4000)) {
+        var_modified_x_4002(x_3947);
+      }
     }
-  }
-  x_3837->has_var_height_expr = true;
-  x_3837->var_height_expr = x_3889;
-  WriteMetric();
-  auto x_3894 = eval_expr_x_3893(x_3837);
-  if (x_3837->has_var_intrinsic_height_is_height) {
-    auto x_3895 = x_3837->var_intrinsic_height_is_height;
-    if (!EqualValue(x_3895, x_3894)) {
-      var_modified_x_3896(x_3837);
+    x_3947->has_var_height_expr = true;
+    x_3947->var_height_expr = x_4000;
+    WriteMetric();
+    auto x_4005 = eval_expr_x_4004(x_3947);
+    if (x_3947->has_var_intrinsic_height_is_height) {
+      auto x_4006 = x_3947->var_intrinsic_height_is_height;
+      if (!EqualValue(x_4006, x_4005)) {
+        var_modified_x_4007(x_3947);
+      }
     }
-  }
-  x_3837->has_var_intrinsic_height_is_height = true;
-  x_3837->var_intrinsic_height_is_height = x_3894;
-  WriteMetric();
-  auto x_3899 = eval_expr_x_3898(x_3837);
-  if (x_3837->has_var_intrinsic_height_internal) {
-    auto x_3900 = x_3837->var_intrinsic_height_internal;
-    if (!EqualValue(x_3900, x_3899)) {
-      var_modified_x_3901(x_3837);
+    x_3947->has_var_intrinsic_height_is_height = true;
+    x_3947->var_intrinsic_height_is_height = x_4005;
+    WriteMetric();
+    auto x_4010 = eval_expr_x_4009(x_3947);
+    if (x_3947->has_var_intrinsic_height_internal) {
+      auto x_4011 = x_3947->var_intrinsic_height_internal;
+      if (!EqualValue(x_4011, x_4010)) {
+        var_modified_x_4012(x_3947);
+      }
     }
-  }
-  x_3837->has_var_intrinsic_height_internal = true;
-  x_3837->var_intrinsic_height_internal = x_3899;
-  WriteMetric();
-  auto x_3904 = eval_expr_x_3903(x_3837);
-  if (x_3837->has_var_intrinsic_height_external) {
-    auto x_3905 = x_3837->var_intrinsic_height_external;
-    if (!EqualValue(x_3905, x_3904)) {
-      var_modified_x_3906(x_3837);
+    x_3947->has_var_intrinsic_height_internal = true;
+    x_3947->var_intrinsic_height_internal = x_4010;
+    WriteMetric();
+    auto x_4015 = eval_expr_x_4014(x_3947);
+    if (x_3947->has_var_intrinsic_height_external) {
+      auto x_4016 = x_3947->var_intrinsic_height_external;
+      if (!EqualValue(x_4016, x_4015)) {
+        var_modified_x_4017(x_3947);
+      }
     }
-  }
-  x_3837->has_var_intrinsic_height_external = true;
-  x_3837->var_intrinsic_height_external = x_3904;
-  WriteMetric();
-  auto x_3909 = eval_expr_x_3908(x_3837);
-  if (x_3837->has_var_intrinsic_height_sum) {
-    auto x_3910 = x_3837->var_intrinsic_height_sum;
-    if (!EqualValue(x_3910, x_3909)) {
-      var_modified_x_3911(x_3837);
+    x_3947->has_var_intrinsic_height_external = true;
+    x_3947->var_intrinsic_height_external = x_4015;
+    WriteMetric();
+    auto x_4020 = eval_expr_x_4019(x_3947);
+    if (x_3947->has_var_intrinsic_height_sum) {
+      auto x_4021 = x_3947->var_intrinsic_height_sum;
+      if (!EqualValue(x_4021, x_4020)) {
+        var_modified_x_4022(x_3947);
+      }
     }
-  }
-  x_3837->has_var_intrinsic_height_sum = true;
-  x_3837->var_intrinsic_height_sum = x_3909;
-  WriteMetric();
-  auto x_3914 = eval_expr_x_3913(x_3837);
-  if (x_3837->has_var_intrinsic_current_line_height) {
-    auto x_3915 = x_3837->var_intrinsic_current_line_height;
-    if (!EqualValue(x_3915, x_3914)) {
-      var_modified_x_3916(x_3837);
+    x_3947->has_var_intrinsic_height_sum = true;
+    x_3947->var_intrinsic_height_sum = x_4020;
+    WriteMetric();
+    auto x_4025 = eval_expr_x_4024(x_3947);
+    if (x_3947->has_var_intrinsic_current_line_height) {
+      auto x_4026 = x_3947->var_intrinsic_current_line_height;
+      if (!EqualValue(x_4026, x_4025)) {
+        var_modified_x_4027(x_3947);
+      }
     }
-  }
-  x_3837->has_var_intrinsic_current_line_height = true;
-  x_3837->var_intrinsic_current_line_height = x_3914;
-  WriteMetric();
-  auto x_3919 = eval_expr_x_3918(x_3837);
-  if (x_3837->has_var_finished_intrinsic_height_sum) {
-    auto x_3920 = x_3837->var_finished_intrinsic_height_sum;
-    if (!EqualValue(x_3920, x_3919)) {
-      var_modified_x_3921(x_3837);
+    x_3947->has_var_intrinsic_current_line_height = true;
+    x_3947->var_intrinsic_current_line_height = x_4025;
+    WriteMetric();
+    auto x_4030 = eval_expr_x_4029(x_3947);
+    if (x_3947->has_var_finished_intrinsic_height_sum) {
+      auto x_4031 = x_3947->var_finished_intrinsic_height_sum;
+      if (!EqualValue(x_4031, x_4030)) {
+        var_modified_x_4032(x_3947);
+      }
     }
-  }
-  x_3837->has_var_finished_intrinsic_height_sum = true;
-  x_3837->var_finished_intrinsic_height_sum = x_3919;
-  return MakeUnit();
+    x_3947->has_var_finished_intrinsic_height_sum = true;
+    x_3947->var_finished_intrinsic_height_sum = x_4030;
+    return MakeUnit();
+  })));
 }
-Unit eval_stmts_x_3694(const auto &x_3923) {
-  WriteMetric();
-  auto x_3925 = eval_expr_x_3924(x_3923);
-  if (x_3923->has_var_display) {
-    auto x_3926 = x_3923->var_display;
-    if (!EqualValue(x_3926, x_3925)) {
-      var_modified_x_3927(x_3923);
+Unit eval_stmts_x_3801(const auto &x_4034) {
+  return MetricRecordEval(Zro(Timed([&](const auto &x_4035) {
+    WriteMetric();
+    auto x_4037 = eval_expr_x_4036(x_4034);
+    if (x_4034->has_var_display) {
+      auto x_4038 = x_4034->var_display;
+      if (!EqualValue(x_4038, x_4037)) {
+        var_modified_x_4039(x_4034);
+      }
     }
-  }
-  x_3923->has_var_display = true;
-  x_3923->var_display = x_3925;
-  WriteMetric();
-  auto x_3930 = eval_expr_x_3929(x_3923);
-  if (x_3923->has_var_position) {
-    auto x_3931 = x_3923->var_position;
-    if (!EqualValue(x_3931, x_3930)) {
-      var_modified_x_3932(x_3923);
+    x_4034->has_var_display = true;
+    x_4034->var_display = x_4037;
+    WriteMetric();
+    auto x_4042 = eval_expr_x_4041(x_4034);
+    if (x_4034->has_var_position) {
+      auto x_4043 = x_4034->var_position;
+      if (!EqualValue(x_4043, x_4042)) {
+        var_modified_x_4044(x_4034);
+      }
     }
-  }
-  x_3923->has_var_position = true;
-  x_3923->var_position = x_3930;
-  WriteMetric();
-  auto x_3935 = eval_expr_x_3934(x_3923);
-  if (x_3923->has_var_flex_grow) {
-    auto x_3936 = x_3923->var_flex_grow;
-    if (!EqualValue(x_3936, x_3935)) {
-      var_modified_x_3937(x_3923);
+    x_4034->has_var_position = true;
+    x_4034->var_position = x_4042;
+    WriteMetric();
+    auto x_4047 = eval_expr_x_4046(x_4034);
+    if (x_4034->has_var_flex_grow) {
+      auto x_4048 = x_4034->var_flex_grow;
+      if (!EqualValue(x_4048, x_4047)) {
+        var_modified_x_4049(x_4034);
+      }
     }
-  }
-  x_3923->has_var_flex_grow = true;
-  x_3923->var_flex_grow = x_3935;
-  WriteMetric();
-  auto x_3940 = eval_expr_x_3939(x_3923);
-  if (x_3923->has_var_flex_shrink) {
-    auto x_3941 = x_3923->var_flex_shrink;
-    if (!EqualValue(x_3941, x_3940)) {
-      var_modified_x_3942(x_3923);
+    x_4034->has_var_flex_grow = true;
+    x_4034->var_flex_grow = x_4047;
+    WriteMetric();
+    auto x_4052 = eval_expr_x_4051(x_4034);
+    if (x_4034->has_var_flex_shrink) {
+      auto x_4053 = x_4034->var_flex_shrink;
+      if (!EqualValue(x_4053, x_4052)) {
+        var_modified_x_4054(x_4034);
+      }
     }
-  }
-  x_3923->has_var_flex_shrink = true;
-  x_3923->var_flex_shrink = x_3940;
-  WriteMetric();
-  auto x_3945 = eval_expr_x_3944(x_3923);
-  if (x_3923->has_var_flex_grow_sum) {
-    auto x_3946 = x_3923->var_flex_grow_sum;
-    if (!EqualValue(x_3946, x_3945)) {
-      var_modified_x_3947(x_3923);
+    x_4034->has_var_flex_shrink = true;
+    x_4034->var_flex_shrink = x_4052;
+    WriteMetric();
+    auto x_4057 = eval_expr_x_4056(x_4034);
+    if (x_4034->has_var_flex_grow_sum) {
+      auto x_4058 = x_4034->var_flex_grow_sum;
+      if (!EqualValue(x_4058, x_4057)) {
+        var_modified_x_4059(x_4034);
+      }
     }
-  }
-  x_3923->has_var_flex_grow_sum = true;
-  x_3923->var_flex_grow_sum = x_3945;
-  WriteMetric();
-  auto x_3950 = eval_expr_x_3949(x_3923);
-  if (x_3923->has_var_flex_shrink_sum) {
-    auto x_3951 = x_3923->var_flex_shrink_sum;
-    if (!EqualValue(x_3951, x_3950)) {
-      var_modified_x_3952(x_3923);
+    x_4034->has_var_flex_grow_sum = true;
+    x_4034->var_flex_grow_sum = x_4057;
+    WriteMetric();
+    auto x_4062 = eval_expr_x_4061(x_4034);
+    if (x_4034->has_var_flex_shrink_sum) {
+      auto x_4063 = x_4034->var_flex_shrink_sum;
+      if (!EqualValue(x_4063, x_4062)) {
+        var_modified_x_4064(x_4034);
+      }
     }
-  }
-  x_3923->has_var_flex_shrink_sum = true;
-  x_3923->var_flex_shrink_sum = x_3950;
-  WriteMetric();
-  auto x_3955 = eval_expr_x_3954(x_3923);
-  if (x_3923->has_var_flex_direction) {
-    auto x_3956 = x_3923->var_flex_direction;
-    if (!EqualValue(x_3956, x_3955)) {
-      var_modified_x_3957(x_3923);
+    x_4034->has_var_flex_shrink_sum = true;
+    x_4034->var_flex_shrink_sum = x_4062;
+    WriteMetric();
+    auto x_4067 = eval_expr_x_4066(x_4034);
+    if (x_4034->has_var_flex_direction) {
+      auto x_4068 = x_4034->var_flex_direction;
+      if (!EqualValue(x_4068, x_4067)) {
+        var_modified_x_4069(x_4034);
+      }
     }
-  }
-  x_3923->has_var_flex_direction = true;
-  x_3923->var_flex_direction = x_3955;
-  WriteMetric();
-  auto x_3960 = eval_expr_x_3959(x_3923);
-  if (x_3923->has_var_is_flex_row) {
-    auto x_3961 = x_3923->var_is_flex_row;
-    if (!EqualValue(x_3961, x_3960)) {
-      var_modified_x_3962(x_3923);
+    x_4034->has_var_flex_direction = true;
+    x_4034->var_flex_direction = x_4067;
+    WriteMetric();
+    auto x_4072 = eval_expr_x_4071(x_4034);
+    if (x_4034->has_var_is_flex_row) {
+      auto x_4073 = x_4034->var_is_flex_row;
+      if (!EqualValue(x_4073, x_4072)) {
+        var_modified_x_4074(x_4034);
+      }
     }
-  }
-  x_3923->has_var_is_flex_row = true;
-  x_3923->var_is_flex_row = x_3960;
-  WriteMetric();
-  auto x_3965 = eval_expr_x_3964(x_3923);
-  if (x_3923->has_var_is_flex_column) {
-    auto x_3966 = x_3923->var_is_flex_column;
-    if (!EqualValue(x_3966, x_3965)) {
-      var_modified_x_3967(x_3923);
+    x_4034->has_var_is_flex_row = true;
+    x_4034->var_is_flex_row = x_4072;
+    WriteMetric();
+    auto x_4077 = eval_expr_x_4076(x_4034);
+    if (x_4034->has_var_is_flex_column) {
+      auto x_4078 = x_4034->var_is_flex_column;
+      if (!EqualValue(x_4078, x_4077)) {
+        var_modified_x_4079(x_4034);
+      }
     }
-  }
-  x_3923->has_var_is_flex_column = true;
-  x_3923->var_is_flex_column = x_3965;
-  WriteMetric();
-  auto x_3970 = eval_expr_x_3969(x_3923);
-  if (x_3923->has_var_width_attr_expr) {
-    auto x_3971 = x_3923->var_width_attr_expr;
-    if (!EqualValue(x_3971, x_3970)) {
-      var_modified_x_3972(x_3923);
+    x_4034->has_var_is_flex_column = true;
+    x_4034->var_is_flex_column = x_4077;
+    WriteMetric();
+    auto x_4082 = eval_expr_x_4081(x_4034);
+    if (x_4034->has_var_width_attr_expr) {
+      auto x_4083 = x_4034->var_width_attr_expr;
+      if (!EqualValue(x_4083, x_4082)) {
+        var_modified_x_4084(x_4034);
+      }
     }
-  }
-  x_3923->has_var_width_attr_expr = true;
-  x_3923->var_width_attr_expr = x_3970;
-  WriteMetric();
-  auto x_3975 = eval_expr_x_3974(x_3923);
-  if (x_3923->has_var_has_width_attr) {
-    auto x_3976 = x_3923->var_has_width_attr;
-    if (!EqualValue(x_3976, x_3975)) {
-      var_modified_x_3977(x_3923);
+    x_4034->has_var_width_attr_expr = true;
+    x_4034->var_width_attr_expr = x_4082;
+    WriteMetric();
+    auto x_4087 = eval_expr_x_4086(x_4034);
+    if (x_4034->has_var_has_width_attr) {
+      auto x_4088 = x_4034->var_has_width_attr;
+      if (!EqualValue(x_4088, x_4087)) {
+        var_modified_x_4089(x_4034);
+      }
     }
-  }
-  x_3923->has_var_has_width_attr = true;
-  x_3923->var_has_width_attr = x_3975;
-  WriteMetric();
-  auto x_3980 = eval_expr_x_3979(x_3923);
-  if (x_3923->has_var_height_attr_expr) {
-    auto x_3981 = x_3923->var_height_attr_expr;
-    if (!EqualValue(x_3981, x_3980)) {
-      var_modified_x_3982(x_3923);
+    x_4034->has_var_has_width_attr = true;
+    x_4034->var_has_width_attr = x_4087;
+    WriteMetric();
+    auto x_4092 = eval_expr_x_4091(x_4034);
+    if (x_4034->has_var_height_attr_expr) {
+      auto x_4093 = x_4034->var_height_attr_expr;
+      if (!EqualValue(x_4093, x_4092)) {
+        var_modified_x_4094(x_4034);
+      }
     }
-  }
-  x_3923->has_var_height_attr_expr = true;
-  x_3923->var_height_attr_expr = x_3980;
-  WriteMetric();
-  auto x_3985 = eval_expr_x_3984(x_3923);
-  if (x_3923->has_var_has_height_attr) {
-    auto x_3986 = x_3923->var_has_height_attr;
-    if (!EqualValue(x_3986, x_3985)) {
-      var_modified_x_3987(x_3923);
+    x_4034->has_var_height_attr_expr = true;
+    x_4034->var_height_attr_expr = x_4092;
+    WriteMetric();
+    auto x_4097 = eval_expr_x_4096(x_4034);
+    if (x_4034->has_var_has_height_attr) {
+      auto x_4098 = x_4034->var_has_height_attr;
+      if (!EqualValue(x_4098, x_4097)) {
+        var_modified_x_4099(x_4034);
+      }
     }
-  }
-  x_3923->has_var_has_height_attr = true;
-  x_3923->var_has_height_attr = x_3985;
-  WriteMetric();
-  auto x_3990 = eval_expr_x_3989(x_3923);
-  if (x_3923->has_var_is_svg_block) {
-    auto x_3991 = x_3923->var_is_svg_block;
-    if (!EqualValue(x_3991, x_3990)) {
-      var_modified_x_3992(x_3923);
+    x_4034->has_var_has_height_attr = true;
+    x_4034->var_has_height_attr = x_4097;
+    WriteMetric();
+    auto x_4102 = eval_expr_x_4101(x_4034);
+    if (x_4034->has_var_is_svg_block) {
+      auto x_4103 = x_4034->var_is_svg_block;
+      if (!EqualValue(x_4103, x_4102)) {
+        var_modified_x_4104(x_4034);
+      }
     }
-  }
-  x_3923->has_var_is_svg_block = true;
-  x_3923->var_is_svg_block = x_3990;
-  WriteMetric();
-  auto x_3995 = eval_expr_x_3994(x_3923);
-  if (x_3923->has_var_inside_svg) {
-    auto x_3996 = x_3923->var_inside_svg;
-    if (!EqualValue(x_3996, x_3995)) {
-      var_modified_x_3997(x_3923);
+    x_4034->has_var_is_svg_block = true;
+    x_4034->var_is_svg_block = x_4102;
+    WriteMetric();
+    auto x_4107 = eval_expr_x_4106(x_4034);
+    if (x_4034->has_var_inside_svg) {
+      auto x_4108 = x_4034->var_inside_svg;
+      if (!EqualValue(x_4108, x_4107)) {
+        var_modified_x_4109(x_4034);
+      }
     }
-  }
-  x_3923->has_var_inside_svg = true;
-  x_3923->var_inside_svg = x_3995;
-  WriteMetric();
-  auto x_4000 = eval_expr_x_3999(x_3923);
-  if (x_3923->has_var_disabled) {
-    auto x_4001 = x_3923->var_disabled;
-    if (!EqualValue(x_4001, x_4000)) {
-      var_modified_x_4002(x_3923);
+    x_4034->has_var_inside_svg = true;
+    x_4034->var_inside_svg = x_4107;
+    WriteMetric();
+    auto x_4112 = eval_expr_x_4111(x_4034);
+    if (x_4034->has_var_disabled) {
+      auto x_4113 = x_4034->var_disabled;
+      if (!EqualValue(x_4113, x_4112)) {
+        var_modified_x_4114(x_4034);
+      }
     }
-  }
-  x_3923->has_var_disabled = true;
-  x_3923->var_disabled = x_4000;
-  WriteMetric();
-  auto x_4005 = eval_expr_x_4004(x_3923);
-  if (x_3923->has_var_visible) {
-    auto x_4006 = x_3923->var_visible;
-    if (!EqualValue(x_4006, x_4005)) {
-      var_modified_x_4007(x_3923);
+    x_4034->has_var_disabled = true;
+    x_4034->var_disabled = x_4112;
+    WriteMetric();
+    auto x_4117 = eval_expr_x_4116(x_4034);
+    if (x_4034->has_var_visible) {
+      auto x_4118 = x_4034->var_visible;
+      if (!EqualValue(x_4118, x_4117)) {
+        var_modified_x_4119(x_4034);
+      }
     }
-  }
-  x_3923->has_var_visible = true;
-  x_3923->var_visible = x_4005;
-  WriteMetric();
-  auto x_4010 = eval_expr_x_4009(x_3923);
-  if (x_3923->has_var_line_break) {
-    auto x_4011 = x_3923->var_line_break;
-    if (!EqualValue(x_4011, x_4010)) {
-      var_modified_x_4012(x_3923);
+    x_4034->has_var_visible = true;
+    x_4034->var_visible = x_4117;
+    WriteMetric();
+    auto x_4122 = eval_expr_x_4121(x_4034);
+    if (x_4034->has_var_line_break) {
+      auto x_4123 = x_4034->var_line_break;
+      if (!EqualValue(x_4123, x_4122)) {
+        var_modified_x_4124(x_4034);
+      }
     }
-  }
-  x_3923->has_var_line_break = true;
-  x_3923->var_line_break = x_4010;
-  return MakeUnit();
+    x_4034->has_var_line_break = true;
+    x_4034->var_line_break = x_4122;
+    return MakeUnit();
+  })));
 }
-Unit x_3423(const auto &x_3424, const auto &x_3425, const auto &x_3426) {
-  auto x_3427 = ListHeadExn(x_3424);
-  auto x_3428 = ListTailExn(x_3424);
-  if (ListIsEmpty(x_3428)) {
-    auto x_3429 = ListSplitN(x_3425->children, x_3427);
-    OutputChangeMetric(IntAdd(layout_size_x_3383(ListNthExn(x_3425->children, x_3427)), layout_size_x_3383(x_3426)));
-    x_3425->children = ListAppend(Zro(x_3429), Cons(x_3426, ListTailExn(Fst(x_3429))));
+Unit x_3530(const auto &x_3531, const auto &x_3532, const auto &x_3533) {
+  auto x_3534 = ListHeadExn(x_3531);
+  auto x_3535 = ListTailExn(x_3531);
+  if (ListIsEmpty(x_3535)) {
+    auto x_3536 = ListSplitN(x_3532->children, x_3534);
+    OutputChangeMetric(IntAdd(layout_size_x_3489(ListNthExn(x_3532->children, x_3534)), layout_size_x_3489(x_3533)));
+    x_3532->children = ListAppend(Zro(x_3536), Cons(x_3533, ListTailExn(Fst(x_3536))));
     return MakeUnit();
   } else {
-    return x_3423(x_3428, ListNthExn(x_3425->children, x_3427), x_3426);
+    return x_3530(x_3535, ListNthExn(x_3532->children, x_3534), x_3533);
   }
 }
-Unit replace_layout_node_x_3422(const auto &x_3424, const auto &x_3425, const auto &x_3426) {
-  return x_3423(x_3424, x_3425, x_3426);
+Unit replace_layout_node_x_3529(const auto &x_3531, const auto &x_3532, const auto &x_3533) {
+  return x_3530(x_3531, x_3532, x_3533);
 }
-Unit x_3430(const auto &x_3431, const auto &x_3432, const auto &x_3433) {
-  auto x_3434 = ListHeadExn(x_3431);
-  auto x_3435 = ListTailExn(x_3431);
-  if (ListIsEmpty(x_3435)) {
-    OutputChangeMetric(layout_size_x_3383(x_3433));
-    auto x_3436 = ListSplitN(x_3432->children, x_3434);
-    x_3432->children = ListAppend(Zro(x_3436), Cons(x_3433, Fst(x_3436)));
+Unit x_3537(const auto &x_3538, const auto &x_3539, const auto &x_3540) {
+  auto x_3541 = ListHeadExn(x_3538);
+  auto x_3542 = ListTailExn(x_3538);
+  if (ListIsEmpty(x_3542)) {
+    OutputChangeMetric(layout_size_x_3489(x_3540));
+    auto x_3543 = ListSplitN(x_3539->children, x_3541);
+    x_3539->children = ListAppend(Zro(x_3543), Cons(x_3540, Fst(x_3543)));
     return MakeUnit();
   } else {
-    return x_3430(x_3435, ListNthExn(x_3432->children, x_3434), x_3433);
+    return x_3537(x_3542, ListNthExn(x_3539->children, x_3541), x_3540);
   }
 }
-Unit add_layout_node_x_3420(const auto &x_3431, const auto &x_3432, const auto &x_3433) {
-  return x_3430(x_3431, x_3432, x_3433);
+Unit add_layout_node_x_3527(const auto &x_3538, const auto &x_3539, const auto &x_3540) {
+  return x_3537(x_3538, x_3539, x_3540);
 }
-Unit x_3437(const auto &x_3438, const auto &x_3439, const auto &x_3440) {
-  auto x_3441 = ListHeadExn(x_3438);
-  auto x_3442 = ListTailExn(x_3438);
-  if (ListIsEmpty(x_3442)) {
-    OutputChangeMetric(layout_size_x_3383(ListNthExn(x_3439->children, x_3441)));
-    auto x_3443 = ListSplitN(x_3439->children, x_3441);
-    x_3439->children = ListAppend(Zro(x_3443), ListTailExn(Fst(x_3443)));
+Unit x_3544(const auto &x_3545, const auto &x_3546, const auto &x_3547) {
+  auto x_3548 = ListHeadExn(x_3545);
+  auto x_3549 = ListTailExn(x_3545);
+  if (ListIsEmpty(x_3549)) {
+    OutputChangeMetric(layout_size_x_3489(ListNthExn(x_3546->children, x_3548)));
+    auto x_3550 = ListSplitN(x_3546->children, x_3548);
+    x_3546->children = ListAppend(Zro(x_3550), ListTailExn(Fst(x_3550)));
     return MakeUnit();
   } else {
-    return x_3437(x_3442, ListNthExn(x_3439->children, x_3441), x_3440);
+    return x_3544(x_3549, ListNthExn(x_3546->children, x_3548), x_3547);
   }
 }
-Unit remove_layout_node_x_3418(const auto &x_3438, const auto &x_3439, const auto &x_3440) {
-  return x_3437(x_3438, x_3439, x_3440);
+Unit remove_layout_node_x_3525(const auto &x_3545, const auto &x_3546, const auto &x_3547) {
+  return x_3544(x_3545, x_3546, x_3547);
 }
-Unit x_3444(const auto &x_3445, const auto &x_3446, const auto &x_3447) {
+Unit x_3551(const auto &x_3552, const auto &x_3553, const auto &x_3554) {
   return ListMatch(
-      x_3445,
-      [&](const auto &x_3450) {
-        auto x_3451 = Zro(x_3447);
-        auto x_3452 = Zro(x_3451);
-        auto x_3453 = Fst(x_3451);
-        auto x_3454 = Fst(x_3447);
+      x_3552,
+      [&](const auto &x_3557) {
+        auto x_3558 = Zro(x_3554);
+        auto x_3559 = Zro(x_3558);
+        auto x_3560 = Fst(x_3558);
+        auto x_3561 = Fst(x_3554);
         InputChangeMetric(static_cast<int64_t>(1));
-        std::string x_5440 = x_3452;
-        if (x_5440 == "attributes") {
-          std::string x_5441 = x_3453;
-          if (x_5441 == "width") {
+        std::string x_5599 = x_3559;
+        if (x_5599 == "attributes") {
+          std::string x_5600 = x_3560;
+          if (x_5600 == "width") {
             WriteMetric();
-            HashtblAddExn(x_3446->attr, std::string("width"), x_3454);
-            if (HashtblContain(x_3446->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3455 = HashtblFindExn(x_3446->meta->BBTimeTable, std::string("bb_1"));
+            HashtblAddExn(x_3553->attr, std::string("width"), x_3561);
+            if (HashtblContain(x_3553->meta->BBTimeTable, std::string("bb_1"))) {
+              auto x_3562 = HashtblFindExn(x_3553->meta->BBTimeTable, std::string("bb_1"));
               MetaWriteMetric();
-              QueuePush(x_3455, x_3446, MakeRecomputeBB(std::string("bb_1")));
+              QueuePush(x_3562, x_3553, MakeRecomputeBB(std::string("bb_1")));
             }
             return MakeUnit();
-          } else if (x_5441 == "image_height") {
+          } else if (x_5600 == "image_height") {
             WriteMetric();
-            HashtblAddExn(x_3446->attr, std::string("image_height"), x_3454);
-            if (HashtblContain(x_3446->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3457 = HashtblFindExn(x_3446->meta->BBTimeTable, std::string("bb_0"));
+            HashtblAddExn(x_3553->attr, std::string("image_height"), x_3561);
+            if (HashtblContain(x_3553->meta->BBTimeTable, std::string("bb_0"))) {
+              auto x_3564 = HashtblFindExn(x_3553->meta->BBTimeTable, std::string("bb_0"));
               MetaWriteMetric();
-              QueuePush(x_3457, x_3446, MakeRecomputeBB(std::string("bb_0")));
+              QueuePush(x_3564, x_3553, MakeRecomputeBB(std::string("bb_0")));
             }
             return MakeUnit();
-          } else if (x_5441 == "image_width") {
+          } else if (x_5600 == "image_width") {
             WriteMetric();
-            HashtblAddExn(x_3446->attr, std::string("image_width"), x_3454);
-            if (HashtblContain(x_3446->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3459 = HashtblFindExn(x_3446->meta->BBTimeTable, std::string("bb_0"));
+            HashtblAddExn(x_3553->attr, std::string("image_width"), x_3561);
+            if (HashtblContain(x_3553->meta->BBTimeTable, std::string("bb_0"))) {
+              auto x_3566 = HashtblFindExn(x_3553->meta->BBTimeTable, std::string("bb_0"));
               MetaWriteMetric();
-              QueuePush(x_3459, x_3446, MakeRecomputeBB(std::string("bb_0")));
+              QueuePush(x_3566, x_3553, MakeRecomputeBB(std::string("bb_0")));
             }
             return MakeUnit();
-          } else if (x_5441 == "height") {
+          } else if (x_5600 == "height") {
             WriteMetric();
-            HashtblAddExn(x_3446->attr, std::string("height"), x_3454);
-            if (HashtblContain(x_3446->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3461 = HashtblFindExn(x_3446->meta->BBTimeTable, std::string("bb_1"));
+            HashtblAddExn(x_3553->attr, std::string("height"), x_3561);
+            if (HashtblContain(x_3553->meta->BBTimeTable, std::string("bb_1"))) {
+              auto x_3568 = HashtblFindExn(x_3553->meta->BBTimeTable, std::string("bb_1"));
               MetaWriteMetric();
-              QueuePush(x_3461, x_3446, MakeRecomputeBB(std::string("bb_1")));
+              QueuePush(x_3568, x_3553, MakeRecomputeBB(std::string("bb_1")));
             }
             return MakeUnit();
-          } else if (x_5441 == "viewBox") {
+          } else if (x_5600 == "viewBox") {
             WriteMetric();
-            HashtblAddExn(x_3446->attr, std::string("viewBox"), x_3454);
-            if (HashtblContain(x_3446->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3463 = HashtblFindExn(x_3446->meta->BBTimeTable, std::string("bb_0"));
+            HashtblAddExn(x_3553->attr, std::string("viewBox"), x_3561);
+            if (HashtblContain(x_3553->meta->BBTimeTable, std::string("bb_0"))) {
+              auto x_3570 = HashtblFindExn(x_3553->meta->BBTimeTable, std::string("bb_0"));
               MetaWriteMetric();
-              QueuePush(x_3463, x_3446, MakeRecomputeBB(std::string("bb_0")));
+              QueuePush(x_3570, x_3553, MakeRecomputeBB(std::string("bb_0")));
             }
             return MakeUnit();
           } else {
             return MakeUnit();
           }
-        } else if (x_5440 == "properties") {
-          std::string x_5442 = x_3453;
-          if (x_5442 == "width") {
+        } else if (x_5599 == "properties") {
+          std::string x_5601 = x_3560;
+          if (x_5601 == "width") {
             WriteMetric();
-            HashtblAddExn(x_3446->prop, std::string("width"), x_3454);
-            if (HashtblContain(x_3446->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3465 = HashtblFindExn(x_3446->meta->BBTimeTable, std::string("bb_0"));
+            HashtblAddExn(x_3553->prop, std::string("width"), x_3561);
+            if (HashtblContain(x_3553->meta->BBTimeTable, std::string("bb_0"))) {
+              auto x_3572 = HashtblFindExn(x_3553->meta->BBTimeTable, std::string("bb_0"));
               MetaWriteMetric();
-              QueuePush(x_3465, x_3446, MakeRecomputeBB(std::string("bb_0")));
+              QueuePush(x_3572, x_3553, MakeRecomputeBB(std::string("bb_0")));
             }
             return MakeUnit();
-          } else if (x_5442 == "flex-grow") {
+          } else if (x_5601 == "flex-grow") {
             WriteMetric();
-            HashtblAddExn(x_3446->prop, std::string("flex-grow"), x_3454);
-            if (HashtblContain(x_3446->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3467 = HashtblFindExn(x_3446->meta->BBTimeTable, std::string("bb_1"));
+            HashtblAddExn(x_3553->prop, std::string("flex-grow"), x_3561);
+            if (HashtblContain(x_3553->meta->BBTimeTable, std::string("bb_1"))) {
+              auto x_3574 = HashtblFindExn(x_3553->meta->BBTimeTable, std::string("bb_1"));
               MetaWriteMetric();
-              QueuePush(x_3467, x_3446, MakeRecomputeBB(std::string("bb_1")));
+              QueuePush(x_3574, x_3553, MakeRecomputeBB(std::string("bb_1")));
             }
             return MakeUnit();
-          } else if (x_5442 == "height") {
+          } else if (x_5601 == "height") {
             WriteMetric();
-            HashtblAddExn(x_3446->prop, std::string("height"), x_3454);
-            if (HashtblContain(x_3446->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3469 = HashtblFindExn(x_3446->meta->BBTimeTable, std::string("bb_0"));
+            HashtblAddExn(x_3553->prop, std::string("height"), x_3561);
+            if (HashtblContain(x_3553->meta->BBTimeTable, std::string("bb_0"))) {
+              auto x_3576 = HashtblFindExn(x_3553->meta->BBTimeTable, std::string("bb_0"));
               MetaWriteMetric();
-              QueuePush(x_3469, x_3446, MakeRecomputeBB(std::string("bb_0")));
+              QueuePush(x_3576, x_3553, MakeRecomputeBB(std::string("bb_0")));
             }
             return MakeUnit();
-          } else if (x_5442 == "display") {
+          } else if (x_5601 == "display") {
             WriteMetric();
-            HashtblAddExn(x_3446->prop, std::string("display"), x_3454);
-            if (HashtblContain(x_3446->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3471 = HashtblFindExn(x_3446->meta->BBTimeTable, std::string("bb_1"));
+            HashtblAddExn(x_3553->prop, std::string("display"), x_3561);
+            if (HashtblContain(x_3553->meta->BBTimeTable, std::string("bb_1"))) {
+              auto x_3578 = HashtblFindExn(x_3553->meta->BBTimeTable, std::string("bb_1"));
               MetaWriteMetric();
-              QueuePush(x_3471, x_3446, MakeRecomputeBB(std::string("bb_1")));
+              QueuePush(x_3578, x_3553, MakeRecomputeBB(std::string("bb_1")));
             }
             return MakeUnit();
-          } else if (x_5442 == "position") {
+          } else if (x_5601 == "position") {
             WriteMetric();
-            HashtblAddExn(x_3446->prop, std::string("position"), x_3454);
-            if (HashtblContain(x_3446->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3473 = HashtblFindExn(x_3446->meta->BBTimeTable, std::string("bb_1"));
+            HashtblAddExn(x_3553->prop, std::string("position"), x_3561);
+            if (HashtblContain(x_3553->meta->BBTimeTable, std::string("bb_1"))) {
+              auto x_3580 = HashtblFindExn(x_3553->meta->BBTimeTable, std::string("bb_1"));
               MetaWriteMetric();
-              QueuePush(x_3473, x_3446, MakeRecomputeBB(std::string("bb_1")));
+              QueuePush(x_3580, x_3553, MakeRecomputeBB(std::string("bb_1")));
             }
             return MakeUnit();
-          } else if (x_5442 == "flex-shrink") {
+          } else if (x_5601 == "flex-shrink") {
             WriteMetric();
-            HashtblAddExn(x_3446->prop, std::string("flex-shrink"), x_3454);
-            if (HashtblContain(x_3446->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3475 = HashtblFindExn(x_3446->meta->BBTimeTable, std::string("bb_1"));
+            HashtblAddExn(x_3553->prop, std::string("flex-shrink"), x_3561);
+            if (HashtblContain(x_3553->meta->BBTimeTable, std::string("bb_1"))) {
+              auto x_3582 = HashtblFindExn(x_3553->meta->BBTimeTable, std::string("bb_1"));
               MetaWriteMetric();
-              QueuePush(x_3475, x_3446, MakeRecomputeBB(std::string("bb_1")));
+              QueuePush(x_3582, x_3553, MakeRecomputeBB(std::string("bb_1")));
             }
             return MakeUnit();
-          } else if (x_5442 == "flex-direction") {
+          } else if (x_5601 == "flex-direction") {
             WriteMetric();
-            HashtblAddExn(x_3446->prop, std::string("flex-direction"), x_3454);
-            if (HashtblContain(x_3446->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3477 = HashtblFindExn(x_3446->meta->BBTimeTable, std::string("bb_1"));
+            HashtblAddExn(x_3553->prop, std::string("flex-direction"), x_3561);
+            if (HashtblContain(x_3553->meta->BBTimeTable, std::string("bb_1"))) {
+              auto x_3584 = HashtblFindExn(x_3553->meta->BBTimeTable, std::string("bb_1"));
               MetaWriteMetric();
-              QueuePush(x_3477, x_3446, MakeRecomputeBB(std::string("bb_1")));
+              QueuePush(x_3584, x_3553, MakeRecomputeBB(std::string("bb_1")));
             }
             return MakeUnit();
           } else {
@@ -2609,134 +2709,134 @@ Unit x_3444(const auto &x_3445, const auto &x_3446, const auto &x_3447) {
           Panic();
         }
       },
-      [&](const auto &x_3448, const auto &x_3449) {
-        return x_3444(x_3449, ListNthExn(x_3446->children, x_3448), x_3447);
+      [&](const auto &x_3555, const auto &x_3556) {
+        return x_3551(x_3556, ListNthExn(x_3553->children, x_3555), x_3554);
       });
 }
-Unit insert_value_x_3416(const auto &x_3445, const auto &x_3446, const auto &x_3447) {
-  return x_3444(x_3445, x_3446, x_3447);
+Unit insert_value_x_3523(const auto &x_3552, const auto &x_3553, const auto &x_3554) {
+  return x_3551(x_3552, x_3553, x_3554);
 }
-Unit x_3479(const auto &x_3480, const auto &x_3481, const auto &x_3482) {
+Unit x_3586(const auto &x_3587, const auto &x_3588, const auto &x_3589) {
   return ListMatch(
-      x_3480,
-      [&](const auto &x_3485) {
-        auto x_3486 = Zro(x_3482);
-        auto x_3487 = Fst(x_3482);
+      x_3587,
+      [&](const auto &x_3592) {
+        auto x_3593 = Zro(x_3589);
+        auto x_3594 = Fst(x_3589);
         InputChangeMetric(static_cast<int64_t>(1));
-        std::string x_5443 = x_3486;
-        if (x_5443 == "attributes") {
-          std::string x_5444 = x_3487;
-          if (x_5444 == "width") {
+        std::string x_5602 = x_3593;
+        if (x_5602 == "attributes") {
+          std::string x_5603 = x_3594;
+          if (x_5603 == "width") {
             WriteMetric();
-            HashtblForceRemove(x_3481->attr, std::string("width"));
-            if (HashtblContain(x_3481->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3488 = HashtblFindExn(x_3481->meta->BBTimeTable, std::string("bb_1"));
+            HashtblForceRemove(x_3588->attr, std::string("width"));
+            if (HashtblContain(x_3588->meta->BBTimeTable, std::string("bb_1"))) {
+              auto x_3595 = HashtblFindExn(x_3588->meta->BBTimeTable, std::string("bb_1"));
               MetaWriteMetric();
-              QueuePush(x_3488, x_3481, MakeRecomputeBB(std::string("bb_1")));
+              QueuePush(x_3595, x_3588, MakeRecomputeBB(std::string("bb_1")));
             }
             return MakeUnit();
-          } else if (x_5444 == "image_height") {
+          } else if (x_5603 == "image_height") {
             WriteMetric();
-            HashtblForceRemove(x_3481->attr, std::string("image_height"));
-            if (HashtblContain(x_3481->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3490 = HashtblFindExn(x_3481->meta->BBTimeTable, std::string("bb_0"));
+            HashtblForceRemove(x_3588->attr, std::string("image_height"));
+            if (HashtblContain(x_3588->meta->BBTimeTable, std::string("bb_0"))) {
+              auto x_3597 = HashtblFindExn(x_3588->meta->BBTimeTable, std::string("bb_0"));
               MetaWriteMetric();
-              QueuePush(x_3490, x_3481, MakeRecomputeBB(std::string("bb_0")));
+              QueuePush(x_3597, x_3588, MakeRecomputeBB(std::string("bb_0")));
             }
             return MakeUnit();
-          } else if (x_5444 == "image_width") {
+          } else if (x_5603 == "image_width") {
             WriteMetric();
-            HashtblForceRemove(x_3481->attr, std::string("image_width"));
-            if (HashtblContain(x_3481->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3492 = HashtblFindExn(x_3481->meta->BBTimeTable, std::string("bb_0"));
+            HashtblForceRemove(x_3588->attr, std::string("image_width"));
+            if (HashtblContain(x_3588->meta->BBTimeTable, std::string("bb_0"))) {
+              auto x_3599 = HashtblFindExn(x_3588->meta->BBTimeTable, std::string("bb_0"));
               MetaWriteMetric();
-              QueuePush(x_3492, x_3481, MakeRecomputeBB(std::string("bb_0")));
+              QueuePush(x_3599, x_3588, MakeRecomputeBB(std::string("bb_0")));
             }
             return MakeUnit();
-          } else if (x_5444 == "height") {
+          } else if (x_5603 == "height") {
             WriteMetric();
-            HashtblForceRemove(x_3481->attr, std::string("height"));
-            if (HashtblContain(x_3481->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3494 = HashtblFindExn(x_3481->meta->BBTimeTable, std::string("bb_1"));
+            HashtblForceRemove(x_3588->attr, std::string("height"));
+            if (HashtblContain(x_3588->meta->BBTimeTable, std::string("bb_1"))) {
+              auto x_3601 = HashtblFindExn(x_3588->meta->BBTimeTable, std::string("bb_1"));
               MetaWriteMetric();
-              QueuePush(x_3494, x_3481, MakeRecomputeBB(std::string("bb_1")));
+              QueuePush(x_3601, x_3588, MakeRecomputeBB(std::string("bb_1")));
             }
             return MakeUnit();
-          } else if (x_5444 == "viewBox") {
+          } else if (x_5603 == "viewBox") {
             WriteMetric();
-            HashtblForceRemove(x_3481->attr, std::string("viewBox"));
-            if (HashtblContain(x_3481->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3496 = HashtblFindExn(x_3481->meta->BBTimeTable, std::string("bb_0"));
+            HashtblForceRemove(x_3588->attr, std::string("viewBox"));
+            if (HashtblContain(x_3588->meta->BBTimeTable, std::string("bb_0"))) {
+              auto x_3603 = HashtblFindExn(x_3588->meta->BBTimeTable, std::string("bb_0"));
               MetaWriteMetric();
-              QueuePush(x_3496, x_3481, MakeRecomputeBB(std::string("bb_0")));
+              QueuePush(x_3603, x_3588, MakeRecomputeBB(std::string("bb_0")));
             }
             return MakeUnit();
           } else {
             return MakeUnit();
           }
-        } else if (x_5443 == "properties") {
-          std::string x_5445 = x_3487;
-          if (x_5445 == "width") {
+        } else if (x_5602 == "properties") {
+          std::string x_5604 = x_3594;
+          if (x_5604 == "width") {
             WriteMetric();
-            HashtblForceRemove(x_3481->prop, std::string("width"));
-            if (HashtblContain(x_3481->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3498 = HashtblFindExn(x_3481->meta->BBTimeTable, std::string("bb_0"));
+            HashtblForceRemove(x_3588->prop, std::string("width"));
+            if (HashtblContain(x_3588->meta->BBTimeTable, std::string("bb_0"))) {
+              auto x_3605 = HashtblFindExn(x_3588->meta->BBTimeTable, std::string("bb_0"));
               MetaWriteMetric();
-              QueuePush(x_3498, x_3481, MakeRecomputeBB(std::string("bb_0")));
+              QueuePush(x_3605, x_3588, MakeRecomputeBB(std::string("bb_0")));
             }
             return MakeUnit();
-          } else if (x_5445 == "flex-grow") {
+          } else if (x_5604 == "flex-grow") {
             WriteMetric();
-            HashtblForceRemove(x_3481->prop, std::string("flex-grow"));
-            if (HashtblContain(x_3481->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3500 = HashtblFindExn(x_3481->meta->BBTimeTable, std::string("bb_1"));
+            HashtblForceRemove(x_3588->prop, std::string("flex-grow"));
+            if (HashtblContain(x_3588->meta->BBTimeTable, std::string("bb_1"))) {
+              auto x_3607 = HashtblFindExn(x_3588->meta->BBTimeTable, std::string("bb_1"));
               MetaWriteMetric();
-              QueuePush(x_3500, x_3481, MakeRecomputeBB(std::string("bb_1")));
+              QueuePush(x_3607, x_3588, MakeRecomputeBB(std::string("bb_1")));
             }
             return MakeUnit();
-          } else if (x_5445 == "height") {
+          } else if (x_5604 == "height") {
             WriteMetric();
-            HashtblForceRemove(x_3481->prop, std::string("height"));
-            if (HashtblContain(x_3481->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3502 = HashtblFindExn(x_3481->meta->BBTimeTable, std::string("bb_0"));
+            HashtblForceRemove(x_3588->prop, std::string("height"));
+            if (HashtblContain(x_3588->meta->BBTimeTable, std::string("bb_0"))) {
+              auto x_3609 = HashtblFindExn(x_3588->meta->BBTimeTable, std::string("bb_0"));
               MetaWriteMetric();
-              QueuePush(x_3502, x_3481, MakeRecomputeBB(std::string("bb_0")));
+              QueuePush(x_3609, x_3588, MakeRecomputeBB(std::string("bb_0")));
             }
             return MakeUnit();
-          } else if (x_5445 == "display") {
+          } else if (x_5604 == "display") {
             WriteMetric();
-            HashtblForceRemove(x_3481->prop, std::string("display"));
-            if (HashtblContain(x_3481->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3504 = HashtblFindExn(x_3481->meta->BBTimeTable, std::string("bb_1"));
+            HashtblForceRemove(x_3588->prop, std::string("display"));
+            if (HashtblContain(x_3588->meta->BBTimeTable, std::string("bb_1"))) {
+              auto x_3611 = HashtblFindExn(x_3588->meta->BBTimeTable, std::string("bb_1"));
               MetaWriteMetric();
-              QueuePush(x_3504, x_3481, MakeRecomputeBB(std::string("bb_1")));
+              QueuePush(x_3611, x_3588, MakeRecomputeBB(std::string("bb_1")));
             }
             return MakeUnit();
-          } else if (x_5445 == "position") {
+          } else if (x_5604 == "position") {
             WriteMetric();
-            HashtblForceRemove(x_3481->prop, std::string("position"));
-            if (HashtblContain(x_3481->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3506 = HashtblFindExn(x_3481->meta->BBTimeTable, std::string("bb_1"));
+            HashtblForceRemove(x_3588->prop, std::string("position"));
+            if (HashtblContain(x_3588->meta->BBTimeTable, std::string("bb_1"))) {
+              auto x_3613 = HashtblFindExn(x_3588->meta->BBTimeTable, std::string("bb_1"));
               MetaWriteMetric();
-              QueuePush(x_3506, x_3481, MakeRecomputeBB(std::string("bb_1")));
+              QueuePush(x_3613, x_3588, MakeRecomputeBB(std::string("bb_1")));
             }
             return MakeUnit();
-          } else if (x_5445 == "flex-shrink") {
+          } else if (x_5604 == "flex-shrink") {
             WriteMetric();
-            HashtblForceRemove(x_3481->prop, std::string("flex-shrink"));
-            if (HashtblContain(x_3481->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3508 = HashtblFindExn(x_3481->meta->BBTimeTable, std::string("bb_1"));
+            HashtblForceRemove(x_3588->prop, std::string("flex-shrink"));
+            if (HashtblContain(x_3588->meta->BBTimeTable, std::string("bb_1"))) {
+              auto x_3615 = HashtblFindExn(x_3588->meta->BBTimeTable, std::string("bb_1"));
               MetaWriteMetric();
-              QueuePush(x_3508, x_3481, MakeRecomputeBB(std::string("bb_1")));
+              QueuePush(x_3615, x_3588, MakeRecomputeBB(std::string("bb_1")));
             }
             return MakeUnit();
-          } else if (x_5445 == "flex-direction") {
+          } else if (x_5604 == "flex-direction") {
             WriteMetric();
-            HashtblForceRemove(x_3481->prop, std::string("flex-direction"));
-            if (HashtblContain(x_3481->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3510 = HashtblFindExn(x_3481->meta->BBTimeTable, std::string("bb_1"));
+            HashtblForceRemove(x_3588->prop, std::string("flex-direction"));
+            if (HashtblContain(x_3588->meta->BBTimeTable, std::string("bb_1"))) {
+              auto x_3617 = HashtblFindExn(x_3588->meta->BBTimeTable, std::string("bb_1"));
               MetaWriteMetric();
-              QueuePush(x_3510, x_3481, MakeRecomputeBB(std::string("bb_1")));
+              QueuePush(x_3617, x_3588, MakeRecomputeBB(std::string("bb_1")));
             }
             return MakeUnit();
           } else {
@@ -2746,220 +2846,220 @@ Unit x_3479(const auto &x_3480, const auto &x_3481, const auto &x_3482) {
           Panic();
         }
       },
-      [&](const auto &x_3483, const auto &x_3484) {
-        return x_3479(x_3484, ListNthExn(x_3481->children, x_3483), x_3482);
+      [&](const auto &x_3590, const auto &x_3591) {
+        return x_3586(x_3591, ListNthExn(x_3588->children, x_3590), x_3589);
       });
 }
-Unit delete_value_x_3414(const auto &x_3480, const auto &x_3481, const auto &x_3482) {
-  return x_3479(x_3480, x_3481, x_3482);
+Unit delete_value_x_3521(const auto &x_3587, const auto &x_3588, const auto &x_3589) {
+  return x_3586(x_3587, x_3588, x_3589);
 }
-Unit x_3512(const auto &x_3513, const auto &x_3514, const auto &x_3515) {
+Unit x_3619(const auto &x_3620, const auto &x_3621, const auto &x_3622) {
   return ListMatch(
-      x_3513,
-      [&](const auto &x_3518) {
-        auto x_3519 = Zro(x_3515);
-        auto x_3520 = Zro(x_3519);
-        auto x_3521 = Fst(x_3519);
-        auto x_3522 = Fst(x_3515);
+      x_3620,
+      [&](const auto &x_3625) {
+        auto x_3626 = Zro(x_3622);
+        auto x_3627 = Zro(x_3626);
+        auto x_3628 = Fst(x_3626);
+        auto x_3629 = Fst(x_3622);
         InputChangeMetric(static_cast<int64_t>(1));
-        std::string x_5446 = x_3520;
-        if (x_5446 == "attributes") {
-          std::string x_5447 = x_3521;
-          if (x_5447 == "width") {
+        std::string x_5605 = x_3627;
+        if (x_5605 == "attributes") {
+          std::string x_5606 = x_3628;
+          if (x_5606 == "width") {
             WriteMetric();
-            HashtblForceRemove(x_3514->attr, std::string("width"));
-            if (HashtblContain(x_3514->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3523 = HashtblFindExn(x_3514->meta->BBTimeTable, std::string("bb_1"));
+            HashtblForceRemove(x_3621->attr, std::string("width"));
+            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_1"))) {
+              auto x_3630 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_1"));
               MetaWriteMetric();
-              QueuePush(x_3523, x_3514, MakeRecomputeBB(std::string("bb_1")));
+              QueuePush(x_3630, x_3621, MakeRecomputeBB(std::string("bb_1")));
             }
             WriteMetric();
-            HashtblAddExn(x_3514->attr, std::string("width"), x_3522);
-            if (HashtblContain(x_3514->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3525 = HashtblFindExn(x_3514->meta->BBTimeTable, std::string("bb_1"));
+            HashtblAddExn(x_3621->attr, std::string("width"), x_3629);
+            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_1"))) {
+              auto x_3632 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_1"));
               MetaWriteMetric();
-              QueuePush(x_3525, x_3514, MakeRecomputeBB(std::string("bb_1")));
-            }
-            return MakeUnit();
-          } else if (x_5447 == "image_height") {
-            WriteMetric();
-            HashtblForceRemove(x_3514->attr, std::string("image_height"));
-            if (HashtblContain(x_3514->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3527 = HashtblFindExn(x_3514->meta->BBTimeTable, std::string("bb_0"));
-              MetaWriteMetric();
-              QueuePush(x_3527, x_3514, MakeRecomputeBB(std::string("bb_0")));
-            }
-            WriteMetric();
-            HashtblAddExn(x_3514->attr, std::string("image_height"), x_3522);
-            if (HashtblContain(x_3514->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3529 = HashtblFindExn(x_3514->meta->BBTimeTable, std::string("bb_0"));
-              MetaWriteMetric();
-              QueuePush(x_3529, x_3514, MakeRecomputeBB(std::string("bb_0")));
+              QueuePush(x_3632, x_3621, MakeRecomputeBB(std::string("bb_1")));
             }
             return MakeUnit();
-          } else if (x_5447 == "image_width") {
+          } else if (x_5606 == "image_height") {
             WriteMetric();
-            HashtblForceRemove(x_3514->attr, std::string("image_width"));
-            if (HashtblContain(x_3514->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3531 = HashtblFindExn(x_3514->meta->BBTimeTable, std::string("bb_0"));
+            HashtblForceRemove(x_3621->attr, std::string("image_height"));
+            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_0"))) {
+              auto x_3634 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_0"));
               MetaWriteMetric();
-              QueuePush(x_3531, x_3514, MakeRecomputeBB(std::string("bb_0")));
+              QueuePush(x_3634, x_3621, MakeRecomputeBB(std::string("bb_0")));
             }
             WriteMetric();
-            HashtblAddExn(x_3514->attr, std::string("image_width"), x_3522);
-            if (HashtblContain(x_3514->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3533 = HashtblFindExn(x_3514->meta->BBTimeTable, std::string("bb_0"));
+            HashtblAddExn(x_3621->attr, std::string("image_height"), x_3629);
+            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_0"))) {
+              auto x_3636 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_0"));
               MetaWriteMetric();
-              QueuePush(x_3533, x_3514, MakeRecomputeBB(std::string("bb_0")));
-            }
-            return MakeUnit();
-          } else if (x_5447 == "height") {
-            WriteMetric();
-            HashtblForceRemove(x_3514->attr, std::string("height"));
-            if (HashtblContain(x_3514->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3535 = HashtblFindExn(x_3514->meta->BBTimeTable, std::string("bb_1"));
-              MetaWriteMetric();
-              QueuePush(x_3535, x_3514, MakeRecomputeBB(std::string("bb_1")));
-            }
-            WriteMetric();
-            HashtblAddExn(x_3514->attr, std::string("height"), x_3522);
-            if (HashtblContain(x_3514->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3537 = HashtblFindExn(x_3514->meta->BBTimeTable, std::string("bb_1"));
-              MetaWriteMetric();
-              QueuePush(x_3537, x_3514, MakeRecomputeBB(std::string("bb_1")));
+              QueuePush(x_3636, x_3621, MakeRecomputeBB(std::string("bb_0")));
             }
             return MakeUnit();
-          } else if (x_5447 == "viewBox") {
+          } else if (x_5606 == "image_width") {
             WriteMetric();
-            HashtblForceRemove(x_3514->attr, std::string("viewBox"));
-            if (HashtblContain(x_3514->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3539 = HashtblFindExn(x_3514->meta->BBTimeTable, std::string("bb_0"));
+            HashtblForceRemove(x_3621->attr, std::string("image_width"));
+            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_0"))) {
+              auto x_3638 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_0"));
               MetaWriteMetric();
-              QueuePush(x_3539, x_3514, MakeRecomputeBB(std::string("bb_0")));
+              QueuePush(x_3638, x_3621, MakeRecomputeBB(std::string("bb_0")));
             }
             WriteMetric();
-            HashtblAddExn(x_3514->attr, std::string("viewBox"), x_3522);
-            if (HashtblContain(x_3514->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3541 = HashtblFindExn(x_3514->meta->BBTimeTable, std::string("bb_0"));
+            HashtblAddExn(x_3621->attr, std::string("image_width"), x_3629);
+            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_0"))) {
+              auto x_3640 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_0"));
               MetaWriteMetric();
-              QueuePush(x_3541, x_3514, MakeRecomputeBB(std::string("bb_0")));
+              QueuePush(x_3640, x_3621, MakeRecomputeBB(std::string("bb_0")));
+            }
+            return MakeUnit();
+          } else if (x_5606 == "height") {
+            WriteMetric();
+            HashtblForceRemove(x_3621->attr, std::string("height"));
+            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_1"))) {
+              auto x_3642 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_1"));
+              MetaWriteMetric();
+              QueuePush(x_3642, x_3621, MakeRecomputeBB(std::string("bb_1")));
+            }
+            WriteMetric();
+            HashtblAddExn(x_3621->attr, std::string("height"), x_3629);
+            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_1"))) {
+              auto x_3644 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_1"));
+              MetaWriteMetric();
+              QueuePush(x_3644, x_3621, MakeRecomputeBB(std::string("bb_1")));
+            }
+            return MakeUnit();
+          } else if (x_5606 == "viewBox") {
+            WriteMetric();
+            HashtblForceRemove(x_3621->attr, std::string("viewBox"));
+            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_0"))) {
+              auto x_3646 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_0"));
+              MetaWriteMetric();
+              QueuePush(x_3646, x_3621, MakeRecomputeBB(std::string("bb_0")));
+            }
+            WriteMetric();
+            HashtblAddExn(x_3621->attr, std::string("viewBox"), x_3629);
+            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_0"))) {
+              auto x_3648 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_0"));
+              MetaWriteMetric();
+              QueuePush(x_3648, x_3621, MakeRecomputeBB(std::string("bb_0")));
             }
             return MakeUnit();
           } else {
             return MakeUnit();
           }
-        } else if (x_5446 == "properties") {
-          std::string x_5448 = x_3521;
-          if (x_5448 == "width") {
+        } else if (x_5605 == "properties") {
+          std::string x_5607 = x_3628;
+          if (x_5607 == "width") {
             WriteMetric();
-            HashtblForceRemove(x_3514->prop, std::string("width"));
-            if (HashtblContain(x_3514->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3543 = HashtblFindExn(x_3514->meta->BBTimeTable, std::string("bb_0"));
+            HashtblForceRemove(x_3621->prop, std::string("width"));
+            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_0"))) {
+              auto x_3650 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_0"));
               MetaWriteMetric();
-              QueuePush(x_3543, x_3514, MakeRecomputeBB(std::string("bb_0")));
+              QueuePush(x_3650, x_3621, MakeRecomputeBB(std::string("bb_0")));
             }
             WriteMetric();
-            HashtblAddExn(x_3514->prop, std::string("width"), x_3522);
-            if (HashtblContain(x_3514->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3545 = HashtblFindExn(x_3514->meta->BBTimeTable, std::string("bb_0"));
+            HashtblAddExn(x_3621->prop, std::string("width"), x_3629);
+            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_0"))) {
+              auto x_3652 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_0"));
               MetaWriteMetric();
-              QueuePush(x_3545, x_3514, MakeRecomputeBB(std::string("bb_0")));
-            }
-            return MakeUnit();
-          } else if (x_5448 == "flex-grow") {
-            WriteMetric();
-            HashtblForceRemove(x_3514->prop, std::string("flex-grow"));
-            if (HashtblContain(x_3514->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3547 = HashtblFindExn(x_3514->meta->BBTimeTable, std::string("bb_1"));
-              MetaWriteMetric();
-              QueuePush(x_3547, x_3514, MakeRecomputeBB(std::string("bb_1")));
-            }
-            WriteMetric();
-            HashtblAddExn(x_3514->prop, std::string("flex-grow"), x_3522);
-            if (HashtblContain(x_3514->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3549 = HashtblFindExn(x_3514->meta->BBTimeTable, std::string("bb_1"));
-              MetaWriteMetric();
-              QueuePush(x_3549, x_3514, MakeRecomputeBB(std::string("bb_1")));
+              QueuePush(x_3652, x_3621, MakeRecomputeBB(std::string("bb_0")));
             }
             return MakeUnit();
-          } else if (x_5448 == "height") {
+          } else if (x_5607 == "flex-grow") {
             WriteMetric();
-            HashtblForceRemove(x_3514->prop, std::string("height"));
-            if (HashtblContain(x_3514->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3551 = HashtblFindExn(x_3514->meta->BBTimeTable, std::string("bb_0"));
+            HashtblForceRemove(x_3621->prop, std::string("flex-grow"));
+            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_1"))) {
+              auto x_3654 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_1"));
               MetaWriteMetric();
-              QueuePush(x_3551, x_3514, MakeRecomputeBB(std::string("bb_0")));
+              QueuePush(x_3654, x_3621, MakeRecomputeBB(std::string("bb_1")));
             }
             WriteMetric();
-            HashtblAddExn(x_3514->prop, std::string("height"), x_3522);
-            if (HashtblContain(x_3514->meta->BBTimeTable, std::string("bb_0"))) {
-              auto x_3553 = HashtblFindExn(x_3514->meta->BBTimeTable, std::string("bb_0"));
+            HashtblAddExn(x_3621->prop, std::string("flex-grow"), x_3629);
+            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_1"))) {
+              auto x_3656 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_1"));
               MetaWriteMetric();
-              QueuePush(x_3553, x_3514, MakeRecomputeBB(std::string("bb_0")));
-            }
-            return MakeUnit();
-          } else if (x_5448 == "display") {
-            WriteMetric();
-            HashtblForceRemove(x_3514->prop, std::string("display"));
-            if (HashtblContain(x_3514->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3555 = HashtblFindExn(x_3514->meta->BBTimeTable, std::string("bb_1"));
-              MetaWriteMetric();
-              QueuePush(x_3555, x_3514, MakeRecomputeBB(std::string("bb_1")));
-            }
-            WriteMetric();
-            HashtblAddExn(x_3514->prop, std::string("display"), x_3522);
-            if (HashtblContain(x_3514->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3557 = HashtblFindExn(x_3514->meta->BBTimeTable, std::string("bb_1"));
-              MetaWriteMetric();
-              QueuePush(x_3557, x_3514, MakeRecomputeBB(std::string("bb_1")));
+              QueuePush(x_3656, x_3621, MakeRecomputeBB(std::string("bb_1")));
             }
             return MakeUnit();
-          } else if (x_5448 == "position") {
+          } else if (x_5607 == "height") {
             WriteMetric();
-            HashtblForceRemove(x_3514->prop, std::string("position"));
-            if (HashtblContain(x_3514->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3559 = HashtblFindExn(x_3514->meta->BBTimeTable, std::string("bb_1"));
+            HashtblForceRemove(x_3621->prop, std::string("height"));
+            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_0"))) {
+              auto x_3658 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_0"));
               MetaWriteMetric();
-              QueuePush(x_3559, x_3514, MakeRecomputeBB(std::string("bb_1")));
+              QueuePush(x_3658, x_3621, MakeRecomputeBB(std::string("bb_0")));
             }
             WriteMetric();
-            HashtblAddExn(x_3514->prop, std::string("position"), x_3522);
-            if (HashtblContain(x_3514->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3561 = HashtblFindExn(x_3514->meta->BBTimeTable, std::string("bb_1"));
+            HashtblAddExn(x_3621->prop, std::string("height"), x_3629);
+            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_0"))) {
+              auto x_3660 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_0"));
               MetaWriteMetric();
-              QueuePush(x_3561, x_3514, MakeRecomputeBB(std::string("bb_1")));
-            }
-            return MakeUnit();
-          } else if (x_5448 == "flex-shrink") {
-            WriteMetric();
-            HashtblForceRemove(x_3514->prop, std::string("flex-shrink"));
-            if (HashtblContain(x_3514->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3563 = HashtblFindExn(x_3514->meta->BBTimeTable, std::string("bb_1"));
-              MetaWriteMetric();
-              QueuePush(x_3563, x_3514, MakeRecomputeBB(std::string("bb_1")));
-            }
-            WriteMetric();
-            HashtblAddExn(x_3514->prop, std::string("flex-shrink"), x_3522);
-            if (HashtblContain(x_3514->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3565 = HashtblFindExn(x_3514->meta->BBTimeTable, std::string("bb_1"));
-              MetaWriteMetric();
-              QueuePush(x_3565, x_3514, MakeRecomputeBB(std::string("bb_1")));
+              QueuePush(x_3660, x_3621, MakeRecomputeBB(std::string("bb_0")));
             }
             return MakeUnit();
-          } else if (x_5448 == "flex-direction") {
+          } else if (x_5607 == "display") {
             WriteMetric();
-            HashtblForceRemove(x_3514->prop, std::string("flex-direction"));
-            if (HashtblContain(x_3514->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3567 = HashtblFindExn(x_3514->meta->BBTimeTable, std::string("bb_1"));
+            HashtblForceRemove(x_3621->prop, std::string("display"));
+            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_1"))) {
+              auto x_3662 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_1"));
               MetaWriteMetric();
-              QueuePush(x_3567, x_3514, MakeRecomputeBB(std::string("bb_1")));
+              QueuePush(x_3662, x_3621, MakeRecomputeBB(std::string("bb_1")));
             }
             WriteMetric();
-            HashtblAddExn(x_3514->prop, std::string("flex-direction"), x_3522);
-            if (HashtblContain(x_3514->meta->BBTimeTable, std::string("bb_1"))) {
-              auto x_3569 = HashtblFindExn(x_3514->meta->BBTimeTable, std::string("bb_1"));
+            HashtblAddExn(x_3621->prop, std::string("display"), x_3629);
+            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_1"))) {
+              auto x_3664 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_1"));
               MetaWriteMetric();
-              QueuePush(x_3569, x_3514, MakeRecomputeBB(std::string("bb_1")));
+              QueuePush(x_3664, x_3621, MakeRecomputeBB(std::string("bb_1")));
+            }
+            return MakeUnit();
+          } else if (x_5607 == "position") {
+            WriteMetric();
+            HashtblForceRemove(x_3621->prop, std::string("position"));
+            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_1"))) {
+              auto x_3666 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_1"));
+              MetaWriteMetric();
+              QueuePush(x_3666, x_3621, MakeRecomputeBB(std::string("bb_1")));
+            }
+            WriteMetric();
+            HashtblAddExn(x_3621->prop, std::string("position"), x_3629);
+            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_1"))) {
+              auto x_3668 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_1"));
+              MetaWriteMetric();
+              QueuePush(x_3668, x_3621, MakeRecomputeBB(std::string("bb_1")));
+            }
+            return MakeUnit();
+          } else if (x_5607 == "flex-shrink") {
+            WriteMetric();
+            HashtblForceRemove(x_3621->prop, std::string("flex-shrink"));
+            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_1"))) {
+              auto x_3670 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_1"));
+              MetaWriteMetric();
+              QueuePush(x_3670, x_3621, MakeRecomputeBB(std::string("bb_1")));
+            }
+            WriteMetric();
+            HashtblAddExn(x_3621->prop, std::string("flex-shrink"), x_3629);
+            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_1"))) {
+              auto x_3672 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_1"));
+              MetaWriteMetric();
+              QueuePush(x_3672, x_3621, MakeRecomputeBB(std::string("bb_1")));
+            }
+            return MakeUnit();
+          } else if (x_5607 == "flex-direction") {
+            WriteMetric();
+            HashtblForceRemove(x_3621->prop, std::string("flex-direction"));
+            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_1"))) {
+              auto x_3674 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_1"));
+              MetaWriteMetric();
+              QueuePush(x_3674, x_3621, MakeRecomputeBB(std::string("bb_1")));
+            }
+            WriteMetric();
+            HashtblAddExn(x_3621->prop, std::string("flex-direction"), x_3629);
+            if (HashtblContain(x_3621->meta->BBTimeTable, std::string("bb_1"))) {
+              auto x_3676 = HashtblFindExn(x_3621->meta->BBTimeTable, std::string("bb_1"));
+              MetaWriteMetric();
+              QueuePush(x_3676, x_3621, MakeRecomputeBB(std::string("bb_1")));
             }
             return MakeUnit();
           } else {
@@ -2969,223 +3069,223 @@ Unit x_3512(const auto &x_3513, const auto &x_3514, const auto &x_3515) {
           Panic();
         }
       },
-      [&](const auto &x_3516, const auto &x_3517) {
-        return x_3512(x_3517, ListNthExn(x_3514->children, x_3516), x_3515);
+      [&](const auto &x_3623, const auto &x_3624) {
+        return x_3619(x_3624, ListNthExn(x_3621->children, x_3623), x_3622);
       });
 }
-Unit replace_value_x_3412(const auto &x_3513, const auto &x_3514, const auto &x_3515) {
-  return x_3512(x_3513, x_3514, x_3515);
+Unit replace_value_x_3519(const auto &x_3620, const auto &x_3621, const auto &x_3622) {
+  return x_3619(x_3620, x_3621, x_3622);
 }
-Unit x_3571(const auto &x_3572, const auto &x_3573, const auto &x_3574) {
-  auto x_3575 = ListHeadExn(x_3572);
-  auto x_3576 = ListTailExn(x_3572);
-  if (ListIsEmpty(x_3576)) {
-    InputChangeMetric(IntAdd(node_size_x_3384(ListNthExn(x_3573->children, x_3575)), node_size_x_3384(x_3574)));
-    auto x_3577 = ListSplitN(x_3573->children, x_3575);
-    auto x_3578 = Zro(x_3577);
-    auto x_3579 = Fst(x_3577);
-    auto x_3580 = ListHeadExn(x_3579);
-    auto x_3581 = ListTailExn(x_3579);
-    x_3573->children = ListAppend(x_3578, x_3581);
-    x_3580->meta->alive = false;
+Unit x_3678(const auto &x_3679, const auto &x_3680, const auto &x_3681) {
+  auto x_3682 = ListHeadExn(x_3679);
+  auto x_3683 = ListTailExn(x_3679);
+  if (ListIsEmpty(x_3683)) {
+    InputChangeMetric(IntAdd(node_size_x_3490(ListNthExn(x_3680->children, x_3682)), node_size_x_3490(x_3681)));
+    auto x_3684 = ListSplitN(x_3680->children, x_3682);
+    auto x_3685 = Zro(x_3684);
+    auto x_3686 = Fst(x_3684);
+    auto x_3687 = ListHeadExn(x_3686);
+    auto x_3688 = ListTailExn(x_3686);
+    x_3680->children = ListAppend(x_3685, x_3688);
+    x_3687->meta->alive = false;
     OptionMatch(
-        x_3580->prev, [&](const auto &x_3583) { return MakeUnit(); },
-        [&](const auto &x_3582) {
-          x_3582->next = ToPath(x_3580->next);
+        x_3687->prev, [&](const auto &x_3690) { return MakeUnit(); },
+        [&](const auto &x_3689) {
+          x_3689->next = ToPath(x_3687->next);
           return MakeUnit();
         });
     OptionMatch(
-        x_3580->next, [&](const auto &x_3585) { return MakeUnit(); },
-        [&](const auto &x_3584) {
-          x_3584->prev = ToPath(x_3580->prev);
+        x_3687->next, [&](const auto &x_3692) { return MakeUnit(); },
+        [&](const auto &x_3691) {
+          x_3691->prev = ToPath(x_3687->prev);
           return MakeUnit();
         });
-    if (ListIsEmpty(x_3578)) {
-      x_3573->first = ToPath(ListHead(x_3581));
+    if (ListIsEmpty(x_3685)) {
+      x_3680->first = ToPath(ListHead(x_3688));
     }
-    if (ListIsEmpty(x_3581)) {
-      x_3573->last = ToPath(ListLast(x_3578));
+    if (ListIsEmpty(x_3688)) {
+      x_3680->last = ToPath(ListLast(x_3685));
     }
     OptionMatch(
-        x_3580->next, [&](const auto &x_3589) { return MakeUnit(); },
-        [&](const auto &x_3586) {
-          if (HashtblContain(x_3586->meta->BBTimeTable, std::string("bb_1"))) {
-            auto x_3587 = HashtblFindExn(x_3586->meta->BBTimeTable, std::string("bb_1"));
+        x_3687->next, [&](const auto &x_3696) { return MakeUnit(); },
+        [&](const auto &x_3693) {
+          if (HashtblContain(x_3693->meta->BBTimeTable, std::string("bb_1"))) {
+            auto x_3694 = HashtblFindExn(x_3693->meta->BBTimeTable, std::string("bb_1"));
             MetaWriteMetric();
-            return QueuePush(x_3587, x_3586, MakeRecomputeBB(std::string("bb_1")));
+            return QueuePush(x_3694, x_3693, MakeRecomputeBB(std::string("bb_1")));
           } else {
             return MakeUnit();
           }
         });
-    if (ListIsEmpty(x_3573->children)) {
-      if (HashtblContain(x_3573->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_3590 = HashtblFindExn(x_3573->meta->BBTimeTable, std::string("bb_0"));
+    if (ListIsEmpty(x_3680->children)) {
+      if (HashtblContain(x_3680->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_3697 = HashtblFindExn(x_3680->meta->BBTimeTable, std::string("bb_0"));
         MetaWriteMetric();
-        QueuePush(x_3590, x_3573, MakeRecomputeBB(std::string("bb_0")));
+        QueuePush(x_3697, x_3680, MakeRecomputeBB(std::string("bb_0")));
       }
     }
-    if (ListIsEmpty(x_3581)) {
-      if (HashtblContain(x_3573->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_3592 = HashtblFindExn(x_3573->meta->BBTimeTable, std::string("bb_0"));
+    if (ListIsEmpty(x_3688)) {
+      if (HashtblContain(x_3680->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_3699 = HashtblFindExn(x_3680->meta->BBTimeTable, std::string("bb_0"));
         MetaWriteMetric();
-        QueuePush(x_3592, x_3573, MakeRecomputeBB(std::string("bb_0")));
+        QueuePush(x_3699, x_3680, MakeRecomputeBB(std::string("bb_0")));
       }
     }
     OptionMatch(
-        x_3580->next, [&](const auto &x_3597) { return MakeUnit(); },
-        [&](const auto &x_3594) {
-          if (HashtblContain(x_3594->meta->BBTimeTable, std::string("bb_0"))) {
-            auto x_3595 = HashtblFindExn(x_3594->meta->BBTimeTable, std::string("bb_0"));
+        x_3687->next, [&](const auto &x_3704) { return MakeUnit(); },
+        [&](const auto &x_3701) {
+          if (HashtblContain(x_3701->meta->BBTimeTable, std::string("bb_0"))) {
+            auto x_3702 = HashtblFindExn(x_3701->meta->BBTimeTable, std::string("bb_0"));
             MetaWriteMetric();
-            return QueuePush(x_3595, x_3594, MakeRecomputeBB(std::string("bb_0")));
+            return QueuePush(x_3702, x_3701, MakeRecomputeBB(std::string("bb_0")));
           } else {
             return MakeUnit();
           }
         });
-    if (ListIsEmpty(x_3573->children)) {
-      if (HashtblContain(x_3573->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_3598 = HashtblFindExn(x_3573->meta->BBTimeTable, std::string("bb_2"));
+    if (ListIsEmpty(x_3680->children)) {
+      if (HashtblContain(x_3680->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_3705 = HashtblFindExn(x_3680->meta->BBTimeTable, std::string("bb_2"));
         MetaWriteMetric();
-        QueuePush(x_3598, x_3573, MakeRecomputeBB(std::string("bb_2")));
+        QueuePush(x_3705, x_3680, MakeRecomputeBB(std::string("bb_2")));
       }
     }
-    if (ListIsEmpty(x_3581)) {
-      if (HashtblContain(x_3573->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_3600 = HashtblFindExn(x_3573->meta->BBTimeTable, std::string("bb_2"));
+    if (ListIsEmpty(x_3688)) {
+      if (HashtblContain(x_3680->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_3707 = HashtblFindExn(x_3680->meta->BBTimeTable, std::string("bb_2"));
         MetaWriteMetric();
-        QueuePush(x_3600, x_3573, MakeRecomputeBB(std::string("bb_2")));
+        QueuePush(x_3707, x_3680, MakeRecomputeBB(std::string("bb_2")));
       }
     }
     OptionMatch(
-        x_3580->next, [&](const auto &x_3605) { return MakeUnit(); },
-        [&](const auto &x_3602) {
-          if (HashtblContain(x_3602->meta->BBTimeTable, std::string("bb_2"))) {
-            auto x_3603 = HashtblFindExn(x_3602->meta->BBTimeTable, std::string("bb_2"));
+        x_3687->next, [&](const auto &x_3712) { return MakeUnit(); },
+        [&](const auto &x_3709) {
+          if (HashtblContain(x_3709->meta->BBTimeTable, std::string("bb_2"))) {
+            auto x_3710 = HashtblFindExn(x_3709->meta->BBTimeTable, std::string("bb_2"));
             MetaWriteMetric();
-            return QueuePush(x_3603, x_3602, MakeRecomputeBB(std::string("bb_2")));
+            return QueuePush(x_3710, x_3709, MakeRecomputeBB(std::string("bb_2")));
           } else {
             return MakeUnit();
           }
         });
     MakeUnit();
-    auto x_3606 = ListSplitN(x_3573->children, x_3575);
-    auto x_3607 = Zro(x_3606);
-    auto x_3608 = Fst(x_3606);
-    x_3573->children = ListAppend(x_3607, Cons(x_3574, x_3608));
-    if (ListIsEmpty(x_3607)) {
-      x_3573->first = x_3574.get();
+    auto x_3713 = ListSplitN(x_3680->children, x_3682);
+    auto x_3714 = Zro(x_3713);
+    auto x_3715 = Fst(x_3713);
+    x_3680->children = ListAppend(x_3714, Cons(x_3681, x_3715));
+    if (ListIsEmpty(x_3714)) {
+      x_3680->first = x_3681.get();
     }
-    if (ListIsEmpty(x_3608)) {
-      x_3573->last = x_3574.get();
+    if (ListIsEmpty(x_3715)) {
+      x_3680->last = x_3681.get();
     }
     OptionMatch(
-        ListLast(x_3607),
-        [&](const auto &x_3610) {
-          x_3574->prev = nullptr;
+        ListLast(x_3714),
+        [&](const auto &x_3717) {
+          x_3681->prev = nullptr;
           return MakeUnit();
         },
-        [&](const auto &x_3609) {
-          x_3574->prev = x_3609.get();
-          x_3609->next = x_3574.get();
+        [&](const auto &x_3716) {
+          x_3681->prev = x_3716.get();
+          x_3716->next = x_3681.get();
           return MakeUnit();
         });
     OptionMatch(
-        ListHead(x_3608),
-        [&](const auto &x_3612) {
-          x_3574->next = nullptr;
+        ListHead(x_3715),
+        [&](const auto &x_3719) {
+          x_3681->next = nullptr;
           return MakeUnit();
         },
-        [&](const auto &x_3611) {
-          x_3574->next = x_3611.get();
-          x_3611->prev = x_3574.get();
+        [&](const auto &x_3718) {
+          x_3681->next = x_3718.get();
+          x_3718->prev = x_3681.get();
           return MakeUnit();
         });
-    x_3574->parent = x_3573.get();
-    auto x_3613 = (x_3574->parent);
-    if (HashtblContain(x_3613->meta->ProcTimeTable, std::string("pass_0"))) {
-      auto x_3616 = OptionMatch(
-          x_3574->prev,
-          [&](const auto &x_3615) {
-            return NextTotalOrder(HashtblFindExn(x_3613->meta->BBTimeTable, std::string("bb_1")));
+    x_3681->parent = x_3680.get();
+    auto x_3720 = (x_3681->parent);
+    if (HashtblContain(x_3720->meta->ProcTimeTable, std::string("pass_0"))) {
+      auto x_3723 = OptionMatch(
+          x_3681->prev,
+          [&](const auto &x_3722) {
+            return NextTotalOrder(HashtblFindExn(x_3720->meta->BBTimeTable, std::string("bb_1")));
           },
-          [&](const auto &x_3614) {
-            return NextTotalOrder(HashtblFindExn(x_3614->meta->ProcTimeTable, std::string("pass_0")));
+          [&](const auto &x_3721) {
+            return NextTotalOrder(HashtblFindExn(x_3721->meta->ProcTimeTable, std::string("pass_0")));
           });
-      HashtblAddExn(x_3574->meta->ProcTimeTable, std::string("pass_0"), x_3616);
+      HashtblAddExn(x_3681->meta->ProcTimeTable, std::string("pass_0"), x_3723);
       MetaWriteMetric();
-      QueueForcePush(x_3616, x_3574, MakeRecomputeProc(std::string("pass_0")));
+      QueueForcePush(x_3723, x_3681, MakeRecomputeProc(std::string("pass_0")));
     }
     OptionMatch(
-        x_3574->next, [&](const auto &x_3621) { return MakeUnit(); },
-        [&](const auto &x_3618) {
-          if (HashtblContain(x_3618->meta->BBTimeTable, std::string("bb_1"))) {
-            auto x_3619 = HashtblFindExn(x_3618->meta->BBTimeTable, std::string("bb_1"));
+        x_3681->next, [&](const auto &x_3728) { return MakeUnit(); },
+        [&](const auto &x_3725) {
+          if (HashtblContain(x_3725->meta->BBTimeTable, std::string("bb_1"))) {
+            auto x_3726 = HashtblFindExn(x_3725->meta->BBTimeTable, std::string("bb_1"));
             MetaWriteMetric();
-            return QueuePush(x_3619, x_3618, MakeRecomputeBB(std::string("bb_1")));
+            return QueuePush(x_3726, x_3725, MakeRecomputeBB(std::string("bb_1")));
           } else {
             return MakeUnit();
           }
         });
-    if (ListIsSingleton(x_3573->children)) {
-      if (HashtblContain(x_3573->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_3622 = HashtblFindExn(x_3573->meta->BBTimeTable, std::string("bb_0"));
+    if (ListIsSingleton(x_3680->children)) {
+      if (HashtblContain(x_3680->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_3729 = HashtblFindExn(x_3680->meta->BBTimeTable, std::string("bb_0"));
         MetaWriteMetric();
-        QueuePush(x_3622, x_3573, MakeRecomputeBB(std::string("bb_0")));
+        QueuePush(x_3729, x_3680, MakeRecomputeBB(std::string("bb_0")));
       }
     }
-    if (ListIsEmpty(x_3608)) {
-      if (HashtblContain(x_3573->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_3624 = HashtblFindExn(x_3573->meta->BBTimeTable, std::string("bb_0"));
+    if (ListIsEmpty(x_3715)) {
+      if (HashtblContain(x_3680->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_3731 = HashtblFindExn(x_3680->meta->BBTimeTable, std::string("bb_0"));
         MetaWriteMetric();
-        QueuePush(x_3624, x_3573, MakeRecomputeBB(std::string("bb_0")));
+        QueuePush(x_3731, x_3680, MakeRecomputeBB(std::string("bb_0")));
       }
     }
     OptionMatch(
-        x_3574->next, [&](const auto &x_3629) { return MakeUnit(); },
-        [&](const auto &x_3626) {
-          if (HashtblContain(x_3626->meta->BBTimeTable, std::string("bb_0"))) {
-            auto x_3627 = HashtblFindExn(x_3626->meta->BBTimeTable, std::string("bb_0"));
+        x_3681->next, [&](const auto &x_3736) { return MakeUnit(); },
+        [&](const auto &x_3733) {
+          if (HashtblContain(x_3733->meta->BBTimeTable, std::string("bb_0"))) {
+            auto x_3734 = HashtblFindExn(x_3733->meta->BBTimeTable, std::string("bb_0"));
             MetaWriteMetric();
-            return QueuePush(x_3627, x_3626, MakeRecomputeBB(std::string("bb_0")));
+            return QueuePush(x_3734, x_3733, MakeRecomputeBB(std::string("bb_0")));
           } else {
             return MakeUnit();
           }
         });
-    auto x_3630 = (x_3574->parent);
-    if (HashtblContain(x_3630->meta->ProcTimeTable, std::string("pass_1"))) {
-      auto x_3633 = OptionMatch(
-          x_3574->prev,
-          [&](const auto &x_3632) {
-            return NextTotalOrder(HashtblFindExn(x_3630->meta->BBTimeTable, std::string("bb_2")));
+    auto x_3737 = (x_3681->parent);
+    if (HashtblContain(x_3737->meta->ProcTimeTable, std::string("pass_1"))) {
+      auto x_3740 = OptionMatch(
+          x_3681->prev,
+          [&](const auto &x_3739) {
+            return NextTotalOrder(HashtblFindExn(x_3737->meta->BBTimeTable, std::string("bb_2")));
           },
-          [&](const auto &x_3631) {
-            return NextTotalOrder(HashtblFindExn(x_3631->meta->ProcTimeTable, std::string("pass_1")));
+          [&](const auto &x_3738) {
+            return NextTotalOrder(HashtblFindExn(x_3738->meta->ProcTimeTable, std::string("pass_1")));
           });
-      HashtblAddExn(x_3574->meta->ProcTimeTable, std::string("pass_1"), x_3633);
+      HashtblAddExn(x_3681->meta->ProcTimeTable, std::string("pass_1"), x_3740);
       MetaWriteMetric();
-      QueueForcePush(x_3633, x_3574, MakeRecomputeProc(std::string("pass_1")));
+      QueueForcePush(x_3740, x_3681, MakeRecomputeProc(std::string("pass_1")));
     }
-    if (ListIsSingleton(x_3573->children)) {
-      if (HashtblContain(x_3573->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_3635 = HashtblFindExn(x_3573->meta->BBTimeTable, std::string("bb_2"));
+    if (ListIsSingleton(x_3680->children)) {
+      if (HashtblContain(x_3680->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_3742 = HashtblFindExn(x_3680->meta->BBTimeTable, std::string("bb_2"));
         MetaWriteMetric();
-        QueuePush(x_3635, x_3573, MakeRecomputeBB(std::string("bb_2")));
+        QueuePush(x_3742, x_3680, MakeRecomputeBB(std::string("bb_2")));
       }
     }
-    if (ListIsEmpty(x_3608)) {
-      if (HashtblContain(x_3573->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_3637 = HashtblFindExn(x_3573->meta->BBTimeTable, std::string("bb_2"));
+    if (ListIsEmpty(x_3715)) {
+      if (HashtblContain(x_3680->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_3744 = HashtblFindExn(x_3680->meta->BBTimeTable, std::string("bb_2"));
         MetaWriteMetric();
-        QueuePush(x_3637, x_3573, MakeRecomputeBB(std::string("bb_2")));
+        QueuePush(x_3744, x_3680, MakeRecomputeBB(std::string("bb_2")));
       }
     }
     OptionMatch(
-        x_3574->next, [&](const auto &x_3642) { return MakeUnit(); },
-        [&](const auto &x_3639) {
-          if (HashtblContain(x_3639->meta->BBTimeTable, std::string("bb_2"))) {
-            auto x_3640 = HashtblFindExn(x_3639->meta->BBTimeTable, std::string("bb_2"));
+        x_3681->next, [&](const auto &x_3749) { return MakeUnit(); },
+        [&](const auto &x_3746) {
+          if (HashtblContain(x_3746->meta->BBTimeTable, std::string("bb_2"))) {
+            auto x_3747 = HashtblFindExn(x_3746->meta->BBTimeTable, std::string("bb_2"));
             MetaWriteMetric();
-            return QueuePush(x_3640, x_3639, MakeRecomputeBB(std::string("bb_2")));
+            return QueuePush(x_3747, x_3746, MakeRecomputeBB(std::string("bb_2")));
           } else {
             return MakeUnit();
           }
@@ -3193,588 +3293,599 @@ Unit x_3571(const auto &x_3572, const auto &x_3573, const auto &x_3574) {
     MakeUnit();
     return MakeUnit();
   } else {
-    return x_3571(x_3576, ListNthExn(x_3573->children, x_3575), x_3574);
+    return x_3678(x_3683, ListNthExn(x_3680->children, x_3682), x_3681);
   }
 }
-Unit replace_node_x_3410(const auto &x_3572, const auto &x_3573, const auto &x_3574) {
-  return x_3571(x_3572, x_3573, x_3574);
+Unit replace_node_x_3517(const auto &x_3679, const auto &x_3680, const auto &x_3681) {
+  return x_3678(x_3679, x_3680, x_3681);
 }
-Unit x_3643(const auto &x_3644) {
-  ListIter2(x_3644->children, [&](const auto &x_3645, const auto &x_3646) {
-    x_3645->parent = x_3644.get();
-    x_3646->parent = x_3644.get();
-    x_3645->next = x_3646.get();
-    x_3646->prev = x_3645.get();
-    x_3643(x_3645);
+Unit x_3750(const auto &x_3751) {
+  ListIter2(x_3751->children, [&](const auto &x_3752, const auto &x_3753) {
+    x_3752->parent = x_3751.get();
+    x_3753->parent = x_3751.get();
+    x_3752->next = x_3753.get();
+    x_3753->prev = x_3752.get();
+    x_3750(x_3752);
     return MakeUnit();
   });
   OptionMatch(
-      ListHead(x_3644->children),
-      [&](const auto &x_3648) {
-        x_3644->first = nullptr;
+      ListHead(x_3751->children),
+      [&](const auto &x_3755) {
+        x_3751->first = nullptr;
         return MakeUnit();
       },
-      [&](const auto &x_3647) {
-        x_3644->first = x_3647.get();
-        x_3647->parent = x_3644.get();
+      [&](const auto &x_3754) {
+        x_3751->first = x_3754.get();
+        x_3754->parent = x_3751.get();
         return MakeUnit();
       });
   OptionMatch(
-      ListLast(x_3644->children),
-      [&](const auto &x_3650) {
-        x_3644->last = nullptr;
+      ListLast(x_3751->children),
+      [&](const auto &x_3757) {
+        x_3751->last = nullptr;
         return MakeUnit();
       },
-      [&](const auto &x_3649) {
-        x_3644->last = x_3649.get();
-        x_3649->parent = x_3644.get();
-        x_3643(x_3649);
+      [&](const auto &x_3756) {
+        x_3751->last = x_3756.get();
+        x_3756->parent = x_3751.get();
+        x_3750(x_3756);
         return MakeUnit();
       });
   return MakeUnit();
 }
-Unit set_children_relation_x_3408(const auto &x_3644) { return x_3643(x_3644); }
-Unit x_3651(const auto &x_3652, const auto &x_3653, const auto &x_3654) {
-  auto x_3655 = ListHeadExn(x_3652);
-  auto x_3656 = ListTailExn(x_3652);
-  if (ListIsEmpty(x_3656)) {
-    InputChangeMetric(node_size_x_3384(ListNthExn(x_3653->children, x_3655)));
-    auto x_3657 = ListSplitN(x_3653->children, x_3655);
-    auto x_3658 = Zro(x_3657);
-    auto x_3659 = Fst(x_3657);
-    auto x_3660 = ListHeadExn(x_3659);
-    auto x_3661 = ListTailExn(x_3659);
-    x_3653->children = ListAppend(x_3658, x_3661);
-    x_3660->meta->alive = false;
+Unit set_children_relation_x_3515(const auto &x_3751) { return x_3750(x_3751); }
+Unit x_3758(const auto &x_3759, const auto &x_3760, const auto &x_3761) {
+  auto x_3762 = ListHeadExn(x_3759);
+  auto x_3763 = ListTailExn(x_3759);
+  if (ListIsEmpty(x_3763)) {
+    InputChangeMetric(node_size_x_3490(ListNthExn(x_3760->children, x_3762)));
+    auto x_3764 = ListSplitN(x_3760->children, x_3762);
+    auto x_3765 = Zro(x_3764);
+    auto x_3766 = Fst(x_3764);
+    auto x_3767 = ListHeadExn(x_3766);
+    auto x_3768 = ListTailExn(x_3766);
+    x_3760->children = ListAppend(x_3765, x_3768);
+    x_3767->meta->alive = false;
     OptionMatch(
-        x_3660->prev, [&](const auto &x_3663) { return MakeUnit(); },
-        [&](const auto &x_3662) {
-          x_3662->next = ToPath(x_3660->next);
+        x_3767->prev, [&](const auto &x_3770) { return MakeUnit(); },
+        [&](const auto &x_3769) {
+          x_3769->next = ToPath(x_3767->next);
           return MakeUnit();
         });
     OptionMatch(
-        x_3660->next, [&](const auto &x_3665) { return MakeUnit(); },
-        [&](const auto &x_3664) {
-          x_3664->prev = ToPath(x_3660->prev);
+        x_3767->next, [&](const auto &x_3772) { return MakeUnit(); },
+        [&](const auto &x_3771) {
+          x_3771->prev = ToPath(x_3767->prev);
           return MakeUnit();
         });
-    if (ListIsEmpty(x_3658)) {
-      x_3653->first = ToPath(ListHead(x_3661));
+    if (ListIsEmpty(x_3765)) {
+      x_3760->first = ToPath(ListHead(x_3768));
     }
-    if (ListIsEmpty(x_3661)) {
-      x_3653->last = ToPath(ListLast(x_3658));
+    if (ListIsEmpty(x_3768)) {
+      x_3760->last = ToPath(ListLast(x_3765));
     }
     OptionMatch(
-        x_3660->next, [&](const auto &x_3669) { return MakeUnit(); },
-        [&](const auto &x_3666) {
-          if (HashtblContain(x_3666->meta->BBTimeTable, std::string("bb_1"))) {
-            auto x_3667 = HashtblFindExn(x_3666->meta->BBTimeTable, std::string("bb_1"));
+        x_3767->next, [&](const auto &x_3776) { return MakeUnit(); },
+        [&](const auto &x_3773) {
+          if (HashtblContain(x_3773->meta->BBTimeTable, std::string("bb_1"))) {
+            auto x_3774 = HashtblFindExn(x_3773->meta->BBTimeTable, std::string("bb_1"));
             MetaWriteMetric();
-            return QueuePush(x_3667, x_3666, MakeRecomputeBB(std::string("bb_1")));
+            return QueuePush(x_3774, x_3773, MakeRecomputeBB(std::string("bb_1")));
           } else {
             return MakeUnit();
           }
         });
-    if (ListIsEmpty(x_3653->children)) {
-      if (HashtblContain(x_3653->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_3670 = HashtblFindExn(x_3653->meta->BBTimeTable, std::string("bb_0"));
+    if (ListIsEmpty(x_3760->children)) {
+      if (HashtblContain(x_3760->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_3777 = HashtblFindExn(x_3760->meta->BBTimeTable, std::string("bb_0"));
         MetaWriteMetric();
-        QueuePush(x_3670, x_3653, MakeRecomputeBB(std::string("bb_0")));
+        QueuePush(x_3777, x_3760, MakeRecomputeBB(std::string("bb_0")));
       }
     }
-    if (ListIsEmpty(x_3661)) {
-      if (HashtblContain(x_3653->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_3672 = HashtblFindExn(x_3653->meta->BBTimeTable, std::string("bb_0"));
+    if (ListIsEmpty(x_3768)) {
+      if (HashtblContain(x_3760->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_3779 = HashtblFindExn(x_3760->meta->BBTimeTable, std::string("bb_0"));
         MetaWriteMetric();
-        QueuePush(x_3672, x_3653, MakeRecomputeBB(std::string("bb_0")));
+        QueuePush(x_3779, x_3760, MakeRecomputeBB(std::string("bb_0")));
       }
     }
     OptionMatch(
-        x_3660->next, [&](const auto &x_3677) { return MakeUnit(); },
-        [&](const auto &x_3674) {
-          if (HashtblContain(x_3674->meta->BBTimeTable, std::string("bb_0"))) {
-            auto x_3675 = HashtblFindExn(x_3674->meta->BBTimeTable, std::string("bb_0"));
+        x_3767->next, [&](const auto &x_3784) { return MakeUnit(); },
+        [&](const auto &x_3781) {
+          if (HashtblContain(x_3781->meta->BBTimeTable, std::string("bb_0"))) {
+            auto x_3782 = HashtblFindExn(x_3781->meta->BBTimeTable, std::string("bb_0"));
             MetaWriteMetric();
-            return QueuePush(x_3675, x_3674, MakeRecomputeBB(std::string("bb_0")));
+            return QueuePush(x_3782, x_3781, MakeRecomputeBB(std::string("bb_0")));
           } else {
             return MakeUnit();
           }
         });
-    if (ListIsEmpty(x_3653->children)) {
-      if (HashtblContain(x_3653->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_3678 = HashtblFindExn(x_3653->meta->BBTimeTable, std::string("bb_2"));
+    if (ListIsEmpty(x_3760->children)) {
+      if (HashtblContain(x_3760->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_3785 = HashtblFindExn(x_3760->meta->BBTimeTable, std::string("bb_2"));
         MetaWriteMetric();
-        QueuePush(x_3678, x_3653, MakeRecomputeBB(std::string("bb_2")));
+        QueuePush(x_3785, x_3760, MakeRecomputeBB(std::string("bb_2")));
       }
     }
-    if (ListIsEmpty(x_3661)) {
-      if (HashtblContain(x_3653->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_3680 = HashtblFindExn(x_3653->meta->BBTimeTable, std::string("bb_2"));
+    if (ListIsEmpty(x_3768)) {
+      if (HashtblContain(x_3760->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_3787 = HashtblFindExn(x_3760->meta->BBTimeTable, std::string("bb_2"));
         MetaWriteMetric();
-        QueuePush(x_3680, x_3653, MakeRecomputeBB(std::string("bb_2")));
+        QueuePush(x_3787, x_3760, MakeRecomputeBB(std::string("bb_2")));
       }
     }
     OptionMatch(
-        x_3660->next, [&](const auto &x_3685) { return MakeUnit(); },
-        [&](const auto &x_3682) {
-          if (HashtblContain(x_3682->meta->BBTimeTable, std::string("bb_2"))) {
-            auto x_3683 = HashtblFindExn(x_3682->meta->BBTimeTable, std::string("bb_2"));
+        x_3767->next, [&](const auto &x_3792) { return MakeUnit(); },
+        [&](const auto &x_3789) {
+          if (HashtblContain(x_3789->meta->BBTimeTable, std::string("bb_2"))) {
+            auto x_3790 = HashtblFindExn(x_3789->meta->BBTimeTable, std::string("bb_2"));
             MetaWriteMetric();
-            return QueuePush(x_3683, x_3682, MakeRecomputeBB(std::string("bb_2")));
+            return QueuePush(x_3790, x_3789, MakeRecomputeBB(std::string("bb_2")));
           } else {
             return MakeUnit();
           }
         });
     return MakeUnit();
   } else {
-    return x_3651(x_3656, ListNthExn(x_3653->children, x_3655), x_3654);
+    return x_3758(x_3763, ListNthExn(x_3760->children, x_3762), x_3761);
   }
 }
-Unit remove_node_x_3406(const auto &x_3652, const auto &x_3653, const auto &x_3654) {
-  return x_3651(x_3652, x_3653, x_3654);
+Unit remove_node_x_3513(const auto &x_3759, const auto &x_3760, const auto &x_3761) {
+  return x_3758(x_3759, x_3760, x_3761);
 }
-Unit x_3686(const auto &x_3687) {
+Unit x_3793(const auto &x_3794) {
   if (!QueueIsEmpty()) {
-    auto x_3688 = QueuePeek();
-    auto x_3689 = Zro(x_3688);
-    auto x_3690 = Fst(x_3688);
+    auto x_3795 = QueuePeek();
+    auto x_3796 = Zro(x_3795);
+    auto x_3797 = Fst(x_3795);
     MetaReadMetric();
     MetricQueueSize(QueueSize());
-    if (x_3690.n->meta->alive) {
+    if (x_3797.n->meta->alive) {
       RFMatch(
-          x_3690.rf,
-          [&](const auto &x_3693) {
-            std::string x_5449 = x_3693;
-            if (x_5449 == "bb_1") {
-              return eval_stmts_x_3694(x_3690.n);
-            } else if (x_5449 == "bb_0") {
-              return eval_stmts_x_3695(x_3690.n);
-            } else if (x_5449 == "bb_2") {
-              return eval_stmts_x_3696(x_3690.n);
+          x_3797.rf,
+          [&](const auto &x_3800) {
+            std::string x_5608 = x_3800;
+            if (x_5608 == "bb_1") {
+              return eval_stmts_x_3801(x_3797.n);
+            } else if (x_5608 == "bb_0") {
+              return eval_stmts_x_3802(x_3797.n);
+            } else if (x_5608 == "bb_2") {
+              return eval_stmts_x_3803(x_3797.n);
             } else {
               Panic();
             }
           },
-          [&](const auto &x_3691) {
-            auto x_3692 = ReadRef(current_time);
-            WriteRef(current_time, x_3689);
+          [&](const auto &x_3798) {
+            auto x_3799 = ReadRef(current_time);
+            WriteRef(current_time, x_3796);
             [&]() {
-              std::string x_5450 = x_3691;
-              if (x_5450 == "pass_0") {
-                return eval_stmts_x_3396(x_3690.n);
-              } else if (x_5450 == "pass_1") {
-                return eval_stmts_x_3397(x_3690.n);
+              std::string x_5609 = x_3798;
+              if (x_5609 == "pass_0") {
+                return eval_stmts_x_3502(x_3797.n);
+              } else if (x_5609 == "pass_1") {
+                return eval_stmts_x_3503(x_3797.n);
               } else {
                 Panic();
               }
             }();
-            HashtblSet(x_3690.n->meta->ProcTimeTable, x_3691, ReadRef(current_time));
-            WriteRef(current_time, x_3692);
+            HashtblSet(x_3797.n->meta->ProcTimeTable, x_3798, ReadRef(current_time));
+            WriteRef(current_time, x_3799);
             return MakeUnit();
           });
     }
-    auto x_3697 = Zro(QueuePop());
-    x_3686(MakeUnit());
+    auto x_3804 = Zro(QueuePop());
+    x_3793(MakeUnit());
     return MakeUnit();
   } else {
     return MakeUnit();
   }
 }
-Unit recalculate_internal_x_3404(const auto &x_3687) { return x_3686(x_3687); }
-Unit x_3698(const auto &x_3699, const auto &x_3700, const auto &x_3701) {
-  auto x_3702 = ListHeadExn(x_3699);
-  auto x_3703 = ListTailExn(x_3699);
-  if (ListIsEmpty(x_3703)) {
-    InputChangeMetric(node_size_x_3384(x_3701));
-    auto x_3704 = ListSplitN(x_3700->children, x_3702);
-    auto x_3705 = Zro(x_3704);
-    auto x_3706 = Fst(x_3704);
-    x_3700->children = ListAppend(x_3705, Cons(x_3701, x_3706));
-    if (ListIsEmpty(x_3705)) {
-      x_3700->first = x_3701.get();
+Unit recalculate_internal_x_3511(const auto &x_3794) { return x_3793(x_3794); }
+Unit x_3805(const auto &x_3806, const auto &x_3807, const auto &x_3808) {
+  auto x_3809 = ListHeadExn(x_3806);
+  auto x_3810 = ListTailExn(x_3806);
+  if (ListIsEmpty(x_3810)) {
+    InputChangeMetric(node_size_x_3490(x_3808));
+    auto x_3811 = ListSplitN(x_3807->children, x_3809);
+    auto x_3812 = Zro(x_3811);
+    auto x_3813 = Fst(x_3811);
+    x_3807->children = ListAppend(x_3812, Cons(x_3808, x_3813));
+    if (ListIsEmpty(x_3812)) {
+      x_3807->first = x_3808.get();
     }
-    if (ListIsEmpty(x_3706)) {
-      x_3700->last = x_3701.get();
+    if (ListIsEmpty(x_3813)) {
+      x_3807->last = x_3808.get();
     }
     OptionMatch(
-        ListLast(x_3705),
-        [&](const auto &x_3708) {
-          x_3701->prev = nullptr;
+        ListLast(x_3812),
+        [&](const auto &x_3815) {
+          x_3808->prev = nullptr;
           return MakeUnit();
         },
-        [&](const auto &x_3707) {
-          x_3701->prev = x_3707.get();
-          x_3707->next = x_3701.get();
+        [&](const auto &x_3814) {
+          x_3808->prev = x_3814.get();
+          x_3814->next = x_3808.get();
           return MakeUnit();
         });
     OptionMatch(
-        ListHead(x_3706),
-        [&](const auto &x_3710) {
-          x_3701->next = nullptr;
+        ListHead(x_3813),
+        [&](const auto &x_3817) {
+          x_3808->next = nullptr;
           return MakeUnit();
         },
-        [&](const auto &x_3709) {
-          x_3701->next = x_3709.get();
-          x_3709->prev = x_3701.get();
+        [&](const auto &x_3816) {
+          x_3808->next = x_3816.get();
+          x_3816->prev = x_3808.get();
           return MakeUnit();
         });
-    x_3701->parent = x_3700.get();
-    auto x_3711 = (x_3701->parent);
-    if (HashtblContain(x_3711->meta->ProcTimeTable, std::string("pass_0"))) {
-      auto x_3714 = OptionMatch(
-          x_3701->prev,
-          [&](const auto &x_3713) {
-            return NextTotalOrder(HashtblFindExn(x_3711->meta->BBTimeTable, std::string("bb_1")));
+    x_3808->parent = x_3807.get();
+    auto x_3818 = (x_3808->parent);
+    if (HashtblContain(x_3818->meta->ProcTimeTable, std::string("pass_0"))) {
+      auto x_3821 = OptionMatch(
+          x_3808->prev,
+          [&](const auto &x_3820) {
+            return NextTotalOrder(HashtblFindExn(x_3818->meta->BBTimeTable, std::string("bb_1")));
           },
-          [&](const auto &x_3712) {
-            return NextTotalOrder(HashtblFindExn(x_3712->meta->ProcTimeTable, std::string("pass_0")));
+          [&](const auto &x_3819) {
+            return NextTotalOrder(HashtblFindExn(x_3819->meta->ProcTimeTable, std::string("pass_0")));
           });
-      HashtblAddExn(x_3701->meta->ProcTimeTable, std::string("pass_0"), x_3714);
+      HashtblAddExn(x_3808->meta->ProcTimeTable, std::string("pass_0"), x_3821);
       MetaWriteMetric();
-      QueueForcePush(x_3714, x_3701, MakeRecomputeProc(std::string("pass_0")));
+      QueueForcePush(x_3821, x_3808, MakeRecomputeProc(std::string("pass_0")));
     }
     OptionMatch(
-        x_3701->next, [&](const auto &x_3719) { return MakeUnit(); },
-        [&](const auto &x_3716) {
-          if (HashtblContain(x_3716->meta->BBTimeTable, std::string("bb_1"))) {
-            auto x_3717 = HashtblFindExn(x_3716->meta->BBTimeTable, std::string("bb_1"));
+        x_3808->next, [&](const auto &x_3826) { return MakeUnit(); },
+        [&](const auto &x_3823) {
+          if (HashtblContain(x_3823->meta->BBTimeTable, std::string("bb_1"))) {
+            auto x_3824 = HashtblFindExn(x_3823->meta->BBTimeTable, std::string("bb_1"));
             MetaWriteMetric();
-            return QueuePush(x_3717, x_3716, MakeRecomputeBB(std::string("bb_1")));
+            return QueuePush(x_3824, x_3823, MakeRecomputeBB(std::string("bb_1")));
           } else {
             return MakeUnit();
           }
         });
-    if (ListIsSingleton(x_3700->children)) {
-      if (HashtblContain(x_3700->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_3720 = HashtblFindExn(x_3700->meta->BBTimeTable, std::string("bb_0"));
+    if (ListIsSingleton(x_3807->children)) {
+      if (HashtblContain(x_3807->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_3827 = HashtblFindExn(x_3807->meta->BBTimeTable, std::string("bb_0"));
         MetaWriteMetric();
-        QueuePush(x_3720, x_3700, MakeRecomputeBB(std::string("bb_0")));
+        QueuePush(x_3827, x_3807, MakeRecomputeBB(std::string("bb_0")));
       }
     }
-    if (ListIsEmpty(x_3706)) {
-      if (HashtblContain(x_3700->meta->BBTimeTable, std::string("bb_0"))) {
-        auto x_3722 = HashtblFindExn(x_3700->meta->BBTimeTable, std::string("bb_0"));
+    if (ListIsEmpty(x_3813)) {
+      if (HashtblContain(x_3807->meta->BBTimeTable, std::string("bb_0"))) {
+        auto x_3829 = HashtblFindExn(x_3807->meta->BBTimeTable, std::string("bb_0"));
         MetaWriteMetric();
-        QueuePush(x_3722, x_3700, MakeRecomputeBB(std::string("bb_0")));
+        QueuePush(x_3829, x_3807, MakeRecomputeBB(std::string("bb_0")));
       }
     }
     OptionMatch(
-        x_3701->next, [&](const auto &x_3727) { return MakeUnit(); },
-        [&](const auto &x_3724) {
-          if (HashtblContain(x_3724->meta->BBTimeTable, std::string("bb_0"))) {
-            auto x_3725 = HashtblFindExn(x_3724->meta->BBTimeTable, std::string("bb_0"));
+        x_3808->next, [&](const auto &x_3834) { return MakeUnit(); },
+        [&](const auto &x_3831) {
+          if (HashtblContain(x_3831->meta->BBTimeTable, std::string("bb_0"))) {
+            auto x_3832 = HashtblFindExn(x_3831->meta->BBTimeTable, std::string("bb_0"));
             MetaWriteMetric();
-            return QueuePush(x_3725, x_3724, MakeRecomputeBB(std::string("bb_0")));
+            return QueuePush(x_3832, x_3831, MakeRecomputeBB(std::string("bb_0")));
           } else {
             return MakeUnit();
           }
         });
-    auto x_3728 = (x_3701->parent);
-    if (HashtblContain(x_3728->meta->ProcTimeTable, std::string("pass_1"))) {
-      auto x_3731 = OptionMatch(
-          x_3701->prev,
-          [&](const auto &x_3730) {
-            return NextTotalOrder(HashtblFindExn(x_3728->meta->BBTimeTable, std::string("bb_2")));
+    auto x_3835 = (x_3808->parent);
+    if (HashtblContain(x_3835->meta->ProcTimeTable, std::string("pass_1"))) {
+      auto x_3838 = OptionMatch(
+          x_3808->prev,
+          [&](const auto &x_3837) {
+            return NextTotalOrder(HashtblFindExn(x_3835->meta->BBTimeTable, std::string("bb_2")));
           },
-          [&](const auto &x_3729) {
-            return NextTotalOrder(HashtblFindExn(x_3729->meta->ProcTimeTable, std::string("pass_1")));
+          [&](const auto &x_3836) {
+            return NextTotalOrder(HashtblFindExn(x_3836->meta->ProcTimeTable, std::string("pass_1")));
           });
-      HashtblAddExn(x_3701->meta->ProcTimeTable, std::string("pass_1"), x_3731);
+      HashtblAddExn(x_3808->meta->ProcTimeTable, std::string("pass_1"), x_3838);
       MetaWriteMetric();
-      QueueForcePush(x_3731, x_3701, MakeRecomputeProc(std::string("pass_1")));
+      QueueForcePush(x_3838, x_3808, MakeRecomputeProc(std::string("pass_1")));
     }
-    if (ListIsSingleton(x_3700->children)) {
-      if (HashtblContain(x_3700->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_3733 = HashtblFindExn(x_3700->meta->BBTimeTable, std::string("bb_2"));
+    if (ListIsSingleton(x_3807->children)) {
+      if (HashtblContain(x_3807->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_3840 = HashtblFindExn(x_3807->meta->BBTimeTable, std::string("bb_2"));
         MetaWriteMetric();
-        QueuePush(x_3733, x_3700, MakeRecomputeBB(std::string("bb_2")));
+        QueuePush(x_3840, x_3807, MakeRecomputeBB(std::string("bb_2")));
       }
     }
-    if (ListIsEmpty(x_3706)) {
-      if (HashtblContain(x_3700->meta->BBTimeTable, std::string("bb_2"))) {
-        auto x_3735 = HashtblFindExn(x_3700->meta->BBTimeTable, std::string("bb_2"));
+    if (ListIsEmpty(x_3813)) {
+      if (HashtblContain(x_3807->meta->BBTimeTable, std::string("bb_2"))) {
+        auto x_3842 = HashtblFindExn(x_3807->meta->BBTimeTable, std::string("bb_2"));
         MetaWriteMetric();
-        QueuePush(x_3735, x_3700, MakeRecomputeBB(std::string("bb_2")));
+        QueuePush(x_3842, x_3807, MakeRecomputeBB(std::string("bb_2")));
       }
     }
     OptionMatch(
-        x_3701->next, [&](const auto &x_3740) { return MakeUnit(); },
-        [&](const auto &x_3737) {
-          if (HashtblContain(x_3737->meta->BBTimeTable, std::string("bb_2"))) {
-            auto x_3738 = HashtblFindExn(x_3737->meta->BBTimeTable, std::string("bb_2"));
+        x_3808->next, [&](const auto &x_3847) { return MakeUnit(); },
+        [&](const auto &x_3844) {
+          if (HashtblContain(x_3844->meta->BBTimeTable, std::string("bb_2"))) {
+            auto x_3845 = HashtblFindExn(x_3844->meta->BBTimeTable, std::string("bb_2"));
             MetaWriteMetric();
-            return QueuePush(x_3738, x_3737, MakeRecomputeBB(std::string("bb_2")));
+            return QueuePush(x_3845, x_3844, MakeRecomputeBB(std::string("bb_2")));
           } else {
             return MakeUnit();
           }
         });
     return MakeUnit();
   } else {
-    return x_3698(x_3703, ListNthExn(x_3700->children, x_3702), x_3701);
+    return x_3805(x_3810, ListNthExn(x_3807->children, x_3809), x_3808);
   }
 }
-Unit add_node_x_3403(const auto &x_3699, const auto &x_3700, const auto &x_3701) {
-  return x_3698(x_3699, x_3700, x_3701);
+Unit add_node_x_3509(const auto &x_3806, const auto &x_3807, const auto &x_3808) {
+  return x_3805(x_3806, x_3807, x_3808);
 }
-Unit x_3741(const auto &x_3742) {
-  ListIter2(x_3742->children, [&](const auto &x_3743, const auto &x_3744) {
-    x_3743->parent = x_3742.get();
-    x_3744->parent = x_3742.get();
-    x_3743->next = x_3744.get();
-    x_3744->prev = x_3743.get();
-    x_3741(x_3743);
+Unit x_3848(const auto &x_3849) {
+  ListIter2(x_3849->children, [&](const auto &x_3850, const auto &x_3851) {
+    x_3850->parent = x_3849.get();
+    x_3851->parent = x_3849.get();
+    x_3850->next = x_3851.get();
+    x_3851->prev = x_3850.get();
+    x_3848(x_3850);
     return MakeUnit();
   });
   OptionMatch(
-      ListHead(x_3742->children),
-      [&](const auto &x_3746) {
-        x_3742->first = nullptr;
+      ListHead(x_3849->children),
+      [&](const auto &x_3853) {
+        x_3849->first = nullptr;
         return MakeUnit();
       },
-      [&](const auto &x_3745) {
-        x_3742->first = x_3745.get();
-        x_3745->parent = x_3742.get();
+      [&](const auto &x_3852) {
+        x_3849->first = x_3852.get();
+        x_3852->parent = x_3849.get();
         return MakeUnit();
       });
   OptionMatch(
-      ListLast(x_3742->children),
-      [&](const auto &x_3748) {
-        x_3742->last = nullptr;
+      ListLast(x_3849->children),
+      [&](const auto &x_3855) {
+        x_3849->last = nullptr;
         return MakeUnit();
       },
-      [&](const auto &x_3747) {
-        x_3742->last = x_3747.get();
-        x_3747->parent = x_3742.get();
-        x_3741(x_3747);
+      [&](const auto &x_3854) {
+        x_3849->last = x_3854.get();
+        x_3854->parent = x_3849.get();
+        x_3848(x_3854);
         return MakeUnit();
       });
   return MakeUnit();
 }
-Unit set_children_relation_x_3401(const auto &x_3742) { return x_3741(x_3742); }
-Unit eval_stmts_x_3397(const auto &x_3749) {
-  WriteRef(current_time, NextTotalOrder(ReadRef(current_time)));
-  HashtblAddExn(x_3749->meta->BBTimeTable, std::string("bb_2"), ReadRef(current_time));
-  eval_stmts_x_3696(x_3749);
-  ListIter(x_3749->children, [&](const auto &x_3750) {
+Unit set_children_relation_x_3507(const auto &x_3849) { return x_3848(x_3849); }
+Unit eval_stmts_x_3503(const auto &x_3856) {
+  return MetricRecordEval(Zro(Timed([&](const auto &x_3857) {
     WriteRef(current_time, NextTotalOrder(ReadRef(current_time)));
-    eval_stmts_x_3397(x_3750);
-    return HashtblAddExn(x_3750->meta->ProcTimeTable, std::string("pass_1"), ReadRef(current_time));
-  });
-  return MakeUnit();
+    HashtblAddExn(x_3856->meta->BBTimeTable, std::string("bb_2"), ReadRef(current_time));
+    eval_stmts_x_3803(x_3856);
+    ListIter(x_3856->children, [&](const auto &x_3858) {
+      WriteRef(current_time, NextTotalOrder(ReadRef(current_time)));
+      eval_stmts_x_3503(x_3858);
+      return HashtblAddExn(x_3858->meta->ProcTimeTable, std::string("pass_1"), ReadRef(current_time));
+    });
+    return MakeUnit();
+  })));
 }
-Unit eval_stmts_x_3396(const auto &x_3751) {
-  WriteRef(current_time, NextTotalOrder(ReadRef(current_time)));
-  HashtblAddExn(x_3751->meta->BBTimeTable, std::string("bb_1"), ReadRef(current_time));
-  eval_stmts_x_3694(x_3751);
-  ListIter(x_3751->children, [&](const auto &x_3752) {
+Unit eval_stmts_x_3502(const auto &x_3859) {
+  return MetricRecordEval(Zro(Timed([&](const auto &x_3860) {
     WriteRef(current_time, NextTotalOrder(ReadRef(current_time)));
-    eval_stmts_x_3396(x_3752);
-    return HashtblAddExn(x_3752->meta->ProcTimeTable, std::string("pass_0"), ReadRef(current_time));
-  });
-  WriteRef(current_time, NextTotalOrder(ReadRef(current_time)));
-  HashtblAddExn(x_3751->meta->BBTimeTable, std::string("bb_0"), ReadRef(current_time));
-  eval_stmts_x_3695(x_3751);
-  return MakeUnit();
+    HashtblAddExn(x_3859->meta->BBTimeTable, std::string("bb_1"), ReadRef(current_time));
+    eval_stmts_x_3801(x_3859);
+    ListIter(x_3859->children, [&](const auto &x_3861) {
+      WriteRef(current_time, NextTotalOrder(ReadRef(current_time)));
+      eval_stmts_x_3502(x_3861);
+      return HashtblAddExn(x_3861->meta->ProcTimeTable, std::string("pass_0"), ReadRef(current_time));
+    });
+    WriteRef(current_time, NextTotalOrder(ReadRef(current_time)));
+    HashtblAddExn(x_3859->meta->BBTimeTable, std::string("bb_0"), ReadRef(current_time));
+    eval_stmts_x_3802(x_3859);
+    return MakeUnit();
+  })));
 }
-Unit x_3753(const auto &x_3754) {
-  ListIter2(x_3754->children, [&](const auto &x_3755, const auto &x_3756) {
-    x_3755->parent = x_3754.get();
-    x_3756->parent = x_3754.get();
-    x_3755->next = x_3756.get();
-    x_3756->prev = x_3755.get();
-    x_3753(x_3755);
+Unit x_3862(const auto &x_3863) {
+  ListIter2(x_3863->children, [&](const auto &x_3864, const auto &x_3865) {
+    x_3864->parent = x_3863.get();
+    x_3865->parent = x_3863.get();
+    x_3864->next = x_3865.get();
+    x_3865->prev = x_3864.get();
+    x_3862(x_3864);
     return MakeUnit();
   });
   OptionMatch(
-      ListHead(x_3754->children),
-      [&](const auto &x_3758) {
-        x_3754->first = nullptr;
+      ListHead(x_3863->children),
+      [&](const auto &x_3867) {
+        x_3863->first = nullptr;
         return MakeUnit();
       },
-      [&](const auto &x_3757) {
-        x_3754->first = x_3757.get();
-        x_3757->parent = x_3754.get();
+      [&](const auto &x_3866) {
+        x_3863->first = x_3866.get();
+        x_3866->parent = x_3863.get();
         return MakeUnit();
       });
   OptionMatch(
-      ListLast(x_3754->children),
-      [&](const auto &x_3760) {
-        x_3754->last = nullptr;
+      ListLast(x_3863->children),
+      [&](const auto &x_3869) {
+        x_3863->last = nullptr;
         return MakeUnit();
       },
-      [&](const auto &x_3759) {
-        x_3754->last = x_3759.get();
-        x_3759->parent = x_3754.get();
-        x_3753(x_3759);
+      [&](const auto &x_3868) {
+        x_3863->last = x_3868.get();
+        x_3868->parent = x_3863.get();
+        x_3862(x_3868);
         return MakeUnit();
       });
   return MakeUnit();
 }
-Unit set_children_relation_x_3393(const auto &x_3754) { return x_3753(x_3754); }
-int64_t x_3761(const auto &x_3762) {
+Unit set_children_relation_x_3499(const auto &x_3863) { return x_3862(x_3863); }
+int64_t x_3870(const auto &x_3871) {
   return IntAdd(static_cast<int64_t>(1),
-                ListIntSum(x_3762->children, [&](const auto &x_3763) { return x_3761(x_3763); }));
+                ListIntSum(x_3871->children, [&](const auto &x_3872) { return x_3870(x_3872); }));
 }
-int64_t node_size_x_3384(const auto &x_3762) { return x_3761(x_3762); }
-int64_t x_3764(const auto &x_3765) {
+int64_t node_size_x_3490(const auto &x_3871) { return x_3870(x_3871); }
+int64_t x_3873(const auto &x_3874) {
   return IntAdd(static_cast<int64_t>(1),
-                ListIntSum(x_3765->children, [&](const auto &x_3766) { return x_3764(x_3766); }));
+                ListIntSum(x_3874->children, [&](const auto &x_3875) { return x_3873(x_3875); }));
 }
-int64_t layout_size_x_3383(const auto &x_3765) { return x_3764(x_3765); }
-LayoutNode x_3767(const auto &x_3768) {
-  return MakeLayoutNode(ListMap(JsonToList(JsonMember(std::string("children"), x_3768)),
-                                [&](const auto &x_3769) { return x_3767(x_3769); }));
+int64_t layout_size_x_3489(const auto &x_3874) { return x_3873(x_3874); }
+LayoutNode x_3876(const auto &x_3877) {
+  return MakeLayoutNode(ListMap(JsonToList(JsonMember(std::string("children"), x_3877)),
+                                [&](const auto &x_3878) { return x_3876(x_3878); }));
 }
-LayoutNode json_to_layout_node_x_3382(const auto &x_3768) { return x_3767(x_3768); }
-Node x_3770(const auto &x_3771) {
-  return MakeNode(x_3771->name, x_3771->attr, x_3771->prop, x_3771->extern_id,
-                  ListMap(x_3771->children, [&](const auto &x_3772) { return x_3770(x_3772); }));
+LayoutNode json_to_layout_node_x_3488(const auto &x_3877) { return x_3876(x_3877); }
+Node x_3879(const auto &x_3880) {
+  return MakeNode(x_3880->name, x_3880->attr, x_3880->prop, x_3880->extern_id,
+                  ListMap(x_3880->children, [&](const auto &x_3881) { return x_3879(x_3881); }));
 }
-Node node_to_fs_node_x_3381(const auto &x_3771) { return x_3770(x_3771); }
-Node x_3773(const auto &x_3774) {
+Node node_to_fs_node_x_3487(const auto &x_3880) { return x_3879(x_3880); }
+Node x_3882(const auto &x_3883) {
   return MakeNode(
-      JsonToString(JsonMember(std::string("name"), x_3774)), JsonToDict(JsonMember(std::string("attributes"), x_3774)),
-      JsonToDict(JsonMember(std::string("properties"), x_3774)), JsonToInt(JsonMember(std::string("id"), x_3774)),
-      ListMap(JsonToList(JsonMember(std::string("children"), x_3774)),
-              [&](const auto &x_3775) { return x_3773(x_3775); }));
+      JsonToString(JsonMember(std::string("name"), x_3883)), JsonToDict(JsonMember(std::string("attributes"), x_3883)),
+      JsonToDict(JsonMember(std::string("properties"), x_3883)), JsonToInt(JsonMember(std::string("id"), x_3883)),
+      ListMap(JsonToList(JsonMember(std::string("children"), x_3883)),
+              [&](const auto &x_3884) { return x_3882(x_3884); }));
 }
-Node json_to_node_aux_x_3380(const auto &x_3774) { return x_3773(x_3774); }
+Node json_to_node_aux_x_3486(const auto &x_3883) { return x_3882(x_3883); }
 int main() {
-  WithOutFile(std::string("hn_type.out"), [&](const auto &x_3385) {
+  WithOutFile(std::string("hn_type.out"), [&](const auto &x_3491) {
     PrintEndline(std::string("RUNNING PQ_D"));
-    return WithInFile(std::string("command.json"), [&](const auto &x_3386) {
-      auto x_3387 = MakeRef(static_cast<int64_t>(0));
-      auto x_3388 = FreshMetric();
-      auto x_3389 = JsonOfString(InputLine(x_3386));
-      auto x_3390 = JsonOfString(InputLine(x_3386));
-      auto x_3391 = MakeStack();
-      PushStack(x_3391, x_3389);
-      PushStack(x_3391, x_3390);
-      Assert(StringEqual(JsonToString(JsonMember(std::string("name"), x_3389)), std::string("init")));
-      Assert(StringEqual(JsonToString(JsonMember(std::string("name"), x_3390)), std::string("layout_init")));
-      auto x_3394 = [&]() {
-        auto x_3392 = json_to_node_aux_x_3380(JsonMember(std::string("node"), x_3389));
-        x_3392->parent = nullptr;
-        x_3392->prev = nullptr;
-        x_3392->next = nullptr;
-        set_children_relation_x_3393(x_3392);
-        return x_3392;
+    return WithInFile(std::string("command.json"), [&](const auto &x_3492) {
+      auto x_3493 = MakeRef(static_cast<int64_t>(0));
+      auto x_3494 = FreshMetric();
+      auto x_3495 = JsonOfString(InputLine(x_3492));
+      auto x_3496 = JsonOfString(InputLine(x_3492));
+      auto x_3497 = MakeStack();
+      PushStack(x_3497, x_3495);
+      PushStack(x_3497, x_3496);
+      Assert(StringEqual(JsonToString(JsonMember(std::string("name"), x_3495)), std::string("init")));
+      Assert(StringEqual(JsonToString(JsonMember(std::string("name"), x_3496)), std::string("layout_init")));
+      auto x_3500 = [&]() {
+        auto x_3498 = json_to_node_aux_x_3486(JsonMember(std::string("node"), x_3495));
+        x_3498->parent = nullptr;
+        x_3498->prev = nullptr;
+        x_3498->next = nullptr;
+        set_children_relation_x_3499(x_3498);
+        return x_3498;
       }();
-      auto x_3395 = json_to_layout_node_x_3382(JsonMember(std::string("node"), x_3390));
-      OutputChangeMetric(layout_size_x_3383(x_3395));
-      InputChangeMetric(node_size_x_3384(x_3394));
+      auto x_3501 = json_to_layout_node_x_3488(JsonMember(std::string("node"), x_3496));
+      OutputChangeMetric(layout_size_x_3489(x_3501));
+      InputChangeMetric(node_size_x_3490(x_3500));
       WriteRef(current_time, NextTotalOrder(ReadRef(current_time)));
-      eval_stmts_x_3396(x_3394);
-      HashtblAddExn(x_3394->meta->ProcTimeTable, std::string("pass_0"), ReadRef(current_time));
+      eval_stmts_x_3502(x_3500);
+      HashtblAddExn(x_3500->meta->ProcTimeTable, std::string("pass_0"), ReadRef(current_time));
       WriteRef(current_time, NextTotalOrder(ReadRef(current_time)));
-      eval_stmts_x_3397(x_3394);
-      HashtblAddExn(x_3394->meta->ProcTimeTable, std::string("pass_1"), ReadRef(current_time));
-      JsonToChannel(x_3385, [&]() {
-        auto x_5451 = FreshJson();
-        WriteJson(x_5451, std::string("name"), std::string("PQ_D"));
-        WriteJson(x_5451, std::string("diff_num"), ReadRef(x_3387));
-        WriteJson(x_5451, std::string("read_count"), MetricReadCount());
-        WriteJson(x_5451, std::string("meta_read_count"), MetricMetaReadCount());
-        WriteJson(x_5451, std::string("write_count"), MetricWriteCount());
-        WriteJson(x_5451, std::string("meta_write_count"), MetricMetaWriteCount());
-        WriteJson(x_5451, std::string("queue_size_acc"), MetricQueueSizeAcc());
-        WriteJson(x_5451, std::string("input_change_count"), MetricInputChangeCount());
-        WriteJson(x_5451, std::string("output_change_count"), MetricOutputChangeCount());
-        WriteJson(x_5451, std::string("html"), std::string(""));
-        WriteJson(x_5451, std::string("command"), StackToList(x_3391));
-        return x_5451;
+      eval_stmts_x_3503(x_3500);
+      HashtblAddExn(x_3500->meta->ProcTimeTable, std::string("pass_1"), ReadRef(current_time));
+      JsonToChannel(x_3491, [&]() {
+        auto x_5610 = FreshJson();
+        WriteJson(x_5610, std::string("name"), std::string("PQ_D"));
+        WriteJson(x_5610, std::string("diff_num"), ReadRef(x_3493));
+        WriteJson(x_5610, std::string("read_count"), MetricReadCount());
+        WriteJson(x_5610, std::string("meta_read_count"), MetricMetaReadCount());
+        WriteJson(x_5610, std::string("write_count"), MetricWriteCount());
+        WriteJson(x_5610, std::string("meta_write_count"), MetricMetaWriteCount());
+        WriteJson(x_5610, std::string("queue_size_acc"), MetricQueueSizeAcc());
+        WriteJson(x_5610, std::string("input_change_count"), MetricInputChangeCount());
+        WriteJson(x_5610, std::string("output_change_count"), MetricOutputChangeCount());
+        WriteJson(x_5610, std::string("overhead_time"), MetricOverheadCount());
+        WriteJson(x_5610, std::string("eval_time"), MetricEvalCount());
+        WriteJson(x_5610, std::string("html"), std::string(""));
+        WriteJson(x_5610, std::string("command"), StackToList(x_3497));
+        return x_5610;
       }());
-      OutputString(x_3385, std::string("\n"));
-      ClearStack(x_3391);
-      WriteRef(x_3387, IntAdd(ReadRef(x_3387), static_cast<int64_t>(1)));
+      OutputString(x_3491, std::string("\n"));
+      ClearStack(x_3497);
+      WriteRef(x_3493, IntAdd(ReadRef(x_3493), static_cast<int64_t>(1)));
       ResetMetric();
       PrintEndline(std::string("EVAL OK!"));
-      IterLines(x_3386, [&](const auto &x_3398) {
-        auto x_3399 = JsonOfString(x_3398);
-        PushStack(x_3391, x_3399);
-        std::string x_5453 = JsonToString(JsonMember(std::string("name"), x_3399));
-        if (x_5453 == "add") {
-          return add_node_x_3403(ListMap(JsonToList(JsonMember(std::string("path"), x_3399)),
-                                         [&](const auto &x_3402) { return JsonToInt(x_3402); }),
-                                 x_3394, [&]() {
-                                   auto x_3400 = json_to_node_aux_x_3380(JsonMember(std::string("node"), x_3399));
-                                   x_3400->parent = nullptr;
-                                   x_3400->prev = nullptr;
-                                   x_3400->next = nullptr;
-                                   set_children_relation_x_3401(x_3400);
-                                   return x_3400;
+      IterLines(x_3492, [&](const auto &x_3504) {
+        auto x_3505 = JsonOfString(x_3504);
+        PushStack(x_3497, x_3505);
+        std::string x_5612 = JsonToString(JsonMember(std::string("name"), x_3505));
+        if (x_5612 == "add") {
+          return add_node_x_3509(ListMap(JsonToList(JsonMember(std::string("path"), x_3505)),
+                                         [&](const auto &x_3508) { return JsonToInt(x_3508); }),
+                                 x_3500, [&]() {
+                                   auto x_3506 = json_to_node_aux_x_3486(JsonMember(std::string("node"), x_3505));
+                                   x_3506->parent = nullptr;
+                                   x_3506->prev = nullptr;
+                                   x_3506->next = nullptr;
+                                   set_children_relation_x_3507(x_3506);
+                                   return x_3506;
                                  }());
-        } else if (x_5453 == "recalculate") {
-          recalculate_internal_x_3404(MakeUnit());
-          JsonToChannel(x_3385, [&]() {
-            auto x_5452 = FreshJson();
-            WriteJson(x_5452, std::string("name"), std::string("PQ_D"));
-            WriteJson(x_5452, std::string("diff_num"), ReadRef(x_3387));
-            WriteJson(x_5452, std::string("read_count"), MetricReadCount());
-            WriteJson(x_5452, std::string("meta_read_count"), MetricMetaReadCount());
-            WriteJson(x_5452, std::string("write_count"), MetricWriteCount());
-            WriteJson(x_5452, std::string("meta_write_count"), MetricMetaWriteCount());
-            WriteJson(x_5452, std::string("queue_size_acc"), MetricQueueSizeAcc());
-            WriteJson(x_5452, std::string("input_change_count"), MetricInputChangeCount());
-            WriteJson(x_5452, std::string("output_change_count"), MetricOutputChangeCount());
-            WriteJson(x_5452, std::string("html"), std::string(""));
-            WriteJson(x_5452, std::string("command"), StackToList(x_3391));
-            return x_5452;
+        } else if (x_5612 == "recalculate") {
+          MetricRecordOverhead(Zro(Timed([&](const auto &x_3510) {
+            recalculate_internal_x_3511(MakeUnit());
+            return MakeUnit();
+          })));
+          JsonToChannel(x_3491, [&]() {
+            auto x_5611 = FreshJson();
+            WriteJson(x_5611, std::string("name"), std::string("PQ_D"));
+            WriteJson(x_5611, std::string("diff_num"), ReadRef(x_3493));
+            WriteJson(x_5611, std::string("read_count"), MetricReadCount());
+            WriteJson(x_5611, std::string("meta_read_count"), MetricMetaReadCount());
+            WriteJson(x_5611, std::string("write_count"), MetricWriteCount());
+            WriteJson(x_5611, std::string("meta_write_count"), MetricMetaWriteCount());
+            WriteJson(x_5611, std::string("queue_size_acc"), MetricQueueSizeAcc());
+            WriteJson(x_5611, std::string("input_change_count"), MetricInputChangeCount());
+            WriteJson(x_5611, std::string("output_change_count"), MetricOutputChangeCount());
+            WriteJson(x_5611, std::string("overhead_time"), MetricOverheadCount());
+            WriteJson(x_5611, std::string("eval_time"), MetricEvalCount());
+            WriteJson(x_5611, std::string("html"), std::string(""));
+            WriteJson(x_5611, std::string("command"), StackToList(x_3497));
+            return x_5611;
           }());
-          OutputString(x_3385, std::string("\n"));
-          ClearStack(x_3391);
-          WriteRef(x_3387, IntAdd(ReadRef(x_3387), static_cast<int64_t>(1)));
+          OutputString(x_3491, std::string("\n"));
+          ClearStack(x_3497);
+          WriteRef(x_3493, IntAdd(ReadRef(x_3493), static_cast<int64_t>(1)));
           ResetMetric();
           return MakeUnit();
-        } else if (x_5453 == "remove") {
-          return remove_node_x_3406(ListMap(JsonToList(JsonMember(std::string("path"), x_3399)),
-                                            [&](const auto &x_3405) { return JsonToInt(x_3405); }),
-                                    x_3394, MakeUnit());
-        } else if (x_5453 == "replace") {
-          return replace_node_x_3410(ListMap(JsonToList(JsonMember(std::string("path"), x_3399)),
-                                             [&](const auto &x_3409) { return JsonToInt(x_3409); }),
-                                     x_3394, [&]() {
-                                       auto x_3407 = json_to_node_aux_x_3380(JsonMember(std::string("node"), x_3399));
-                                       x_3407->parent = nullptr;
-                                       x_3407->prev = nullptr;
-                                       x_3407->next = nullptr;
-                                       set_children_relation_x_3408(x_3407);
-                                       return x_3407;
+        } else if (x_5612 == "remove") {
+          return remove_node_x_3513(ListMap(JsonToList(JsonMember(std::string("path"), x_3505)),
+                                            [&](const auto &x_3512) { return JsonToInt(x_3512); }),
+                                    x_3500, MakeUnit());
+        } else if (x_5612 == "replace") {
+          return replace_node_x_3517(ListMap(JsonToList(JsonMember(std::string("path"), x_3505)),
+                                             [&](const auto &x_3516) { return JsonToInt(x_3516); }),
+                                     x_3500, [&]() {
+                                       auto x_3514 = json_to_node_aux_x_3486(JsonMember(std::string("node"), x_3505));
+                                       x_3514->parent = nullptr;
+                                       x_3514->prev = nullptr;
+                                       x_3514->next = nullptr;
+                                       set_children_relation_x_3515(x_3514);
+                                       return x_3514;
                                      }());
-        } else if (x_5453 == "replace_value") {
-          return replace_value_x_3412(ListMap(JsonToList(JsonMember(std::string("path"), x_3399)),
-                                              [&](const auto &x_3411) { return JsonToInt(x_3411); }),
-                                      x_3394,
-                                      MakePair(MakePair(JsonToString(JsonMember(std::string("type"), x_3399)),
-                                                        JsonToString(JsonMember(std::string("key"), x_3399))),
-                                               JsonToValue(JsonMember(std::string("value"), x_3399))));
-        } else if (x_5453 == "delete_value") {
-          return delete_value_x_3414(ListMap(JsonToList(JsonMember(std::string("path"), x_3399)),
-                                             [&](const auto &x_3413) { return JsonToInt(x_3413); }),
-                                     x_3394,
-                                     MakePair(JsonToString(JsonMember(std::string("type"), x_3399)),
-                                              JsonToString(JsonMember(std::string("key"), x_3399))));
-        } else if (x_5453 == "insert_value") {
-          return insert_value_x_3416(ListMap(JsonToList(JsonMember(std::string("path"), x_3399)),
-                                             [&](const auto &x_3415) { return JsonToInt(x_3415); }),
-                                     x_3394,
-                                     MakePair(MakePair(JsonToString(JsonMember(std::string("type"), x_3399)),
-                                                       JsonToString(JsonMember(std::string("key"), x_3399))),
-                                              JsonToValue(JsonMember(std::string("value"), x_3399))));
-        } else if (x_5453 == "layout_remove") {
-          return remove_layout_node_x_3418(ListMap(JsonToList(JsonMember(std::string("path"), x_3399)),
-                                                   [&](const auto &x_3417) { return JsonToInt(x_3417); }),
-                                           x_3395, MakeUnit());
-        } else if (x_5453 == "layout_add") {
-          return add_layout_node_x_3420(ListMap(JsonToList(JsonMember(std::string("path"), x_3399)),
-                                                [&](const auto &x_3419) { return JsonToInt(x_3419); }),
-                                        x_3395, json_to_layout_node_x_3382(JsonMember(std::string("node"), x_3399)));
-        } else if (x_5453 == "layout_replace") {
-          return replace_layout_node_x_3422(ListMap(JsonToList(JsonMember(std::string("path"), x_3399)),
-                                                    [&](const auto &x_3421) { return JsonToInt(x_3421); }),
-                                            x_3395,
-                                            json_to_layout_node_x_3382(JsonMember(std::string("node"), x_3399)));
-        } else if (x_5453 == "layout_info_changed") {
+        } else if (x_5612 == "replace_value") {
+          return replace_value_x_3519(ListMap(JsonToList(JsonMember(std::string("path"), x_3505)),
+                                              [&](const auto &x_3518) { return JsonToInt(x_3518); }),
+                                      x_3500,
+                                      MakePair(MakePair(JsonToString(JsonMember(std::string("type"), x_3505)),
+                                                        JsonToString(JsonMember(std::string("key"), x_3505))),
+                                               JsonToValue(JsonMember(std::string("value"), x_3505))));
+        } else if (x_5612 == "delete_value") {
+          return delete_value_x_3521(ListMap(JsonToList(JsonMember(std::string("path"), x_3505)),
+                                             [&](const auto &x_3520) { return JsonToInt(x_3520); }),
+                                     x_3500,
+                                     MakePair(JsonToString(JsonMember(std::string("type"), x_3505)),
+                                              JsonToString(JsonMember(std::string("key"), x_3505))));
+        } else if (x_5612 == "insert_value") {
+          return insert_value_x_3523(ListMap(JsonToList(JsonMember(std::string("path"), x_3505)),
+                                             [&](const auto &x_3522) { return JsonToInt(x_3522); }),
+                                     x_3500,
+                                     MakePair(MakePair(JsonToString(JsonMember(std::string("type"), x_3505)),
+                                                       JsonToString(JsonMember(std::string("key"), x_3505))),
+                                              JsonToValue(JsonMember(std::string("value"), x_3505))));
+        } else if (x_5612 == "layout_remove") {
+          return remove_layout_node_x_3525(ListMap(JsonToList(JsonMember(std::string("path"), x_3505)),
+                                                   [&](const auto &x_3524) { return JsonToInt(x_3524); }),
+                                           x_3501, MakeUnit());
+        } else if (x_5612 == "layout_add") {
+          return add_layout_node_x_3527(ListMap(JsonToList(JsonMember(std::string("path"), x_3505)),
+                                                [&](const auto &x_3526) { return JsonToInt(x_3526); }),
+                                        x_3501, json_to_layout_node_x_3488(JsonMember(std::string("node"), x_3505)));
+        } else if (x_5612 == "layout_replace") {
+          return replace_layout_node_x_3529(ListMap(JsonToList(JsonMember(std::string("path"), x_3505)),
+                                                    [&](const auto &x_3528) { return JsonToInt(x_3528); }),
+                                            x_3501,
+                                            json_to_layout_node_x_3488(JsonMember(std::string("node"), x_3505)));
+        } else if (x_5612 == "layout_info_changed") {
           return OutputChangeMetric(static_cast<int64_t>(1));
         } else {
           Panic();

@@ -14,7 +14,7 @@ let is_pure_function f =
   | "InputChangeMetric" | "OutputChangeMetric" | "PrintEndline" | "WriteMetric" | "HashtblAddExn" | "HashtblForceRemove"
   | "PushStack" | "Assert" | "IterLines" | "JsonToChannel" | "OutputString" | "ResetMetric" | "ClearStack" | "WriteRef"
   | "ReadMetric" | "HashtblSet" | "WriteJson" | "MetaReadMetric" | "MetaWriteMetric" | "RemoveMeta" | "NextTotalOrder"
-  | "QueuePop" | "MetricQueueSize" ->
+  | "QueuePop" | "MetricQueueSize" | "MetricRecordOverhead" ->
       false
   | "MakeUnit" | "ListIsEmpty" | "IntEqual" | "ListLength" | "ListSplitN" | "Zro" | "Fst" | "FreshMetric" | "Cons"
   | "Nil" | "IsNone" | "HashtblFind" | "UnSome" | "ListLast" | "JsonMember" | "ListMatch" | "OptionIter" | "OptionMatch"
@@ -92,10 +92,15 @@ let rec simplify (p : prog) x =
       ( CPF
           (( "WriteMetric" | "MetricWriteCount" | "MetaWriteMetric" | "MetricQueueSizeAcc" | "MetricMetaReadCount"
            | "MetricMetaWriteCount" | "MetricOutputChangeCount" | "MetricInputChangeCount" | "MetricReadCount"
-           | "ResetMetric" | "MetaReadMetric" ) as f),
+           | "ResetMetric" | "MetaReadMetric" | "MetricOverheadCount" | "MetricEvalCount" ) as f),
         [ _ ] ) ->
       CApp (CPF f, [])
-  | CApp (CPF (("OutputChangeMetric" | "InputChangeMetric" | "MetricQueueSize") as f), [ _; i ]) -> CApp (CPF f, [ i ])
+  | CApp
+      ( CPF
+          (("OutputChangeMetric" | "InputChangeMetric" | "MetricQueueSize" | "MetricRecordOverhead" | "MetricRecordEval")
+          as f),
+        [ _; i ] ) ->
+      CApp (CPF f, [ i ])
   | CApp (CPF (("QueuePush" | "QueueForcePush") as f), [ a; b; c; _ ]) -> CApp (CPF f, [ a; b; c ])
   | CApp (CFun ([ xname ], body), [ x ]) -> CLet (xname, x, body)
   | CIf (i, CApp (CPF "MakeUnit", []), CApp (CPF "MakeUnit", [])) -> CSeq [ i; CApp (CPF "MakeUnit", []) ]
