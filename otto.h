@@ -46,14 +46,12 @@ private:
 
     friend inline bool operator<(const _l2_node &l, const _l2_node &r)
     {
-      if (l.parent->label == r.parent->label)
-      {
-        return l.label < r.label;
-      }
-      else
-      {
-        return l.parent->label < r.parent->label;
-      }
+      Label lpl = l.parent->label;
+      Label rpl = r.parent->label;
+      Label result1 = static_cast<Label>(l.label < r.label);
+      Label result2 = static_cast<Label>(lpl < rpl);
+      Label mask1 = static_cast<Label>(lpl == rpl) - 1;
+      return (result1 & ~mask1) | (result2 & mask1);
     }
   };
 
@@ -269,7 +267,16 @@ private:
     for (auto it = lo; it != hi; )
     {
       auto old = it;
-      it = succ(it).value();
+      auto next = succ(it);
+      if (next)
+      {
+        it = next.value();
+      }
+      else
+      {
+        // we reached the end?
+        it = hi;
+      }
       remove(old);
     }
   }
