@@ -101,7 +101,7 @@ private:
       }
 
       density = static_cast<double>(range_count) / (label_mask + 1);
-      if (density < tau || (label_mask >> (_label_bits - 1)) & 1 == 1)
+      if (density < tau || ((label_mask >> (_label_bits - 1)) & 1) == 1)
       {
         // we found the smallest tag-range that is not in overflow
         // or we have reached the top and have to stop here :(

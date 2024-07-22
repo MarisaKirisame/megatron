@@ -115,26 +115,6 @@ std::string JsonToString(const json &j) { return j.template get<std::string>(); 
 int64_t JsonToInt(const json &j) { return j.template get<int64_t>(); }
 bool StringEqual(const std::string &l, const std::string &r) { return l == r; }
 #define Assert assert
-struct Value {
-  std::variant<int64_t, double, bool, std::string> v;
-};
-Value JsonToValue(const json &j) {
-  if (j.is_string()) {
-    return Value(JsonToString(j));
-  } else if (j.is_number_integer()) {
-    return Value(JsonToInt(j));
-  } else {
-    std::cout << "JsonToValue:" << std::endl;
-    assert(false);
-  }
-}
-std::unordered_map<std::string, Value> JsonToDict(const json &j) {
-  std::unordered_map<std::string, Value> ret;
-  for (auto &[key, val] : j.items()) {
-    ret.insert({key, JsonToValue(val)});
-  }
-  return ret;
-}
 template <typename T> struct ListNode {
   virtual ~ListNode() {}
 };
@@ -360,8 +340,9 @@ template <typename T> T minus(T x, T y) { return x - y; }
 template <typename T> T mult(T x, T y) { return x * y; }
 template <typename T> T divide(T x, T y) { return x / y; }
 template <typename T> bool gt(T x, T y) { return x > y; }
-double string_to_float(const std::string &x) { return std::stod(x); }
-bool string_is_float(const std::string &x) {
+double int_to_float(int64_t x) { return static_cast<double>(x); }
+double std_string_to_float(const std::string &x) { return std::stod(x); }
+bool std_string_is_float(const std::string &x) {
   try {
     std::stod(x);
     return true;
@@ -369,17 +350,19 @@ bool string_is_float(const std::string &x) {
     return false;
   }
 }
-double int_to_float(int64_t x) { return static_cast<double>(x); }
-std::string strip_suffix(const std::string &str, const std::string &sfx) {
+std::string std_strip_suffix(const std::string &str, const std::string &sfx) {
   return str.substr(0, str.size() - sfx.size());
 }
-bool has_suffix(const std::string &str, const std::string &sfx) {
+bool std_has_suffix(const std::string &str, const std::string &sfx) {
   return str.size() >= sfx.size() && str.substr(str.size() - sfx.size(), sfx.size()) == sfx;
 }
-bool has_prefix(const std::string &str, const std::string &pfx) {
+std::string std_strip_prefix(const std::string &str, const std::string &pfx) {
+  return str.substr(pfx.size(), str.size() - pfx.size());
+}
+bool std_has_prefix(const std::string &str, const std::string &pfx) {
   return str.size() >= pfx.size() && str.substr(0, pfx.size()) == pfx;
 }
-std::string nth_by_sep(const std::string &str, const std::string &sep, int64_t nth) {
+std::string std_nth_by_sep(const std::string &str, const std::string &sep, int64_t nth) {
   std::stringstream test(str);
   std::string segment;
   assert(sep.size() == 1);

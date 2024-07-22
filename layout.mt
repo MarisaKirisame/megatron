@@ -200,7 +200,7 @@ proc pass_0() {
       (self.width_expr = "auto") ||
       has_suffix(self.width_expr, "px") ||
       has_suffix(self.width_expr, "ch") ||
-      has_prefix(self.width_expr, "calc(") ||
+      has_prefix(self.width_expr, "calc") ||
       (self.width_expr = "max-content")
     then true
     else if has_suffix(self.width_expr, "%") || self.width_expr = "fit-content"

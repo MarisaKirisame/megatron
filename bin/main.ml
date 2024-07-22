@@ -20,6 +20,35 @@ Out_channel.newline stdout
 
 let prog = prog_of_prog_def prog_def
 
+let rec destring_expr e : destringed list =
+  match e with
+  | String x -> [ DString x ]
+  | Call (HasSuffix, [ x; String y ]) -> DHasSuffix y :: destring_expr x
+  | Call (HasPrefix, [ x; String y ]) -> DHasPrefix y :: destring_expr x
+  | Call (StringIsFloat, [ x ]) -> DStringIsFloat :: destring_expr x
+  | Call (StringToFloat, [ Call (NthBySep, [ x; String y; z ]) ]) ->
+      DFloatBySep y :: List.append (destring_expr x) (destring_expr z)
+  | Call (StringToFloat, [ x ]) -> DStringToFloat :: destring_expr x
+  | Call (StripSuffix, [ x; String y ]) -> DStripSuffix y :: destring_expr x
+  | GetProperty _ | HasProperty _ | Float _ | Read _ | HasPath _ | Bool _ | GetAttribute _ | HasAttribute _ | GetName
+  | Int _ | Panic _ ->
+      (*we do not compile panic in C++*)
+      []
+  | Call ((IntToFloat | Plus | Eq | Not | Neq | Mult | Div | Max | Minus | Gt), xs) ->
+      List.concat_map xs ~f:destring_expr
+  | Or (x, y) | And (x, y) -> List.append (destring_expr x) (destring_expr y)
+  | IfExpr (i, t, e) -> List.append (destring_expr i) (List.append (destring_expr t) (destring_expr e))
+  | _ -> Megatron.Common.panic (show_expr e)
+
+let destring_stmt s : destringed list =
+  match s with Write (_, e) -> destring_expr e | _ -> Megatron.Common.panic (show_stmt s)
+
+let ds =
+  List.dedup_and_sort
+    (List.concat_map (Hashtbl.to_alist prog.bbs) ~f:(fun (_, BasicBlock (_, stmts)) ->
+         List.concat_map stmts ~f:destring_stmt))
+    ~compare:compare_destringed
+
 let shell cmd =
   let in_channel = Core_unix.open_process_in cmd in
   In_channel.iter_lines in_channel ~f:(fun str -> print_endline str);
@@ -589,7 +618,7 @@ module Main (EVAL : Eval) = struct
     let compiled_file_name = "Layout" ^ name ^ ".cpp" in
 
     let c = Stdio.Out_channel.create compiled_file_name in
-    compile prog (defs ()) (undyn main) (EVAL.meta_defs prog) c;
+    compile prog (defs ()) (undyn main) (EVAL.meta_defs prog) ds c;
     Stdio.Out_channel.close c;
 
     shell ("clang-format-18 --style=file -i " ^ compiled_file_name);

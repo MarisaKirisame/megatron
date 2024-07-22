@@ -2,7 +2,9 @@
  (public_name megatron)
  (name main)
  (modes byte exe)
- (libraries megatron core yojson core_unix.sys_unix unix core_unix))
+ (libraries megatron core yojson core_unix.sys_unix unix core_unix)
+ (preprocess
+  (pps ppx_deriving.show ppx_deriving.ord ppx_hash ppx_compare ppx_sexp_conv)))
 
 (menhir
  (modules parser))

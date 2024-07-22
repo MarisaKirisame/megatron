@@ -77,6 +77,16 @@ type stmt = BBCall of string | ChildrenCall of string | Write of string * expr
 
 type stmts = stmt list [@@deriving show, hash, compare, sexp_of]
 
+type destringed =
+  | DString of string
+  | DHasSuffix of string
+  | DStringIsFloat
+  | DHasPrefix of string
+  | DStringToFloat
+  | DFloatBySep of string
+  | DStripSuffix of string
+[@@deriving show, hash, compare, sexp]
+
 let rec resolve (x : type_expr) : type_expr =
   match x with
   | TVar x_ -> (

@@ -10,7 +10,7 @@ let compile_type_expr ty =
   match resolve ty with
   | TInt -> "int64_t"
   | TBool -> "bool"
-  | TString -> "std::string"
+  | TString -> "DEString"
   | TFloat -> "double"
   | _ -> panic (show_type_expr ty)
 

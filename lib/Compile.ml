@@ -9,6 +9,11 @@ let truncate_length = 120
 let truncate str = if String.length str <= truncate_length then str else String.sub str ~pos:0 ~len:truncate_length
 let is_absolutely_pure_function f = match f with "Cons" -> true | _ -> false
 
+let replace (s : string) (from : string) (into : string) =
+  String.Search_pattern.replace_all (String.Search_pattern.create from) ~in_:s ~with_:into
+
+let string_to_cpp (s : string) : string = replace (replace (replace s "#" "SLASH") "-" "_") "%" "PERCENTAGE"
+
 let is_pure_function f =
   match f with
   | "InputChangeMetric" | "OutputChangeMetric" | "PrintEndline" | "WriteMetric" | "HashtblAddExn" | "HashtblForceRemove"
@@ -76,10 +81,27 @@ let rec simplify (p : prog) x =
       CLet (v, f, CIf (i, CApp (CPF "ListIter", [ t; CVar v ]), CApp (CPF "ListIter", [ e; CVar v ])))
   | CApp (CPF "UnSome", [ CApp (CPF "Some", [ x ]) ]) -> x
   | CApp (CPF "UnSome", [ CApp (CPF "HashtblFind", [ x; y ]) ]) -> CApp (CPF "HashtblFindExn", [ x; y ])
-  | CApp (CPF "HashtblFindExn", [ CGetMember (x, "var"); CString f ]) -> CGetMember (x, "var_" ^ f)
-  | CApp (CPF "HashtblContain", [ CGetMember (x, "var"); CString f ]) -> CGetMember (x, "has_var_" ^ f)
-  | CApp (CPF "HashtblSet", [ CGetMember (x, "var"); CString f; v ]) ->
-      CSeq [ CSetMember (x, "has_var_" ^ f, CBool true); CSetMember (x, "var_" ^ f, v) ]
+  | CApp (CPF "HashtblFindExn", [ CGetMember (x, (("var" | "prop" | "attr") as tbl)); CString f ]) ->
+      CGetMember (x, tbl ^ "_" ^ string_to_cpp f)
+  | CApp (CPF "HashtblContain", [ CGetMember (x, (("var" | "prop" | "attr") as tbl)); CString f ]) ->
+      CGetMember (x, "has_" ^ tbl ^ "_" ^ string_to_cpp f)
+  | CApp (CPF ("HashtblSet" | "HashtblAddExn"), [ CGetMember (x, (("var" | "prop" | "attr") as tbl)); CString f; v ]) ->
+      let type_ =
+        compile_type_expr
+          (Hashtbl.find_exn
+             (match tbl with
+             | "var" -> p.tyck_env.var_type
+             | "attr" -> p.tyck_env.attr_type
+             | "prop" -> p.tyck_env.prop_type)
+             f)
+      in
+      CSeq
+        [
+          CSetMember (x, "has_" ^ tbl ^ "_" ^ string_to_cpp f, CBool true);
+          CSetMember (x, tbl ^ "_" ^ string_to_cpp f, CApp (CPF ("As" ^ type_), [ v ]));
+        ]
+  | CApp (CPF "HashtblForceRemove", [ CGetMember (x, (("var" | "prop" | "attr") as tbl)); CString f ]) ->
+      CSetMember (x, "has_" ^ tbl ^ "_" ^ string_to_cpp f, CBool false)
   | CApp (CPF "HashtblContain", [ CGetMember (x, "BBTimeTable"); CString f ]) ->
       CApp (CPF "IsSome", [ CGetMember (x, f ^ "_bb_time_table") ])
   | CApp (CPF "HashtblFindExn", [ CGetMember (x, "BBTimeTable"); CString f ]) ->
@@ -107,13 +129,7 @@ let rec simplify (p : prog) x =
   | CApp (CPF "HashtblFindExn", [ CGetMember (x, "BBDirtied"); CString f ]) -> CGetMember (x, f ^ "_bb_dirtied")
   | CApp (CPF ("HashtblSet" | "HashtblAddExn"), [ CGetMember (x, "BBDirtied"); CString f; v ]) ->
       CSeq [ CSetMember (x, f ^ "_has_bb_dirtied", CBool true); CSetMember (x, f ^ "_bb_dirtied", v) ]
-  | CApp (CPF "HashtblFindExn", [ CGetMember (x, "prop"); CString f ]) ->
-      CApp (CPF ("GetProp" ^ angle_bracket (compile_type_expr (prop_from_tyck_env p.tyck_env f))), [ x; CString f ])
   | CApp (CPF "IsSome", [ CApp (CPF "HashtblFind", [ x; y ]) ]) -> CApp (CPF "HashtblContain", [ x; y ])
-  | CApp (CPF "HashtblContain", [ CGetMember (x, "prop"); CString f ]) -> CApp (CPF "HasProp", [ x; CString f ])
-  | CApp (CPF "HashtblFindExn", [ CGetMember (x, "attr"); CString f ]) ->
-      CApp (CPF ("GetAttr" ^ angle_bracket (compile_type_expr (attr_from_tyck_env p.tyck_env f))), [ x; CString f ])
-  | CApp (CPF "HashtblContain", [ CGetMember (x, "attr"); CString f ]) -> CApp (CPF "HasAttr", [ x; CString f ])
   | CApp (CPF ("BoolOfValue" | "VBool" | "VString" | "VFloat" | "VInt"), [ x ]) -> x
   | CApp
       ( CPF
@@ -304,6 +320,85 @@ and compile_expr c x =
       output_string c "[&](){";
       compile_stmt c x;
       output_string c "}()"
+  | CApp (CPF (("PrintEndline" | "MakeRecomputeBB" | "MakeRecomputeProc") as f), [ CString x ]) -> output_string c (f ^ bracket (quoted x))
+  | CApp (CPF (("StringEqual" | "OutputString") as f), [ x; CString y ]) ->
+      output_string c f;
+      output_string c "(";
+      compile_expr c x;
+      output_string c ",";
+      output_string c (quoted y);
+      output_string c ")"
+  | CApp (CPF "JsonMember", [ CString x; y ]) ->
+      output_string c "JsonMember(";
+      output_string c (quoted x);
+      output_string c ",";
+      compile_expr c y;
+      output_string c ")"
+  | CApp (CPF "WriteJson", [ x; CString y; CString z ]) ->
+      output_string c "WriteJson(";
+      compile_expr c x;
+      output_string c ",";
+      output_string c (quoted y);
+      output_string c ",";
+      output_string c (quoted z);
+      output_string c ")"
+  | CApp (CPF "WriteJson", [ x; CString y; z ]) ->
+      output_string c "WriteJson(";
+      compile_expr c x;
+      output_string c ",";
+      output_string c (quoted y);
+      output_string c ",";
+      compile_expr c z;
+      output_string c ")"
+  | CApp (CPF "WithInFile", [ CString x; y ]) ->
+      output_string c "WithInFile(";
+      output_string c (quoted x);
+      output_string c ",";
+      compile_expr c y;
+      output_string c ")"
+  | CApp (CPF "WithOutFile", [ CString x; y ]) ->
+      output_string c "WithOutFile(";
+      output_string c (quoted x);
+      output_string c ",";
+      compile_expr c y;
+      output_string c ")"
+  | CApp (CPF "string_to_float", [ CApp (CPF "strip_suffix", [ x; _ ]) ]) ->
+      compile_expr c x;
+      output_string c ".r.a0"
+  | CApp (CPF "has_suffix", [ x; CString f ]) ->
+      output_string c "(";
+      compile_expr c x;
+      output_string c ".c == ";
+      output_string c ("DEStringCase::DHasSuffix_" ^ string_to_cpp f);
+      output_string c ")"
+  | CApp (CPF "has_prefix", [ x; CString f ]) ->
+      output_string c "(";
+      compile_expr c x;
+      output_string c ".c == ";
+      output_string c ("DEStringCase::DHasPrefix_" ^ string_to_cpp f);
+      output_string c ")"
+  | CApp (CPF "string_is_float", [ x ]) ->
+      output_string c "(";
+      compile_expr c x;
+      output_string c ".c == ";
+      output_string c "DEStringCase::DStringIsFloat";
+      output_string c ")"
+  | CApp (CPF "string_to_float", [ CApp (CPF "nth_by_sep", [ x; CString " "; CInt i ]) ]) ->
+      output_string c "(";
+      compile_expr c x;
+      output_string c (".r.a" ^ string_of_int i);
+      output_string c ")"
+  | CApp (CPF "string_to_float", [ x ]) ->
+      output_string c "(";
+      compile_expr c x;
+      output_string c ".r.a0";
+      output_string c ")"
+  | CApp (CPF (("HashtblFindExn" | "HashtblContain") as func), [ h; CString f ]) ->
+      output_string c (func ^ "(");
+      compile_expr c h;
+      output_string c ", ";
+      output_string c (quoted f);
+      output_string c ")"
   | CApp (CPF "IsSome", [ CGetMember (x, (("parent" | "prev" | "next" | "first" | "last") as y)) ]) ->
       output_string c "(";
       compile_expr c x;
@@ -345,7 +440,7 @@ and compile_expr c x =
       compile_expr c x;
       output_string c ")"
   | CPanic xs -> output_string c "Panic()"
-  | CString str -> output_string c ("std::string" ^ bracket (quoted str))
+  | CString str -> output_string c ("DEStringLit" ^ bracket ("DEStringCase::DSTRING_" ^ string_to_cpp str))
   | CGetMember (x, (("n" | "rf") as f)) ->
       compile_expr c x;
       output_string c ("." ^ f)
@@ -387,51 +482,102 @@ let compile_def prog c (ret_type, name, x) =
       output_string c ";"
   | _ -> Common.panic ("compile_def:" ^ truncate (show_code x))
 
-let compile_field name type_expr =
-  compile_type_expr type_expr ^ " var_" ^ name ^ ";" ^ "bool " ^ "has_var_" ^ name ^ " = false;"
+let compile_field tbl name type_expr =
+  compile_type_expr type_expr ^ " " ^ tbl ^ "_" ^ string_to_cpp name ^ ";" ^ "bool " ^ "has_" ^ tbl ^ "_"
+  ^ string_to_cpp name ^ " = false;"
 
-let compile_typedef (env : tyck_env) meta_defs : string =
-  " struct MetaNode{\n " ^ meta_defs
-  ^ "};\n\
-    \ using Meta = std::shared_ptr<MetaNode>;\n\
-    \   struct Content : std::enable_shared_from_this<Content> {\n\
-    \    Content* parent = nullptr;\n\
+let compile_constructor tbl name type_expr =
+  "if(" ^ tbl ^ ".count(" ^ quoted name ^ ")==1){" ^ "has_" ^ tbl ^ "_" ^ string_to_cpp name ^ " = true;" ^ tbl ^ "_"
+  ^ string_to_cpp name ^ "=As" ^ compile_type_expr type_expr ^ "(" ^ tbl ^ ".at(" ^ quoted name ^ "));}"
+
+let compile_destring_case (d : destringed) : string =
+  match d with
+  | DString d -> "DSTRING_" ^ string_to_cpp d ^ ","
+  | DHasSuffix d -> "DHasSuffix_" ^ string_to_cpp d ^ ","
+  | DHasPrefix d -> "DHasPrefix_" ^ string_to_cpp d ^ ","
+  | DStringIsFloat -> "DStringIsFloat" ^ ","
+  | DStringToFloat | DFloatBySep _ | DStripSuffix _ -> ""
+  | _ -> panic (show_destringed d)
+
+let compile_to_destring_case (d : destringed) : string =
+  match d with
+  | DString d -> "if (str ==" ^ quoted d ^ "){return DEStringLit(DEStringCase::DSTRING_" ^ string_to_cpp d ^ ");}"
+  | DHasSuffix d ->
+      "if (std_has_suffix(str," ^ quoted d ^ ")){return DEString{DEStringCase::DHasSuffix_" ^ string_to_cpp d
+      ^ ",StringToDEStringRest(std_strip_suffix(str," ^ quoted d ^ "))};}"
+  | DHasPrefix d ->
+      "if (std_has_prefix(str," ^ quoted d ^ ")){return DEString{DEStringCase::DHasPrefix_" ^ string_to_cpp d
+      ^ ",StringToDEStringRest(std_strip_prefix(str," ^ quoted d ^ "))};}"
+  | DStringIsFloat ->
+      "if (std_string_is_float(str)){ return DEString{DEStringCase::DStringIsFloat, StringToDEStringRest(str)}; }"
+  | DStringToFloat | DFloatBySep _ | DStripSuffix _ -> ""
+  | _ -> panic (show_destringed d)
+
+let compile_typedef (env : tyck_env) meta_defs (ds : destringed list) : string =
+  "enum class DEStringCase { DEStringCaseDefault, "
+  ^ String.concat (List.map ds ~f:compile_destring_case)
+  ^ "};" ^ "struct DEStringRest{ double a0 = 0, a1 = 0, a2 = 0, a3 = 0;" ^ "};"
+  ^ "struct DEString { DEStringCase c; DEStringRest r; };" ^ " struct MetaNode{\n " ^ meta_defs ^ "};\n"
+  ^ "\n struct Value {\n   std::variant<int64_t, double, bool, DEString> v;\n };\n"
+  ^ "\n         DEString DEStringLit(DEStringCase c) {\n   DEString des;\n   des.c = c;\n   return des;\n }\n "
+  ^ "bool Asbool(const bool &b) { return b; }\n\
+    \  bool Asbool(const Value &v) { return std::get<bool>(v.v); }\n\
+    \  DEString AsDEString(const DEString &d) { return d; }\n\
+    \  DEString AsDEString(const Value &v) { return std::get<DEString>(v.v); }\n\
+    \  double Asdouble(const double &d) { return d; }\n\
+    \  double Asdouble(const Value &v) { return std::get<double>(v.v); }\n\
+    \  int64_t Asint64_t(const int64_t &i) { return i; }\n\
+    \  int64_t Asint64_t(const Value &v) { return std::get<int64_t>(v.v); }"
+  ^ " DEStringRest StringToDEStringRest(const std::string& str);\n DEString StringToDEString(const std::string& str) {"
+  ^ String.concat (List.map ds ~f:compile_to_destring_case)
+  ^ "return DEStringLit(DEStringCase::DEStringCaseDefault);}\n\
+    \     Value JsonToValue(const json &j) {\n\
+    \   if (j.is_string()) {\n\
+    \     return Value(StringToDEString(JsonToString(j)));\n\
+    \   } else if (j.is_number_integer()) {\n\
+    \     return Value(JsonToInt(j));\n\
+    \   } else {\n\
+    \     std::cout << \"JsonToValue:\" << std::endl;\n\
+    \     assert(false);\n\
+    \   }\n\
+    \ }\n\
+     std::unordered_map<std::string, Value> JsonToDict(const json &j) {\n\
+    \  std::unordered_map<std::string, Value> ret;\n\
+    \  for (auto &[key, val] : j.items()) {\n\
+    \    ret.insert({key, JsonToValue(val)});\n\
+    \  }\n\
+    \  return ret;\n\
+     }\n\n\
+    \  using Meta = std::shared_ptr<MetaNode>;\n\
+    \  struct Content : std::enable_shared_from_this<Content> {\n\
+    \   Content* parent = nullptr;\n\
     \    Content* prev = nullptr;\n\
     \    Content* next = nullptr;\n\
     \    Content* first = nullptr;\n\
     \    Content* last = nullptr;\n\
     \    int64_t extern_id;\n\
     \    List<Node> children;\n\
-    \    std::string name;\n\
-    \    std::unordered_map<std::string, Value> attr;\n\
-    \    std::unordered_map<std::string, Value> prop;\n\
+    \    DEString name;\n\
     \    Meta meta = std::make_shared<MetaNode>();\n\
-    \    Content(const std::string& name,\n\
-    \            std::unordered_map<std::string, Value>&& attr,\n\
-    \            std::unordered_map<std::string, Value>&& prop,\n\
-    \            int64_t extern_id, \n\
-    \            const List<Node>& children) :\n\
-    \            name(name),\n\
-    \            attr(std::move(attr)), \n\
-    \            prop(std::move(prop)), \n\
-    \            extern_id(extern_id), \n\
-    \            children(children) { }\n\
-    \    Content(const std::string& name,\n\
+    \    Content(const DEString& name,\n\
     \            const std::unordered_map<std::string, Value>& attr,\n\
     \            const std::unordered_map<std::string, Value>& prop,\n\
     \            int64_t extern_id, \n\
     \            const List<Node>& children) :\n\
     \            name(name),\n\
-    \            attr(attr), \n\
-    \            prop(prop), \n\
     \            extern_id(extern_id), \n\
-    \            children(children) { }"
-  ^ String.concat (List.map (Hashtbl.to_alist env.var_type) ~f:(fun (x, y) -> compile_field x y))
+    \            children(children) { "
+  ^ String.concat (List.map (Hashtbl.to_alist env.attr_type) ~f:(fun (x, y) -> compile_constructor "attr" x y))
+  ^ String.concat (List.map (Hashtbl.to_alist env.prop_type) ~f:(fun (x, y) -> compile_constructor "prop" x y))
+  ^ " }"
+  ^ String.concat (List.map (Hashtbl.to_alist env.var_type) ~f:(fun (x, y) -> compile_field "var" x y))
+  ^ String.concat (List.map (Hashtbl.to_alist env.attr_type) ~f:(fun (x, y) -> compile_field "attr" x y))
+  ^ String.concat (List.map (Hashtbl.to_alist env.prop_type) ~f:(fun (x, y) -> compile_field "prop" x y))
   ^ "};"
 
-let compile (prog : prog) defs main meta_defs c : unit =
+let compile (prog : prog) defs main meta_defs (ds : destringed list) c : unit =
   Stdio.Out_channel.output_string c "#include \"header.h\"\n";
-  Stdio.Out_channel.output_string c (compile_typedef prog.tyck_env meta_defs);
+  Stdio.Out_channel.output_string c (compile_typedef prog.tyck_env meta_defs ds);
   Stdio.Out_channel.output_string c "\n";
   Stdio.Out_channel.output_string c "#include \"header_continued.h\"\n";
   List.iter defs (compile_forward_def prog c);
