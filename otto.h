@@ -127,8 +127,7 @@ private:
     Label incr = (label_mask + 1) / range_count;
 
     // possibly overflowing check
-    assert(incr != 0);
-    assert(range_count != 0);
+    assert(incr != 0 && range_count != 0);
 
     while (true)
     {
@@ -281,21 +280,10 @@ private:
 
   inline void remove(_l2_iter lo, _l2_iter hi)
   {
-    assert(*lo < *hi);
-
     for (auto it = lo; it != hi;)
     {
       auto old = it;
-      auto next = succ(it);
-      if (next)
-      {
-        it = next.value();
-      }
-      else
-      {
-        // we reached the end?
-        it = hi;
-      }
+      it = succ(it).value();
       remove(old);
     }
   }
