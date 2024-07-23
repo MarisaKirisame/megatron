@@ -348,6 +348,8 @@ bool std_string_is_float(const std::string &x) {
     return true;
   } catch (const std::invalid_argument &) {
     return false;
+  } catch (const std::out_of_range &) {
+    return false;
   }
 }
 std::string std_strip_suffix(const std::string &str, const std::string &sfx) {
