@@ -95,13 +95,13 @@ private:
       lo_label = base_label & (~label_mask);
       hi_label = lo_label | label_mask;
 
-      while (prev_of(lo)->label >= lo_label && prev_of(lo)->label <= lo->label)
+      while (lo != _l1_nodes.begin() && prev_of(lo)->label >= lo_label && prev_of(lo)->label <= lo->label)
       {
         --lo;
         ++range_count;
       }
 
-      while (next_of(hi)->label <= hi_label && next_of(hi)->label >= hi->label)
+      while (next_of(hi) != _l1_nodes.end() && next_of(hi)->label <= hi_label && next_of(hi)->label >= hi->label)
       {
         ++hi;
         ++range_count;
@@ -124,11 +124,11 @@ private:
     // (ii) relabel
     _l1_iter cur = lo;
     Label label = lo_label;
-    assert(range_count != 0);
     Label incr = (label_mask + 1) / range_count;
 
     // possibly overflowing check
     assert(incr != 0);
+    assert(range_count != 0);
 
     while (true)
     {
@@ -162,9 +162,19 @@ private:
       if (cur2 != cur1->children.end())
       {
         Label prev_label = cur1->label;
-        Label next_label = (next_of(cur1)->label > prev_label) ? next_of(cur1)->label : prev_label + 2;
+        auto next = next_of(cur1);
+        Label next_label = 0;
 
-        _l1_iter new_node = _l1_nodes.emplace(next_of(cur1), std::list<_l2_node>(), prev_label);
+        if (next != _l1_nodes.end() && next->label > prev_label)
+        {
+          next_label = next->label;
+        }
+        else
+        {
+          next_label = prev_label + 2;
+        }
+
+        _l1_iter new_node = _l1_nodes.emplace(next, std::list<_l2_node>(), prev_label);
         new_node->children.splice(new_node->children.end(), cur1->children, cur2, cur1->children.end());
 
         if (prev_label + 1 == next_label)
@@ -271,7 +281,9 @@ private:
 
   inline void remove(_l2_iter lo, _l2_iter hi)
   {
-    for (auto it = lo; it != hi; )
+    assert(*lo < *hi);
+
+    for (auto it = lo; it != hi;)
     {
       auto old = it;
       auto next = succ(it);
