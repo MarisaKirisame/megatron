@@ -53,6 +53,13 @@ private:
       Label mask1 = static_cast<Label>(lpl == rpl) - 1;
       return (result1 & ~mask1) | (result2 & mask1);
     }
+
+    friend inline bool operator==(const _l2_node &l, const _l2_node &r)
+    {
+      Label lpl = l.parent->label;
+      Label rpl = r.parent->label;
+      return lpl == rpl && l.label == r.label;
+    }
   };
 
   std::list<_l1_node> _l1_nodes;
@@ -289,6 +296,11 @@ public:
     friend inline bool operator<(const _l2_iter_wrapper &l, const _l2_iter_wrapper &r)
     {
       return *l.inner < *r.inner;
+    }
+
+    friend inline bool operator==(const _l2_iter_wrapper &l, const _l2_iter_wrapper &r)
+    {
+      return *l.inner == *r.inner;
     }
   };
 
