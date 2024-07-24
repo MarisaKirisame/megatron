@@ -62,6 +62,12 @@ end
 module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
   include EI
 
+  let bracket_call_bb_timed (node: meta node sd) (n: string) (f: unit -> unit sd) (m : metric sd): unit sd =
+    metric_record_overhead m (zro (timed (fun _ -> bracket_call_bb node n f)))
+
+  let bracket_call_proc_timed (node: meta node sd) (n: string) (f: unit -> unit sd) (m : metric sd): unit sd =
+    metric_record_overhead m (zro (timed (fun _ -> bracket_call_proc node n f)))
+  
   let make_node ~(name : string sd) ~(attr : (string, value) Hashtbl.t sd) ~(prop : (string, value) Hashtbl.t sd)
       ~(extern_id : int sd) (children : EI.meta node list sd) : EI.meta node sd =
     if is_static then
@@ -195,11 +201,11 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                      (fun value ->
                        ite (equal_value value new_value) (fun _ -> tt) (fun _ -> var_modified p n var_name m)))
                   (fun _ -> hashtbl_set (node_get_var n) (string var_name) new_value)))
-    | BBCall bb_name -> bracket_call_bb n bb_name (fun _ -> eval_stmts p n (stmts_of_basic_block p bb_name) m)
+    | BBCall bb_name -> bracket_call_bb_timed n bb_name (fun _ -> eval_stmts p n (stmts_of_basic_block p bb_name) m) m
     | ChildrenCall proc_name ->
         list_iter (node_get_children n) (fun new_node ->
-            bracket_call_proc new_node proc_name (fun _ ->
-                eval_stmts p new_node (stmts_of_processed_proc p proc_name) m))
+            bracket_call_proc_timed new_node proc_name (fun _ ->
+                eval_stmts p new_node (stmts_of_processed_proc p proc_name) m) m)
 
   and eval_stmts_aux (p : prog) (n : meta node sd) (s : stmts) (m : metric sd) : unit sd =
     metric_record_eval m (zro (timed (fun _ -> seqs (List.map s ~f:(fun stmt _ -> eval_stmt_aux p n stmt m)))))
@@ -215,7 +221,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
   let eval (p : prog) (n : meta node sd) (m : metric sd) : unit sd =
     seqs
       (List.map p.order (fun proc_name _ ->
-           bracket_call_proc n proc_name (fun _ -> eval_stmts p n (stmts_of_processed_proc p proc_name) m)))
+           bracket_call_proc_timed n proc_name (fun _ -> eval_stmts p n (stmts_of_processed_proc p proc_name) m) m))
 
   let remove_children (p : prog) (x : meta node sd) (n : int sd) (m : metric sd) : unit sd =
     let_
