@@ -17,15 +17,15 @@ Content *ToPath(const std::optional<Node> &opt) {
 Content *ToPath(Content *ptr) { return ptr; }
 struct PQData {
   bool BBOrProc;
-  std::string name;
+  int8_t v;
 };
-PQData MakeRecomputeBB(const std::string &name) { return PQData(true, name); }
-PQData MakeRecomputeProc(const std::string &name) { return PQData(false, name); }
+PQData MakeRecomputeBB(int64_t v) { return PQData(true, v); }
+PQData MakeRecomputeProc(int64_t v) { return PQData(false, v); }
 auto RFMatch(const PQData &rf, const auto &bb, const auto &proc) {
   if (rf.BBOrProc) {
-    return bb(rf.name);
+    return bb(rf.v);
   } else {
-    return proc(rf.name);
+    return proc(rf.v);
   }
 }
 #include <map>

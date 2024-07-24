@@ -21,6 +21,7 @@ type code =
   | CSetMember of code * string * code
   | CPanic of code
   | CStringMatch of code * (string * code) list * code
+  | CIntMatch of code * (int * code) list * code
   | CAnd of code * code
   | COr of code * code
   | CNot of code
@@ -177,6 +178,7 @@ module type SDIN = sig
   val show_node : 'a node sd -> string sd
   val show_value : value sd -> string sd
   val string_match : string sd -> (string * (unit -> 'a sd)) list -> (unit -> 'a sd) -> 'a sd
+  val int_match : int sd -> (int * (unit -> 'a sd)) list -> (unit -> 'a sd) -> 'a sd
   val list_match : 'a list sd -> (unit -> 'b sd) -> ('a sd -> 'a list sd -> 'b sd) -> 'b sd
   val list_split_n : 'a list sd -> int sd -> ('a list * 'a list) sd
   val list_int_sum : 'a list sd -> ('a sd -> int sd) -> int sd
@@ -490,6 +492,9 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
     | (chs, chc) :: ct -> if String.equal chs s then chc () else string_match s ct default
     | [] -> default ()
 
+  let rec int_match i cases default =
+    match cases with (chs, chc) :: ct -> if Int.equal chs i then chc () else int_match i ct default | [] -> default ()
+
   let list_split_n l i = List.split_n l i
   let list_tail_exn l = match l with _ :: t -> t
   let list_hd x = match x with [] -> None | x :: _ -> Some x
@@ -637,6 +642,9 @@ module D : SD with type 'x sd = code = MakeSD (struct
 
   let string_match (s : string sd) (cases : (string * (unit -> 'a sd)) list) (default : unit -> 'a sd) : 'a sd =
     CStringMatch (s, List.map cases ~f:(fun (l, r) -> (l, r ())), default ())
+
+  let int_match (s : int sd) (cases : (int * (unit -> 'a sd)) list) (default : unit -> 'a sd) : 'a sd =
+    CIntMatch (s, List.map cases ~f:(fun (l, r) -> (l, r ())), default ())
 
   let list_match (l : 'a list sd) (n : unit -> 'b sd) (c : 'a sd -> 'a list sd -> 'b sd) : 'b sd =
     CApp (CPF "ListMatch", [ l; lam (fun _ -> n ()); lam2 (fun h t -> c h t) ])

@@ -43,8 +43,8 @@ let rec is_pure x =
   | CNot x -> is_pure x
   | CGetMember (x, f) -> is_pure x
   | CLet (lhs, rhs, body) -> is_pure rhs && is_pure body
-  | CStringMatch (str, cases, default) ->
-      is_pure str && List.for_all cases ~f:(fun (_, c) -> is_pure c) && is_pure default
+  | CStringMatch (x, cases, default) -> is_pure x && List.for_all cases ~f:(fun (_, c) -> is_pure c) && is_pure default
+  | CIntMatch (x, cases, default) -> is_pure x && List.for_all cases ~f:(fun (_, c) -> is_pure c) && is_pure default
   | _ -> Common.panic ("is_pure:" ^ truncate (show_code x))
 
 let rec simplify (p : prog) x =
@@ -161,7 +161,12 @@ let rec simplify (p : prog) x =
                         match x with
                         | CSeq xs -> xs
                         | CApp (CPF f, xs) -> if is_absolutely_pure_function f then xs else [ x ]
-                        | CIf _ | CLet _ | CSetMember _ | CApp (CVar _, _) | CStringMatch (_, _, _) | CAssert _ -> [ x ]
+                        | CIf _ | CLet _ | CSetMember _
+                        | CApp (CVar _, _)
+                        | CStringMatch (_, _, _)
+                        | CIntMatch (_, _, _)
+                        | CAssert _ ->
+                            [ x ]
                         | CFun _ | CVar _ -> []
                         | CGetMember (x, _) -> [ x ]
                         | _ -> Common.panic ("simplify_seq:" ^ truncate (show_code x)))))
@@ -194,6 +199,8 @@ let rec simplify (p : prog) x =
   | CSetMember (x, f, v) -> CSetMember (recurse x, f, recurse v)
   | CStringMatch (str, cases, default) ->
       CStringMatch (recurse str, List.map cases ~f:(fun (l, r) -> (l, recurse r)), recurse default)
+  | CIntMatch (i, cases, default) ->
+      CIntMatch (recurse i, List.map cases ~f:(fun (l, r) -> (l, recurse r)), recurse default)
   | _ -> Common.panic ("simplify:" ^ truncate (show_code x))
 
 let rec optimize prog x =
@@ -247,6 +254,18 @@ let rec compile_stmt c x =
       output_string c "{";
       compile_stmt c default;
       output_string c "}"
+      | CIntMatch (i, cases, default) ->
+        let v = fresh () in
+        output_string c ("auto " ^ v ^ " = ");
+        compile_expr c i;
+        output_string c ";";
+        List.iter cases ~f:(fun (value, case) ->
+            output_string c ("if (" ^ v ^ "==" ^ string_of_int value ^ "){");
+            compile_stmt c case;
+            output_string c "}else ");
+        output_string c "{";
+        compile_stmt c default;
+        output_string c "}"
   | _ -> Common.panic ("compile_stmt:" ^ truncate (show_code x))
 
 and compile_proc c x =
@@ -260,7 +279,7 @@ and compile_proc c x =
       compile_expr c value;
       output_string c ";";
       compile_proc c body
-  | CApp _ | CGetMember _ | CVar _ | CInt _ | CStringMatch _ ->
+  | CApp _ | CGetMember _ | CVar _ | CInt _ | CStringMatch _ | CIntMatch _ ->
       compile_expr c x;
       output_string c ";"
   | CSetMember (x, (("first" | "parent" | "prev" | "next" | "last") as f), CApp (CPF "None", [])) ->
@@ -316,11 +335,12 @@ and compile_expr c x =
       output_string c "):(";
       compile_expr c e;
       output_string c ")"
-  | CLet _ | CSeq _ | CStringMatch _ ->
+  | CLet _ | CSeq _ | CStringMatch _ | CIntMatch _ ->
       output_string c "[&](){";
       compile_stmt c x;
       output_string c "}()"
-  | CApp (CPF (("PrintEndline" | "MakeRecomputeBB" | "MakeRecomputeProc") as f), [ CString x ]) -> output_string c (f ^ bracket (quoted x))
+  | CApp (CPF (("PrintEndline" | "MakeRecomputeBB" | "MakeRecomputeProc") as f), [ CString x ]) ->
+      output_string c (f ^ bracket (quoted x))
   | CApp (CPF (("StringEqual" | "OutputString") as f), [ x; CString y ]) ->
       output_string c f;
       output_string c "(";

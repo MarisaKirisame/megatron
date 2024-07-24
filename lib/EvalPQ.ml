@@ -51,7 +51,27 @@ module EVAL (SD : SD) = MakeEval (struct
     if is_static then ((m |> unstatic).alive <- false) |> static
     else CSetMember (m |> undyn, "alive", CBool false) |> dyn
 
-  type recompute_func = RecomputeBB of string | RecomputeProc of string
+  type recompute_func = RecomputeBB of int | RecomputeProc of int
+
+  let bb_intern_hash : (string, int) Hashtbl.t = Hashtbl.create (module String)
+
+  let bb_intern (s : string) : int =
+    match Hashtbl.find bb_intern_hash s with
+    | Some i -> i
+    | None ->
+        let i = Hashtbl.length bb_intern_hash in
+        Hashtbl.add_exn bb_intern_hash s i;
+        i
+
+  let proc_intern_hash : (string, int) Hashtbl.t = Hashtbl.create (module String)
+
+  let proc_intern (s : string) : int =
+    match Hashtbl.find proc_intern_hash s with
+    | Some i -> i
+    | None ->
+        let i = Hashtbl.length proc_intern_hash in
+        Hashtbl.add_exn proc_intern_hash s i;
+        i
 
   let make_recompute_bb str =
     if is_static then RecomputeBB (str |> unstatic) |> static else CApp (CPF "MakeRecomputeBB", [ str |> undyn ]) |> dyn
@@ -115,15 +135,18 @@ module EVAL (SD : SD) = MakeEval (struct
               (fun time ->
                 seq
                   (hashtbl_add_exn (meta_get_proc_time_table (node_get_meta y)) (string proc_name) time)
-                  (fun _ -> queue_force_push time y (make_recompute_proc (string proc_name)) m)))
+                  (fun _ -> queue_force_push time y (make_recompute_proc (int (proc_intern proc_name))) m)))
           (fun _ -> (*otherwise this proc is already in the queue with y's ancestor.*) tt))
 
   let bb_dirtied (n : meta node sd) ~(proc_name : string) ~(bb_name : string) (m : metric sd) : unit sd =
     Core.ignore proc_name;
-    option_match
-      (hashtbl_find (meta_get_bb_time_table (node_get_meta n)) (string bb_name))
-      (fun _ -> tt)
-      (fun order -> queue_push order n (make_recompute_bb (string bb_name)) m)
+    metric_record_overhead m
+      (zro
+         (timed (fun _ ->
+              option_match
+                (hashtbl_find (meta_get_bb_time_table (node_get_meta n)) (string bb_name))
+                (fun _ -> tt)
+                (fun order -> queue_push order n (make_recompute_bb (int (bb_intern bb_name))) m))))
 
   let bracket_call_bb (n : meta node sd) bb_name (f : unit -> unit sd) : unit sd =
     seqs
@@ -144,7 +167,7 @@ module EVAL (SD : SD) = MakeEval (struct
     if is_static then phys_equal (TotalOrder.compare (l |> unstatic) (r |> unstatic)) 0 |> static
     else CApp (CPF "TotalOrderEqual", [ l |> undyn; r |> undyn ]) |> dyn
 
-  let rf_match (rf : recompute_func sd) (bb : string sd -> 'a sd) (proc : string sd -> 'a sd) : 'a sd =
+  let rf_match (rf : recompute_func sd) (bb : int sd -> 'a sd) (proc : int sd -> 'a sd) : 'a sd =
     if is_static then
       match rf |> unstatic with RecomputeBB s -> bb (s |> static) | RecomputeProc s -> proc (s |> static)
     else CApp (CPF "RFMatch", [ rf |> undyn; bb |> lam |> undyn; proc |> lam |> undyn ]) |> dyn
@@ -170,9 +193,9 @@ module EVAL (SD : SD) = MakeEval (struct
                                      (fun _ ->
                                        rf_match (k |> key_get_rf)
                                          (fun bb ->
-                                           string_match bb
+                                           int_match bb
                                              (List.map (Hashtbl.to_alist p.bbs) ~f:(fun (str, BasicBlock (_, stmts)) ->
-                                                  (str, fun _ -> eval_stmts (key_get_node k) stmts)))
+                                                  (bb_intern str, fun _ -> eval_stmts (key_get_node k) stmts)))
                                              (fun _ -> panic (string "unknown bb")))
                                          (fun proc ->
                                            let_ (read_ref current_time) (fun old_time ->
@@ -180,10 +203,10 @@ module EVAL (SD : SD) = MakeEval (struct
                                                  [
                                                    (fun _ -> write_ref current_time x);
                                                    (fun _ ->
-                                                     string_match proc
+                                                     int_match proc
                                                        (List.map (Hashtbl.to_alist p.procs)
                                                           ~f:(fun (str, ProcessedProc (_, stmts)) ->
-                                                            ( str,
+                                                            ( proc_intern str,
                                                               fun _ ->
                                                                 seq
                                                                   (eval_stmts (key_get_node k) stmts)

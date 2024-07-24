@@ -5,6 +5,7 @@ from dominate.tags import *
 import subprocess
 import json
 from common import *
+import math
 
 def get_time():
     return datetime.datetime.now().strftime("%m%d_%H%M%S")
@@ -101,6 +102,7 @@ def get_time(js):
     return ""
 
 overhead_htbl = {}
+eval_htbl = {}
 
 def per_trace(trace_out_path):
     default_count = {}
@@ -139,7 +141,9 @@ def per_trace(trace_out_path):
                         overhead_key = trace_out_path + str(j["diff_num"])
                         if overhead_key not in overhead_htbl:
                             overhead_htbl[overhead_key] = {}
+                            eval_htbl[overhead_key] = {}
                         overhead_htbl[overhead_key][name] = j["overhead_time"]
+                        eval_htbl[overhead_key][name] = j["eval_time"]
 
                         if name not in summary:
                             summary[name] = {"name": name, "diff_num": "total", "html": "NA", "command": "NA", "full_command": "NA", "time": "NA"}
@@ -157,17 +161,21 @@ def per_trace(trace_out_path):
 
 outs = ["google_hover.out", "google_searchbar.out", "google_searchpage.out", "github_nologin.out", "wikipedia_idle.out", "wikipedia_hover.out", "hn_type.out", "espn.out", "discord_nologin.out"]
 
-def plot():
-    x = []
-    y = []
+def overhead_plot():
+    xs = []
+    ys = []
+    geosum = 0
     for k in overhead_htbl.values():
         if k["DB_D"] != 0:
-            x.append(k["DB_D"])
-            y.append(k["PQ_D"])
-    min_value = min(min(*x), min(*y))
-    max_value = max(max(*x), max(*y))
+            x = k["DB_D"]
+            y = k["PQ_D"]
+            xs.append(x)
+            ys.append(y)
+            geosum += math.log(x/y)
+    min_value = min(min(*xs), min(*ys))
+    max_value = max(max(*xs), max(*ys))
     import matplotlib.pyplot as plt
-    plt.scatter(x, y)
+    plt.scatter(xs, ys)
     plt.plot([min_value, max_value], [min_value, max_value])
     plt.xscale('log')
     plt.yscale('log')
@@ -177,14 +185,44 @@ def plot():
     plt.ylim(min_value / 2, max_value * 2)
     pic_path = f"{count()}.jpg"
     plt.savefig(out_path + pic_path)
-    return pic_path
+    img(src=pic_path)
+    span(f"geomean={math.exp(geosum/len(xs))}")
+
+def total_plot():
+    xs = []
+    ys = []
+    geosum = 0
+    for v in overhead_htbl.keys():
+        if overhead_htbl[v]["DB_D"] != 0:
+            x = overhead_htbl[v]["DB_D"] + eval_htbl[v]["DB_D"]
+            y = overhead_htbl[v]["PQ_D"] + eval_htbl[v]["PQ_D"]
+            xs.append(x)
+            ys.append(y)
+            geosum += math.log(x/y)
+    min_value = min(min(*xs), min(*ys))
+    max_value = max(max(*xs), max(*ys))
+    import matplotlib.pyplot as plt
+    plt.scatter(xs, ys)
+    plt.plot([min_value, max_value], [min_value, max_value])
+    plt.xscale('log')
+    plt.yscale('log')
+    plt.xlabel('DB_total')
+    plt.ylabel('PQ_total')
+    plt.xlim(min_value / 2, max_value * 2)
+    plt.ylim(min_value / 2, max_value * 2)
+    pic_path = f"{count()}.jpg"
+    plt.savefig(out_path + pic_path)
+    img(src=pic_path)
+    span(f"geomean={math.exp(geosum/len(xs))}")
     
 doc = make_doc(title=out_path)
 with doc:
     for o in outs:
         a(o, href=per_trace(o))
         br()
-    img(src=plot())
+
+    overhead_plot()
+    total_plot()
 
 write_to(out_path + "index.html", str(doc))
 

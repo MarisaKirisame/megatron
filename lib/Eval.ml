@@ -62,12 +62,12 @@ end
 module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
   include EI
 
-  let bracket_call_bb_timed (node: meta node sd) (n: string) (f: unit -> unit sd) (m : metric sd): unit sd =
+  let bracket_call_bb_timed (node : meta node sd) (n : string) (f : unit -> unit sd) (m : metric sd) : unit sd =
     metric_record_overhead m (zro (timed (fun _ -> bracket_call_bb node n f)))
 
-  let bracket_call_proc_timed (node: meta node sd) (n: string) (f: unit -> unit sd) (m : metric sd): unit sd =
+  let bracket_call_proc_timed (node : meta node sd) (n : string) (f : unit -> unit sd) (m : metric sd) : unit sd =
     metric_record_overhead m (zro (timed (fun _ -> bracket_call_proc node n f)))
-  
+
   let make_node ~(name : string sd) ~(attr : (string, value) Hashtbl.t sd) ~(prop : (string, value) Hashtbl.t sd)
       ~(extern_id : int sd) (children : EI.meta node list sd) : EI.meta node sd =
     if is_static then
@@ -204,8 +204,9 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
     | BBCall bb_name -> bracket_call_bb_timed n bb_name (fun _ -> eval_stmts p n (stmts_of_basic_block p bb_name) m) m
     | ChildrenCall proc_name ->
         list_iter (node_get_children n) (fun new_node ->
-            bracket_call_proc_timed new_node proc_name (fun _ ->
-                eval_stmts p new_node (stmts_of_processed_proc p proc_name) m) m)
+            bracket_call_proc_timed new_node proc_name
+              (fun _ -> eval_stmts p new_node (stmts_of_processed_proc p proc_name) m)
+              m)
 
   and eval_stmts_aux (p : prog) (n : meta node sd) (s : stmts) (m : metric sd) : unit sd =
     metric_record_eval m (zro (timed (fun _ -> seqs (List.map s ~f:(fun stmt _ -> eval_stmt_aux p n stmt m)))))
