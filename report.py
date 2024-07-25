@@ -6,6 +6,9 @@ import subprocess
 import json
 from common import *
 import math
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+import numpy as np
 
 def get_time():
     return datetime.datetime.now().strftime("%m%d_%H%M%S")
@@ -116,7 +119,7 @@ def per_trace(trace_out_path):
             j_by_diff[diff_num] = []
         j_by_diff[diff_num].append(j)
     strip_default = default_count_to_strip_default(default_count)
-        
+
     doc = make_doc(title=out_path)
     summary = {}
     with doc:
@@ -138,12 +141,12 @@ def per_trace(trace_out_path):
                         tr(*[td(processed[h]) for h in header])
                         name = j["name"]
 
-                        overhead_key = trace_out_path + str(j["diff_num"])
-                        if overhead_key not in overhead_htbl:
-                            overhead_htbl[overhead_key] = {}
-                            eval_htbl[overhead_key] = {}
-                        overhead_htbl[overhead_key][name] = j["overhead_time"]
-                        eval_htbl[overhead_key][name] = j["eval_time"]
+                        key = trace_out_path + str(j["diff_num"])
+                        if key not in overhead_htbl:
+                            overhead_htbl[key] = {}
+                            eval_htbl[key] = {}
+                        overhead_htbl[key][name] = j["overhead_time"]
+                        eval_htbl[key][name] = j["eval_time"]
 
                         if name not in summary:
                             summary[name] = {"name": name, "diff_num": "total", "html": "NA", "command": "NA", "full_command": "NA", "time": "NA"}
@@ -155,53 +158,76 @@ def per_trace(trace_out_path):
                 for j in summary.values():
                     tr(*[td(j[h]) for h in header])
 
+        xs = []
+        ys = []
+        for k in overhead_htbl.keys():
+            if k.startswith(trace_out_path) and overhead_htbl[k]["DB_D"] != 0:
+                x = overhead_htbl[k]["DB_D"]
+                y = overhead_htbl[k]["PQ_D"]
+                xs.append(x)
+                ys.append(y)
+        plot(xs, ys, "overhead")
+
+        xs = []
+        ys = []
+        for k in overhead_htbl.keys():
+            if k.startswith(trace_out_path) and eval_htbl[k]["DB_D"] != 0:
+                x = eval_htbl[k]["DB_D"]
+                y = eval_htbl[k]["PQ_D"]
+                xs.append(x)
+                ys.append(y)
+        plot(xs, ys, "eval")
+
+        xs = []
+        ys = []
+        for k in overhead_htbl.keys():
+            if k.startswith(trace_out_path) and overhead_htbl[k]["DB_D"] != 0:
+                x = overhead_htbl[k]["DB_D"] + eval_htbl[k]["DB_D"]
+                y = overhead_htbl[k]["PQ_D"] + eval_htbl[k]["PQ_D"]
+                xs.append(x)
+                ys.append(y)
+        plot(xs, ys, "total")
+    
     page_path = f"{count()}.html"
     write_to(out_path + page_path, str(doc))
     return page_path
 
 outs = ["google_hover.out", "google_searchbar.out", "google_searchpage.out", "github_nologin.out", "wikipedia_idle.out", "wikipedia_hover.out", "hn_type.out", "espn.out", "discord_nologin.out"]
+    
+def anal_speedup(x):
+    n_clusters = 4
+    est = KMeans(n_clusters=n_clusters)
+    est.fit(np.array(x).reshape(-1, 1))
+    mp = []
+    for nc in range(n_clusters):
+        sub = [x[i] for i in range(len(x)) if est.labels_[i] == nc]
+        # (geomean, percentage)
+        mp.append((math.exp(sum(sub)/len(sub)), 100 * len(sub)/len(x)))
+    mp.sort()
+    for geomean, percentage in mp:
+        span(f"{percentage:.2f}% geomean={geomean:.2f}, ")
+    span(f"geomean={math.exp(sum(x)/len(x)):.2f}")
 
-def overhead_plot():
-    xs = []
-    ys = []
-    geosum = 0
-    for k in overhead_htbl.values():
-        if k["DB_D"] != 0:
-            x = k["DB_D"]
-            y = k["PQ_D"]
-            xs.append(x)
-            ys.append(y)
-            geosum += math.log(x/y)
+def plot(xs, ys, name):
     min_value = min(min(*xs), min(*ys))
     max_value = max(max(*xs), max(*ys))
-    import matplotlib.pyplot as plt
     plt.scatter(xs, ys)
     plt.plot([min_value, max_value], [min_value, max_value])
     plt.xscale('log')
     plt.yscale('log')
-    plt.xlabel('DB_overhead')
-    plt.ylabel('PQ_overhead')
+    plt.xlabel(f'DB_{name}')
+    plt.ylabel(f'PQ_{name}')
     plt.xlim(min_value / 2, max_value * 2)
     plt.ylim(min_value / 2, max_value * 2)
     pic_path = f"{count()}.jpg"
     plt.savefig(out_path + pic_path)
+    plt.clf()
     img(src=pic_path)
-    span(f"geomean={math.exp(geosum/len(xs))}")
+    anal_speedup([math.log(xs[i]/ys[i]) for i in range(len(xs))])
 
 def total_plot():
-    xs = []
-    ys = []
-    geosum = 0
-    for v in overhead_htbl.keys():
-        if overhead_htbl[v]["DB_D"] != 0:
-            x = overhead_htbl[v]["DB_D"] + eval_htbl[v]["DB_D"]
-            y = overhead_htbl[v]["PQ_D"] + eval_htbl[v]["PQ_D"]
-            xs.append(x)
-            ys.append(y)
-            geosum += math.log(x/y)
     min_value = min(min(*xs), min(*ys))
     max_value = max(max(*xs), max(*ys))
-    import matplotlib.pyplot as plt
     plt.scatter(xs, ys)
     plt.plot([min_value, max_value], [min_value, max_value])
     plt.xscale('log')
@@ -212,17 +238,44 @@ def total_plot():
     plt.ylim(min_value / 2, max_value * 2)
     pic_path = f"{count()}.jpg"
     plt.savefig(out_path + pic_path)
-    img(src=pic_path)
-    span(f"geomean={math.exp(geosum/len(xs))}")
-    
+    img(src=pic_path)    
+    anal_speedup([math.log(xs[i]/ys[i]) for i in range(len(xs))])
+
 doc = make_doc(title=out_path)
 with doc:
     for o in outs:
         a(o, href=per_trace(o))
         br()
 
-    overhead_plot()
-    total_plot()
+    xs = []
+    ys = []
+    for k in overhead_htbl.values():
+        if k["DB_D"] != 0:
+            x = k["DB_D"]
+            y = k["PQ_D"]
+            xs.append(x)
+            ys.append(y)
+    plot(xs, ys, "overhead")
+
+    xs = []
+    ys = []
+    for v in overhead_htbl.keys():
+        if eval_htbl[v]["DB_D"] != 0:
+            x = eval_htbl[v]["DB_D"]
+            y = eval_htbl[v]["PQ_D"]
+            xs.append(x)
+            ys.append(y)
+    plot(xs, ys, "eval")
+
+    xs = []
+    ys = []
+    for v in overhead_htbl.keys():
+        if overhead_htbl[v]["DB_D"] != 0:
+            x = overhead_htbl[v]["DB_D"] + eval_htbl[v]["DB_D"]
+            y = overhead_htbl[v]["PQ_D"] + eval_htbl[v]["PQ_D"]
+            xs.append(x)
+            ys.append(y)
+    plot(xs, ys, "total")
 
 write_to(out_path + "index.html", str(doc))
 

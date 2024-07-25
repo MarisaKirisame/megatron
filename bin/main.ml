@@ -624,7 +624,7 @@ module Main (EVAL : Eval) = struct
     shell ("clang-format-18 --style=file -i " ^ compiled_file_name);
     shell ("clang-format-18 --style=file -i " ^ "header.h");
     shell ("clang-format-18 --style=file -i " ^ "header_continued.h");
-    shell ("clang++-18 -O3 -std=c++23 " ^ compiled_file_name);
+    shell ("clang++-18 -O3 -mtune=native -march=native -std=c++23 " ^ compiled_file_name);
     shell "./a.out"
 
   let () = if is_static then () else run_dynamic ()
