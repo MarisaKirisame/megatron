@@ -537,7 +537,7 @@ let compile_typedef (env : tyck_env) meta_defs (ds : destringed list) : string =
   "enum class DEStringCase { DEStringCaseDefault, "
   ^ String.concat (List.map ds ~f:compile_destring_case)
   ^ "};" ^ "struct DEStringRest{ double a0 = 0, a1 = 0, a2 = 0, a3 = 0;" ^ "};"
-  ^ "struct DEString { DEStringCase c; DEStringRest r; };" ^ " struct MetaNode{\n " ^ meta_defs ^ "};\n"
+  ^ "struct DEString { DEStringCase c; DEStringRest r; };" ^ " struct Meta{\n " ^ meta_defs ^ "};\n"
   ^ "\n struct Value {\n   std::variant<int64_t, double, bool, DEString> v;\n };\n"
   ^ "\n         DEString DEStringLit(DEStringCase c) {\n   DEString des;\n   des.c = c;\n   return des;\n }\n "
   ^ "bool Asbool(const bool &b) { return b; }\n\
@@ -568,7 +568,6 @@ let compile_typedef (env : tyck_env) meta_defs (ds : destringed list) : string =
     \  }\n\
     \  return ret;\n\
      }\n\n\
-    \  using Meta = std::shared_ptr<MetaNode>;\n\
     \  struct Content : std::enable_shared_from_this<Content> {\n\
     \   Content* parent = nullptr;\n\
     \    Content* prev = nullptr;\n\
@@ -578,7 +577,8 @@ let compile_typedef (env : tyck_env) meta_defs (ds : destringed list) : string =
     \    int64_t extern_id;\n\
     \    List<Node> children;\n\
     \    DEString name;\n\
-    \    Meta meta = std::make_shared<MetaNode>();\n\
+    \    Meta m;\n\
+    \    Meta* meta = &m;\n\
     \    Content(const DEString& name,\n\
     \            const std::unordered_map<std::string, Value>& attr,\n\
     \            const std::unordered_map<std::string, Value>& prop,\n\
