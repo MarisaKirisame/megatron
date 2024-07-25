@@ -9,12 +9,67 @@
 #include <type_traits>
 #include <list>
 #include <optional>
-
+#include <vector>
 #include <cassert>
+
+namespace STL_PP {
+
+template<typename T>
+struct List {
+
+};
+
+// does not allow storing internal iterator as delete may move node around
+template<typename T>
+struct CompactList {
+  struct Node {
+    T value;
+    ptrdiff_t left  = -1;
+    ptrdiff_t right = -1;
+  };
+
+  static std::vector<Node> pool;
+  ptrdiff_t begin_ = -1;
+  ptrdiff_t end_   = -1;
+
+  ~CompactList() {
+    while (true) {
+
+    }
+  }
+
+  struct iterator {
+    CompactList<T>& host;
+    ptrdiff_t idx = -1;
+    bool operator==(const iterator& rhs) const {
+      return idx == rhs.idx;
+    }
+    bool operator!=(const iterator& rhs) const {
+      return idx != rhs.idx;
+    }
+    T& operator*() {
+      return host.pool[idx].value;
+    }
+    const T& operator*() const {
+      return host.pool[idx].value;
+    }
+    T* operator->() {
+      return &(host.v[idx].value);
+    }
+    const T* operator->() const {
+      return &(host.v[idx].value);
+    }
+  };
+  iterator end() {
+    return iterator{*this};
+  }
+};
+
+}
 
 // Expected size: Tau^(-_label_bits) * 2^(_label_bits)
 template <double Tau = 1.4, typename Label = std::uint64_t>
-class total_order
+struct total_order
 {
   static_assert(Tau > 1.0 && Tau < 2.0, "Tau must be greater than 1.0 and smaller than 2.0");
   static_assert(std::is_integral<Label>() && std::is_unsigned<Label>(), "Label must be an unsigned integer");

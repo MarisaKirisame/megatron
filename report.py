@@ -224,22 +224,7 @@ def plot(xs, ys, name):
     plt.clf()
     img(src=pic_path)
     anal_speedup([math.log(xs[i]/ys[i]) for i in range(len(xs))])
-
-def total_plot():
-    min_value = min(min(*xs), min(*ys))
-    max_value = max(max(*xs), max(*ys))
-    plt.scatter(xs, ys)
-    plt.plot([min_value, max_value], [min_value, max_value])
-    plt.xscale('log')
-    plt.yscale('log')
-    plt.xlabel('DB_total')
-    plt.ylabel('PQ_total')
-    plt.xlim(min_value / 2, max_value * 2)
-    plt.ylim(min_value / 2, max_value * 2)
-    pic_path = f"{count()}.jpg"
-    plt.savefig(out_path + pic_path)
-    img(src=pic_path)    
-    anal_speedup([math.log(xs[i]/ys[i]) for i in range(len(xs))])
+    span(f"arithmean={sum(xs)/sum(ys):.2f}")
 
 doc = make_doc(title=out_path)
 with doc:
@@ -256,7 +241,7 @@ with doc:
             xs.append(x)
             ys.append(y)
     plot(xs, ys, "overhead")
-
+    
     xs = []
     ys = []
     for v in overhead_htbl.keys():

@@ -113,7 +113,7 @@ struct DEString {
   DEStringCase c;
   DEStringRest r;
 };
-struct MetaNode {
+struct Meta {
   bool bb_1_has_bb_dirtied = false;
   bool bb_1_bb_dirtied;
   bool bb_0_has_bb_dirtied = false;
@@ -479,7 +479,6 @@ std::unordered_map<std::string, Value> JsonToDict(const json &j) {
   return ret;
 }
 
-using Meta = std::shared_ptr<MetaNode>;
 struct Content : std::enable_shared_from_this<Content> {
   Content *parent = nullptr;
   Content *prev = nullptr;
@@ -489,7 +488,8 @@ struct Content : std::enable_shared_from_this<Content> {
   int64_t extern_id;
   List<Node> children;
   DEString name;
-  Meta meta = std::make_shared<MetaNode>();
+  Meta m;
+  Meta *meta = &m;
   Content(const DEString &name, const std::unordered_map<std::string, Value> &attr,
           const std::unordered_map<std::string, Value> &prop, int64_t extern_id, const List<Node> &children)
       : name(name), extern_id(extern_id), children(children) {
