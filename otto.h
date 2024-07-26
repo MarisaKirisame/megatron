@@ -14,9 +14,32 @@
 
 namespace STL_PP {
 
+// an allocator of a single type only.
+template<typename T>
+struct Pool {
+  T* pool = nullptr;
+  size_t capacity = 0;
+  std::vector<ptrdiff_t> free_locs;
+  template<typename Arg>
+  T allocate() {
+
+  }
+};
+
 template<typename T>
 struct List {
+  // contain an inline free-list.
 
+  struct Node {
+    T value;
+    ptrdiff_t left  = -1;
+    ptrdiff_t right = -1;
+    ptrdiff_t left_imm_free = -1;
+    ptrdiff_t right_imm_free = -1;
+  };
+
+  static std::vector<Node> pool;
+  static ptrdiff_t rightmost_free = -1;
 };
 
 // does not allow storing internal iterator as delete may move node around

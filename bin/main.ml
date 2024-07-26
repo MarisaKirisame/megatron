@@ -630,6 +630,8 @@ module Main (EVAL : Eval) = struct
   let () = if is_static then () else run_dynamic ()
 end
 
+module PQC = Main (Megatron.EvalPQ.EVAL (D))
+
 module MainFSI = Main (Megatron.EvalFS.EVAL (S))
 module MainFSC = Main (Megatron.EvalFS.EVAL (D))
 module MainDBI = Main (Megatron.EvalDB.EVAL (S))
