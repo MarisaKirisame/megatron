@@ -254,18 +254,18 @@ let rec compile_stmt c x =
       output_string c "{";
       compile_stmt c default;
       output_string c "}"
-      | CIntMatch (i, cases, default) ->
-        let v = fresh () in
-        output_string c ("auto " ^ v ^ " = ");
-        compile_expr c i;
-        output_string c ";";
-        List.iter cases ~f:(fun (value, case) ->
-            output_string c ("if (" ^ v ^ "==" ^ string_of_int value ^ "){");
-            compile_stmt c case;
-            output_string c "}else ");
-        output_string c "{";
-        compile_stmt c default;
-        output_string c "}"
+  | CIntMatch (i, cases, default) ->
+      let v = fresh () in
+      output_string c ("auto " ^ v ^ " = ");
+      compile_expr c i;
+      output_string c ";";
+      List.iter cases ~f:(fun (value, case) ->
+          output_string c ("if (" ^ v ^ "==" ^ string_of_int value ^ "){");
+          compile_stmt c case;
+          output_string c "}else ");
+      output_string c "{";
+      compile_stmt c default;
+      output_string c "}"
   | _ -> Common.panic ("compile_stmt:" ^ truncate (show_code x))
 
 and compile_proc c x =

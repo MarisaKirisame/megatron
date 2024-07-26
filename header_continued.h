@@ -15,19 +15,7 @@ Content *ToPath(const std::optional<Node> &opt) {
   }
 }
 Content *ToPath(Content *ptr) { return ptr; }
-struct PQData {
-  bool BBOrProc;
-  int8_t v;
-};
-PQData MakeRecomputeBB(int64_t v) { return PQData(true, v); }
-PQData MakeRecomputeProc(int64_t v) { return PQData(false, v); }
-auto RFMatch(const PQData &rf, const auto &bb, const auto &proc) {
-  if (rf.BBOrProc) {
-    return bb(rf.v);
-  } else {
-    return proc(rf.v);
-  }
-}
+using PQData = int8_t;
 #include <map>
 struct Key {
   Node n;

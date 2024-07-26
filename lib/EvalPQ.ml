@@ -51,38 +51,26 @@ module EVAL (SD : SD) = MakeEval (struct
     if is_static then ((m |> unstatic).alive <- false) |> static
     else CSetMember (m |> undyn, "alive", CBool false) |> dyn
 
-  type recompute_func = RecomputeBB of int | RecomputeProc of int
-
   let bb_intern_hash : (string, int) Hashtbl.t = Hashtbl.create (module String)
+  let proc_intern_hash : (string, int) Hashtbl.t = Hashtbl.create (module String)
 
   let bb_intern (s : string) : int =
     match Hashtbl.find bb_intern_hash s with
     | Some i -> i
     | None ->
-        let i = Hashtbl.length bb_intern_hash in
+        let i = Hashtbl.length bb_intern_hash + Hashtbl.length proc_intern_hash in
         Hashtbl.add_exn bb_intern_hash s i;
         i
-
-  let proc_intern_hash : (string, int) Hashtbl.t = Hashtbl.create (module String)
 
   let proc_intern (s : string) : int =
     match Hashtbl.find proc_intern_hash s with
     | Some i -> i
     | None ->
-        let i = Hashtbl.length proc_intern_hash in
+        let i = Hashtbl.length bb_intern_hash + Hashtbl.length proc_intern_hash in
         Hashtbl.add_exn proc_intern_hash s i;
         i
 
-  let make_recompute_bb str =
-    if is_static then RecomputeBB (str |> unstatic) |> static else CApp (CPF "MakeRecomputeBB", [ str |> undyn ]) |> dyn
-
-  let make_recompute_proc str =
-    if is_static then RecomputeProc (str |> unstatic) |> static
-    else CApp (CPF "MakeRecomputeProc", [ str |> undyn ]) |> dyn
-
-  let recompute_to_string = function RecomputeBB x -> x | RecomputeProc x -> x
-
-  type key = { n : meta node; rf : recompute_func }
+  type key = { n : meta node; rf : int }
 
   let key_get_node k = if is_static then (k |> unstatic).n |> static else CGetMember (k |> undyn, "n") |> dyn
   let key_get_rf k = if is_static then (k |> unstatic).rf |> static else CGetMember (k |> undyn, "rf") |> dyn
@@ -102,14 +90,14 @@ module EVAL (SD : SD) = MakeEval (struct
   let queue_peek () = if is_static then PriorityQueue.peek queue |> static else CApp (CPF "QueuePeek", []) |> dyn
   let queue_size () = if is_static then PriorityQueue.size queue |> static else CApp (CPF "QueueSize", []) |> dyn
 
-  let queue_push (x : TotalOrder.t sd) (y : meta node sd) (z : recompute_func sd) (m : metric sd) : unit sd =
+  let queue_push (x : TotalOrder.t sd) (y : meta node sd) (z : int sd) (m : metric sd) : unit sd =
     seq (meta_write_metric m) (fun _ ->
         if is_static then
           let result = PriorityQueue.add queue (x |> unstatic, { n = y |> unstatic; rf = z |> unstatic }) in
           Core.ignore result |> static
         else CApp (CPF "QueuePush", [ x |> undyn; y |> undyn; z |> undyn; m |> undyn ]) |> dyn)
 
-  let queue_force_push (x : TotalOrder.t sd) (y : meta node sd) (z : recompute_func sd) (m : metric sd) : unit sd =
+  let queue_force_push (x : TotalOrder.t sd) (y : meta node sd) (z : int sd) (m : metric sd) : unit sd =
     seq (meta_write_metric m) (fun _ ->
         if is_static then
           if PriorityQueue.add queue (x |> unstatic, { n = y |> unstatic; rf = z |> unstatic }) then tt
@@ -135,7 +123,7 @@ module EVAL (SD : SD) = MakeEval (struct
               (fun time ->
                 seq
                   (hashtbl_add_exn (meta_get_proc_time_table (node_get_meta y)) (string proc_name) time)
-                  (fun _ -> queue_force_push time y (make_recompute_proc (int (proc_intern proc_name))) m)))
+                  (fun _ -> queue_force_push time y (int (proc_intern proc_name)) m)))
           (fun _ -> (*otherwise this proc is already in the queue with y's ancestor.*) tt))
 
   let bb_dirtied (n : meta node sd) ~(proc_name : string) ~(bb_name : string) (m : metric sd) : unit sd =
@@ -146,7 +134,7 @@ module EVAL (SD : SD) = MakeEval (struct
               option_match
                 (hashtbl_find (meta_get_bb_time_table (node_get_meta n)) (string bb_name))
                 (fun _ -> tt)
-                (fun order -> queue_push order n (make_recompute_bb (int (bb_intern bb_name))) m))))
+                (fun order -> queue_push order n (int (bb_intern bb_name)) m))))
 
   let bracket_call_bb (n : meta node sd) bb_name (f : unit -> unit sd) : unit sd =
     seqs
@@ -167,11 +155,6 @@ module EVAL (SD : SD) = MakeEval (struct
     if is_static then phys_equal (TotalOrder.compare (l |> unstatic) (r |> unstatic)) 0 |> static
     else CApp (CPF "TotalOrderEqual", [ l |> undyn; r |> undyn ]) |> dyn
 
-  let rf_match (rf : recompute_func sd) (bb : int sd -> 'a sd) (proc : int sd -> 'a sd) : 'a sd =
-    if is_static then
-      match rf |> unstatic with RecomputeBB s -> bb (s |> static) | RecomputeProc s -> proc (s |> static)
-    else CApp (CPF "RFMatch", [ rf |> undyn; bb |> lam |> undyn; proc |> lam |> undyn ]) |> dyn
-
   let rec recalculate_internal_aux (p : prog) (m : metric sd) (eval_stmts : meta node sd -> stmts -> unit sd) :
       (unit -> unit) sd =
     lift "Unit" "recalculate_internal"
@@ -191,33 +174,28 @@ module EVAL (SD : SD) = MakeEval (struct
                                    ite
                                      (k |> key_get_node |> node_get_meta |> meta_get_alive)
                                      (fun _ ->
-                                       rf_match (k |> key_get_rf)
-                                         (fun bb ->
-                                           int_match bb
-                                             (List.map (Hashtbl.to_alist p.bbs) ~f:(fun (str, BasicBlock (_, stmts)) ->
-                                                  (bb_intern str, fun _ -> eval_stmts (key_get_node k) stmts)))
-                                             (fun _ -> panic (string "unknown bb")))
-                                         (fun proc ->
-                                           let_ (read_ref current_time) (fun old_time ->
-                                               seqs
-                                                 [
-                                                   (fun _ -> write_ref current_time x);
-                                                   (fun _ ->
-                                                     int_match proc
-                                                       (List.map (Hashtbl.to_alist p.procs)
-                                                          ~f:(fun (str, ProcessedProc (_, stmts)) ->
-                                                            ( proc_intern str,
-                                                              fun _ ->
-                                                                seq
-                                                                  (eval_stmts (key_get_node k) stmts)
-                                                                  (fun _ ->
-                                                                    hashtbl_set
-                                                                      (meta_get_proc_time_table
-                                                                         (node_get_meta (key_get_node k)))
-                                                                      (string str) (read_ref current_time)) )))
-                                                       (fun _ -> panic (string "unknown proc")));
-                                                   (fun _ -> write_ref current_time old_time);
-                                                 ])))
+                                       let bb_cases =
+                                         List.map (Hashtbl.to_alist p.bbs) ~f:(fun (str, BasicBlock (_, stmts)) ->
+                                             (bb_intern str, fun _ -> eval_stmts (key_get_node k) stmts))
+                                       in
+                                       let proc_cases =
+                                         List.map (Hashtbl.to_alist p.procs) ~f:(fun (str, ProcessedProc (_, stmts)) ->
+                                             ( proc_intern str,
+                                               fun _ ->
+                                                 let_ (read_ref current_time) (fun old_time ->
+                                                     seqs
+                                                       [
+                                                         (fun _ -> write_ref current_time x);
+                                                         (fun _ -> eval_stmts (key_get_node k) stmts);
+                                                         (fun _ ->
+                                                           hashtbl_set
+                                                             (meta_get_proc_time_table (node_get_meta (key_get_node k)))
+                                                             (string str) (read_ref current_time));
+                                                         (fun _ -> write_ref current_time old_time);
+                                                       ]) ))
+                                       in
+                                       int_match (k |> key_get_rf) (List.append bb_cases proc_cases) (fun _ ->
+                                           panic (string "unknown bb/proc")))
                                      (fun _ -> tt));
                                  (fun _ ->
                                    let_

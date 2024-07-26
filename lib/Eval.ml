@@ -367,7 +367,8 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                              let down, up = get_bb_from_proc p proc_name in
                              seqs
                                [
-                                 (fun _ -> metric_record_overhead m (zro (timed (fun _ -> register_todo_proc p y proc_name m))));
+                                 (fun _ ->
+                                   metric_record_overhead m (zro (timed (fun _ -> register_todo_proc p y proc_name m))));
                                  (fun _ -> match down with Some down -> work down | None -> tt);
                                  (fun _ -> match up with Some up -> work up | None -> tt);
                                ])));
