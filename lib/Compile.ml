@@ -103,19 +103,17 @@ let rec simplify (p : prog) x =
   | CApp (CPF "HashtblForceRemove", [ CGetMember (x, (("var" | "prop" | "attr") as tbl)); CString f ]) ->
       CSetMember (x, "has_" ^ tbl ^ "_" ^ string_to_cpp f, CBool false)
   | CApp (CPF "HashtblContain", [ CGetMember (x, "BBTimeTable"); CString f ]) ->
-      CApp (CPF "IsSome", [ CGetMember (x, f ^ "_bb_time_table") ])
+      CGetMember (x, f ^ "_has_bb_time_table")
   | CApp (CPF "HashtblFindExn", [ CGetMember (x, "BBTimeTable"); CString f ]) ->
-      CApp (CPF "UnSome", [ CGetMember (x, f ^ "_bb_time_table") ])
-  | CApp (CPF "HashtblAddExn", [ CGetMember (x, "BBTimeTable"); CString f; v ]) ->
-      CSetMember (x, f ^ "_bb_time_table", v)
+      CGetMember (x, f ^ "_bb_time_table")
+  | CApp (CPF ("HashtblAddExn" | "HashtblSet"), [ CGetMember (x, "BBTimeTable"); CString f; v ]) ->
+      CSeq[CSetMember (x, f ^ "_has_bb_time_table", CBool true); CSetMember (x, f ^ "_bb_time_table", v)]
   | CApp (CPF "HashtblContain", [ CGetMember (x, "ProcTimeTable"); CString f ]) ->
-      CApp (CPF "IsSome", [ CGetMember (x, f ^ "_proc_time_table") ])
+      CGetMember (x, f ^ "_has_proc_time_table")
   | CApp (CPF "HashtblFindExn", [ CGetMember (x, "ProcTimeTable"); CString f ]) ->
-      CApp (CPF "UnSome", [ CGetMember (x, f ^ "_proc_time_table") ])
-  | CApp (CPF "HashtblAddExn", [ CGetMember (x, "ProcTimeTable"); CString f; v ]) ->
-      CSetMember (x, f ^ "_proc_time_table", v)
-  | CApp (CPF "HashtblSet", [ CGetMember (x, "ProcTimeTable"); CString f; v ]) ->
-      CSetMember (x, f ^ "_proc_time_table", v)
+      CGetMember (x, f ^ "_proc_time_table")
+  | CApp (CPF ("HashtblAddExn" | "HashtblSet"), [ CGetMember (x, "ProcTimeTable"); CString f; v ]) ->
+      CSeq[CSetMember (x, f ^ "_has_proc_time_table", CBool true);CSetMember (x, f ^ "_proc_time_table", v)]
   | CApp (CPF "HashtblContain", [ CGetMember (x, "ProcInited"); CString f ]) -> CGetMember (x, f ^ "_proc_inited")
   | CApp (CPF "HashtblAddExn", [ CGetMember (x, "ProcInited"); CString f; _ ]) ->
       CSetMember (x, f ^ "_proc_inited", CBool true)
