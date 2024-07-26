@@ -81,6 +81,8 @@ public:
   constexpr static Label _gap_size = _max_label / _list_size;
   constexpr static Label _end_label = _max_label - _gap_size;
 
+  typedef std::make_signed_t<Label> SignedLabel;
+
 private:
   struct _l1_node;
   struct _l2_node;
@@ -114,6 +116,16 @@ private:
       Label lpl = l.parent->label;
       Label rpl = r.parent->label;
       return lpl == rpl && l.label == r.label;
+    }
+
+    inline SignedLabel compare(const _l2_node &other)
+    {
+      Label lpl = parent->label;
+      Label rpl = other.parent->label;
+      Label result1 = static_cast<Label>(label - other.label);
+      Label result2 = static_cast<Label>(lpl - rpl);
+      Label mask1 = static_cast<Label>(lpl == rpl) - 1;
+      return static_cast<SignedLabel>((result1 & ~mask1) | (result2 & mask1));
     }
   };
 
@@ -356,6 +368,11 @@ public:
     friend inline bool operator==(const _l2_iter_wrapper &l, const _l2_iter_wrapper &r)
     {
       return *l.inner == *r.inner;
+    }
+
+    inline SignedLabel compare(const _l2_iter_wrapper &other)
+    {
+      return inner->compare(*other.inner);
     }
   };
 

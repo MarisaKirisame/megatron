@@ -1,3 +1,7 @@
+#ifdef TRACY_ENABLE
+#include <tracy/Tracy.hpp>
+#endif
+
 #include <cstdio>
 #include <vector>
 #include <random>
@@ -37,8 +41,17 @@ int main()
       printf("Test 1 failed.\n");
       exit(-1);
     }
+    if ((static_cast<signed char>(a - b) > 0) != (nodes[a].compare(nodes[b]) > 0))
+    {
+      printf("Test 1 failed.\n");
+      exit(-1);
+    }
   }
   printf("Test 1 passed.\n");
+
+#ifdef TRACY_ENABLE
+  FrameMark;
+#endif
 
   // 2.
   for (size_t i = 0; i < 100000; i++)
@@ -70,6 +83,10 @@ int main()
     nodes[n] = to.insert(nodes[n - 1]);
   }
   printf("Test 2 passed.\n");
+
+#ifdef TRACY_ENABLE
+  FrameMark;
+#endif
 
   // 3.
   for (size_t i = 0; i < 100000; i++)
@@ -119,5 +136,9 @@ int main()
   }
   printf("Test 3 passed.\n");
 
+#ifdef TRACY_ENABLE
+  FrameMark;
+#endif
+  
   return 0;
 }
