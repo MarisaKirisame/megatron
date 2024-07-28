@@ -17,33 +17,35 @@ Content *ToPath(const std::optional<Node> &opt) {
 Content *ToPath(Content *ptr) { return ptr; }
 using PQData = int8_t;
 #include <map>
-struct Key {
+struct QueueValue {
   Node n;
   PQData rf;
 };
-std::map<TotalOrder, Key> queue;
+std::map<TotalOrder, QueueValue, std::less<TotalOrder>,
+         boost::fast_pool_allocator<std::pair<const TotalOrder, QueueValue>>>
+    queue;
 Unit QueuePush(const TotalOrder &to, const Node &n, PQData &&data) {
-  queue.insert({to, Key(n, std::move(data))});
+  queue.insert({to, QueueValue(n, std::move(data))});
   return Unit{};
 }
 int64_t QueueSize() { return queue.size(); }
 bool QueueIsEmpty() { return queue.empty(); }
 Unit QueuePush(const TotalOrder &to, Content *n, PQData &&data) {
-  queue.insert({to, Key(n->shared_from_this(), std::move(data))});
+  queue.insert({to, QueueValue(n->shared_from_this(), std::move(data))});
   return Unit{};
 }
 // todo:check
 Unit QueueForcePush(const TotalOrder &to, const Node &n, PQData &&data) {
-  queue.insert({to, Key(n, std::move(data))});
+  queue.insert({to, QueueValue(n, std::move(data))});
   return Unit{};
 }
 // todo:check
 Unit QueueForcePush(const TotalOrder &to, Content *n, PQData &&data) {
-  queue.insert({to, Key(n->shared_from_this(), std::move(data))});
+  queue.insert({to, QueueValue(n->shared_from_this(), std::move(data))});
   return Unit{};
 }
-std::pair<TotalOrder, Key> QueuePeek() { return *(queue.begin()); }
-std::pair<TotalOrder, Key> QueuePop() {
+std::pair<TotalOrder, QueueValue> QueuePeek() { return *(queue.begin()); }
+std::pair<TotalOrder, QueueValue> QueuePop() {
   auto it = queue.begin();
   auto ret = *it;
   queue.erase(it);
