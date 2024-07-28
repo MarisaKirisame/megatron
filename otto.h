@@ -11,84 +11,8 @@
 #include <optional>
 #include <vector>
 #include <cassert>
-
-namespace STL_PP {
-
-// an allocator of a single type only.
-template<typename T>
-struct Pool {
-  T* pool = nullptr;
-  size_t capacity = 0;
-  std::vector<ptrdiff_t> free_locs;
-  template<typename Arg>
-  T allocate() {
-
-  }
-};
-
-template<typename T>
-struct List {
-  // contain an inline free-list.
-
-  struct Node {
-    T value;
-    ptrdiff_t left  = -1;
-    ptrdiff_t right = -1;
-    ptrdiff_t left_imm_free = -1;
-    ptrdiff_t right_imm_free = -1;
-  };
-
-  static std::vector<Node> pool;
-  static ptrdiff_t rightmost_free = -1;
-};
-
-// does not allow storing internal iterator as delete may move node around
-template<typename T>
-struct CompactList {
-  struct Node {
-    T value;
-    ptrdiff_t left  = -1;
-    ptrdiff_t right = -1;
-  };
-
-  static std::vector<Node> pool;
-  ptrdiff_t begin_ = -1;
-  ptrdiff_t end_   = -1;
-
-  ~CompactList() {
-    while (true) {
-
-    }
-  }
-
-  struct iterator {
-    CompactList<T>& host;
-    ptrdiff_t idx = -1;
-    bool operator==(const iterator& rhs) const {
-      return idx == rhs.idx;
-    }
-    bool operator!=(const iterator& rhs) const {
-      return idx != rhs.idx;
-    }
-    T& operator*() {
-      return host.pool[idx].value;
-    }
-    const T& operator*() const {
-      return host.pool[idx].value;
-    }
-    T* operator->() {
-      return &(host.v[idx].value);
-    }
-    const T* operator->() const {
-      return &(host.v[idx].value);
-    }
-  };
-  iterator end() {
-    return iterator{*this};
-  }
-};
-
-}
+#include <boost/pool/pool.hpp>
+#include <boost/pool/pool_alloc.hpp>
 
 // Expected size: Tau^(-_label_bits) * 2^(_label_bits)
 template <double Tau = 1.4, typename Label = std::uint64_t>
@@ -97,27 +21,22 @@ struct total_order
   static_assert(Tau > 1.0 && Tau < 2.0, "Tau must be greater than 1.0 and smaller than 2.0");
   static_assert(std::is_integral<Label>() && std::is_unsigned<Label>(), "Label must be an unsigned integer");
 
-public:
   constexpr static std::size_t _label_bits = sizeof(Label) * 8;
   constexpr static std::size_t _list_size = _label_bits;
   constexpr static Label _max_label = static_cast<Label>(1) << (_label_bits - 1);
   constexpr static Label _gap_size = _max_label / _list_size;
   constexpr static Label _end_label = _max_label - _gap_size;
 
-  typedef std::make_signed_t<Label> SignedLabel;
-
-private:
   struct _l1_node;
   struct _l2_node;
 
-  typedef std::list<_l1_node>::iterator _l1_iter;
-  typedef std::list<_l2_node>::iterator _l2_iter;
-
   struct _l1_node
   {
-    std::list<_l2_node> children;
+    std::list<_l2_node, boost::fast_pool_allocator<_l2_node>> children;
     Label label;
   };
+
+  typedef std::list<_l1_node, boost::fast_pool_allocator<_l1_node>>::iterator _l1_iter;
 
   struct _l2_node
   {
@@ -140,19 +59,11 @@ private:
       Label rpl = r.parent->label;
       return lpl == rpl && l.label == r.label;
     }
-
-    inline SignedLabel compare(const _l2_node &other)
-    {
-      Label lpl = parent->label;
-      Label rpl = other.parent->label;
-      Label result1 = static_cast<Label>(label - other.label);
-      Label result2 = static_cast<Label>(lpl - rpl);
-      Label mask1 = static_cast<Label>(lpl == rpl) - 1;
-      return static_cast<SignedLabel>((result1 & ~mask1) | (result2 & mask1));
-    }
   };
 
-  std::list<_l1_node> _l1_nodes;
+  typedef std::list<_l2_node, boost::fast_pool_allocator<_l2_node>>::iterator _l2_iter;
+
+  std::list<_l1_node, boost::fast_pool_allocator<_l1_node>> _l1_nodes;
 
   template <typename T>
   T prev_of(T it)
@@ -263,7 +174,7 @@ private:
           next_label = prev_label + 2;
         }
 
-        _l1_iter new_node = _l1_nodes.emplace(next, std::list<_l2_node>(), prev_label);
+        _l1_iter new_node = _l1_nodes.emplace(next, std::list<_l2_node, boost::fast_pool_allocator<_l2_node>>(), prev_label);
         new_node->children.splice(new_node->children.end(), cur1->children, cur2, cur1->children.end());
 
         if (prev_label + 1 == next_label)
@@ -392,18 +303,13 @@ public:
     {
       return *l.inner == *r.inner;
     }
-
-    inline SignedLabel compare(const _l2_iter_wrapper &other)
-    {
-      return inner->compare(*other.inner);
-    }
   };
 
   typedef _l2_iter_wrapper node;
 
   inline total_order()
   {
-    auto n1 = _l1_nodes.emplace(_l1_nodes.end(), std::list<_l2_node>(), 0x0);
+    auto n1 = _l1_nodes.emplace(_l1_nodes.end(), std::list<_l2_node, boost::fast_pool_allocator<_l2_node>>(), 0x0);
     n1->children.emplace_back(n1, 0x0);
   }
 
