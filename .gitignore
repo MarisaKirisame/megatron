@@ -35,3 +35,4 @@ __pycache__
 *.webm
 \#*#
 *.trace
+build/
