@@ -11,6 +11,7 @@
 #include <optional>
 #include <vector>
 #include <cassert>
+#include <memory>
 #define BOOST_POOL_NO_MT
 #include <boost/pool/pool.hpp>
 #include <boost/pool/pool_alloc.hpp>
@@ -18,16 +19,17 @@
 //template<typename T>
 //using default_allocator = boost::fast_pool_allocator<T, boost::default_user_allocator_new_delete, boost::details::pool::null_mutex, 1024, 1024>;
 
-template<typename T>
-using default_allocator = std::allocator<T>;
+// template<typename T>
+// using default_allocator = std::allocator<T>;
 
 // Expected size: Tau^(-_label_bits) * 2^(_label_bits)
-template <double Tau = 1.4, typename Label = std::uint64_t>
+template <double Tau = 1.4, typename Label = std::uint64_t, template <typename> typename Allocator = std::allocator>
 struct total_order
 {
   static_assert(Tau > 1.0 && Tau < 2.0, "Tau must be greater than 1.0 and smaller than 2.0");
   static_assert(std::is_integral<Label>() && std::is_unsigned<Label>(), "Label must be an unsigned integer");
 
+public:
   constexpr static std::size_t _label_bits = sizeof(Label) * 8;
   constexpr static std::size_t _list_size = _label_bits;
   constexpr static Label _max_label = static_cast<Label>(1) << (_label_bits - 1);
@@ -39,11 +41,11 @@ struct total_order
 
   struct _l1_node
   {
-    std::list<_l2_node, default_allocator<_l2_node>> children;
+    std::list<_l2_node, Allocator<_l2_node>> children;
     Label label;
   };
 
-  typedef std::list<_l1_node, default_allocator<_l1_node>>::iterator _l1_iter;
+  typedef std::list<_l1_node, Allocator<_l1_node>>::iterator _l1_iter;
 
   struct _l2_node
   {
@@ -68,9 +70,9 @@ struct total_order
     }
   };
 
-  typedef std::list<_l2_node, default_allocator<_l2_node>>::iterator _l2_iter;
+  typedef std::list<_l2_node, Allocator<_l2_node>>::iterator _l2_iter;
 
-  std::list<_l1_node, default_allocator<_l1_node>> _l1_nodes;
+  std::list<_l1_node, Allocator<_l1_node>> _l1_nodes;
 
   template <typename T>
   T prev_of(T it)
@@ -231,14 +233,8 @@ struct total_order
       if (next_of(n->parent) != _l1_nodes.end())
       {
         _l2_iter m = next_of(n->parent)->children.begin();
-        if (*n < *m)
-        {
-          return std::optional<_l2_iter>(m);
-        }
-        else
-        {
-          return std::optional<_l2_iter>();
-        }
+        assert(*n < *m);
+        return std::optional<_l2_iter>(m);
       }
       else
       {
@@ -258,14 +254,8 @@ struct total_order
       if (n->parent != _l1_nodes.begin())
       {
         _l2_iter m = prev_of(prev_of(n->parent)->children.end());
-        if (*m < *n)
-        {
-          return std::optional<_l2_iter>(m);
-        }
-        else
-        {
-          return std::optional<_l2_iter>();
-        }
+        assert(*m < *n);
+        return std::optional<_l2_iter>(m);
       }
       else
       {
