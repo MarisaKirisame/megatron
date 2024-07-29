@@ -21,8 +21,7 @@ struct QueueValue {
   Node n;
   PQData rf;
 };
-std::map<TotalOrder, QueueValue, std::less<TotalOrder>,
-         boost::fast_pool_allocator<std::pair<const TotalOrder, QueueValue>>>
+std::map<TotalOrder, QueueValue, std::less<TotalOrder>, default_allocator<std::pair<const TotalOrder, QueueValue>>>
     queue;
 Unit QueuePush(const TotalOrder &to, const Node &n, PQData &&data) {
   queue.insert({to, QueueValue(n, std::move(data))});

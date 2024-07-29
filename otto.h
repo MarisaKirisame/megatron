@@ -15,6 +15,12 @@
 #include <boost/pool/pool.hpp>
 #include <boost/pool/pool_alloc.hpp>
 
+//template<typename T>
+//using default_allocator = boost::fast_pool_allocator<T, boost::default_user_allocator_new_delete, boost::details::pool::null_mutex, 1024, 1024>;
+
+template<typename T>
+using default_allocator = std::allocator<T>;
+
 // Expected size: Tau^(-_label_bits) * 2^(_label_bits)
 template <double Tau = 1.4, typename Label = std::uint64_t>
 struct total_order
@@ -33,11 +39,11 @@ struct total_order
 
   struct _l1_node
   {
-    std::list<_l2_node, boost::fast_pool_allocator<_l2_node>> children;
+    std::list<_l2_node, default_allocator<_l2_node>> children;
     Label label;
   };
 
-  typedef std::list<_l1_node, boost::fast_pool_allocator<_l1_node>>::iterator _l1_iter;
+  typedef std::list<_l1_node, default_allocator<_l1_node>>::iterator _l1_iter;
 
   struct _l2_node
   {
@@ -62,9 +68,9 @@ struct total_order
     }
   };
 
-  typedef std::list<_l2_node, boost::fast_pool_allocator<_l2_node>>::iterator _l2_iter;
+  typedef std::list<_l2_node, default_allocator<_l2_node>>::iterator _l2_iter;
 
-  std::list<_l1_node, boost::fast_pool_allocator<_l1_node>> _l1_nodes;
+  std::list<_l1_node, default_allocator<_l1_node>> _l1_nodes;
 
   template <typename T>
   T prev_of(T it)
@@ -175,7 +181,7 @@ struct total_order
           next_label = prev_label + 2;
         }
 
-        _l1_iter new_node = _l1_nodes.emplace(next, std::list<_l2_node, boost::fast_pool_allocator<_l2_node>>(), prev_label);
+        _l1_iter new_node = _l1_nodes.emplace(next, std::list<_l2_node, default_allocator<_l2_node>>(), prev_label);
         new_node->children.splice(new_node->children.end(), cur1->children, cur2, cur1->children.end());
 
         if (prev_label + 1 == next_label)
@@ -310,7 +316,7 @@ public:
 
   inline total_order()
   {
-    auto n1 = _l1_nodes.emplace(_l1_nodes.end(), std::list<_l2_node, boost::fast_pool_allocator<_l2_node>>(), 0x0);
+    auto n1 = _l1_nodes.emplace(_l1_nodes.end(), std::list<_l2_node, default_allocator<_l2_node>>(), 0x0);
     n1->children.emplace_back(n1, 0x0);
   }
 
