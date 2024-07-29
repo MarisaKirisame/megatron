@@ -266,5 +266,6 @@ write_to(out_path + "index.html", str(doc))
 
 if subprocess.run("command -v nightly-results", shell=True).returncode == 0:
     subprocess.run(f"""nightly-results publish {out_path}""", shell=True, check=True)
+    subprocess.run(f"""rm -rf output/*""", shell=True, check=True)
 else:
     subprocess.run(f"xdg-open {out_path}/index.html", shell=True, check=True)
