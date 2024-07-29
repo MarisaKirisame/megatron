@@ -390,7 +390,7 @@ template <typename T> struct PoolAllocator {
   // copied from boost.pool
   struct initializer {
     initializer() {
-      pool_ = new memory::memory_pool<>(sizeof(T), 1_KiB);
+      pool_ = new memory::memory_pool<>(sizeof(T), 16_KiB);
       allocator_ = new memory::std_allocator<T, memory::memory_pool<>>(*pool_);
     }
     ~initializer() {

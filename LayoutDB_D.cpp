@@ -4736,7 +4736,7 @@ Node x_2011(const auto &x_2012) {
 }
 Node json_to_node_aux_x_1700(const auto &x_2012) { return x_2011(x_2012); }
 int main() {
-  WithOutFile("google_hover.out", [&](const auto &x_1705) {
+  WithOutFile("hn_type.out", [&](const auto &x_1705) {
     PrintEndline("RUNNING DB_D");
     return WithInFile("command.json", [&](const auto &x_1706) {
       auto x_1707 = MakeRef(static_cast<int64_t>(0));
