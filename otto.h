@@ -11,16 +11,9 @@
 #include <optional>
 #include <vector>
 #include <cassert>
+#include <concepts>
 #include <memory>
-#define BOOST_POOL_NO_MT
-#include <boost/pool/pool.hpp>
-#include <boost/pool/pool_alloc.hpp>
-
-//template<typename T>
-//using default_allocator = boost::fast_pool_allocator<T, boost::default_user_allocator_new_delete, boost::details::pool::null_mutex, 1024, 1024>;
-
-// template<typename T>
-// using default_allocator = std::allocator<T>;
+#include <cstring>
 
 // Expected size: Tau^(-_label_bits) * 2^(_label_bits)
 template <double Tau = 1.4, typename Label = std::uint64_t, template <typename> typename Allocator = std::allocator>
@@ -183,7 +176,7 @@ public:
           next_label = prev_label + 2;
         }
 
-        _l1_iter new_node = _l1_nodes.emplace(next, std::list<_l2_node, default_allocator<_l2_node>>(), prev_label);
+        _l1_iter new_node = _l1_nodes.emplace(next, std::list<_l2_node, Allocator<_l2_node>>(), prev_label);
         new_node->children.splice(new_node->children.end(), cur1->children, cur2, cur1->children.end());
 
         if (prev_label + 1 == next_label)
@@ -306,7 +299,7 @@ public:
 
   inline total_order()
   {
-    auto n1 = _l1_nodes.emplace(_l1_nodes.end(), std::list<_l2_node, default_allocator<_l2_node>>(), 0x0);
+    auto n1 = _l1_nodes.emplace(_l1_nodes.end(), std::list<_l2_node, Allocator<_l2_node>>(), 0x0);
     n1->children.emplace_back(n1, 0x0);
   }
 
