@@ -11,6 +11,7 @@
 #include <optional>
 #include <vector>
 #include <cassert>
+#define BOOST_POOL_NO_MT
 #include <boost/pool/pool.hpp>
 #include <boost/pool/pool_alloc.hpp>
 
