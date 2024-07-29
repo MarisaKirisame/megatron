@@ -378,6 +378,42 @@ std::string std_nth_by_sep(const std::string &str, const std::string &sep, int64
   }
   assert(false);
 }
+
+#include <foonathan/memory/memory_pool.hpp>
+#include <foonathan/memory/namespace_alias.hpp>
+#include <foonathan/memory/std_allocator.hpp>
+using namespace memory::literals;
+
+template<typename T>
+struct PoolAllocator {
+  // inline static here isnt too safe, but it is fine as long as we have one .cpp file.
+  inline static memory::memory_pool<> *pool;
+  inline static memory::std_allocator<T, memory::memory_pool<>> *allocator;
+  struct initializer {
+    initializer() {
+      pool = new memory::memory_pool<>(sizeof(T), 1_KiB);
+      allocator = memory::std_allocator<T, memory::memory_pool<>>(*pool);
+    }
+    ~initializer() {
+      // technically we should destroy it, but we are exiting anyway.
+    }
+  };
+  static initializer init;
+  using value_type = T;
+  using pointer = T*;
+  using size_type = size_t;
+  static void deallocate(const pointer ptr, const size_type n) {
+    allocator->deallocate(ptr, n);
+  }
+  static pointer allocate(const size_type n) {
+    return allocator->allocate(n);
+  }
+};
+
+template<typename T> using default_allocator = PoolAllocator<T>;
+
+//template <typename T> using default_allocator = std::allocator<T>;
+
 #include "otto.h"
 typedef total_order<1.4, uint32_t> TotalOrderS;
 typedef TotalOrderS::node TotalOrder;
