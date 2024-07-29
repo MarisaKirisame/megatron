@@ -625,7 +625,7 @@ module Main (EVAL : Eval) = struct
     shell ("clang-format-18 --style=file -i " ^ "header.h");
     shell ("clang-format-18 --style=file -i " ^ "header_continued.h");
     shell ("clang++-18 -O3 -mtune=native -march=native -std=c++23 " ^ compiled_file_name);
-    shell "LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libmimalloc.so ./a.out"
+    shell "./a.out"
 
   let () = if is_static then () else run_dynamic ()
 end
