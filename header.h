@@ -384,35 +384,37 @@ std::string std_nth_by_sep(const std::string &str, const std::string &sep, int64
 #include <foonathan/memory/std_allocator.hpp>
 using namespace memory::literals;
 
-template<typename T>
-struct PoolAllocator {
-  // inline static here isnt too safe, but it is fine as long as we have one .cpp file.
-  inline static memory::memory_pool<> *pool;
-  inline static memory::std_allocator<T, memory::memory_pool<>> *allocator;
+template <typename T> struct PoolAllocator {
+  static inline memory::memory_pool<> *pool_;
+  static inline memory::std_allocator<T, memory::memory_pool<>> *allocator_;
+  // copied from boost.pool
   struct initializer {
     initializer() {
-      pool = new memory::memory_pool<>(sizeof(T), 1_KiB);
-      allocator = memory::std_allocator<T, memory::memory_pool<>>(*pool);
+      pool_ = new memory::memory_pool<>(sizeof(T), 1_KiB);
+      allocator_ = new memory::std_allocator<T, memory::memory_pool<>>(*pool_);
     }
     ~initializer() {
       // technically we should destroy it, but we are exiting anyway.
     }
+    void do_nothing() {}
   };
-  static initializer init;
+  static inline initializer init;
+  static auto &get_allocator() {
+    init.do_nothing();
+    return *allocator_;
+  }
+  bool operator==(const PoolAllocator<T> &) const { return true; }
+  bool operator!=(const PoolAllocator<T> &) const { return false; }
   using value_type = T;
-  using pointer = T*;
+  using pointer = T *;
   using size_type = size_t;
-  static void deallocate(const pointer ptr, const size_type n) {
-    allocator->deallocate(ptr, n);
-  }
-  static pointer allocate(const size_type n) {
-    return allocator->allocate(n);
-  }
+  static void deallocate(const pointer ptr, const size_type n) { get_allocator().deallocate(ptr, n); }
+  static pointer allocate(const size_type n) { return get_allocator().allocate(n); }
 };
 
-template<typename T> using default_allocator = PoolAllocator<T>;
+template <typename T> using default_allocator = PoolAllocator<T>;
 
-//template <typename T> using default_allocator = std::allocator<T>;
+// template <typename T> using default_allocator = std::allocator<T>;
 
 #include "otto.h"
 typedef total_order<1.4, uint32_t> TotalOrderS;

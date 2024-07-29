@@ -2576,7 +2576,7 @@ Node x_225(const auto &x_226) {
 }
 Node json_to_node_aux_x_0(const auto &x_226) { return x_225(x_226); }
 int main() {
-  WithOutFile("hn_type.out", [&](const auto &x_5) {
+  WithOutFile("google_hover.out", [&](const auto &x_5) {
     PrintEndline("RUNNING FS_D");
     return WithInFile("command.json", [&](const auto &x_6) {
       auto x_7 = MakeRef(static_cast<int64_t>(0));
