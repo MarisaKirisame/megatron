@@ -55,6 +55,9 @@ let shell cmd =
   let res = Core_unix.close_process_in in_channel in
   match res with Ok () -> () | _ -> panic "shell failed"
 
+let () = shell ("mkdir -p build")
+let () = shell ("cd build && cmake ../")
+
 let tag t str = "<" ^ t ^ ">" ^ str ^ "</" ^ t ^ ">"
 
 let default_tag : (string, unit) Hashtbl.t =
@@ -624,8 +627,8 @@ module Main (EVAL : Eval) = struct
     shell ("clang-format-18 --style=file -i " ^ compiled_file_name);
     shell ("clang-format-18 --style=file -i " ^ "header.h");
     shell ("clang-format-18 --style=file -i " ^ "header_continued.h");
-    shell ("clang++-18 -O3 -mtune=native -march=native -std=c++23 " ^ compiled_file_name);
-    shell "./a.out"
+    shell ("cd build && make");
+    shell ("build/Layout" ^ name)
 
   let () = if is_static then () else run_dynamic ()
 end

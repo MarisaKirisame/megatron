@@ -4,6 +4,7 @@
 #include <list>
 #include <random>
 
+#define BOOST_POOL_NO_MT
 #include <boost/pool/pool.hpp>
 #include <boost/pool/pool_alloc.hpp>
 
@@ -27,11 +28,13 @@ template<template <typename> typename Allocator>
 void test() {
     auto before = readTSC();
     using too = total_order<1.4, uint64_t, Allocator>;
-    too to;
-    std::vector<typename too::node> nodes;
-    nodes.push_back(to.smallest());
-    for (size_t i = 0; i < 1000000; ++i) {
-        nodes.push_back(to.insert(nodes[std::uniform_int_distribution<size_t>(0, nodes.size() - 1)(gen)]));
+    for (size_t i = 0; i < 100; ++i) {
+        too& to = *new too();
+        std::vector<typename too::node>& nodes = *new std::vector<typename too::node>();
+        nodes.push_back(to.smallest());
+        for (size_t j = 0; j < 1000000; ++j) {
+            nodes.push_back(to.insert(nodes[std::uniform_int_distribution<size_t>(0, nodes.size() - 1)(gen)]));
+        }
     }
     auto after = readTSC();
     std::cout << after - before << std::endl;

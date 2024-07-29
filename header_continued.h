@@ -17,6 +17,13 @@ Content *ToPath(const std::optional<Node> &opt) {
 Content *ToPath(Content *ptr) { return ptr; }
 using PQData = int8_t;
 #include <map>
+
+// template<typename T>
+// using default_allocator = boost::fast_pool_allocator<T, boost::default_user_allocator_new_delete,
+// boost::details::pool::null_mutex, 1024, 1024>;
+
+template <typename T> using default_allocator = std::allocator<T>;
+
 struct QueueValue {
   Node n;
   PQData rf;
