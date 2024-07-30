@@ -29,6 +29,8 @@ public:
   constexpr static Label _gap_size = _max_label / _list_size;
   constexpr static Label _end_label = _max_label - _gap_size;
 
+  typedef std::make_signed_t<Label> SignedLabel;
+
   struct _l1_node;
   struct _l2_node;
 
@@ -60,6 +62,16 @@ public:
       Label lpl = l.parent->label;
       Label rpl = r.parent->label;
       return lpl == rpl && l.label == r.label;
+    }
+
+    inline SignedLabel compare(const _l2_node &other) const
+    {
+      Label lpl = parent->label;
+      Label rpl = other.parent->label;
+      Label result1 = static_cast<Label>(label - other.label);
+      Label result2 = static_cast<Label>(lpl - rpl);
+      Label mask1 = static_cast<Label>(lpl == rpl) - 1;
+      return static_cast<SignedLabel>((result1 & ~mask1) | (result2 & mask1));
     }
   };
 
@@ -293,6 +305,11 @@ public:
     {
       return *l.inner == *r.inner;
     }
+
+    inline SignedLabel compare(const _l2_iter_wrapper &other) const
+    {
+      return inner->compare(*other.inner);
+    }
   };
 
   typedef _l2_iter_wrapper node;
@@ -333,5 +350,452 @@ public:
   inline void remove(node lo, node hi)
   {
     remove(lo.inner, hi.inner);
+  }
+};
+
+template <typename T>
+concept Comparable = requires(const T a, const T b) {
+  { a.compare(b) } -> std::signed_integral;
+};
+
+template <Comparable Key, typename Value, template <typename> typename Allocator = std::allocator>
+class rb_tree
+{
+private:
+  struct _rb_node
+  {
+    Key key;
+    _rb_node *left;
+    _rb_node *right;
+    _rb_node *parent;
+    unsigned char color;
+    Value value;
+
+    inline void set_black()
+    {
+      color = 0;
+    }
+
+    inline void set_red()
+    {
+      color = 1;
+    }
+
+    inline bool is_black() const
+    {
+      return color == 0;
+    }
+
+    inline bool is_red() const
+    {
+      return color == 1;
+    }
+
+    inline void copy_color(const _rb_node &n2)
+    {
+      color = n2.color;
+    }
+  };
+
+  _rb_node *_root;
+  _rb_node *_sentinel;
+  Allocator<_rb_node> allocator;
+
+  inline std::optional<_rb_node *> find(Key key) const
+  {
+    if (_root == _sentinel)
+    {
+      return std::optional<_rb_node *>();
+    }
+
+    for (_rb_node *temp = _root; temp != _sentinel;)
+    {
+      auto result = key.compare(temp->key);
+      if (result < 0)
+      {
+        temp = temp->left;
+      }
+      else if (result > 0)
+      {
+        temp = temp->right;
+      }
+      else
+      {
+        return std::optional<_rb_node *>(temp);
+      }
+    }
+
+    return std::optional<_rb_node *>();
+  }
+
+  inline std::optional<_rb_node *> min(_rb_node *node) const
+  {
+    while (node->left != _sentinel)
+    {
+      node = node->left;
+    }
+
+    return node;
+  }
+
+  inline void left_rotate(_rb_node *node)
+  {
+    _rb_node *temp = node->right;
+    node->right = temp->left;
+
+    if (temp->left != _sentinel)
+    {
+      temp->left->parent = node;
+    }
+
+    temp->parent = node->parent;
+
+    if (node == _root)
+    {
+      _root = temp;
+    }
+    else if (node == node->parent->left)
+    {
+      node->parent->left = temp;
+    }
+    else
+    {
+      node->parent->right = temp;
+    }
+
+    temp->left = node;
+    node->parent = temp;
+  }
+
+  inline void right_rotate(_rb_node *node)
+  {
+    _rb_node *temp = node->left;
+    node->left = temp->right;
+
+    if (temp->right != _sentinel)
+    {
+      temp->right->parent = node;
+    }
+
+    temp->parent = node->parent;
+
+    if (node == _root)
+    {
+      _root = temp;
+    }
+    else if (node == node->parent->right)
+    {
+      node->parent->right = temp;
+    }
+    else
+    {
+      node->parent->left = temp;
+    }
+
+    temp->right = node;
+    node->parent = temp;
+  }
+
+public:
+  rb_tree()
+  {
+    _sentinel = allocator.allocate(1);
+    memset(_sentinel, 0x0, sizeof(_rb_node));
+    _sentinel->set_black();
+    _root = _sentinel;
+  }
+
+  ~rb_tree()
+  {
+  }
+
+  // returns Some when replaces an existing entry
+  inline std::optional<Value> insert(Key key, Value value)
+  {
+    if (_root == _sentinel)
+    {
+      _rb_node *node = allocator.allocate(1);
+      node->key = key;
+      node->value = value;
+      node->left = _sentinel;
+      node->right = _sentinel;
+      node->parent = nullptr;
+      node->set_black();
+      _root = node;
+      return std::optional<Value>();
+    }
+
+    _rb_node *temp = _root;
+    _rb_node **p;
+
+    for (; temp != _sentinel; temp = *p)
+    {
+      auto result = key.compare(temp->key);
+      if (result < 0)
+      {
+        p = &temp->left;
+      }
+      else if (result > 0)
+      {
+        p = &temp->right;
+      }
+      else
+      {
+        Value old = temp->value;
+        temp->value = value;
+        return std::optional<Value>(old);
+      }
+    }
+
+    _rb_node *node = allocator.allocate(1);
+    *p = node;
+    node->key = key;
+    node->value = value;
+    node->left = _sentinel;
+    node->right = _sentinel;
+    node->parent = temp;
+    node->set_red();
+
+    while (node != _root && node->parent->is_red())
+    {
+      if (node->parent == node->parent->parent->left)
+      {
+        temp = node->parent->parent->right;
+
+        if (temp->is_red())
+        {
+          node->parent->set_black();
+          temp->set_black();
+          node->parent->parent->set_red();
+          node = node->parent->parent;
+        }
+        else
+        {
+          if (node == node->parent->right)
+          {
+            node = node->parent;
+            left_rotate(node);
+          }
+
+          node->parent->set_black();
+          node->parent->parent->set_red();
+          right_rotate(node->parent->parent);
+        }
+      }
+      else
+      {
+        temp = node->parent->parent->left;
+
+        if (temp->is_red())
+        {
+          node->parent->set_black();
+          temp->set_black();
+          node->parent->parent->set_red();
+          node = node->parent->parent;
+        }
+        else
+        {
+          if (node == node->parent->left)
+          {
+            node = node->parent;
+            right_rotate(node);
+          }
+
+          node->parent->set_black();
+          node->parent->parent->set_red();
+          left_rotate(node->parent->parent);
+        }
+      }
+    }
+
+    _root->set_black();
+
+    return std::optional<Value>();
+  }
+
+  inline std::optional<Value> at(Key key) const
+  {
+    return find(key).transform([](_rb_node *node)
+                               { return node->value; });
+  }
+
+  inline void remove(Key key)
+  {
+    auto fr = find(key);
+    if (!fr)
+    {
+      return;
+    }
+    _rb_node *node = fr.value();
+
+    _rb_node *temp, *subst, *w;
+
+    if (node->left == _sentinel)
+    {
+      temp = node->right;
+      subst = node;
+    }
+    else if (node->right == _sentinel)
+    {
+      temp = node->left;
+      subst = node;
+    }
+    else
+    {
+      subst = min(node->right).value();
+      temp = subst->right;
+    }
+
+    if (subst == _root)
+    {
+      _root = temp;
+      temp->set_black();
+
+      // allocator.deallocate(node, 1);
+      return;
+    }
+
+    bool red = subst->is_red();
+
+    if (subst == subst->parent->left)
+    {
+      subst->parent->left = temp;
+    }
+    else
+    {
+      subst->parent->right = temp;
+    }
+
+    if (subst == node)
+    {
+      temp->parent = subst->parent;
+    }
+    else
+    {
+      if (subst->parent == node)
+      {
+        temp->parent = subst;
+      }
+      else
+      {
+        temp->parent = subst->parent;
+      }
+
+      subst->left = node->left;
+      subst->right = node->right;
+      subst->parent = node->parent;
+      subst->copy_color(*node);
+
+      if (node == _root)
+      {
+        _root = subst;
+      }
+      else
+      {
+        if (node == node->parent->left)
+        {
+          node->parent->left = subst;
+        }
+        else
+        {
+          node->parent->right = subst;
+        }
+      }
+
+      if (subst->left != _sentinel)
+      {
+        subst->left->parent = subst;
+      }
+
+      if (subst->right != _sentinel)
+      {
+        subst->right->parent = subst;
+      }
+    }
+
+    // allocator.deallocate(node, 1);
+
+    if (red)
+    {
+      return;
+    }
+
+    while (temp != _root && temp->is_black())
+    {
+      if (temp == temp->parent->left)
+      {
+        w = temp->parent->right;
+
+        if (w->is_red())
+        {
+          w->set_black();
+          temp->parent->set_red();
+          left_rotate(temp->parent);
+          w = temp->parent->right;
+        }
+
+        if (w->left->is_black() && w->right->is_black())
+        {
+          w->set_red();
+          temp = temp->parent;
+        }
+        else
+        {
+          if (w->right->is_black())
+          {
+            w->left->set_black();
+            w->set_red();
+            right_rotate(w);
+            w = temp->parent->right;
+          }
+
+          w->copy_color(*temp->parent);
+          temp->parent->set_black();
+          w->right->set_black();
+          left_rotate(temp->parent);
+          temp = _root;
+        }
+      }
+      else
+      {
+        w = temp->parent->left;
+        if (w->is_red())
+        {
+          w->set_black();
+          temp->parent->set_red();
+          right_rotate(temp->parent);
+          w = temp->parent->left;
+        }
+
+        if (w->left->is_black() && w->right->is_black())
+        {
+          w->set_red();
+          temp = temp->parent;
+        }
+        else
+        {
+          if (w->left->is_black())
+          {
+            w->right->set_black();
+            w->set_red();
+            left_rotate(w);
+            w = temp->parent->left;
+          }
+
+          w->copy_color(*temp->parent);
+          temp->parent->set_black();
+          w->left->set_black();
+          right_rotate(temp->parent);
+          temp = _root;
+        }
+      }
+    }
+
+    temp->set_black();
+  }
+
+  inline bool empty() const
+  {
+    return _root == _sentinel;
   }
 };
