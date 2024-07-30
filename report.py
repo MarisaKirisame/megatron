@@ -123,10 +123,13 @@ def per_trace(trace_out_path):
     doc = make_doc(title=out_path)
     summary = {}
     with doc:
+        link(href="https://cdn.jsdelivr.net/gh/tofsjonas/sortable@latest/sortable.min.css", rel="stylesheet")
+        script(src="https://cdn.jsdelivr.net/gh/tofsjonas/sortable@latest/sortable.min.js")
+
         string_as_link("default properties", json.dumps(strip_default), "json")
-        with table(border="1"):
-            with thead():                   
-                tr(*[td(h) for h in header])
+        with table(border="1", cls="sortable"):
+            with thead():
+                tr(*[th(h, style="position:sticky;top:0px;") for h in header])
             with tbody():
                 for i in range(len(j_by_diff)):
                     for j in j_by_diff[i]:
@@ -190,28 +193,30 @@ def per_trace(trace_out_path):
     
     page_path = f"{count()}.html"
     write_to(out_path + page_path, str(doc))
+
     return page_path
 
 outs = ["google_hover.out", "google_searchbar.out", "google_searchpage.out", "github_nologin.out", "wikipedia_idle.out", "wikipedia_hover.out", "hn_type.out", "espn.out", "discord_nologin.out"]
     
-def anal_speedup(x):
-    n_clusters = 4
-    est = KMeans(n_clusters=n_clusters)
-    est.fit(np.array(x).reshape(-1, 1))
-    mp = []
-    for nc in range(n_clusters):
-        sub = [x[i] for i in range(len(x)) if est.labels_[i] == nc]
-        # (geomean, percentage)
-        mp.append((math.exp(sum(sub)/len(sub)), 100 * len(sub)/len(x)))
-    mp.sort()
-    for geomean, percentage in mp:
-        span(f"{percentage:.2f}% geomean={geomean:.2f}, ")
-    span(f"geomean={math.exp(sum(x)/len(x)):.2f}")
-
 def plot(xs, ys, name):
     min_value = min(min(*xs), min(*ys))
     max_value = max(max(*xs), max(*ys))
-    plt.scatter(xs, ys)
+
+    speedup = [math.log(xs[i]/ys[i]) for i in range(len(xs))]
+    n_clusters = 4
+    est = KMeans(n_clusters=n_clusters)
+    est.fit(np.array(speedup).reshape(-1, 1))
+    mp = []
+    for nc in range(n_clusters):
+        sub = [speedup[i] for i in range(len(speedup)) if est.labels_[i] == nc]
+        # (geomean, percentage)
+        mp.append((math.exp(sum(sub)/len(sub)), 100 * len(sub)/len(speedup)))
+    mp.sort()
+
+    for nc in range(n_clusters):
+        sub_xs = [xs[i] for i in range(len(speedup)) if est.labels_[i] == nc]
+        sub_ys = [ys[i] for i in range(len(speedup)) if est.labels_[i] == nc]
+        plt.scatter(sub_xs, sub_ys)
     plt.plot([min_value, max_value], [min_value, max_value])
     plt.xscale('log')
     plt.yscale('log')
@@ -222,9 +227,18 @@ def plot(xs, ys, name):
     pic_path = f"{count()}.jpg"
     plt.savefig(out_path + pic_path)
     plt.clf()
-    img(src=pic_path)
-    anal_speedup([math.log(xs[i]/ys[i]) for i in range(len(xs))])
-    span(f"arithmean={sum(xs)/sum(ys):.2f}")
+
+    with div():
+        img(src=pic_path)
+
+        with table(border="1", style="display:inline"):
+            with thead():                   
+                tr(td("fraction"), td("geomean"))
+            with tbody():
+                for geomean, percentage in mp:
+                    tr(td(f"{percentage:.2f}"), td(f"{geomean:.2f}"))
+                tr(td("total"), td(f"{math.exp(sum(speedup)/len(speedup)):.2f}"))
+        span(f"arithmean={sum(xs)/sum(ys):.2f}")
 
 doc = make_doc(title=out_path)
 with doc:
