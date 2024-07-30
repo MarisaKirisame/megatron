@@ -6,18 +6,29 @@
 #include <vector>
 #include <random>
 #include <cassert>
+#include <map>
 #include <otto.h>
 
 typedef total_order<1.4, uint8_t> too;
 
+struct int_key
+{
+  int i;
+
+  friend inline bool operator<(const int_key &l, const int_key &r)
+  {
+    return l.i < r.i;
+  }
+
+  inline int compare(const int_key &other) const
+  {
+    return i - other.i;
+  }
+};
+
 int main()
 {
   too to;
-  printf("Label bits : %llu\n", to._label_bits);
-  printf("List size  : %llu\n", to._list_size);
-  printf("Gap size   : %llu\n", to._gap_size);
-  printf("Max label  : %llu\n", to._max_label);
-  printf("End label  : %llu\n", to._end_label);
 
   std::random_device rd;
   std::mt19937_64 gen(rd());
@@ -139,6 +150,44 @@ int main()
 #ifdef TRACY_ENABLE
   FrameMark;
 #endif
-  
+
+  std::map<int_key, int> ot;
+  rb_tree<int_key, int> rbt;
+
+  std::uniform_int_distribution<int> distrib_rbt(-1000000, 1000000);
+
+  for (size_t i = 0; i < 100; i++)
+  {
+    int k = distrib_rbt(gen);
+    int v = distrib_rbt(gen);
+    ot.insert_or_assign(int_key{k}, v);
+    rbt.insert(int_key{k}, v);
+  }
+
+  for (auto it = ot.begin(); it != ot.end(); it++)
+  {
+    auto got = rbt.at(it->first);
+    if (!got || got.value() != it->second)
+    {
+      printf("RBT Test 1 failed.\n");
+      exit(-1);
+    }
+  }
+
+  printf("RBT Test 1 passed.\n");
+
+  for (auto it = ot.begin(); it != ot.end(); it++)
+  {
+    rbt.remove(it->first);
+  }
+
+  if (!rbt.empty())
+  {
+    printf("RBT Test 2 failed.\n");
+    exit(-1);
+  }
+
+  printf("RBT Test 2 passed.\n");
+
   return 0;
 }
