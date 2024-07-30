@@ -228,10 +228,10 @@ def plot(xs, ys, name):
     plt.savefig(out_path + pic_path)
     plt.clf()
 
-    with div():
+    with div(style="display:flex"):
         img(src=pic_path)
 
-        with table(border="1", style="display:inline"):
+        with table(border="1", style="display:inline-table"):
             with thead():                   
                 tr(td("fraction"), td("geomean"))
             with tbody():
