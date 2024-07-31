@@ -3,6 +3,7 @@
 #include <list>
 #include <optional>
 #include <concepts>
+#include <cassert>
 #include <type_traits>
 
 // Inspired by https://github.com/matthewhammer/ceal/blob/master/src/lib/runtime/totalorder.c
@@ -45,10 +46,18 @@ public:
     {
       Label lpl = l.parent->label;
       Label rpl = r.parent->label;
-      Label result1 = static_cast<Label>(l.label < r.label);
-      Label result2 = static_cast<Label>(lpl < rpl);
-      Label mask1 = static_cast<Label>(lpl == rpl) - 1;
-      return (result1 & ~mask1) | (result2 & mask1);
+      size_t result1 = l.label < r.label;
+      size_t result = 0;
+
+      asm volatile(
+          "xor %%rax, %%rax\n"
+          "cmp %1, %2\n"
+          "seta %%al\n"
+          "cmove %3, %%rax\n"
+          : "=&a"(result)
+          : "r"(lpl), "r"(rpl), "r"(result1));
+
+      return result;
     }
 
     [[gnu::always_inline]]
