@@ -825,7 +825,21 @@ private:
   }
 
 public:
-  inline std::optional<Value> insert(Key &&key, Value &&value)
+  rb_tree()
+  {
+    _root = nullptr;
+    _leftmost = nullptr;
+  }
+
+  ~rb_tree()
+  {
+    while (!empty())
+    {
+      erase(_leftmost->key);
+    }
+  }
+
+  inline std::optional<Value> insert(const Key &key, const Value &value)
   {
     _rb_node **link = &_root;
     _rb_node *parent = nullptr;
@@ -846,9 +860,9 @@ public:
       }
       else
       {
-        Value old = std::move(parent->value);
-        parent->value = std::move(value);
-        return std::optional<Value>(std::move(old));
+        Value old = parent->value;
+        parent->value = value;
+        return std::optional<Value>(old);
       }
     }
 
@@ -865,19 +879,6 @@ public:
     }
     insert_color(node);
     return std::optional<Value>();
-  }
-
-  inline std::optional<Value> insert(const Key &key, const Value &value)
-  {
-    Key k = key;
-    Value v = value;
-    return insert(std::move(k), std::move(v));
-  }
-
-  inline std::optional<Value> insert(const Key &key, Value &&value)
-  {
-    Key k = key;
-    return insert(std::move(k), value);
   }
 
   inline std::optional<Value> at(const Key &key) const
