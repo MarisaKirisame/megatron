@@ -75,8 +75,8 @@ public:
 
   std::list<_l1_node, Allocator<_l1_node>> _l1_nodes;
 
-  [[gnu::always_inline]]
   template <typename T>
+  [[gnu::always_inline]]
   inline T prev_of(T it)
   {
     T copy = it;
@@ -84,8 +84,8 @@ public:
     return copy;
   }
 
-  [[gnu::always_inline]]
   template <typename T>
+  [[gnu::always_inline]]
   inline T next_of(T it)
   {
     T copy = it;
