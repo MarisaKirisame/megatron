@@ -238,6 +238,17 @@ def plot(xs, ys, name):
                 for geomean, percentage in mp:
                     tr(td(f"{percentage:.2f}"), td(f"{geomean:.2f}"))
                 tr(td("total"), td(f"{math.exp(sum(speedup)/len(speedup)):.2f}"))
+
+                cdf_x = sorted([xs[i]/ys[i] for i in range(len(xs))])
+                cdf_y = [(i + 1)/len(cdf_x) for i in range(len(cdf_x))]
+                plt.plot(cdf_x, cdf_y)
+                plt.xscale('log')
+                plt.title('cdf')
+                pic_path = f"{count()}.jpg"
+                plt.savefig(out_path + pic_path)
+                plt.clf()
+                img(src=pic_path)
+                
         span(f"arithmean={sum(xs)/sum(ys):.2f}")
 
 doc = make_doc(title=out_path)

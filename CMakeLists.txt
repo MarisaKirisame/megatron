@@ -4,6 +4,8 @@ cmake_minimum_required(VERSION 3.0)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_FLAGS "-mtune=native -march=native -O3")
 
+set(CMAKE_CXX_FLAGS_PROFILE "-pg")
+
 add_subdirectory(third_party/memory)
 link_libraries(foonathan_memory)
 
