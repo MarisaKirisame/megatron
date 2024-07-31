@@ -1,20 +1,12 @@
-// Inspired by https://github.com/matthewhammer/ceal/blob/master/src/lib/runtime/totalorder.c
-// Replaced the 2nd level singly linked list with doubly linked list
-// Also made it more cpp native
-// Requires C++23
-
 #pragma once
 
-#include <cstdint>
-#include <type_traits>
 #include <list>
 #include <optional>
-#include <vector>
-#include <cassert>
 #include <concepts>
-#include <memory>
-#include <cstring>
 
+// Inspired by https://github.com/matthewhammer/ceal/blob/master/src/lib/runtime/totalorder.c
+// Replaced the 2nd level singly linked list with doubly linked list
+// Requires C++23
 // Expected size: Tau^(-_label_bits) * 2^(_label_bits)
 template <double Tau = 1.4, typename Label = std::uint64_t, template <typename> typename Allocator = std::allocator>
 struct total_order
@@ -28,8 +20,6 @@ public:
   constexpr static Label _max_label = static_cast<Label>(1) << (_label_bits - 1);
   constexpr static Label _gap_size = _max_label / _list_size;
   constexpr static Label _end_label = _max_label - _gap_size;
-
-  typedef std::make_signed_t<Label> SignedLabel;
 
   struct _l1_node;
   struct _l2_node;
@@ -64,14 +54,22 @@ public:
       return lpl == rpl && l.label == r.label;
     }
 
-    inline SignedLabel compare(const _l2_node &other) const
+    friend inline std::strong_ordering operator<=>(const _l2_node &l, const _l2_node &r)
     {
-      Label lpl = parent->label;
-      Label rpl = other.parent->label;
-      Label result1 = static_cast<Label>(label - other.label);
-      Label result2 = static_cast<Label>(lpl - rpl);
-      Label mask1 = static_cast<Label>(lpl == rpl) - 1;
-      return static_cast<SignedLabel>((result1 & ~mask1) | (result2 & mask1));
+      Label lpl = l.parent->label;
+      Label rpl = r.parent->label;
+      // Label result1 = static_cast<Label>(label - other.label);
+      // Label result2 = static_cast<Label>(lpl - rpl);
+      // Label mask1 = static_cast<Label>(lpl == rpl) - 1;
+      // return static_cast<SignedLabel>((result1 & ~mask1) | (result2 & mask1));
+      if (lpl == rpl)
+      {
+        return l.label <=> r.label;
+      }
+      else
+      {
+        return lpl <=> rpl;
+      }
     }
   };
 
@@ -110,15 +108,25 @@ public:
       lo_label = base_label & (~label_mask);
       hi_label = lo_label | label_mask;
 
-      while (lo != _l1_nodes.begin() && prev_of(lo)->label >= lo_label && prev_of(lo)->label <= lo->label)
+      while (true)
       {
-        --lo;
+        auto prev = prev_of(lo);
+        if (lo == _l1_nodes.begin() || prev->label < lo_label || prev->label > lo->label)
+        {
+          break;
+        }
+        lo = prev;
         ++range_count;
       }
 
-      while (next_of(hi) != _l1_nodes.end() && next_of(hi)->label <= hi_label && next_of(hi)->label >= hi->label)
+      while (true)
       {
-        ++hi;
+        auto next = next_of(hi);
+        if (next == _l1_nodes.end() || next->label > hi_label || next->label < hi->label)
+        {
+          break;
+        }
+        hi = next;
         ++range_count;
       }
 
@@ -306,9 +314,9 @@ public:
       return *l.inner == *r.inner;
     }
 
-    inline SignedLabel compare(const _l2_iter_wrapper &other) const
+    friend inline std::strong_ordering operator<=>(const _l2_iter_wrapper &l, const _l2_iter_wrapper &r)
     {
-      return inner->compare(*other.inner);
+      return *l.inner <=> *r.inner;
     }
   };
 
@@ -353,449 +361,574 @@ public:
   }
 };
 
-template <typename T>
-concept Comparable = requires(const T a, const T b) {
-  { a.compare(b) } -> std::signed_integral;
-};
 
-template <Comparable Key, typename Value, template <typename> typename Allocator = std::allocator>
+// Stolen from linux rbtree
+template <std::totally_ordered Key, std::copy_constructible Value, template <typename> typename Allocator = std::allocator>
 class rb_tree
 {
 private:
-  struct _rb_node
+  constexpr static size_t _color_red = 0;
+  constexpr static size_t _color_black = 1;
+
+  struct alignas(size_t) _rb_node
   {
-    Key key;
-    _rb_node *left;
+    size_t parent_color;
     _rb_node *right;
-    _rb_node *parent;
-    unsigned char color;
+    _rb_node *left;
+    Key key;
     Value value;
 
-    inline void set_black()
+    inline _rb_node *parent() const
     {
-      color = 0;
+      return reinterpret_cast<_rb_node *>(parent_color & ~3);
     }
 
-    inline void set_red()
+    // WARN: Only viable when color is red
+    inline _rb_node *red_parent() const
     {
-      color = 1;
+      return reinterpret_cast<_rb_node *>(parent_color);
     }
 
-    inline bool is_black() const
+    inline size_t color() const
     {
-      return color == 0;
+      return parent_color & 1;
     }
 
     inline bool is_red() const
     {
-      return color == 1;
+      return color() == _color_red;
     }
 
-    inline void copy_color(const _rb_node &n2)
+    inline bool is_black() const
     {
-      color = n2.color;
+      return color() == _color_black;
+    }
+
+    inline void set_parent(_rb_node *p)
+    {
+      parent_color = reinterpret_cast<size_t>(p) + color();
+    }
+
+    inline void set_parent_color(_rb_node *p, size_t c)
+    {
+      parent_color = reinterpret_cast<size_t>(p) + c;
+    }
+
+    inline void set_black()
+    {
+      parent_color += _color_black;
+    }
+
+    inline _rb_node *next() const
+    {
+      _rb_node *node = const_cast<_rb_node *>(this);
+
+      if (node->right)
+      {
+        node = node->right;
+        while (node->left)
+        {
+          node = node->left;
+        }
+        return node;
+      }
+
+      _rb_node *parent;
+
+      while ((parent = node->parent()) && node == parent->right)
+      {
+        node = parent;
+      }
+
+      return parent;
     }
   };
 
   _rb_node *_root;
-  _rb_node *_sentinel;
+  _rb_node *_leftmost;
   Allocator<_rb_node> allocator;
 
-  inline std::optional<_rb_node *> find(Key key) const
+  [[gnu::always_inline]]
+  inline void change_child(_rb_node *old, _rb_node *neww, _rb_node *parent)
   {
-    if (_root == _sentinel)
+    if (parent != nullptr)
     {
-      return std::optional<_rb_node *>();
-    }
-
-    for (_rb_node *temp = _root; temp != _sentinel;)
-    {
-      auto result = key.compare(temp->key);
-      if (result < 0)
+      if (parent->left == old)
       {
-        temp = temp->left;
-      }
-      else if (result > 0)
-      {
-        temp = temp->right;
+        parent->left = neww;
       }
       else
       {
-        return std::optional<_rb_node *>(temp);
+        parent->right = neww;
+      }
+    }
+    else
+    {
+      _root = neww;
+    }
+  }
+
+  [[gnu::always_inline]]
+  inline void rotate_set_parents(_rb_node *old, _rb_node *neww, size_t color)
+  {
+    _rb_node *parent = old->parent();
+    neww->parent_color = old->parent_color;
+    old->set_parent_color(neww, color);
+    change_child(old, neww, parent);
+  }
+
+  [[gnu::always_inline]]
+  inline void insert_color(_rb_node *node)
+  {
+    _rb_node *parent = node->red_parent();
+    _rb_node *gparent, *tmp;
+
+    while (true)
+    {
+      if (!parent) [[unlikely]]
+      {
+        node->set_parent_color(nullptr, _color_black);
+        break;
+      }
+
+      if (parent->is_black())
+      {
+        break;
+      }
+
+      gparent = parent->red_parent();
+
+      tmp = gparent->right;
+      if (parent != tmp)
+      {
+        if (tmp && tmp->is_red())
+        {
+          // Case 1
+          tmp->set_parent_color(gparent, _color_black);
+          parent->set_parent_color(gparent, _color_black);
+          node = gparent;
+          parent = node->parent();
+          node->set_parent_color(parent, _color_red);
+          continue;
+        }
+
+        tmp = parent->right;
+        if (node == tmp)
+        {
+          // Case 2
+          tmp = node->left;
+          parent->right = tmp;
+          node->left = parent;
+          if (tmp)
+          {
+            tmp->set_parent_color(parent, _color_black);
+          }
+          parent->set_parent_color(node, _color_red);
+          parent = node;
+          tmp = node->right;
+        }
+
+        // Case 3
+        gparent->left = tmp;
+        parent->right = gparent;
+        if (tmp)
+        {
+          tmp->set_parent_color(gparent, _color_black);
+        }
+        rotate_set_parents(gparent, parent, _color_red);
+        break;
+      }
+      else
+      {
+        tmp = gparent->left;
+        if (tmp && tmp->is_red())
+        {
+          // Case 1
+          tmp->set_parent_color(gparent, _color_black);
+          parent->set_parent_color(gparent, _color_black);
+          node = gparent;
+          parent = node->parent();
+          node->set_parent_color(parent, _color_red);
+          continue;
+        }
+
+        tmp = parent->left;
+        if (node == tmp)
+        {
+          tmp = node->right;
+          parent->left = tmp;
+          node->right = parent;
+          if (tmp)
+          {
+            tmp->set_parent_color(parent, _color_black);
+          }
+          parent->set_parent_color(node, _color_red);
+          parent = node;
+          tmp = node->left;
+        }
+
+        gparent->right = tmp;
+        parent->left = gparent;
+        if (tmp)
+        {
+          tmp->set_parent_color(gparent, _color_black);
+        }
+
+        rotate_set_parents(gparent, parent, _color_red);
+        break;
+      }
+    }
+  }
+
+  [[gnu::always_inline]]
+  inline _rb_node *find(const Key &key) const
+  {
+    _rb_node *node = _root;
+
+    while (node)
+    {
+      auto c = key <=> node->key;
+      if (c < 0)
+      {
+        node = node->left;
+      }
+      else if (c > 0)
+      {
+        node = node->right;
+      }
+      else
+      {
+        return node;
       }
     }
 
-    return std::optional<_rb_node *>();
+    return nullptr;
   }
 
-  inline std::optional<_rb_node *> min(_rb_node *node) const
+  [[gnu::always_inline]]
+  inline _rb_node *erase(_rb_node *node)
   {
-    while (node->left != _sentinel)
+    _rb_node *child = node->right;
+    _rb_node *tmp = node->left;
+    _rb_node *parent, *rebalance;
+    size_t pc;
+
+    if (!tmp)
     {
-      node = node->left;
+      // Case 1
+      pc = node->parent_color;
+      parent = reinterpret_cast<_rb_node *>(pc & ~3);
+      change_child(node, child, parent);
+      if (child)
+      {
+        child->parent_color = pc;
+        rebalance = nullptr;
+      }
+      else
+      {
+        rebalance = ((pc & 1) == _color_black) ? parent : nullptr;
+      }
+      tmp = parent;
     }
-
-    return node;
-  }
-
-  inline void left_rotate(_rb_node *node)
-  {
-    _rb_node *temp = node->right;
-    node->right = temp->left;
-
-    if (temp->left != _sentinel)
+    else if (!child)
     {
-      temp->left->parent = node;
-    }
-
-    temp->parent = node->parent;
-
-    if (node == _root)
-    {
-      _root = temp;
-    }
-    else if (node == node->parent->left)
-    {
-      node->parent->left = temp;
+      // Case 1: Inverted
+      pc = node->parent_color;
+      tmp->parent_color = pc;
+      change_child(node, tmp, parent);
+      rebalance = nullptr;
+      tmp = parent;
     }
     else
     {
-      node->parent->right = temp;
+      _rb_node *successor = child, *child2;
+
+      tmp = child->left;
+      if (!tmp)
+      {
+        // Case 2
+        parent = successor;
+        child2 = successor->right;
+      }
+      else
+      {
+        // Case 3
+        do
+        {
+          parent = successor;
+          successor = tmp;
+          tmp = tmp->left;
+        } while (tmp);
+        child2 = successor->right;
+        parent->left = child2;
+        successor->right = child;
+        child->set_parent(successor);
+      }
+
+      tmp = node->left;
+      successor->left = tmp;
+      tmp->set_parent(successor);
+
+      pc = node->parent_color;
+      tmp = reinterpret_cast<_rb_node *>(pc & ~3);
+      change_child(node, successor, tmp);
+
+      if (child2)
+      {
+        child2->set_parent_color(parent, _color_black);
+        rebalance = nullptr;
+      }
+      else
+      {
+        rebalance = successor->is_black() ? parent : nullptr;
+      }
+      successor->parent_color = pc;
+      tmp = successor;
     }
 
-    temp->left = node;
-    node->parent = temp;
+    return rebalance;
   }
 
-  inline void right_rotate(_rb_node *node)
+  [[gnu::always_inline]]
+  inline void erase_color(_rb_node *parent)
   {
-    _rb_node *temp = node->left;
-    node->left = temp->right;
+    _rb_node *node = nullptr, *sibling, *tmp1, *tmp2;
 
-    if (temp->right != _sentinel)
+    while (true)
     {
-      temp->right->parent = node;
-    }
+      sibling = parent->right;
+      if (node != sibling)
+      {
+        if (sibling->is_red())
+        {
+          // Case 1
+          tmp1 = sibling->left;
+          parent->right = tmp1;
+          sibling->left = parent;
+          tmp1->set_parent_color(parent, _color_black);
+          rotate_set_parents(parent, sibling, _color_red);
+          sibling = tmp1;
+        }
 
-    temp->parent = node->parent;
+        tmp1 = sibling->right;
+        if (!tmp1 || tmp1->is_black())
+        {
+          tmp2 = sibling->left;
+          if (!tmp2 || tmp2->is_black())
+          {
+            // Case 2
+            sibling->set_parent_color(parent, _color_red);
+            if (parent->is_red())
+            {
+              parent->set_black();
+            }
+            else
+            {
+              node = parent;
+              parent = node->parent();
+              if (parent)
+              {
+                continue;
+              }
+            }
+            break;
+          }
 
-    if (node == _root)
-    {
-      _root = temp;
-    }
-    else if (node == node->parent->right)
-    {
-      node->parent->right = temp;
-    }
-    else
-    {
-      node->parent->left = temp;
-    }
+          // Case 3
+          tmp1 = tmp2->right;
+          sibling->left = tmp1;
+          tmp2->right = sibling;
+          parent->right = tmp2;
+          if (tmp1)
+          {
+            tmp1->set_parent_color(sibling, _color_black);
+          }
+          tmp1 = sibling;
+          sibling = tmp2;
+        }
 
-    temp->right = node;
-    node->parent = temp;
+        // Case 4
+        tmp2 = sibling->left;
+        parent->right = tmp2;
+        sibling->left = parent;
+        tmp1->set_parent_color(sibling, _color_black);
+        if (tmp2)
+        {
+          tmp2->set_parent(parent);
+        }
+        rotate_set_parents(parent, sibling, _color_black);
+        break;
+      }
+      else
+      {
+        sibling = parent->left;
+        if (sibling->is_red())
+        {
+          // Case 1
+          tmp1 = sibling->right;
+          parent->left = tmp1;
+          sibling->right = parent;
+          tmp1->set_parent_color(parent, _color_black);
+          rotate_set_parents(parent, sibling, _color_red);
+          sibling = tmp1;
+        }
+        tmp1 = sibling->left;
+        if (!tmp1 || tmp1->is_black())
+        {
+          tmp2 = sibling->right;
+          if (!tmp2 || tmp2->is_black())
+          {
+            // Case 2
+            sibling->set_parent_color(parent, _color_red);
+            if (parent->is_red())
+            {
+              parent->set_black();
+            }
+            else
+            {
+              node = parent;
+              parent = node->parent();
+              if (parent)
+              {
+                continue;
+              }
+            }
+            break;
+          }
+
+          // Case 3
+          tmp1 = tmp2->left;
+          sibling->right = tmp1;
+          tmp2->left = sibling;
+          parent->left = tmp2;
+          if (tmp1)
+          {
+            tmp1->set_parent_color(sibling, _color_black);
+          }
+          tmp1 = sibling;
+          sibling = tmp2;
+        }
+
+        // Case 4
+        tmp2 = sibling->right;
+        parent->left = tmp2;
+        sibling->right = parent;
+        tmp1->set_parent_color(sibling, _color_black);
+        if (tmp2)
+        {
+          tmp2->set_parent(parent);
+        }
+        rotate_set_parents(parent, sibling, _color_black);
+        break;
+      }
+    }
   }
 
 public:
-  rb_tree()
+  inline std::optional<Value> insert(Key &&key, Value &&value)
   {
-    _sentinel = allocator.allocate(1);
-    memset(_sentinel, 0x0, sizeof(_rb_node));
-    _sentinel->set_black();
-    _root = _sentinel;
-  }
+    _rb_node **link = &_root;
+    _rb_node *parent = nullptr;
+    bool leftmost = true;
 
-  ~rb_tree()
-  {
-  }
-
-  // returns Some when replaces an existing entry
-  inline std::optional<Value> insert(Key key, Value value)
-  {
-    if (_root == _sentinel)
+    while (*link != nullptr)
     {
-      _rb_node *node = allocator.allocate(1);
-      node->key = key;
-      node->value = value;
-      node->left = _sentinel;
-      node->right = _sentinel;
-      node->parent = nullptr;
-      node->set_black();
-      _root = node;
-      return std::optional<Value>();
-    }
-
-    _rb_node *temp = _root;
-    _rb_node **p;
-
-    for (; temp != _sentinel; temp = *p)
-    {
-      auto result = key.compare(temp->key);
+      parent = *link;
+      auto result = key <=> parent->key;
       if (result < 0)
       {
-        p = &temp->left;
+        link = &parent->left;
       }
       else if (result > 0)
       {
-        p = &temp->right;
+        link = &parent->right;
+        leftmost = false;
       }
       else
       {
-        Value old = temp->value;
-        temp->value = value;
-        return std::optional<Value>(old);
+        Value old = std::move(parent->value);
+        parent->value = std::move(value);
+        return std::optional<Value>(std::move(old));
       }
     }
 
     _rb_node *node = allocator.allocate(1);
-    *p = node;
     node->key = key;
     node->value = value;
-    node->left = _sentinel;
-    node->right = _sentinel;
-    node->parent = temp;
-    node->set_red();
-
-    while (node != _root && node->parent->is_red())
+    node->parent_color = reinterpret_cast<size_t>(parent);
+    node->left = nullptr;
+    node->right = nullptr;
+    *link = node;
+    if (leftmost)
     {
-      if (node->parent == node->parent->parent->left)
-      {
-        temp = node->parent->parent->right;
-
-        if (temp->is_red())
-        {
-          node->parent->set_black();
-          temp->set_black();
-          node->parent->parent->set_red();
-          node = node->parent->parent;
-        }
-        else
-        {
-          if (node == node->parent->right)
-          {
-            node = node->parent;
-            left_rotate(node);
-          }
-
-          node->parent->set_black();
-          node->parent->parent->set_red();
-          right_rotate(node->parent->parent);
-        }
-      }
-      else
-      {
-        temp = node->parent->parent->left;
-
-        if (temp->is_red())
-        {
-          node->parent->set_black();
-          temp->set_black();
-          node->parent->parent->set_red();
-          node = node->parent->parent;
-        }
-        else
-        {
-          if (node == node->parent->left)
-          {
-            node = node->parent;
-            right_rotate(node);
-          }
-
-          node->parent->set_black();
-          node->parent->parent->set_red();
-          left_rotate(node->parent->parent);
-        }
-      }
+      _leftmost = node;
     }
-
-    _root->set_black();
-
+    insert_color(node);
     return std::optional<Value>();
   }
 
-  inline std::optional<Value> at(Key key) const
+  inline std::optional<Value> insert(const Key &key, const Value &value)
   {
-    return find(key).transform([](_rb_node *node)
-                               { return node->value; });
+    Key k = key;
+    Value v = value;
+    return insert(std::move(k), std::move(v));
   }
 
-  inline void remove(Key key)
+  inline std::optional<Value> insert(const Key &key, Value &&value)
   {
-    auto fr = find(key);
-    if (!fr)
-    {
-      return;
-    }
-    _rb_node *node = fr.value();
+    Key k = key;
+    return insert(std::move(k), value);
+  }
 
-    _rb_node *temp, *subst, *w;
-
-    if (node->left == _sentinel)
+  inline std::optional<Value> at(const Key &key) const
+  {
+    _rb_node *node = find(key);
+    if (node)
     {
-      temp = node->right;
-      subst = node;
-    }
-    else if (node->right == _sentinel)
-    {
-      temp = node->left;
-      subst = node;
+      return std::optional<Value>(node->value);
     }
     else
     {
-      subst = min(node->right).value();
-      temp = subst->right;
+      return std::optional<Value>();
     }
-
-    if (subst == _root)
-    {
-      _root = temp;
-      temp->set_black();
-
-      // allocator.deallocate(node, 1);
-      return;
-    }
-
-    bool red = subst->is_red();
-
-    if (subst == subst->parent->left)
-    {
-      subst->parent->left = temp;
-    }
-    else
-    {
-      subst->parent->right = temp;
-    }
-
-    if (subst == node)
-    {
-      temp->parent = subst->parent;
-    }
-    else
-    {
-      if (subst->parent == node)
-      {
-        temp->parent = subst;
-      }
-      else
-      {
-        temp->parent = subst->parent;
-      }
-
-      subst->left = node->left;
-      subst->right = node->right;
-      subst->parent = node->parent;
-      subst->copy_color(*node);
-
-      if (node == _root)
-      {
-        _root = subst;
-      }
-      else
-      {
-        if (node == node->parent->left)
-        {
-          node->parent->left = subst;
-        }
-        else
-        {
-          node->parent->right = subst;
-        }
-      }
-
-      if (subst->left != _sentinel)
-      {
-        subst->left->parent = subst;
-      }
-
-      if (subst->right != _sentinel)
-      {
-        subst->right->parent = subst;
-      }
-    }
-
-    // allocator.deallocate(node, 1);
-
-    if (red)
-    {
-      return;
-    }
-
-    while (temp != _root && temp->is_black())
-    {
-      if (temp == temp->parent->left)
-      {
-        w = temp->parent->right;
-
-        if (w->is_red())
-        {
-          w->set_black();
-          temp->parent->set_red();
-          left_rotate(temp->parent);
-          w = temp->parent->right;
-        }
-
-        if (w->left->is_black() && w->right->is_black())
-        {
-          w->set_red();
-          temp = temp->parent;
-        }
-        else
-        {
-          if (w->right->is_black())
-          {
-            w->left->set_black();
-            w->set_red();
-            right_rotate(w);
-            w = temp->parent->right;
-          }
-
-          w->copy_color(*temp->parent);
-          temp->parent->set_black();
-          w->right->set_black();
-          left_rotate(temp->parent);
-          temp = _root;
-        }
-      }
-      else
-      {
-        w = temp->parent->left;
-        if (w->is_red())
-        {
-          w->set_black();
-          temp->parent->set_red();
-          right_rotate(temp->parent);
-          w = temp->parent->left;
-        }
-
-        if (w->left->is_black() && w->right->is_black())
-        {
-          w->set_red();
-          temp = temp->parent;
-        }
-        else
-        {
-          if (w->left->is_black())
-          {
-            w->right->set_black();
-            w->set_red();
-            left_rotate(w);
-            w = temp->parent->left;
-          }
-
-          w->copy_color(*temp->parent);
-          temp->parent->set_black();
-          w->left->set_black();
-          right_rotate(temp->parent);
-          temp = _root;
-        }
-      }
-    }
-
-    temp->set_black();
   }
 
   inline bool empty() const
   {
-    return _root == _sentinel;
+    return _root == nullptr;
+  }
+
+  inline void erase(const Key &key)
+  {
+    _rb_node *node = find(key);
+    if (!node)
+    {
+      return;
+    }
+
+    if (_leftmost == node)
+    {
+      _leftmost = node->next();
+    }
+
+    _rb_node *rebalance = erase(node);
+    if (rebalance)
+    {
+      erase_color(rebalance);
+    }
+
+    allocator.deallocate(node, 1);
+  }
+
+  inline std::optional<std::pair<Key, Value>> lestmost() const
+  {
+    if (_leftmost)
+    {
+      return std::make_optional(std::make_pair(_leftmost->key, _leftmost->value));
+    }
+    else
+    {
+      return std::optional<std::pair<Key, Value>>();
+    }
   }
 };
