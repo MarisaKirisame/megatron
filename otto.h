@@ -40,6 +40,7 @@ public:
     _l1_iter parent;
     Label label;
 
+    [[gnu::always_inline]]
     friend inline bool operator<(const _l2_node &l, const _l2_node &r)
     {
       Label lpl = l.parent->label;
@@ -50,6 +51,7 @@ public:
       return (result1 & ~mask1) | (result2 & mask1);
     }
 
+    [[gnu::always_inline]]
     friend inline bool operator==(const _l2_node &l, const _l2_node &r)
     {
       Label lpl = l.parent->label;
@@ -57,7 +59,7 @@ public:
       return lpl == rpl && l.label == r.label;
     }
 
-    [[gnu::noinline]]
+    [[gnu::always_inline]]
     friend inline SignedLabel operator<=>(const _l2_node &l, const _l2_node &r)
     {
       Label lpl = l.parent->label;
@@ -73,22 +75,25 @@ public:
 
   std::list<_l1_node, Allocator<_l1_node>> _l1_nodes;
 
+  [[gnu::always_inline]]
   template <typename T>
-  T prev_of(T it)
+  inline T prev_of(T it)
   {
     T copy = it;
     copy--;
     return copy;
   }
 
+  [[gnu::always_inline]]
   template <typename T>
-  T next_of(T it)
+  inline T next_of(T it)
   {
     T copy = it;
     copy++;
     return copy;
   }
 
+  [[gnu::always_inline]]
   inline void balance_l1(_l1_iter n)
   {
     auto lo = n, hi = n;
@@ -160,6 +165,7 @@ public:
     }
   }
 
+  [[gnu::always_inline]]
   inline void balance_l2(_l1_iter cur1)
   {
     auto cur2 = cur1->children.begin();
@@ -209,6 +215,7 @@ public:
     }
   }
 
+  [[gnu::always_inline]]
   inline _l2_iter insert(_l2_iter n)
   {
     Label next_label;
@@ -231,6 +238,7 @@ public:
     return new_node;
   }
 
+  [[gnu::always_inline]]
   inline std::optional<_l2_iter> succ(_l2_iter n)
   {
     if (next_of(n) != n->parent->children.end())
@@ -252,6 +260,7 @@ public:
     }
   }
 
+  [[gnu::always_inline]]
   inline std::optional<_l2_iter> prev(_l2_iter n)
   {
     if (n != n->parent->children.begin())
@@ -273,6 +282,7 @@ public:
     }
   }
 
+  [[gnu::always_inline]]
   inline void remove(_l2_iter n)
   {
     if (n->parent->children.size() == 1)
@@ -285,6 +295,7 @@ public:
     }
   }
 
+  [[gnu::always_inline]]
   inline void remove(_l2_iter lo, _l2_iter hi)
   {
     for (auto it = lo; it != hi;)
@@ -300,16 +311,19 @@ public:
   {
     _l2_iter inner;
 
+    [[gnu::always_inline]]
     friend inline bool operator<(const _l2_iter_wrapper &l, const _l2_iter_wrapper &r)
     {
       return *l.inner < *r.inner;
     }
 
+    [[gnu::always_inline]]
     friend inline bool operator==(const _l2_iter_wrapper &l, const _l2_iter_wrapper &r)
     {
       return *l.inner == *r.inner;
     }
 
+    [[gnu::always_inline]]
     friend inline SignedLabel operator<=>(const _l2_iter_wrapper &l, const _l2_iter_wrapper &r)
     {
       return *l.inner <=> *r.inner;
@@ -380,47 +394,56 @@ private:
     Key key;
     Value value;
 
+    [[gnu::always_inline]]
     inline _rb_node *parent() const
     {
       return reinterpret_cast<_rb_node *>(parent_color & ~3);
     }
 
     // WARN: Only viable when color is red
+    [[gnu::always_inline]]
     inline _rb_node *red_parent() const
     {
       return reinterpret_cast<_rb_node *>(parent_color);
     }
 
+    [[gnu::always_inline]]
     inline size_t color() const
     {
       return parent_color & 1;
     }
 
+    [[gnu::always_inline]]
     inline bool is_red() const
     {
       return color() == _color_red;
     }
 
+    [[gnu::always_inline]]
     inline bool is_black() const
     {
       return color() == _color_black;
     }
 
+    [[gnu::always_inline]]
     inline void set_parent(_rb_node *p)
     {
       parent_color = reinterpret_cast<size_t>(p) + color();
     }
 
+    [[gnu::always_inline]]
     inline void set_parent_color(_rb_node *p, size_t c)
     {
       parent_color = reinterpret_cast<size_t>(p) + c;
     }
 
+    [[gnu::always_inline]]
     inline void set_black()
     {
       parent_color += _color_black;
     }
 
+    [[gnu::always_inline]]
     inline _rb_node *next() const
     {
       _rb_node *node = const_cast<_rb_node *>(this);
@@ -582,8 +605,7 @@ private:
     }
   }
 
-  // [[gnu::always_inline]]
-  [[gnu::noinline]]
+  [[gnu::always_inline]]
   inline _rb_node *find(const Key &key) const
   {
     _rb_node *node = _root;
@@ -905,6 +927,7 @@ public:
     }
   }
 
+  [[gnu::always_inline]]
   inline bool empty() const
   {
     return _root == nullptr;
