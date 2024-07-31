@@ -3,6 +3,7 @@
 #include <list>
 #include <optional>
 #include <concepts>
+#include <type_traits>
 
 // Inspired by https://github.com/matthewhammer/ceal/blob/master/src/lib/runtime/totalorder.c
 // Replaced the 2nd level singly linked list with doubly linked list
@@ -20,6 +21,8 @@ public:
   constexpr static Label _max_label = static_cast<Label>(1) << (_label_bits - 1);
   constexpr static Label _gap_size = _max_label / _list_size;
   constexpr static Label _end_label = _max_label - _gap_size;
+
+  using SignedLabel = std::make_signed_t<Label>;
 
   struct _l1_node;
   struct _l2_node;
@@ -54,22 +57,15 @@ public:
       return lpl == rpl && l.label == r.label;
     }
 
-    friend inline std::strong_ordering operator<=>(const _l2_node &l, const _l2_node &r)
+    [[gnu::noinline]]
+    friend inline SignedLabel operator<=>(const _l2_node &l, const _l2_node &r)
     {
       Label lpl = l.parent->label;
       Label rpl = r.parent->label;
-      // Label result1 = static_cast<Label>(label - other.label);
-      // Label result2 = static_cast<Label>(lpl - rpl);
-      // Label mask1 = static_cast<Label>(lpl == rpl) - 1;
-      // return static_cast<SignedLabel>((result1 & ~mask1) | (result2 & mask1));
-      if (lpl == rpl)
-      {
-        return l.label <=> r.label;
-      }
-      else
-      {
-        return lpl <=> rpl;
-      }
+      SignedLabel result1 = static_cast<SignedLabel>(l.label - r.label);
+      SignedLabel result2 = static_cast<SignedLabel>(lpl - rpl);
+      SignedLabel mask1 = static_cast<SignedLabel>(lpl == rpl) - 1;
+      return ((result1 & ~mask1) | (result2 & mask1));
     }
   };
 
@@ -314,7 +310,7 @@ public:
       return *l.inner == *r.inner;
     }
 
-    friend inline std::strong_ordering operator<=>(const _l2_iter_wrapper &l, const _l2_iter_wrapper &r)
+    friend inline SignedLabel operator<=>(const _l2_iter_wrapper &l, const _l2_iter_wrapper &r)
     {
       return *l.inner <=> *r.inner;
     }
@@ -361,9 +357,15 @@ public:
   }
 };
 
+template <typename T>
+concept three_way_comparable = requires(const T l, const T r) {
+  { (l <=> r) < 0 } -> std::convertible_to<bool>;
+  { (l <=> r) > 0 } -> std::convertible_to<bool>;
+  { (l <=> r) == 0 } -> std::convertible_to<bool>;
+};
 
 // Stolen from linux rbtree
-template <std::totally_ordered Key, std::copy_constructible Value, template <typename> typename Allocator = std::allocator>
+template <three_way_comparable Key, std::copy_constructible Value, template <typename> typename Allocator = std::allocator>
 class rb_tree
 {
 private:
@@ -580,7 +582,8 @@ private:
     }
   }
 
-  [[gnu::always_inline]]
+  // [[gnu::always_inline]]
+  [[gnu::noinline]]
   inline _rb_node *find(const Key &key) const
   {
     _rb_node *node = _root;
@@ -588,18 +591,26 @@ private:
     while (node)
     {
       auto c = key <=> node->key;
-      if (c < 0)
-      {
-        node = node->left;
-      }
-      else if (c > 0)
-      {
-        node = node->right;
-      }
-      else
+      if (c == 0) [[unlikely]]
       {
         return node;
       }
+
+      // if (c < 0)
+      // {
+      //   node = node->left;
+      // }
+      // else if (c > 0)
+      // {
+      //   node = node->right;
+      // }
+
+      asm(
+          "cmp $0, %1\n"
+          "cmovg 0x10(%0), %0\n"
+          "cmovl 0x08(%0), %0\n"
+          : "=r"(node)
+          : "0"(node), "r"(c));
     }
 
     return nullptr;
