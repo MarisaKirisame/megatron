@@ -628,9 +628,9 @@ private:
       // }
 
       asm(
-          "cmp $0, %1\n"
-          "cmovg 0x10(%0), %0\n"
-          "cmovl 0x08(%0), %0\n"
+          "cmp $0, %2\n"
+          "cmovg 0x08(%0), %1\n"
+          "cmovl 0x10(%0), %1\n"
           : "=r"(node)
           : "0"(node), "r"(c));
     }
