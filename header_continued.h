@@ -22,8 +22,12 @@ struct QueueValue {
   Node n;
   PQData rf;
 };
-#if 0
-std::map<TotalOrder, QueueValue, std::less<TotalOrder>, default_allocator<std::pair<const TotalOrder, QueueValue>>> queue;
+
+#define QUEUE_IMPL 0
+
+#if QUEUE_IMPL == 0
+std::map<TotalOrder, QueueValue, std::less<TotalOrder>, default_allocator<std::pair<const TotalOrder, QueueValue>>>
+    queue;
 
 Unit QueuePush(const TotalOrder &to, const Node &n, PQData &&data) {
   queue.insert({to, QueueValue(n, std::move(data))});
@@ -52,9 +56,7 @@ std::pair<TotalOrder, QueueValue> QueuePop() {
   queue.erase(it);
   return ret;
 }
-#endif
-
-#if 1
+#elif QUEUE_IMPL == 1
 rb_tree<TotalOrder, QueueValue, default_allocator> queue;
 Unit QueuePush(const TotalOrder &to, const Node &n, PQData &&data) {
   queue.insert(to, QueueValue(n, std::move(data)));
@@ -93,6 +95,7 @@ std::pair<TotalOrder, QueueValue> QueuePop() {
 
   return ret;
 }
+#elif QUEUE_IMPL == 2
 #endif
 
 bool eq(const DEStringRest &l, const DEStringRest &r) {

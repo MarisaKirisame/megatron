@@ -55,6 +55,13 @@ let shell cmd =
   let res = Core_unix.close_process_in in_channel in
   match res with Ok () -> () | _ -> panic "shell failed"
 
+let shell_check_bin cmd cmd2 =
+  let in_channel = Core_unix.open_process_in ("command -v " ^ cmd) in
+  (* This iter_lines is required for res to be returned correctly somehow. *)
+  In_channel.iter_lines in_channel ~f:(fun str -> ());
+  let res = Core_unix.close_process_in in_channel in
+  match res with Ok () -> cmd | _ -> cmd2
+
 let () = shell ("mkdir -p build")
 let () = shell ("cd build && cmake -DCMAKE_BUILD_TYPE=Release ../")
 
@@ -624,9 +631,9 @@ module Main (EVAL : Eval) = struct
     compile prog (defs ()) (undyn main) (EVAL.meta_defs prog) ds c;
     Stdio.Out_channel.close c;
 
-    shell ("clang-format-18 --style=file -i " ^ compiled_file_name);
-    shell ("clang-format-18 --style=file -i " ^ "header.h");
-    shell ("clang-format-18 --style=file -i " ^ "header_continued.h");
+    shell ((shell_check_bin "clang-format" "clang-format-18") ^ " --style=file -i " ^ compiled_file_name);
+    shell ((shell_check_bin "clang-format" "clang-format-18") ^ " --style=file -i " ^ "header.h");
+    shell ((shell_check_bin "clang-format" "clang-format-18") ^ " --style=file -i " ^ "header_continued.h");
     shell ("cd build && make");
     shell ("build/Layout" ^ name)
 
