@@ -44,23 +44,23 @@ public:
     [[gnu::always_inline]]
     friend inline bool operator<(const _l2_node &l, const _l2_node &r)
     {
-      Label lpl = l.parent->label;
-      Label rpl = r.parent->label;
-      if (lpl == rpl)
-      {
-        return l.label < r.label;
-      }
-      else
-      {
-        return lpl < rpl;
-      }
-
       // Label lpl = l.parent->label;
       // Label rpl = r.parent->label;
-      // size_t result1 = static_cast<size_t>(l.label < r.label);
-      // size_t result2 = static_cast<size_t>(lpl < rpl);
-      // size_t mask1 = static_cast<size_t>(lpl == rpl) - 1;
-      // return ((result1 & ~mask1) | (result2 & mask1));
+      // if (lpl == rpl)
+      // {
+      //   return l.label < r.label;
+      // }
+      // else
+      // {
+      //   return lpl < rpl;
+      // }
+
+      Label lpl = l.parent->label;
+      Label rpl = r.parent->label;
+      size_t result1 = static_cast<size_t>(l.label < r.label);
+      size_t result2 = static_cast<size_t>(lpl < rpl);
+      size_t mask1 = static_cast<size_t>(lpl == rpl) - 1;
+      return ((result1 & ~mask1) | (result2 & mask1));
 
       // Label lpl = l.parent->label;
       // Label rpl = r.parent->label;
@@ -89,23 +89,23 @@ public:
     [[gnu::always_inline]]
     friend inline ssize_t operator<=>(const _l2_node &l, const _l2_node &r)
     {
-      Label lpl = l.parent->label;
-      Label rpl = r.parent->label;
-      if (lpl == rpl)
-      {
-        return l.label - r.label;
-      }
-      else
-      {
-        return lpl - rpl;
-      }
-
       // Label lpl = l.parent->label;
       // Label rpl = r.parent->label;
-      // ssize_t result1 = static_cast<ssize_t>(l.label - r.label);
-      // ssize_t result2 = static_cast<ssize_t>(lpl - rpl);
-      // ssize_t mask1 = static_cast<ssize_t>(lpl == rpl) - 1;
-      // return ((result1 & ~mask1) | (result2 & mask1));
+      // if (lpl == rpl)
+      // {
+      //   return l.label - r.label;
+      // }
+      // else
+      // {
+      //   return lpl - rpl;
+      // }
+
+      Label lpl = l.parent->label;
+      Label rpl = r.parent->label;
+      ssize_t result1 = static_cast<ssize_t>(l.label - r.label);
+      ssize_t result2 = static_cast<ssize_t>(lpl - rpl);
+      ssize_t mask1 = static_cast<ssize_t>(lpl == rpl) - 1;
+      return ((result1 & ~mask1) | (result2 & mask1));
 
       // Label lpl = l.parent->label;
       // Label rpl = r.parent->label;
