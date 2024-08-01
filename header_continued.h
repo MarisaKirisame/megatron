@@ -22,35 +22,39 @@ struct QueueValue {
   Node n;
   PQData rf;
 };
-// std::map<TotalOrder, QueueValue, std::less<TotalOrder>, default_allocator<std::pair<const TotalOrder, QueueValue>>>
-//     queue;
-// Unit QueuePush(const TotalOrder &to, const Node &n, PQData &&data) {
-//   queue.insert({to, QueueValue(n, std::move(data))});
-//   return Unit{};
-// }
-// int64_t QueueSize() { return queue.size(); }
-// bool QueueIsEmpty() { return queue.empty(); }
-// Unit QueuePush(const TotalOrder &to, Content *n, PQData &&data) {
-//   queue.insert({to, QueueValue(n->shared_from_this(), std::move(data))});
-//   return Unit{};
-// }
-// // todo:check
-// Unit QueueForcePush(const TotalOrder &to, const Node &n, PQData &&data) {
-//   queue.insert({to, QueueValue(n, std::move(data))});
-//   return Unit{};
-// }
-// // todo:check
-// Unit QueueForcePush(const TotalOrder &to, Content *n, PQData &&data) {
-//   queue.insert({to, QueueValue(n->shared_from_this(), std::move(data))});
-//   return Unit{};
-// }
-// std::pair<TotalOrder, QueueValue> QueuePeek() { return *(queue.begin()); }
-// std::pair<TotalOrder, QueueValue> QueuePop() {
-//   auto it = queue.begin();
-//   auto ret = *it;
-//   queue.erase(it);
-//   return ret;
-// }
+#if 1
+std::map<TotalOrder, QueueValue, std::less<TotalOrder>, default_allocator<std::pair<const TotalOrder, QueueValue>>> queue;
+
+Unit QueuePush(const TotalOrder &to, const Node &n, PQData &&data) {
+  queue.insert({to, QueueValue(n, std::move(data))});
+  return Unit{};
+}
+int64_t QueueSize() { return queue.size(); }
+bool QueueIsEmpty() { return queue.empty(); }
+Unit QueuePush(const TotalOrder &to, Content *n, PQData &&data) {
+  queue.insert({to, QueueValue(n->shared_from_this(), std::move(data))});
+  return Unit{};
+}
+// todo:check
+Unit QueueForcePush(const TotalOrder &to, const Node &n, PQData &&data) {
+  queue.insert({to, QueueValue(n, std::move(data))});
+  return Unit{};
+}
+// todo:check
+Unit QueueForcePush(const TotalOrder &to, Content *n, PQData &&data) {
+  queue.insert({to, QueueValue(n->shared_from_this(), std::move(data))});
+  return Unit{};
+}
+std::pair<TotalOrder, QueueValue> QueuePeek() { return *(queue.begin()); }
+std::pair<TotalOrder, QueueValue> QueuePop() {
+  auto it = queue.begin();
+  auto ret = *it;
+  queue.erase(it);
+  return ret;
+}
+#endif
+
+#if 0
 rb_tree<TotalOrder, QueueValue, default_allocator> queue;
 Unit QueuePush(const TotalOrder &to, const Node &n, PQData &&data) {
   queue.insert(to, QueueValue(n, std::move(data)));
@@ -89,6 +93,8 @@ std::pair<TotalOrder, QueueValue> QueuePop() {
 
   return ret;
 }
+#endif
+
 bool eq(const DEStringRest &l, const DEStringRest &r) {
   return eq(l.a0, r.a0) && eq(l.a1, r.a1) && eq(l.a2, r.a2) && eq(l.a3, r.a3);
 }
