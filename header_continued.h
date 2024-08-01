@@ -75,7 +75,18 @@ Unit QueueForcePush(const TotalOrder &to, Content *n, PQData &&data) {
 std::pair<TotalOrder, QueueValue> QueuePeek() { return std::make_pair(queue._leftmost->key, queue._leftmost->value); }
 std::pair<TotalOrder, QueueValue> QueuePop() {
   auto ret = std::make_pair(queue._leftmost->key, queue._leftmost->value);
-  queue.erase(queue._leftmost);
+
+  // TODO: Move all this into a real func
+  rb_tree<TotalOrder, QueueValue, default_allocator>::_rb_node *rebalance, *node;
+  node = queue._leftmost;
+  queue._leftmost = queue._leftmost->next();
+  rebalance = queue.erase(node);
+  if (rebalance) {
+    queue.erase_color(rebalance);
+  }
+  queue._size -= 1;
+  queue.allocator.deallocate(node, 1);
+
   return ret;
 }
 bool eq(const DEStringRest &l, const DEStringRest &r) {

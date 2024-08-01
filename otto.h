@@ -911,6 +911,7 @@ public:
     }
 
     _rb_node *node = allocator.allocate(1);
+    memset(node, 0x0, sizeof(_rb_node));
     node->key = key;
     node->value = value;
     node->parent_color = reinterpret_cast<size_t>(parent);
@@ -942,7 +943,7 @@ public:
   [[gnu::always_inline]]
   inline bool empty() const
   {
-    return _root == nullptr;
+    return _size == 0;
   }
 
   inline size_t size() const
