@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.9)
 project(megatron)
 
 set(CMAKE_CXX_STANDARD 23)
-#set(CMAKE_CXX_FLAGS "-mtune=native -march=native -O3")
+set(CMAKE_CXX_FLAGS "-mtune=native -march=native -O3")
 set(CMAKE_CXX_FLAGS_PROFILE "-pg")
 
 add_subdirectory(third_party/memory)
