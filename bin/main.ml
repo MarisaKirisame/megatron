@@ -56,7 +56,7 @@ let shell cmd =
   match res with Ok () -> () | _ -> panic "shell failed"
 
 let () = shell ("mkdir -p build")
-let () = shell ("cd build && cmake ../")
+let () = shell ("cd build && cmake -DCMAKE_BUILD_TYPE=Release ../")
 
 let tag t str = "<" ^ t ^ ">" ^ str ^ "</" ^ t ^ ">"
 
