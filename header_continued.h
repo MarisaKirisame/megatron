@@ -22,7 +22,7 @@ struct QueueValue {
   Node n;
   PQData rf;
 };
-#if 1
+#if 0
 std::map<TotalOrder, QueueValue, std::less<TotalOrder>, default_allocator<std::pair<const TotalOrder, QueueValue>>> queue;
 
 Unit QueuePush(const TotalOrder &to, const Node &n, PQData &&data) {
@@ -54,7 +54,7 @@ std::pair<TotalOrder, QueueValue> QueuePop() {
 }
 #endif
 
-#if 0
+#if 1
 rb_tree<TotalOrder, QueueValue, default_allocator> queue;
 Unit QueuePush(const TotalOrder &to, const Node &n, PQData &&data) {
   queue.insert(to, QueueValue(n, std::move(data)));
