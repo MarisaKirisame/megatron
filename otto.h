@@ -1118,6 +1118,7 @@ struct SplayList {
       }
 
       delete this;
+      --sl.size;
     }
 
     void rotate(Node*& root_node) {
@@ -1215,7 +1216,6 @@ struct SplayList {
     Node* ptr = find_precise_node(k);
     if (ptr != nullptr) {
       ptr->remove(*this);
-      --size;
     }
   }
 
