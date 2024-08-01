@@ -22,33 +22,60 @@ struct QueueValue {
   Node n;
   PQData rf;
 };
-std::map<TotalOrder, QueueValue, std::less<TotalOrder>, default_allocator<std::pair<const TotalOrder, QueueValue>>>
-    queue;
+// std::map<TotalOrder, QueueValue, std::less<TotalOrder>, default_allocator<std::pair<const TotalOrder, QueueValue>>>
+//     queue;
+// Unit QueuePush(const TotalOrder &to, const Node &n, PQData &&data) {
+//   queue.insert({to, QueueValue(n, std::move(data))});
+//   return Unit{};
+// }
+// int64_t QueueSize() { return queue.size(); }
+// bool QueueIsEmpty() { return queue.empty(); }
+// Unit QueuePush(const TotalOrder &to, Content *n, PQData &&data) {
+//   queue.insert({to, QueueValue(n->shared_from_this(), std::move(data))});
+//   return Unit{};
+// }
+// // todo:check
+// Unit QueueForcePush(const TotalOrder &to, const Node &n, PQData &&data) {
+//   queue.insert({to, QueueValue(n, std::move(data))});
+//   return Unit{};
+// }
+// // todo:check
+// Unit QueueForcePush(const TotalOrder &to, Content *n, PQData &&data) {
+//   queue.insert({to, QueueValue(n->shared_from_this(), std::move(data))});
+//   return Unit{};
+// }
+// std::pair<TotalOrder, QueueValue> QueuePeek() { return *(queue.begin()); }
+// std::pair<TotalOrder, QueueValue> QueuePop() {
+//   auto it = queue.begin();
+//   auto ret = *it;
+//   queue.erase(it);
+//   return ret;
+// }
+rb_tree<TotalOrder, QueueValue, default_allocator> queue;
 Unit QueuePush(const TotalOrder &to, const Node &n, PQData &&data) {
-  queue.insert({to, QueueValue(n, std::move(data))});
+  queue.insert(to, QueueValue(n, std::move(data)));
   return Unit{};
 }
 int64_t QueueSize() { return queue.size(); }
 bool QueueIsEmpty() { return queue.empty(); }
 Unit QueuePush(const TotalOrder &to, Content *n, PQData &&data) {
-  queue.insert({to, QueueValue(n->shared_from_this(), std::move(data))});
+  queue.insert(to, QueueValue(n->shared_from_this(), std::move(data)));
   return Unit{};
 }
 // todo:check
 Unit QueueForcePush(const TotalOrder &to, const Node &n, PQData &&data) {
-  queue.insert({to, QueueValue(n, std::move(data))});
+  queue.insert(to, QueueValue(n, std::move(data)));
   return Unit{};
 }
 // todo:check
 Unit QueueForcePush(const TotalOrder &to, Content *n, PQData &&data) {
-  queue.insert({to, QueueValue(n->shared_from_this(), std::move(data))});
+  queue.insert(to, QueueValue(n->shared_from_this(), std::move(data)));
   return Unit{};
 }
-std::pair<TotalOrder, QueueValue> QueuePeek() { return *(queue.begin()); }
+std::pair<TotalOrder, QueueValue> QueuePeek() { return std::make_pair(queue._leftmost->key, queue._leftmost->value); }
 std::pair<TotalOrder, QueueValue> QueuePop() {
-  auto it = queue.begin();
-  auto ret = *it;
-  queue.erase(it);
+  auto ret = std::make_pair(queue._leftmost->key, queue._leftmost->value);
+  queue.erase(queue._leftmost);
   return ret;
 }
 bool eq(const DEStringRest &l, const DEStringRest &r) {

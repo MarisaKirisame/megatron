@@ -391,7 +391,7 @@ concept three_way_comparable = requires(const T l, const T r) {
 template <three_way_comparable Key, std::copy_constructible Value, template <typename> typename Allocator = std::allocator>
 class rb_tree
 {
-private:
+public:
   constexpr static size_t _color_red = 0;
   constexpr static size_t _color_black = 1;
 
@@ -480,6 +480,7 @@ private:
 
   _rb_node *_root;
   _rb_node *_leftmost;
+  size_t _size;
   Allocator<_rb_node> allocator;
 
   [[gnu::always_inline]]
@@ -871,6 +872,7 @@ public:
   {
     _root = nullptr;
     _leftmost = nullptr;
+    _size = 0;
   }
 
   ~rb_tree()
@@ -915,6 +917,7 @@ public:
     node->left = nullptr;
     node->right = nullptr;
     *link = node;
+    _size += 1;
     if (leftmost)
     {
       _leftmost = node;
@@ -942,6 +945,11 @@ public:
     return _root == nullptr;
   }
 
+  inline size_t size() const
+  {
+    return _size;
+  }
+
   inline void erase(const Key &key)
   {
     _rb_node *node = find(key);
@@ -961,6 +969,7 @@ public:
       erase_color(rebalance);
     }
 
+    _size -= 1;
     allocator.deallocate(node, 1);
   }
 
