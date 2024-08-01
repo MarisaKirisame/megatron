@@ -1045,18 +1045,24 @@ struct SplayList {
     Node* splay_parent;
     mutable std::array<Node*, 2> splay_children = {nullptr, nullptr};
 
-    Node(const K& k, const V& v, Node* list_parent, Node* list_children, Node* splay_parent) :
+    Node(const K& k, const V& v, Node* list_parent, Node* list_children, Node* splay_parent, SplayList& sl) :
       k(k), v(v), list_parent(list_parent), list_children(list_children), splay_parent(splay_parent) {
       if (list_parent != nullptr) {
         assert(list_parent->list_children == list_children);
         assert(list_parent->k < k);
         list_parent->list_children = this;
+      } else {
+        sl.leftmost_node = this;
       }
+
       if (list_children != nullptr) {
         assert(list_children->list_parent == list_parent);
         assert(list_children->k > k);
         list_children->list_parent = this;
+      } else {
+        sl.rightmost_node = this;
       }
+      ++sl.size;
     }
 
     size_t idx_at_parent() const {
@@ -1237,20 +1243,20 @@ struct SplayList {
     if (ptr != nullptr) {
       if (ptr->k < k) {
         assert(ptr->splay_children[1] == nullptr);
-        ptr->splay_children[1] = new Node(k, v, ptr, ptr->list_children, ptr);
-        ++size;
+        if (ptr->list_children != nullptr) {
+          assert(rightmost_node != nullptr);
+        }
+        ptr->splay_children[1] = new Node(k, v, ptr, ptr->list_children, ptr, *this);
       } else if (k < ptr->k) {
         assert(ptr->splay_children[0] == nullptr);
-        ptr->splay_children[0] = new Node(k, v, ptr->list_parent, ptr, ptr);
-        ++size;
+        ptr->splay_children[0] = new Node(k, v, ptr->list_parent, ptr, ptr, *this);
       } else {
         assert (ptr->k == k);
         ptr->v = v;
       }
       ptr->splay(this->root_node);
     } else {
-      root_node = new Node(k, v, nullptr, nullptr, nullptr);
-      ++size;
+      root_node = new Node(k, v, nullptr, nullptr, nullptr, *this);
     }
   }
 
