@@ -1037,27 +1037,25 @@ template<typename K, typename V>
 struct SplayList {
   struct Node {
     K k;
-    // todo: remove V
     V v;
 
-    // todo: rename to list_parent and list_children
-    Node* parent;
-    Node* children;
+    Node* list_parent;
+    Node* list_children;
 
     Node* splay_parent;
     mutable std::array<Node*, 2> splay_children = {nullptr, nullptr};
 
-    Node(const K& k, const V& v, Node* parent, Node* children, Node* splay_parent) :
-      k(k), v(v), parent(parent), children(children), splay_parent(splay_parent) {
-      if (parent != nullptr) {
-        assert(parent->children == children);
-        assert(parent->k <= k);
-        parent->children = this;
+    Node(const K& k, const V& v, Node* list_parent, Node* list_children, Node* splay_parent) :
+      k(k), v(v), list_parent(list_parent), list_children(list_children), splay_parent(splay_parent) {
+      if (list_parent != nullptr) {
+        assert(list_parent->list_children == list_children);
+        assert(list_parent->k < k);
+        list_parent->list_children = this;
       }
-      if (children != nullptr) {
-        assert(children->parent == parent);
-        assert(children->k >= k);
-        children->parent = this;
+      if (list_children != nullptr) {
+        assert(list_children->list_parent == list_parent);
+        assert(list_children->k > k);
+        list_children->list_parent = this;
       }
     }
 
@@ -1066,42 +1064,57 @@ struct SplayList {
       return splay_parent->splay_children[0] == this ? 0 : 1;
     }
 
-    void maintain_parent(size_t idx) {
+    void splay_maintain_children_parent(size_t idx) {
       if (splay_children[idx] != nullptr) {
         splay_children[idx]->splay_parent = this;
       }
     }
 
     void swap_children(size_t idx, Node* node, size_t nidx) {
-      std::swap(splay_children[idx], node->splay_children[nidx]);
-      maintain_parent(idx);
-      node->maintain_parent(nidx);
+      std::swap(this->splay_children[idx], node->splay_children[nidx]);
+      this->splay_maintain_children_parent(idx);
+      node->splay_maintain_children_parent(nidx);
     }
 
-    void remove(SplayList& tl) {
-      if (parent != nullptr) {
-        parent->children = children;
-      }
-      if (children != nullptr) {
-        children->parent = parent;
-      }
-
-      splay(tl.root_node);
-      if (splay_children[0] == nullptr && splay_children[1] == nullptr) {
-        tl.root_node = nullptr;
-      } else if (splay_children[0]== nullptr) {
-        tl.root_node = std::move(splay_children[1]);
-        tl.root_node->splay_parent = nullptr;
-      } else if (splay_children[1] == nullptr) {
-        tl.root_node = std::move(splay_children[0]);
-        tl.root_node->splay_parent = nullptr;
+    void remove(SplayList& sl) {
+      if (splay_children[0] == nullptr) {
+        if (splay_children[1] != nullptr) {
+          splay_children[1]->splay_parent = splay_parent;
+        }
+        if (splay_parent == nullptr) {
+          sl.root_node = splay_children[1];
+        } else {
+          splay_parent->splay_children(idx_at_parent()) = splay_children[1];
+        }
       } else {
-        splay_children[1]->splay_parent = nullptr;
+        assert (splay_children[0] != nullptr);
+        splay_children[0]->splay_parent = splay_parent;
+        if (splay_children[1] != nullptr) {
+          splay_children[0]->splay_parent = splay_parent;
+          list_parent->splay(splay_children[0]);
+          assert(splay_children[0]->splay_children[1] == nullptr);
+          splay_children[0]->splay_children[1] = splay_children[1];
+          splay_children[0]->splay_maintain_children_parent(1);
+        }
+        if (splay_parent == nullptr) {
+          sl.root_node = splay_children[0];
+        } else {
+          splay_parent->splay_children(idx_at_parent()) = splay_children[0];
+        }
+      }
 
-        splay_children[1]->min_node()->splay(splay_children[1]);
-        splay_children[1]->splay_children[0] = std::move(splay_children[0]);
-        splay_children[1]->maintain_parent(0);
-        tl.root_node = std::move(splay_children[1]);
+      if (list_parent == nullptr) {
+        assert(sl.leftmost_node == this);
+        sl.leftmost_node = list_children;
+      } else {
+        list_parent->list_children = list_children;
+      }
+
+      if (list_children == nullptr) {
+        assert(sl.rightmost_node == this);
+        sl.rightmost_node = list_parent;
+      } else {
+        list_children->list_parent = list_parent;
       }
 
       delete this;
@@ -1137,35 +1150,27 @@ struct SplayList {
     }
 
   };
+
   mutable Node* root_node = nullptr;
+  Node* leftmost_node = nullptr;
+  Node* rightmost_node = nullptr;
   size_t size = 0;
 
   ~SplayList() {
-    Node* root_node_copy = root_node;
-    root_node = nullptr;
-    size = 0;
-    if (root_node_copy != nullptr) {
-      for (Node* left_ptr = root_node_copy->parent; left_ptr != nullptr;) {
-        Node* to_delete = left_ptr;
-        left_ptr = left_ptr->parent;
-        delete to_delete;
-      }
-      for (Node* right_ptr = root_node_copy->children; right_ptr != nullptr;) {
-        Node* to_delete = right_ptr;
-        right_ptr = right_ptr->children;
-        delete to_delete;
-      }
-      delete root_node;
+    Node* ptr = leftmost_node;
+    while (ptr != rightmost_node) {
+      Node* old = ptr;
+      ptr = ptr->list_children;
+      delete old;
+    }
+    if (ptr != nullptr) {
+      delete ptr;
     }
   }
 
-  // for insert
-  // you have to insert the new node at the leaf before splay
+  // return either the node with the key, or the last node seen.
+  // return nullptr if the tree is empty.
   Node* find_node_without_splay(const K& k) {
-    if (root_node == nullptr) {
-      return nullptr;
-    }
-
     Node* last_ptr = nullptr;
     Node* ptr = root_node;
     while (ptr != nullptr) {
@@ -1191,6 +1196,11 @@ struct SplayList {
     return ret;
   }
 
+  Node* find_precise_node(const K& k) {
+    Node* ptr = find_node(k);
+    return (ptr == nullptr || ptr->k != k) ? nullptr : ptr;
+  }
+
   V* find_precise(const K& k) {
     Node* ptr = find_precise_node(k);
     return ptr == nullptr ? nullptr : &(ptr->v);
@@ -1208,6 +1218,19 @@ struct SplayList {
       --size;
     }
   }
+
+  std::pair<K, V> peek() {
+    assert(leftmost_node != nullptr);
+    return std::make_pair(leftmost_node->k, leftmost_node->v);
+  }
+
+  std::pair<K, V> pop() {
+    assert(leftmost_node != nullptr);
+    auto ret = std::make_pair(std::move(leftmost_node->k), std::move(leftmost_node->v));
+    leftmost_node->remove(*this);
+    return ret;
+  }
+
 
   void insert(const K& k, const V& v) {
     Node* ptr = find_node_without_splay(k);
