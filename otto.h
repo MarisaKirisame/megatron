@@ -55,27 +55,27 @@ public:
       //   return lpl < rpl;
       // }
 
-      Label lpl = l.parent->label;
-      Label rpl = r.parent->label;
-      Label result1 = static_cast<Label>(l.label < r.label);
-      Label result2 = static_cast<Label>(lpl < rpl);
-      Label mask1 = static_cast<Label>(lpl == rpl) - 1;
-      return ((result1 & ~mask1) | (result2 & mask1));
-
       // Label lpl = l.parent->label;
       // Label rpl = r.parent->label;
-      // size_t result1 = l.label < r.label;
-      // size_t result = 0;
+      // Label result1 = static_cast<Label>(l.label < r.label);
+      // Label result2 = static_cast<Label>(lpl < rpl);
+      // Label mask1 = static_cast<Label>(lpl == rpl) - 1;
+      // return ((result1 & ~mask1) | (result2 & mask1));
 
-      // asm volatile(
-      //     "xor %%rax, %%rax\n"
-      //     "cmp %1, %2\n"
-      //     "seta %%al\n"
-      //     "cmove %3, %%rax\n"
-      //     : "=&a"(result)
-      //     : "r"(lpl), "r"(rpl), "r"(result1));
+      Label lpl = l.parent->label;
+      Label rpl = r.parent->label;
+      size_t result1 = l.label < r.label;
+      size_t result = 0;
 
-      // return result;
+      asm volatile(
+          "xor %%rax, %%rax\n"
+          "cmp %1, %2\n"
+          "seta %%al\n"
+          "cmove %3, %%rax\n"
+          : "=&a"(result)
+          : "r"(lpl), "r"(rpl), "r"(result1));
+
+      return result;
     }
 
     [[gnu::always_inline]]
@@ -100,27 +100,27 @@ public:
       //   return lpl - rpl;
       // }
 
+      // Label lpl = l.parent->label;
+      // Label rpl = r.parent->label;
+      // SignedLabel result1 = static_cast<SignedLabel>(l.label - r.label);
+      // SignedLabel result2 = static_cast<SignedLabel>(lpl - rpl);
+      // SignedLabel mask1 = static_cast<SignedLabel>(lpl == rpl) - 1;
+      // return ((result1 & ~mask1) | (result2 & mask1));
+
       Label lpl = l.parent->label;
       Label rpl = r.parent->label;
       SignedLabel result1 = static_cast<SignedLabel>(l.label - r.label);
       SignedLabel result2 = static_cast<SignedLabel>(lpl - rpl);
-      SignedLabel mask1 = static_cast<SignedLabel>(lpl == rpl) - 1;
-      return ((result1 & ~mask1) | (result2 & mask1));
+      SignedLabel result;
 
-      // Label lpl = l.parent->label;
-      // Label rpl = r.parent->label;
-      // ssize_t result1 = static_cast<ssize_t>(l.label - r.label);
-      // ssize_t result2 = static_cast<ssize_t>(lpl - rpl);
-      // ssize_t result;
+      asm volatile(
+          "cmp %1, %2\n"
+          "cmove %3, %0\n"
+          "cmovne %4, %0\n"
+          : "=&r"(result)
+          : "r"(lpl), "r"(rpl), "r"(result1), "r"(result2));
 
-      // asm volatile(
-      //     "cmp %1, %2\n"
-      //     "cmove %3, %0\n"
-      //     "cmovne %4, %0\n"
-      //     : "=&r"(result)
-      //     : "r"(lpl), "r"(rpl), "r"(result1), "r"(result2));
-
-      // return result;
+      return result;
     }
   };
 
