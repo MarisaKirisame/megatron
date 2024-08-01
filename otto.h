@@ -1084,7 +1084,7 @@ struct SplayList {
         if (splay_parent == nullptr) {
           sl.root_node = splay_children[1];
         } else {
-          splay_parent->splay_children(idx_at_parent()) = splay_children[1];
+          splay_parent->splay_children[idx_at_parent()] = splay_children[1];
         }
       } else {
         assert (splay_children[0] != nullptr);
@@ -1099,7 +1099,7 @@ struct SplayList {
         if (splay_parent == nullptr) {
           sl.root_node = splay_children[0];
         } else {
-          splay_parent->splay_children(idx_at_parent()) = splay_children[0];
+          splay_parent->splay_children[idx_at_parent()] = splay_children[0];
         }
       }
 
@@ -1237,11 +1237,11 @@ struct SplayList {
     if (ptr != nullptr) {
       if (ptr->k < k) {
         assert(ptr->splay_children[1] == nullptr);
-        ptr->splay_children[1] = new Node(k, v, ptr, ptr->children, ptr);
+        ptr->splay_children[1] = new Node(k, v, ptr, ptr->list_children, ptr);
         ++size;
       } else if (k < ptr->k) {
         assert(ptr->splay_children[0] == nullptr);
-        ptr->splay_children[0] = new Node(k, v, ptr->parent, ptr, ptr);
+        ptr->splay_children[0] = new Node(k, v, ptr->list_parent, ptr, ptr);
         ++size;
       } else {
         assert (ptr->k == k);
