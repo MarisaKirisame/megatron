@@ -1158,7 +1158,7 @@ struct SplayList {
 
   };
 
-  Allocator<_rb_node> allocator;
+  Allocator<Node> allocator;
   mutable Node* root_node = nullptr;
   Node* leftmost_node = nullptr;
   Node* rightmost_node = nullptr;
