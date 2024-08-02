@@ -35,4 +35,9 @@ __pycache__
 *.webm
 \#*#
 *.trace
+callgrind.*
 build/
+debug/
+profile/
+relwithdebuginfo/
+releasewithdebug/

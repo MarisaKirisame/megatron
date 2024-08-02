@@ -25,6 +25,7 @@ type code =
   | CAnd of code * code
   | COr of code * code
   | CNot of code
+  | CWhile of code * code
   | CAssert of (*assertion*) code * (*error message*) code * (*return*) code
 [@@deriving show, equal]
 
@@ -47,6 +48,7 @@ module type SDIN = sig
   val let_ : 'a sd -> ('a sd -> 'b sd) -> 'b sd
   val lam : ('a sd -> 'b sd) -> ('a -> 'b) sd
   val app : ('a -> 'b) sd -> 'a sd -> 'b sd
+  val while_ : (unit -> bool sd) -> (unit -> unit sd) -> unit sd
 
   (*note that we are compiling lamx/appx different then repeated application of lam/app.
     this is because cpp's function have multi-arity, different from tuple-packing/currying.
@@ -192,6 +194,7 @@ module type SDIN = sig
   val unsome : 'a option sd -> 'a sd
   val and_ : bool sd -> (unit -> bool sd) -> bool sd
   val or_ : bool sd -> (unit -> bool sd) -> bool sd
+  val not_ : bool sd -> bool sd
   val timed : (unit -> 'a sd) -> (int * 'a) sd
 end
 
@@ -250,6 +253,11 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
   let rec fix2 (f : ('a -> 'b -> 'c) -> 'a -> 'b -> 'c) (x0 : 'a) (x1 : 'b) : 'c = f (fun x0 x1 -> fix2 f x0 x1) x0 x1
   let lam3 f = f
   let app3 f = f
+
+  let rec while_ b s =
+    if b () then (
+      s ();
+      while_ b s)
 
   let rec fix3 (f : ('a -> 'b -> 'c -> 'd) -> 'a -> 'b -> 'c -> 'd) (x0 : 'a) (x1 : 'b) (x2 : 'c) : 'd =
     f (fun x0 x1 x2 -> fix3 f x0 x1 x2) x0 x1 x2
@@ -503,6 +511,7 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
   let list_is_singleton x = match x with [] -> false | _ :: y -> list_is_empty y
   let and_ l r = if l then r () else false
   let or_ l r = if l then true else r ()
+  let not_ x = if x then false else true
 end)
 
 module D : SD with type 'x sd = code = MakeSD (struct
@@ -574,6 +583,7 @@ module D : SD with type 'x sd = code = MakeSD (struct
         f (fun x0 x1 x2 -> CApp (CVar fname, [ x0; x1; x2 ])) (CVar xname0) (CVar xname1) (CVar xname2) )
 
   let app3 (f : code) x0 x1 x2 = CApp (f, [ x0; x1; x2 ])
+  let while_ b s = CWhile (b (), s ())
   let ignore x = x
   let int x = CInt x
   let bool x = CBool x
@@ -717,4 +727,5 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let and_ l r = CAnd (l, r ())
   let or_ l r = COr (l, r ())
   let timed f = CApp (CPF "Timed", [ lam (fun _ -> f ()) ])
+  let not_ x = CNot x
 end)

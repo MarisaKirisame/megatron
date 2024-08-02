@@ -62,9 +62,8 @@ let shell_check_bin cmd cmd2 =
   let res = Core_unix.close_process_in in_channel in
   match res with Ok () -> cmd | _ -> cmd2
 
-let () = shell ("mkdir -p build")
-let () = shell ("cd build && cmake -DCMAKE_BUILD_TYPE=Release ../")
-
+let () = shell "mkdir -p build"
+let () = shell "cd build && cmake -DCMAKE_BUILD_TYPE=Release ../"
 let tag t str = "<" ^ t ^ ">" ^ str ^ "</" ^ t ^ ">"
 
 let default_tag : (string, unit) Hashtbl.t =
@@ -631,18 +630,22 @@ module Main (EVAL : Eval) = struct
     compile prog (defs ()) (undyn main) (EVAL.meta_defs prog) ds c;
     Stdio.Out_channel.close c;
 
-    shell ((shell_check_bin "clang-format-18" "clang-format") ^ " --style=file -i " ^ compiled_file_name);
-    shell ((shell_check_bin "clang-format-18" "clang-format") ^ " --style=file -i " ^ "header.h");
-    shell ((shell_check_bin "clang-format-18" "clang-format") ^ " --style=file -i " ^ "header_continued.h");
-    shell ("cd build && make");
+    shell (shell_check_bin "clang-format-18" "clang-format" ^ " --style=file -i " ^ compiled_file_name);
+    shell (shell_check_bin "clang-format-18" "clang-format" ^ " --style=file -i " ^ "header.h");
+    shell (shell_check_bin "clang-format-18" "clang-format" ^ " --style=file -i " ^ "header_continued.h");
+    shell "cd build && make";
     shell ("build/Layout" ^ name)
 
   let () = if is_static then () else run_dynamic ()
 end
 
-module MainFSI = Main (Megatron.EvalFS.EVAL (S))
+module DEBUG = Main (Megatron.EvalPQ.EVAL (D))
+
+(*module MainFSI = Main (Megatron.EvalFS.EVAL (S))*)
 module MainFSC = Main (Megatron.EvalFS.EVAL (D))
-module MainDBI = Main (Megatron.EvalDB.EVAL (S))
+
+(*module MainDBI = Main (Megatron.EvalDB.EVAL (S))*)
 module MainDBC = Main (Megatron.EvalDB.EVAL (D))
-module MainPQI = Main (Megatron.EvalPQ.EVAL (S))
+
+(*module MainPQI = Main (Megatron.EvalPQ.EVAL (S))*)
 module MainPQC = Main (Megatron.EvalPQ.EVAL (D))

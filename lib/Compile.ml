@@ -31,7 +31,7 @@ let is_pure_function f =
 
 let rec is_pure x =
   match x with
-  | CSetMember _ | CPanic _ -> false
+  | CSetMember _ | CPanic _ | CWhile _ -> false
   | CInt _ | CString _ | CVar _ -> true
   | CAssert _ -> false
   | CFun (name, body) -> is_pure body
@@ -102,18 +102,15 @@ let rec simplify (p : prog) x =
         ]
   | CApp (CPF "HashtblForceRemove", [ CGetMember (x, (("var" | "prop" | "attr") as tbl)); CString f ]) ->
       CSetMember (x, "has_" ^ tbl ^ "_" ^ string_to_cpp f, CBool false)
-  | CApp (CPF "HashtblContain", [ CGetMember (x, "BBTimeTable"); CString f ]) ->
-      CGetMember (x, f ^ "_has_bb_time_table")
-  | CApp (CPF "HashtblFindExn", [ CGetMember (x, "BBTimeTable"); CString f ]) ->
-      CGetMember (x, f ^ "_bb_time_table")
+  | CApp (CPF "HashtblContain", [ CGetMember (x, "BBTimeTable"); CString f ]) -> CGetMember (x, f ^ "_has_bb_time_table")
+  | CApp (CPF "HashtblFindExn", [ CGetMember (x, "BBTimeTable"); CString f ]) -> CGetMember (x, f ^ "_bb_time_table")
   | CApp (CPF ("HashtblAddExn" | "HashtblSet"), [ CGetMember (x, "BBTimeTable"); CString f; v ]) ->
-      CSeq[CSetMember (x, f ^ "_has_bb_time_table", CBool true); CSetMember (x, f ^ "_bb_time_table", v)]
+      CSeq [ CSetMember (x, f ^ "_has_bb_time_table", CBool true); CSetMember (x, f ^ "_bb_time_table", v) ]
   | CApp (CPF "HashtblContain", [ CGetMember (x, "ProcTimeTable"); CString f ]) ->
       CGetMember (x, f ^ "_has_proc_time_table")
-  | CApp (CPF "HashtblFindExn", [ CGetMember (x, "ProcTimeTable"); CString f ]) ->
-      CGetMember (x, f ^ "_proc_time_table")
+  | CApp (CPF "HashtblFindExn", [ CGetMember (x, "ProcTimeTable"); CString f ]) -> CGetMember (x, f ^ "_proc_time_table")
   | CApp (CPF ("HashtblAddExn" | "HashtblSet"), [ CGetMember (x, "ProcTimeTable"); CString f; v ]) ->
-      CSeq[CSetMember (x, f ^ "_has_proc_time_table", CBool true);CSetMember (x, f ^ "_proc_time_table", v)]
+      CSeq [ CSetMember (x, f ^ "_has_proc_time_table", CBool true); CSetMember (x, f ^ "_proc_time_table", v) ]
   | CApp (CPF "HashtblContain", [ CGetMember (x, "ProcInited"); CString f ]) -> CGetMember (x, f ^ "_proc_inited")
   | CApp (CPF "HashtblAddExn", [ CGetMember (x, "ProcInited"); CString f; _ ]) ->
       CSetMember (x, f ^ "_proc_inited", CBool true)
@@ -163,7 +160,8 @@ let rec simplify (p : prog) x =
                         | CApp (CVar _, _)
                         | CStringMatch (_, _, _)
                         | CIntMatch (_, _, _)
-                        | CAssert _ ->
+                        | CAssert _
+                        | CWhile (_, _) ->
                             [ x ]
                         | CFun _ | CVar _ -> []
                         | CGetMember (x, _) -> [ x ]
@@ -183,6 +181,7 @@ let rec simplify (p : prog) x =
   | CApp (CPF "WriteAssocToJson", [ j; CApp (CPF "Nil", []) ]) -> j
   | CApp (CPF "not", [ x ]) -> CNot x
   (* default cases *)
+  | CWhile (b, s) -> CWhile (recurse b, recurse s)
   | CAssert (b, e, t) -> CAssert (recurse b, recurse e, recurse t)
   | CPanic xs -> CPanic (recurse xs)
   | CIf (i, t, e) -> CIf (recurse i, recurse t, recurse e)
@@ -280,6 +279,12 @@ and compile_proc c x =
   | CApp _ | CGetMember _ | CVar _ | CInt _ | CStringMatch _ | CIntMatch _ ->
       compile_expr c x;
       output_string c ";"
+  | CWhile (b, s) ->
+      output_string c "while(";
+      compile_expr c b;
+      output_string c "){";
+      compile_proc c s;
+      output_string c "}"
   | CSetMember (x, (("first" | "parent" | "prev" | "next" | "last") as f), CApp (CPF "None", [])) ->
       compile_expr c x;
       output_string c ("->" ^ f ^ "= nullptr;")
