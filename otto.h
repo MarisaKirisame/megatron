@@ -1033,7 +1033,7 @@ public:
 
 // todo: add allocator
 // todo: add pop
-template<typename K, typename V>
+template<typename K, typename V, template <typename> typename Allocator = std::allocator>
 struct SplayList {
   struct Node {
     K k;
@@ -1123,7 +1123,7 @@ struct SplayList {
         list_children->list_parent = list_parent;
       }
 
-      delete this;
+      sl.allocator.deallocate(this, 1);
       --sl.size;
     }
 
@@ -1158,6 +1158,7 @@ struct SplayList {
 
   };
 
+  Allocator<_rb_node> allocator;
   mutable Node* root_node = nullptr;
   Node* leftmost_node = nullptr;
   Node* rightmost_node = nullptr;
@@ -1168,10 +1169,10 @@ struct SplayList {
     while (ptr != rightmost_node) {
       Node* old = ptr;
       ptr = ptr->list_children;
-      delete old;
+      sl.allocator.deallocate(old, 1);
     }
     if (ptr != nullptr) {
-      delete ptr;
+      sl.allocator.deallocate(ptr, 1);
     }
   }
 
@@ -1246,17 +1247,17 @@ struct SplayList {
         if (ptr->list_children != nullptr) {
           assert(rightmost_node != nullptr);
         }
-        ptr->splay_children[1] = new Node(k, v, ptr, ptr->list_children, ptr, *this);
+        ptr->splay_children[1] = std::construct_at(allocator.allocate(1), k, v, ptr, ptr->list_children, ptr, *this);
       } else if (k < ptr->k) {
         assert(ptr->splay_children[0] == nullptr);
-        ptr->splay_children[0] = new Node(k, v, ptr->list_parent, ptr, ptr, *this);
+        ptr->splay_children[0] = std::construct_at(allocator.allocate(1), k, v, ptr->list_parent, ptr, ptr, *this);
       } else {
         assert (ptr->k == k);
         ptr->v = v;
       }
       ptr->splay(this->root_node);
     } else {
-      root_node = new Node(k, v, nullptr, nullptr, nullptr, *this);
+      root_node = std::construct_at(allocator.allocate(1), k, v, nullptr, nullptr, nullptr, *this);
     }
   }
 
