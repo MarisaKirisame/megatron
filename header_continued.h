@@ -96,7 +96,7 @@ std::pair<TotalOrder, QueueValue> QueuePop() {
   return ret;
 }
 #elif QUEUE_IMPL == 2
-SplayList<TotalOrder, QueueValue> queue;
+SplayList<TotalOrder, QueueValue, default_allocator> queue;
 int64_t QueueSize() { return queue.size; }
 bool QueueIsEmpty() { return queue.size == 0; }
 Unit QueuePush(const TotalOrder &to, const Node &n, PQData &&data) {
