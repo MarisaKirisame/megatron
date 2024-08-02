@@ -1169,10 +1169,10 @@ struct SplayList {
     while (ptr != rightmost_node) {
       Node* old = ptr;
       ptr = ptr->list_children;
-      sl.allocator.deallocate(old, 1);
+      allocator.deallocate(old, 1);
     }
     if (ptr != nullptr) {
-      sl.allocator.deallocate(ptr, 1);
+      allocator.deallocate(ptr, 1);
     }
   }
 
