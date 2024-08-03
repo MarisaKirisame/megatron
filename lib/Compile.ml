@@ -54,6 +54,7 @@ let rec simplify (p : prog) x =
   | CApp (CPF "ReadMetric", [ x ]) ->
       x (* not correct, but we dont care about ReadMetric rn, and this simplify the generated code *)
   | CAssert (_, _, x) -> x (*also not correct.*)
+  | CApp (CPF "Zro", [ CApp (CPF "Timed", [x]) ]) -> CApp (CPF "TimedOnly", [x])
   | CApp (CPF "OptionMatch", [ x; CFun (_, CApp (CPF "MakeUnit", [])); CFun (_, CApp (CPF "MakeUnit", [])) ]) -> x
   | CApp (CPF "OptionMatch", [ x; CFun (_, CPanic _); y ]) -> CApp (y, [ CApp (CPF "UnSome", [ x ]) ])
   | CApp (CPF "OptionMatch", [ CApp (CPF "Some", [ x ]); y; z ]) -> CSeq [ y; CApp (z, [ x ]) ]
