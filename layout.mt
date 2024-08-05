@@ -1,3 +1,22 @@
+(*
+property:
+display := block | inline-block | flex | inline-flex | none | contents | table | table-row-group | table-row | table-cell | list-item | grid
+position := static | absolute
+flex-grow := float
+flex-shrink := float
+flex-direction := row | row-reverse | column | column-reverse
+
+attribute:
+width := auto | Auto | float px | float ch | float lh | float % | fit-content | max-content
+height := auto | Auto | float px | float ch | float lh | float % | fit-content | max-content
+
+name := svg | NOSCRIPT | #document | #shadow-root | DIV | HTML | BODY | BUTTON | FOOTER | SELECT | SECTION | FORM | CENTER 
+      | TD | TR | TBODY | TABLE | SPAN | FONT | A | ARTICLE | P | U | UL | B | H1 | H2 | H3 | H4 | DT | DD | DL | LI | LABEL | OL
+      | NAV | HEADER | HEAD | SOURCE | PICTURE | FIGURE | FIGCAPTION | MAIN | REACT-PARTIAL | QUERY-BUILDER | MODAL-DIALOG | SCROLLABLE-REGION
+      | DIALOG-HELPER | AUTO-CHECK | TOOL-TIP | CUSTOM-SCOPES | QBSEARCH-INPUT | INCLUDE-FRAGMENT | COOKIE-CONSENT-LINK | FULLSTORY-CAPTURE 
+      | GHCC-CONSENT | GLOBAL-BANNER | ACTIVE-GLOBAL-BANNERS | CARD-SKEW | EM | ASIDE | AUDIO | SUP | TIME | ABBR | SMALL | SLOT | I
+      | #text | IFRAME | INPUT | VIDEO | BR | IMG | TEXTAREA
+*)
 var finished_intrinsic_height_sum : float;
 
 (*calculate display, intrinsic_width, and intrinsic_height*)
@@ -13,7 +32,7 @@ proc pass_0() {
   self.is_flex_row <- 
     if (has_parent() && ((parent().display = "flex") || (parent().display = "inline-flex")))
     then
-      (if parent().flex_direction = "row"
+      (if ((parent().flex_direction = "row") || (parent().flex_direction = "row-reverse"))
       then true
       else if (parent().flex_direction = "column") || (parent().flex_direction = "column-reverse")
       then false
@@ -76,6 +95,8 @@ proc pass_0() {
     else if self.display = "flex"
     then 
       (if get_prop(flex-direction) = "row"
+      then false
+      else if get_prop(flex-direction) = "row-reverse"
       then false
       else if get_prop(flex-direction) = "column"
       then true
