@@ -453,3 +453,16 @@ auto Timed(const auto &f) {
   }
   return std::make_pair(static_cast<int64_t>(time_taken - frame.skipped), std::move(val));
 }
+
+auto TimedOnly(const auto &f) {
+  t.v.push_back(Timer::Node{0, readTSC()});
+  auto val = f(Unit{});
+  rdtsc_type end_time = readTSC();
+  auto frame = t.v.back();
+  t.v.pop_back();
+  auto time_taken = end_time - frame.start_time;
+  if (!t.v.empty()) {
+    t.v.back().skipped += time_taken;
+  }
+  return static_cast<int64_t>(time_taken - frame.skipped);
+}
