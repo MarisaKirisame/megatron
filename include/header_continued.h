@@ -23,9 +23,11 @@ struct QueueValue {
   PQData rf;
 };
 
-#define QUEUE_IMPL 2
+#define QUEUE_IMPL 1
 
 #if QUEUE_IMPL == 0
+#include <map>
+
 std::map<TotalOrder, QueueValue, std::less<TotalOrder>, default_allocator<std::pair<const TotalOrder, QueueValue>>>
     queue;
 
@@ -57,6 +59,8 @@ std::pair<TotalOrder, QueueValue> QueuePop() {
   return ret;
 }
 #elif QUEUE_IMPL == 1
+#include "queue/rb_tree.h"
+
 rb_tree<TotalOrder, QueueValue, default_allocator> queue;
 int64_t QueueSize() { return queue.size(); }
 bool QueueIsEmpty() { return queue.empty(); }
@@ -78,24 +82,11 @@ Unit QueueForcePush(const TotalOrder &to, Content *n, PQData &&data) {
   queue.insert(to, QueueValue(n->shared_from_this(), std::move(data)));
   return Unit{};
 }
-std::pair<TotalOrder, QueueValue> QueuePeek() { return std::make_pair(queue._leftmost->key, queue._leftmost->value); }
-std::pair<TotalOrder, QueueValue> QueuePop() {
-  auto ret = std::make_pair(queue._leftmost->key, queue._leftmost->value);
-
-  // TODO: Move all this into a real func
-  rb_tree<TotalOrder, QueueValue, default_allocator>::_rb_node *rebalance, *node;
-  node = queue._leftmost;
-  queue._leftmost = queue._leftmost->next();
-  rebalance = queue.erase(node);
-  if (rebalance) {
-    queue.erase_color(rebalance);
-  }
-  queue._size -= 1;
-  queue.allocator.deallocate(node, 1);
-
-  return ret;
-}
+std::pair<TotalOrder, QueueValue> QueuePeek() { return queue.peek_lestmost().value(); }
+std::pair<TotalOrder, QueueValue> QueuePop() { return queue.pop_leftmost().value(); }
 #elif QUEUE_IMPL == 2
+#include "queue/splay.h"
+
 SplayList<TotalOrder, QueueValue, default_allocator> queue;
 int64_t QueueSize() { return queue.size; }
 bool QueueIsEmpty() { return queue.size == 0; }

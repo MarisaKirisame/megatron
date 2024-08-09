@@ -631,8 +631,6 @@ module Main (EVAL : Eval) = struct
     Stdio.Out_channel.close c;
 
     shell (shell_check_bin "clang-format-18" "clang-format" ^ " --style=file -i " ^ compiled_file_name);
-    shell (shell_check_bin "clang-format-18" "clang-format" ^ " --style=file -i " ^ "header.h");
-    shell (shell_check_bin "clang-format-18" "clang-format" ^ " --style=file -i " ^ "header_continued.h");
     shell "cd build && make";
     shell ("build/Layout" ^ name)
 

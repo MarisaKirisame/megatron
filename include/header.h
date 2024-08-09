@@ -9,6 +9,7 @@
 #include <string>
 #include <unordered_map>
 #include <variant>
+#include <boost/predef.h>
 using json = nlohmann::json;
 
 struct Unit {};
@@ -423,13 +424,38 @@ TotalOrderS *tos = new TotalOrderS();
 auto current_time = MakeRef(tos->smallest());
 TotalOrder NextTotalOrder(const TotalOrder &to) { return tos->insert(to); }
 
+#if BOOST_ARCH_X86
 #include <x86intrin.h>
-// optional wrapper if you don't want to just use __rdtsc() everywhere
+
 inline unsigned long long readTSC() {
-  // _mm_lfence();  // optionally wait for earlier insns to retire before reading the clock
   return __rdtsc();
-  // _mm_lfence();  // optionally block later instructions until rdtsc retires
 }
+
+inline unsigned long long readTSCP() {
+  unsigned int aux;
+  return __rdtscp(&aux);
+}
+
+#elif BOOST_ARCH_ARM >= BOOST_VERSION_NUMBER(8,0,0)
+
+inline uint64_t readTSC() {
+  uint64_t cntvct;
+  asm volatile ("mrs %0, cntvct_el0" : "=r"(cntvct));
+  return cntvct;
+}
+
+inline uint64_t readTSCP() {
+  uint64_t cntvct;
+  asm volatile ("isb; mrs %0, cntvct_el0; isb" : "=r"(cntvct));
+  return cntvct;
+}
+
+#else
+
+#error "rdtsc not implemented on this arch"
+
+#endif
+
 using rdtsc_type = decltype(readTSC());
 
 // a timer that allow recursive measuring. however, the outer level does not contain the inner level time.
