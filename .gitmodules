@@ -1,3 +1,9 @@
 [submodule "third_party/memory"]
 	path = third_party/memory
 	url = https://github.com/foonathan/memory
+[submodule "third_party/json"]
+	path = third_party/json
+	url = https://github.com/nlohmann/json
+[submodule "third_party/predef"]
+	path = third_party/predef
+	url = https://github.com/boostorg/predef.git
