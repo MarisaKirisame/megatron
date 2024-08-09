@@ -63,7 +63,6 @@ let shell_check_bin cmd cmd2 =
   match res with Ok () -> cmd | _ -> cmd2
 
 let () = shell "mkdir -p build"
-let () = shell "cd build && cmake -DCMAKE_BUILD_TYPE=Release ../"
 let tag t str = "<" ^ t ^ ">" ^ str ^ "</" ^ t ^ ">"
 
 let default_tag : (string, unit) Hashtbl.t =
@@ -631,7 +630,7 @@ module Main (EVAL : Eval) = struct
     Stdio.Out_channel.close c;
 
     shell (shell_check_bin "clang-format-18" "clang-format" ^ " --style=file -i " ^ compiled_file_name);
-    shell "cd build && make";
+    shell "cd build && cmake -DCMAKE_BUILD_TYPE=Release .. && make";
     shell ("build/Layout" ^ name)
 
   let () = if is_static then () else run_dynamic ()
