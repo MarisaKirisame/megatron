@@ -16,7 +16,7 @@ add_subdirectory(third_party/json)
 link_libraries(nlohmann_json)
 
 add_subdirectory(third_party/predef)
-link_directories(boost_predef)
+link_libraries(boost_predef)
 
 add_library(megatron_runtime INTERFACE)
 target_include_directories(megatron_runtime INTERFACE

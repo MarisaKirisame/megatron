@@ -214,20 +214,19 @@ public:
         return node;
       }
 
-      // if (c < 0)
-      // {
-      //   node = node->left;
-      // }
-      // else if (c > 0)
-      // {
-      //   node = node->right;
-      // }
-
+#if BOOST_ARCH_X86
       asm("cmp $0, %2\n"
           "cmovg 0x08(%0), %1\n"
           "cmovl 0x10(%0), %1\n"
           : "=r"(node)
           : "0"(node), "r"(c));
+#else
+      if (c < 0) {
+        node = node->left;
+      } else if (c > 0) {
+        node = node->right;
+      }
+#endif
     }
 
     return nullptr;

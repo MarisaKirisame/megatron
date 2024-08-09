@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <memory>
 #include <nlohmann/json.hpp>
 #include <optional>
