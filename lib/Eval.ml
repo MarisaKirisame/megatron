@@ -24,7 +24,7 @@ module type EvalIn = sig
 
   val name : string
 
-  type meta
+  type meta (*extra information at each node*)
 
   val meta_defs : prog -> string
   val fresh_meta : unit sd -> meta sd
@@ -32,7 +32,8 @@ module type EvalIn = sig
   val register_todo_proc : prog -> meta node sd -> string -> metric sd -> unit sd
   val bracket_call_bb : meta node sd -> string -> (unit -> unit sd) -> unit sd
   val bracket_call_proc : meta node sd -> string -> (unit -> unit sd) -> unit sd
-  val bb_dirtied : meta node sd -> proc_name:string -> bb_name:string -> metric sd -> unit sd
+  val bb_dirtied_internal : meta node sd -> proc_name:string -> bb_name:string -> metric sd -> unit sd
+  val bb_dirtied_external : meta node sd -> proc_name:string -> bb_name:string -> metric sd -> unit sd
   val recalculate_internal : prog -> meta node sd -> metric sd -> (meta node sd -> stmt list -> unit sd) -> unit sd
 end
 
@@ -123,11 +124,11 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                                 (List.dedup_and_sort (List.filter_map reads ~f:dirty) ~compare:compare_path)
                                 ~f:(fun path _ ->
                                   list_iter (reversed_path path n) (fun dirtied_node ->
-                                      bb_dirtied dirtied_node ~proc_name ~bb_name m)))
+                                      bb_dirtied_internal dirtied_node ~proc_name ~bb_name m)))
                          in
                          seqs (List.map (List.append (Option.to_list down) (Option.to_list up)) ~f:(fun n () -> work n))))))))
 
-  let var_modified (p : prog) (n : meta node sd) (var_name : string) (m : metric sd) : unit sd =
+  let var_modified (p : prog) (var_name : string) (n : meta node sd) (m : metric sd) : unit sd =
     if Option.is_none (Hashtbl.find var_modified_hash var_name) then
       Hashtbl.add_exn var_modified_hash ~key:var_name
         ~data:(lift "Unit" "var_modified" (lazy (var_modified_aux p var_name m)));
@@ -199,7 +200,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                      (hashtbl_find (node_get_var n) (string var_name))
                      (fun () -> tt)
                      (fun value ->
-                       ite (equal_value value new_value) (fun _ -> tt) (fun _ -> var_modified p n var_name m)))
+                       ite (equal_value value new_value) (fun _ -> tt) (fun _ -> var_modified p var_name n m)))
                   (fun _ -> hashtbl_set (node_get_var n) (string var_name) new_value)))
     | BBCall bb_name -> bracket_call_bb_timed n bb_name (fun _ -> eval_stmts p n (stmts_of_basic_block p bb_name) m) m
     | ChildrenCall proc_name ->
@@ -265,28 +266,28 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                                              once "HasPathFirstLast" (fun _ ->
                                                  ite
                                                    (list_is_empty (node_get_children x))
-                                                   (fun _ -> bb_dirtied x ~proc_name ~bb_name m)
+                                                   (fun _ -> bb_dirtied_external x ~proc_name ~bb_name m)
                                                    (fun _ -> tt))
                                          | ReadVar (First, _) ->
                                              once "VarFirst" (fun _ ->
                                                  ite (list_is_empty lhs)
-                                                   (fun _ -> bb_dirtied x ~proc_name ~bb_name m)
+                                                   (fun _ -> bb_dirtied_external x ~proc_name ~bb_name m)
                                                    (fun _ -> tt))
                                          | ReadVar (Last, _) ->
                                              once "VarLast" (fun _ ->
                                                  ite (list_is_empty rhs)
-                                                   (fun _ -> bb_dirtied x ~proc_name ~bb_name m)
+                                                   (fun _ -> bb_dirtied_external x ~proc_name ~bb_name m)
                                                    (fun _ -> tt))
                                          | ReadHasPath Prev | ReadVar (Prev, _) ->
                                              once "VarPrev" (fun _ ->
                                                  option_match (node_get_next removed)
                                                    (fun _ -> tt)
-                                                   (fun x -> bb_dirtied x ~proc_name ~bb_name m))
+                                                   (fun x -> bb_dirtied_external x ~proc_name ~bb_name m))
                                          | ReadHasPath Next | ReadVar (Next, _) ->
                                              once "VarNext" (fun _ ->
                                                  option_match (node_get_prev removed)
                                                    (fun _ -> tt)
-                                                   (fun x -> bb_dirtied x ~proc_name ~bb_name m))
+                                                   (fun x -> bb_dirtied_external x ~proc_name ~bb_name m))
                                          | ReadProp _ | ReadAttr _ -> tt
                                          | _ -> Common.panic (show_read read)
                                        in
@@ -337,28 +338,28 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                                      once "HasPathFirstLast" (fun _ ->
                                          ite
                                            (list_is_singleton (node_get_children x))
-                                           (fun _ -> bb_dirtied x ~proc_name ~bb_name m)
+                                           (fun _ -> bb_dirtied_external x ~proc_name ~bb_name m)
                                            (fun _ -> tt))
                                  | ReadVar (First, _) ->
                                      once "VarFirst" (fun _ ->
                                          ite (list_is_empty lhs)
-                                           (fun _ -> bb_dirtied x ~proc_name ~bb_name m)
+                                           (fun _ -> bb_dirtied_external x ~proc_name ~bb_name m)
                                            (fun _ -> tt))
                                  | ReadVar (Last, _) ->
                                      once "VarLast" (fun _ ->
                                          ite (list_is_empty rhs)
-                                           (fun _ -> bb_dirtied x ~proc_name ~bb_name m)
+                                           (fun _ -> bb_dirtied_external x ~proc_name ~bb_name m)
                                            (fun _ -> tt))
                                  | ReadHasPath Prev | ReadVar (Prev, _) ->
                                      once "VarPrev" (fun _ ->
                                          option_match (node_get_next y)
                                            (fun _ -> tt)
-                                           (fun x -> bb_dirtied x ~proc_name ~bb_name m))
+                                           (fun x -> bb_dirtied_external x ~proc_name ~bb_name m))
                                  | ReadHasPath Next | ReadVar (Next, _) ->
                                      once "VarNext" (fun _ ->
                                          option_match (node_get_prev y)
                                            (fun _ -> tt)
-                                           (fun x -> bb_dirtied x ~proc_name ~bb_name m))
+                                           (fun x -> bb_dirtied_external x ~proc_name ~bb_name m))
                                  | ReadVar (Self, _) | ReadProp _ | ReadAttr _ -> tt
                                  | _ -> Common.panic (show_read read)
                                in
@@ -391,7 +392,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                      | ReadProp read_name -> String.equal name read_name
                      (*| _ -> panic (show_read read)*)
                    in
-                   if List.exists reads ~f:dirty then bb_dirtied n ~proc_name ~bb_name m else tt
+                   if List.exists reads ~f:dirty then bb_dirtied_external n ~proc_name ~bb_name m else tt
                  in
                  let down, up = get_bb_from_proc p proc_name in
                  seqs
@@ -418,7 +419,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                      | ReadProp read_name -> String.equal name read_name
                      (*| _ -> panic (show_read read)*)
                    in
-                   if List.exists reads ~f:dirty then bb_dirtied n ~proc_name ~bb_name m else tt
+                   if List.exists reads ~f:dirty then bb_dirtied_external n ~proc_name ~bb_name m else tt
                  in
                  let down, up = get_bb_from_proc p proc_name in
                  seqs
@@ -445,7 +446,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                      | ReadAttr read_name -> String.equal name read_name
                      (*| _ -> panic (show_read read)*)
                    in
-                   if List.exists reads ~f:dirty then bb_dirtied n ~proc_name ~bb_name m else tt
+                   if List.exists reads ~f:dirty then bb_dirtied_external n ~proc_name ~bb_name m else tt
                  in
                  let down, up = get_bb_from_proc p proc_name in
                  seqs
@@ -472,7 +473,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                      | ReadAttr read_name -> String.equal name read_name
                      (*| _ -> panic (show_read read)*)
                    in
-                   if List.exists reads ~f:dirty then bb_dirtied n ~proc_name ~bb_name m else tt
+                   if List.exists reads ~f:dirty then bb_dirtied_external n ~proc_name ~bb_name m else tt
                  in
                  let down, up = get_bb_from_proc p proc_name in
                  seqs

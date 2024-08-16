@@ -71,7 +71,7 @@ Unit MetricRecordOverhead(int64_t i) {
   m.overhead_time += i;
   return Unit{};
 }
-#define Panic() assert(false)
+[[noreturn]] void Panic() { assert(false); }
 void PrintEndline(const std::string &str) { std::cout << str << std::endl; }
 Unit MakeUnit() { return Unit{}; }
 template <typename T> struct RefNode {
@@ -133,35 +133,35 @@ template <typename T> auto ListMatch(const List<T> &l, const auto &n, const auto
   auto *p_ = l.get();
   if (auto *p = dynamic_cast<NilNode<T> *>(p_)) {
     return n(Unit{});
-  } else if (auto *p = dynamic_cast<ConsNode<T> *>(p_)) {
-    return c(p->hd, p->tl);
   } else {
-    assert(false);
+    {
+      auto *p = dynamic_cast<ConsNode<T> *>(p_);
+      assert(p);
+      return c(p->hd, p->tl);
+    }
   }
 }
 template <typename T> T ListHeadExn(const List<T> &l) {
-  if (auto *p = dynamic_cast<ConsNode<T> *>(l.get())) {
-    return p->hd;
-  } else {
-    assert(false);
-  }
+  auto *p = dynamic_cast<ConsNode<T> *>(l.get());
+  assert(p);
+  return p->hd;
 }
 template <typename T> List<T> ListTailExn(const List<T> &l) {
-  if (auto *p = dynamic_cast<ConsNode<T> *>(l.get())) {
-    return p->tl;
-  } else {
-    assert(false);
-  }
+  auto *p = dynamic_cast<ConsNode<T> *>(l.get());
+  assert(p);
+  return p->tl;
 }
 
 template <typename T> bool ListIsEmpty(const List<T> &l) {
   auto *p_ = l.get();
   if (auto *p = dynamic_cast<NilNode<T> *>(p_)) {
     return true;
-  } else if (auto *p = dynamic_cast<ConsNode<T> *>(p_)) {
-    return false;
   } else {
-    assert(false);
+    {
+      auto *p = dynamic_cast<ConsNode<T> *>(p_);
+      assert(p);
+      return false;
+    }
   }
 }
 
@@ -169,10 +169,12 @@ template <typename T> bool ListIsSingleton(const List<T> &l) {
   auto *p_ = l.get();
   if (auto *p = dynamic_cast<NilNode<T> *>(p_)) {
     return false;
-  } else if (auto *p = dynamic_cast<ConsNode<T> *>(p_)) {
-    return ListIsEmpty(p->tl);
   } else {
-    assert(false);
+    {
+      auto *p = dynamic_cast<ConsNode<T> *>(p_);
+      assert(p);
+      return ListIsEmpty(p->tl);
+    }
   }
 }
 
@@ -378,7 +380,7 @@ std::string std_nth_by_sep(const std::string &str, const std::string &sep, int64
       --nth;
     }
   }
-  assert(false);
+  Panic();
 }
 
 #include <foonathan/memory/memory_pool.hpp>

@@ -141,6 +141,7 @@ module type SDIN = sig
   val layout_node_set_children : layout_node sd -> layout_node list sd -> unit sd
   val int_add : int sd -> int sd -> int sd
   val int_equal : int sd -> int sd -> bool sd
+  val int_lt : int sd -> int sd -> bool sd
   val fresh_metric : unit -> metric sd
   val reset_metric : metric sd -> unit sd
   val read_metric : metric sd -> unit sd
@@ -196,6 +197,9 @@ module type SDIN = sig
   val or_ : bool sd -> (unit -> bool sd) -> bool sd
   val not_ : bool sd -> bool sd
   val timed : (unit -> 'a sd) -> (int * 'a) sd
+  val current_time : TotalOrder.t ref sd
+  val to_equal : TotalOrder.t sd -> TotalOrder.t sd -> bool sd
+  val to_compare : TotalOrder.t sd -> TotalOrder.t sd -> int sd
 end
 
 module type SD = sig
@@ -392,6 +396,7 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
   let layout_node_set_children (l : layout_node) c = l.children <- c
   let int_add x y = x + y
   let int_equal x y = Int.equal x y
+  let int_lt x y = x < y
 
   let reset_metric m =
     m.read_count <- 0;
@@ -512,6 +517,9 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
   let and_ l r = if l then r () else false
   let or_ l r = if l then true else r ()
   let not_ x = if x then false else true
+  let current_time = TotalOrder.create () |> ref
+  let to_equal l r = phys_equal (TotalOrder.compare l r) 0
+  let to_compare l r = TotalOrder.compare l r
 end)
 
 module D : SD with type 'x sd = code = MakeSD (struct
@@ -678,6 +686,7 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let layout_node_set_children l c = CSetMember (l, "children", c)
   let int_add x y = CApp (CPF "IntAdd", [ x; y ])
   let int_equal x y = CApp (CPF "IntEqual", [ x; y ])
+  let int_lt x y = CApp (CPF "IntLt", [ x; y ])
   let panic x = CPanic x
   let node_get_extern_id x = CGetMember (x, "extern_id")
   let string_of_int i = CApp (CPF "StringOfInt", [ i ])
@@ -728,4 +737,7 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let or_ l r = COr (l, r ())
   let timed f = CApp (CPF "Timed", [ lam (fun _ -> f ()) ])
   let not_ x = CNot x
+  let current_time = CVar "current_time"
+  let to_equal l r = CApp (CPF "TotalOrderEqual", [ l; r ])
+  let to_compare l r = CApp (CPF "TotalOrderCompare", [ l; r ])
 end)

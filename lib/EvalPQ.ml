@@ -127,7 +127,7 @@ module EVAL (SD : SD) = MakeEval (struct
                   (fun _ -> queue_force_push time y (int (proc_intern proc_name)) m)))
           (fun _ -> (*otherwise this proc is already in the queue with y's ancestor.*) tt))
 
-  let bb_dirtied (n : meta node sd) ~(proc_name : string) ~(bb_name : string) (m : metric sd) : unit sd =
+  let bb_dirtied_internal (n : meta node sd) ~(proc_name : string) ~(bb_name : string) (m : metric sd) : unit sd =
     Core.ignore proc_name;
     metric_record_overhead m
       (zro
@@ -136,6 +136,8 @@ module EVAL (SD : SD) = MakeEval (struct
                 (hashtbl_find (meta_get_bb_time_table (node_get_meta n)) (string bb_name))
                 (fun _ -> tt)
                 (fun order -> queue_push order n (int (bb_intern bb_name)) m))))
+
+  let bb_dirtied_external = bb_dirtied_internal
 
   let bracket_call_bb (n : meta node sd) bb_name (f : unit -> unit sd) : unit sd =
     seqs
@@ -151,10 +153,6 @@ module EVAL (SD : SD) = MakeEval (struct
       (fun _ ->
         seq (f ()) (fun _ ->
             hashtbl_add_exn (meta_get_proc_time_table (node_get_meta n)) (string proc_name) (read_ref current_time)))
-
-  let to_equal l r =
-    if is_static then phys_equal (TotalOrder.compare (l |> unstatic) (r |> unstatic)) 0 |> static
-    else CApp (CPF "TotalOrderEqual", [ l |> undyn; r |> undyn ]) |> dyn
 
   let rec check_aux (p : prog) (n : meta node) : unit =
     Hashtbl.iter p.bbs ~f:(fun (BasicBlock (bb, _)) -> Core.ignore (Hashtbl.find_exn n.m.bb_time_table bb));

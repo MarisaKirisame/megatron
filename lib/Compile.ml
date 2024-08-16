@@ -4,6 +4,7 @@ open Eval
 open Common
 open SD
 open TypeCheck
+open Out_channel
 
 let truncate_length = 120
 let truncate str = if String.length str <= truncate_length then str else String.sub str ~pos:0 ~len:truncate_length
@@ -42,7 +43,7 @@ let rec is_pure x =
   | CIf (i, t, e) -> is_pure i && is_pure t && is_pure e
   | CNot x -> is_pure x
   | CGetMember (x, f) -> is_pure x
-  | CLet (lhs, rhs, body) -> is_pure rhs && is_pure body
+  | CLet (_, rhs, body) -> is_pure rhs && is_pure body
   | CStringMatch (x, cases, default) -> is_pure x && List.for_all cases ~f:(fun (_, c) -> is_pure c) && is_pure default
   | CIntMatch (x, cases, default) -> is_pure x && List.for_all cases ~f:(fun (_, c) -> is_pure c) && is_pure default
   | _ -> Common.panic ("is_pure:" ^ truncate (show_code x))
@@ -54,7 +55,7 @@ let rec simplify (p : prog) x =
   | CApp (CPF "ReadMetric", [ x ]) ->
       x (* not correct, but we dont care about ReadMetric rn, and this simplify the generated code *)
   | CAssert (_, _, x) -> x (*also not correct.*)
-  | CApp (CPF "Zro", [ CApp (CPF "Timed", [x]) ]) -> CApp (CPF "TimedOnly", [x])
+  | CApp (CPF "Zro", [ CApp (CPF "Timed", [ x ]) ]) -> CApp (CPF "TimedOnly", [ x ])
   | CApp (CPF "OptionMatch", [ x; CFun (_, CApp (CPF "MakeUnit", [])); CFun (_, CApp (CPF "MakeUnit", [])) ]) -> x
   | CApp (CPF "OptionMatch", [ x; CFun (_, CPanic _); y ]) -> CApp (y, [ CApp (CPF "UnSome", [ x ]) ])
   | CApp (CPF "OptionMatch", [ CApp (CPF "Some", [ x ]); y; z ]) -> CSeq [ y; CApp (z, [ x ]) ]
@@ -463,7 +464,7 @@ and compile_expr c x =
       output_string c "(!";
       compile_expr c x;
       output_string c ")"
-  | CPanic xs -> output_string c "Panic()"
+  | CPanic _ -> output_string c "Panic()"
   | CString str -> output_string c ("DEStringLit" ^ bracket ("DEStringCase::DSTRING_" ^ string_to_cpp str))
   | CGetMember (x, (("n" | "rf") as f)) ->
       compile_expr c x;
@@ -481,7 +482,7 @@ and compile_expr c x =
       output_string c ")"
   | _ -> Common.panic ("compile_expr:" ^ truncate (show_code x))
 
-let compile_forward_def prog c (ret_type, name, x) =
+let compile_forward_def _ c (ret_type, name, x) =
   match x with
   | CFix (name, xname, _) -> output_string c (ret_type ^ " " ^ name ^ names_to_args xname ^ ";")
   | CFun (xname, _) -> output_string c (ret_type ^ " " ^ name ^ names_to_args xname ^ ";")
@@ -521,7 +522,7 @@ let compile_destring_case (d : destringed) : string =
   | DHasPrefix d -> "DHasPrefix_" ^ string_to_cpp d ^ ","
   | DStringIsFloat -> "DStringIsFloat" ^ ","
   | DStringToFloat | DFloatBySep _ | DStripSuffix _ -> ""
-  | _ -> panic (show_destringed d)
+(*| _ -> panic (show_destringed d)*)
 
 let compile_to_destring_case (d : destringed) : string =
   match d with
