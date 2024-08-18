@@ -19,7 +19,8 @@ module EVAL (SD : SD) = MakeEval (struct
   let current_time = if is_static then make_ref (make_total_order ()) else CVar "current_time" |> dyn
 
   type meta = {
-    (*time of bbs*)
+    (*note that bb_time_table record when a bb is entered, while proc_time_table record when a proc is done.
+      todo: unify *)
     bb_time_table : (string, TotalOrder.t) Hashtbl.t;
     proc_time_table : (string, TotalOrder.t) Hashtbl.t;
     mutable alive : bool;

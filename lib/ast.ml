@@ -182,8 +182,7 @@ let exprs_of_stmt (s : stmt) : expr list =
 let reads_of_stmt (s : stmt) : read list = List.( >>= ) (exprs_of_stmt s) (fun e -> reads_of_expr e)
 let reads_of_stmts (s : stmts) : read list = List.( >>= ) s reads_of_stmt
 
-let get_bb_from_proc (p : prog) (n : string) : string option * string option =
+let get_bb_from_proc (p : prog) (n : string) : string * string =
   match stmts_of_processed_proc p n with
-  | [ BBCall x; ChildrenCall _; BBCall y ] -> (Some x, Some y)
-  | [ BBCall x; ChildrenCall _ ] -> (Some x, None)
+  | [ BBCall x; ChildrenCall _; BBCall y ] -> (x, y)
   | stmts -> panic (show_stmts stmts)

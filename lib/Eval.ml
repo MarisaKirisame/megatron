@@ -126,7 +126,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                                   list_iter (reversed_path path n) (fun dirtied_node ->
                                       bb_dirtied_internal dirtied_node ~proc_name ~bb_name m)))
                          in
-                         seqs (List.map (List.append (Option.to_list down) (Option.to_list up)) ~f:(fun n () -> work n))))))))
+                         seqs (List.map [ down; up ] ~f:(fun n () -> work n))))))))
 
   let var_modified (p : prog) (var_name : string) (n : meta node sd) (m : metric sd) : unit sd =
     if Option.is_none (Hashtbl.find var_modified_hash var_name) then
@@ -294,11 +294,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                                        seqs (List.map reads ~f:(fun r () -> dirty r))
                                      in
                                      let down, up = get_bb_from_proc p proc_name in
-                                     seqs
-                                       [
-                                         (fun _ -> match down with Some down -> work down | None -> tt);
-                                         (fun _ -> match up with Some up -> work up | None -> tt);
-                                       ])));
+                                     seqs [ (fun _ -> work down); (fun _ -> work up) ])));
                           ])))))
 
   let add_children (p : prog) (x : meta node sd) (y : meta node sd) (n : int sd) (m : metric sd) : unit sd =
@@ -370,8 +366,8 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                                [
                                  (fun _ ->
                                    metric_record_overhead m (zro (timed (fun _ -> register_todo_proc p y proc_name m))));
-                                 (fun _ -> match down with Some down -> work down | None -> tt);
-                                 (fun _ -> match up with Some up -> work up | None -> tt);
+                                 (fun _ -> work down);
+                                 (fun _ -> work up);
                                ])));
                   ])))
 
