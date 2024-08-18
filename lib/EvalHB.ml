@@ -148,7 +148,7 @@ module EVAL (SD : SD) = MakeEval (struct
               (option_match (node_get_prev y)
                  (fun _ ->
                    next_total_order
-                     (hashtbl_find_exn (meta_get_bb_time_table (node_get_meta x)) (Option.value_exn down |> string)))
+                     (hashtbl_find_exn (meta_get_bb_time_table (node_get_meta x)) (string down)))
                  (fun x ->
                    next_total_order (hashtbl_find_exn (meta_get_proc_time_table (node_get_meta x)) (string proc_name))))
               (fun time ->

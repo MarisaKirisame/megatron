@@ -3,7 +3,6 @@ open Core
 open Eval
 open Common
 open SD
-open TypeCheck
 open Out_channel
 
 let truncate_length = 120
@@ -35,14 +34,14 @@ let rec is_pure x =
   | CSetMember _ | CPanic _ | CWhile _ -> false
   | CInt _ | CString _ | CVar _ -> true
   | CAssert _ -> false
-  | CFun (name, body) -> is_pure body
+  | CFun (_, body) -> is_pure body
   | CSeq xs -> List.for_all xs ~f:is_pure
   | CApp (CVar _, _) -> false
   | CApp (f, xs) -> is_pure f && List.for_all xs ~f:is_pure
   | CPF f -> is_pure_function f
   | CIf (i, t, e) -> is_pure i && is_pure t && is_pure e
   | CNot x -> is_pure x
-  | CGetMember (x, f) -> is_pure x
+  | CGetMember (x, _) -> is_pure x
   | CLet (_, rhs, body) -> is_pure rhs && is_pure body
   | CStringMatch (x, cases, default) -> is_pure x && List.for_all cases ~f:(fun (_, c) -> is_pure c) && is_pure default
   | CIntMatch (x, cases, default) -> is_pure x && List.for_all cases ~f:(fun (_, c) -> is_pure c) && is_pure default
@@ -505,7 +504,7 @@ let compile_def prog c (ret_type, name, x) =
       output_string c ("auto " ^ name ^ " = ");
       compile_expr c x;
       output_string c ";"
-  | _ -> Common.panic ("compile_def:" ^ truncate (show_code x))
+  (*| _ -> Common.panic ("compile_def:" ^ truncate (show_code x))*)
 
 let compile_field tbl name type_expr =
   compile_type_expr type_expr ^ " " ^ tbl ^ "_" ^ string_to_cpp name ^ ";" ^ "bool " ^ "has_" ^ tbl ^ "_"
@@ -536,7 +535,7 @@ let compile_to_destring_case (d : destringed) : string =
   | DStringIsFloat ->
       "if (std_string_is_float(str)){ return DEString{DEStringCase::DStringIsFloat, StringToDEStringRest(str)}; }"
   | DStringToFloat | DFloatBySep _ | DStripSuffix _ -> ""
-  | _ -> panic (show_destringed d)
+  (*| _ -> panic (show_destringed d)*)
 
 let compile_typedef (env : tyck_env) meta_defs (ds : destringed list) : string =
   "enum class DEStringCase { DEStringCaseDefault, "
@@ -605,8 +604,8 @@ let compile (prog : prog) defs main meta_defs (ds : destringed list) c : unit =
   Stdio.Out_channel.output_string c (compile_typedef prog.tyck_env meta_defs ds);
   Stdio.Out_channel.output_string c "\n";
   Stdio.Out_channel.output_string c "#include \"header_continued.h\"\n";
-  List.iter defs (compile_forward_def prog c);
-  List.iter defs (compile_def prog c);
+  List.iter defs ~f:(compile_forward_def prog c);
+  List.iter defs ~f:(compile_def prog c);
   Stdio.Out_channel.output_string c "int main(){";
   compile_proc c (main |> optimize prog);
   Stdio.Out_channel.output_string c "}"

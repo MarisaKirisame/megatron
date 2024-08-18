@@ -391,11 +391,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                    if List.exists reads ~f:dirty then bb_dirtied_external n ~proc_name ~bb_name m else tt
                  in
                  let down, up = get_bb_from_proc p proc_name in
-                 seqs
-                   [
-                     (fun _ -> match down with Some down -> work down | None -> tt);
-                     (fun _ -> match up with Some up -> work up | None -> tt);
-                   ])));
+                 seqs [ (fun _ -> work down); (fun _ -> work up) ])));
       ]
 
   let remove_prop (p : prog) (n : meta node sd) (name : string) (m : metric sd) : unit sd =
@@ -418,11 +414,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                    if List.exists reads ~f:dirty then bb_dirtied_external n ~proc_name ~bb_name m else tt
                  in
                  let down, up = get_bb_from_proc p proc_name in
-                 seqs
-                   [
-                     (fun _ -> match down with Some down -> work down | None -> tt);
-                     (fun _ -> match up with Some up -> work up | None -> tt);
-                   ])));
+                 seqs [ (fun _ -> work down); (fun _ -> work up) ])));
       ]
 
   let add_attr (p : prog) (n : meta node sd) (name : string) (v : value sd) (m : metric sd) : unit sd =
@@ -445,11 +437,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                    if List.exists reads ~f:dirty then bb_dirtied_external n ~proc_name ~bb_name m else tt
                  in
                  let down, up = get_bb_from_proc p proc_name in
-                 seqs
-                   [
-                     (fun _ -> match down with Some down -> work down | None -> tt);
-                     (fun _ -> match up with Some up -> work up | None -> tt);
-                   ])));
+                 seqs [ (fun _ -> work down); (fun _ -> work up) ])));
       ]
 
   let remove_attr (p : prog) (n : meta node sd) (name : string) (m : metric sd) : unit sd =
@@ -472,11 +460,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                    if List.exists reads ~f:dirty then bb_dirtied_external n ~proc_name ~bb_name m else tt
                  in
                  let down, up = get_bb_from_proc p proc_name in
-                 seqs
-                   [
-                     (fun _ -> match down with Some down -> work down | None -> tt);
-                     (fun _ -> match up with Some up -> work up | None -> tt);
-                   ])));
+                 seqs [ (fun _ -> work down); (fun _ -> work up) ])));
       ]
 
   let recalculate (p : prog) (n : meta node sd) (m : metric sd) : unit sd =

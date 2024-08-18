@@ -166,7 +166,6 @@ let prog_of_prog_def (p : prog_def) : prog =
     let transformed_stmts =
       List.fold_right (split false stmts []) ~init:[] ~f:(fun stmts acc ->
           match stmts with
-          | [] -> acc
           | [ ChildrenCall n ] -> ChildrenCall n :: acc
           | _ ->
               let bb_name = "bb_" ^ string_of_int (Hashtbl.length bb) in

@@ -98,8 +98,8 @@ module EVAL (SD : SD) = MakeEval (struct
       ]
 
   (*assuming a global metric to avoid passing around*)
-  let recalculate_internal_aux_code (p : prog) (proc_name : string) (down_name : string option)
-      (up_name : string option) (eval_stmts : meta node sd -> stmts -> unit sd) (m : metric sd) : (meta node -> unit) sd
+  let recalculate_internal_aux_code (p : prog) (proc_name : string) (down_name : string)
+      (up_name : string) (eval_stmts : meta node sd -> stmts -> unit sd) (m : metric sd) : (meta node -> unit) sd
       =
     lift "Unit" "recalculate_internal"
       (lazy
@@ -126,9 +126,9 @@ module EVAL (SD : SD) = MakeEval (struct
                          (fun _ ->
                            seqs
                              [
-                               (fun _ -> match down_name with None -> tt | Some dn -> rerun_if_dirty dn);
+                               (fun _ -> rerun_if_dirty down_name);
                                (fun _ -> list_iter (node_get_children n) recurse);
-                               (fun _ -> match up_name with None -> tt | Some un -> rerun_if_dirty un);
+                               (fun _ -> rerun_if_dirty up_name);
                              ])
                          (fun _ ->
                            seq
@@ -141,8 +141,8 @@ module EVAL (SD : SD) = MakeEval (struct
 
   let recalculate_internal_aux_hash : (string, (meta node -> unit) sd) Hashtbl.t = Hashtbl.create (module String)
 
-  let recalculate_internal_aux (p : prog) (n : meta node sd) (proc_name : string) (down_name : string option)
-      (up_name : string option) (m : metric sd) (eval_stmts : meta node sd -> stmts -> unit sd) : unit sd =
+  let recalculate_internal_aux (p : prog) (n : meta node sd) (proc_name : string) (down_name : string)
+      (up_name : string) (m : metric sd) (eval_stmts : meta node sd -> stmts -> unit sd) : unit sd =
     if Option.is_none (Hashtbl.find recalculate_internal_aux_hash proc_name) then
       Hashtbl.add_exn recalculate_internal_aux_hash ~key:proc_name
         ~data:(recalculate_internal_aux_code p proc_name down_name up_name eval_stmts m);
