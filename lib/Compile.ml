@@ -122,9 +122,9 @@ let rec simplify (p : prog) x =
         [
           CSetMember (x, f ^ "_has_recursive_proc_dirtied", CBool true); CSetMember (x, f ^ "_recursive_proc_dirtied", v);
         ]
-        | CApp (CPF "HashtblFindExn", [ CGetMember (x, "BBDirtied"); CString f ]) -> CGetMember (x, f ^ "_bb_dirtied")
-        | CApp (CPF "HashtblContain", [ CGetMember (x, "BBDirtied"); CString f ]) -> CGetMember (x, f ^ "_has_bb_dirtied")
-        | CApp (CPF ("HashtblSet" | "HashtblAddExn"), [ CGetMember (x, "BBDirtied"); CString f; v ]) ->
+  | CApp (CPF "HashtblFindExn", [ CGetMember (x, "BBDirtied"); CString f ]) -> CGetMember (x, f ^ "_bb_dirtied")
+  | CApp (CPF "HashtblContain", [ CGetMember (x, "BBDirtied"); CString f ]) -> CGetMember (x, f ^ "_has_bb_dirtied")
+  | CApp (CPF ("HashtblSet" | "HashtblAddExn"), [ CGetMember (x, "BBDirtied"); CString f; v ]) ->
       CSeq [ CSetMember (x, f ^ "_has_bb_dirtied", CBool true); CSetMember (x, f ^ "_bb_dirtied", v) ]
   | CApp (CPF "IsSome", [ CApp (CPF "HashtblFind", [ x; y ]) ]) -> CApp (CPF "HashtblContain", [ x; y ])
   | CApp (CPF ("BoolOfValue" | "VBool" | "VString" | "VFloat" | "VInt"), [ x ]) -> x

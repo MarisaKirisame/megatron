@@ -260,7 +260,7 @@ with doc:
     xs = []
     ys = []
     for v in overhead_htbl.keys():
-        if eval_htbl[v]["DB_D"] != 0:
+        if eval_htbl[v]["PQ_D"] != 0:
             x = overhead_htbl[v]["DB_D"]
             y = overhead_htbl[v]["PQ_D"]
             xs.append(x)
@@ -270,7 +270,7 @@ with doc:
     xs = []
     ys = []
     for v in overhead_htbl.keys():
-        if eval_htbl[v]["DB_D"] != 0:
+        if eval_htbl[v]["PQ_D"] != 0:
             x = eval_htbl[v]["DB_D"]
             y = eval_htbl[v]["PQ_D"]
             xs.append(x)
@@ -280,7 +280,7 @@ with doc:
     xs = []
     ys = []
     for v in overhead_htbl.keys():
-        if eval_htbl[v]["DB_D"] != 0:
+        if eval_htbl[v]["PQ_D"] != 0:
             x = overhead_htbl[v]["DB_D"] + eval_htbl[v]["DB_D"]
             y = overhead_htbl[v]["PQ_D"] + eval_htbl[v]["PQ_D"]
             xs.append(x)
