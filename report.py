@@ -164,7 +164,7 @@ def per_trace(trace_out_path):
         xs = []
         ys = []
         for k in overhead_htbl.keys():
-            if k.startswith(trace_out_path) and eval_htbl[k]["DB_D"] != 0:
+            if k.startswith(trace_out_path) and eval_htbl[k]["PQ_D"] != 0:
                 x = overhead_htbl[k]["DB_D"]
                 y = overhead_htbl[k]["PQ_D"]
                 xs.append(x)
@@ -174,7 +174,7 @@ def per_trace(trace_out_path):
         xs = []
         ys = []
         for k in overhead_htbl.keys():
-            if k.startswith(trace_out_path) and eval_htbl[k]["DB_D"] != 0:
+            if k.startswith(trace_out_path) and eval_htbl[k]["PQ_D"] != 0:
                 x = eval_htbl[k]["DB_D"]
                 y = eval_htbl[k]["PQ_D"]
                 xs.append(x)
@@ -184,7 +184,7 @@ def per_trace(trace_out_path):
         xs = []
         ys = []
         for k in overhead_htbl.keys():
-            if k.startswith(trace_out_path) and eval_htbl[k]["DB_D"] != 0:
+            if k.startswith(trace_out_path) and eval_htbl[k]["PQ_D"] != 0:
                 x = overhead_htbl[k]["DB_D"] + eval_htbl[k]["DB_D"]
                 y = overhead_htbl[k]["PQ_D"] + eval_htbl[k]["PQ_D"]
                 xs.append(x)
