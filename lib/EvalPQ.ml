@@ -36,7 +36,7 @@ module EVAL (SD : SD) = MakeEval (struct
       ~sep:""
     ^ String.concat
         (List.map (Hashtbl.to_alist p.bbs) ~f:(fun (bb, _) ->
-             "bool " ^ bb ^ "_has_bb_time_table=false;TotalOrder " ^ bb ^ "_bb_time_table;"))
+             "bool " ^ bb ^ "_has_bb_time_table = false;" ^ "TotalOrder " ^ bb ^ "_bb_time_table;"))
         ~sep:""
     ^ "bool alive=true;"
 

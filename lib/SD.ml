@@ -269,7 +269,7 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
 
   let ite i t e = if i then t () else e ()
   let json_of_string x = Yojson.Basic.from_string x
-  let debug = true
+  let debug = false
   let with_in_file name f = if debug then f (Stdio.In_channel.create name) else Stdio.In_channel.with_file name ~f
 
   let with_out_file name f =

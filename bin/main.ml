@@ -12,13 +12,12 @@ open Megatron.SD
 module EvalFSS = Megatron.EvalFS.EVAL (S)
 
 let out_file_path = Sys.argv.(1)
-let prog_def = parse "./layout.mt";;
-
-Out_channel.newline stdout
-
-(*print_endline (show_prog_def prog_def)*)
+let prog_def = parse "./layout.mt"
 
 let prog = prog_of_prog_def prog_def
+
+let _ = Out_channel.newline stdout
+let _ = print_endline (show_prog prog)
 
 let rec destring_expr e : destringed list =
   match e with
@@ -641,10 +640,8 @@ end
 
 (*module MainFSI = Main (Megatron.EvalFS.EVAL (S))*)
 module MainFSC = Main (Megatron.EvalFS.EVAL (D))
-
 (*module MainDBI = Main (Megatron.EvalDB.EVAL (S))*)
 module MainDBC = Main (Megatron.EvalDB.EVAL (D))
-
 (*module MainPQI = Main (Megatron.EvalPQ.EVAL (S))*)
 module MainPQC = Main (Megatron.EvalPQ.EVAL (D))
 (*module MainHBC = Main (Megatron.EvalHB.EVAL (D))
