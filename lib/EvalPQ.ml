@@ -116,8 +116,17 @@ module EVAL (SD : SD) = MakeEval (struct
             let_
               (option_match (node_get_prev y)
                  (fun _ -> next_total_order (hashtbl_find_exn (meta_get_bb_time_table (node_get_meta x)) (string down)))
-                 (fun x -> next_total_order (hashtbl_find_exn (meta_get_bb_time_table (node_get_meta x)) (string up))))
-              (fun time -> queue_force_push time y (int (proc_intern proc_name)) m))
+                 (fun x ->
+                   (option_match (hashtbl_find (meta_get_bb_time_table (node_get_meta x)) (string up)))
+                     (fun _ ->
+                       next_total_order (hashtbl_find_exn (meta_get_bb_time_table (node_get_meta x)) (string down)))
+                     (fun time -> next_total_order time)))
+              (fun time ->
+                seqs
+                  [
+                    (fun _ -> hashtbl_add_exn (meta_get_bb_time_table (node_get_meta y)) (string down) time);
+                    (fun _ -> queue_force_push time y (int (proc_intern proc_name)) m);
+                  ]))
           (fun _ -> (*otherwise this proc is already in the queue with y's ancestor.*) tt))
 
   let bb_dirtied_internal p (n : meta node sd) ~(proc_name : string) ~(bb_name : string) (m : metric sd) : unit sd =
@@ -130,7 +139,10 @@ module EVAL (SD : SD) = MakeEval (struct
                 (fun _ -> tt)
                 (fun order ->
                   ite
-                    (not_ (hashtbl_find_exn (meta_get_bb_dirtied (node_get_meta n)) (string bb_name)))
+                    (not_
+                       (and_
+                          (is_some (hashtbl_find (meta_get_bb_dirtied (node_get_meta n)) (string bb_name)))
+                          (fun _ -> hashtbl_find_exn (meta_get_bb_dirtied (node_get_meta n)) (string bb_name))))
                     (fun _ ->
                       seqs
                         [
@@ -144,7 +156,7 @@ module EVAL (SD : SD) = MakeEval (struct
   let bracket_call_bb (n : meta node sd) bb_name (f : unit -> unit sd) : unit sd =
     seqs
       [
-        (fun _ -> hashtbl_add_exn (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool false));
+        (fun _ -> hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool false));
         (fun _ -> hashtbl_set (meta_get_bb_time_table (node_get_meta n)) (string bb_name) (read_ref current_time));
         (fun _ -> write_ref current_time (next_total_order (read_ref current_time)));
         (fun _ -> f ());
@@ -155,7 +167,9 @@ module EVAL (SD : SD) = MakeEval (struct
     f ()
 
   let rec check_aux (p : prog) (n : meta node) : unit =
-    Hashtbl.iter p.bbs ~f:(fun (BasicBlock (bb, _)) -> Core.ignore (Hashtbl.find_exn n.m.bb_time_table bb));
+    Hashtbl.iter p.bbs ~f:(fun (BasicBlock (bb, _)) ->
+        assert (not (Hashtbl.find_exn n.m.bb_dirtied bb));
+        Core.ignore (Hashtbl.find_exn n.m.bb_time_table bb));
     List.iter p.vars ~f:(fun (VarDecl (p, _)) -> Core.ignore (Hashtbl.find_exn n.var p));
     List.iter n.children ~f:(check_aux p)
 
@@ -187,7 +201,7 @@ module EVAL (SD : SD) = MakeEval (struct
                                                (fun _ -> eval_stmts (key_get_node k) stmts);
                                                (fun _ ->
                                                  hashtbl_set
-                                                   (meta_get_bb_dirtied (node_get_meta n))
+                                                   (meta_get_bb_dirtied (node_get_meta (key_get_node k)))
                                                    (string bb_name) (bool false));
                                              ] ))
                                  in
