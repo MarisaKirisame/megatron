@@ -16,8 +16,8 @@ let prog_def = parse "./layout.mt"
 
 let prog = prog_of_prog_def prog_def
 
-let _ = Out_channel.newline stdout
-let _ = print_endline (show_prog prog)
+(*let _ = Out_channel.newline stdout
+let _ = print_endline (show_prog prog)*)
 
 let rec destring_expr e : destringed list =
   match e with
