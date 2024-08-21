@@ -19,12 +19,13 @@ module EVAL (SD : SD) = MakeEval (struct
   let current_time = if is_static then make_ref (make_total_order ()) else CVar "current_time" |> dyn
 
   type meta = {
-    (*note that bb_time_table record when a bb is entered, while proc_time_table record when a proc is done.
-      todo: unify *)
+    bb_dirtied : (string, bool) Hashtbl.t;
     bb_time_table : (string, TotalOrder.t) Hashtbl.t;
-    proc_time_table : (string, TotalOrder.t) Hashtbl.t;
     mutable alive : bool;
   }
+
+  let meta_get_bb_dirtied (n : meta sd) =
+    if is_static then (n |> unstatic).bb_dirtied |> static else CGetMember (n |> undyn, "BBDirtied") |> dyn
 
   let meta_get_alive m = if is_static then (m |> unstatic).alive |> static else CGetMember (m |> undyn, "alive") |> dyn
 
@@ -33,20 +34,13 @@ module EVAL (SD : SD) = MakeEval (struct
       (List.map (Hashtbl.to_alist p.bbs) ~f:(fun (bb, _) ->
            "bool " ^ bb ^ "_has_bb_time_table=false;TotalOrder " ^ bb ^ "_bb_time_table;"))
       ~sep:""
-    ^ String.concat
-        (List.map (Hashtbl.to_alist p.procs) ~f:(fun (proc, _) ->
-             "bool " ^ proc ^ "_has_proc_time_table=false;TotalOrder " ^ proc ^ "_proc_time_table;"))
-        ~sep:""
     ^ "bool alive=true;"
 
   let meta_get_bb_time_table m =
     if is_static then (m |> unstatic).bb_time_table |> static else CGetMember (m |> undyn, "BBTimeTable") |> dyn
 
-  let meta_get_proc_time_table m =
-    if is_static then (m |> unstatic).proc_time_table |> static else CGetMember (m |> undyn, "ProcTimeTable") |> dyn
-
   let fresh_meta _ =
-    { bb_time_table = Hashtbl.create (module String); proc_time_table = Hashtbl.create (module String); alive = true }
+    { bb_dirtied = Hashtbl.create (module String); bb_time_table = Hashtbl.create (module String); alive = true }
     |> static
 
   let remove_meta m =
@@ -107,28 +101,25 @@ module EVAL (SD : SD) = MakeEval (struct
         else CApp (CPF "QueueForcePush", [ x |> undyn; y |> undyn; z |> undyn; m |> undyn ]) |> dyn)
 
   let register_todo_proc p (y : meta node sd) proc_name (m : metric sd) : unit sd =
+    let down, up = get_bb_from_proc p proc_name in
     option_match (node_get_parent y)
       (fun _ -> panic (string "dangling node"))
       (fun x ->
         ite
-          (is_some (hashtbl_find (meta_get_proc_time_table (node_get_meta x)) (string proc_name)))
+          (*a node can have down but not up, only if it was initially enqueued. otherwise up and down must both be value or none.*)
+          (is_some (hashtbl_find (meta_get_bb_time_table (node_get_meta x)) (string up)))
           (fun _ ->
-            let down, up = get_bb_from_proc p proc_name in
-            Core.ignore up;
             let_
               (option_match (node_get_prev y)
-                 (fun _ ->
-                   next_total_order
-                     (hashtbl_find_exn (meta_get_bb_time_table (node_get_meta x)) (string down)))
-                 (fun x ->
-                   next_total_order (hashtbl_find_exn (meta_get_proc_time_table (node_get_meta x)) (string proc_name))))
+                 (fun _ -> next_total_order (hashtbl_find_exn (meta_get_bb_time_table (node_get_meta x)) (string down)))
+                 (fun x -> next_total_order (hashtbl_find_exn (meta_get_bb_time_table (node_get_meta x)) (string up))))
               (fun time ->
                 seq
-                  (hashtbl_add_exn (meta_get_proc_time_table (node_get_meta y)) (string proc_name) time)
+                  (hashtbl_add_exn (meta_get_bb_time_table (node_get_meta y)) (string proc_name) time)
                   (fun _ -> queue_force_push time y (int (proc_intern proc_name)) m)))
           (fun _ -> (*otherwise this proc is already in the queue with y's ancestor.*) tt))
 
-  let bb_dirtied_internal (n : meta node sd) ~(proc_name : string) ~(bb_name : string) (m : metric sd) : unit sd =
+  let bb_dirtied_internal p (n : meta node sd) ~(proc_name : string) ~(bb_name : string) (m : metric sd) : unit sd =
     Core.ignore proc_name;
     metric_record_overhead m
       (zro
@@ -136,24 +127,31 @@ module EVAL (SD : SD) = MakeEval (struct
               option_match
                 (hashtbl_find (meta_get_bb_time_table (node_get_meta n)) (string bb_name))
                 (fun _ -> tt)
-                (fun order -> queue_push order n (int (bb_intern bb_name)) m))))
+                (fun order ->
+                  ite
+                    (not_ (hashtbl_find_exn (meta_get_bb_dirtied (node_get_meta n)) (string bb_name)))
+                    (fun _ ->
+                      seqs
+                        [
+                          (fun _ -> hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool true));
+                          (fun _ -> queue_push order n (int (bb_intern bb_name)) m);
+                        ])
+                    (fun _ -> tt)))))
 
   let bb_dirtied_external = bb_dirtied_internal
 
   let bracket_call_bb (n : meta node sd) bb_name (f : unit -> unit sd) : unit sd =
     seqs
       [
+        (fun _ -> hashtbl_add_exn (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool false));
+        (fun _ -> hashtbl_set (meta_get_bb_time_table (node_get_meta n)) (string bb_name) (read_ref current_time));
         (fun _ -> write_ref current_time (next_total_order (read_ref current_time)));
-        (fun _ -> hashtbl_add_exn (meta_get_bb_time_table (node_get_meta n)) (string bb_name) (read_ref current_time));
         (fun _ -> f ());
       ]
 
   let bracket_call_proc (n : meta node sd) proc_name (f : unit -> unit sd) : unit sd =
-    seq
-      (write_ref current_time (next_total_order (read_ref current_time)))
-      (fun _ ->
-        seq (f ()) (fun _ ->
-            hashtbl_add_exn (meta_get_proc_time_table (node_get_meta n)) (string proc_name) (read_ref current_time)))
+    Core.ignore proc_name;
+    f ()
 
   let rec check_aux (p : prog) (n : meta node) : unit =
     Hashtbl.iter p.bbs ~f:(fun (BasicBlock (bb, _)) -> Core.ignore (Hashtbl.find_exn n.m.bb_time_table bb));
@@ -180,8 +178,17 @@ module EVAL (SD : SD) = MakeEval (struct
                                (k |> key_get_node |> node_get_meta |> meta_get_alive)
                                (fun _ ->
                                  let bb_cases =
-                                   List.map (Hashtbl.to_alist p.bbs) ~f:(fun (str, BasicBlock (_, stmts)) ->
-                                       (bb_intern str, fun _ -> eval_stmts (key_get_node k) stmts))
+                                   List.map (Hashtbl.to_alist p.bbs) ~f:(fun (bb_name, BasicBlock (_, stmts)) ->
+                                       ( bb_intern bb_name,
+                                         fun _ ->
+                                           seqs
+                                             [
+                                               (fun _ -> eval_stmts (key_get_node k) stmts);
+                                               (fun _ ->
+                                                hashtbl_set
+                                                  (meta_get_bb_dirtied (node_get_meta n))
+                                                  (string bb_name) (bool false));
+                                            ] ))
                                  in
                                  let proc_cases =
                                    List.map (Hashtbl.to_alist p.procs) ~f:(fun (str, ProcessedProc (_, stmts)) ->
@@ -192,10 +199,6 @@ module EVAL (SD : SD) = MakeEval (struct
                                                  [
                                                    (fun _ -> write_ref current_time x);
                                                    (fun _ -> eval_stmts (key_get_node k) stmts);
-                                                   (fun _ ->
-                                                     hashtbl_set
-                                                       (meta_get_proc_time_table (node_get_meta (key_get_node k)))
-                                                       (string str) (read_ref current_time));
                                                    (fun _ -> write_ref current_time old_time);
                                                  ]) ))
                                  in

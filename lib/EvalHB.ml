@@ -19,9 +19,7 @@ module EVAL (SD : SD) = MakeEval (struct
 
   (*we need to store both proc init time and finish time*)
   type meta = {
-    (*time of bbs*)
     bb_time_table : (string, TotalOrder.t) Hashtbl.t;
-    proc_time_table : (string, TotalOrder.t) Hashtbl.t;
     mutable alive : bool;
     bb_dirtied : (string, bool) Hashtbl.t;
     proc_inited : (string, unit) Hashtbl.t;
@@ -61,9 +59,6 @@ module EVAL (SD : SD) = MakeEval (struct
   let meta_get_bb_time_table m =
     if is_static then (m |> unstatic).bb_time_table |> static else CGetMember (m |> undyn, "BBTimeTable") |> dyn
 
-  let meta_get_proc_time_table m =
-    if is_static then (m |> unstatic).proc_time_table |> static else CGetMember (m |> undyn, "ProcTimeTable") |> dyn
-
   let meta_get_bb_dirtied (n : meta sd) =
     if is_static then (n |> unstatic).bb_dirtied |> static else CGetMember (n |> undyn, "BBDirtied") |> dyn
 
@@ -77,7 +72,6 @@ module EVAL (SD : SD) = MakeEval (struct
   let fresh_meta _ =
     {
       bb_time_table = Hashtbl.create (module String);
-      proc_time_table = Hashtbl.create (module String);
       alive = true;
       bb_dirtied = Hashtbl.create (module String);
       proc_inited = Hashtbl.create (module String);
@@ -136,26 +130,49 @@ module EVAL (SD : SD) = MakeEval (struct
         else CApp (CPF "QueueForcePush", [ x |> undyn; y |> undyn; z |> undyn; m |> undyn ]) |> dyn)
 
   let register_todo_proc p (y : meta node sd) proc_name (m : metric sd) : unit sd =
-    option_match (node_get_parent y)
-      (fun _ -> panic (string "dangling node"))
-      (fun x ->
-        ite
-          (is_some (hashtbl_find (meta_get_proc_time_table (node_get_meta x)) (string proc_name)))
-          (fun _ ->
-            let down, up = get_bb_from_proc p proc_name in
-            Core.ignore up;
-            let_
-              (option_match (node_get_prev y)
-                 (fun _ ->
-                   next_total_order
-                     (hashtbl_find_exn (meta_get_bb_time_table (node_get_meta x)) (string down)))
-                 (fun x ->
-                   next_total_order (hashtbl_find_exn (meta_get_proc_time_table (node_get_meta x)) (string proc_name))))
-              (fun time ->
-                seq
-                  (hashtbl_add_exn (meta_get_proc_time_table (node_get_meta y)) (string proc_name) time)
-                  (fun _ -> queue_force_push time y (int (proc_intern proc_name)) m)))
-          (fun _ -> (*otherwise this proc is already in the queue with y's ancestor.*) tt))
+    let down_name, up_name = get_bb_from_proc p proc_name in
+    seqs
+      [
+        (fun _ -> hashtbl_add_exn (meta_get_recursive_proc_dirtied (node_get_meta y)) (string proc_name) (bool true));
+        (fun _ ->
+          option_match (node_get_parent y)
+            (fun _ -> panic (string "dangling node"))
+            (fun x ->
+              ite
+                (*a node can have down but not up, only if it was initially enqueued. otherwise up and down must both be value or none.*)
+                (is_some (hashtbl_find (meta_get_bb_time_table (node_get_meta x)) (string up_name)))
+                (fun _ ->
+                  let_
+                    (option_match (node_get_prev y)
+                       (fun _ ->
+                         seq
+                           (print_endline (string "no_prev"))
+                           (fun _ ->
+                             next_total_order
+                               (hashtbl_find_exn (meta_get_bb_time_table (node_get_meta x)) (string down_name))))
+                       (*todo: if the node is newly insert it will not have up only down.
+                          so at the code below we have to check up-ness and fallback to down.
+                         also have to fix for raw pq.*)
+                         (fun x ->
+                         seq
+                           (print_endline (string "have_prev"))
+                           (fun _ ->
+                             next_total_order
+                               (hashtbl_find_exn (meta_get_bb_time_table (node_get_meta x)) (string up_name)))))
+                    (fun time ->
+                      seqs
+                        [
+                          (fun _ ->
+                            print_endline
+                              (to_compare time
+                                 (hashtbl_find_exn (meta_get_bb_time_table (node_get_meta x)) (string up_name))
+                              |> string_of_int));
+                          (fun _ -> print_endline (string ("insert init:" ^ proc_name ^ "(" ^ down_name ^ ")")));
+                          (fun _ -> hashtbl_add_exn (meta_get_bb_time_table (node_get_meta y)) (string down_name) time);
+                          (fun _ -> queue_force_push time y (int (proc_intern proc_name)) m);
+                        ]))
+                (fun _ -> panic (string up_name) (*otherwise this proc is already in the queue with y's ancestor.*))));
+      ]
 
   let set_recursive_proc_dirtied_inner (proc_name : string) (m : metric sd) : (meta node -> unit) sd =
     fix (fun recurse n ->
@@ -179,7 +196,7 @@ module EVAL (SD : SD) = MakeEval (struct
         ~data:(lift "Unit" "set_recursive_proc_dirtied" (lazy (set_recursive_proc_dirtied_inner proc_name m)));
     app (Hashtbl.find_exn set_recursive_proc_dirtied_hash proc_name) n
 
-  let bb_dirtied_internal (n : meta node sd) ~(proc_name : string) ~(bb_name : string) (m : metric sd) : unit sd =
+  let bb_dirtied_internal prog (n : meta node sd) ~(proc_name : string) ~(bb_name : string) (m : metric sd) : unit sd =
     metric_record_overhead m
       (zro
          (timed (fun _ ->
@@ -191,45 +208,128 @@ module EVAL (SD : SD) = MakeEval (struct
                     (fun _ -> set_recursive_proc_dirtied n proc_name m))
                 (fun _ -> meta_write_metric m))))
 
-  let bb_dirtied_external (n : meta node sd) ~(proc_name : string) ~(bb_name : string) (m : metric sd) : unit sd =
-    Core.ignore proc_name;
+  (*todo: it use two different method of determining initness. unify them both.*)
+  let bb_dirtied_external (p : prog) (n : meta node sd) ~(proc_name : string) ~(bb_name : string) (m : metric sd) :
+      unit sd =
+    let down, up = get_bb_from_proc p proc_name in
     metric_record_overhead m
       (zro
          (timed (fun _ ->
-              option_match
-                (hashtbl_find (meta_get_proc_time_table (node_get_meta n)) (string proc_name))
-                (*todo: need to store init*)
-                  (fun _ -> tt)
-                (fun order -> queue_push order n (int (proc_intern proc_name)) m))))
+              seqs
+                [
+                  (fun _ ->
+                    ite
+                      (is_some (hashtbl_find (meta_get_proc_inited (node_get_meta n)) (string proc_name)))
+                      (fun _ ->
+                        seqs
+                          [
+                            (fun _ ->
+                              hashtbl_set
+                                (meta_get_recursive_proc_dirtied (node_get_meta n))
+                                (string proc_name) (bool true));
+                            (fun _ -> hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool true));
+                          ])
+                      (fun _ -> meta_write_metric m));
+                  (fun _ ->
+                    option_match
+                      (hashtbl_find (meta_get_bb_time_table (node_get_meta n)) (string down))
+                      (fun _ -> tt)
+                      (fun order ->
+                        seqs
+                          [
+                            (fun _ -> print_endline (string ("queue_push: " ^ bb_name)));
+                            (fun _ -> queue_push order n (int (proc_intern proc_name)) m);
+                          ]));
+                ])))
 
-  let bracket_call_bb (n : meta node sd) bb_name (f : unit -> unit sd) : unit sd =
+  let bracket_call_bb (n : meta node sd) bb_name f =
     seqs
       [
+        (fun _ -> hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool false));
+        (fun _ -> hashtbl_set (meta_get_bb_time_table (node_get_meta n)) (string bb_name) (read_ref current_time));
         (fun _ -> write_ref current_time (next_total_order (read_ref current_time)));
-        (fun _ -> hashtbl_add_exn (meta_get_bb_time_table (node_get_meta n)) (string bb_name) (read_ref current_time));
         (fun _ -> f ());
       ]
 
-  let bracket_call_proc (n : meta node sd) proc_name (f : unit -> unit sd) : unit sd =
-    seq
-      (write_ref current_time (next_total_order (read_ref current_time)))
-      (fun _ ->
-        seq (f ()) (fun _ ->
-            hashtbl_add_exn (meta_get_proc_time_table (node_get_meta n)) (string proc_name) (read_ref current_time)))
+  let bracket_call_proc (n : meta node sd) proc_name f =
+    seqs
+      [
+        (fun _ -> hashtbl_add_exn (meta_get_proc_inited (node_get_meta n)) (string proc_name) tt);
+        (fun _ -> hashtbl_add_exn (meta_get_recursive_proc_dirtied (node_get_meta n)) (string proc_name) (bool false));
+        (fun _ -> f ());
+      ]
 
   let to_equal l r =
     if is_static then phys_equal (TotalOrder.compare (l |> unstatic) (r |> unstatic)) 0 |> static
     else CApp (CPF "TotalOrderEqual", [ l |> undyn; r |> undyn ]) |> dyn
 
   let rec check_aux (p : prog) (n : meta node) : unit =
-    Hashtbl.iter p.bbs ~f:(fun (BasicBlock (bb, _)) -> Core.ignore (Hashtbl.find_exn n.m.bb_time_table bb));
+    Hashtbl.iter p.procs ~f:(fun (ProcessedProc (proc, _)) ->
+        assert (not (Hashtbl.find_exn n.m.recursive_proc_dirtied proc)));
+    Hashtbl.iter p.bbs ~f:(fun (BasicBlock (bb, _)) ->
+        assert (not (Hashtbl.find_exn n.m.bb_dirtied bb));
+        Core.ignore (Hashtbl.find_exn n.m.bb_time_table bb));
     List.iter p.vars ~f:(fun (VarDecl (p, _)) -> Core.ignore (Hashtbl.find_exn n.var p));
     List.iter n.children ~f:(check_aux p)
 
-  let check (p : prog) (n : meta node sd) : unit sd = if is_static then check_aux p (n |> unstatic) |> static else tt
+  let check (p : prog) (n : meta node sd) : unit sd =
+    seqs
+      [
+        (fun _ -> if is_static then check_aux p (n |> unstatic) |> static else tt);
+        (fun _ -> print_endline (string "checkok"));
+      ]
+
+  (*todo: remove this code replacing it with a single chase down.
+      todo: chase does not fix recursive_proc*)
+  (*assuming a global metric to avoid passing around*)
+  let recalculate_internal_aux_code (p : prog) (proc_name : string) (down_name : string) (up_name : string)
+      (eval_stmts : meta node sd -> stmts -> unit sd) (m : metric sd) : (meta node -> unit) sd =
+    lift "Unit" "recalculate_internal"
+      (lazy
+        (fix (fun recurse n ->
+             (*inlined*)
+             let rerun_if_dirty name : unit sd =
+               ite
+                 (hashtbl_find_exn (meta_get_bb_dirtied (node_get_meta n)) (string name))
+                 (fun _ ->
+                   seqs
+                     [
+                       (fun _ -> print_endline (string ("rerunning " ^ name)));
+                       (fun _ -> eval_stmts n (stmts_of_basic_block p name));
+                       (fun _ -> hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string name) (bool false));
+                     ])
+                 (fun _ -> tt)
+             in
+             seqs
+               [
+                 (fun _ -> meta_read_metric m);
+                 (fun _ ->
+                   ite
+                     (hashtbl_find_exn (meta_get_recursive_proc_dirtied (node_get_meta n)) (string proc_name))
+                     (fun _ ->
+                       ite
+                         (is_some (hashtbl_find (meta_get_proc_inited (node_get_meta n)) (string proc_name)))
+                         (fun _ ->
+                           seqs
+                             [
+                               (fun _ -> rerun_if_dirty down_name);
+                               (fun _ -> list_iter (node_get_children n) recurse);
+                               (fun _ -> rerun_if_dirty up_name);
+                             ])
+                         (fun _ ->
+                           seqs
+                             [
+                               (fun _ -> print_endline (string "inserted init popped:"));
+                               (fun _ -> hashtbl_add_exn (meta_get_proc_inited (node_get_meta n)) (string proc_name) tt);
+                               (fun _ -> eval_stmts n (stmts_of_processed_proc p proc_name));
+                             ]))
+                     (fun _ -> tt));
+                 (fun _ ->
+                   hashtbl_set (meta_get_recursive_proc_dirtied (node_get_meta n)) (string proc_name) (bool false));
+               ])))
 
   (*
-  there are two difficulty: converting from pq to db, and converting from db to pq.
+  there are two problem: converting from pq to db, and converting from db to pq.
   
   from pq to db: db is a recursive function, so the spine is recorded on the call stack.
   however pq work with only a node instead of the spine.
@@ -252,18 +352,21 @@ module EVAL (SD : SD) = MakeEval (struct
   let rec fix_key (p : prog) (x : TotalOrder.t sd) (k : key sd) (m : metric sd)
       (eval_stmts : meta node sd -> stmts -> unit sd) : unit sd =
     let proc_cases =
-      List.map (Hashtbl.to_alist p.procs) ~f:(fun (str, ProcessedProc (_, stmts)) ->
-          ( proc_intern str,
+      List.map (Hashtbl.to_alist p.procs) ~f:(fun (proc_name, ProcessedProc (_, stmts)) ->
+          let down, up = get_bb_from_proc p proc_name in
+          ( proc_intern proc_name,
             fun _ ->
               let_ (read_ref current_time) (fun old_time ->
                   seqs
                     [
                       (fun _ -> write_ref current_time x);
-                      (fun _ -> eval_stmts (key_get_node k) stmts);
                       (fun _ ->
-                        hashtbl_set
-                          (meta_get_proc_time_table (node_get_meta (key_get_node k)))
-                          (string str) (read_ref current_time));
+                        ite
+                          (is_some (node_get_parent (key_get_node k)))
+                          (fun _ -> print_endline (string "is not root"))
+                          (fun _ -> print_endline (string "is root")));
+                      (fun _ -> app (recalculate_internal_aux_code p proc_name down up eval_stmts m) (key_get_node k));
+                      (fun _ -> chase_dirty p true proc_name down up (key_get_node k) eval_stmts m);
                       (fun _ -> write_ref current_time old_time);
                     ]) ))
     in
@@ -281,7 +384,7 @@ module EVAL (SD : SD) = MakeEval (struct
     this code will start fixing db, from n. (note that n need not be fixed prior to calling this function.)
   *)
   and chase_dirty (program : prog) (down_up : bool) (proc_name : string) (down_name : string) (up_name : string)
-      (n : meta node sd) (m : metric sd) (eval_stmts : meta node sd -> stmts -> unit sd) : unit sd =
+      (n : meta node sd) (eval_stmts : meta node sd -> stmts -> unit sd) (m : metric sd) : unit sd =
     let current_bb_name = if down_up then down_name else up_name in
     let move_root_candidate_up () =
       option_match (node_get_parent n)
@@ -312,8 +415,7 @@ module EVAL (SD : SD) = MakeEval (struct
                (hashtbl_find_exn (meta_get_recursive_proc_dirtied (node_get_meta n)) (string proc_name))
                (fun _ ->
                  queue_push
-                   (hashtbl_find_exn (meta_get_proc_time_table (node_get_meta n)) (string proc_name))
-                   (*todo: need to be the init time*)
+                   (hashtbl_find_exn (meta_get_bb_time_table (node_get_meta n)) (string down_name))
                    n
                    (proc_intern proc_name |> int)
                    m)
@@ -342,11 +444,12 @@ module EVAL (SD : SD) = MakeEval (struct
                 (fun _ -> tt));
             (fun _ -> meta_set_is_current_node (n |> node_get_meta) (bool false));
             (fun _ -> meta_set_is_current_node (node |> node_get_meta) (bool true));
-            (fun _ -> chase_dirty program new_down_up proc_name down_name up_name node m eval_stmts);
+            (fun _ -> chase_dirty program new_down_up proc_name down_name up_name node eval_stmts m);
           ]
       in
       seqs
         [
+          (fun _ -> print_endline (string ("chase " ^ if down_up then "down" else "up")));
           (fun _ -> ite (meta_get_is_root_candidate (node_get_meta n)) move_root_candidate_up (fun _ -> tt));
           (fun _ ->
             ite
@@ -379,8 +482,8 @@ module EVAL (SD : SD) = MakeEval (struct
                                         seqs
                                           [
                                             (fun _ ->
-                                              chase_dirty program down_up proc_name down_name up_name (key_get_node k) m
-                                                eval_stmts);
+                                              chase_dirty program down_up proc_name down_name up_name (key_get_node k)
+                                                eval_stmts m);
                                             (fun _ ->
                                               ite
                                                 (meta_get_is_current_node (n |> node_get_meta))
@@ -392,7 +495,9 @@ module EVAL (SD : SD) = MakeEval (struct
         ]
     in
     let try_move_right () =
-      option_match (node_get_next n) (fun _ -> move (*down_up=*) false n) (fun d -> move (*down_up=*) true d)
+      option_match (node_get_next n)
+        (fun _ -> seqs [ (fun _ -> print_endline (string "move right")); (fun _ -> move (*down_up=*) false n) ])
+        (fun d -> move (*down_up=*) true d)
     in
     let try_move_down () = option_match (node_get_first n) try_move_right (fun d -> move (*down_up=*) true d) in
     seqs
@@ -413,7 +518,7 @@ module EVAL (SD : SD) = MakeEval (struct
               (fun _ ->
                 option_match (node_get_parent n)
                   (fun _ -> panic (string "no parent but all work done"))
-                  (fun p -> move (*down_up=*) false p)));
+                  (fun p -> seqs [ (fun _ -> print_endline (string "move up")); (fun _ -> move (*down_up=*) false p) ])));
       ]
 
   let recalculate_internal (p : prog) (n : meta node sd) (m : metric sd) (eval_stmts : meta node sd -> stmts -> unit sd)
@@ -429,6 +534,8 @@ module EVAL (SD : SD) = MakeEval (struct
                         let_ (fst qp) (fun k ->
                             seqs
                               [
+                                (fun _ ->
+                                  print_endline (string_append (string "queue_size: ") (queue_size () |> string_of_int)));
                                 (fun _ -> meta_read_metric m);
                                 (fun _ -> queue_size_metric m (queue_size ()));
                                 (fun _ ->

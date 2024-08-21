@@ -113,6 +113,7 @@ module type SDIN = sig
   val node_get_extern_id : 'a node sd -> int sd
   val node_get_name : 'a node sd -> string sd
   val node_get_meta : 'a node sd -> 'a sd
+  val node_get_id : 'a node sd -> int sd
   val hashtbl_force_remove : (string, 'a) Hashtbl.t sd -> string sd -> unit sd
   val hashtbl_contain : (string, 'a) Hashtbl.t sd -> string sd -> bool sd
   val hashtbl_find : (string, 'a) Hashtbl.t sd -> string sd -> 'a option sd
@@ -268,8 +269,12 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
 
   let ite i t e = if i then t () else e ()
   let json_of_string x = Yojson.Basic.from_string x
-  let with_in_file name f = Stdio.In_channel.with_file name ~f
-  let with_out_file name f = Stdio.Out_channel.with_file name ~f ~append:true
+  let debug = true
+  let with_in_file name f = if debug then f (Stdio.In_channel.create name) else Stdio.In_channel.with_file name ~f
+
+  let with_out_file name f =
+    if debug then f (Stdio.Out_channel.create name ~append:true) else Stdio.Out_channel.with_file name ~f ~append:true
+
   let ignore x = Core.ignore x
   let output_string c s = Stdio.Out_channel.output_string c s
   let input_line c = Stdio.In_channel.input_line_exn c
@@ -358,6 +363,7 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
   let node_set_children (n : _ node) v = n.children <- v
   let node_get_extern_id x = x.extern_id
   let node_get_name x = x.name
+  let node_get_id x = x.id
   let node_get_meta x = x.m
   let hashtbl_find h k = Hashtbl.find h k
   let hashtbl_contain h k = Option.is_some (Hashtbl.find h k)
@@ -643,6 +649,7 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let node_get_var n = CGetMember (n, "var")
   let node_get_attr n = CGetMember (n, "attr")
   let node_get_name n = CGetMember (n, "name")
+  let node_get_id n = CGetMember (n, "id")
   let node_get_meta n = CGetMember (n, "meta")
   let hashtbl_contain h k = CApp (CPF "HashtblContain", [ h; k ])
   let hashtbl_find h k = CApp (CPF "HashtblFind", [ h; k ])

@@ -199,7 +199,7 @@ let rec simplify (p : prog) x =
       CStringMatch (recurse str, List.map cases ~f:(fun (l, r) -> (l, recurse r)), recurse default)
   | CIntMatch (i, cases, default) ->
       CIntMatch (recurse i, List.map cases ~f:(fun (l, r) -> (l, recurse r)), recurse default)
-  | _ -> Common.panic ("simplify:" ^ truncate (show_code x))
+(*| _ -> Common.panic ("simplify:" ^ truncate (show_code x))*)
 
 let rec optimize prog x =
   let new_x = simplify prog x in
@@ -485,6 +485,7 @@ let compile_forward_def _ c (ret_type, name, x) =
   match x with
   | CFix (name, xname, _) -> output_string c (ret_type ^ " " ^ name ^ names_to_args xname ^ ";")
   | CFun (xname, _) -> output_string c (ret_type ^ " " ^ name ^ names_to_args xname ^ ";")
+  | _ -> Common.panic ("compile_forward_def:" ^ truncate (show_code x))
 
 let compile_def prog c (ret_type, name, x) =
   match optimize prog x with
@@ -504,7 +505,7 @@ let compile_def prog c (ret_type, name, x) =
       output_string c ("auto " ^ name ^ " = ");
       compile_expr c x;
       output_string c ";"
-  (*| _ -> Common.panic ("compile_def:" ^ truncate (show_code x))*)
+(*| _ -> Common.panic ("compile_def:" ^ truncate (show_code x))*)
 
 let compile_field tbl name type_expr =
   compile_type_expr type_expr ^ " " ^ tbl ^ "_" ^ string_to_cpp name ^ ";" ^ "bool " ^ "has_" ^ tbl ^ "_"
@@ -535,7 +536,7 @@ let compile_to_destring_case (d : destringed) : string =
   | DStringIsFloat ->
       "if (std_string_is_float(str)){ return DEString{DEStringCase::DStringIsFloat, StringToDEStringRest(str)}; }"
   | DStringToFloat | DFloatBySep _ | DStripSuffix _ -> ""
-  (*| _ -> panic (show_destringed d)*)
+(*| _ -> panic (show_destringed d)*)
 
 let compile_typedef (env : tyck_env) meta_defs (ds : destringed list) : string =
   "enum class DEStringCase { DEStringCaseDefault, "

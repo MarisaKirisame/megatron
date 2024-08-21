@@ -637,6 +637,7 @@ module Main (EVAL : Eval) = struct
 end
 
 (*module DEBUG = Main (Megatron.EvalPQ.EVAL (S))*)
+(*module DEBUG = Main (Megatron.EvalHB.EVAL (S))*)
 
 (*module MainFSI = Main (Megatron.EvalFS.EVAL (S))*)
 module MainFSC = Main (Megatron.EvalFS.EVAL (D))

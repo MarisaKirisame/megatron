@@ -18,7 +18,7 @@ module EVAL (SD : SD) = MakeEval (struct
   let remove_meta x = x
   let bracket_call_bb _ _ f = f ()
   let bracket_call_proc _ _ f = f ()
-  let bb_dirtied_internal _ ~proc_name ~bb_name _ = tt
+  let bb_dirtied_internal _ _ ~proc_name ~bb_name _ = tt
   let bb_dirtied_external = bb_dirtied_internal
   let register_todo_proc _ _ _ _ = tt
 
