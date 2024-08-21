@@ -7,6 +7,7 @@ process(){
   dune exec megatron -- $1.out
 }
 
+rm Layout*.cpp
 rm *.out || true
 process discord_nologin
 process espn

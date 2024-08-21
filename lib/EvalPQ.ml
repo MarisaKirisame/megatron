@@ -32,8 +32,12 @@ module EVAL (SD : SD) = MakeEval (struct
   let meta_defs (p : prog) =
     String.concat
       (List.map (Hashtbl.to_alist p.bbs) ~f:(fun (bb, _) ->
-           "bool " ^ bb ^ "_has_bb_time_table=false;TotalOrder " ^ bb ^ "_bb_time_table;"))
+           "bool " ^ bb ^ "_has_bb_dirtied = false;" ^ "bool " ^ bb ^ "_bb_dirtied;"))
       ~sep:""
+    ^ String.concat
+        (List.map (Hashtbl.to_alist p.bbs) ~f:(fun (bb, _) ->
+             "bool " ^ bb ^ "_has_bb_time_table=false;TotalOrder " ^ bb ^ "_bb_time_table;"))
+        ~sep:""
     ^ "bool alive=true;"
 
   let meta_get_bb_time_table m =
@@ -113,10 +117,7 @@ module EVAL (SD : SD) = MakeEval (struct
               (option_match (node_get_prev y)
                  (fun _ -> next_total_order (hashtbl_find_exn (meta_get_bb_time_table (node_get_meta x)) (string down)))
                  (fun x -> next_total_order (hashtbl_find_exn (meta_get_bb_time_table (node_get_meta x)) (string up))))
-              (fun time ->
-                seq
-                  (hashtbl_add_exn (meta_get_bb_time_table (node_get_meta y)) (string proc_name) time)
-                  (fun _ -> queue_force_push time y (int (proc_intern proc_name)) m)))
+              (fun time -> queue_force_push time y (int (proc_intern proc_name)) m))
           (fun _ -> (*otherwise this proc is already in the queue with y's ancestor.*) tt))
 
   let bb_dirtied_internal p (n : meta node sd) ~(proc_name : string) ~(bb_name : string) (m : metric sd) : unit sd =
@@ -185,10 +186,10 @@ module EVAL (SD : SD) = MakeEval (struct
                                              [
                                                (fun _ -> eval_stmts (key_get_node k) stmts);
                                                (fun _ ->
-                                                hashtbl_set
-                                                  (meta_get_bb_dirtied (node_get_meta n))
-                                                  (string bb_name) (bool false));
-                                            ] ))
+                                                 hashtbl_set
+                                                   (meta_get_bb_dirtied (node_get_meta n))
+                                                   (string bb_name) (bool false));
+                                             ] ))
                                  in
                                  let proc_cases =
                                    List.map (Hashtbl.to_alist p.procs) ~f:(fun (str, ProcessedProc (_, stmts)) ->
