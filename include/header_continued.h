@@ -23,7 +23,7 @@ struct QueueValue {
   PQData rf;
 };
 
-#define QUEUE_IMPL 1
+#define QUEUE_IMPL 0
 
 #if QUEUE_IMPL == 0
 #include <map>
