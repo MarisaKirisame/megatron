@@ -182,7 +182,7 @@ module EVAL (SD : SD) = MakeEval (struct
       (while_
          (fun _ -> not_ (queue_isempty ()))
          (fun _ ->
-           let_ (queue_peek ()) (fun qp ->
+           let_ (queue_pop ()) (fun qp ->
                let_ (zro qp) (fun x ->
                    let_ (fst qp) (fun k ->
                        seqs
@@ -221,10 +221,6 @@ module EVAL (SD : SD) = MakeEval (struct
                                  int_match (k |> key_get_rf) (List.append bb_cases proc_cases) (fun _ ->
                                      panic (string "unknown bb/proc")))
                                (fun _ -> tt));
-                           (fun _ ->
-                             let_
-                               (queue_pop () |> zro)
-                               (fun x' -> ite (to_equal x x') (fun _ -> tt) (fun _ -> panic (string "unequal"))));
                          ])))))
       (fun _ -> check p n)
 end)
