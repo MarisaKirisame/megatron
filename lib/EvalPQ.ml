@@ -124,6 +124,7 @@ module EVAL (SD : SD) = MakeEval (struct
               (fun time ->
                 seqs
                   [
+                    (fun _ -> hashtbl_add_exn (meta_get_bb_dirtied (node_get_meta y)) (string down) (bool true));
                     (fun _ -> hashtbl_add_exn (meta_get_bb_time_table (node_get_meta y)) (string down) time);
                     (fun _ -> queue_force_push time y (int (proc_intern proc_name)) m);
                   ]))
@@ -147,7 +148,7 @@ module EVAL (SD : SD) = MakeEval (struct
                       seqs
                         [
                           (fun _ -> hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool true));
-                          (fun _ -> queue_push order n (int (bb_intern bb_name)) m);
+                          (fun _ -> queue_force_push order n (int (bb_intern bb_name)) m);
                         ])
                     (fun _ -> tt)))))
 
@@ -156,10 +157,10 @@ module EVAL (SD : SD) = MakeEval (struct
   let bracket_call_bb (n : meta node sd) bb_name (f : unit -> unit sd) : unit sd =
     seqs
       [
-        (fun _ -> hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool false));
         (fun _ -> hashtbl_set (meta_get_bb_time_table (node_get_meta n)) (string bb_name) (read_ref current_time));
         (fun _ -> write_ref current_time (next_total_order (read_ref current_time)));
         (fun _ -> f ());
+        (fun _ -> hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool false));
       ]
 
   let bracket_call_proc (n : meta node sd) proc_name (f : unit -> unit sd) : unit sd =
