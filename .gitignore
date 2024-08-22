@@ -43,6 +43,3 @@ relwithdebuginfo/
 releasewithdebug/
 
 .venv
-LayoutDB_D.cpp
-LayoutFS_D.cpp
-LayoutPQ_D.cpp
