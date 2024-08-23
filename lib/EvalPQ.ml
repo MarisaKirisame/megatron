@@ -32,11 +32,11 @@ module EVAL (SD : SD) = MakeEval (struct
   let meta_defs (p : prog) =
     String.concat
       (List.map (Hashtbl.to_alist p.bbs) ~f:(fun (bb, _) ->
-           "bool " ^ bb ^ "_has_bb_dirtied = false;" ^ "bool " ^ bb ^ "_bb_dirtied;"))
+           "bool " ^ bb ^ "_has_bb_dirtied = false;" ^ "bool " ^ bb ^ "_bb_dirtied;" ^ "bool " ^ bb ^ "_has_bb_time_table = false;"))
       ~sep:""
     ^ String.concat
         (List.map (Hashtbl.to_alist p.bbs) ~f:(fun (bb, _) ->
-             "bool " ^ bb ^ "_has_bb_time_table = false;" ^ "TotalOrder " ^ bb ^ "_bb_time_table;"))
+             "TotalOrder " ^ bb ^ "_bb_time_table;"))
         ~sep:""
     ^ "bool alive=true;"
 
