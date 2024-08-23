@@ -117,19 +117,19 @@ struct DEString {
 struct Meta {
   bool bb_3_has_bb_dirtied = false;
   bool bb_3_bb_dirtied;
+  bool bb_3_has_bb_time_table = false;
   bool bb_1_has_bb_dirtied = false;
   bool bb_1_bb_dirtied;
+  bool bb_1_has_bb_time_table = false;
   bool bb_0_has_bb_dirtied = false;
   bool bb_0_bb_dirtied;
+  bool bb_0_has_bb_time_table = false;
   bool bb_2_has_bb_dirtied = false;
   bool bb_2_bb_dirtied;
-  bool bb_3_has_bb_time_table = false;
-  TotalOrder bb_3_bb_time_table;
-  bool bb_1_has_bb_time_table = false;
-  TotalOrder bb_1_bb_time_table;
-  bool bb_0_has_bb_time_table = false;
-  TotalOrder bb_0_bb_time_table;
   bool bb_2_has_bb_time_table = false;
+  TotalOrder bb_3_bb_time_table;
+  TotalOrder bb_1_bb_time_table;
+  TotalOrder bb_0_bb_time_table;
   TotalOrder bb_2_bb_time_table;
   bool alive = true;
 };
@@ -5870,7 +5870,7 @@ Node x_3521(const auto &x_3522) {
 }
 Node json_to_node_aux_x_2790(const auto &x_3522) { return x_3521(x_3522); }
 int main() {
-  WithOutFile("hn_type.out", [&](const auto &x_2795) {
+  WithOutFile("espn.out", [&](const auto &x_2795) {
     PrintEndline("RUNNING PQ_D");
     return WithInFile("command.json", [&](const auto &x_2796) {
       auto x_2797 = MakeRef(static_cast<int64_t>(0));

@@ -23,7 +23,7 @@ struct QueueValue {
   PQData rf;
 };
 
-#define QUEUE_IMPL 1
+#define QUEUE_IMPL 3
 
 #if QUEUE_IMPL == 0
 #include <map>
@@ -108,6 +108,35 @@ Unit QueueForcePush(const TotalOrder &to, Content *n, PQData &&data) {
   queue.insert(to, QueueValue(n->shared_from_this(), std::move(data)));
   return Unit{};
 }
+std::pair<TotalOrder, QueueValue> QueuePeek() { return queue.peek(); }
+std::pair<TotalOrder, QueueValue> QueuePop() { return queue.pop(); }
+#elif QUEUE_IMPL == 3
+
+#include "queue/min_heap.h"
+MinHeap<TotalOrder, QueueValue> queue;
+
+int64_t QueueSize() { return queue.size(); }
+bool QueueIsEmpty() { return queue.empty(); }
+
+Unit QueuePush(const TotalOrder &to, const Node &n, PQData &&data) {
+  queue.push(to, QueueValue(n, std::move(data)));
+  return Unit{};
+}
+Unit QueuePush(const TotalOrder &to, Content *n, PQData &&data) {
+  queue.push(to, QueueValue(n->shared_from_this(), std::move(data)));
+  return Unit{};
+}
+// todo:check
+Unit QueueForcePush(const TotalOrder &to, const Node &n, PQData &&data) {
+  queue.push(to, QueueValue(n, std::move(data)));
+  return Unit{};
+}
+// todo:check
+Unit QueueForcePush(const TotalOrder &to, Content *n, PQData &&data) {
+  queue.push(to, QueueValue(n->shared_from_this(), std::move(data)));
+  return Unit{};
+}
+
 std::pair<TotalOrder, QueueValue> QueuePeek() { return queue.peek(); }
 std::pair<TotalOrder, QueueValue> QueuePop() { return queue.pop(); }
 #endif
