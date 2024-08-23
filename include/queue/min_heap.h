@@ -23,7 +23,7 @@ template<typename K, typename V, template <typename> typename Allocator = std::a
 struct MinHeap {
   using T = std::pair<K, V>;
   // maybe we should use a rootish array?
-  std::vector<T, Allocator> arr;
+  std::vector<T, Allocator<T>> arr;
 
   T& peek() {
     return (*this)[0];
