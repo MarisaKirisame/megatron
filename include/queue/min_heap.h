@@ -38,7 +38,11 @@ struct MinHeap {
   }
 
   T pop() {
-    return remove(0);
+    auto val = remove_no_rebalance(0);
+    if (!empty()) {
+        sink(0);
+    }
+    return val;
   }
 
   void flow(const size_t& idx) {
@@ -48,6 +52,7 @@ struct MinHeap {
       if ((*this)[idx].first < (*this)[pidx].first) {
         swap(idx, pidx);
       }
+      flow(pidx);
     }
   }
 
@@ -69,12 +74,6 @@ struct MinHeap {
         sink(smaller_idx);
       }
     }
-  }
-
-  void rebalance(const size_t& idx) {
-    assert(has_value(idx));
-    flow(idx);
-    sink(idx);
   }
 
   void swap(const size_t& l, const size_t& r) {
@@ -118,14 +117,6 @@ struct MinHeap {
     T ret = std::move(arr[idx]);
     swap(idx, arr.size() - 1);
     arr.pop_back();
-    return ret;
-  }
-
-  T remove(const size_t& idx) {
-    T ret = remove_no_rebalance(idx);
-    if (idx < arr.size()) {
-      rebalance(idx);
-    }
     return ret;
   }
 };

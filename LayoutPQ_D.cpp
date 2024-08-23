@@ -5870,7 +5870,7 @@ Node x_3521(const auto &x_3522) {
 }
 Node json_to_node_aux_x_2790(const auto &x_3522) { return x_3521(x_3522); }
 int main() {
-  WithOutFile("espn.out", [&](const auto &x_2795) {
+  WithOutFile("hn_type.out", [&](const auto &x_2795) {
     PrintEndline("RUNNING PQ_D");
     return WithInFile("command.json", [&](const auto &x_2796) {
       auto x_2797 = MakeRef(static_cast<int64_t>(0));
