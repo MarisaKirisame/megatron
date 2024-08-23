@@ -416,9 +416,9 @@ template <typename T> struct PoolAllocator {
   static pointer allocate(const size_type n) { return get_allocator().allocate(n); }
 };
 
-//template <typename T> using default_allocator = PoolAllocator<T>;
+template <typename T> using default_allocator = PoolAllocator<T>;
 
-template <typename T> using default_allocator = std::allocator<T>;
+//template <typename T> using default_allocator = std::allocator<T>;
 
 #include "otto.h"
 typedef total_order<1.4, uint32_t> TotalOrderS;
