@@ -26,7 +26,7 @@ struct MinHeap {
   std::vector<T, Allocator<T>> arr;
 
   MinHeap() {
-    arr.reserve(1024);
+    arr.reserve(16384);
   }
 
   T& peek() {
