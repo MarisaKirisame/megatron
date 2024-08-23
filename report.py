@@ -203,6 +203,8 @@ def plot(xs, ys, name):
     min_value = min(min(*xs), min(*ys))
     max_value = max(max(*xs), max(*ys))
 
+    ys = [max(ys[i], 1) for i in range(len(ys))]
+
     speedup = [math.log(xs[i]/ys[i]) for i in range(len(xs))]
     n_clusters = 4
     est = KMeans(n_clusters=n_clusters)
