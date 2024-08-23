@@ -19,11 +19,11 @@ inline size_t heap_right_child(size_t i) {
   return heap_left_child(i) + 1;
 }
 
-template<typename K, typename V>
+template<typename K, typename V, template <typename> typename Allocator = std::allocator>
 struct MinHeap {
   using T = std::pair<K, V>;
   // maybe we should use a rootish array?
-  std::vector<T> arr;
+  std::vector<T, Allocator> arr;
 
   T& peek() {
     return (*this)[0];

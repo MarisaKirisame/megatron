@@ -113,7 +113,7 @@ std::pair<TotalOrder, QueueValue> QueuePop() { return queue.pop(); }
 #elif QUEUE_IMPL == 3
 
 #include "queue/min_heap.h"
-MinHeap<TotalOrder, QueueValue> queue;
+MinHeap<TotalOrder, QueueValue, default_allocator> queue;
 
 int64_t QueueSize() { return queue.size(); }
 bool QueueIsEmpty() { return queue.empty(); }
