@@ -25,6 +25,10 @@ struct MinHeap {
   // maybe we should use a rootish array?
   std::vector<T, Allocator<T>> arr;
 
+  MinHeap() {
+    arr.reserve(1024);
+  }
+
   T& peek() {
     return (*this)[0];
   }
