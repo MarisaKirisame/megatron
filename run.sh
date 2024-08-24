@@ -18,5 +18,6 @@ process github_nologin
 process wikipedia_idle
 process wikipedia_hover
 process hn_type
+process speedometer2
 rm *.trace
 python3 report.py

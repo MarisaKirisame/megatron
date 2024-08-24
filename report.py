@@ -196,7 +196,7 @@ def per_trace(trace_out_path):
 
     return page_path
 
-outs = ["google_hover.out", "google_searchbar.out", "google_searchpage.out", "github_nologin.out", "wikipedia_idle.out", "wikipedia_hover.out", "hn_type.out", "espn.out", "discord_nologin.out"]
+outs = ["google_hover.out", "google_searchbar.out", "google_searchpage.out", "github_nologin.out", "wikipedia_idle.out", "wikipedia_hover.out", "hn_type.out", "espn.out", "discord_nologin.out", "speedometer2.out"]
 #outs = ["discord_nologin.out"]
     
 def plot(xs, ys, name):
