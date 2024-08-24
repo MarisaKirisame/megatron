@@ -8,6 +8,7 @@ enum class DEStringCase {
   DSTRING_A,
   DSTRING_ABBR,
   DSTRING_ACTIVE_GLOBAL_BANNERS,
+  DSTRING_APP_ROOT,
   DSTRING_ARTICLE,
   DSTRING_ASIDE,
   DSTRING_AUDIO,
@@ -41,6 +42,7 @@ enum class DEStringCase {
   DSTRING_H4,
   DSTRING_HEAD,
   DSTRING_HEADER,
+  DSTRING_HR,
   DSTRING_HTML,
   DSTRING_I,
   DSTRING_IFRAME,
@@ -52,6 +54,8 @@ enum class DEStringCase {
   DSTRING_MAIN,
   DSTRING_MODAL_DIALOG,
   DSTRING_NAV,
+  DSTRING_NG_PLURALIZE,
+  DSTRING_NG_VIEW,
   DSTRING_NOSCRIPT,
   DSTRING_OL,
   DSTRING_P,
@@ -66,6 +70,7 @@ enum class DEStringCase {
   DSTRING_SMALL,
   DSTRING_SOURCE,
   DSTRING_SPAN,
+  DSTRING_STRONG,
   DSTRING_SUP,
   DSTRING_TABLE,
   DSTRING_TBODY,
@@ -86,6 +91,7 @@ enum class DEStringCase {
   DSTRING_fit_content,
   DSTRING_flex,
   DSTRING_grid,
+  DSTRING_html,
   DSTRING_inline,
   DSTRING_inline_block,
   DSTRING_inline_flex,
@@ -155,6 +161,9 @@ DEString StringToDEString(const std::string &str) {
   }
   if (str == "ACTIVE-GLOBAL-BANNERS") {
     return DEStringLit(DEStringCase::DSTRING_ACTIVE_GLOBAL_BANNERS);
+  }
+  if (str == "APP-ROOT") {
+    return DEStringLit(DEStringCase::DSTRING_APP_ROOT);
   }
   if (str == "ARTICLE") {
     return DEStringLit(DEStringCase::DSTRING_ARTICLE);
@@ -255,6 +264,9 @@ DEString StringToDEString(const std::string &str) {
   if (str == "HEADER") {
     return DEStringLit(DEStringCase::DSTRING_HEADER);
   }
+  if (str == "HR") {
+    return DEStringLit(DEStringCase::DSTRING_HR);
+  }
   if (str == "HTML") {
     return DEStringLit(DEStringCase::DSTRING_HTML);
   }
@@ -287,6 +299,12 @@ DEString StringToDEString(const std::string &str) {
   }
   if (str == "NAV") {
     return DEStringLit(DEStringCase::DSTRING_NAV);
+  }
+  if (str == "NG-PLURALIZE") {
+    return DEStringLit(DEStringCase::DSTRING_NG_PLURALIZE);
+  }
+  if (str == "NG-VIEW") {
+    return DEStringLit(DEStringCase::DSTRING_NG_VIEW);
   }
   if (str == "NOSCRIPT") {
     return DEStringLit(DEStringCase::DSTRING_NOSCRIPT);
@@ -329,6 +347,9 @@ DEString StringToDEString(const std::string &str) {
   }
   if (str == "SPAN") {
     return DEStringLit(DEStringCase::DSTRING_SPAN);
+  }
+  if (str == "STRONG") {
+    return DEStringLit(DEStringCase::DSTRING_STRONG);
   }
   if (str == "SUP") {
     return DEStringLit(DEStringCase::DSTRING_SUP);
@@ -389,6 +410,9 @@ DEString StringToDEString(const std::string &str) {
   }
   if (str == "grid") {
     return DEStringLit(DEStringCase::DSTRING_grid);
+  }
+  if (str == "html") {
+    return DEStringLit(DEStringCase::DSTRING_html);
   }
   if (str == "inline") {
     return DEStringLit(DEStringCase::DSTRING_inline);
@@ -1243,7 +1267,8 @@ auto eval_expr_x_292(const auto &x_943) {
                   ? (10.)
                   : ((x_943->var_is_default_case)
                          ? (0.)
-                         : ((eq(x_943->name, DEStringLit(DEStringCase::DSTRING_BR)))
+                         : ((eq(x_943->name, DEStringLit(DEStringCase::DSTRING_BR)) ||
+                             eq(x_943->name, DEStringLit(DEStringCase::DSTRING_HR)))
                                 ? (0.)
                                 : ((eq(x_943->name, DEStringLit(DEStringCase::DSTRING_INPUT)))
                                        ? (10.)
@@ -1386,7 +1411,8 @@ auto eval_expr_x_252(const auto &x_1116) {
                   ? (100.)
                   : ((x_1116->var_is_default_case)
                          ? (0.)
-                         : ((eq(x_1116->name, DEStringLit(DEStringCase::DSTRING_BR)))
+                         : ((eq(x_1116->name, DEStringLit(DEStringCase::DSTRING_BR)) ||
+                             eq(x_1116->name, DEStringLit(DEStringCase::DSTRING_HR)))
                                 ? (0.)
                                 : ((eq(x_1116->name, DEStringLit(DEStringCase::DSTRING_INPUT)))
                                        ? (100.)
@@ -1469,7 +1495,7 @@ auto eval_expr_x_237(const auto &x_1236) {
     } else {
       if (x_1236->var_disabled) {
         return true;
-      } else {if ( eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_SLASHdocument)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_SLASHshadow_root)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_DIV)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_HTML)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_BODY)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_BUTTON)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_FOOTER)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_SELECT)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_SECTION)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_FORM)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_CENTER)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_TD)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_TR)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_TBODY)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_TABLE)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_SPAN)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_FONT)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_A)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_ARTICLE)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_P)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_U)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_UL)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_B)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_H1)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_H2)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_H3)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_H4)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_DT)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_DD)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_DL)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_LI)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_LABEL)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_OL)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_NAV)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_HEADER)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_HEAD)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_SOURCE)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_PICTURE)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_FIGURE)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_FIGCAPTION)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_MAIN)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_REACT_PARTIAL)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_QUERY_BUILDER)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_MODAL_DIALOG)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_SCROLLABLE_REGION)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_DIALOG_HELPER)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_AUTO_CHECK)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_TOOL_TIP)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_CUSTOM_SCOPES)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_QBSEARCH_INPUT)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_INCLUDE_FRAGMENT)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_COOKIE_CONSENT_LINK)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_FULLSTORY_CAPTURE)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_GHCC_CONSENT)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_GLOBAL_BANNER)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_ACTIVE_GLOBAL_BANNERS)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_CARD_SKEW)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_EM)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_ASIDE)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_AUDIO)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_SUP)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_TIME)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_ABBR)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_SMALL)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_SLOT)) || eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_I)))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))) ){
+      } else {if ( eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_SLASHdocument)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_SLASHshadow_root)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_DIV)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_HTML)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_BODY)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_BUTTON)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_FOOTER)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_SELECT)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_SECTION)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_FORM)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_CENTER)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_TD)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_TR)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_TBODY)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_TABLE)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_SPAN)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_FONT)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_A)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_ARTICLE)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_P)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_U)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_UL)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_B)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_H1)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_H2)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_H3)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_H4)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_DT)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_DD)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_DL)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_LI)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_LABEL)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_OL)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_NAV)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_HEADER)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_HEAD)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_SOURCE)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_PICTURE)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_FIGURE)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_FIGCAPTION)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_MAIN)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_REACT_PARTIAL)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_QUERY_BUILDER)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_MODAL_DIALOG)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_SCROLLABLE_REGION)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_DIALOG_HELPER)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_AUTO_CHECK)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_TOOL_TIP)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_CUSTOM_SCOPES)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_QBSEARCH_INPUT)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_INCLUDE_FRAGMENT)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_COOKIE_CONSENT_LINK)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_FULLSTORY_CAPTURE)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_GHCC_CONSENT)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_GLOBAL_BANNER)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_ACTIVE_GLOBAL_BANNERS)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_CARD_SKEW)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_EM)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_ASIDE)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_AUDIO)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_SUP)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_TIME)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_ABBR)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_SMALL)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_SLOT)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_I)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_NG_PLURALIZE)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_NG_VIEW)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_APP_ROOT)) || (eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_html)) || eq(x_1236->name,DEStringLit(DEStringCase::DSTRING_STRONG))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))) ){
           return true;
         } else {
           return false;
@@ -2589,7 +2615,7 @@ Node x_227(const auto &x_228) {
 }
 Node json_to_node_aux_x_0(const auto &x_228) { return x_227(x_228); }
 int main() {
-  WithOutFile("hn_type.out", [&](const auto &x_5) {
+  WithOutFile("speedometer2.out", [&](const auto &x_5) {
     PrintEndline("RUNNING FS_D");
     return WithInFile("command.json", [&](const auto &x_6) {
       auto x_7 = MakeRef(static_cast<int64_t>(0));

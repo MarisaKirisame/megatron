@@ -195,7 +195,12 @@ proc pass_0() {
       (get_name() = "ABBR") ||
       (get_name() = "SMALL") ||
       (get_name() = "SLOT") ||
-      (get_name() = "I")
+      (get_name() = "I") ||
+      (get_name() = "NG-PLURALIZE") ||
+      (get_name() = "NG-VIEW") ||
+      (get_name() = "APP-ROOT") ||
+      (get_name() = "html") ||
+      (get_name() = "STRONG")
     then true
     else if 
       (get_name() = "#text") ||
@@ -204,6 +209,7 @@ proc pass_0() {
       (get_name() = "INPUT") ||
       (get_name() = "VIDEO") ||
       (get_name() = "BR") ||
+      (get_name() = "HR") ||
       (get_name() = "IMG") ||
       (get_name() = "TEXTAREA")
     then false
@@ -253,7 +259,7 @@ proc pass_0() {
       then (if has_first() then panic("intrinsic_width_internal ICE") else 100)
       else if self.is_default_case 
       then 0
-      else if get_name() = "BR"
+      else if (get_name() = "BR") || (get_name() = "HR")
       then (if has_first() then panic("intrinsic_width_internal ICE") else 0)
       else if get_name() = "INPUT"
       then 100
@@ -350,7 +356,7 @@ proc pass_0() {
       then (if has_first() then panic("intrinsic_height ICE") else 10)
       else if self.is_default_case
       then 0
-      else if get_name() = "BR"
+      else if (get_name() = "BR") || (get_name() = "HR")
       then (if has_first() then panic("intrinsic_height BR ICE") else 0)
       else if get_name() = "INPUT"
       then 10

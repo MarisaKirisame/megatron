@@ -9,6 +9,7 @@ process(){
 
 rm Layout*.cpp || true
 rm *.out || true
+process speedometer2
 process discord_nologin
 process espn
 process google_hover
@@ -18,6 +19,5 @@ process github_nologin
 process wikipedia_idle
 process wikipedia_hover
 process hn_type
-process speedometer2
 rm *.trace
 python3 report.py
