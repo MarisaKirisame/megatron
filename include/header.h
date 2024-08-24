@@ -512,6 +512,8 @@ static bool papi_counting = false;
 void papi_init() {
   assert(!papi_initialized);
 
+  int retval;
+
   if (PAPI_library_init(PAPI_VER_CURRENT) != PAPI_VER_CURRENT) {
     std::cout << "PAPI_library_init not ok" << std::endl;
     Panic();
@@ -523,7 +525,7 @@ void papi_init() {
   }
 
   if (PAPI_query_event(PAPI_L2_DCM) != PAPI_OK) { 
-    std::cout << "PAPI_L1_DCM not available" << std::endl;
+    std::cout << "PAPI_L2_DCM not available" << std::endl;
     Panic();
   }
 
@@ -532,13 +534,15 @@ void papi_init() {
     Panic();
   }
 
-  if (PAPI_add_event(EventSet, PAPI_L1_DCM) != PAPI_OK) {
+  if ((retval = PAPI_add_event(EventSet, PAPI_L1_DCM)) != PAPI_OK) {
     std::cout << "PAPI_add_eventset not ok" << std::endl;
+    fprintf(stderr, "PAPI error %d: %s\n",retval,PAPI_strerror(retval));
     Panic();
   }
 
-  if (PAPI_add_event(EventSet, PAPI_L2_DCM) != PAPI_OK) {
+  if ((retval = PAPI_add_event(EventSet, PAPI_L2_DCM)) != PAPI_OK) {
     std::cout << "PAPI_add_eventset not ok" << std::endl;
+    fprintf(stderr, "PAPI error %d: %s\n",retval,PAPI_strerror(retval));
     Panic();
   }
   
