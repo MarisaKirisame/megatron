@@ -64,10 +64,10 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
   include EI
 
   let bracket_call_bb_timed (node : meta node sd) (n : string) (f : unit -> unit sd) (m : metric sd) : unit sd =
-    metric_record_overhead m (zro (timed (fun _ -> bracket_call_bb node n f)))
+    record_overhead m (fun _ -> bracket_call_bb node n f)
 
   let bracket_call_proc_timed (node : meta node sd) (n : string) (f : unit -> unit sd) (m : metric sd) : unit sd =
-    metric_record_overhead m (zro (timed (fun _ -> bracket_call_proc node n f)))
+    record_overhead m (fun _ -> bracket_call_proc node n f)
 
   let make_node ~(name : string sd) ~(attr : (string, value) Hashtbl.t sd) ~(prop : (string, value) Hashtbl.t sd)
       ~(extern_id : int sd) (children : EI.meta node list sd) : EI.meta node sd =
@@ -103,30 +103,28 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
 
   let var_modified_aux (p : prog) (var_name : string) m : (meta node -> unit) sd =
     lam (fun n ->
-        metric_record_overhead m
-          (zro
-             (timed (fun _ ->
-                  seqs
-                    (List.map (Hashtbl.to_alist p.procs) ~f:(fun (proc_name, _) _ ->
-                         let down, up = get_bb_from_proc p proc_name in
-                         let work bb_name : unit sd =
-                           let (BasicBlock (_, stmts)) = Hashtbl.find_exn p.bbs bb_name in
-                           let reads = reads_of_stmts stmts in
-                           let dirty read : path Option.t =
-                             match read with
-                             | ReadVar (path, read_var_name) ->
-                                 if String.equal var_name read_var_name then Some path else None
-                             | ReadHasPath _ -> None (*property being changed cannot change haspath status*)
-                             | ReadProp _ | ReadAttr _ -> None
-                           in
-                           seqs
-                             (List.map
-                                (List.dedup_and_sort (List.filter_map reads ~f:dirty) ~compare:compare_path)
-                                ~f:(fun path _ ->
-                                  list_iter (reversed_path path n) (fun dirtied_node ->
-                                      bb_dirtied_internal p dirtied_node ~proc_name ~bb_name m)))
-                         in
-                         seqs (List.map [ down; up ] ~f:(fun n () -> work n))))))))
+        record_overhead m (fun _ ->
+            seqs
+              (List.map (Hashtbl.to_alist p.procs) ~f:(fun (proc_name, _) _ ->
+                   let down, up = get_bb_from_proc p proc_name in
+                   let work bb_name : unit sd =
+                     let (BasicBlock (_, stmts)) = Hashtbl.find_exn p.bbs bb_name in
+                     let reads = reads_of_stmts stmts in
+                     let dirty read : path Option.t =
+                       match read with
+                       | ReadVar (path, read_var_name) ->
+                           if String.equal var_name read_var_name then Some path else None
+                       | ReadHasPath _ -> None (*property being changed cannot change haspath status*)
+                       | ReadProp _ | ReadAttr _ -> None
+                     in
+                     seqs
+                       (List.map
+                          (List.dedup_and_sort (List.filter_map reads ~f:dirty) ~compare:compare_path)
+                          ~f:(fun path _ ->
+                            list_iter (reversed_path path n) (fun dirtied_node ->
+                                bb_dirtied_internal p dirtied_node ~proc_name ~bb_name m)))
+                   in
+                   seqs (List.map [ down; up ] ~f:(fun n () -> work n))))))
 
   let var_modified (p : prog) (var_name : string) (n : meta node sd) (m : metric sd) : unit sd =
     if Option.is_none (Hashtbl.find var_modified_hash var_name) then
@@ -365,8 +363,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                              let down, up = get_bb_from_proc p proc_name in
                              seqs
                                [
-                                 (fun _ ->
-                                   metric_record_overhead m (zro (timed (fun _ -> register_todo_proc p y proc_name m))));
+                                 (fun _ -> record_overhead m (fun _ -> register_todo_proc p y proc_name m));
                                  (fun _ -> work down);
                                  (fun _ -> work up);
                                ])));
@@ -464,8 +461,18 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
                  seqs [ (fun _ -> work down); (fun _ -> work up) ])));
       ]
 
+  let recalculate_aux p (m : metric sd) : (meta node -> unit) sd =
+    lam (fun n -> record_overhead m (fun _ -> recalculate_internal p n m (fun n stmts -> eval_stmts p n stmts m)))
+
+  let recalculate_aux_code : (meta node -> unit) sd option ref = ref None
+
   let recalculate (p : prog) (n : meta node sd) (m : metric sd) : unit sd =
-    metric_record_overhead m (zro (timed (fun _ -> recalculate_internal p n m (fun n stmts -> eval_stmts p n stmts m))))
+    match !recalculate_aux_code with
+    | Some f -> app f n
+    | None ->
+        let f = lift "Unit" "recalculate" (lazy (recalculate_aux p m)) in
+        recalculate_aux_code := Some f;
+        app f n
 
   let rec assert_node_value_equal (l : _ node sd) (r : _ node sd) : unit sd =
     if is_static then (

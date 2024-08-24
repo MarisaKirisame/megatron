@@ -159,8 +159,10 @@ module type SDIN = sig
   val metric_output_change_count : metric sd -> int sd
   val queue_size_metric : metric sd -> int sd -> unit sd
   val metric_queue_size_acc : metric sd -> int sd
-  val metric_record_overhead : metric sd -> int sd -> unit sd
-  val metric_overhead_count : metric sd -> int sd
+  val metric_record_overhead_time : metric sd -> int sd -> unit sd
+  val metric_overhead_time : metric sd -> int sd
+  val metric_record_overhead_l2m : metric sd -> int sd -> unit sd
+  val metric_overhead_l2m : metric sd -> int sd
   val metric_record_eval : metric sd -> int sd -> unit sd
   val metric_eval_count : metric sd -> int sd
   val vbool : bool sd -> value sd
@@ -198,6 +200,7 @@ module type SDIN = sig
   val or_ : bool sd -> (unit -> bool sd) -> bool sd
   val not_ : bool sd -> bool sd
   val timed : (unit -> 'a sd) -> (int * 'a) sd
+  val l2m_raw : (unit -> 'a sd) -> (int * 'a) sd
   val current_time : TotalOrder.t ref sd
   val to_equal : TotalOrder.t sd -> TotalOrder.t sd -> bool sd
   val to_compare : TotalOrder.t sd -> TotalOrder.t sd -> int sd
@@ -206,6 +209,7 @@ end
 module type SD = sig
   include SDIN
 
+  val record_overhead : metric sd -> (unit -> unit sd) -> unit sd
   val seqs : (unit -> unit sd) list -> unit sd
   val list : 'a sd list -> 'a list sd
   val option_to_list : 'a option sd -> 'a list sd
@@ -215,6 +219,9 @@ end
 
 module MakeSD (SDIN : SDIN) : SD with type 'a sd = 'a SDIN.sd = struct
   include SDIN
+
+  let record_overhead m (f : unit -> unit sd) : unit sd =
+    metric_record_overhead_l2m m (zro (l2m_raw (fun _ -> metric_record_overhead_time m (zro (timed f)))))
 
   let rec seqs x = match x with [] -> tt | hd :: tl -> seq (hd ()) (fun _ -> seqs tl)
   let rec list x = match x with [] -> nil () | hd :: tl -> cons hd (list tl)
@@ -295,6 +302,7 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
       input_change_count = 0;
       output_change_count = 0;
       overhead_time = 0;
+      overhead_l2m = 0;
       eval_time = 0;
     }
 
@@ -413,7 +421,8 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
     m.input_change_count <- 0;
     m.output_change_count <- 0;
     m.eval_time <- 0;
-    m.overhead_time <- 0
+    m.overhead_time <- 0;
+    m.overhead_l2m <- 0
 
   let read_metric (m : metric) : unit = m.read_count <- m.read_count + 1
   let meta_read_metric (m : metric) : unit = m.meta_read_count <- m.meta_read_count + 1
@@ -431,9 +440,12 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
   let metric_queue_size_acc m = m.queue_size_acc
   let metric_eval_count m = m.eval_time
   let metric_record_eval m i = m.eval_time <- m.eval_time + i
-  let metric_overhead_count m = m.overhead_time
-  let metric_record_overhead m i = m.overhead_time <- m.overhead_time + i
+  let metric_overhead_time m = m.overhead_time
+  let metric_record_overhead_time m i = m.overhead_time <- m.overhead_time + i
+  let metric_overhead_l2m m = m.overhead_l2m
+  let metric_record_overhead_l2m m i = m.overhead_l2m <- m.overhead_l2m + i
   let timed f = (0, f ())
+  let l2m_raw f = (0, f ())
   let vbool b = VBool b
   let vint i = VInt i
   let vstring x = VString x
@@ -718,8 +730,10 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let metric_queue_size_acc m = CApp (CPF "MetricQueueSizeAcc", [ m ])
   let metric_eval_count m = CApp (CPF "MetricEvalCount", [ m ])
   let metric_record_eval m i = CApp (CPF "MetricRecordEval", [ m; i ])
-  let metric_overhead_count m = CApp (CPF "MetricOverheadCount", [ m ])
-  let metric_record_overhead m i = CApp (CPF "MetricRecordOverhead", [ m; i ])
+  let metric_overhead_time m = CApp (CPF "MetricOverheadTime", [ m ])
+  let metric_record_overhead_time m i = CApp (CPF "MetricRecordOverheadTime", [ m; i ])
+  let metric_overhead_l2m m = CApp (CPF "MetricOverheadL2m", [ m ])
+  let metric_record_overhead_l2m m i = CApp (CPF "MetricRecordOverheadL2m", [ m; i ])
   let vbool b = CApp (CPF "VBool", [ b ])
   let vint i = CApp (CPF "VInt", [ i ])
   let vstring s = CApp (CPF "VString", [ s ])
@@ -742,8 +756,9 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let list_is_singleton l = CApp (CPF "ListIsSingleton", [ l ])
   let and_ l r = CAnd (l, r ())
   let or_ l r = COr (l, r ())
-  let timed f = CApp (CPF "Timed", [ lam (fun _ -> f ()) ])
   let not_ x = CNot x
+  let timed f = CApp (CPF "Timed", [ lam (fun _ -> f ()) ])
+  let l2m_raw f = CApp (CPF "L2mRaw", [ lam (fun _ -> f ()) ])
   let current_time = CVar "current_time"
   let to_equal l r = CApp (CPF "TotalOrderEqual", [ l; r ])
   let to_compare l r = CApp (CPF "TotalOrderCompare", [ l; r ])

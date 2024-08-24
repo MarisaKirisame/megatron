@@ -24,6 +24,7 @@ struct Metric {
   int64_t meta_write_count = 0;
   int64_t eval_time = 0;
   int64_t overhead_time = 0;
+  int64_t overhead_l2m = 0;
 } m;
 Unit ResetMetric() {
   m = Metric{};
@@ -62,16 +63,21 @@ int64_t MetricMetaReadCount() { return m.meta_read_count; }
 int64_t MetricOutputChangeCount() { return m.output_change_count; }
 int64_t MetricInputChangeCount() { return m.input_change_count; }
 int64_t MetricEvalCount() { return m.eval_time; }
-int64_t MetricOverheadCount() { return m.overhead_time; }
+int64_t MetricOverheadTime() { return m.overhead_time; }
+int64_t MetricOverheadL2m() { return m.overhead_l2m; }
 Unit MetricRecordEval(int64_t i) {
   m.eval_time += i;
   return Unit{};
 }
-Unit MetricRecordOverhead(int64_t i) {
+Unit MetricRecordOverheadTime(int64_t i) {
   m.overhead_time += i;
   return Unit{};
 }
-[[noreturn]] void Panic() { assert(false); }
+Unit MetricRecordOverheadL2m(int64_t i) {
+  m.overhead_l2m += i;
+  return Unit{};
+}
+[[noreturn]] void Panic() { assert(false); throw; }
 void PrintEndline(const std::string &str) { std::cout << str << std::endl; }
 Unit MakeUnit() { return Unit{}; }
 template <typename T> struct RefNode {
@@ -494,4 +500,80 @@ auto TimedOnly(const auto &f) {
     t.v.back().skipped += time_taken;
   }
   return static_cast<int64_t>(time_taken - frame.skipped);
+}
+
+#include <papiStdEventDefs.h>
+#include <papi.h>
+
+static int EventSet = PAPI_NULL;
+static bool papi_initialized = false;
+static bool papi_counting = false;
+
+void papi_init() {
+  assert(!papi_initialized);
+
+  if (PAPI_library_init(PAPI_VER_CURRENT) != PAPI_VER_CURRENT) {
+    std::cout << "PAPI_library_init not ok" << std::endl;
+    Panic();
+  }
+
+  if (PAPI_query_event(PAPI_L1_DCM) != PAPI_OK) { 
+    std::cout << "PAPI_L1_DCM not available" << std::endl;
+    Panic();
+  }
+
+  if (PAPI_query_event(PAPI_L2_DCM) != PAPI_OK) { 
+    std::cout << "PAPI_L1_DCM not available" << std::endl;
+    Panic();
+  }
+
+  if (PAPI_create_eventset(&EventSet) != PAPI_OK) {
+    std::cout << "PAPI_create_eventset not ok" << std::endl;
+    Panic();
+  }
+
+  if (PAPI_add_event(EventSet, PAPI_L1_DCM) != PAPI_OK) {
+    std::cout << "PAPI_add_eventset not ok" << std::endl;
+    Panic();
+  }
+
+  if (PAPI_add_event(EventSet, PAPI_L2_DCM) != PAPI_OK) {
+    std::cout << "PAPI_add_eventset not ok" << std::endl;
+    Panic();
+  }
+  
+  std::cout << "papi initialization ok" << std::endl;
+  papi_initialized = true;
+}
+
+auto L2mRaw(const auto& f) {
+  if (papi_counting) {
+    return std::make_pair(static_cast<int64_t>(0), f(Unit{}));
+  }
+
+  papi_counting = true;
+
+  if (!papi_initialized) {
+    papi_init();
+  }
+
+  long long counts[2];
+
+  int retval;
+  if ((retval = PAPI_start(EventSet)) != PAPI_OK) {
+    std::cout << "PAPI_start not ok" << std::endl;
+    fprintf(stderr, "PAPI error %d: %s\n",retval,PAPI_strerror(retval));
+    Panic();
+  }
+
+  auto val = f(Unit{});
+
+  if (PAPI_stop(EventSet, counts) != PAPI_OK) {
+    std::cout << "PAPI_stop not ok" << std::endl;
+    Panic();
+  }
+  
+  papi_counting = false;
+
+  return std::make_pair(static_cast<int64_t>(counts[1]), std::move(val));
 }

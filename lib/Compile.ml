@@ -19,7 +19,8 @@ let is_pure_function f =
   | "InputChangeMetric" | "OutputChangeMetric" | "PrintEndline" | "WriteMetric" | "HashtblAddExn" | "HashtblForceRemove"
   | "PushStack" | "Assert" | "IterLines" | "JsonToChannel" | "OutputString" | "ResetMetric" | "ClearStack" | "WriteRef"
   | "ReadMetric" | "HashtblSet" | "WriteJson" | "MetaReadMetric" | "MetaWriteMetric" | "RemoveMeta" | "NextTotalOrder"
-  | "QueuePop" | "QueuePush" | "QueueForcePush" | "MetricQueueSize" | "MetricRecordOverhead" ->
+  | "QueuePop" | "QueuePush" | "QueueForcePush" | "MetricQueueSize" | "MetricRecordOverheadL2m"
+  | "MetricRecordOverheadTime" ->
       false
   | "MakeUnit" | "ListIsEmpty" | "IntEqual" | "ListLength" | "ListSplitN" | "Zro" | "Fst" | "FreshMetric" | "Cons"
   | "Nil" | "IsNone" | "HashtblFind" | "UnSome" | "ListLast" | "JsonMember" | "ListMatch" | "OptionIter" | "OptionMatch"
@@ -132,13 +133,13 @@ let rec simplify (p : prog) x =
       ( CPF
           (( "WriteMetric" | "MetricWriteCount" | "MetaWriteMetric" | "MetricQueueSizeAcc" | "MetricMetaReadCount"
            | "MetricMetaWriteCount" | "MetricOutputChangeCount" | "MetricInputChangeCount" | "MetricReadCount"
-           | "ResetMetric" | "MetaReadMetric" | "MetricOverheadCount" | "MetricEvalCount" ) as f),
+           | "ResetMetric" | "MetaReadMetric" | "MetricOverheadTime" | "MetricOverheadL2m" | "MetricEvalCount" ) as f),
         [ _ ] ) ->
       CApp (CPF f, [])
   | CApp
       ( CPF
-          (("OutputChangeMetric" | "InputChangeMetric" | "MetricQueueSize" | "MetricRecordOverhead" | "MetricRecordEval")
-          as f),
+          (( "OutputChangeMetric" | "InputChangeMetric" | "MetricQueueSize" | "MetricRecordOverheadTime"
+           | "MetricRecordOverheadL2m" | "MetricRecordEval" ) as f),
         [ _; i ] ) ->
       CApp (CPF f, [ i ])
   | CApp (CPF (("QueuePush" | "QueueForcePush") as f), [ a; b; c; _ ]) -> CApp (CPF f, [ a; b; c ])
@@ -160,6 +161,7 @@ let rec simplify (p : prog) x =
                         | CApp (CPF f, xs) -> if is_absolutely_pure_function f then xs else [ x ]
                         | CIf _ | CLet _ | CSetMember _
                         | CApp (CVar _, _)
+                        | CApp (CFun _, _)
                         | CStringMatch (_, _, _)
                         | CIntMatch (_, _, _)
                         | CAssert _

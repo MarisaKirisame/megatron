@@ -197,50 +197,44 @@ module EVAL (SD : SD) = MakeEval (struct
     app (Hashtbl.find_exn set_recursive_proc_dirtied_hash proc_name) n
 
   let bb_dirtied_internal prog (n : meta node sd) ~(proc_name : string) ~(bb_name : string) (m : metric sd) : unit sd =
-    metric_record_overhead m
-      (zro
-         (timed (fun _ ->
-              ite
-                (is_some (hashtbl_find (meta_get_proc_inited (node_get_meta n)) (string proc_name)))
-                (fun _ ->
-                  seq
-                    (hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool true))
-                    (fun _ -> set_recursive_proc_dirtied n proc_name m))
-                (fun _ -> meta_write_metric m))))
+    record_overhead m (fun _ ->
+        ite
+          (is_some (hashtbl_find (meta_get_proc_inited (node_get_meta n)) (string proc_name)))
+          (fun _ ->
+            seq
+              (hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool true))
+              (fun _ -> set_recursive_proc_dirtied n proc_name m))
+          (fun _ -> meta_write_metric m))
 
   (*todo: it use two different method of determining initness. unify them both.*)
   let bb_dirtied_external (p : prog) (n : meta node sd) ~(proc_name : string) ~(bb_name : string) (m : metric sd) :
       unit sd =
     let down, up = get_bb_from_proc p proc_name in
-    metric_record_overhead m
-      (zro
-         (timed (fun _ ->
-              seqs
-                [
-                  (fun _ ->
-                    ite
-                      (is_some (hashtbl_find (meta_get_proc_inited (node_get_meta n)) (string proc_name)))
+    record_overhead m (fun _ ->
+        seqs
+          [
+            (fun _ ->
+              ite
+                (is_some (hashtbl_find (meta_get_proc_inited (node_get_meta n)) (string proc_name)))
+                (fun _ ->
+                  seqs
+                    [
                       (fun _ ->
-                        seqs
-                          [
-                            (fun _ ->
-                              hashtbl_set
-                                (meta_get_recursive_proc_dirtied (node_get_meta n))
-                                (string proc_name) (bool true));
-                            (fun _ -> hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool true));
-                          ])
-                      (fun _ -> meta_write_metric m));
-                  (fun _ ->
-                    option_match
-                      (hashtbl_find (meta_get_bb_time_table (node_get_meta n)) (string down))
-                      (fun _ -> tt)
-                      (fun order ->
-                        seqs
-                          [
-                            (fun _ -> print_endline (string ("queue_push: " ^ bb_name)));
-                            (fun _ -> queue_push order n (int (proc_intern proc_name)) m);
-                          ]));
-                ])))
+                        hashtbl_set (meta_get_recursive_proc_dirtied (node_get_meta n)) (string proc_name) (bool true));
+                      (fun _ -> hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool true));
+                    ])
+                (fun _ -> meta_write_metric m));
+            (fun _ ->
+              option_match
+                (hashtbl_find (meta_get_bb_time_table (node_get_meta n)) (string down))
+                (fun _ -> tt)
+                (fun order ->
+                  seqs
+                    [
+                      (fun _ -> print_endline (string ("queue_push: " ^ bb_name)));
+                      (fun _ -> queue_push order n (int (proc_intern proc_name)) m);
+                    ]));
+          ])
 
   let bracket_call_bb (n : meta node sd) bb_name f =
     seqs

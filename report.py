@@ -113,7 +113,7 @@ def per_trace(trace_out_path):
     for l in readlines_file(trace_out_path):
         j = json.loads(l)
         anal(j, default_count)
-        header = ["name", "diff_num", "read_count", "write_count", "meta_read_count", "meta_write_count", "queue_size_acc", "input_change_count", "output_change_count", "overhead_time", "eval_time", "command", "full_command", "html", "time"]
+        header = ["name", "diff_num", "read_count", "write_count", "meta_read_count", "meta_write_count", "queue_size_acc", "input_change_count", "output_change_count", "overhead_time", "overhead_l2m", "eval_time", "command", "full_command", "html", "time"]
         diff_num = j["diff_num"]
         if diff_num not in j_by_diff:
             j_by_diff[diff_num] = []
@@ -196,7 +196,8 @@ def per_trace(trace_out_path):
 
     return page_path
 
-outs = ["google_hover.out", "google_searchbar.out", "google_searchpage.out", "github_nologin.out", "wikipedia_idle.out", "wikipedia_hover.out", "hn_type.out", "espn.out", "discord_nologin.out", "speedometer2.out"]
+outs = ["google_hover.out", "google_searchbar.out", "google_searchpage.out", "github_nologin.out", "wikipedia_idle.out", "wikipedia_hover.out", "hn_type.out", "espn.out", "discord_nologin.out"]
+#outs.append("speedometer2.out")
 #outs = ["discord_nologin.out"]
     
 def plot(xs, ys, name):

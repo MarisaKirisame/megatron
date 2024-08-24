@@ -132,25 +132,23 @@ module EVAL (SD : SD) = MakeEval (struct
 
   let bb_dirtied_internal p (n : meta node sd) ~(proc_name : string) ~(bb_name : string) (m : metric sd) : unit sd =
     Core.ignore proc_name;
-    metric_record_overhead m
-      (zro
-         (timed (fun _ ->
-              option_match
-                (hashtbl_find (meta_get_bb_time_table (node_get_meta n)) (string bb_name))
-                (fun _ -> tt)
-                (fun order ->
-                  ite
-                    (not_
-                       (and_
-                          (is_some (hashtbl_find (meta_get_bb_dirtied (node_get_meta n)) (string bb_name)))
-                          (fun _ -> hashtbl_find_exn (meta_get_bb_dirtied (node_get_meta n)) (string bb_name))))
-                    (fun _ ->
-                      seqs
-                        [
-                          (fun _ -> hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool true));
-                          (fun _ -> queue_force_push order n (int (bb_intern bb_name)) m);
-                        ])
-                    (fun _ -> tt)))))
+    record_overhead m (fun _ ->
+        option_match
+          (hashtbl_find (meta_get_bb_time_table (node_get_meta n)) (string bb_name))
+          (fun _ -> tt)
+          (fun order ->
+            ite
+              (not_
+                 (and_
+                    (is_some (hashtbl_find (meta_get_bb_dirtied (node_get_meta n)) (string bb_name)))
+                    (fun _ -> hashtbl_find_exn (meta_get_bb_dirtied (node_get_meta n)) (string bb_name))))
+              (fun _ ->
+                seqs
+                  [
+                    (fun _ -> hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool true));
+                    (fun _ -> queue_force_push order n (int (bb_intern bb_name)) m);
+                  ])
+              (fun _ -> tt)))
 
   let bb_dirtied_external = bb_dirtied_internal
 

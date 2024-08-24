@@ -9,6 +9,7 @@ type metric = {
   mutable input_change_count : int;
   mutable output_change_count : int;
   mutable overhead_time : int;
+  mutable overhead_l2m : int;
   mutable eval_time : int;
 }
 [@@deriving show]

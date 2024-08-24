@@ -68,16 +68,14 @@ module EVAL (SD : SD) = MakeEval (struct
     app (Hashtbl.find_exn set_recursive_proc_dirtied_hash proc_name) n
 
   let bb_dirtied_internal p (n : meta node sd) ~(proc_name : string) ~(bb_name : string) (m : metric sd) : unit sd =
-    metric_record_overhead m
-      (zro
-         (timed (fun _ ->
-              ite
-                (is_some (hashtbl_find (meta_get_proc_inited (node_get_meta n)) (string proc_name)))
-                (fun _ ->
-                  seq
-                    (hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool true))
-                    (fun _ -> set_recursive_proc_dirtied n proc_name m))
-                (fun _ -> meta_write_metric m))))
+    record_overhead m (fun _ ->
+        ite
+          (is_some (hashtbl_find (meta_get_proc_inited (node_get_meta n)) (string proc_name)))
+          (fun _ ->
+            seq
+              (hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool true))
+              (fun _ -> set_recursive_proc_dirtied n proc_name m))
+          (fun _ -> meta_write_metric m))
 
   let bb_dirtied_external = bb_dirtied_internal
 
