@@ -45,33 +45,41 @@ struct MinHeap {
     return val;
   }
 
-  void flow(const size_t& idx) {
+  void flow(size_t idx) {
     assert(has_value(idx));
-    if (!heap_is_root(idx)) {
+    while (!heap_is_root(idx)) {
       size_t pidx = heap_parent(idx);
       if ((*this)[idx].first < (*this)[pidx].first) {
         swap(idx, pidx);
+        idx = pidx;
+      } else {
+        return;
       }
-      flow(pidx);
     }
   }
 
-  void sink(const size_t& idx) {
-    size_t a_child_idx = heap_left_child(idx);
-    size_t b_child_idx = heap_right_child(idx);
-    if (has_value(a_child_idx) || has_value(b_child_idx)) {
-      size_t smaller_idx = [&](){
-        if (!has_value(a_child_idx)) {
-          return b_child_idx;
-        } else if (!has_value(b_child_idx)) {
-          return a_child_idx;
+  void sink(size_t idx) {
+    while (true) {
+      size_t a_child_idx = heap_left_child(idx);
+      size_t b_child_idx = heap_right_child(idx);
+      if (has_value(a_child_idx) || has_value(b_child_idx)) {
+        size_t smaller_idx = [&](){
+          if (!has_value(a_child_idx)) {
+            return b_child_idx;
+          } else if (!has_value(b_child_idx)) {
+            return a_child_idx;
+          } else {
+            return ((*this)[a_child_idx].first < (*this)[b_child_idx].first) ? a_child_idx : b_child_idx;
+          }
+        }();
+        if ((*this)[smaller_idx].first < (*this)[idx].first) {
+          swap(idx, smaller_idx);
+          idx = smaller_idx;
         } else {
-          return ((*this)[a_child_idx].first < (*this)[b_child_idx].first) ? a_child_idx : b_child_idx;
+          return;
         }
-      }();
-      if ((*this)[smaller_idx].first < (*this)[idx].first) {
-        swap(idx, smaller_idx);
-        sink(smaller_idx);
+      } else {
+        return;
       }
     }
   }
