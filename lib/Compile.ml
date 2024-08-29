@@ -20,7 +20,7 @@ let is_pure_function f =
   | "PushStack" | "Assert" | "IterLines" | "JsonToChannel" | "OutputString" | "ResetMetric" | "ClearStack" | "WriteRef"
   | "ReadMetric" | "HashtblSet" | "WriteJson" | "MetaReadMetric" | "MetaWriteMetric" | "RemoveMeta" | "NextTotalOrder"
   | "QueuePop" | "QueuePush" | "QueueForcePush" | "MetricQueueSize" | "MetricRecordOverheadL2m"
-  | "MetricRecordOverheadTime" ->
+  | "MetricRecordOverheadTime" | "RecordOverhead" | "RecordEval" ->
       false
   | "MakeUnit" | "ListIsEmpty" | "IntEqual" | "ListLength" | "ListSplitN" | "Zro" | "Fst" | "FreshMetric" | "Cons"
   | "Nil" | "IsNone" | "HashtblFind" | "UnSome" | "ListLast" | "JsonMember" | "ListMatch" | "OptionIter" | "OptionMatch"
@@ -129,6 +129,7 @@ let rec simplify (p : prog) x =
       CSeq [ CSetMember (x, f ^ "_has_bb_dirtied", CBool true); CSetMember (x, f ^ "_bb_dirtied", v) ]
   | CApp (CPF "IsSome", [ CApp (CPF "HashtblFind", [ x; y ]) ]) -> CApp (CPF "HashtblContain", [ x; y ])
   | CApp (CPF ("BoolOfValue" | "VBool" | "VString" | "VFloat" | "VInt"), [ x ]) -> x
+  | CApp (CPF "RecordOverhead", [CFun (_, CApp (CPF "MakeUnit", []))]) -> CApp (CPF "MakeUnit", [])
   | CApp
       ( CPF
           (( "WriteMetric" | "MetricWriteCount" | "MetaWriteMetric" | "MetricQueueSizeAcc" | "MetricMetaReadCount"
@@ -139,7 +140,7 @@ let rec simplify (p : prog) x =
   | CApp
       ( CPF
           (( "OutputChangeMetric" | "InputChangeMetric" | "MetricQueueSize" | "MetricRecordOverheadTime"
-           | "MetricRecordOverheadL2m" | "MetricRecordEval" ) as f),
+           | "MetricRecordOverheadL2m" | "MetricRecordEval" | "MetricRecordOverhead" | "RecordOverhead" | "RecordEval" ) as f),
         [ _; i ] ) ->
       CApp (CPF f, [ i ])
   | CApp (CPF (("QueuePush" | "QueueForcePush") as f), [ a; b; c; _ ]) -> CApp (CPF f, [ a; b; c ])

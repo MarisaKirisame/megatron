@@ -7,6 +7,7 @@ set(CMAKE_CXX_FLAGS "-mtune=native -march=native -O3")
 set(CMAKE_CXX_FLAGS_PROFILE "-pg")
 
 link_libraries(papi)
+link_libraries(pfm)
 
 set(FOONATHAN_MEMORY_BUILD_EXAMPLES OFF)
 set(FOONATHAN_MEMORY_BUILD_TESTS OFF)

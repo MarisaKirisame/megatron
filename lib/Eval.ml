@@ -209,7 +209,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
               m)
 
   and eval_stmts_aux (p : prog) (n : meta node sd) (s : stmts) (m : metric sd) : unit sd =
-    metric_record_eval m (zro (timed (fun _ -> seqs (List.map s ~f:(fun stmt _ -> eval_stmt_aux p n stmt m)))))
+    record_eval m (fun _ -> seqs (List.map s ~f:(fun stmt _ -> eval_stmt_aux p n stmt m)))
 
   and eval_stmts_hash : (stmts, (meta node -> unit) sd) Hashtbl.t = Hashtbl.create (module STMTS)
 
