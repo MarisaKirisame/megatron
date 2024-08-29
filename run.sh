@@ -10,14 +10,14 @@ process(){
 rm Layout*.cpp || true
 rm *.out || true
 process github_nologin
-process discord_nologin
-process espn
-process google_hover
-process google_searchbar
-process google_searchpage
-process wikipedia_idle
-process wikipedia_hover
-process hn_type
+#process discord_nologin
+#process espn
+#process google_hover
+#process google_searchbar
+#process google_searchpage
+#process wikipedia_idle
+#process wikipedia_hover
+#process hn_type
 
 #process speedometer2
 rm *.trace

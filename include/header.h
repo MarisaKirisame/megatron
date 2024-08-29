@@ -600,6 +600,14 @@ struct PerfResult{
         count(count), enabled(enabled), running(running){}
 };
 
+#ifdef PERF_ATTR_SIZE_VER0
+#ifdef PERF_ATTR_SIZE_VER8
+#define PERF_HAVE_CONFIG3
+#endif
+#else
+#error "PERF_ATTR_SIZE_VER0"
+#endif
+
 struct PerfEvent{
     int fd;
     perf_event_mmap_page* header;
@@ -612,12 +620,14 @@ struct PerfEvent{
         memset(&attr, 0, sizeof(attr));
 
         // sad: version incompatible        
-        attr = perf_config;
-        /*attr.type = perf_config.type;
+        //attr = perf_config;
+        attr.type = perf_config.type;
         attr.config  = perf_config.config;
         attr.config1 = perf_config.config1;
         attr.config2 = perf_config.config2;
-        attr.config3 = perf_config.config3;*/
+        #ifdef PERF_HAVE_CONFIG3
+          attr.config3 = perf_config.config3;
+        #endif
 
         attr.size = sizeof(perf_event_attr);
         /*
@@ -728,48 +738,6 @@ struct PerfEvent{
     }
 };
 
-/*
-int main(){
-    printf("Hello, world!\n");
-
-
-    PerfEvent l2_request_references(pfm.get_perf_arg(pfm_branch_misprediction));
-    if(l2_request_references.cap_user_rdpmc()){
-        printf("cap_user_rdpmc is OK!\n");
-    }else{
-        printf("cap_user_rdpmc is BROKEN!\n");
-    }
-    long long tot = 0;
-    for(int i=0; i<10; i++){
-        l2_request_references.reset();
-        l2_request_references.enable();
-        auto cntr_start_val = l2_request_references.read_count_rdpmc();
-        workload_matmul();
-        auto cntr_end_val = l2_request_references.read_count_rdpmc();
-        l2_request_references.disable();
-
-
-        auto result = l2_request_references.read_count();
-        printf("Count from read(): %ld, running=%ld, enabled=%ld\n", result.count, result.running, result.enabled);
-        if(cntr_start_val.has_value() && cntr_end_val.has_value()){
-            auto& cntr_start = *cntr_start_val;
-            auto& cntr_end = *cntr_end_val;
-            printf("Count cntr_start: %ld, running=%ld, enabled=%ld\n", cntr_start.count, cntr_start.running, cntr_start.enabled);
-            printf("Count cntr_end: %ld, running=%ld, enabled=%ld\n", cntr_end.count, cntr_end.running, cntr_end.enabled);
-            printf("Count rdpmc: %ld\n", cntr_end.count-cntr_start.count);
-        }else{
-            printf("rdpmc() failed. This may happen on first access.\n");
-        }
-        tot += result.count;
-    }
-    printf("Total = %lld\n", tot);
-
-
-    //attr[0].config 
-    
-}
-*/
-
 static bool pfm_initialized = false;
 static PerfEvent* pfm_event = nullptr;
 
@@ -781,7 +749,7 @@ void pfm_init() {
   const char* pfm_cycle = "CYCLES";
   const char* pfm_branch_miss = "BR_MISP_EXEC";
 
-  static PerfEvent event(pfm.get_perf_arg(pfm_l2_miss));
+  static PerfEvent event(pfm.get_perf_arg(pfm_cycle));
   pfm_event = &event;
 
   pfm_event->reset();
