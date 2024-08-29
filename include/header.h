@@ -581,9 +581,9 @@ struct LibPFM{
         arg.size = sizeof(arg);
         arg.attr = &attr;
         int ret = pfm_get_os_event_encoding(name, PFM_PLM3, PFM_OS_PERF_EVENT, &arg);
-	if (ret != PFM_SUCCESS) {
-	  fprintf(stderr, "PFM error %d: %s\n",ret,pfm_strerror(ret));
-	}
+      	if (ret != PFM_SUCCESS) {
+	        fprintf(stderr, "PFM error %d: %s\n",ret,pfm_strerror(ret));
+	      }
         assert(ret == PFM_SUCCESS);
         return attr;
     }
@@ -610,13 +610,16 @@ struct PerfEvent{
         // https://gist.github.com/teqdruid/2473071
         struct perf_event_attr attr;
         memset(&attr, 0, sizeof(attr));
-        attr.size = sizeof(perf_event_attr);
-        
-        attr.type = perf_config.type;
+
+        // sad: version incompatible        
+        attr = perf_config;
+        /*attr.type = perf_config.type;
         attr.config  = perf_config.config;
         attr.config1 = perf_config.config1;
         attr.config2 = perf_config.config2;
-        attr.config3 = perf_config.config3;
+        attr.config3 = perf_config.config3;*/
+
+        attr.size = sizeof(perf_event_attr);
         /*
         attr.type = PERF_TYPE_HARDWARE;
         attr.config = PERF_COUNT_HW_INSTRUCTIONS;
