@@ -48,6 +48,33 @@ let rec is_pure x =
   | CIntMatch (x, cases, default) -> is_pure x && List.for_all cases ~f:(fun (_, c) -> is_pure c) && is_pure default
   | _ -> Common.panic ("is_pure:" ^ truncate (show_code x))
 
+let rec occur_count name x : int =
+  let on_var (x : string) = if name == x then 1 else 0 in
+  let recurse x = occur_count name x in
+  let recurses xs = List.sum (module Int) xs ~f:recurse in
+  match x with
+  | CString _ | CPF _ | CBool _ | CInt _ -> 0
+  | CStringMatch (str, cases, default) -> recurse str + List.sum (module Int) cases ~f:(fun (_, x) -> recurse x) + recurse default
+  | CFun (args, body) -> if List.for_all args ~f:(fun arg -> name != arg) then recurse body else 0
+  | CLet (lhs, rhs, body) -> recurse rhs + if name == lhs then 0 else recurse body
+  | CIf (i, t, e) -> recurse i + recurse t + recurse e
+  | CSetMember (x, _, y) -> recurse x + recurse y
+  | CVar x -> on_var x
+  | CGetMember (x, _) | CNot x | CPanic x -> recurse x
+  | CApp (f, xs) -> recurse f + recurses xs
+  | CSeq seqs -> List.sum (module Int) seqs ~f:recurse
+  | _ -> Common.panic ("occur_count:" ^ truncate (show_code x))
+
+let rec inline lhs rhs body =
+  let recurse x = inline lhs rhs x in
+  let recurses xs = List.map xs ~f:recurse in
+  match body with
+  | CPF _ | CString _ -> body
+  | CVar name -> if name == lhs then rhs else CVar name
+  | CApp (f, xs) -> CApp(recurse f, recurses xs)
+  | CIf (i, t, e) -> CIf (recurse i, recurse t, recurse e)
+  | _ -> Common.panic ("inline:" ^ truncate (show_code body))
+
 let rec simplify (p : prog) x =
   let recurse x = simplify p x in
   match x with
@@ -129,7 +156,7 @@ let rec simplify (p : prog) x =
       CSeq [ CSetMember (x, f ^ "_has_bb_dirtied", CBool true); CSetMember (x, f ^ "_bb_dirtied", v) ]
   | CApp (CPF "IsSome", [ CApp (CPF "HashtblFind", [ x; y ]) ]) -> CApp (CPF "HashtblContain", [ x; y ])
   | CApp (CPF ("BoolOfValue" | "VBool" | "VString" | "VFloat" | "VInt"), [ x ]) -> x
-  | CApp (CPF "RecordOverhead", [CFun (_, CApp (CPF "MakeUnit", []))]) -> CApp (CPF "MakeUnit", [])
+  | CApp (CPF "RecordOverhead", [ CFun (_, CApp (CPF "MakeUnit", [])) ]) -> CApp (CPF "MakeUnit", [])
   | CApp
       ( CPF
           (( "WriteMetric" | "MetricWriteCount" | "MetaWriteMetric" | "MetricQueueSizeAcc" | "MetricMetaReadCount"
@@ -140,7 +167,8 @@ let rec simplify (p : prog) x =
   | CApp
       ( CPF
           (( "OutputChangeMetric" | "InputChangeMetric" | "MetricQueueSize" | "MetricRecordOverheadTime"
-           | "MetricRecordOverheadL2m" | "MetricRecordEval" | "MetricRecordOverhead" | "RecordOverhead" | "RecordEval" ) as f),
+           | "MetricRecordOverheadL2m" | "MetricRecordEval" | "MetricRecordOverhead" | "RecordOverhead" | "RecordEval"
+             ) as f),
         [ _; i ] ) ->
       CApp (CPF f, [ i ])
   | CApp (CPF (("QueuePush" | "QueueForcePush") as f), [ a; b; c; _ ]) -> CApp (CPF f, [ a; b; c ])
@@ -176,6 +204,11 @@ let rec simplify (p : prog) x =
   | CIf (i, CPanic t, e) -> CAssert (CNot i, t, e)
   | CIf (i, t, CPanic e) -> CAssert (i, e, t)
   | CLet (lhs, rhs, CVar body) -> if String.equal lhs body then rhs else CSeq [ rhs; CVar body ]
+  | CLet (lhs, rhs, body) ->
+      let cnt = occur_count lhs body in
+      if cnt == 0 then CSeq [ rhs; body ]
+      else if cnt == 1 then inline lhs rhs body
+      else CLet (lhs, recurse rhs, recurse body)
   | CApp (CPF "AssocToJson", [ x ]) ->
       let v = fresh () in
       recurse (CLet (v, CApp (CPF "FreshJson", []), CApp (CPF "WriteAssocToJson", [ CVar v; x ])))

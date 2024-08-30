@@ -1426,8 +1426,7 @@ Unit eval_stmts_x_208(const auto &x_232) {
     WriteMetric();
     auto x_235 = eval_expr_x_234(x_232);
     if (x_232->has_var_width_expr) {
-      auto x_236 = x_232->var_width_expr;
-      if (!EqualValue(x_236, x_235)) {
+      if (!EqualValue(x_232->var_width_expr, x_235)) {
         var_modified_x_237(x_232);
       }
     }
@@ -1436,8 +1435,7 @@ Unit eval_stmts_x_208(const auto &x_232) {
     WriteMetric();
     auto x_240 = eval_expr_x_239(x_232);
     if (x_232->has_var_is_default_case) {
-      auto x_241 = x_232->var_is_default_case;
-      if (!EqualValue(x_241, x_240)) {
+      if (!EqualValue(x_232->var_is_default_case, x_240)) {
         var_modified_x_242(x_232);
       }
     }
@@ -1446,8 +1444,7 @@ Unit eval_stmts_x_208(const auto &x_232) {
     WriteMetric();
     auto x_245 = eval_expr_x_244(x_232);
     if (x_232->has_var_intrinsic_width_is_width) {
-      auto x_246 = x_232->var_intrinsic_width_is_width;
-      if (!EqualValue(x_246, x_245)) {
+      if (!EqualValue(x_232->var_intrinsic_width_is_width, x_245)) {
         var_modified_x_247(x_232);
       }
     }
@@ -1456,8 +1453,7 @@ Unit eval_stmts_x_208(const auto &x_232) {
     WriteMetric();
     auto x_250 = eval_expr_x_249(x_232);
     if (x_232->has_var_children_intrinsic_width) {
-      auto x_251 = x_232->var_children_intrinsic_width;
-      if (!EqualValue(x_251, x_250)) {
+      if (!EqualValue(x_232->var_children_intrinsic_width, x_250)) {
         var_modified_x_252(x_232);
       }
     }
@@ -1466,8 +1462,7 @@ Unit eval_stmts_x_208(const auto &x_232) {
     WriteMetric();
     auto x_255 = eval_expr_x_254(x_232);
     if (x_232->has_var_intrinsic_width_internal) {
-      auto x_256 = x_232->var_intrinsic_width_internal;
-      if (!EqualValue(x_256, x_255)) {
+      if (!EqualValue(x_232->var_intrinsic_width_internal, x_255)) {
         var_modified_x_257(x_232);
       }
     }
@@ -1476,8 +1471,7 @@ Unit eval_stmts_x_208(const auto &x_232) {
     WriteMetric();
     auto x_260 = eval_expr_x_259(x_232);
     if (x_232->has_var_intrinsic_width_external) {
-      auto x_261 = x_232->var_intrinsic_width_external;
-      if (!EqualValue(x_261, x_260)) {
+      if (!EqualValue(x_232->var_intrinsic_width_external, x_260)) {
         var_modified_x_262(x_232);
       }
     }
@@ -1486,8 +1480,7 @@ Unit eval_stmts_x_208(const auto &x_232) {
     WriteMetric();
     auto x_265 = eval_expr_x_264(x_232);
     if (x_232->has_var_intrinsic_current_line_width) {
-      auto x_266 = x_232->var_intrinsic_current_line_width;
-      if (!EqualValue(x_266, x_265)) {
+      if (!EqualValue(x_232->var_intrinsic_current_line_width, x_265)) {
         var_modified_x_267(x_232);
       }
     }
@@ -1496,8 +1489,7 @@ Unit eval_stmts_x_208(const auto &x_232) {
     WriteMetric();
     auto x_270 = eval_expr_x_269(x_232);
     if (x_232->has_var_intrinsic_width_max) {
-      auto x_271 = x_232->var_intrinsic_width_max;
-      if (!EqualValue(x_271, x_270)) {
+      if (!EqualValue(x_232->var_intrinsic_width_max, x_270)) {
         var_modified_x_272(x_232);
       }
     }
@@ -1506,8 +1498,7 @@ Unit eval_stmts_x_208(const auto &x_232) {
     WriteMetric();
     auto x_275 = eval_expr_x_274(x_232);
     if (x_232->has_var_intrinsic_width_sum) {
-      auto x_276 = x_232->var_intrinsic_width_sum;
-      if (!EqualValue(x_276, x_275)) {
+      if (!EqualValue(x_232->var_intrinsic_width_sum, x_275)) {
         var_modified_x_277(x_232);
       }
     }
@@ -1516,8 +1507,7 @@ Unit eval_stmts_x_208(const auto &x_232) {
     WriteMetric();
     auto x_280 = eval_expr_x_279(x_232);
     if (x_232->has_var_children_intrinsic_height) {
-      auto x_281 = x_232->var_children_intrinsic_height;
-      if (!EqualValue(x_281, x_280)) {
+      if (!EqualValue(x_232->var_children_intrinsic_height, x_280)) {
         var_modified_x_282(x_232);
       }
     }
@@ -1526,8 +1516,7 @@ Unit eval_stmts_x_208(const auto &x_232) {
     WriteMetric();
     auto x_285 = eval_expr_x_284(x_232);
     if (x_232->has_var_height_expr) {
-      auto x_286 = x_232->var_height_expr;
-      if (!EqualValue(x_286, x_285)) {
+      if (!EqualValue(x_232->var_height_expr, x_285)) {
         var_modified_x_287(x_232);
       }
     }
@@ -1536,8 +1525,7 @@ Unit eval_stmts_x_208(const auto &x_232) {
     WriteMetric();
     auto x_290 = eval_expr_x_289(x_232);
     if (x_232->has_var_intrinsic_height_is_height) {
-      auto x_291 = x_232->var_intrinsic_height_is_height;
-      if (!EqualValue(x_291, x_290)) {
+      if (!EqualValue(x_232->var_intrinsic_height_is_height, x_290)) {
         var_modified_x_292(x_232);
       }
     }
@@ -1546,8 +1534,7 @@ Unit eval_stmts_x_208(const auto &x_232) {
     WriteMetric();
     auto x_295 = eval_expr_x_294(x_232);
     if (x_232->has_var_intrinsic_height_internal) {
-      auto x_296 = x_232->var_intrinsic_height_internal;
-      if (!EqualValue(x_296, x_295)) {
+      if (!EqualValue(x_232->var_intrinsic_height_internal, x_295)) {
         var_modified_x_297(x_232);
       }
     }
@@ -1556,8 +1543,7 @@ Unit eval_stmts_x_208(const auto &x_232) {
     WriteMetric();
     auto x_300 = eval_expr_x_299(x_232);
     if (x_232->has_var_intrinsic_height_external) {
-      auto x_301 = x_232->var_intrinsic_height_external;
-      if (!EqualValue(x_301, x_300)) {
+      if (!EqualValue(x_232->var_intrinsic_height_external, x_300)) {
         var_modified_x_302(x_232);
       }
     }
@@ -1566,8 +1552,7 @@ Unit eval_stmts_x_208(const auto &x_232) {
     WriteMetric();
     auto x_305 = eval_expr_x_304(x_232);
     if (x_232->has_var_intrinsic_height_sum) {
-      auto x_306 = x_232->var_intrinsic_height_sum;
-      if (!EqualValue(x_306, x_305)) {
+      if (!EqualValue(x_232->var_intrinsic_height_sum, x_305)) {
         var_modified_x_307(x_232);
       }
     }
@@ -1576,8 +1561,7 @@ Unit eval_stmts_x_208(const auto &x_232) {
     WriteMetric();
     auto x_310 = eval_expr_x_309(x_232);
     if (x_232->has_var_intrinsic_current_line_height) {
-      auto x_311 = x_232->var_intrinsic_current_line_height;
-      if (!EqualValue(x_311, x_310)) {
+      if (!EqualValue(x_232->var_intrinsic_current_line_height, x_310)) {
         var_modified_x_312(x_232);
       }
     }
@@ -1586,8 +1570,7 @@ Unit eval_stmts_x_208(const auto &x_232) {
     WriteMetric();
     auto x_315 = eval_expr_x_314(x_232);
     if (x_232->has_var_finished_intrinsic_height_sum) {
-      auto x_316 = x_232->var_finished_intrinsic_height_sum;
-      if (!EqualValue(x_316, x_315)) {
+      if (!EqualValue(x_232->var_finished_intrinsic_height_sum, x_315)) {
         var_modified_x_317(x_232);
       }
     }
@@ -1601,8 +1584,7 @@ Unit eval_stmts_x_204(const auto &x_319) {
     WriteMetric();
     auto x_322 = eval_expr_x_321(x_319);
     if (x_319->has_var_display) {
-      auto x_323 = x_319->var_display;
-      if (!EqualValue(x_323, x_322)) {
+      if (!EqualValue(x_319->var_display, x_322)) {
         var_modified_x_324(x_319);
       }
     }
@@ -1611,8 +1593,7 @@ Unit eval_stmts_x_204(const auto &x_319) {
     WriteMetric();
     auto x_327 = eval_expr_x_326(x_319);
     if (x_319->has_var_position) {
-      auto x_328 = x_319->var_position;
-      if (!EqualValue(x_328, x_327)) {
+      if (!EqualValue(x_319->var_position, x_327)) {
         var_modified_x_329(x_319);
       }
     }
@@ -1621,8 +1602,7 @@ Unit eval_stmts_x_204(const auto &x_319) {
     WriteMetric();
     auto x_332 = eval_expr_x_331(x_319);
     if (x_319->has_var_flex_grow) {
-      auto x_333 = x_319->var_flex_grow;
-      if (!EqualValue(x_333, x_332)) {
+      if (!EqualValue(x_319->var_flex_grow, x_332)) {
         var_modified_x_334(x_319);
       }
     }
@@ -1631,8 +1611,7 @@ Unit eval_stmts_x_204(const auto &x_319) {
     WriteMetric();
     auto x_337 = eval_expr_x_336(x_319);
     if (x_319->has_var_flex_shrink) {
-      auto x_338 = x_319->var_flex_shrink;
-      if (!EqualValue(x_338, x_337)) {
+      if (!EqualValue(x_319->var_flex_shrink, x_337)) {
         var_modified_x_339(x_319);
       }
     }
@@ -1641,8 +1620,7 @@ Unit eval_stmts_x_204(const auto &x_319) {
     WriteMetric();
     auto x_342 = eval_expr_x_341(x_319);
     if (x_319->has_var_flex_grow_sum) {
-      auto x_343 = x_319->var_flex_grow_sum;
-      if (!EqualValue(x_343, x_342)) {
+      if (!EqualValue(x_319->var_flex_grow_sum, x_342)) {
         var_modified_x_344(x_319);
       }
     }
@@ -1651,8 +1629,7 @@ Unit eval_stmts_x_204(const auto &x_319) {
     WriteMetric();
     auto x_347 = eval_expr_x_346(x_319);
     if (x_319->has_var_flex_shrink_sum) {
-      auto x_348 = x_319->var_flex_shrink_sum;
-      if (!EqualValue(x_348, x_347)) {
+      if (!EqualValue(x_319->var_flex_shrink_sum, x_347)) {
         var_modified_x_349(x_319);
       }
     }
@@ -1661,8 +1638,7 @@ Unit eval_stmts_x_204(const auto &x_319) {
     WriteMetric();
     auto x_352 = eval_expr_x_351(x_319);
     if (x_319->has_var_flex_direction) {
-      auto x_353 = x_319->var_flex_direction;
-      if (!EqualValue(x_353, x_352)) {
+      if (!EqualValue(x_319->var_flex_direction, x_352)) {
         var_modified_x_354(x_319);
       }
     }
@@ -1671,8 +1647,7 @@ Unit eval_stmts_x_204(const auto &x_319) {
     WriteMetric();
     auto x_357 = eval_expr_x_356(x_319);
     if (x_319->has_var_is_flex_row) {
-      auto x_358 = x_319->var_is_flex_row;
-      if (!EqualValue(x_358, x_357)) {
+      if (!EqualValue(x_319->var_is_flex_row, x_357)) {
         var_modified_x_359(x_319);
       }
     }
@@ -1681,8 +1656,7 @@ Unit eval_stmts_x_204(const auto &x_319) {
     WriteMetric();
     auto x_362 = eval_expr_x_361(x_319);
     if (x_319->has_var_is_flex_column) {
-      auto x_363 = x_319->var_is_flex_column;
-      if (!EqualValue(x_363, x_362)) {
+      if (!EqualValue(x_319->var_is_flex_column, x_362)) {
         var_modified_x_364(x_319);
       }
     }
@@ -1691,8 +1665,7 @@ Unit eval_stmts_x_204(const auto &x_319) {
     WriteMetric();
     auto x_367 = eval_expr_x_366(x_319);
     if (x_319->has_var_width_attr_expr) {
-      auto x_368 = x_319->var_width_attr_expr;
-      if (!EqualValue(x_368, x_367)) {
+      if (!EqualValue(x_319->var_width_attr_expr, x_367)) {
         var_modified_x_369(x_319);
       }
     }
@@ -1701,8 +1674,7 @@ Unit eval_stmts_x_204(const auto &x_319) {
     WriteMetric();
     auto x_372 = eval_expr_x_371(x_319);
     if (x_319->has_var_has_width_attr) {
-      auto x_373 = x_319->var_has_width_attr;
-      if (!EqualValue(x_373, x_372)) {
+      if (!EqualValue(x_319->var_has_width_attr, x_372)) {
         var_modified_x_374(x_319);
       }
     }
@@ -1711,8 +1683,7 @@ Unit eval_stmts_x_204(const auto &x_319) {
     WriteMetric();
     auto x_377 = eval_expr_x_376(x_319);
     if (x_319->has_var_height_attr_expr) {
-      auto x_378 = x_319->var_height_attr_expr;
-      if (!EqualValue(x_378, x_377)) {
+      if (!EqualValue(x_319->var_height_attr_expr, x_377)) {
         var_modified_x_379(x_319);
       }
     }
@@ -1721,8 +1692,7 @@ Unit eval_stmts_x_204(const auto &x_319) {
     WriteMetric();
     auto x_382 = eval_expr_x_381(x_319);
     if (x_319->has_var_has_height_attr) {
-      auto x_383 = x_319->var_has_height_attr;
-      if (!EqualValue(x_383, x_382)) {
+      if (!EqualValue(x_319->var_has_height_attr, x_382)) {
         var_modified_x_384(x_319);
       }
     }
@@ -1731,8 +1701,7 @@ Unit eval_stmts_x_204(const auto &x_319) {
     WriteMetric();
     auto x_387 = eval_expr_x_386(x_319);
     if (x_319->has_var_is_svg_block) {
-      auto x_388 = x_319->var_is_svg_block;
-      if (!EqualValue(x_388, x_387)) {
+      if (!EqualValue(x_319->var_is_svg_block, x_387)) {
         var_modified_x_389(x_319);
       }
     }
@@ -1741,8 +1710,7 @@ Unit eval_stmts_x_204(const auto &x_319) {
     WriteMetric();
     auto x_392 = eval_expr_x_391(x_319);
     if (x_319->has_var_inside_svg) {
-      auto x_393 = x_319->var_inside_svg;
-      if (!EqualValue(x_393, x_392)) {
+      if (!EqualValue(x_319->var_inside_svg, x_392)) {
         var_modified_x_394(x_319);
       }
     }
@@ -1751,8 +1719,7 @@ Unit eval_stmts_x_204(const auto &x_319) {
     WriteMetric();
     auto x_397 = eval_expr_x_396(x_319);
     if (x_319->has_var_disabled) {
-      auto x_398 = x_319->var_disabled;
-      if (!EqualValue(x_398, x_397)) {
+      if (!EqualValue(x_319->var_disabled, x_397)) {
         var_modified_x_399(x_319);
       }
     }
@@ -1761,8 +1728,7 @@ Unit eval_stmts_x_204(const auto &x_319) {
     WriteMetric();
     auto x_402 = eval_expr_x_401(x_319);
     if (x_319->has_var_visible) {
-      auto x_403 = x_319->var_visible;
-      if (!EqualValue(x_403, x_402)) {
+      if (!EqualValue(x_319->var_visible, x_402)) {
         var_modified_x_404(x_319);
       }
     }
@@ -1771,8 +1737,7 @@ Unit eval_stmts_x_204(const auto &x_319) {
     WriteMetric();
     auto x_407 = eval_expr_x_406(x_319);
     if (x_319->has_var_line_break) {
-      auto x_408 = x_319->var_line_break;
-      if (!EqualValue(x_408, x_407)) {
+      if (!EqualValue(x_319->var_line_break, x_407)) {
         var_modified_x_409(x_319);
       }
     }
@@ -1789,8 +1754,7 @@ Unit eval_stmts_x_196(const auto &x_413) {
     WriteMetric();
     auto x_416 = eval_expr_x_415(x_413);
     if (x_413->has_var_box_width) {
-      auto x_417 = x_413->var_box_width;
-      if (!EqualValue(x_417, x_416)) {
+      if (!EqualValue(x_413->var_box_width, x_416)) {
         var_modified_x_418(x_413);
       }
     }
@@ -1799,8 +1763,7 @@ Unit eval_stmts_x_196(const auto &x_413) {
     WriteMetric();
     auto x_421 = eval_expr_x_420(x_413);
     if (x_413->has_var_box_height) {
-      auto x_422 = x_413->var_box_height;
-      if (!EqualValue(x_422, x_421)) {
+      if (!EqualValue(x_413->var_box_height, x_421)) {
         var_modified_x_423(x_413);
       }
     }
@@ -1809,8 +1772,7 @@ Unit eval_stmts_x_196(const auto &x_413) {
     WriteMetric();
     auto x_426 = eval_expr_x_425(x_413);
     if (x_413->has_var_left_over) {
-      auto x_427 = x_413->var_left_over;
-      if (!EqualValue(x_427, x_426)) {
+      if (!EqualValue(x_413->var_left_over, x_426)) {
         var_modified_x_428(x_413);
       }
     }
@@ -1819,8 +1781,7 @@ Unit eval_stmts_x_196(const auto &x_413) {
     WriteMetric();
     auto x_431 = eval_expr_x_430(x_413);
     if (x_413->has_var_flex_amount) {
-      auto x_432 = x_413->var_flex_amount;
-      if (!EqualValue(x_432, x_431)) {
+      if (!EqualValue(x_413->var_flex_amount, x_431)) {
         var_modified_x_433(x_413);
       }
     }
@@ -1829,8 +1790,7 @@ Unit eval_stmts_x_196(const auto &x_413) {
     WriteMetric();
     auto x_436 = eval_expr_x_435(x_413);
     if (x_413->has_var_flex_unit) {
-      auto x_437 = x_413->var_flex_unit;
-      if (!EqualValue(x_437, x_436)) {
+      if (!EqualValue(x_413->var_flex_unit, x_436)) {
         var_modified_x_438(x_413);
       }
     }
@@ -1839,8 +1799,7 @@ Unit eval_stmts_x_196(const auto &x_413) {
     WriteMetric();
     auto x_441 = eval_expr_x_440(x_413);
     if (x_413->has_var_x) {
-      auto x_442 = x_413->var_x;
-      if (!EqualValue(x_442, x_441)) {
+      if (!EqualValue(x_413->var_x, x_441)) {
         var_modified_x_443(x_413);
       }
     }
@@ -1849,8 +1808,7 @@ Unit eval_stmts_x_196(const auto &x_413) {
     WriteMetric();
     auto x_446 = eval_expr_x_445(x_413);
     if (x_413->has_var_width_internal) {
-      auto x_447 = x_413->var_width_internal;
-      if (!EqualValue(x_447, x_446)) {
+      if (!EqualValue(x_413->var_width_internal, x_446)) {
         var_modified_x_448(x_413);
       }
     }
@@ -1859,8 +1817,7 @@ Unit eval_stmts_x_196(const auto &x_413) {
     WriteMetric();
     auto x_451 = eval_expr_x_450(x_413);
     if (x_413->has_var_width_external) {
-      auto x_452 = x_413->var_width_external;
-      if (!EqualValue(x_452, x_451)) {
+      if (!EqualValue(x_413->var_width_external, x_451)) {
         var_modified_x_453(x_413);
       }
     }
@@ -1869,8 +1826,7 @@ Unit eval_stmts_x_196(const auto &x_413) {
     WriteMetric();
     auto x_456 = eval_expr_x_455(x_413);
     if (x_413->has_var_y) {
-      auto x_457 = x_413->var_y;
-      if (!EqualValue(x_457, x_456)) {
+      if (!EqualValue(x_413->var_y, x_456)) {
         var_modified_x_458(x_413);
       }
     }
@@ -1879,8 +1835,7 @@ Unit eval_stmts_x_196(const auto &x_413) {
     WriteMetric();
     auto x_461 = eval_expr_x_460(x_413);
     if (x_413->has_var_height_internal) {
-      auto x_462 = x_413->var_height_internal;
-      if (!EqualValue(x_462, x_461)) {
+      if (!EqualValue(x_413->var_height_internal, x_461)) {
         var_modified_x_463(x_413);
       }
     }
@@ -1889,8 +1844,7 @@ Unit eval_stmts_x_196(const auto &x_413) {
     WriteMetric();
     auto x_466 = eval_expr_x_465(x_413);
     if (x_413->has_var_height_external) {
-      auto x_467 = x_413->var_height_external;
-      if (!EqualValue(x_467, x_466)) {
+      if (!EqualValue(x_413->var_height_external, x_466)) {
         var_modified_x_468(x_413);
       }
     }
@@ -1899,8 +1853,7 @@ Unit eval_stmts_x_196(const auto &x_413) {
     WriteMetric();
     auto x_471 = eval_expr_x_470(x_413);
     if (x_413->has_var_line_height) {
-      auto x_472 = x_413->var_line_height;
-      if (!EqualValue(x_472, x_471)) {
+      if (!EqualValue(x_413->var_line_height, x_471)) {
         var_modified_x_473(x_413);
       }
     }
@@ -2525,11 +2478,10 @@ Node x_229(const auto &x_230) {
 }
 Node json_to_node_aux_x_0(const auto &x_230) { return x_229(x_230); }
 int main() {
-  WithOutFile("github_nologin.out", [&](const auto &x_5) {
+  WithOutFile("espn.out", [&](const auto &x_5) {
     PrintEndline("RUNNING FS_D");
     return WithInFile("command.json", [&](const auto &x_6) {
       auto x_7 = MakeRef(static_cast<int64_t>(0));
-      auto x_8 = FreshMetric();
       auto x_9 = JsonOfString(InputLine(x_6));
       auto x_10 = JsonOfString(InputLine(x_6));
       auto x_11 = MakeStack();
@@ -2550,24 +2502,46 @@ int main() {
       InputChangeMetric(node_size_x_4(x_14));
       RecordOverhead([&](const auto &x_16) { return eval_stmts_x_17(x_14); });
       RecordOverhead([&](const auto &x_18) { return eval_stmts_x_19(x_14); });
-      JsonToChannel(x_5, [&]() {
-        auto x_1261 = FreshJson();
-        WriteJson(x_1261, "name", "FS_D");
-        WriteJson(x_1261, "diff_num", ReadRef(x_7));
-        WriteJson(x_1261, "read_count", MetricReadCount());
-        WriteJson(x_1261, "meta_read_count", MetricMetaReadCount());
-        WriteJson(x_1261, "write_count", MetricWriteCount());
-        WriteJson(x_1261, "meta_write_count", MetricMetaWriteCount());
-        WriteJson(x_1261, "queue_size_acc", MetricQueueSizeAcc());
-        WriteJson(x_1261, "input_change_count", MetricInputChangeCount());
-        WriteJson(x_1261, "output_change_count", MetricOutputChangeCount());
-        WriteJson(x_1261, "overhead_time", MetricOverheadTime());
-        WriteJson(x_1261, "overhead_l2m", MetricOverheadL2m());
-        WriteJson(x_1261, "eval_time", MetricEvalCount());
-        WriteJson(x_1261, "html", "");
-        WriteJson(x_1261, "command", StackToList(x_11));
-        return x_1261;
-      }());
+      JsonToChannel(
+          x_5,
+          WriteAssocToJson(
+              FreshJson(),
+              Cons(
+                  MakePair(DEStringLit(DEStringCase::DSTRING_name),
+                           StringToJson(DEStringLit(DEStringCase::DSTRING_FS_D))),
+                  Cons(
+                      MakePair(DEStringLit(DEStringCase::DSTRING_diff_num), IntToJson(ReadRef(x_7))),
+                      Cons(
+                          MakePair(DEStringLit(DEStringCase::DSTRING_read_count), IntToJson(MetricReadCount())),
+                          Cons(MakePair(DEStringLit(DEStringCase::DSTRING_meta_read_count),
+                                        IntToJson(MetricMetaReadCount())),
+                               Cons(MakePair(DEStringLit(DEStringCase::DSTRING_write_count),
+                                             IntToJson(MetricWriteCount())),
+                                    Cons(MakePair(DEStringLit(DEStringCase::DSTRING_meta_write_count),
+                                                  IntToJson(MetricMetaWriteCount())),
+                                         Cons(MakePair(DEStringLit(DEStringCase::DSTRING_queue_size_acc),
+                                                       IntToJson(MetricQueueSizeAcc())),
+                                              Cons(MakePair(DEStringLit(DEStringCase::DSTRING_input_change_count),
+                                                            IntToJson(MetricInputChangeCount())),
+                                                   Cons(MakePair(DEStringLit(DEStringCase::DSTRING_output_change_count),
+                                                                 IntToJson(MetricOutputChangeCount())),
+                                                        Cons(MakePair(DEStringLit(DEStringCase::DSTRING_overhead_time),
+                                                                      IntToJson(MetricOverheadTime())),
+                                                             Cons(MakePair(
+                                                                      DEStringLit(DEStringCase::DSTRING_overhead_l2m),
+                                                                      IntToJson(MetricOverheadL2m())),
+                                                                  Cons(MakePair(
+                                                                           DEStringLit(DEStringCase::DSTRING_eval_time),
+                                                                           IntToJson(MetricEvalCount())),
+                                                                       Cons(MakePair(
+                                                                                DEStringLit(DEStringCase::DSTRING_html),
+                                                                                StringToJson(DEStringLit(
+                                                                                    DEStringCase::DSTRING_))),
+                                                                            Cons(MakePair(
+                                                                                     DEStringLit(
+                                                                                         DEStringCase::DSTRING_command),
+                                                                                     ListToJson(StackToList(x_11))),
+                                                                                 Nil()))))))))))))))));
       OutputString(x_5, "\n");
       ClearStack(x_11);
       WriteRef(x_7, IntAdd(ReadRef(x_7), static_cast<int64_t>(1)));
@@ -2590,24 +2564,50 @@ int main() {
               }());
         } else if (x_1263 == "recalculate") {
           recalculate_x_26(x_14);
-          JsonToChannel(x_5, [&]() {
-            auto x_1262 = FreshJson();
-            WriteJson(x_1262, "name", "FS_D");
-            WriteJson(x_1262, "diff_num", ReadRef(x_7));
-            WriteJson(x_1262, "read_count", MetricReadCount());
-            WriteJson(x_1262, "meta_read_count", MetricMetaReadCount());
-            WriteJson(x_1262, "write_count", MetricWriteCount());
-            WriteJson(x_1262, "meta_write_count", MetricMetaWriteCount());
-            WriteJson(x_1262, "queue_size_acc", MetricQueueSizeAcc());
-            WriteJson(x_1262, "input_change_count", MetricInputChangeCount());
-            WriteJson(x_1262, "output_change_count", MetricOutputChangeCount());
-            WriteJson(x_1262, "overhead_time", MetricOverheadTime());
-            WriteJson(x_1262, "overhead_l2m", MetricOverheadL2m());
-            WriteJson(x_1262, "eval_time", MetricEvalCount());
-            WriteJson(x_1262, "html", "");
-            WriteJson(x_1262, "command", StackToList(x_11));
-            return x_1262;
-          }());
+          JsonToChannel(
+              x_5,
+              WriteAssocToJson(
+                  FreshJson(),
+                  Cons(
+                      MakePair(DEStringLit(DEStringCase::DSTRING_name),
+                               StringToJson(DEStringLit(DEStringCase::DSTRING_FS_D))),
+                      Cons(
+                          MakePair(DEStringLit(DEStringCase::DSTRING_diff_num), IntToJson(ReadRef(x_7))),
+                          Cons(
+                              MakePair(DEStringLit(DEStringCase::DSTRING_read_count), IntToJson(MetricReadCount())),
+                              Cons(
+                                  MakePair(DEStringLit(DEStringCase::DSTRING_meta_read_count),
+                                           IntToJson(MetricMetaReadCount())),
+                                  Cons(MakePair(DEStringLit(DEStringCase::DSTRING_write_count),
+                                                IntToJson(MetricWriteCount())),
+                                       Cons(MakePair(DEStringLit(DEStringCase::DSTRING_meta_write_count),
+                                                     IntToJson(MetricMetaWriteCount())),
+                                            Cons(MakePair(DEStringLit(DEStringCase::DSTRING_queue_size_acc),
+                                                          IntToJson(MetricQueueSizeAcc())),
+                                                 Cons(MakePair(DEStringLit(DEStringCase::DSTRING_input_change_count),
+                                                               IntToJson(MetricInputChangeCount())),
+                                                      Cons(
+                                                          MakePair(
+                                                              DEStringLit(DEStringCase::DSTRING_output_change_count),
+                                                              IntToJson(MetricOutputChangeCount())),
+                                                          Cons(MakePair(
+                                                                   DEStringLit(DEStringCase::DSTRING_overhead_time),
+                                                                   IntToJson(MetricOverheadTime())),
+                                                               Cons(MakePair(
+                                                                        DEStringLit(DEStringCase::DSTRING_overhead_l2m),
+                                                                        IntToJson(MetricOverheadL2m())),
+                                                                    Cons(MakePair(DEStringLit(
+                                                                                      DEStringCase::DSTRING_eval_time),
+                                                                                  IntToJson(MetricEvalCount())),
+                                                                         Cons(MakePair(DEStringLit(
+                                                                                           DEStringCase::DSTRING_html),
+                                                                                       StringToJson(DEStringLit(
+                                                                                           DEStringCase::DSTRING_))),
+                                                                              Cons(MakePair(
+                                                                                       DEStringLit(DEStringCase::
+                                                                                                       DSTRING_command),
+                                                                                       ListToJson(StackToList(x_11))),
+                                                                                   Nil()))))))))))))))));
           OutputString(x_5, "\n");
           ClearStack(x_11);
           WriteRef(x_7, IntAdd(ReadRef(x_7), static_cast<int64_t>(1)));
