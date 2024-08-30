@@ -467,8 +467,7 @@ inline uint64_t readTSCP() {
 
 using rdtsc_type = decltype(readTSC());
 
-
-
+#if BOOST_OS_LINUX
 #include <papiStdEventDefs.h>
 #include <papi.h>
 
@@ -766,6 +765,7 @@ auto read_pfm() {
   // return pfm_event->read_count().count;
   return pfm_event->read_count_rdpmc().value().count;
 }
+#endif
 
 struct Stat {
   rdtsc_type time = 0;
@@ -779,9 +779,14 @@ struct Stat {
     return *this;
   }
   static Stat measure() {
+#if BOOST_OS_LINUX
     return Stat(readTSC(), read_pfm());
+#else
+    return Stat(readTSC(), 1);
+#endif
   }
 };
+
 // a timer that allow recursive measuring. however, the outer level does not contain the inner level time.
 struct Timer {
   struct Node {

@@ -6,8 +6,10 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_FLAGS "-mtune=native -march=native -O3")
 set(CMAKE_CXX_FLAGS_PROFILE "-pg")
 
-link_libraries(papi)
-link_libraries(pfm)
+if(UNIX AND NOT APPLE)
+    link_libraries(papi)
+    link_libraries(pfm)
+endif()
 
 set(FOONATHAN_MEMORY_BUILD_EXAMPLES OFF)
 set(FOONATHAN_MEMORY_BUILD_TESTS OFF)
