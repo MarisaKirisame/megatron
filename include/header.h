@@ -99,6 +99,8 @@ std::string StackToList(Unit) { return ""; }
 json FreshJson() { return json(); }
 void WriteJson(json &j, const std::string &name, const std::string &value) { j[name] = value; }
 void WriteJson(json &j, const std::string &name, const int64_t &value) { j[name] = value; }
+json IntToJson(int64_t i) { return json(i); }
+json StringToJson(const std::string& str) { return json(str); }
 int64_t IntAdd(int64_t l, int64_t r) { return l + r; }
 auto WithOutFile(const std::string &path, const auto &f) {
   std::ofstream s{path, std::ios_base::app};

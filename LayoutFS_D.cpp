@@ -2502,46 +2502,24 @@ int main() {
       InputChangeMetric(node_size_x_4(x_14));
       RecordOverhead([&](const auto &x_16) { return eval_stmts_x_17(x_14); });
       RecordOverhead([&](const auto &x_18) { return eval_stmts_x_19(x_14); });
-      JsonToChannel(
-          x_5,
-          WriteAssocToJson(
-              FreshJson(),
-              Cons(
-                  MakePair(DEStringLit(DEStringCase::DSTRING_name),
-                           StringToJson(DEStringLit(DEStringCase::DSTRING_FS_D))),
-                  Cons(
-                      MakePair(DEStringLit(DEStringCase::DSTRING_diff_num), IntToJson(ReadRef(x_7))),
-                      Cons(
-                          MakePair(DEStringLit(DEStringCase::DSTRING_read_count), IntToJson(MetricReadCount())),
-                          Cons(MakePair(DEStringLit(DEStringCase::DSTRING_meta_read_count),
-                                        IntToJson(MetricMetaReadCount())),
-                               Cons(MakePair(DEStringLit(DEStringCase::DSTRING_write_count),
-                                             IntToJson(MetricWriteCount())),
-                                    Cons(MakePair(DEStringLit(DEStringCase::DSTRING_meta_write_count),
-                                                  IntToJson(MetricMetaWriteCount())),
-                                         Cons(MakePair(DEStringLit(DEStringCase::DSTRING_queue_size_acc),
-                                                       IntToJson(MetricQueueSizeAcc())),
-                                              Cons(MakePair(DEStringLit(DEStringCase::DSTRING_input_change_count),
-                                                            IntToJson(MetricInputChangeCount())),
-                                                   Cons(MakePair(DEStringLit(DEStringCase::DSTRING_output_change_count),
-                                                                 IntToJson(MetricOutputChangeCount())),
-                                                        Cons(MakePair(DEStringLit(DEStringCase::DSTRING_overhead_time),
-                                                                      IntToJson(MetricOverheadTime())),
-                                                             Cons(MakePair(
-                                                                      DEStringLit(DEStringCase::DSTRING_overhead_l2m),
-                                                                      IntToJson(MetricOverheadL2m())),
-                                                                  Cons(MakePair(
-                                                                           DEStringLit(DEStringCase::DSTRING_eval_time),
-                                                                           IntToJson(MetricEvalCount())),
-                                                                       Cons(MakePair(
-                                                                                DEStringLit(DEStringCase::DSTRING_html),
-                                                                                StringToJson(DEStringLit(
-                                                                                    DEStringCase::DSTRING_))),
-                                                                            Cons(MakePair(
-                                                                                     DEStringLit(
-                                                                                         DEStringCase::DSTRING_command),
-                                                                                     ListToJson(StackToList(x_11))),
-                                                                                 Nil()))))))))))))))));
+      JsonToChannel(x_5, [&]() {
+        auto x_1261 = FreshJson();
+        WriteJson(x_1261, "name", "FS_D");
+        WriteJson(x_1261, "diff_num", ReadRef(x_7));
+        WriteJson(x_1261, "read_count", MetricReadCount());
+        WriteJson(x_1261, "meta_read_count", MetricMetaReadCount());
+        WriteJson(x_1261, "write_count", MetricWriteCount());
+        WriteJson(x_1261, "meta_write_count", MetricMetaWriteCount());
+        WriteJson(x_1261, "queue_size_acc", MetricQueueSizeAcc());
+        WriteJson(x_1261, "input_change_count", MetricInputChangeCount());
+        WriteJson(x_1261, "output_change_count", MetricOutputChangeCount());
+        WriteJson(x_1261, "overhead_time", MetricOverheadTime());
+        WriteJson(x_1261, "overhead_l2m", MetricOverheadL2m());
+        WriteJson(x_1261, "eval_time", MetricEvalCount());
+        WriteJson(x_1261, "html", "");
+        WriteJson(x_1261, "command", StackToList(x_11));
+        return x_1261;
+      }());
       OutputString(x_5, "\n");
       ClearStack(x_11);
       WriteRef(x_7, IntAdd(ReadRef(x_7), static_cast<int64_t>(1)));
@@ -2564,50 +2542,24 @@ int main() {
               }());
         } else if (x_1263 == "recalculate") {
           recalculate_x_26(x_14);
-          JsonToChannel(
-              x_5,
-              WriteAssocToJson(
-                  FreshJson(),
-                  Cons(
-                      MakePair(DEStringLit(DEStringCase::DSTRING_name),
-                               StringToJson(DEStringLit(DEStringCase::DSTRING_FS_D))),
-                      Cons(
-                          MakePair(DEStringLit(DEStringCase::DSTRING_diff_num), IntToJson(ReadRef(x_7))),
-                          Cons(
-                              MakePair(DEStringLit(DEStringCase::DSTRING_read_count), IntToJson(MetricReadCount())),
-                              Cons(
-                                  MakePair(DEStringLit(DEStringCase::DSTRING_meta_read_count),
-                                           IntToJson(MetricMetaReadCount())),
-                                  Cons(MakePair(DEStringLit(DEStringCase::DSTRING_write_count),
-                                                IntToJson(MetricWriteCount())),
-                                       Cons(MakePair(DEStringLit(DEStringCase::DSTRING_meta_write_count),
-                                                     IntToJson(MetricMetaWriteCount())),
-                                            Cons(MakePair(DEStringLit(DEStringCase::DSTRING_queue_size_acc),
-                                                          IntToJson(MetricQueueSizeAcc())),
-                                                 Cons(MakePair(DEStringLit(DEStringCase::DSTRING_input_change_count),
-                                                               IntToJson(MetricInputChangeCount())),
-                                                      Cons(
-                                                          MakePair(
-                                                              DEStringLit(DEStringCase::DSTRING_output_change_count),
-                                                              IntToJson(MetricOutputChangeCount())),
-                                                          Cons(MakePair(
-                                                                   DEStringLit(DEStringCase::DSTRING_overhead_time),
-                                                                   IntToJson(MetricOverheadTime())),
-                                                               Cons(MakePair(
-                                                                        DEStringLit(DEStringCase::DSTRING_overhead_l2m),
-                                                                        IntToJson(MetricOverheadL2m())),
-                                                                    Cons(MakePair(DEStringLit(
-                                                                                      DEStringCase::DSTRING_eval_time),
-                                                                                  IntToJson(MetricEvalCount())),
-                                                                         Cons(MakePair(DEStringLit(
-                                                                                           DEStringCase::DSTRING_html),
-                                                                                       StringToJson(DEStringLit(
-                                                                                           DEStringCase::DSTRING_))),
-                                                                              Cons(MakePair(
-                                                                                       DEStringLit(DEStringCase::
-                                                                                                       DSTRING_command),
-                                                                                       ListToJson(StackToList(x_11))),
-                                                                                   Nil()))))))))))))))));
+          JsonToChannel(x_5, [&]() {
+            auto x_1262 = FreshJson();
+            WriteJson(x_1262, "name", "FS_D");
+            WriteJson(x_1262, "diff_num", ReadRef(x_7));
+            WriteJson(x_1262, "read_count", MetricReadCount());
+            WriteJson(x_1262, "meta_read_count", MetricMetaReadCount());
+            WriteJson(x_1262, "write_count", MetricWriteCount());
+            WriteJson(x_1262, "meta_write_count", MetricMetaWriteCount());
+            WriteJson(x_1262, "queue_size_acc", MetricQueueSizeAcc());
+            WriteJson(x_1262, "input_change_count", MetricInputChangeCount());
+            WriteJson(x_1262, "output_change_count", MetricOutputChangeCount());
+            WriteJson(x_1262, "overhead_time", MetricOverheadTime());
+            WriteJson(x_1262, "overhead_l2m", MetricOverheadL2m());
+            WriteJson(x_1262, "eval_time", MetricEvalCount());
+            WriteJson(x_1262, "html", "");
+            WriteJson(x_1262, "command", StackToList(x_11));
+            return x_1262;
+          }());
           OutputString(x_5, "\n");
           ClearStack(x_11);
           WriteRef(x_7, IntAdd(ReadRef(x_7), static_cast<int64_t>(1)));

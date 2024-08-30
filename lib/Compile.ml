@@ -54,7 +54,8 @@ let rec occur_count name x : int =
   let recurses xs = List.sum (module Int) xs ~f:recurse in
   match x with
   | CString _ | CPF _ | CBool _ | CInt _ -> 0
-  | CStringMatch (str, cases, default) -> recurse str + List.sum (module Int) cases ~f:(fun (_, x) -> recurse x) + recurse default
+  | CStringMatch (str, cases, default) ->
+      recurse str + List.sum (module Int) cases ~f:(fun (_, x) -> recurse x) + recurse default
   | CFun (args, body) -> if List.for_all args ~f:(fun arg -> name != arg) then recurse body else 0
   | CLet (lhs, rhs, body) -> recurse rhs + if name == lhs then 0 else recurse body
   | CIf (i, t, e) -> recurse i + recurse t + recurse e
@@ -71,7 +72,7 @@ let rec inline lhs rhs body =
   match body with
   | CPF _ | CString _ -> body
   | CVar name -> if name == lhs then rhs else CVar name
-  | CApp (f, xs) -> CApp(recurse f, recurses xs)
+  | CApp (f, xs) -> CApp (recurse f, recurses xs)
   | CIf (i, t, e) -> CIf (recurse i, recurse t, recurse e)
   | _ -> Common.panic ("inline:" ^ truncate (show_code body))
 
@@ -203,21 +204,26 @@ let rec simplify (p : prog) x =
            ~f:recurse)
   | CIf (i, CPanic t, e) -> CAssert (CNot i, t, e)
   | CIf (i, t, CPanic e) -> CAssert (i, e, t)
+  | CApp (CPF "AssocToJson", [ x ]) -> CApp (CPF "WriteAssocToJson", [ CApp (CPF "FreshJson", []); x ])
+  | CApp (CPF "WriteAssocToJson", [ CVar j; CApp (CPF "Cons", [ CApp (CPF "MakePair", [ CString f; x ]); y ]) ]) ->
+      recurse (CSeq [ CApp (CPF "WriteJson", [ CVar j; CString f; x ]); CApp (CPF "WriteAssocToJson", [ CVar j; y ]) ])
+  | CApp (CPF "WriteAssocToJson", [ j; CApp (CPF "Cons", [ CApp (CPF "MakePair", [ CString f; x ]); y ]) ]) ->
+      let v = fresh () in
+      CLet
+        ( v,
+          j,
+          recurse
+            (CSeq [ CApp (CPF "WriteJson", [ CVar v; CString f; x ]); CApp (CPF "WriteAssocToJson", [ CVar v; y ]) ]) )
+  | CApp (CPF "WriteJson", [ j; f; CApp (CPF ("IntToJson" | "StringToJson" | "ListToJson"), [ x ]) ]) ->
+      recurse (CApp (CPF "WriteJson", [ j; f; x ]))
+  | CApp (CPF "WriteAssocToJson", [ j; CApp (CPF "Nil", []) ]) -> j
+  | CApp (CPF "not", [ x ]) -> CNot x
   | CLet (lhs, rhs, CVar body) -> if String.equal lhs body then rhs else CSeq [ rhs; CVar body ]
   | CLet (lhs, rhs, body) ->
       let cnt = occur_count lhs body in
       if cnt == 0 then CSeq [ rhs; body ]
       else if cnt == 1 then inline lhs rhs body
       else CLet (lhs, recurse rhs, recurse body)
-  | CApp (CPF "AssocToJson", [ x ]) ->
-      let v = fresh () in
-      recurse (CLet (v, CApp (CPF "FreshJson", []), CApp (CPF "WriteAssocToJson", [ CVar v; x ])))
-  | CApp (CPF "WriteAssocToJson", [ CVar j; CApp (CPF "Cons", [ CApp (CPF "MakePair", [ CString f; x ]); y ]) ]) ->
-      recurse (CSeq [ CApp (CPF "WriteJson", [ CVar j; CString f; x ]); CApp (CPF "WriteAssocToJson", [ CVar j; y ]) ])
-  | CApp (CPF "WriteJson", [ j; f; CApp (CPF ("IntToJson" | "StringToJson" | "ListToJson"), [ x ]) ]) ->
-      recurse (CApp (CPF "WriteJson", [ j; f; x ]))
-  | CApp (CPF "WriteAssocToJson", [ j; CApp (CPF "Nil", []) ]) -> j
-  | CApp (CPF "not", [ x ]) -> CNot x
   (* default cases *)
   | CWhile (b, s) -> CWhile (recurse b, recurse s)
   | CAssert (b, e, t) -> CAssert (recurse b, recurse e, recurse t)
@@ -391,6 +397,16 @@ and compile_expr c x =
       output_string c ")"
   | CApp (CPF "JsonMember", [ CString x; y ]) ->
       output_string c "JsonMember(";
+      output_string c (quoted x);
+      output_string c ",";
+      compile_expr c y;
+      output_string c ")"
+  | CApp (CPF "StringToJson", [ CString x ]) ->
+      output_string c "StringToJson(";
+      output_string c (quoted x);
+      output_string c ")"
+  | CApp (CPF "MakePair", [ CString x; (CApp (CPF ("StringToJson" | "IntToJson" | "ListToJson"), _) as y) ]) ->
+      output_string c "MakePair(";
       output_string c (quoted x);
       output_string c ",";
       compile_expr c y;
