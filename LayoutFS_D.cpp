@@ -1422,7 +1422,7 @@ auto eval_expr_x_234(const auto &x_1249) {
   }
 }
 Unit eval_stmts_x_208(const auto &x_232) {
-  RecordEval([&](const auto &x_1252) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1253) {
     auto x_235 = eval_expr_x_234(x_232);
     if (x_232->has_var_width_expr) {
@@ -1434,7 +1434,7 @@ Unit eval_stmts_x_208(const auto &x_232) {
     x_232->var_width_expr = AsDEString(x_235);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1255) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1256) {
     auto x_240 = eval_expr_x_239(x_232);
     if (x_232->has_var_is_default_case) {
@@ -1446,7 +1446,7 @@ Unit eval_stmts_x_208(const auto &x_232) {
     x_232->var_is_default_case = Asbool(x_240);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1258) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1259) {
     auto x_245 = eval_expr_x_244(x_232);
     if (x_232->has_var_intrinsic_width_is_width) {
@@ -1458,7 +1458,7 @@ Unit eval_stmts_x_208(const auto &x_232) {
     x_232->var_intrinsic_width_is_width = Asbool(x_245);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1261) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1262) {
     auto x_250 = eval_expr_x_249(x_232);
     if (x_232->has_var_children_intrinsic_width) {
@@ -1470,7 +1470,7 @@ Unit eval_stmts_x_208(const auto &x_232) {
     x_232->var_children_intrinsic_width = Asdouble(x_250);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1264) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1265) {
     auto x_255 = eval_expr_x_254(x_232);
     if (x_232->has_var_intrinsic_width_internal) {
@@ -1482,7 +1482,7 @@ Unit eval_stmts_x_208(const auto &x_232) {
     x_232->var_intrinsic_width_internal = Asdouble(x_255);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1267) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1268) {
     auto x_260 = eval_expr_x_259(x_232);
     if (x_232->has_var_intrinsic_width_external) {
@@ -1494,7 +1494,7 @@ Unit eval_stmts_x_208(const auto &x_232) {
     x_232->var_intrinsic_width_external = Asdouble(x_260);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1270) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1271) {
     auto x_265 = eval_expr_x_264(x_232);
     if (x_232->has_var_intrinsic_current_line_width) {
@@ -1506,7 +1506,7 @@ Unit eval_stmts_x_208(const auto &x_232) {
     x_232->var_intrinsic_current_line_width = Asdouble(x_265);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1273) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1274) {
     auto x_270 = eval_expr_x_269(x_232);
     if (x_232->has_var_intrinsic_width_max) {
@@ -1518,7 +1518,7 @@ Unit eval_stmts_x_208(const auto &x_232) {
     x_232->var_intrinsic_width_max = Asdouble(x_270);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1276) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1277) {
     auto x_275 = eval_expr_x_274(x_232);
     if (x_232->has_var_intrinsic_width_sum) {
@@ -1530,7 +1530,7 @@ Unit eval_stmts_x_208(const auto &x_232) {
     x_232->var_intrinsic_width_sum = Asdouble(x_275);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1279) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1280) {
     auto x_280 = eval_expr_x_279(x_232);
     if (x_232->has_var_children_intrinsic_height) {
@@ -1542,7 +1542,7 @@ Unit eval_stmts_x_208(const auto &x_232) {
     x_232->var_children_intrinsic_height = Asdouble(x_280);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1282) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1283) {
     auto x_285 = eval_expr_x_284(x_232);
     if (x_232->has_var_height_expr) {
@@ -1554,7 +1554,7 @@ Unit eval_stmts_x_208(const auto &x_232) {
     x_232->var_height_expr = AsDEString(x_285);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1285) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1286) {
     auto x_290 = eval_expr_x_289(x_232);
     if (x_232->has_var_intrinsic_height_is_height) {
@@ -1566,7 +1566,7 @@ Unit eval_stmts_x_208(const auto &x_232) {
     x_232->var_intrinsic_height_is_height = Asbool(x_290);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1288) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1289) {
     auto x_295 = eval_expr_x_294(x_232);
     if (x_232->has_var_intrinsic_height_internal) {
@@ -1578,7 +1578,7 @@ Unit eval_stmts_x_208(const auto &x_232) {
     x_232->var_intrinsic_height_internal = Asdouble(x_295);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1291) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1292) {
     auto x_300 = eval_expr_x_299(x_232);
     if (x_232->has_var_intrinsic_height_external) {
@@ -1590,7 +1590,7 @@ Unit eval_stmts_x_208(const auto &x_232) {
     x_232->var_intrinsic_height_external = Asdouble(x_300);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1294) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1295) {
     auto x_305 = eval_expr_x_304(x_232);
     if (x_232->has_var_intrinsic_height_sum) {
@@ -1602,7 +1602,7 @@ Unit eval_stmts_x_208(const auto &x_232) {
     x_232->var_intrinsic_height_sum = Asdouble(x_305);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1297) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1298) {
     auto x_310 = eval_expr_x_309(x_232);
     if (x_232->has_var_intrinsic_current_line_height) {
@@ -1614,7 +1614,7 @@ Unit eval_stmts_x_208(const auto &x_232) {
     x_232->var_intrinsic_current_line_height = Asdouble(x_310);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1300) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1301) {
     auto x_315 = eval_expr_x_314(x_232);
     if (x_232->has_var_finished_intrinsic_height_sum) {
@@ -1629,7 +1629,7 @@ Unit eval_stmts_x_208(const auto &x_232) {
   return MakeUnit();
 }
 Unit eval_stmts_x_204(const auto &x_319) {
-  RecordEval([&](const auto &x_1303) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1304) {
     auto x_322 = eval_expr_x_321(x_319);
     if (x_319->has_var_display) {
@@ -1641,7 +1641,7 @@ Unit eval_stmts_x_204(const auto &x_319) {
     x_319->var_display = AsDEString(x_322);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1306) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1307) {
     auto x_327 = eval_expr_x_326(x_319);
     if (x_319->has_var_position) {
@@ -1653,7 +1653,7 @@ Unit eval_stmts_x_204(const auto &x_319) {
     x_319->var_position = AsDEString(x_327);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1309) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1310) {
     auto x_332 = eval_expr_x_331(x_319);
     if (x_319->has_var_flex_grow) {
@@ -1665,7 +1665,7 @@ Unit eval_stmts_x_204(const auto &x_319) {
     x_319->var_flex_grow = Asdouble(x_332);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1312) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1313) {
     auto x_337 = eval_expr_x_336(x_319);
     if (x_319->has_var_flex_shrink) {
@@ -1677,7 +1677,7 @@ Unit eval_stmts_x_204(const auto &x_319) {
     x_319->var_flex_shrink = Asdouble(x_337);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1315) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1316) {
     auto x_342 = eval_expr_x_341(x_319);
     if (x_319->has_var_flex_grow_sum) {
@@ -1689,7 +1689,7 @@ Unit eval_stmts_x_204(const auto &x_319) {
     x_319->var_flex_grow_sum = Asdouble(x_342);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1318) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1319) {
     auto x_347 = eval_expr_x_346(x_319);
     if (x_319->has_var_flex_shrink_sum) {
@@ -1701,7 +1701,7 @@ Unit eval_stmts_x_204(const auto &x_319) {
     x_319->var_flex_shrink_sum = Asdouble(x_347);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1321) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1322) {
     auto x_352 = eval_expr_x_351(x_319);
     if (x_319->has_var_flex_direction) {
@@ -1713,7 +1713,7 @@ Unit eval_stmts_x_204(const auto &x_319) {
     x_319->var_flex_direction = AsDEString(x_352);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1324) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1325) {
     auto x_357 = eval_expr_x_356(x_319);
     if (x_319->has_var_is_flex_row) {
@@ -1725,7 +1725,7 @@ Unit eval_stmts_x_204(const auto &x_319) {
     x_319->var_is_flex_row = Asbool(x_357);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1327) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1328) {
     auto x_362 = eval_expr_x_361(x_319);
     if (x_319->has_var_is_flex_column) {
@@ -1737,7 +1737,7 @@ Unit eval_stmts_x_204(const auto &x_319) {
     x_319->var_is_flex_column = Asbool(x_362);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1330) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1331) {
     auto x_367 = eval_expr_x_366(x_319);
     if (x_319->has_var_width_attr_expr) {
@@ -1749,7 +1749,7 @@ Unit eval_stmts_x_204(const auto &x_319) {
     x_319->var_width_attr_expr = AsDEString(x_367);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1333) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1334) {
     auto x_372 = eval_expr_x_371(x_319);
     if (x_319->has_var_has_width_attr) {
@@ -1761,7 +1761,7 @@ Unit eval_stmts_x_204(const auto &x_319) {
     x_319->var_has_width_attr = Asbool(x_372);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1336) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1337) {
     auto x_377 = eval_expr_x_376(x_319);
     if (x_319->has_var_height_attr_expr) {
@@ -1773,7 +1773,7 @@ Unit eval_stmts_x_204(const auto &x_319) {
     x_319->var_height_attr_expr = AsDEString(x_377);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1339) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1340) {
     auto x_382 = eval_expr_x_381(x_319);
     if (x_319->has_var_has_height_attr) {
@@ -1785,7 +1785,7 @@ Unit eval_stmts_x_204(const auto &x_319) {
     x_319->var_has_height_attr = Asbool(x_382);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1342) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1343) {
     auto x_387 = eval_expr_x_386(x_319);
     if (x_319->has_var_is_svg_block) {
@@ -1797,7 +1797,7 @@ Unit eval_stmts_x_204(const auto &x_319) {
     x_319->var_is_svg_block = Asbool(x_387);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1345) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1346) {
     auto x_392 = eval_expr_x_391(x_319);
     if (x_319->has_var_inside_svg) {
@@ -1809,7 +1809,7 @@ Unit eval_stmts_x_204(const auto &x_319) {
     x_319->var_inside_svg = Asbool(x_392);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1348) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1349) {
     auto x_397 = eval_expr_x_396(x_319);
     if (x_319->has_var_disabled) {
@@ -1821,7 +1821,7 @@ Unit eval_stmts_x_204(const auto &x_319) {
     x_319->var_disabled = Asbool(x_397);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1351) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1352) {
     auto x_402 = eval_expr_x_401(x_319);
     if (x_319->has_var_visible) {
@@ -1833,7 +1833,7 @@ Unit eval_stmts_x_204(const auto &x_319) {
     x_319->var_visible = Asbool(x_402);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1354) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1355) {
     auto x_407 = eval_expr_x_406(x_319);
     if (x_319->has_var_line_break) {
@@ -1849,7 +1849,7 @@ Unit eval_stmts_x_204(const auto &x_319) {
 }
 Unit eval_stmts_x_200(const auto &x_411) { return MakeUnit(); }
 Unit eval_stmts_x_196(const auto &x_413) {
-  RecordEval([&](const auto &x_1357) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1358) {
     auto x_416 = eval_expr_x_415(x_413);
     if (x_413->has_var_box_width) {
@@ -1861,7 +1861,7 @@ Unit eval_stmts_x_196(const auto &x_413) {
     x_413->var_box_width = Asdouble(x_416);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1360) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1361) {
     auto x_421 = eval_expr_x_420(x_413);
     if (x_413->has_var_box_height) {
@@ -1873,7 +1873,7 @@ Unit eval_stmts_x_196(const auto &x_413) {
     x_413->var_box_height = Asdouble(x_421);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1363) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1364) {
     auto x_426 = eval_expr_x_425(x_413);
     if (x_413->has_var_left_over) {
@@ -1885,7 +1885,7 @@ Unit eval_stmts_x_196(const auto &x_413) {
     x_413->var_left_over = Asdouble(x_426);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1366) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1367) {
     auto x_431 = eval_expr_x_430(x_413);
     if (x_413->has_var_flex_amount) {
@@ -1897,7 +1897,7 @@ Unit eval_stmts_x_196(const auto &x_413) {
     x_413->var_flex_amount = Asdouble(x_431);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1369) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1370) {
     auto x_436 = eval_expr_x_435(x_413);
     if (x_413->has_var_flex_unit) {
@@ -1909,7 +1909,7 @@ Unit eval_stmts_x_196(const auto &x_413) {
     x_413->var_flex_unit = Asdouble(x_436);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1372) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1373) {
     auto x_441 = eval_expr_x_440(x_413);
     if (x_413->has_var_x) {
@@ -1921,7 +1921,7 @@ Unit eval_stmts_x_196(const auto &x_413) {
     x_413->var_x = Asdouble(x_441);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1375) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1376) {
     auto x_446 = eval_expr_x_445(x_413);
     if (x_413->has_var_width_internal) {
@@ -1933,7 +1933,7 @@ Unit eval_stmts_x_196(const auto &x_413) {
     x_413->var_width_internal = Asdouble(x_446);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1378) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1379) {
     auto x_451 = eval_expr_x_450(x_413);
     if (x_413->has_var_width_external) {
@@ -1945,7 +1945,7 @@ Unit eval_stmts_x_196(const auto &x_413) {
     x_413->var_width_external = Asdouble(x_451);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1381) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1382) {
     auto x_456 = eval_expr_x_455(x_413);
     if (x_413->has_var_y) {
@@ -1957,7 +1957,7 @@ Unit eval_stmts_x_196(const auto &x_413) {
     x_413->var_y = Asdouble(x_456);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1384) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1385) {
     auto x_461 = eval_expr_x_460(x_413);
     if (x_413->has_var_height_internal) {
@@ -1969,7 +1969,7 @@ Unit eval_stmts_x_196(const auto &x_413) {
     x_413->var_height_internal = Asdouble(x_461);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1387) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1388) {
     auto x_466 = eval_expr_x_465(x_413);
     if (x_413->has_var_height_external) {
@@ -1981,7 +1981,7 @@ Unit eval_stmts_x_196(const auto &x_413) {
     x_413->var_height_external = Asdouble(x_466);
     return MakeUnit();
   });
-  RecordEval([&](const auto &x_1390) { return WriteMetric(); });
+  WriteMetric();
   RecordEval([&](const auto &x_1391) {
     auto x_471 = eval_expr_x_470(x_413);
     if (x_413->has_var_line_height) {

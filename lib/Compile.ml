@@ -234,7 +234,7 @@ let rec simplify (p : prog) x =
       else CLet (lhs, recurse rhs, recurse body)
   (* default cases *)
   | CString _ | CVar _ | CPF _ | CInt _ | CBool _ | CFloat _ -> x
-    | CWhile (b, s) -> CWhile (recurse b, recurse s)
+  | CWhile (b, s) -> CWhile (recurse b, recurse s)
   | CAssert (b, e, t) -> CAssert (recurse b, recurse e, recurse t)
   | CPanic xs -> CPanic (recurse xs)
   | CIf (i, t, e) -> CIf (recurse i, recurse t, recurse e)
@@ -261,11 +261,11 @@ let rec simplify_record (p : prog) x =
       CSeq (List.map xs ~f:(fun x -> CApp (CPF f, [ CFun ([ fresh () ], x) ])))
   | CApp
       ( CPF ("RecordOverhead" | "RecordEval"),
-        [ CFun ([ _ ], CApp (CPF (("RecordOverhead" | "RecordEval") as f), [ x ])) ] ) ->
-      CApp (CPF f, [ x ])
+        [ CFun ([ _ ], (CApp (CPF ("RecordOverhead" | "RecordEval" | "WriteMetric"), _) as x)) ] ) ->
+      x
   (* default cases *)
   | CString _ | CVar _ | CPF _ | CInt _ | CBool _ | CFloat _ -> x
-    | CSeq xs -> CSeq (List.map xs ~f:recurse)
+  | CSeq xs -> CSeq (List.map xs ~f:recurse)
   | CWhile (b, s) -> CWhile (recurse b, recurse s)
   | CAssert (b, e, t) -> CAssert (recurse b, recurse e, recurse t)
   | CPanic xs -> CPanic (recurse xs)
