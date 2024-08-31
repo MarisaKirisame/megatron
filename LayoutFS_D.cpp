@@ -1422,8 +1422,8 @@ auto eval_expr_x_234(const auto &x_1249) {
   }
 }
 Unit eval_stmts_x_208(const auto &x_232) {
-  return RecordEval([&](const auto &x_233) {
-    WriteMetric();
+  RecordEval([&](const auto &x_1252) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1253) {
     auto x_235 = eval_expr_x_234(x_232);
     if (x_232->has_var_width_expr) {
       if (!EqualValue(x_232->var_width_expr, x_235)) {
@@ -1432,7 +1432,10 @@ Unit eval_stmts_x_208(const auto &x_232) {
     }
     x_232->has_var_width_expr = true;
     x_232->var_width_expr = AsDEString(x_235);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1255) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1256) {
     auto x_240 = eval_expr_x_239(x_232);
     if (x_232->has_var_is_default_case) {
       if (!EqualValue(x_232->var_is_default_case, x_240)) {
@@ -1441,7 +1444,10 @@ Unit eval_stmts_x_208(const auto &x_232) {
     }
     x_232->has_var_is_default_case = true;
     x_232->var_is_default_case = Asbool(x_240);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1258) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1259) {
     auto x_245 = eval_expr_x_244(x_232);
     if (x_232->has_var_intrinsic_width_is_width) {
       if (!EqualValue(x_232->var_intrinsic_width_is_width, x_245)) {
@@ -1450,7 +1456,10 @@ Unit eval_stmts_x_208(const auto &x_232) {
     }
     x_232->has_var_intrinsic_width_is_width = true;
     x_232->var_intrinsic_width_is_width = Asbool(x_245);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1261) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1262) {
     auto x_250 = eval_expr_x_249(x_232);
     if (x_232->has_var_children_intrinsic_width) {
       if (!EqualValue(x_232->var_children_intrinsic_width, x_250)) {
@@ -1459,7 +1468,10 @@ Unit eval_stmts_x_208(const auto &x_232) {
     }
     x_232->has_var_children_intrinsic_width = true;
     x_232->var_children_intrinsic_width = Asdouble(x_250);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1264) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1265) {
     auto x_255 = eval_expr_x_254(x_232);
     if (x_232->has_var_intrinsic_width_internal) {
       if (!EqualValue(x_232->var_intrinsic_width_internal, x_255)) {
@@ -1468,7 +1480,10 @@ Unit eval_stmts_x_208(const auto &x_232) {
     }
     x_232->has_var_intrinsic_width_internal = true;
     x_232->var_intrinsic_width_internal = Asdouble(x_255);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1267) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1268) {
     auto x_260 = eval_expr_x_259(x_232);
     if (x_232->has_var_intrinsic_width_external) {
       if (!EqualValue(x_232->var_intrinsic_width_external, x_260)) {
@@ -1477,7 +1492,10 @@ Unit eval_stmts_x_208(const auto &x_232) {
     }
     x_232->has_var_intrinsic_width_external = true;
     x_232->var_intrinsic_width_external = Asdouble(x_260);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1270) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1271) {
     auto x_265 = eval_expr_x_264(x_232);
     if (x_232->has_var_intrinsic_current_line_width) {
       if (!EqualValue(x_232->var_intrinsic_current_line_width, x_265)) {
@@ -1486,7 +1504,10 @@ Unit eval_stmts_x_208(const auto &x_232) {
     }
     x_232->has_var_intrinsic_current_line_width = true;
     x_232->var_intrinsic_current_line_width = Asdouble(x_265);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1273) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1274) {
     auto x_270 = eval_expr_x_269(x_232);
     if (x_232->has_var_intrinsic_width_max) {
       if (!EqualValue(x_232->var_intrinsic_width_max, x_270)) {
@@ -1495,7 +1516,10 @@ Unit eval_stmts_x_208(const auto &x_232) {
     }
     x_232->has_var_intrinsic_width_max = true;
     x_232->var_intrinsic_width_max = Asdouble(x_270);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1276) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1277) {
     auto x_275 = eval_expr_x_274(x_232);
     if (x_232->has_var_intrinsic_width_sum) {
       if (!EqualValue(x_232->var_intrinsic_width_sum, x_275)) {
@@ -1504,7 +1528,10 @@ Unit eval_stmts_x_208(const auto &x_232) {
     }
     x_232->has_var_intrinsic_width_sum = true;
     x_232->var_intrinsic_width_sum = Asdouble(x_275);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1279) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1280) {
     auto x_280 = eval_expr_x_279(x_232);
     if (x_232->has_var_children_intrinsic_height) {
       if (!EqualValue(x_232->var_children_intrinsic_height, x_280)) {
@@ -1513,7 +1540,10 @@ Unit eval_stmts_x_208(const auto &x_232) {
     }
     x_232->has_var_children_intrinsic_height = true;
     x_232->var_children_intrinsic_height = Asdouble(x_280);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1282) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1283) {
     auto x_285 = eval_expr_x_284(x_232);
     if (x_232->has_var_height_expr) {
       if (!EqualValue(x_232->var_height_expr, x_285)) {
@@ -1522,7 +1552,10 @@ Unit eval_stmts_x_208(const auto &x_232) {
     }
     x_232->has_var_height_expr = true;
     x_232->var_height_expr = AsDEString(x_285);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1285) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1286) {
     auto x_290 = eval_expr_x_289(x_232);
     if (x_232->has_var_intrinsic_height_is_height) {
       if (!EqualValue(x_232->var_intrinsic_height_is_height, x_290)) {
@@ -1531,7 +1564,10 @@ Unit eval_stmts_x_208(const auto &x_232) {
     }
     x_232->has_var_intrinsic_height_is_height = true;
     x_232->var_intrinsic_height_is_height = Asbool(x_290);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1288) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1289) {
     auto x_295 = eval_expr_x_294(x_232);
     if (x_232->has_var_intrinsic_height_internal) {
       if (!EqualValue(x_232->var_intrinsic_height_internal, x_295)) {
@@ -1540,7 +1576,10 @@ Unit eval_stmts_x_208(const auto &x_232) {
     }
     x_232->has_var_intrinsic_height_internal = true;
     x_232->var_intrinsic_height_internal = Asdouble(x_295);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1291) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1292) {
     auto x_300 = eval_expr_x_299(x_232);
     if (x_232->has_var_intrinsic_height_external) {
       if (!EqualValue(x_232->var_intrinsic_height_external, x_300)) {
@@ -1549,7 +1588,10 @@ Unit eval_stmts_x_208(const auto &x_232) {
     }
     x_232->has_var_intrinsic_height_external = true;
     x_232->var_intrinsic_height_external = Asdouble(x_300);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1294) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1295) {
     auto x_305 = eval_expr_x_304(x_232);
     if (x_232->has_var_intrinsic_height_sum) {
       if (!EqualValue(x_232->var_intrinsic_height_sum, x_305)) {
@@ -1558,7 +1600,10 @@ Unit eval_stmts_x_208(const auto &x_232) {
     }
     x_232->has_var_intrinsic_height_sum = true;
     x_232->var_intrinsic_height_sum = Asdouble(x_305);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1297) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1298) {
     auto x_310 = eval_expr_x_309(x_232);
     if (x_232->has_var_intrinsic_current_line_height) {
       if (!EqualValue(x_232->var_intrinsic_current_line_height, x_310)) {
@@ -1567,7 +1612,10 @@ Unit eval_stmts_x_208(const auto &x_232) {
     }
     x_232->has_var_intrinsic_current_line_height = true;
     x_232->var_intrinsic_current_line_height = Asdouble(x_310);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1300) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1301) {
     auto x_315 = eval_expr_x_314(x_232);
     if (x_232->has_var_finished_intrinsic_height_sum) {
       if (!EqualValue(x_232->var_finished_intrinsic_height_sum, x_315)) {
@@ -1578,10 +1626,11 @@ Unit eval_stmts_x_208(const auto &x_232) {
     x_232->var_finished_intrinsic_height_sum = Asdouble(x_315);
     return MakeUnit();
   });
+  return MakeUnit();
 }
 Unit eval_stmts_x_204(const auto &x_319) {
-  return RecordEval([&](const auto &x_320) {
-    WriteMetric();
+  RecordEval([&](const auto &x_1303) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1304) {
     auto x_322 = eval_expr_x_321(x_319);
     if (x_319->has_var_display) {
       if (!EqualValue(x_319->var_display, x_322)) {
@@ -1590,7 +1639,10 @@ Unit eval_stmts_x_204(const auto &x_319) {
     }
     x_319->has_var_display = true;
     x_319->var_display = AsDEString(x_322);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1306) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1307) {
     auto x_327 = eval_expr_x_326(x_319);
     if (x_319->has_var_position) {
       if (!EqualValue(x_319->var_position, x_327)) {
@@ -1599,7 +1651,10 @@ Unit eval_stmts_x_204(const auto &x_319) {
     }
     x_319->has_var_position = true;
     x_319->var_position = AsDEString(x_327);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1309) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1310) {
     auto x_332 = eval_expr_x_331(x_319);
     if (x_319->has_var_flex_grow) {
       if (!EqualValue(x_319->var_flex_grow, x_332)) {
@@ -1608,7 +1663,10 @@ Unit eval_stmts_x_204(const auto &x_319) {
     }
     x_319->has_var_flex_grow = true;
     x_319->var_flex_grow = Asdouble(x_332);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1312) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1313) {
     auto x_337 = eval_expr_x_336(x_319);
     if (x_319->has_var_flex_shrink) {
       if (!EqualValue(x_319->var_flex_shrink, x_337)) {
@@ -1617,7 +1675,10 @@ Unit eval_stmts_x_204(const auto &x_319) {
     }
     x_319->has_var_flex_shrink = true;
     x_319->var_flex_shrink = Asdouble(x_337);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1315) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1316) {
     auto x_342 = eval_expr_x_341(x_319);
     if (x_319->has_var_flex_grow_sum) {
       if (!EqualValue(x_319->var_flex_grow_sum, x_342)) {
@@ -1626,7 +1687,10 @@ Unit eval_stmts_x_204(const auto &x_319) {
     }
     x_319->has_var_flex_grow_sum = true;
     x_319->var_flex_grow_sum = Asdouble(x_342);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1318) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1319) {
     auto x_347 = eval_expr_x_346(x_319);
     if (x_319->has_var_flex_shrink_sum) {
       if (!EqualValue(x_319->var_flex_shrink_sum, x_347)) {
@@ -1635,7 +1699,10 @@ Unit eval_stmts_x_204(const auto &x_319) {
     }
     x_319->has_var_flex_shrink_sum = true;
     x_319->var_flex_shrink_sum = Asdouble(x_347);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1321) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1322) {
     auto x_352 = eval_expr_x_351(x_319);
     if (x_319->has_var_flex_direction) {
       if (!EqualValue(x_319->var_flex_direction, x_352)) {
@@ -1644,7 +1711,10 @@ Unit eval_stmts_x_204(const auto &x_319) {
     }
     x_319->has_var_flex_direction = true;
     x_319->var_flex_direction = AsDEString(x_352);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1324) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1325) {
     auto x_357 = eval_expr_x_356(x_319);
     if (x_319->has_var_is_flex_row) {
       if (!EqualValue(x_319->var_is_flex_row, x_357)) {
@@ -1653,7 +1723,10 @@ Unit eval_stmts_x_204(const auto &x_319) {
     }
     x_319->has_var_is_flex_row = true;
     x_319->var_is_flex_row = Asbool(x_357);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1327) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1328) {
     auto x_362 = eval_expr_x_361(x_319);
     if (x_319->has_var_is_flex_column) {
       if (!EqualValue(x_319->var_is_flex_column, x_362)) {
@@ -1662,7 +1735,10 @@ Unit eval_stmts_x_204(const auto &x_319) {
     }
     x_319->has_var_is_flex_column = true;
     x_319->var_is_flex_column = Asbool(x_362);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1330) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1331) {
     auto x_367 = eval_expr_x_366(x_319);
     if (x_319->has_var_width_attr_expr) {
       if (!EqualValue(x_319->var_width_attr_expr, x_367)) {
@@ -1671,7 +1747,10 @@ Unit eval_stmts_x_204(const auto &x_319) {
     }
     x_319->has_var_width_attr_expr = true;
     x_319->var_width_attr_expr = AsDEString(x_367);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1333) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1334) {
     auto x_372 = eval_expr_x_371(x_319);
     if (x_319->has_var_has_width_attr) {
       if (!EqualValue(x_319->var_has_width_attr, x_372)) {
@@ -1680,7 +1759,10 @@ Unit eval_stmts_x_204(const auto &x_319) {
     }
     x_319->has_var_has_width_attr = true;
     x_319->var_has_width_attr = Asbool(x_372);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1336) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1337) {
     auto x_377 = eval_expr_x_376(x_319);
     if (x_319->has_var_height_attr_expr) {
       if (!EqualValue(x_319->var_height_attr_expr, x_377)) {
@@ -1689,7 +1771,10 @@ Unit eval_stmts_x_204(const auto &x_319) {
     }
     x_319->has_var_height_attr_expr = true;
     x_319->var_height_attr_expr = AsDEString(x_377);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1339) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1340) {
     auto x_382 = eval_expr_x_381(x_319);
     if (x_319->has_var_has_height_attr) {
       if (!EqualValue(x_319->var_has_height_attr, x_382)) {
@@ -1698,7 +1783,10 @@ Unit eval_stmts_x_204(const auto &x_319) {
     }
     x_319->has_var_has_height_attr = true;
     x_319->var_has_height_attr = Asbool(x_382);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1342) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1343) {
     auto x_387 = eval_expr_x_386(x_319);
     if (x_319->has_var_is_svg_block) {
       if (!EqualValue(x_319->var_is_svg_block, x_387)) {
@@ -1707,7 +1795,10 @@ Unit eval_stmts_x_204(const auto &x_319) {
     }
     x_319->has_var_is_svg_block = true;
     x_319->var_is_svg_block = Asbool(x_387);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1345) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1346) {
     auto x_392 = eval_expr_x_391(x_319);
     if (x_319->has_var_inside_svg) {
       if (!EqualValue(x_319->var_inside_svg, x_392)) {
@@ -1716,7 +1807,10 @@ Unit eval_stmts_x_204(const auto &x_319) {
     }
     x_319->has_var_inside_svg = true;
     x_319->var_inside_svg = Asbool(x_392);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1348) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1349) {
     auto x_397 = eval_expr_x_396(x_319);
     if (x_319->has_var_disabled) {
       if (!EqualValue(x_319->var_disabled, x_397)) {
@@ -1725,7 +1819,10 @@ Unit eval_stmts_x_204(const auto &x_319) {
     }
     x_319->has_var_disabled = true;
     x_319->var_disabled = Asbool(x_397);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1351) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1352) {
     auto x_402 = eval_expr_x_401(x_319);
     if (x_319->has_var_visible) {
       if (!EqualValue(x_319->var_visible, x_402)) {
@@ -1734,7 +1831,10 @@ Unit eval_stmts_x_204(const auto &x_319) {
     }
     x_319->has_var_visible = true;
     x_319->var_visible = Asbool(x_402);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1354) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1355) {
     auto x_407 = eval_expr_x_406(x_319);
     if (x_319->has_var_line_break) {
       if (!EqualValue(x_319->var_line_break, x_407)) {
@@ -1745,13 +1845,12 @@ Unit eval_stmts_x_204(const auto &x_319) {
     x_319->var_line_break = Asbool(x_407);
     return MakeUnit();
   });
+  return MakeUnit();
 }
-Unit eval_stmts_x_200(const auto &x_411) {
-  return RecordEval([&](const auto &x_412) { return MakeUnit(); });
-}
+Unit eval_stmts_x_200(const auto &x_411) { return MakeUnit(); }
 Unit eval_stmts_x_196(const auto &x_413) {
-  return RecordEval([&](const auto &x_414) {
-    WriteMetric();
+  RecordEval([&](const auto &x_1357) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1358) {
     auto x_416 = eval_expr_x_415(x_413);
     if (x_413->has_var_box_width) {
       if (!EqualValue(x_413->var_box_width, x_416)) {
@@ -1760,7 +1859,10 @@ Unit eval_stmts_x_196(const auto &x_413) {
     }
     x_413->has_var_box_width = true;
     x_413->var_box_width = Asdouble(x_416);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1360) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1361) {
     auto x_421 = eval_expr_x_420(x_413);
     if (x_413->has_var_box_height) {
       if (!EqualValue(x_413->var_box_height, x_421)) {
@@ -1769,7 +1871,10 @@ Unit eval_stmts_x_196(const auto &x_413) {
     }
     x_413->has_var_box_height = true;
     x_413->var_box_height = Asdouble(x_421);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1363) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1364) {
     auto x_426 = eval_expr_x_425(x_413);
     if (x_413->has_var_left_over) {
       if (!EqualValue(x_413->var_left_over, x_426)) {
@@ -1778,7 +1883,10 @@ Unit eval_stmts_x_196(const auto &x_413) {
     }
     x_413->has_var_left_over = true;
     x_413->var_left_over = Asdouble(x_426);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1366) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1367) {
     auto x_431 = eval_expr_x_430(x_413);
     if (x_413->has_var_flex_amount) {
       if (!EqualValue(x_413->var_flex_amount, x_431)) {
@@ -1787,7 +1895,10 @@ Unit eval_stmts_x_196(const auto &x_413) {
     }
     x_413->has_var_flex_amount = true;
     x_413->var_flex_amount = Asdouble(x_431);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1369) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1370) {
     auto x_436 = eval_expr_x_435(x_413);
     if (x_413->has_var_flex_unit) {
       if (!EqualValue(x_413->var_flex_unit, x_436)) {
@@ -1796,7 +1907,10 @@ Unit eval_stmts_x_196(const auto &x_413) {
     }
     x_413->has_var_flex_unit = true;
     x_413->var_flex_unit = Asdouble(x_436);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1372) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1373) {
     auto x_441 = eval_expr_x_440(x_413);
     if (x_413->has_var_x) {
       if (!EqualValue(x_413->var_x, x_441)) {
@@ -1805,7 +1919,10 @@ Unit eval_stmts_x_196(const auto &x_413) {
     }
     x_413->has_var_x = true;
     x_413->var_x = Asdouble(x_441);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1375) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1376) {
     auto x_446 = eval_expr_x_445(x_413);
     if (x_413->has_var_width_internal) {
       if (!EqualValue(x_413->var_width_internal, x_446)) {
@@ -1814,7 +1931,10 @@ Unit eval_stmts_x_196(const auto &x_413) {
     }
     x_413->has_var_width_internal = true;
     x_413->var_width_internal = Asdouble(x_446);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1378) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1379) {
     auto x_451 = eval_expr_x_450(x_413);
     if (x_413->has_var_width_external) {
       if (!EqualValue(x_413->var_width_external, x_451)) {
@@ -1823,7 +1943,10 @@ Unit eval_stmts_x_196(const auto &x_413) {
     }
     x_413->has_var_width_external = true;
     x_413->var_width_external = Asdouble(x_451);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1381) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1382) {
     auto x_456 = eval_expr_x_455(x_413);
     if (x_413->has_var_y) {
       if (!EqualValue(x_413->var_y, x_456)) {
@@ -1832,7 +1955,10 @@ Unit eval_stmts_x_196(const auto &x_413) {
     }
     x_413->has_var_y = true;
     x_413->var_y = Asdouble(x_456);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1384) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1385) {
     auto x_461 = eval_expr_x_460(x_413);
     if (x_413->has_var_height_internal) {
       if (!EqualValue(x_413->var_height_internal, x_461)) {
@@ -1841,7 +1967,10 @@ Unit eval_stmts_x_196(const auto &x_413) {
     }
     x_413->has_var_height_internal = true;
     x_413->var_height_internal = Asdouble(x_461);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1387) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1388) {
     auto x_466 = eval_expr_x_465(x_413);
     if (x_413->has_var_height_external) {
       if (!EqualValue(x_413->var_height_external, x_466)) {
@@ -1850,7 +1979,10 @@ Unit eval_stmts_x_196(const auto &x_413) {
     }
     x_413->has_var_height_external = true;
     x_413->var_height_external = Asdouble(x_466);
-    WriteMetric();
+    return MakeUnit();
+  });
+  RecordEval([&](const auto &x_1390) { return WriteMetric(); });
+  RecordEval([&](const auto &x_1391) {
     auto x_471 = eval_expr_x_470(x_413);
     if (x_413->has_var_line_height) {
       if (!EqualValue(x_413->var_line_height, x_471)) {
@@ -1861,6 +1993,7 @@ Unit eval_stmts_x_196(const auto &x_413) {
     x_413->var_line_height = Asdouble(x_471);
     return MakeUnit();
   });
+  return MakeUnit();
 }
 Unit x_45(const auto &x_46, const auto &x_47, const auto &x_48) {
   auto x_49 = ListHeadExn(x_46);
@@ -1910,30 +2043,30 @@ Unit x_66(const auto &x_67, const auto &x_68, const auto &x_69) {
         auto x_75 = Fst(x_73);
         auto x_76 = Fst(x_69);
         InputChangeMetric(static_cast<int64_t>(1));
-        std::string x_1252 = x_74;
-        if (x_1252 == "attributes") {
-          std::string x_1253 = x_75;
-          if (x_1253 == "width") {
+        std::string x_1393 = x_74;
+        if (x_1393 == "attributes") {
+          std::string x_1394 = x_75;
+          if (x_1394 == "width") {
             WriteMetric();
             x_68->has_attr_width = true;
             x_68->attr_width = AsDEString(x_76);
             return MakeUnit();
-          } else if (x_1253 == "image_height") {
+          } else if (x_1394 == "image_height") {
             WriteMetric();
             x_68->has_attr_image_height = true;
             x_68->attr_image_height = Asint64_t(x_76);
             return MakeUnit();
-          } else if (x_1253 == "image_width") {
+          } else if (x_1394 == "image_width") {
             WriteMetric();
             x_68->has_attr_image_width = true;
             x_68->attr_image_width = Asint64_t(x_76);
             return MakeUnit();
-          } else if (x_1253 == "height") {
+          } else if (x_1394 == "height") {
             WriteMetric();
             x_68->has_attr_height = true;
             x_68->attr_height = AsDEString(x_76);
             return MakeUnit();
-          } else if (x_1253 == "viewBox") {
+          } else if (x_1394 == "viewBox") {
             WriteMetric();
             x_68->has_attr_viewBox = true;
             x_68->attr_viewBox = AsDEString(x_76);
@@ -1941,39 +2074,39 @@ Unit x_66(const auto &x_67, const auto &x_68, const auto &x_69) {
           } else {
             return MakeUnit();
           }
-        } else if (x_1252 == "properties") {
-          std::string x_1254 = x_75;
-          if (x_1254 == "width") {
+        } else if (x_1393 == "properties") {
+          std::string x_1395 = x_75;
+          if (x_1395 == "width") {
             WriteMetric();
             x_68->has_prop_width = true;
             x_68->prop_width = AsDEString(x_76);
             return MakeUnit();
-          } else if (x_1254 == "flex-grow") {
+          } else if (x_1395 == "flex-grow") {
             WriteMetric();
             x_68->has_prop_flex_grow = true;
             x_68->prop_flex_grow = AsDEString(x_76);
             return MakeUnit();
-          } else if (x_1254 == "height") {
+          } else if (x_1395 == "height") {
             WriteMetric();
             x_68->has_prop_height = true;
             x_68->prop_height = AsDEString(x_76);
             return MakeUnit();
-          } else if (x_1254 == "display") {
+          } else if (x_1395 == "display") {
             WriteMetric();
             x_68->has_prop_display = true;
             x_68->prop_display = AsDEString(x_76);
             return MakeUnit();
-          } else if (x_1254 == "position") {
+          } else if (x_1395 == "position") {
             WriteMetric();
             x_68->has_prop_position = true;
             x_68->prop_position = AsDEString(x_76);
             return MakeUnit();
-          } else if (x_1254 == "flex-shrink") {
+          } else if (x_1395 == "flex-shrink") {
             WriteMetric();
             x_68->has_prop_flex_shrink = true;
             x_68->prop_flex_shrink = AsDEString(x_76);
             return MakeUnit();
-          } else if (x_1254 == "flex-direction") {
+          } else if (x_1395 == "flex-direction") {
             WriteMetric();
             x_68->has_prop_flex_direction = true;
             x_68->prop_flex_direction = AsDEString(x_76);
@@ -1995,59 +2128,59 @@ Unit x_77(const auto &x_78, const auto &x_79, const auto &x_80) {
         auto x_84 = Zro(x_80);
         auto x_85 = Fst(x_80);
         InputChangeMetric(static_cast<int64_t>(1));
-        std::string x_1255 = x_84;
-        if (x_1255 == "attributes") {
-          std::string x_1256 = x_85;
-          if (x_1256 == "width") {
+        std::string x_1396 = x_84;
+        if (x_1396 == "attributes") {
+          std::string x_1397 = x_85;
+          if (x_1397 == "width") {
             WriteMetric();
             x_79->has_attr_width = false;
             return MakeUnit();
-          } else if (x_1256 == "image_height") {
+          } else if (x_1397 == "image_height") {
             WriteMetric();
             x_79->has_attr_image_height = false;
             return MakeUnit();
-          } else if (x_1256 == "image_width") {
+          } else if (x_1397 == "image_width") {
             WriteMetric();
             x_79->has_attr_image_width = false;
             return MakeUnit();
-          } else if (x_1256 == "height") {
+          } else if (x_1397 == "height") {
             WriteMetric();
             x_79->has_attr_height = false;
             return MakeUnit();
-          } else if (x_1256 == "viewBox") {
+          } else if (x_1397 == "viewBox") {
             WriteMetric();
             x_79->has_attr_viewBox = false;
             return MakeUnit();
           } else {
             return MakeUnit();
           }
-        } else if (x_1255 == "properties") {
-          std::string x_1257 = x_85;
-          if (x_1257 == "width") {
+        } else if (x_1396 == "properties") {
+          std::string x_1398 = x_85;
+          if (x_1398 == "width") {
             WriteMetric();
             x_79->has_prop_width = false;
             return MakeUnit();
-          } else if (x_1257 == "flex-grow") {
+          } else if (x_1398 == "flex-grow") {
             WriteMetric();
             x_79->has_prop_flex_grow = false;
             return MakeUnit();
-          } else if (x_1257 == "height") {
+          } else if (x_1398 == "height") {
             WriteMetric();
             x_79->has_prop_height = false;
             return MakeUnit();
-          } else if (x_1257 == "display") {
+          } else if (x_1398 == "display") {
             WriteMetric();
             x_79->has_prop_display = false;
             return MakeUnit();
-          } else if (x_1257 == "position") {
+          } else if (x_1398 == "position") {
             WriteMetric();
             x_79->has_prop_position = false;
             return MakeUnit();
-          } else if (x_1257 == "flex-shrink") {
+          } else if (x_1398 == "flex-shrink") {
             WriteMetric();
             x_79->has_prop_flex_shrink = false;
             return MakeUnit();
-          } else if (x_1257 == "flex-direction") {
+          } else if (x_1398 == "flex-direction") {
             WriteMetric();
             x_79->has_prop_flex_direction = false;
             return MakeUnit();
@@ -2070,38 +2203,38 @@ Unit x_86(const auto &x_87, const auto &x_88, const auto &x_89) {
         auto x_95 = Fst(x_93);
         auto x_96 = Fst(x_89);
         InputChangeMetric(static_cast<int64_t>(1));
-        std::string x_1258 = x_94;
-        if (x_1258 == "attributes") {
-          std::string x_1259 = x_95;
-          if (x_1259 == "width") {
+        std::string x_1399 = x_94;
+        if (x_1399 == "attributes") {
+          std::string x_1400 = x_95;
+          if (x_1400 == "width") {
             WriteMetric();
             x_88->has_attr_width = false;
             WriteMetric();
             x_88->has_attr_width = true;
             x_88->attr_width = AsDEString(x_96);
             return MakeUnit();
-          } else if (x_1259 == "image_height") {
+          } else if (x_1400 == "image_height") {
             WriteMetric();
             x_88->has_attr_image_height = false;
             WriteMetric();
             x_88->has_attr_image_height = true;
             x_88->attr_image_height = Asint64_t(x_96);
             return MakeUnit();
-          } else if (x_1259 == "image_width") {
+          } else if (x_1400 == "image_width") {
             WriteMetric();
             x_88->has_attr_image_width = false;
             WriteMetric();
             x_88->has_attr_image_width = true;
             x_88->attr_image_width = Asint64_t(x_96);
             return MakeUnit();
-          } else if (x_1259 == "height") {
+          } else if (x_1400 == "height") {
             WriteMetric();
             x_88->has_attr_height = false;
             WriteMetric();
             x_88->has_attr_height = true;
             x_88->attr_height = AsDEString(x_96);
             return MakeUnit();
-          } else if (x_1259 == "viewBox") {
+          } else if (x_1400 == "viewBox") {
             WriteMetric();
             x_88->has_attr_viewBox = false;
             WriteMetric();
@@ -2111,51 +2244,51 @@ Unit x_86(const auto &x_87, const auto &x_88, const auto &x_89) {
           } else {
             return MakeUnit();
           }
-        } else if (x_1258 == "properties") {
-          std::string x_1260 = x_95;
-          if (x_1260 == "width") {
+        } else if (x_1399 == "properties") {
+          std::string x_1401 = x_95;
+          if (x_1401 == "width") {
             WriteMetric();
             x_88->has_prop_width = false;
             WriteMetric();
             x_88->has_prop_width = true;
             x_88->prop_width = AsDEString(x_96);
             return MakeUnit();
-          } else if (x_1260 == "flex-grow") {
+          } else if (x_1401 == "flex-grow") {
             WriteMetric();
             x_88->has_prop_flex_grow = false;
             WriteMetric();
             x_88->has_prop_flex_grow = true;
             x_88->prop_flex_grow = AsDEString(x_96);
             return MakeUnit();
-          } else if (x_1260 == "height") {
+          } else if (x_1401 == "height") {
             WriteMetric();
             x_88->has_prop_height = false;
             WriteMetric();
             x_88->has_prop_height = true;
             x_88->prop_height = AsDEString(x_96);
             return MakeUnit();
-          } else if (x_1260 == "display") {
+          } else if (x_1401 == "display") {
             WriteMetric();
             x_88->has_prop_display = false;
             WriteMetric();
             x_88->has_prop_display = true;
             x_88->prop_display = AsDEString(x_96);
             return MakeUnit();
-          } else if (x_1260 == "position") {
+          } else if (x_1401 == "position") {
             WriteMetric();
             x_88->has_prop_position = false;
             WriteMetric();
             x_88->has_prop_position = true;
             x_88->prop_position = AsDEString(x_96);
             return MakeUnit();
-          } else if (x_1260 == "flex-shrink") {
+          } else if (x_1401 == "flex-shrink") {
             WriteMetric();
             x_88->has_prop_flex_shrink = false;
             WriteMetric();
             x_88->has_prop_flex_shrink = true;
             x_88->prop_flex_shrink = AsDEString(x_96);
             return MakeUnit();
-          } else if (x_1260 == "flex-direction") {
+          } else if (x_1401 == "flex-direction") {
             WriteMetric();
             x_88->has_prop_flex_direction = false;
             WriteMetric();
@@ -2236,6 +2369,8 @@ Unit x_97(const auto &x_98, const auto &x_99, const auto &x_100) {
         });
     x_100->parent = x_99.get();
     MakeUnit();
+    MakeUnit();
+    MakeUnit();
     return MakeUnit();
   } else {
     return x_97(x_102, ListNthExn(x_99->children, x_101), x_100);
@@ -2313,11 +2448,9 @@ Unit x_141(const auto &x_142, const auto &x_143, const auto &x_144) {
 }
 Unit remove_node_x_28(const auto &x_142, const auto &x_143, const auto &x_144) { return x_141(x_142, x_143, x_144); }
 Unit recalculate_x_26(const auto &x_162) {
-  return RecordOverhead([&](const auto &x_163) {
-    eval_stmts_x_17(x_162);
-    eval_stmts_x_19(x_162);
-    return MakeUnit();
-  });
+  RecordOverhead([&](const auto &x_1402) { return eval_stmts_x_17(x_162); });
+  RecordOverhead([&](const auto &x_1404) { return eval_stmts_x_19(x_162); });
+  return MakeUnit();
 }
 Unit x_164(const auto &x_165, const auto &x_166, const auto &x_167) {
   auto x_168 = ListHeadExn(x_165);
@@ -2357,6 +2490,8 @@ Unit x_164(const auto &x_165, const auto &x_166, const auto &x_167) {
           return MakeUnit();
         });
     x_167->parent = x_166.get();
+    MakeUnit();
+    MakeUnit();
     return MakeUnit();
   } else {
     return x_164(x_169, ListNthExn(x_166->children, x_168), x_167);
@@ -2399,24 +2534,24 @@ Unit x_185(const auto &x_186) {
 }
 Unit set_children_relation_x_23(const auto &x_186) { return x_185(x_186); }
 Unit eval_stmts_x_19(const auto &x_193) {
-  return RecordEval([&](const auto &x_194) {
-    RecordOverhead([&](const auto &x_195) { return eval_stmts_x_196(x_193); });
-    ListIter(x_193->children, [&](const auto &x_197) {
+  RecordOverhead([&](const auto &x_195) { return eval_stmts_x_196(x_193); });
+  RecordEval([&](const auto &x_1408) {
+    return ListIter(x_193->children, [&](const auto &x_197) {
       return RecordOverhead([&](const auto &x_198) { return eval_stmts_x_19(x_197); });
     });
-    RecordOverhead([&](const auto &x_199) { return eval_stmts_x_200(x_193); });
-    return MakeUnit();
   });
+  RecordOverhead([&](const auto &x_199) { return eval_stmts_x_200(x_193); });
+  return MakeUnit();
 }
 Unit eval_stmts_x_17(const auto &x_201) {
-  return RecordEval([&](const auto &x_202) {
-    RecordOverhead([&](const auto &x_203) { return eval_stmts_x_204(x_201); });
-    ListIter(x_201->children, [&](const auto &x_205) {
+  RecordOverhead([&](const auto &x_203) { return eval_stmts_x_204(x_201); });
+  RecordEval([&](const auto &x_1414) {
+    return ListIter(x_201->children, [&](const auto &x_205) {
       return RecordOverhead([&](const auto &x_206) { return eval_stmts_x_17(x_205); });
     });
-    RecordOverhead([&](const auto &x_207) { return eval_stmts_x_208(x_201); });
-    return MakeUnit();
   });
+  RecordOverhead([&](const auto &x_207) { return eval_stmts_x_208(x_201); });
+  return MakeUnit();
 }
 Unit x_209(const auto &x_210) {
   ListIter2(x_210->children, [&](const auto &x_211, const auto &x_212) {
@@ -2503,22 +2638,22 @@ int main() {
       RecordOverhead([&](const auto &x_16) { return eval_stmts_x_17(x_14); });
       RecordOverhead([&](const auto &x_18) { return eval_stmts_x_19(x_14); });
       JsonToChannel(x_5, [&]() {
-        auto x_1261 = FreshJson();
-        WriteJson(x_1261, "name", "FS_D");
-        WriteJson(x_1261, "diff_num", ReadRef(x_7));
-        WriteJson(x_1261, "read_count", MetricReadCount());
-        WriteJson(x_1261, "meta_read_count", MetricMetaReadCount());
-        WriteJson(x_1261, "write_count", MetricWriteCount());
-        WriteJson(x_1261, "meta_write_count", MetricMetaWriteCount());
-        WriteJson(x_1261, "queue_size_acc", MetricQueueSizeAcc());
-        WriteJson(x_1261, "input_change_count", MetricInputChangeCount());
-        WriteJson(x_1261, "output_change_count", MetricOutputChangeCount());
-        WriteJson(x_1261, "overhead_time", MetricOverheadTime());
-        WriteJson(x_1261, "overhead_l2m", MetricOverheadL2m());
-        WriteJson(x_1261, "eval_time", MetricEvalCount());
-        WriteJson(x_1261, "html", "");
-        WriteJson(x_1261, "command", StackToList(x_11));
-        return x_1261;
+        auto x_1418 = FreshJson();
+        WriteJson(x_1418, "name", "FS_D");
+        WriteJson(x_1418, "diff_num", ReadRef(x_7));
+        WriteJson(x_1418, "read_count", MetricReadCount());
+        WriteJson(x_1418, "meta_read_count", MetricMetaReadCount());
+        WriteJson(x_1418, "write_count", MetricWriteCount());
+        WriteJson(x_1418, "meta_write_count", MetricMetaWriteCount());
+        WriteJson(x_1418, "queue_size_acc", MetricQueueSizeAcc());
+        WriteJson(x_1418, "input_change_count", MetricInputChangeCount());
+        WriteJson(x_1418, "output_change_count", MetricOutputChangeCount());
+        WriteJson(x_1418, "overhead_time", MetricOverheadTime());
+        WriteJson(x_1418, "overhead_l2m", MetricOverheadL2m());
+        WriteJson(x_1418, "eval_time", MetricEvalCount());
+        WriteJson(x_1418, "html", "");
+        WriteJson(x_1418, "command", StackToList(x_11));
+        return x_1418;
       }());
       OutputString(x_5, "\n");
       ClearStack(x_11);
@@ -2528,8 +2663,8 @@ int main() {
       IterLines(x_6, [&](const auto &x_20) {
         auto x_21 = JsonOfString(x_20);
         PushStack(x_11, x_21);
-        std::string x_1263 = JsonToString(JsonMember("name", x_21));
-        if (x_1263 == "add") {
+        std::string x_1420 = JsonToString(JsonMember("name", x_21));
+        if (x_1420 == "add") {
           return add_node_x_25(
               ListMap(JsonToList(JsonMember("path", x_21)), [&](const auto &x_24) { return JsonToInt(x_24); }), x_14,
               [&]() {
@@ -2540,36 +2675,36 @@ int main() {
                 set_children_relation_x_23(x_22);
                 return x_22;
               }());
-        } else if (x_1263 == "recalculate") {
+        } else if (x_1420 == "recalculate") {
           recalculate_x_26(x_14);
           JsonToChannel(x_5, [&]() {
-            auto x_1262 = FreshJson();
-            WriteJson(x_1262, "name", "FS_D");
-            WriteJson(x_1262, "diff_num", ReadRef(x_7));
-            WriteJson(x_1262, "read_count", MetricReadCount());
-            WriteJson(x_1262, "meta_read_count", MetricMetaReadCount());
-            WriteJson(x_1262, "write_count", MetricWriteCount());
-            WriteJson(x_1262, "meta_write_count", MetricMetaWriteCount());
-            WriteJson(x_1262, "queue_size_acc", MetricQueueSizeAcc());
-            WriteJson(x_1262, "input_change_count", MetricInputChangeCount());
-            WriteJson(x_1262, "output_change_count", MetricOutputChangeCount());
-            WriteJson(x_1262, "overhead_time", MetricOverheadTime());
-            WriteJson(x_1262, "overhead_l2m", MetricOverheadL2m());
-            WriteJson(x_1262, "eval_time", MetricEvalCount());
-            WriteJson(x_1262, "html", "");
-            WriteJson(x_1262, "command", StackToList(x_11));
-            return x_1262;
+            auto x_1419 = FreshJson();
+            WriteJson(x_1419, "name", "FS_D");
+            WriteJson(x_1419, "diff_num", ReadRef(x_7));
+            WriteJson(x_1419, "read_count", MetricReadCount());
+            WriteJson(x_1419, "meta_read_count", MetricMetaReadCount());
+            WriteJson(x_1419, "write_count", MetricWriteCount());
+            WriteJson(x_1419, "meta_write_count", MetricMetaWriteCount());
+            WriteJson(x_1419, "queue_size_acc", MetricQueueSizeAcc());
+            WriteJson(x_1419, "input_change_count", MetricInputChangeCount());
+            WriteJson(x_1419, "output_change_count", MetricOutputChangeCount());
+            WriteJson(x_1419, "overhead_time", MetricOverheadTime());
+            WriteJson(x_1419, "overhead_l2m", MetricOverheadL2m());
+            WriteJson(x_1419, "eval_time", MetricEvalCount());
+            WriteJson(x_1419, "html", "");
+            WriteJson(x_1419, "command", StackToList(x_11));
+            return x_1419;
           }());
           OutputString(x_5, "\n");
           ClearStack(x_11);
           WriteRef(x_7, IntAdd(ReadRef(x_7), static_cast<int64_t>(1)));
           ResetMetric();
           return MakeUnit();
-        } else if (x_1263 == "remove") {
+        } else if (x_1420 == "remove") {
           return remove_node_x_28(
               ListMap(JsonToList(JsonMember("path", x_21)), [&](const auto &x_27) { return JsonToInt(x_27); }), x_14,
               MakeUnit());
-        } else if (x_1263 == "replace") {
+        } else if (x_1420 == "replace") {
           return replace_node_x_32(
               ListMap(JsonToList(JsonMember("path", x_21)), [&](const auto &x_31) { return JsonToInt(x_31); }), x_14,
               [&]() {
@@ -2580,33 +2715,33 @@ int main() {
                 set_children_relation_x_30(x_29);
                 return x_29;
               }());
-        } else if (x_1263 == "replace_value") {
+        } else if (x_1420 == "replace_value") {
           return replace_value_x_34(
               ListMap(JsonToList(JsonMember("path", x_21)), [&](const auto &x_33) { return JsonToInt(x_33); }), x_14,
               MakePair(MakePair(JsonToString(JsonMember("type", x_21)), JsonToString(JsonMember("key", x_21))),
                        JsonToValue(JsonMember("value", x_21))));
-        } else if (x_1263 == "delete_value") {
+        } else if (x_1420 == "delete_value") {
           return delete_value_x_36(
               ListMap(JsonToList(JsonMember("path", x_21)), [&](const auto &x_35) { return JsonToInt(x_35); }), x_14,
               MakePair(JsonToString(JsonMember("type", x_21)), JsonToString(JsonMember("key", x_21))));
-        } else if (x_1263 == "insert_value") {
+        } else if (x_1420 == "insert_value") {
           return insert_value_x_38(
               ListMap(JsonToList(JsonMember("path", x_21)), [&](const auto &x_37) { return JsonToInt(x_37); }), x_14,
               MakePair(MakePair(JsonToString(JsonMember("type", x_21)), JsonToString(JsonMember("key", x_21))),
                        JsonToValue(JsonMember("value", x_21))));
-        } else if (x_1263 == "layout_remove") {
+        } else if (x_1420 == "layout_remove") {
           return remove_layout_node_x_40(
               ListMap(JsonToList(JsonMember("path", x_21)), [&](const auto &x_39) { return JsonToInt(x_39); }), x_15,
               MakeUnit());
-        } else if (x_1263 == "layout_add") {
+        } else if (x_1420 == "layout_add") {
           return add_layout_node_x_42(
               ListMap(JsonToList(JsonMember("path", x_21)), [&](const auto &x_41) { return JsonToInt(x_41); }), x_15,
               json_to_layout_node_x_2(JsonMember("node", x_21)));
-        } else if (x_1263 == "layout_replace") {
+        } else if (x_1420 == "layout_replace") {
           return replace_layout_node_x_44(
               ListMap(JsonToList(JsonMember("path", x_21)), [&](const auto &x_43) { return JsonToInt(x_43); }), x_15,
               json_to_layout_node_x_2(JsonMember("node", x_21)));
-        } else if (x_1263 == "layout_info_changed") {
+        } else if (x_1420 == "layout_info_changed") {
           return OutputChangeMetric(static_cast<int64_t>(1));
         } else {
           Panic();

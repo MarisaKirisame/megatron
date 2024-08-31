@@ -56,10 +56,12 @@ let rec occur_count name x : int =
   | CString _ | CPF _ | CBool _ | CInt _ -> 0
   | CStringMatch (str, cases, default) ->
       recurse str + List.sum (module Int) cases ~f:(fun (_, x) -> recurse x) + recurse default
+  | CIntMatch (str, cases, default) ->
+      recurse str + List.sum (module Int) cases ~f:(fun (_, x) -> recurse x) + recurse default
   | CFun (args, body) -> if List.for_all args ~f:(fun arg -> name != arg) then recurse body else 0
   | CLet (lhs, rhs, body) -> recurse rhs + if name == lhs then 0 else recurse body
   | CIf (i, t, e) -> recurse i + recurse t + recurse e
-  | CSetMember (x, _, y) -> recurse x + recurse y
+  | CSetMember (x, _, y) | CAnd (x, y) -> recurse x + recurse y
   | CVar x -> on_var x
   | CGetMember (x, _) | CNot x | CPanic x -> recurse x
   | CApp (f, xs) -> recurse f + recurses xs
@@ -70,16 +72,23 @@ let rec inline lhs rhs body =
   let recurse x = inline lhs rhs x in
   let recurses xs = List.map xs ~f:recurse in
   match body with
-  | CPF _ | CString _ -> body
+  | CPF _ | CString _ | CBool _ | CInt _ -> body
+  | CLet (let_lhs, let_rhs, let_body) ->
+      CLet (let_lhs, recurse let_rhs, if lhs == let_lhs then let_body else recurse let_body)
   | CVar name -> if name == lhs then rhs else CVar name
+  | CSeq xs -> CSeq (recurses xs)
   | CApp (f, xs) -> CApp (recurse f, recurses xs)
   | CIf (i, t, e) -> CIf (recurse i, recurse t, recurse e)
+  | CGetMember (r, f) -> CGetMember (recurse r, f)
+  | CNot x -> CNot (recurse x)
+  | CAnd (x, y) -> CAnd (recurse x, recurse y)
+  | CFun (args, func_body) ->
+      if List.for_all args ~f:(fun arg -> lhs != arg) then CFun (args, recurse func_body) else body
   | _ -> Common.panic ("inline:" ^ truncate (show_code body))
 
 let rec simplify (p : prog) x =
   let recurse x = simplify p x in
   match x with
-  | CString _ | CVar _ | CPF _ | CInt _ | CBool _ | CFloat _ -> x
   | CApp (CPF "ReadMetric", [ x ]) ->
       x (* not correct, but we dont care about ReadMetric rn, and this simplify the generated code *)
   | CAssert (_, _, x) -> x (*also not correct.*)
@@ -157,7 +166,6 @@ let rec simplify (p : prog) x =
       CSeq [ CSetMember (x, f ^ "_has_bb_dirtied", CBool true); CSetMember (x, f ^ "_bb_dirtied", v) ]
   | CApp (CPF "IsSome", [ CApp (CPF "HashtblFind", [ x; y ]) ]) -> CApp (CPF "HashtblContain", [ x; y ])
   | CApp (CPF ("BoolOfValue" | "VBool" | "VString" | "VFloat" | "VInt"), [ x ]) -> x
-  | CApp (CPF "RecordOverhead", [ CFun (_, CApp (CPF "MakeUnit", [])) ]) -> CApp (CPF "MakeUnit", [])
   | CApp
       ( CPF
           (( "WriteMetric" | "MetricWriteCount" | "MetaWriteMetric" | "MetricQueueSizeAcc" | "MetricMetaReadCount"
@@ -225,7 +233,8 @@ let rec simplify (p : prog) x =
       else if cnt == 1 then inline lhs rhs body
       else CLet (lhs, recurse rhs, recurse body)
   (* default cases *)
-  | CWhile (b, s) -> CWhile (recurse b, recurse s)
+  | CString _ | CVar _ | CPF _ | CInt _ | CBool _ | CFloat _ -> x
+    | CWhile (b, s) -> CWhile (recurse b, recurse s)
   | CAssert (b, e, t) -> CAssert (recurse b, recurse e, recurse t)
   | CPanic xs -> CPanic (recurse xs)
   | CIf (i, t, e) -> CIf (recurse i, recurse t, recurse e)
@@ -244,10 +253,43 @@ let rec simplify (p : prog) x =
       CIntMatch (recurse i, List.map cases ~f:(fun (l, r) -> (l, recurse r)), recurse default)
 (*| _ -> Common.panic ("simplify:" ^ truncate (show_code x))*)
 
-let rec optimize prog x =
-  let new_x = simplify prog x in
-  if equal_code x new_x then x else optimize prog new_x
+let rec simplify_record (p : prog) x =
+  let recurse x = simplify_record p x in
+  match x with
+  | CApp (CPF ("RecordOverhead" | "RecordEval"), [ CFun (_, CApp (CPF "MakeUnit", [])) ]) -> CApp (CPF "MakeUnit", [])
+  | CApp (CPF (("RecordOverhead" | "RecordEval") as f), [ CFun ([ _ ], CSeq xs) ]) ->
+      CSeq (List.map xs ~f:(fun x -> CApp (CPF f, [ CFun ([ fresh () ], x) ])))
+  | CApp
+      ( CPF ("RecordOverhead" | "RecordEval"),
+        [ CFun ([ _ ], CApp (CPF (("RecordOverhead" | "RecordEval") as f), [ x ])) ] ) ->
+      CApp (CPF f, [ x ])
+  (* default cases *)
+  | CString _ | CVar _ | CPF _ | CInt _ | CBool _ | CFloat _ -> x
+    | CSeq xs -> CSeq (List.map xs ~f:recurse)
+  | CWhile (b, s) -> CWhile (recurse b, recurse s)
+  | CAssert (b, e, t) -> CAssert (recurse b, recurse e, recurse t)
+  | CPanic xs -> CPanic (recurse xs)
+  | CIf (i, t, e) -> CIf (recurse i, recurse t, recurse e)
+  | CAnd (l, r) -> CAnd (recurse l, recurse r)
+  | COr (l, r) -> COr (recurse l, recurse r)
+  | CNot i -> CNot (recurse i)
+  | CApp (f, xs) -> CApp (recurse f, List.map xs ~f:recurse)
+  | CLet (lhs, rhs, body) -> CLet (lhs, recurse rhs, recurse body)
+  | CFix (fname, xname, body) -> CFix (fname, xname, recurse body)
+  | CFun (xname, body) -> CFun (xname, recurse body)
+  | CGetMember (x, f) -> CGetMember (recurse x, f)
+  | CSetMember (x, f, v) -> CSetMember (recurse x, f, recurse v)
+  | CStringMatch (str, cases, default) ->
+      CStringMatch (recurse str, List.map cases ~f:(fun (l, r) -> (l, recurse r)), recurse default)
+  | CIntMatch (i, cases, default) ->
+      CIntMatch (recurse i, List.map cases ~f:(fun (l, r) -> (l, recurse r)), recurse default)
+  | _ -> Common.panic ("simplify_record:" ^ truncate (show_code x))
 
+let rec fixpoint f x =
+  let new_x = f x in
+  if equal_code x new_x then x else fixpoint f new_x
+
+let rec optimize prog x = fixpoint (simplify_record prog) (fixpoint (simplify prog) x)
 let names_to_args x = bracket (String.concat ~sep:"," (List.map x ~f:(fun v -> "const auto&" ^ v)))
 
 let rec compile_stmt c x =
