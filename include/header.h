@@ -760,10 +760,11 @@ void pfm_init() {
 }
 
 int64_t read_pfm() {
-  return 1;
   if (!pfm_initialized) {
     pfm_init();
   }
+
+  return 1;
 
   // return pfm_event->read_count().count;
   return pfm_event->read_count_rdpmc().value().count;
