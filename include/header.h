@@ -759,11 +759,12 @@ void pfm_init() {
   pfm_initialized = true;
 }
 
-int64_t read_pfm() {
-  if (!pfm_initialized) {
+struct PFMInitializer {
+  PFMInitializer() {
     pfm_init();
   }
-
+};
+int64_t read_pfm() {
   // return pfm_event->read_count().count;
   return pfm_event->read_count_rdpmc().value().count;
 }
