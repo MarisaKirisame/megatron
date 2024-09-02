@@ -4325,7 +4325,7 @@ Node x_1531(const auto &x_1532) {
 }
 Node json_to_node_aux_x_1296(const auto &x_1532) { return x_1531(x_1532); }
 int main() {
-  WithOutFile("espn.out", [&](const auto &x_1301) {
+  WithOutFile("hn_type.out", [&](const auto &x_1301) {
     PrintEndline("RUNNING DB_D");
     return WithInFile("command.json", [&](const auto &x_1302) {
       auto x_1303 = MakeRef(static_cast<int64_t>(0));

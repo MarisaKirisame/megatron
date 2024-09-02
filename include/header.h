@@ -750,7 +750,7 @@ void pfm_init() {
   const char* pfm_cycle = "CYCLES";
   const char* pfm_branch_miss = "BR_MISP_EXEC";
 
-  static PerfEvent event(pfm.get_perf_arg(pfm_cycle));
+  static PerfEvent event(pfm.get_perf_arg(pfm_l2_miss));
   pfm_event = &event;
 
   pfm_event->reset();
@@ -759,7 +759,8 @@ void pfm_init() {
   pfm_initialized = true;
 }
 
-auto read_pfm() {
+int64_t read_pfm() {
+  return 1;
   if (!pfm_initialized) {
     pfm_init();
   }

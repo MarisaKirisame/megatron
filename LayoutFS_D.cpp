@@ -2558,7 +2558,7 @@ Node x_218(const auto &x_219) {
 }
 Node json_to_node_aux_x_0(const auto &x_219) { return x_218(x_219); }
 int main() {
-  WithOutFile("espn.out", [&](const auto &x_5) {
+  WithOutFile("hn_type.out", [&](const auto &x_5) {
     PrintEndline("RUNNING FS_D");
     return WithInFile("command.json", [&](const auto &x_6) {
       auto x_7 = MakeRef(static_cast<int64_t>(0));
