@@ -236,20 +236,26 @@ module EVAL (SD : SD) = MakeEval (struct
                     ]));
           ])
 
-  let bracket_call_bb (n : meta node sd) bb_name f =
+  let bracket_call_bb (n : meta node sd) bb_name f m =
     seqs
       [
-        (fun _ -> hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool false));
-        (fun _ -> hashtbl_set (meta_get_bb_time_table (node_get_meta n)) (string bb_name) (read_ref current_time));
-        (fun _ -> write_ref current_time (next_total_order (read_ref current_time)));
+        (fun _ ->
+          record_overhead m (fun _ -> hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool false)));
+        (fun _ ->
+          record_overhead m (fun _ ->
+              hashtbl_set (meta_get_bb_time_table (node_get_meta n)) (string bb_name) (read_ref current_time)));
+        (fun _ -> record_overhead m (fun _ -> write_ref current_time (next_total_order (read_ref current_time))));
         (fun _ -> f ());
       ]
 
-  let bracket_call_proc (n : meta node sd) proc_name f =
+  let bracket_call_proc (n : meta node sd) proc_name f m =
     seqs
       [
-        (fun _ -> hashtbl_add_exn (meta_get_proc_inited (node_get_meta n)) (string proc_name) tt);
-        (fun _ -> hashtbl_add_exn (meta_get_recursive_proc_dirtied (node_get_meta n)) (string proc_name) (bool false));
+        (fun _ ->
+          record_overhead m (fun _ -> hashtbl_add_exn (meta_get_proc_inited (node_get_meta n)) (string proc_name) tt));
+        (fun _ ->
+          record_overhead m (fun _ ->
+              hashtbl_add_exn (meta_get_recursive_proc_dirtied (node_get_meta n)) (string proc_name) (bool false)));
         (fun _ -> f ());
       ]
 
@@ -519,24 +525,26 @@ module EVAL (SD : SD) = MakeEval (struct
       : unit sd =
     lift "Unit" "recalculate"
       (lazy
-        (seq
-           (while_
-              (fun _ -> not_ (queue_isempty ()))
-              (fun _ ->
-                let_ (queue_pop ()) (fun qp ->
-                    let_ (zro qp) (fun x ->
-                        let_ (fst qp) (fun k ->
-                            seqs
-                              [
-                                (fun _ ->
-                                  print_endline (string_append (string "queue_size: ") (queue_size () |> string_of_int)));
-                                (fun _ -> meta_read_metric m);
-                                (fun _ -> queue_size_metric m (queue_size ()));
-                                (fun _ ->
-                                  ite
-                                    (k |> key_get_node |> node_get_meta |> meta_get_alive)
-                                    (fun _ -> fix_key p x k m eval_stmts)
-                                    (fun _ -> tt));
-                              ])))))
-           (fun _ -> check p n)))
+        (record_overhead m (fun _ ->
+             seq
+               (while_
+                  (fun _ -> not_ (queue_isempty ()))
+                  (fun _ ->
+                    let_ (queue_pop ()) (fun qp ->
+                        let_ (zro qp) (fun x ->
+                            let_ (fst qp) (fun k ->
+                                seqs
+                                  [
+                                    (fun _ ->
+                                      print_endline
+                                        (string_append (string "queue_size: ") (queue_size () |> string_of_int)));
+                                    (fun _ -> meta_read_metric m);
+                                    (fun _ -> queue_size_metric m (queue_size ()));
+                                    (fun _ ->
+                                      ite
+                                        (k |> key_get_node |> node_get_meta |> meta_get_alive)
+                                        (fun _ -> fix_key p x k m eval_stmts)
+                                        (fun _ -> tt));
+                                  ])))))
+               (fun _ -> check p n))))
 end)

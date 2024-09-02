@@ -68,14 +68,13 @@ module EVAL (SD : SD) = MakeEval (struct
     app (Hashtbl.find_exn set_recursive_proc_dirtied_hash proc_name) n
 
   let bb_dirtied_internal p (n : meta node sd) ~(proc_name : string) ~(bb_name : string) (m : metric sd) : unit sd =
-    record_overhead m (fun _ ->
-        ite
-          (is_some (hashtbl_find (meta_get_proc_inited (node_get_meta n)) (string proc_name)))
-          (fun _ ->
-            seq
-              (hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool true))
-              (fun _ -> set_recursive_proc_dirtied n proc_name m))
-          (fun _ -> meta_write_metric m))
+    ite
+      (is_some (hashtbl_find (meta_get_proc_inited (node_get_meta n)) (string proc_name)))
+      (fun _ ->
+        seq
+          (hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool true))
+          (fun _ -> set_recursive_proc_dirtied n proc_name m))
+      (fun _ -> meta_write_metric m)
 
   let bb_dirtied_external = bb_dirtied_internal
 
@@ -84,14 +83,22 @@ module EVAL (SD : SD) = MakeEval (struct
       (hashtbl_add_exn (meta_get_recursive_proc_dirtied (node_get_meta y)) (string proc_name) (bool false))
       (fun _ -> set_recursive_proc_dirtied y proc_name m)
 
-  let bracket_call_bb (n : meta node sd) bb_name f =
-    seq (hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool false)) (fun _ -> f ())
-
-  let bracket_call_proc (n : meta node sd) proc_name f =
+  let bracket_call_bb (n : meta node sd) bb_name f m =
     seqs
       [
-        (fun _ -> hashtbl_add_exn (meta_get_proc_inited (node_get_meta n)) (string proc_name) tt);
-        (fun _ -> hashtbl_add_exn (meta_get_recursive_proc_dirtied (node_get_meta n)) (string proc_name) (bool false));
+        (fun _ ->
+          record_overhead m (fun _ -> hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool false)));
+        (fun _ -> f ());
+      ]
+
+  let bracket_call_proc (n : meta node sd) proc_name f m =
+    seqs
+      [
+        (fun _ ->
+          record_overhead m (fun _ -> hashtbl_add_exn (meta_get_proc_inited (node_get_meta n)) (string proc_name) tt));
+        (fun _ ->
+          record_overhead m (fun _ ->
+              hashtbl_add_exn (meta_get_recursive_proc_dirtied (node_get_meta n)) (string proc_name) (bool false)));
         (fun _ -> f ());
       ]
 
@@ -155,10 +162,11 @@ module EVAL (SD : SD) = MakeEval (struct
 
   let recalculate_internal (p : prog) (n : meta node sd) (m : metric sd) (eval_stmts : meta node sd -> stmts -> unit sd)
       : unit sd =
-    seq
-      (seqs
-         (List.map p.order ~f:(fun proc_name _ ->
-              let down, up = get_bb_from_proc p proc_name in
-              recalculate_internal_aux p n proc_name down up m eval_stmts)))
-      (fun _ -> if is_static then check p (n |> unstatic) |> static else tt)
+    record_overhead m (fun _ ->
+        seq
+          (seqs
+             (List.map p.order ~f:(fun proc_name _ ->
+                  let down, up = get_bb_from_proc p proc_name in
+                  recalculate_internal_aux p n proc_name down up m eval_stmts)))
+          (fun _ -> if is_static then check p (n |> unstatic) |> static else tt))
 end)

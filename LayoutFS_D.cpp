@@ -677,311 +677,337 @@ struct Content : std::enable_shared_from_this<Content> {
   bool has_prop_flex_direction = false;
 };
 #include "header_continued.h"
-Unit var_modified_x_473(const auto &x_475);
-auto eval_expr_x_470(const auto &x_480);
-Unit var_modified_x_468(const auto &x_489);
-auto eval_expr_x_465(const auto &x_492);
-Unit var_modified_x_463(const auto &x_497);
-auto eval_expr_x_460(const auto &x_501);
-Unit var_modified_x_458(const auto &x_528);
-auto eval_expr_x_455(const auto &x_534);
-Unit var_modified_x_453(const auto &x_547);
-auto eval_expr_x_450(const auto &x_552);
-Unit var_modified_x_448(const auto &x_557);
-auto eval_expr_x_445(const auto &x_561);
-Unit var_modified_x_443(const auto &x_588);
-auto eval_expr_x_440(const auto &x_594);
-Unit var_modified_x_438(const auto &x_605);
-auto eval_expr_x_435(const auto &x_608);
-Unit var_modified_x_433(const auto &x_619);
-auto eval_expr_x_430(const auto &x_622);
-Unit var_modified_x_428(const auto &x_629);
-auto eval_expr_x_425(const auto &x_633);
-Unit var_modified_x_423(const auto &x_644);
-auto eval_expr_x_420(const auto &x_647);
-Unit var_modified_x_418(const auto &x_650);
-auto eval_expr_x_415(const auto &x_653);
-Unit var_modified_x_409(const auto &x_656);
-auto eval_expr_x_406(const auto &x_666);
-Unit var_modified_x_404(const auto &x_711);
-auto eval_expr_x_401(const auto &x_714);
-Unit var_modified_x_399(const auto &x_723);
-auto eval_expr_x_396(const auto &x_728);
-Unit var_modified_x_394(const auto &x_731);
-auto eval_expr_x_391(const auto &x_736);
-Unit var_modified_x_389(const auto &x_741);
-auto eval_expr_x_386(const auto &x_744);
-Unit var_modified_x_384(const auto &x_745);
-auto eval_expr_x_381(const auto &x_748);
-Unit var_modified_x_379(const auto &x_751);
-auto eval_expr_x_376(const auto &x_755);
-Unit var_modified_x_374(const auto &x_766);
-auto eval_expr_x_371(const auto &x_769);
-Unit var_modified_x_369(const auto &x_772);
-auto eval_expr_x_366(const auto &x_776);
-Unit var_modified_x_364(const auto &x_787);
-auto eval_expr_x_361(const auto &x_791);
-Unit var_modified_x_359(const auto &x_804);
-auto eval_expr_x_356(const auto &x_809);
-Unit var_modified_x_354(const auto &x_824);
-auto eval_expr_x_351(const auto &x_827);
-Unit var_modified_x_349(const auto &x_830);
-auto eval_expr_x_346(const auto &x_836);
-Unit var_modified_x_344(const auto &x_841);
-auto eval_expr_x_341(const auto &x_847);
-Unit var_modified_x_339(const auto &x_852);
-auto eval_expr_x_336(const auto &x_856);
-Unit var_modified_x_334(const auto &x_859);
-auto eval_expr_x_331(const auto &x_863);
-Unit var_modified_x_329(const auto &x_866);
-auto eval_expr_x_326(const auto &x_871);
-Unit var_modified_x_324(const auto &x_874);
-auto eval_expr_x_321(const auto &x_879);
-Unit var_modified_x_317(const auto &x_882);
-auto eval_expr_x_314(const auto &x_890);
-Unit var_modified_x_312(const auto &x_905);
-auto eval_expr_x_309(const auto &x_913);
-Unit var_modified_x_307(const auto &x_920);
-auto eval_expr_x_304(const auto &x_928);
-Unit var_modified_x_302(const auto &x_933);
-auto eval_expr_x_299(const auto &x_936);
-Unit var_modified_x_297(const auto &x_941);
-auto eval_expr_x_294(const auto &x_945);
-Unit var_modified_x_292(const auto &x_1024);
-auto eval_expr_x_289(const auto &x_1027);
-Unit var_modified_x_287(const auto &x_1052);
-auto eval_expr_x_284(const auto &x_1056);
-Unit var_modified_x_282(const auto &x_1059);
-auto eval_expr_x_279(const auto &x_1062);
-Unit var_modified_x_277(const auto &x_1067);
-auto eval_expr_x_274(const auto &x_1075);
-Unit var_modified_x_272(const auto &x_1080);
-auto eval_expr_x_269(const auto &x_1088);
-Unit var_modified_x_267(const auto &x_1093);
-auto eval_expr_x_264(const auto &x_1099);
-Unit var_modified_x_262(const auto &x_1106);
-auto eval_expr_x_259(const auto &x_1109);
-Unit var_modified_x_257(const auto &x_1114);
-auto eval_expr_x_254(const auto &x_1118);
-Unit var_modified_x_252(const auto &x_1201);
-auto eval_expr_x_249(const auto &x_1204);
-Unit var_modified_x_247(const auto &x_1207);
-auto eval_expr_x_244(const auto &x_1210);
-Unit var_modified_x_242(const auto &x_1235);
-auto eval_expr_x_239(const auto &x_1238);
-Unit var_modified_x_237(const auto &x_1245);
-auto eval_expr_x_234(const auto &x_1249);
-Unit eval_stmts_x_208(const auto &x_232);
-Unit eval_stmts_x_204(const auto &x_319);
-Unit eval_stmts_x_200(const auto &x_411);
-Unit eval_stmts_x_196(const auto &x_413);
-Unit x_45(const auto &x_46, const auto &x_47, const auto &x_48);
-Unit x_52(const auto &x_53, const auto &x_54, const auto &x_55);
-Unit x_59(const auto &x_60, const auto &x_61, const auto &x_62);
-Unit x_66(const auto &x_67, const auto &x_68, const auto &x_69);
-Unit x_77(const auto &x_78, const auto &x_79, const auto &x_80);
-Unit x_86(const auto &x_87, const auto &x_88, const auto &x_89);
-Unit x_97(const auto &x_98, const auto &x_99, const auto &x_100);
-Unit x_133(const auto &x_134);
-Unit x_141(const auto &x_142, const auto &x_143, const auto &x_144);
-Unit recalculate_x_26(const auto &x_162);
-Unit x_164(const auto &x_165, const auto &x_166, const auto &x_167);
-Unit x_185(const auto &x_186);
-Unit eval_stmts_x_19(const auto &x_193);
-Unit eval_stmts_x_17(const auto &x_201);
-Unit x_209(const auto &x_210);
-int64_t x_217(const auto &x_218);
-int64_t x_220(const auto &x_221);
-LayoutNode x_223(const auto &x_224);
-Node x_226(const auto &x_227);
-Node x_229(const auto &x_230);
-Unit var_modified_x_473(const auto &x_475) { return MakeUnit(); }
-auto eval_expr_x_470(const auto &x_480) {
-  if ((x_480->prev != nullptr) && (!(x_480->prev)->var_line_break)) {
-    return max(x_480->var_height_external, (x_480->prev)->var_line_height);
-  } else {
-    return x_480->var_height_external;
-  }
-}
-Unit var_modified_x_468(const auto &x_489) { return MakeUnit(); }
-auto eval_expr_x_465(const auto &x_492) {
-  if (eq(x_492->var_position, DEStringLit(DEStringCase::DSTRING_absolute))) {
-    return 0.;
-  } else {
-    return x_492->var_height_internal;
-  }
-}
-Unit var_modified_x_463(const auto &x_497) { return MakeUnit(); }
-auto eval_expr_x_460(const auto &x_501) {
-  if (x_501->var_intrinsic_height_is_height) {
-    return x_501->var_intrinsic_height_internal;
-  } else {
-    if ((x_501->parent != nullptr) && (x_501->parent)->var_is_flex_column) {
-      return plus(x_501->var_intrinsic_height_internal, mult(x_501->var_flex_amount, (x_501->parent)->var_flex_unit));
+Unit var_modified_x_458(const auto &x_460);
+auto eval_expr_x_455(const auto &x_465);
+Unit var_modified_x_453(const auto &x_475);
+auto eval_expr_x_450(const auto &x_478);
+Unit var_modified_x_448(const auto &x_484);
+auto eval_expr_x_445(const auto &x_488);
+Unit var_modified_x_443(const auto &x_516);
+auto eval_expr_x_440(const auto &x_522);
+Unit var_modified_x_438(const auto &x_536);
+auto eval_expr_x_435(const auto &x_541);
+Unit var_modified_x_433(const auto &x_547);
+auto eval_expr_x_430(const auto &x_551);
+Unit var_modified_x_428(const auto &x_579);
+auto eval_expr_x_425(const auto &x_585);
+Unit var_modified_x_423(const auto &x_597);
+auto eval_expr_x_420(const auto &x_600);
+Unit var_modified_x_418(const auto &x_612);
+auto eval_expr_x_415(const auto &x_615);
+Unit var_modified_x_413(const auto &x_623);
+auto eval_expr_x_410(const auto &x_627);
+Unit var_modified_x_408(const auto &x_639);
+auto eval_expr_x_405(const auto &x_642);
+Unit var_modified_x_403(const auto &x_646);
+auto eval_expr_x_400(const auto &x_649);
+Unit var_modified_x_396(const auto &x_653);
+auto eval_expr_x_393(const auto &x_663);
+Unit var_modified_x_391(const auto &x_709);
+auto eval_expr_x_388(const auto &x_712);
+Unit var_modified_x_386(const auto &x_722);
+auto eval_expr_x_383(const auto &x_727);
+Unit var_modified_x_381(const auto &x_731);
+auto eval_expr_x_378(const auto &x_736);
+Unit var_modified_x_376(const auto &x_742);
+auto eval_expr_x_373(const auto &x_745);
+Unit var_modified_x_371(const auto &x_747);
+auto eval_expr_x_368(const auto &x_750);
+Unit var_modified_x_366(const auto &x_754);
+auto eval_expr_x_363(const auto &x_758);
+Unit var_modified_x_361(const auto &x_770);
+auto eval_expr_x_358(const auto &x_773);
+Unit var_modified_x_356(const auto &x_777);
+auto eval_expr_x_353(const auto &x_781);
+Unit var_modified_x_351(const auto &x_793);
+auto eval_expr_x_348(const auto &x_797);
+Unit var_modified_x_346(const auto &x_811);
+auto eval_expr_x_343(const auto &x_816);
+Unit var_modified_x_341(const auto &x_832);
+auto eval_expr_x_338(const auto &x_835);
+Unit var_modified_x_336(const auto &x_839);
+auto eval_expr_x_333(const auto &x_845);
+Unit var_modified_x_331(const auto &x_851);
+auto eval_expr_x_328(const auto &x_857);
+Unit var_modified_x_326(const auto &x_863);
+auto eval_expr_x_323(const auto &x_867);
+Unit var_modified_x_321(const auto &x_871);
+auto eval_expr_x_318(const auto &x_875);
+Unit var_modified_x_316(const auto &x_879);
+auto eval_expr_x_313(const auto &x_884);
+Unit var_modified_x_311(const auto &x_888);
+auto eval_expr_x_308(const auto &x_893);
+Unit var_modified_x_305(const auto &x_897);
+auto eval_expr_x_302(const auto &x_905);
+Unit var_modified_x_300(const auto &x_921);
+auto eval_expr_x_297(const auto &x_929);
+Unit var_modified_x_295(const auto &x_937);
+auto eval_expr_x_292(const auto &x_945);
+Unit var_modified_x_290(const auto &x_951);
+auto eval_expr_x_287(const auto &x_954);
+Unit var_modified_x_285(const auto &x_960);
+auto eval_expr_x_282(const auto &x_964);
+Unit var_modified_x_280(const auto &x_1044);
+auto eval_expr_x_277(const auto &x_1047);
+Unit var_modified_x_275(const auto &x_1073);
+auto eval_expr_x_272(const auto &x_1077);
+Unit var_modified_x_270(const auto &x_1081);
+auto eval_expr_x_267(const auto &x_1084);
+Unit var_modified_x_265(const auto &x_1090);
+auto eval_expr_x_262(const auto &x_1098);
+Unit var_modified_x_260(const auto &x_1104);
+auto eval_expr_x_257(const auto &x_1112);
+Unit var_modified_x_255(const auto &x_1118);
+auto eval_expr_x_252(const auto &x_1124);
+Unit var_modified_x_250(const auto &x_1132);
+auto eval_expr_x_247(const auto &x_1135);
+Unit var_modified_x_245(const auto &x_1141);
+auto eval_expr_x_242(const auto &x_1145);
+Unit var_modified_x_240(const auto &x_1229);
+auto eval_expr_x_237(const auto &x_1232);
+Unit var_modified_x_235(const auto &x_1236);
+auto eval_expr_x_232(const auto &x_1239);
+Unit var_modified_x_230(const auto &x_1265);
+auto eval_expr_x_227(const auto &x_1268);
+Unit var_modified_x_225(const auto &x_1276);
+auto eval_expr_x_222(const auto &x_1280);
+Unit eval_stmts_x_197(const auto &x_221);
+Unit eval_stmts_x_195(const auto &x_307);
+Unit eval_stmts_x_193(const auto &x_398);
+Unit eval_stmts_x_191(const auto &x_399);
+Unit x_43(const auto &x_44, const auto &x_45, const auto &x_46);
+Unit x_50(const auto &x_51, const auto &x_52, const auto &x_53);
+Unit x_57(const auto &x_58, const auto &x_59, const auto &x_60);
+Unit x_64(const auto &x_65, const auto &x_66, const auto &x_67);
+Unit x_75(const auto &x_76, const auto &x_77, const auto &x_78);
+Unit x_84(const auto &x_85, const auto &x_86, const auto &x_87);
+Unit x_95(const auto &x_96, const auto &x_97, const auto &x_98);
+Unit x_131(const auto &x_132);
+Unit x_139(const auto &x_140, const auto &x_141, const auto &x_142);
+Unit recalculate_x_24(const auto &x_160);
+Unit x_161(const auto &x_162, const auto &x_163, const auto &x_164);
+Unit x_182(const auto &x_183);
+Unit eval_stmts_x_17(const auto &x_190);
+Unit eval_stmts_x_16(const auto &x_194);
+Unit x_198(const auto &x_199);
+int64_t x_206(const auto &x_207);
+int64_t x_209(const auto &x_210);
+LayoutNode x_212(const auto &x_213);
+Node x_215(const auto &x_216);
+Node x_218(const auto &x_219);
+Unit var_modified_x_458(const auto &x_460) { return MakeUnit(); }
+auto eval_expr_x_455(const auto &x_465) {
+  return RecordEval([&](const auto &x_466) {
+    if ((x_465->prev != nullptr) && (!(x_465->prev)->var_line_break)) {
+      return max(x_465->var_height_external, (x_465->prev)->var_line_height);
     } else {
-      if (x_501->var_height_expr.c == DEStringCase::DHasSuffix_PERCENTAGE) {
-        return mult(x_501->var_box_height, divide(x_501->var_height_expr.r.a0, 100.));
+      return x_465->var_height_external;
+    }
+  });
+}
+Unit var_modified_x_453(const auto &x_475) { return MakeUnit(); }
+auto eval_expr_x_450(const auto &x_478) {
+  return RecordEval([&](const auto &x_479) {
+    if (eq(x_478->var_position, DEStringLit(DEStringCase::DSTRING_absolute))) {
+      return 0.;
+    } else {
+      return x_478->var_height_internal;
+    }
+  });
+}
+Unit var_modified_x_448(const auto &x_484) { return MakeUnit(); }
+auto eval_expr_x_445(const auto &x_488) {
+  return RecordEval([&](const auto &x_489) {
+    if (x_488->var_intrinsic_height_is_height) {
+      return x_488->var_intrinsic_height_internal;
+    } else {
+      if ((x_488->parent != nullptr) && (x_488->parent)->var_is_flex_column) {
+        return plus(x_488->var_intrinsic_height_internal, mult(x_488->var_flex_amount, (x_488->parent)->var_flex_unit));
       } else {
-        return max(x_501->var_box_height, x_501->var_intrinsic_height_internal);
+        if (x_488->var_height_expr.c == DEStringCase::DHasSuffix_PERCENTAGE) {
+          return mult(x_488->var_box_height, divide(x_488->var_height_expr.r.a0, 100.));
+        } else {
+          return max(x_488->var_box_height, x_488->var_intrinsic_height_internal);
+        }
       }
     }
-  }
+  });
 }
-Unit var_modified_x_458(const auto &x_528) { return MakeUnit(); }
-auto eval_expr_x_455(const auto &x_534) {
-  if (x_534->prev != nullptr) {
-    if (x_534->var_line_break || (x_534->prev)->var_line_break) {
-      return plus((x_534->prev)->var_y, (x_534->prev)->var_line_height);
-    } else {
-      return (x_534->prev)->var_y;
-    }
-  } else {
-    if (x_534->parent != nullptr) {
-      return (x_534->parent)->var_y;
-    } else {
-      return 0.;
-    }
-  }
-}
-Unit var_modified_x_453(const auto &x_547) { return MakeUnit(); }
-auto eval_expr_x_450(const auto &x_552) {
-  if (eq(x_552->var_position, DEStringLit(DEStringCase::DSTRING_absolute))) {
-    return 0.;
-  } else {
-    return x_552->var_width_internal;
-  }
-}
-Unit var_modified_x_448(const auto &x_557) { return MakeUnit(); }
-auto eval_expr_x_445(const auto &x_561) {
-  if (x_561->var_intrinsic_width_is_width) {
-    return x_561->var_intrinsic_width_internal;
-  } else {
-    if ((x_561->parent != nullptr) && (x_561->parent)->var_is_flex_row) {
-      return plus(x_561->var_intrinsic_width_internal, mult(x_561->var_flex_amount, (x_561->parent)->var_flex_unit));
-    } else {
-      if (x_561->var_width_expr.c == DEStringCase::DHasSuffix_PERCENTAGE) {
-        return mult(x_561->var_box_width, divide(x_561->var_width_expr.r.a0, 100.));
+Unit var_modified_x_443(const auto &x_516) { return MakeUnit(); }
+auto eval_expr_x_440(const auto &x_522) {
+  return RecordEval([&](const auto &x_523) {
+    if (x_522->prev != nullptr) {
+      if (x_522->var_line_break || (x_522->prev)->var_line_break) {
+        return plus((x_522->prev)->var_y, (x_522->prev)->var_line_height);
       } else {
-        return max(x_561->var_box_width, x_561->var_intrinsic_width_internal);
+        return (x_522->prev)->var_y;
+      }
+    } else {
+      if (x_522->parent != nullptr) {
+        return (x_522->parent)->var_y;
+      } else {
+        return 0.;
       }
     }
-  }
+  });
 }
-Unit var_modified_x_443(const auto &x_588) { return MakeUnit(); }
-auto eval_expr_x_440(const auto &x_594) {
-  if (x_594->prev != nullptr) {
-    if (x_594->var_line_break || (x_594->prev)->var_line_break) {
+Unit var_modified_x_438(const auto &x_536) { return MakeUnit(); }
+auto eval_expr_x_435(const auto &x_541) {
+  return RecordEval([&](const auto &x_542) {
+    if (eq(x_541->var_position, DEStringLit(DEStringCase::DSTRING_absolute))) {
       return 0.;
     } else {
-      return plus((x_594->prev)->var_x, (x_594->prev)->var_width_external);
+      return x_541->var_width_internal;
     }
-  } else {
-    if (x_594->parent != nullptr) {
-      return (x_594->parent)->var_x;
+  });
+}
+Unit var_modified_x_433(const auto &x_547) { return MakeUnit(); }
+auto eval_expr_x_430(const auto &x_551) {
+  return RecordEval([&](const auto &x_552) {
+    if (x_551->var_intrinsic_width_is_width) {
+      return x_551->var_intrinsic_width_internal;
     } else {
-      return 0.;
+      if ((x_551->parent != nullptr) && (x_551->parent)->var_is_flex_row) {
+        return plus(x_551->var_intrinsic_width_internal, mult(x_551->var_flex_amount, (x_551->parent)->var_flex_unit));
+      } else {
+        if (x_551->var_width_expr.c == DEStringCase::DHasSuffix_PERCENTAGE) {
+          return mult(x_551->var_box_width, divide(x_551->var_width_expr.r.a0, 100.));
+        } else {
+          return max(x_551->var_box_width, x_551->var_intrinsic_width_internal);
+        }
+      }
     }
-  }
+  });
 }
-Unit var_modified_x_438(const auto &x_605) { return MakeUnit(); }
-auto eval_expr_x_435(const auto &x_608) {
-  if (gt(x_608->var_left_over, 0.)) {
-    return divide(x_608->var_left_over, x_608->var_flex_grow_sum);
-  } else {
-    return divide(x_608->var_left_over, x_608->var_flex_shrink_sum);
-  }
+Unit var_modified_x_428(const auto &x_579) { return MakeUnit(); }
+auto eval_expr_x_425(const auto &x_585) {
+  return RecordEval([&](const auto &x_586) {
+    if (x_585->prev != nullptr) {
+      if (x_585->var_line_break || (x_585->prev)->var_line_break) {
+        return 0.;
+      } else {
+        return plus((x_585->prev)->var_x, (x_585->prev)->var_width_external);
+      }
+    } else {
+      if (x_585->parent != nullptr) {
+        return (x_585->parent)->var_x;
+      } else {
+        return 0.;
+      }
+    }
+  });
 }
-Unit var_modified_x_433(const auto &x_619) { return MakeUnit(); }
-auto eval_expr_x_430(const auto &x_622) {
-  if ((x_622->parent != nullptr) && gt((x_622->parent)->var_left_over, 0.)) {
-    return x_622->var_flex_grow;
-  } else {
-    return x_622->var_flex_shrink;
-  }
+Unit var_modified_x_423(const auto &x_597) { return MakeUnit(); }
+auto eval_expr_x_420(const auto &x_600) {
+  return RecordEval([&](const auto &x_601) {
+    if (gt(x_600->var_left_over, 0.)) {
+      return divide(x_600->var_left_over, x_600->var_flex_grow_sum);
+    } else {
+      return divide(x_600->var_left_over, x_600->var_flex_shrink_sum);
+    }
+  });
 }
-Unit var_modified_x_428(const auto &x_629) { return MakeUnit(); }
-auto eval_expr_x_425(const auto &x_633) {
-  if (x_633->var_is_flex_row) {
-    return minus(x_633->var_box_width, (x_633->last != nullptr) ? ((x_633->last)->var_intrinsic_width_sum) : (0.));
-  } else {
-    return minus(x_633->var_box_height, (x_633->last != nullptr) ? ((x_633->last)->var_intrinsic_height_sum) : (0.));
-  }
+Unit var_modified_x_418(const auto &x_612) { return MakeUnit(); }
+auto eval_expr_x_415(const auto &x_615) {
+  return RecordEval([&](const auto &x_616) {
+    if ((x_615->parent != nullptr) && gt((x_615->parent)->var_left_over, 0.)) {
+      return x_615->var_flex_grow;
+    } else {
+      return x_615->var_flex_shrink;
+    }
+  });
 }
-Unit var_modified_x_423(const auto &x_644) { return MakeUnit(); }
-auto eval_expr_x_420(const auto &x_647) {
-  if (x_647->parent != nullptr) {
-    return (x_647->parent)->var_height_internal;
-  } else {
-    return 1080.;
-  }
+Unit var_modified_x_413(const auto &x_623) { return MakeUnit(); }
+auto eval_expr_x_410(const auto &x_627) {
+  return RecordEval([&](const auto &x_628) {
+    if (x_627->var_is_flex_row) {
+      return minus(x_627->var_box_width, (x_627->last != nullptr) ? ((x_627->last)->var_intrinsic_width_sum) : (0.));
+    } else {
+      return minus(x_627->var_box_height, (x_627->last != nullptr) ? ((x_627->last)->var_intrinsic_height_sum) : (0.));
+    }
+  });
 }
-Unit var_modified_x_418(const auto &x_650) { return MakeUnit(); }
-auto eval_expr_x_415(const auto &x_653) {
-  if (x_653->parent != nullptr) {
-    return (x_653->parent)->var_width_internal;
-  } else {
-    return 1920.;
-  }
+Unit var_modified_x_408(const auto &x_639) { return MakeUnit(); }
+auto eval_expr_x_405(const auto &x_642) {
+  return RecordEval([&](const auto &x_643) {
+    if (x_642->parent != nullptr) {
+      return (x_642->parent)->var_height_internal;
+    } else {
+      return 1080.;
+    }
+  });
 }
-Unit var_modified_x_409(const auto &x_656) { return MakeUnit(); }
-auto eval_expr_x_406(const auto &x_666) {
-  if (eq(x_666->var_display, DEStringLit(DEStringCase::DSTRING_none))) {
-    return false;
-  } else {
-    if (eq(x_666->var_position, DEStringLit(DEStringCase::DSTRING_absolute))) {
+Unit var_modified_x_403(const auto &x_646) { return MakeUnit(); }
+auto eval_expr_x_400(const auto &x_649) {
+  return RecordEval([&](const auto &x_650) {
+    if (x_649->parent != nullptr) {
+      return (x_649->parent)->var_width_internal;
+    } else {
+      return 1920.;
+    }
+  });
+}
+Unit var_modified_x_396(const auto &x_653) { return MakeUnit(); }
+auto eval_expr_x_393(const auto &x_663) {
+  return RecordEval([&](const auto &x_664) {
+    if (eq(x_663->var_display, DEStringLit(DEStringCase::DSTRING_none))) {
       return false;
     } else {
-      if ((x_666->parent != nullptr) &&
-          (eq((x_666->parent)->var_display, DEStringLit(DEStringCase::DSTRING_flex)) ||
-           eq((x_666->parent)->var_display, DEStringLit(DEStringCase::DSTRING_inline_flex)))) {
-        return true;
+      if (eq(x_663->var_position, DEStringLit(DEStringCase::DSTRING_absolute))) {
+        return false;
       } else {
-        if (eq(x_666->var_display, DEStringLit(DEStringCase::DSTRING_block))) {
+        if ((x_663->parent != nullptr) &&
+            (eq((x_663->parent)->var_display, DEStringLit(DEStringCase::DSTRING_flex)) ||
+             eq((x_663->parent)->var_display, DEStringLit(DEStringCase::DSTRING_inline_flex)))) {
           return true;
         } else {
-          if (eq(x_666->var_display, DEStringLit(DEStringCase::DSTRING_inline))) {
-            return false;
+          if (eq(x_663->var_display, DEStringLit(DEStringCase::DSTRING_block))) {
+            return true;
           } else {
-            if (eq(x_666->var_display, DEStringLit(DEStringCase::DSTRING_inline_block))) {
+            if (eq(x_663->var_display, DEStringLit(DEStringCase::DSTRING_inline))) {
               return false;
             } else {
-              if (eq(x_666->var_display, DEStringLit(DEStringCase::DSTRING_flex))) {
-                if (eq(x_666->prop_flex_direction, DEStringLit(DEStringCase::DSTRING_row))) {
-                  return false;
-                } else {
-                  if (eq(x_666->prop_flex_direction, DEStringLit(DEStringCase::DSTRING_row_reverse))) {
-                    return false;
-                  } else {
-                    if (eq(x_666->prop_flex_direction, DEStringLit(DEStringCase::DSTRING_column))) {
-                      return true;
-                    } else {
-                      return true;
-                    }
-                  }
-                }
+              if (eq(x_663->var_display, DEStringLit(DEStringCase::DSTRING_inline_block))) {
+                return false;
               } else {
-                if (eq(x_666->var_display, DEStringLit(DEStringCase::DSTRING_inline_flex))) {
-                  return false;
-                } else {
-                  if (eq(x_666->var_display, DEStringLit(DEStringCase::DSTRING_contents))) {
+                if (eq(x_663->var_display, DEStringLit(DEStringCase::DSTRING_flex))) {
+                  if (eq(x_663->prop_flex_direction, DEStringLit(DEStringCase::DSTRING_row))) {
                     return false;
                   } else {
-                    if (eq(x_666->var_display, DEStringLit(DEStringCase::DSTRING_table))) {
-                      return true;
+                    if (eq(x_663->prop_flex_direction, DEStringLit(DEStringCase::DSTRING_row_reverse))) {
+                      return false;
                     } else {
-                      if (eq(x_666->var_display, DEStringLit(DEStringCase::DSTRING_table_row_group))) {
+                      if (eq(x_663->prop_flex_direction, DEStringLit(DEStringCase::DSTRING_column))) {
                         return true;
                       } else {
-                        if (eq(x_666->var_display, DEStringLit(DEStringCase::DSTRING_table_row))) {
+                        return true;
+                      }
+                    }
+                  }
+                } else {
+                  if (eq(x_663->var_display, DEStringLit(DEStringCase::DSTRING_inline_flex))) {
+                    return false;
+                  } else {
+                    if (eq(x_663->var_display, DEStringLit(DEStringCase::DSTRING_contents))) {
+                      return false;
+                    } else {
+                      if (eq(x_663->var_display, DEStringLit(DEStringCase::DSTRING_table))) {
+                        return true;
+                      } else {
+                        if (eq(x_663->var_display, DEStringLit(DEStringCase::DSTRING_table_row_group))) {
                           return true;
                         } else {
-                          if (eq(x_666->var_display, DEStringLit(DEStringCase::DSTRING_table_cell))) {
-                            return false;
+                          if (eq(x_663->var_display, DEStringLit(DEStringCase::DSTRING_table_row))) {
+                            return true;
                           } else {
-                            if (eq(x_666->var_display, DEStringLit(DEStringCase::DSTRING_list_item))) {
-                              return true;
+                            if (eq(x_663->var_display, DEStringLit(DEStringCase::DSTRING_table_cell))) {
+                              return false;
                             } else {
-                              return true;
+                              if (eq(x_663->var_display, DEStringLit(DEStringCase::DSTRING_list_item))) {
+                                return true;
+                              } else {
+                                return true;
+                              }
                             }
                           }
                         }
@@ -995,1121 +1021,1048 @@ auto eval_expr_x_406(const auto &x_666) {
         }
       }
     }
-  }
+  });
 }
-Unit var_modified_x_404(const auto &x_711) { return MakeUnit(); }
-auto eval_expr_x_401(const auto &x_714) {
-  return (((!(x_714->parent != nullptr)) || (x_714->parent)->var_visible) &&
-          (neq(x_714->var_display, DEStringLit(DEStringCase::DSTRING_none)) &&
-           ((!x_714->var_inside_svg) && (!x_714->var_disabled))));
+Unit var_modified_x_391(const auto &x_709) { return MakeUnit(); }
+auto eval_expr_x_388(const auto &x_712) {
+  return RecordEval([&](const auto &x_713) {
+    return (((!(x_712->parent != nullptr)) || (x_712->parent)->var_visible) &&
+            (neq(x_712->var_display, DEStringLit(DEStringCase::DSTRING_none)) &&
+             ((!x_712->var_inside_svg) && (!x_712->var_disabled))));
+  });
 }
-Unit var_modified_x_399(const auto &x_723) { return MakeUnit(); }
-auto eval_expr_x_396(const auto &x_728) {
-  if (eq(x_728->name, DEStringLit(DEStringCase::DSTRING_NOSCRIPT))) {
-    return true;
-  } else {
-    return ((x_728->parent != nullptr) && (x_728->parent)->var_disabled);
-  }
-}
-Unit var_modified_x_394(const auto &x_731) { return MakeUnit(); }
-auto eval_expr_x_391(const auto &x_736) {
-  return ((x_736->parent != nullptr) && ((x_736->parent)->var_is_svg_block || (x_736->parent)->var_inside_svg));
-}
-Unit var_modified_x_389(const auto &x_741) { return MakeUnit(); }
-auto eval_expr_x_386(const auto &x_744) { return eq(x_744->name, DEStringLit(DEStringCase::DSTRING_svg)); }
-Unit var_modified_x_384(const auto &x_745) { return MakeUnit(); }
-auto eval_expr_x_381(const auto &x_748) {
-  return neq(x_748->var_height_attr_expr, DEStringLit(DEStringCase::DSTRING_auto));
-}
-Unit var_modified_x_379(const auto &x_751) { return MakeUnit(); }
-auto eval_expr_x_376(const auto &x_755) {
-  if (!x_755->has_attr_height) {
-    return DEStringLit(DEStringCase::DSTRING_auto);
-  } else {
-    if ((x_755->attr_height.c == DEStringCase::DStringIsFloat) ||
-        (x_755->attr_height.c == DEStringCase::DHasSuffix_PERCENTAGE)) {
-      return x_755->attr_height;
-    } else {
-      return DEStringLit(DEStringCase::DSTRING_auto);
-    }
-  }
-}
-Unit var_modified_x_374(const auto &x_766) { return MakeUnit(); }
-auto eval_expr_x_371(const auto &x_769) {
-  return neq(x_769->var_width_attr_expr, DEStringLit(DEStringCase::DSTRING_auto));
-}
-Unit var_modified_x_369(const auto &x_772) { return MakeUnit(); }
-auto eval_expr_x_366(const auto &x_776) {
-  if (!x_776->has_attr_width) {
-    return DEStringLit(DEStringCase::DSTRING_auto);
-  } else {
-    if ((x_776->attr_width.c == DEStringCase::DStringIsFloat) ||
-        (x_776->attr_width.c == DEStringCase::DHasSuffix_PERCENTAGE)) {
-      return x_776->attr_width;
-    } else {
-      return DEStringLit(DEStringCase::DSTRING_auto);
-    }
-  }
-}
-Unit var_modified_x_364(const auto &x_787) { return MakeUnit(); }
-auto eval_expr_x_361(const auto &x_791) {
-  if ((x_791->parent != nullptr) &&
-      (eq((x_791->parent)->var_display, DEStringLit(DEStringCase::DSTRING_flex)) ||
-       eq((x_791->parent)->var_display, DEStringLit(DEStringCase::DSTRING_inline_flex)))) {
-    if (eq((x_791->parent)->var_flex_direction, DEStringLit(DEStringCase::DSTRING_column)) ||
-        eq((x_791->parent)->var_flex_direction, DEStringLit(DEStringCase::DSTRING_column_reverse))) {
+Unit var_modified_x_386(const auto &x_722) { return MakeUnit(); }
+auto eval_expr_x_383(const auto &x_727) {
+  return RecordEval([&](const auto &x_728) {
+    if (eq(x_727->name, DEStringLit(DEStringCase::DSTRING_NOSCRIPT))) {
       return true;
+    } else {
+      return ((x_727->parent != nullptr) && (x_727->parent)->var_disabled);
+    }
+  });
+}
+Unit var_modified_x_381(const auto &x_731) { return MakeUnit(); }
+auto eval_expr_x_378(const auto &x_736) {
+  return RecordEval([&](const auto &x_737) {
+    return ((x_736->parent != nullptr) && ((x_736->parent)->var_is_svg_block || (x_736->parent)->var_inside_svg));
+  });
+}
+Unit var_modified_x_376(const auto &x_742) { return MakeUnit(); }
+auto eval_expr_x_373(const auto &x_745) {
+  return RecordEval([&](const auto &x_746) { return eq(x_745->name, DEStringLit(DEStringCase::DSTRING_svg)); });
+}
+Unit var_modified_x_371(const auto &x_747) { return MakeUnit(); }
+auto eval_expr_x_368(const auto &x_750) {
+  return RecordEval(
+      [&](const auto &x_751) { return neq(x_750->var_height_attr_expr, DEStringLit(DEStringCase::DSTRING_auto)); });
+}
+Unit var_modified_x_366(const auto &x_754) { return MakeUnit(); }
+auto eval_expr_x_363(const auto &x_758) {
+  return RecordEval([&](const auto &x_759) {
+    if (!x_758->has_attr_height) {
+      return DEStringLit(DEStringCase::DSTRING_auto);
+    } else {
+      if ((x_758->attr_height.c == DEStringCase::DStringIsFloat) ||
+          (x_758->attr_height.c == DEStringCase::DHasSuffix_PERCENTAGE)) {
+        return x_758->attr_height;
+      } else {
+        return DEStringLit(DEStringCase::DSTRING_auto);
+      }
+    }
+  });
+}
+Unit var_modified_x_361(const auto &x_770) { return MakeUnit(); }
+auto eval_expr_x_358(const auto &x_773) {
+  return RecordEval(
+      [&](const auto &x_774) { return neq(x_773->var_width_attr_expr, DEStringLit(DEStringCase::DSTRING_auto)); });
+}
+Unit var_modified_x_356(const auto &x_777) { return MakeUnit(); }
+auto eval_expr_x_353(const auto &x_781) {
+  return RecordEval([&](const auto &x_782) {
+    if (!x_781->has_attr_width) {
+      return DEStringLit(DEStringCase::DSTRING_auto);
+    } else {
+      if ((x_781->attr_width.c == DEStringCase::DStringIsFloat) ||
+          (x_781->attr_width.c == DEStringCase::DHasSuffix_PERCENTAGE)) {
+        return x_781->attr_width;
+      } else {
+        return DEStringLit(DEStringCase::DSTRING_auto);
+      }
+    }
+  });
+}
+Unit var_modified_x_351(const auto &x_793) { return MakeUnit(); }
+auto eval_expr_x_348(const auto &x_797) {
+  return RecordEval([&](const auto &x_798) {
+    if ((x_797->parent != nullptr) &&
+        (eq((x_797->parent)->var_display, DEStringLit(DEStringCase::DSTRING_flex)) ||
+         eq((x_797->parent)->var_display, DEStringLit(DEStringCase::DSTRING_inline_flex)))) {
+      if (eq((x_797->parent)->var_flex_direction, DEStringLit(DEStringCase::DSTRING_column)) ||
+          eq((x_797->parent)->var_flex_direction, DEStringLit(DEStringCase::DSTRING_column_reverse))) {
+        return true;
+      } else {
+        return false;
+      }
     } else {
       return false;
     }
-  } else {
-    return false;
-  }
+  });
 }
-Unit var_modified_x_359(const auto &x_804) { return MakeUnit(); }
-auto eval_expr_x_356(const auto &x_809) {
-  if ((x_809->parent != nullptr) &&
-      (eq((x_809->parent)->var_display, DEStringLit(DEStringCase::DSTRING_flex)) ||
-       eq((x_809->parent)->var_display, DEStringLit(DEStringCase::DSTRING_inline_flex)))) {
-    if (eq((x_809->parent)->var_flex_direction, DEStringLit(DEStringCase::DSTRING_row)) ||
-        eq((x_809->parent)->var_flex_direction, DEStringLit(DEStringCase::DSTRING_row_reverse))) {
-      return true;
+Unit var_modified_x_346(const auto &x_811) { return MakeUnit(); }
+auto eval_expr_x_343(const auto &x_816) {
+  return RecordEval([&](const auto &x_817) {
+    if ((x_816->parent != nullptr) &&
+        (eq((x_816->parent)->var_display, DEStringLit(DEStringCase::DSTRING_flex)) ||
+         eq((x_816->parent)->var_display, DEStringLit(DEStringCase::DSTRING_inline_flex)))) {
+      if (eq((x_816->parent)->var_flex_direction, DEStringLit(DEStringCase::DSTRING_row)) ||
+          eq((x_816->parent)->var_flex_direction, DEStringLit(DEStringCase::DSTRING_row_reverse))) {
+        return true;
+      } else {
+        return false;
+      }
     } else {
       return false;
     }
-  } else {
-    return false;
-  }
+  });
 }
-Unit var_modified_x_354(const auto &x_824) { return MakeUnit(); }
-auto eval_expr_x_351(const auto &x_827) {
-  if (x_827->has_prop_flex_direction) {
-    return x_827->prop_flex_direction;
-  } else {
-    return DEStringLit(DEStringCase::DSTRING_);
-  }
-}
-Unit var_modified_x_349(const auto &x_830) { return MakeUnit(); }
-auto eval_expr_x_346(const auto &x_836) {
-  return plus((x_836->prev != nullptr) ? ((x_836->prev)->var_flex_shrink_sum) : (0.), x_836->var_flex_shrink);
-}
-Unit var_modified_x_344(const auto &x_841) { return MakeUnit(); }
-auto eval_expr_x_341(const auto &x_847) {
-  return plus((x_847->prev != nullptr) ? ((x_847->prev)->var_flex_grow_sum) : (0.), x_847->var_flex_grow);
-}
-Unit var_modified_x_339(const auto &x_852) { return MakeUnit(); }
-auto eval_expr_x_336(const auto &x_856) {
-  if (x_856->has_prop_flex_shrink) {
-    return (x_856->prop_flex_shrink.r.a0);
-  } else {
-    return 0.;
-  }
-}
-Unit var_modified_x_334(const auto &x_859) { return MakeUnit(); }
-auto eval_expr_x_331(const auto &x_863) {
-  if (x_863->has_prop_flex_grow) {
-    return (x_863->prop_flex_grow.r.a0);
-  } else {
-    return 0.;
-  }
-}
-Unit var_modified_x_329(const auto &x_866) { return MakeUnit(); }
-auto eval_expr_x_326(const auto &x_871) {
-  if (x_871->has_prop_position) {
-    return x_871->prop_position;
-  } else {
-    return DEStringLit(DEStringCase::DSTRING_static);
-  }
-}
-Unit var_modified_x_324(const auto &x_874) { return MakeUnit(); }
-auto eval_expr_x_321(const auto &x_879) {
-  if (x_879->has_prop_display) {
-    return x_879->prop_display;
-  } else {
-    return DEStringLit(DEStringCase::DSTRING_block);
-  }
-}
-Unit var_modified_x_317(const auto &x_882) { return MakeUnit(); }
-auto eval_expr_x_314(const auto &x_890) {
-  if (x_890->prev != nullptr) {
-    if (x_890->var_line_break) {
-      return plus((x_890->prev)->var_finished_intrinsic_height_sum,
-                  plus((x_890->prev)->var_intrinsic_current_line_height, x_890->var_intrinsic_height_external));
+Unit var_modified_x_341(const auto &x_832) { return MakeUnit(); }
+auto eval_expr_x_338(const auto &x_835) {
+  return RecordEval([&](const auto &x_836) {
+    if (x_835->has_prop_flex_direction) {
+      return x_835->prop_flex_direction;
     } else {
-      return (x_890->prev)->var_finished_intrinsic_height_sum;
+      return DEStringLit(DEStringCase::DSTRING_);
     }
-  } else {
-    if (x_890->var_line_break) {
-      return x_890->var_intrinsic_height_external;
+  });
+}
+Unit var_modified_x_336(const auto &x_839) { return MakeUnit(); }
+auto eval_expr_x_333(const auto &x_845) {
+  return RecordEval([&](const auto &x_846) {
+    return plus((x_845->prev != nullptr) ? ((x_845->prev)->var_flex_shrink_sum) : (0.), x_845->var_flex_shrink);
+  });
+}
+Unit var_modified_x_331(const auto &x_851) { return MakeUnit(); }
+auto eval_expr_x_328(const auto &x_857) {
+  return RecordEval([&](const auto &x_858) {
+    return plus((x_857->prev != nullptr) ? ((x_857->prev)->var_flex_grow_sum) : (0.), x_857->var_flex_grow);
+  });
+}
+Unit var_modified_x_326(const auto &x_863) { return MakeUnit(); }
+auto eval_expr_x_323(const auto &x_867) {
+  return RecordEval([&](const auto &x_868) {
+    if (x_867->has_prop_flex_shrink) {
+      return (x_867->prop_flex_shrink.r.a0);
     } else {
       return 0.;
     }
-  }
+  });
 }
-Unit var_modified_x_312(const auto &x_905) { return MakeUnit(); }
-auto eval_expr_x_309(const auto &x_913) {
-  if (x_913->var_line_break) {
-    return 0.;
-  } else {
-    return max(x_913->var_intrinsic_height_external,
-               (x_913->prev != nullptr) ? ((x_913->prev)->var_intrinsic_current_line_height) : (0.));
-  }
+Unit var_modified_x_321(const auto &x_871) { return MakeUnit(); }
+auto eval_expr_x_318(const auto &x_875) {
+  return RecordEval([&](const auto &x_876) {
+    if (x_875->has_prop_flex_grow) {
+      return (x_875->prop_flex_grow.r.a0);
+    } else {
+      return 0.;
+    }
+  });
 }
-Unit var_modified_x_307(const auto &x_920) { return MakeUnit(); }
-auto eval_expr_x_304(const auto &x_928) {
-  return plus((x_928->prev != nullptr) ? ((x_928->prev)->var_intrinsic_height_sum) : (0.),
-              x_928->var_intrinsic_height_external);
+Unit var_modified_x_316(const auto &x_879) { return MakeUnit(); }
+auto eval_expr_x_313(const auto &x_884) {
+  return RecordEval([&](const auto &x_885) {
+    if (x_884->has_prop_position) {
+      return x_884->prop_position;
+    } else {
+      return DEStringLit(DEStringCase::DSTRING_static);
+    }
+  });
 }
-Unit var_modified_x_302(const auto &x_933) { return MakeUnit(); }
-auto eval_expr_x_299(const auto &x_936) {
-  if (eq(x_936->var_position, DEStringLit(DEStringCase::DSTRING_absolute))) {
-    return 0.;
-  } else {
-    return x_936->var_intrinsic_height_internal;
-  }
+Unit var_modified_x_311(const auto &x_888) { return MakeUnit(); }
+auto eval_expr_x_308(const auto &x_893) {
+  return RecordEval([&](const auto &x_894) {
+    if (x_893->has_prop_display) {
+      return x_893->prop_display;
+    } else {
+      return DEStringLit(DEStringCase::DSTRING_block);
+    }
+  });
 }
-Unit var_modified_x_297(const auto &x_941) { return MakeUnit(); }
-auto eval_expr_x_294(const auto &x_945) {
-  if (eq(x_945->var_display, DEStringLit(DEStringCase::DSTRING_none))) {
-    return 0.;
-  } else {
-    if (x_945->var_inside_svg) {
+Unit var_modified_x_305(const auto &x_897) { return MakeUnit(); }
+auto eval_expr_x_302(const auto &x_905) {
+  return RecordEval([&](const auto &x_906) {
+    if (x_905->prev != nullptr) {
+      if (x_905->var_line_break) {
+        return plus((x_905->prev)->var_finished_intrinsic_height_sum,
+                    plus((x_905->prev)->var_intrinsic_current_line_height, x_905->var_intrinsic_height_external));
+      } else {
+        return (x_905->prev)->var_finished_intrinsic_height_sum;
+      }
+    } else {
+      if (x_905->var_line_break) {
+        return x_905->var_intrinsic_height_external;
+      } else {
+        return 0.;
+      }
+    }
+  });
+}
+Unit var_modified_x_300(const auto &x_921) { return MakeUnit(); }
+auto eval_expr_x_297(const auto &x_929) {
+  return RecordEval([&](const auto &x_930) {
+    if (x_929->var_line_break) {
       return 0.;
     } else {
-      if (x_945->var_disabled) {
+      return max(x_929->var_intrinsic_height_external,
+                 (x_929->prev != nullptr) ? ((x_929->prev)->var_intrinsic_current_line_height) : (0.));
+    }
+  });
+}
+Unit var_modified_x_295(const auto &x_937) { return MakeUnit(); }
+auto eval_expr_x_292(const auto &x_945) {
+  return RecordEval([&](const auto &x_946) {
+    return plus((x_945->prev != nullptr) ? ((x_945->prev)->var_intrinsic_height_sum) : (0.),
+                x_945->var_intrinsic_height_external);
+  });
+}
+Unit var_modified_x_290(const auto &x_951) { return MakeUnit(); }
+auto eval_expr_x_287(const auto &x_954) {
+  return RecordEval([&](const auto &x_955) {
+    if (eq(x_954->var_position, DEStringLit(DEStringCase::DSTRING_absolute))) {
+      return 0.;
+    } else {
+      return x_954->var_intrinsic_height_internal;
+    }
+  });
+}
+Unit var_modified_x_285(const auto &x_960) { return MakeUnit(); }
+auto eval_expr_x_282(const auto &x_964) {
+  return RecordEval([&](const auto &x_965) {
+    if (eq(x_964->var_display, DEStringLit(DEStringCase::DSTRING_none))) {
+      return 0.;
+    } else {
+      if (x_964->var_inside_svg) {
         return 0.;
       } else {
-        if (neq(x_945->var_height_expr, DEStringLit(DEStringCase::DSTRING_auto)) &&
-            ((!(x_945->var_height_expr.c == DEStringCase::DHasSuffix_PERCENTAGE)) &&
-             neq(x_945->var_height_expr, DEStringLit(DEStringCase::DSTRING_fit_content)))) {
-          if (x_945->var_height_expr.c == DEStringCase::DHasSuffix_px) {
-            return x_945->var_height_expr.r.a0;
-          } else {
-            if (x_945->var_height_expr.c == DEStringCase::DHasSuffix_ch) {
-              return x_945->var_height_expr.r.a0;
+        if (x_964->var_disabled) {
+          return 0.;
+        } else {
+          if (neq(x_964->var_height_expr, DEStringLit(DEStringCase::DSTRING_auto)) &&
+              ((!(x_964->var_height_expr.c == DEStringCase::DHasSuffix_PERCENTAGE)) &&
+               neq(x_964->var_height_expr, DEStringLit(DEStringCase::DSTRING_fit_content)))) {
+            if (x_964->var_height_expr.c == DEStringCase::DHasSuffix_px) {
+              return x_964->var_height_expr.r.a0;
             } else {
-              return x_945->var_height_expr.r.a0;
+              if (x_964->var_height_expr.c == DEStringCase::DHasSuffix_ch) {
+                return x_964->var_height_expr.r.a0;
+              } else {
+                return x_964->var_height_expr.r.a0;
+              }
             }
-          }
-        } else {
-          return plus(
-              x_945->var_children_intrinsic_height,
-              (eq(x_945->name, DEStringLit(DEStringCase::DSTRING_SLASHtext)))
-                  ? (10.)
-                  : ((x_945->var_is_default_case)
-                         ? (0.)
-                         : ((eq(x_945->name, DEStringLit(DEStringCase::DSTRING_BR)) ||
-                             eq(x_945->name, DEStringLit(DEStringCase::DSTRING_HR)))
-                                ? (0.)
-                                : ((eq(x_945->name, DEStringLit(DEStringCase::DSTRING_INPUT)))
-                                       ? (10.)
-                                       : ((eq(x_945->name, DEStringLit(DEStringCase::DSTRING_svg)))
-                                              ? ((x_945->var_has_height_attr &&
-                                                  (x_945->var_height_attr_expr.c == DEStringCase::DStringIsFloat))
-                                                     ? (x_945->var_height_attr_expr.r.a0)
-                                                     : ((x_945->has_attr_viewBox)
-                                                            ? (x_945->attr_viewBox.r.a3)
-                                                            : (mult((x_945->attr_viewBox.r.a3),
-                                                                    divide(x_945->var_height_attr_expr.r.a0, 100.)))))
-                                              : ((eq(x_945->name, DEStringLit(DEStringCase::DSTRING_IMG)))
-                                                     ? ((x_945->var_has_height_attr)
-                                                            ? (x_945->var_height_attr_expr.r.a0)
-                                                            : ((x_945->has_attr_image_height &&
-                                                                (!x_945->var_has_width_attr))
-                                                                   ? (int_to_float(x_945->attr_image_height))
-                                                                   : ((neq(x_945->attr_image_width,
-                                                                           static_cast<int64_t>(0)))
-                                                                          ? (mult((x_945->var_width_attr_expr.r.a0),
-                                                                                  divide(int_to_float(
-                                                                                             x_945->attr_image_height),
-                                                                                         int_to_float(
-                                                                                             x_945->attr_image_width))))
-                                                                          : (0.))))
-                                                     : ((eq(x_945->name, DEStringLit(DEStringCase::DSTRING_IFRAME)))
-                                                            ? (150.)
-                                                            : ((eq(x_945->name,
-                                                                   DEStringLit(DEStringCase::DSTRING_TEXTAREA)))
-                                                                   ? (100.)
-                                                                   : (150.)))))))));
-        }
-      }
-    }
-  }
-}
-Unit var_modified_x_292(const auto &x_1024) { return MakeUnit(); }
-auto eval_expr_x_289(const auto &x_1027) {
-  if (eq(x_1027->var_display, DEStringLit(DEStringCase::DSTRING_none)) ||
-      (x_1027->var_inside_svg || x_1027->var_disabled)) {
-    return true;
-  } else {
-    if ((x_1027->parent != nullptr) && (x_1027->parent)->var_is_flex_column) {
-      return false;
-    } else {
-      if (eq(x_1027->var_height_expr, DEStringLit(DEStringCase::DSTRING_auto)) ||
-          ((x_1027->var_height_expr.c == DEStringCase::DHasSuffix_px) ||
-           ((x_1027->var_height_expr.c == DEStringCase::DHasSuffix_ch) ||
-            ((x_1027->var_height_expr.c == DEStringCase::DHasSuffix_lh) ||
-             eq(x_1027->var_height_expr, DEStringLit(DEStringCase::DSTRING_max_content)))))) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  }
-}
-Unit var_modified_x_287(const auto &x_1052) { return MakeUnit(); }
-auto eval_expr_x_284(const auto &x_1056) {
-  if (x_1056->has_prop_height) {
-    return x_1056->prop_height;
-  } else {
-    return DEStringLit(DEStringCase::DSTRING_auto);
-  }
-}
-Unit var_modified_x_282(const auto &x_1059) { return MakeUnit(); }
-auto eval_expr_x_279(const auto &x_1062) {
-  if (x_1062->last != nullptr) {
-    return plus((x_1062->last)->var_finished_intrinsic_height_sum, (x_1062->last)->var_intrinsic_current_line_height);
-  } else {
-    return 0.;
-  }
-}
-Unit var_modified_x_277(const auto &x_1067) { return MakeUnit(); }
-auto eval_expr_x_274(const auto &x_1075) {
-  return plus((x_1075->prev != nullptr) ? ((x_1075->prev)->var_intrinsic_width_sum) : (0.),
-              x_1075->var_intrinsic_width_external);
-}
-Unit var_modified_x_272(const auto &x_1080) { return MakeUnit(); }
-auto eval_expr_x_269(const auto &x_1088) {
-  return max(x_1088->var_intrinsic_current_line_width,
-             (x_1088->prev != nullptr) ? ((x_1088->prev)->var_intrinsic_width_max) : (0.));
-}
-Unit var_modified_x_267(const auto &x_1093) { return MakeUnit(); }
-auto eval_expr_x_264(const auto &x_1099) {
-  return plus(x_1099->var_intrinsic_width_external,
-              ((x_1099->prev != nullptr) && (!(x_1099->prev)->var_line_break))
-                  ? ((x_1099->prev)->var_intrinsic_current_line_width)
-                  : (0.));
-}
-Unit var_modified_x_262(const auto &x_1106) { return MakeUnit(); }
-auto eval_expr_x_259(const auto &x_1109) {
-  if (eq(x_1109->var_position, DEStringLit(DEStringCase::DSTRING_absolute))) {
-    return 0.;
-  } else {
-    return x_1109->var_intrinsic_width_internal;
-  }
-}
-Unit var_modified_x_257(const auto &x_1114) { return MakeUnit(); }
-auto eval_expr_x_254(const auto &x_1118) {
-  if (eq(x_1118->var_display, DEStringLit(DEStringCase::DSTRING_none))) {
-    return 0.;
-  } else {
-    if (x_1118->var_inside_svg) {
-      return 0.;
-    } else {
-      if (x_1118->var_disabled) {
-        return 0.;
-      } else {
-        if (neq(x_1118->var_width_expr, DEStringLit(DEStringCase::DSTRING_auto)) &&
-            ((!(x_1118->var_width_expr.c == DEStringCase::DHasSuffix_PERCENTAGE)) &&
-             (neq(x_1118->var_width_expr, DEStringLit(DEStringCase::DSTRING_fit_content)) &&
-              (neq(x_1118->var_width_expr, DEStringLit(DEStringCase::DSTRING_max_content)) &&
-               (!(x_1118->var_width_expr.c == DEStringCase::DHasPrefix_calc)))))) {
-          if (x_1118->var_width_expr.c == DEStringCase::DHasSuffix_px) {
-            return x_1118->var_width_expr.r.a0;
           } else {
-            return x_1118->var_width_expr.r.a0;
+            return plus(
+                x_964->var_children_intrinsic_height,
+                (eq(x_964->name, DEStringLit(DEStringCase::DSTRING_SLASHtext)))
+                    ? (10.)
+                    : ((x_964->var_is_default_case)
+                           ? (0.)
+                           : ((eq(x_964->name, DEStringLit(DEStringCase::DSTRING_BR)) ||
+                               eq(x_964->name, DEStringLit(DEStringCase::DSTRING_HR)))
+                                  ? (0.)
+                                  : ((eq(x_964->name, DEStringLit(DEStringCase::DSTRING_INPUT)))
+                                         ? (10.)
+                                         : ((eq(x_964->name, DEStringLit(DEStringCase::DSTRING_svg)))
+                                                ? ((x_964->var_has_height_attr &&
+                                                    (x_964->var_height_attr_expr.c == DEStringCase::DStringIsFloat))
+                                                       ? (x_964->var_height_attr_expr.r.a0)
+                                                       : ((x_964->has_attr_viewBox)
+                                                              ? (x_964->attr_viewBox.r.a3)
+                                                              : (mult((x_964->attr_viewBox.r.a3),
+                                                                      divide(x_964->var_height_attr_expr.r.a0, 100.)))))
+                                                : ((eq(x_964->name, DEStringLit(DEStringCase::DSTRING_IMG)))
+                                                       ? ((x_964->var_has_height_attr)
+                                                              ? (x_964->var_height_attr_expr.r.a0)
+                                                              : ((x_964->has_attr_image_height &&
+                                                                  (!x_964->var_has_width_attr))
+                                                                     ? (int_to_float(x_964->attr_image_height))
+                                                                     : ((neq(x_964->attr_image_width,
+                                                                             static_cast<int64_t>(0)))
+                                                                            ? (mult(
+                                                                                  (x_964->var_width_attr_expr.r.a0),
+                                                                                  divide(int_to_float(
+                                                                                             x_964->attr_image_height),
+                                                                                         int_to_float(
+                                                                                             x_964->attr_image_width))))
+                                                                            : (0.))))
+                                                       : ((eq(x_964->name, DEStringLit(DEStringCase::DSTRING_IFRAME)))
+                                                              ? (150.)
+                                                              : ((eq(x_964->name,
+                                                                     DEStringLit(DEStringCase::DSTRING_TEXTAREA)))
+                                                                     ? (100.)
+                                                                     : (150.)))))))));
           }
-        } else {
-          return plus(
-              x_1118->var_children_intrinsic_width,
-              (eq(x_1118->name, DEStringLit(DEStringCase::DSTRING_SLASHtext)))
-                  ? (100.)
-                  : ((x_1118->var_is_default_case)
-                         ? (0.)
-                         : ((eq(x_1118->name, DEStringLit(DEStringCase::DSTRING_BR)) ||
-                             eq(x_1118->name, DEStringLit(DEStringCase::DSTRING_HR)))
-                                ? (0.)
-                                : ((eq(x_1118->name, DEStringLit(DEStringCase::DSTRING_INPUT)))
-                                       ? (100.)
-                                       : ((eq(x_1118->name, DEStringLit(DEStringCase::DSTRING_svg)))
-                                              ? ((x_1118->var_has_width_attr &&
-                                                  (x_1118->var_width_attr_expr.c == DEStringCase::DStringIsFloat))
-                                                     ? (x_1118->var_width_attr_expr.r.a0)
-                                                     : (((!x_1118->var_has_width_attr) && x_1118->has_attr_viewBox)
-                                                            ? (x_1118->attr_viewBox.r.a2)
-                                                            : (mult((x_1118->attr_viewBox.r.a2),
-                                                                    divide(x_1118->var_width_attr_expr.r.a0, 100.)))))
-                                              : ((eq(x_1118->name, DEStringLit(DEStringCase::DSTRING_IMG)))
-                                                     ? ((x_1118->var_has_width_attr)
-                                                            ? (x_1118->var_width_attr_expr.r.a0)
-                                                            : ((x_1118->has_attr_image_width &&
-                                                                (!x_1118->var_has_height_attr))
-                                                                   ? (int_to_float(x_1118->attr_image_width))
-                                                                   : ((neq(x_1118->attr_image_height,
-                                                                           static_cast<int64_t>(0)))
-                                                                          ? (mult(
-                                                                                (x_1118->var_height_attr_expr.r.a0),
-                                                                                divide(int_to_float(
-                                                                                           x_1118->attr_image_width),
-                                                                                       int_to_float(
-                                                                                           x_1118->attr_image_height))))
-                                                                          : (0.))))
-                                                     : ((eq(x_1118->name, DEStringLit(DEStringCase::DSTRING_IFRAME)))
-                                                            ? (300.)
-                                                            : ((eq(x_1118->name,
-                                                                   DEStringLit(DEStringCase::DSTRING_TEXTAREA)))
-                                                                   ? (100.)
-                                                                   : (300.)))))))));
         }
       }
     }
-  }
+  });
 }
-Unit var_modified_x_252(const auto &x_1201) { return MakeUnit(); }
-auto eval_expr_x_249(const auto &x_1204) {
-  if (x_1204->last != nullptr) {
-    return (x_1204->last)->var_intrinsic_width_max;
-  } else {
-    return 0.;
-  }
-}
-Unit var_modified_x_247(const auto &x_1207) { return MakeUnit(); }
-auto eval_expr_x_244(const auto &x_1210) {
-  if (eq(x_1210->var_display, DEStringLit(DEStringCase::DSTRING_none)) ||
-      (x_1210->var_inside_svg || x_1210->var_disabled)) {
-    return true;
-  } else {
-    if ((x_1210->parent != nullptr) && (x_1210->parent)->var_is_flex_row) {
-      return false;
-    } else {
-      if (eq(x_1210->var_width_expr, DEStringLit(DEStringCase::DSTRING_auto)) ||
-          ((x_1210->var_width_expr.c == DEStringCase::DHasSuffix_px) ||
-           ((x_1210->var_width_expr.c == DEStringCase::DHasSuffix_ch) ||
-            ((x_1210->var_width_expr.c == DEStringCase::DHasPrefix_calc) ||
-             eq(x_1210->var_width_expr, DEStringLit(DEStringCase::DSTRING_max_content)))))) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  }
-}
-Unit var_modified_x_242(const auto &x_1235) { return MakeUnit(); }
-auto eval_expr_x_239(const auto &x_1238) {
-  if (eq(x_1238->var_display, DEStringLit(DEStringCase::DSTRING_none))) {
-    return true;
-  } else {
-    if (x_1238->var_inside_svg) {
+Unit var_modified_x_280(const auto &x_1044) { return MakeUnit(); }
+auto eval_expr_x_277(const auto &x_1047) {
+  return RecordEval([&](const auto &x_1048) {
+    if (eq(x_1047->var_display, DEStringLit(DEStringCase::DSTRING_none)) ||
+        (x_1047->var_inside_svg || x_1047->var_disabled)) {
       return true;
     } else {
-      if (x_1238->var_disabled) {
-        return true;
-      } else {if ( eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_SLASHdocument)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_SLASHshadow_root)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_DIV)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_HTML)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_BODY)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_BUTTON)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_FOOTER)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_SELECT)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_SECTION)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_FORM)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_CENTER)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_TD)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_TR)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_TBODY)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_TABLE)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_SPAN)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_FONT)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_A)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_ARTICLE)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_P)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_U)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_UL)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_B)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_H1)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_H2)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_H3)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_H4)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_DT)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_DD)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_DL)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_LI)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_LABEL)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_OL)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_NAV)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_HEADER)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_HEAD)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_SOURCE)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_PICTURE)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_FIGURE)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_FIGCAPTION)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_MAIN)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_REACT_PARTIAL)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_QUERY_BUILDER)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_MODAL_DIALOG)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_SCROLLABLE_REGION)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_DIALOG_HELPER)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_AUTO_CHECK)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_TOOL_TIP)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_CUSTOM_SCOPES)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_QBSEARCH_INPUT)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_INCLUDE_FRAGMENT)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_COOKIE_CONSENT_LINK)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_FULLSTORY_CAPTURE)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_GHCC_CONSENT)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_GLOBAL_BANNER)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_ACTIVE_GLOBAL_BANNERS)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_CARD_SKEW)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_EM)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_ASIDE)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_AUDIO)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_SUP)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_TIME)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_ABBR)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_SMALL)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_SLOT)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_I)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_NG_PLURALIZE)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_NG_VIEW)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_APP_ROOT)) || (eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_html)) || eq(x_1238->name,DEStringLit(DEStringCase::DSTRING_STRONG))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))) ){
+      if ((x_1047->parent != nullptr) && (x_1047->parent)->var_is_flex_column) {
+        return false;
+      } else {
+        if (eq(x_1047->var_height_expr, DEStringLit(DEStringCase::DSTRING_auto)) ||
+            ((x_1047->var_height_expr.c == DEStringCase::DHasSuffix_px) ||
+             ((x_1047->var_height_expr.c == DEStringCase::DHasSuffix_ch) ||
+              ((x_1047->var_height_expr.c == DEStringCase::DHasSuffix_lh) ||
+               eq(x_1047->var_height_expr, DEStringLit(DEStringCase::DSTRING_max_content)))))) {
           return true;
         } else {
           return false;
         }
       }
     }
-  }
+  });
 }
-Unit var_modified_x_237(const auto &x_1245) { return MakeUnit(); }
-auto eval_expr_x_234(const auto &x_1249) {
-  if (x_1249->has_prop_width) {
-    return x_1249->prop_width;
-  } else {
-    return DEStringLit(DEStringCase::DSTRING_auto);
-  }
+Unit var_modified_x_275(const auto &x_1073) { return MakeUnit(); }
+auto eval_expr_x_272(const auto &x_1077) {
+  return RecordEval([&](const auto &x_1078) {
+    if (x_1077->has_prop_height) {
+      return x_1077->prop_height;
+    } else {
+      return DEStringLit(DEStringCase::DSTRING_auto);
+    }
+  });
 }
-Unit eval_stmts_x_208(const auto &x_232) {
-  WriteMetric();
-  RecordEval([&](const auto &x_1253) {
-    auto x_235 = eval_expr_x_234(x_232);
-    if (x_232->has_var_width_expr) {
-      if (!EqualValue(x_232->var_width_expr, x_235)) {
-        var_modified_x_237(x_232);
+Unit var_modified_x_270(const auto &x_1081) { return MakeUnit(); }
+auto eval_expr_x_267(const auto &x_1084) {
+  return RecordEval([&](const auto &x_1085) {
+    if (x_1084->last != nullptr) {
+      return plus((x_1084->last)->var_finished_intrinsic_height_sum, (x_1084->last)->var_intrinsic_current_line_height);
+    } else {
+      return 0.;
+    }
+  });
+}
+Unit var_modified_x_265(const auto &x_1090) { return MakeUnit(); }
+auto eval_expr_x_262(const auto &x_1098) {
+  return RecordEval([&](const auto &x_1099) {
+    return plus((x_1098->prev != nullptr) ? ((x_1098->prev)->var_intrinsic_width_sum) : (0.),
+                x_1098->var_intrinsic_width_external);
+  });
+}
+Unit var_modified_x_260(const auto &x_1104) { return MakeUnit(); }
+auto eval_expr_x_257(const auto &x_1112) {
+  return RecordEval([&](const auto &x_1113) {
+    return max(x_1112->var_intrinsic_current_line_width,
+               (x_1112->prev != nullptr) ? ((x_1112->prev)->var_intrinsic_width_max) : (0.));
+  });
+}
+Unit var_modified_x_255(const auto &x_1118) { return MakeUnit(); }
+auto eval_expr_x_252(const auto &x_1124) {
+  return RecordEval([&](const auto &x_1125) {
+    return plus(x_1124->var_intrinsic_width_external,
+                ((x_1124->prev != nullptr) && (!(x_1124->prev)->var_line_break))
+                    ? ((x_1124->prev)->var_intrinsic_current_line_width)
+                    : (0.));
+  });
+}
+Unit var_modified_x_250(const auto &x_1132) { return MakeUnit(); }
+auto eval_expr_x_247(const auto &x_1135) {
+  return RecordEval([&](const auto &x_1136) {
+    if (eq(x_1135->var_position, DEStringLit(DEStringCase::DSTRING_absolute))) {
+      return 0.;
+    } else {
+      return x_1135->var_intrinsic_width_internal;
+    }
+  });
+}
+Unit var_modified_x_245(const auto &x_1141) { return MakeUnit(); }
+auto eval_expr_x_242(const auto &x_1145) {
+  return RecordEval([&](const auto &x_1146) {
+    if (eq(x_1145->var_display, DEStringLit(DEStringCase::DSTRING_none))) {
+      return 0.;
+    } else {
+      if (x_1145->var_inside_svg) {
+        return 0.;
+      } else {
+        if (x_1145->var_disabled) {
+          return 0.;
+        } else {
+          if (neq(x_1145->var_width_expr, DEStringLit(DEStringCase::DSTRING_auto)) &&
+              ((!(x_1145->var_width_expr.c == DEStringCase::DHasSuffix_PERCENTAGE)) &&
+               (neq(x_1145->var_width_expr, DEStringLit(DEStringCase::DSTRING_fit_content)) &&
+                (neq(x_1145->var_width_expr, DEStringLit(DEStringCase::DSTRING_max_content)) &&
+                 (!(x_1145->var_width_expr.c == DEStringCase::DHasPrefix_calc)))))) {
+            if (x_1145->var_width_expr.c == DEStringCase::DHasSuffix_px) {
+              return x_1145->var_width_expr.r.a0;
+            } else {
+              return x_1145->var_width_expr.r.a0;
+            }
+          } else {
+            return plus(
+                x_1145->var_children_intrinsic_width,
+                (eq(x_1145->name, DEStringLit(DEStringCase::DSTRING_SLASHtext)))
+                    ? (100.)
+                    : ((x_1145->var_is_default_case)
+                           ? (0.)
+                           : ((eq(x_1145->name, DEStringLit(DEStringCase::DSTRING_BR)) ||
+                               eq(x_1145->name, DEStringLit(DEStringCase::DSTRING_HR)))
+                                  ? (0.)
+                                  : ((eq(x_1145->name, DEStringLit(DEStringCase::DSTRING_INPUT)))
+                                         ? (100.)
+                                         : ((eq(x_1145->name, DEStringLit(DEStringCase::DSTRING_svg)))
+                                                ? ((x_1145->var_has_width_attr &&
+                                                    (x_1145->var_width_attr_expr.c == DEStringCase::DStringIsFloat))
+                                                       ? (x_1145->var_width_attr_expr.r.a0)
+                                                       : (((!x_1145->var_has_width_attr) && x_1145->has_attr_viewBox)
+                                                              ? (x_1145->attr_viewBox.r.a2)
+                                                              : (mult((x_1145->attr_viewBox.r.a2),
+                                                                      divide(x_1145->var_width_attr_expr.r.a0, 100.)))))
+                                                : ((eq(x_1145->name, DEStringLit(DEStringCase::DSTRING_IMG)))
+                                                       ? ((x_1145->var_has_width_attr)
+                                                              ? (x_1145->var_width_attr_expr.r.a0)
+                                                              : ((x_1145->has_attr_image_width &&
+                                                                  (!x_1145->var_has_height_attr))
+                                                                     ? (int_to_float(x_1145->attr_image_width))
+                                                                     : ((neq(x_1145->attr_image_height,
+                                                                             static_cast<int64_t>(0)))
+                                                                            ? (mult(
+                                                                                  (x_1145->var_height_attr_expr.r.a0),
+                                                                                  divide(
+                                                                                      int_to_float(
+                                                                                          x_1145->attr_image_width),
+                                                                                      int_to_float(
+                                                                                          x_1145->attr_image_height))))
+                                                                            : (0.))))
+                                                       : ((eq(x_1145->name, DEStringLit(DEStringCase::DSTRING_IFRAME)))
+                                                              ? (300.)
+                                                              : ((eq(x_1145->name,
+                                                                     DEStringLit(DEStringCase::DSTRING_TEXTAREA)))
+                                                                     ? (100.)
+                                                                     : (300.)))))))));
+          }
+        }
       }
     }
-    x_232->has_var_width_expr = true;
-    x_232->var_width_expr = AsDEString(x_235);
-    return MakeUnit();
   });
-  WriteMetric();
-  RecordEval([&](const auto &x_1256) {
-    auto x_240 = eval_expr_x_239(x_232);
-    if (x_232->has_var_is_default_case) {
-      if (!EqualValue(x_232->var_is_default_case, x_240)) {
-        var_modified_x_242(x_232);
+}
+Unit var_modified_x_240(const auto &x_1229) { return MakeUnit(); }
+auto eval_expr_x_237(const auto &x_1232) {
+  return RecordEval([&](const auto &x_1233) {
+    if (x_1232->last != nullptr) {
+      return (x_1232->last)->var_intrinsic_width_max;
+    } else {
+      return 0.;
+    }
+  });
+}
+Unit var_modified_x_235(const auto &x_1236) { return MakeUnit(); }
+auto eval_expr_x_232(const auto &x_1239) {
+  return RecordEval([&](const auto &x_1240) {
+    if (eq(x_1239->var_display, DEStringLit(DEStringCase::DSTRING_none)) ||
+        (x_1239->var_inside_svg || x_1239->var_disabled)) {
+      return true;
+    } else {
+      if ((x_1239->parent != nullptr) && (x_1239->parent)->var_is_flex_row) {
+        return false;
+      } else {
+        if (eq(x_1239->var_width_expr, DEStringLit(DEStringCase::DSTRING_auto)) ||
+            ((x_1239->var_width_expr.c == DEStringCase::DHasSuffix_px) ||
+             ((x_1239->var_width_expr.c == DEStringCase::DHasSuffix_ch) ||
+              ((x_1239->var_width_expr.c == DEStringCase::DHasPrefix_calc) ||
+               eq(x_1239->var_width_expr, DEStringLit(DEStringCase::DSTRING_max_content)))))) {
+          return true;
+        } else {
+          return false;
+        }
       }
     }
-    x_232->has_var_is_default_case = true;
-    x_232->var_is_default_case = Asbool(x_240);
-    return MakeUnit();
   });
-  WriteMetric();
-  RecordEval([&](const auto &x_1259) {
-    auto x_245 = eval_expr_x_244(x_232);
-    if (x_232->has_var_intrinsic_width_is_width) {
-      if (!EqualValue(x_232->var_intrinsic_width_is_width, x_245)) {
-        var_modified_x_247(x_232);
+}
+Unit var_modified_x_230(const auto &x_1265) { return MakeUnit(); }
+auto eval_expr_x_227(const auto &x_1268) {
+  return RecordEval([&](const auto &x_1269) {
+    if (eq(x_1268->var_display, DEStringLit(DEStringCase::DSTRING_none))) {
+      return true;
+    } else {
+      if (x_1268->var_inside_svg) {
+        return true;
+      } else {
+        if (x_1268->var_disabled) {
+          return true;
+        } else {if ( eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_SLASHdocument)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_SLASHshadow_root)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_DIV)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_HTML)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_BODY)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_BUTTON)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_FOOTER)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_SELECT)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_SECTION)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_FORM)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_CENTER)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_TD)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_TR)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_TBODY)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_TABLE)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_SPAN)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_FONT)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_A)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_ARTICLE)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_P)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_U)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_UL)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_B)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_H1)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_H2)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_H3)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_H4)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_DT)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_DD)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_DL)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_LI)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_LABEL)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_OL)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_NAV)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_HEADER)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_HEAD)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_SOURCE)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_PICTURE)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_FIGURE)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_FIGCAPTION)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_MAIN)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_REACT_PARTIAL)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_QUERY_BUILDER)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_MODAL_DIALOG)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_SCROLLABLE_REGION)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_DIALOG_HELPER)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_AUTO_CHECK)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_TOOL_TIP)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_CUSTOM_SCOPES)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_QBSEARCH_INPUT)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_INCLUDE_FRAGMENT)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_COOKIE_CONSENT_LINK)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_FULLSTORY_CAPTURE)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_GHCC_CONSENT)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_GLOBAL_BANNER)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_ACTIVE_GLOBAL_BANNERS)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_CARD_SKEW)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_EM)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_ASIDE)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_AUDIO)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_SUP)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_TIME)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_ABBR)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_SMALL)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_SLOT)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_I)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_NG_PLURALIZE)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_NG_VIEW)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_APP_ROOT)) || (eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_html)) || eq(x_1268->name,DEStringLit(DEStringCase::DSTRING_STRONG))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))) ){
+            return true;
+          } else {
+            return false;
+          }
+        }
       }
     }
-    x_232->has_var_intrinsic_width_is_width = true;
-    x_232->var_intrinsic_width_is_width = Asbool(x_245);
-    return MakeUnit();
   });
-  WriteMetric();
-  RecordEval([&](const auto &x_1262) {
-    auto x_250 = eval_expr_x_249(x_232);
-    if (x_232->has_var_children_intrinsic_width) {
-      if (!EqualValue(x_232->var_children_intrinsic_width, x_250)) {
-        var_modified_x_252(x_232);
-      }
+}
+Unit var_modified_x_225(const auto &x_1276) { return MakeUnit(); }
+auto eval_expr_x_222(const auto &x_1280) {
+  return RecordEval([&](const auto &x_1281) {
+    if (x_1280->has_prop_width) {
+      return x_1280->prop_width;
+    } else {
+      return DEStringLit(DEStringCase::DSTRING_auto);
     }
-    x_232->has_var_children_intrinsic_width = true;
-    x_232->var_children_intrinsic_width = Asdouble(x_250);
-    return MakeUnit();
   });
+}
+Unit eval_stmts_x_197(const auto &x_221) {
   WriteMetric();
-  RecordEval([&](const auto &x_1265) {
-    auto x_255 = eval_expr_x_254(x_232);
-    if (x_232->has_var_intrinsic_width_internal) {
-      if (!EqualValue(x_232->var_intrinsic_width_internal, x_255)) {
-        var_modified_x_257(x_232);
-      }
+  auto x_223 = eval_expr_x_222(x_221);
+  if (x_221->has_var_width_expr) {
+    if (!EqualValue(x_221->var_width_expr, x_223)) {
+      var_modified_x_225(x_221);
     }
-    x_232->has_var_intrinsic_width_internal = true;
-    x_232->var_intrinsic_width_internal = Asdouble(x_255);
-    return MakeUnit();
-  });
+  }
+  x_221->has_var_width_expr = true;
+  x_221->var_width_expr = AsDEString(x_223);
   WriteMetric();
-  RecordEval([&](const auto &x_1268) {
-    auto x_260 = eval_expr_x_259(x_232);
-    if (x_232->has_var_intrinsic_width_external) {
-      if (!EqualValue(x_232->var_intrinsic_width_external, x_260)) {
-        var_modified_x_262(x_232);
-      }
+  auto x_228 = eval_expr_x_227(x_221);
+  if (x_221->has_var_is_default_case) {
+    if (!EqualValue(x_221->var_is_default_case, x_228)) {
+      var_modified_x_230(x_221);
     }
-    x_232->has_var_intrinsic_width_external = true;
-    x_232->var_intrinsic_width_external = Asdouble(x_260);
-    return MakeUnit();
-  });
+  }
+  x_221->has_var_is_default_case = true;
+  x_221->var_is_default_case = Asbool(x_228);
   WriteMetric();
-  RecordEval([&](const auto &x_1271) {
-    auto x_265 = eval_expr_x_264(x_232);
-    if (x_232->has_var_intrinsic_current_line_width) {
-      if (!EqualValue(x_232->var_intrinsic_current_line_width, x_265)) {
-        var_modified_x_267(x_232);
-      }
+  auto x_233 = eval_expr_x_232(x_221);
+  if (x_221->has_var_intrinsic_width_is_width) {
+    if (!EqualValue(x_221->var_intrinsic_width_is_width, x_233)) {
+      var_modified_x_235(x_221);
     }
-    x_232->has_var_intrinsic_current_line_width = true;
-    x_232->var_intrinsic_current_line_width = Asdouble(x_265);
-    return MakeUnit();
-  });
+  }
+  x_221->has_var_intrinsic_width_is_width = true;
+  x_221->var_intrinsic_width_is_width = Asbool(x_233);
   WriteMetric();
-  RecordEval([&](const auto &x_1274) {
-    auto x_270 = eval_expr_x_269(x_232);
-    if (x_232->has_var_intrinsic_width_max) {
-      if (!EqualValue(x_232->var_intrinsic_width_max, x_270)) {
-        var_modified_x_272(x_232);
-      }
+  auto x_238 = eval_expr_x_237(x_221);
+  if (x_221->has_var_children_intrinsic_width) {
+    if (!EqualValue(x_221->var_children_intrinsic_width, x_238)) {
+      var_modified_x_240(x_221);
     }
-    x_232->has_var_intrinsic_width_max = true;
-    x_232->var_intrinsic_width_max = Asdouble(x_270);
-    return MakeUnit();
-  });
+  }
+  x_221->has_var_children_intrinsic_width = true;
+  x_221->var_children_intrinsic_width = Asdouble(x_238);
   WriteMetric();
-  RecordEval([&](const auto &x_1277) {
-    auto x_275 = eval_expr_x_274(x_232);
-    if (x_232->has_var_intrinsic_width_sum) {
-      if (!EqualValue(x_232->var_intrinsic_width_sum, x_275)) {
-        var_modified_x_277(x_232);
-      }
+  auto x_243 = eval_expr_x_242(x_221);
+  if (x_221->has_var_intrinsic_width_internal) {
+    if (!EqualValue(x_221->var_intrinsic_width_internal, x_243)) {
+      var_modified_x_245(x_221);
     }
-    x_232->has_var_intrinsic_width_sum = true;
-    x_232->var_intrinsic_width_sum = Asdouble(x_275);
-    return MakeUnit();
-  });
+  }
+  x_221->has_var_intrinsic_width_internal = true;
+  x_221->var_intrinsic_width_internal = Asdouble(x_243);
   WriteMetric();
-  RecordEval([&](const auto &x_1280) {
-    auto x_280 = eval_expr_x_279(x_232);
-    if (x_232->has_var_children_intrinsic_height) {
-      if (!EqualValue(x_232->var_children_intrinsic_height, x_280)) {
-        var_modified_x_282(x_232);
-      }
+  auto x_248 = eval_expr_x_247(x_221);
+  if (x_221->has_var_intrinsic_width_external) {
+    if (!EqualValue(x_221->var_intrinsic_width_external, x_248)) {
+      var_modified_x_250(x_221);
     }
-    x_232->has_var_children_intrinsic_height = true;
-    x_232->var_children_intrinsic_height = Asdouble(x_280);
-    return MakeUnit();
-  });
+  }
+  x_221->has_var_intrinsic_width_external = true;
+  x_221->var_intrinsic_width_external = Asdouble(x_248);
   WriteMetric();
-  RecordEval([&](const auto &x_1283) {
-    auto x_285 = eval_expr_x_284(x_232);
-    if (x_232->has_var_height_expr) {
-      if (!EqualValue(x_232->var_height_expr, x_285)) {
-        var_modified_x_287(x_232);
-      }
+  auto x_253 = eval_expr_x_252(x_221);
+  if (x_221->has_var_intrinsic_current_line_width) {
+    if (!EqualValue(x_221->var_intrinsic_current_line_width, x_253)) {
+      var_modified_x_255(x_221);
     }
-    x_232->has_var_height_expr = true;
-    x_232->var_height_expr = AsDEString(x_285);
-    return MakeUnit();
-  });
+  }
+  x_221->has_var_intrinsic_current_line_width = true;
+  x_221->var_intrinsic_current_line_width = Asdouble(x_253);
   WriteMetric();
-  RecordEval([&](const auto &x_1286) {
-    auto x_290 = eval_expr_x_289(x_232);
-    if (x_232->has_var_intrinsic_height_is_height) {
-      if (!EqualValue(x_232->var_intrinsic_height_is_height, x_290)) {
-        var_modified_x_292(x_232);
-      }
+  auto x_258 = eval_expr_x_257(x_221);
+  if (x_221->has_var_intrinsic_width_max) {
+    if (!EqualValue(x_221->var_intrinsic_width_max, x_258)) {
+      var_modified_x_260(x_221);
     }
-    x_232->has_var_intrinsic_height_is_height = true;
-    x_232->var_intrinsic_height_is_height = Asbool(x_290);
-    return MakeUnit();
-  });
+  }
+  x_221->has_var_intrinsic_width_max = true;
+  x_221->var_intrinsic_width_max = Asdouble(x_258);
   WriteMetric();
-  RecordEval([&](const auto &x_1289) {
-    auto x_295 = eval_expr_x_294(x_232);
-    if (x_232->has_var_intrinsic_height_internal) {
-      if (!EqualValue(x_232->var_intrinsic_height_internal, x_295)) {
-        var_modified_x_297(x_232);
-      }
+  auto x_263 = eval_expr_x_262(x_221);
+  if (x_221->has_var_intrinsic_width_sum) {
+    if (!EqualValue(x_221->var_intrinsic_width_sum, x_263)) {
+      var_modified_x_265(x_221);
     }
-    x_232->has_var_intrinsic_height_internal = true;
-    x_232->var_intrinsic_height_internal = Asdouble(x_295);
-    return MakeUnit();
-  });
+  }
+  x_221->has_var_intrinsic_width_sum = true;
+  x_221->var_intrinsic_width_sum = Asdouble(x_263);
   WriteMetric();
-  RecordEval([&](const auto &x_1292) {
-    auto x_300 = eval_expr_x_299(x_232);
-    if (x_232->has_var_intrinsic_height_external) {
-      if (!EqualValue(x_232->var_intrinsic_height_external, x_300)) {
-        var_modified_x_302(x_232);
-      }
+  auto x_268 = eval_expr_x_267(x_221);
+  if (x_221->has_var_children_intrinsic_height) {
+    if (!EqualValue(x_221->var_children_intrinsic_height, x_268)) {
+      var_modified_x_270(x_221);
     }
-    x_232->has_var_intrinsic_height_external = true;
-    x_232->var_intrinsic_height_external = Asdouble(x_300);
-    return MakeUnit();
-  });
+  }
+  x_221->has_var_children_intrinsic_height = true;
+  x_221->var_children_intrinsic_height = Asdouble(x_268);
   WriteMetric();
-  RecordEval([&](const auto &x_1295) {
-    auto x_305 = eval_expr_x_304(x_232);
-    if (x_232->has_var_intrinsic_height_sum) {
-      if (!EqualValue(x_232->var_intrinsic_height_sum, x_305)) {
-        var_modified_x_307(x_232);
-      }
+  auto x_273 = eval_expr_x_272(x_221);
+  if (x_221->has_var_height_expr) {
+    if (!EqualValue(x_221->var_height_expr, x_273)) {
+      var_modified_x_275(x_221);
     }
-    x_232->has_var_intrinsic_height_sum = true;
-    x_232->var_intrinsic_height_sum = Asdouble(x_305);
-    return MakeUnit();
-  });
+  }
+  x_221->has_var_height_expr = true;
+  x_221->var_height_expr = AsDEString(x_273);
   WriteMetric();
-  RecordEval([&](const auto &x_1298) {
-    auto x_310 = eval_expr_x_309(x_232);
-    if (x_232->has_var_intrinsic_current_line_height) {
-      if (!EqualValue(x_232->var_intrinsic_current_line_height, x_310)) {
-        var_modified_x_312(x_232);
-      }
+  auto x_278 = eval_expr_x_277(x_221);
+  if (x_221->has_var_intrinsic_height_is_height) {
+    if (!EqualValue(x_221->var_intrinsic_height_is_height, x_278)) {
+      var_modified_x_280(x_221);
     }
-    x_232->has_var_intrinsic_current_line_height = true;
-    x_232->var_intrinsic_current_line_height = Asdouble(x_310);
-    return MakeUnit();
-  });
+  }
+  x_221->has_var_intrinsic_height_is_height = true;
+  x_221->var_intrinsic_height_is_height = Asbool(x_278);
   WriteMetric();
-  RecordEval([&](const auto &x_1301) {
-    auto x_315 = eval_expr_x_314(x_232);
-    if (x_232->has_var_finished_intrinsic_height_sum) {
-      if (!EqualValue(x_232->var_finished_intrinsic_height_sum, x_315)) {
-        var_modified_x_317(x_232);
-      }
+  auto x_283 = eval_expr_x_282(x_221);
+  if (x_221->has_var_intrinsic_height_internal) {
+    if (!EqualValue(x_221->var_intrinsic_height_internal, x_283)) {
+      var_modified_x_285(x_221);
     }
-    x_232->has_var_finished_intrinsic_height_sum = true;
-    x_232->var_finished_intrinsic_height_sum = Asdouble(x_315);
-    return MakeUnit();
-  });
+  }
+  x_221->has_var_intrinsic_height_internal = true;
+  x_221->var_intrinsic_height_internal = Asdouble(x_283);
+  WriteMetric();
+  auto x_288 = eval_expr_x_287(x_221);
+  if (x_221->has_var_intrinsic_height_external) {
+    if (!EqualValue(x_221->var_intrinsic_height_external, x_288)) {
+      var_modified_x_290(x_221);
+    }
+  }
+  x_221->has_var_intrinsic_height_external = true;
+  x_221->var_intrinsic_height_external = Asdouble(x_288);
+  WriteMetric();
+  auto x_293 = eval_expr_x_292(x_221);
+  if (x_221->has_var_intrinsic_height_sum) {
+    if (!EqualValue(x_221->var_intrinsic_height_sum, x_293)) {
+      var_modified_x_295(x_221);
+    }
+  }
+  x_221->has_var_intrinsic_height_sum = true;
+  x_221->var_intrinsic_height_sum = Asdouble(x_293);
+  WriteMetric();
+  auto x_298 = eval_expr_x_297(x_221);
+  if (x_221->has_var_intrinsic_current_line_height) {
+    if (!EqualValue(x_221->var_intrinsic_current_line_height, x_298)) {
+      var_modified_x_300(x_221);
+    }
+  }
+  x_221->has_var_intrinsic_current_line_height = true;
+  x_221->var_intrinsic_current_line_height = Asdouble(x_298);
+  WriteMetric();
+  auto x_303 = eval_expr_x_302(x_221);
+  if (x_221->has_var_finished_intrinsic_height_sum) {
+    if (!EqualValue(x_221->var_finished_intrinsic_height_sum, x_303)) {
+      var_modified_x_305(x_221);
+    }
+  }
+  x_221->has_var_finished_intrinsic_height_sum = true;
+  x_221->var_finished_intrinsic_height_sum = Asdouble(x_303);
   return MakeUnit();
 }
-Unit eval_stmts_x_204(const auto &x_319) {
+Unit eval_stmts_x_195(const auto &x_307) {
   WriteMetric();
-  RecordEval([&](const auto &x_1304) {
-    auto x_322 = eval_expr_x_321(x_319);
-    if (x_319->has_var_display) {
-      if (!EqualValue(x_319->var_display, x_322)) {
-        var_modified_x_324(x_319);
-      }
+  auto x_309 = eval_expr_x_308(x_307);
+  if (x_307->has_var_display) {
+    if (!EqualValue(x_307->var_display, x_309)) {
+      var_modified_x_311(x_307);
     }
-    x_319->has_var_display = true;
-    x_319->var_display = AsDEString(x_322);
-    return MakeUnit();
-  });
+  }
+  x_307->has_var_display = true;
+  x_307->var_display = AsDEString(x_309);
   WriteMetric();
-  RecordEval([&](const auto &x_1307) {
-    auto x_327 = eval_expr_x_326(x_319);
-    if (x_319->has_var_position) {
-      if (!EqualValue(x_319->var_position, x_327)) {
-        var_modified_x_329(x_319);
-      }
+  auto x_314 = eval_expr_x_313(x_307);
+  if (x_307->has_var_position) {
+    if (!EqualValue(x_307->var_position, x_314)) {
+      var_modified_x_316(x_307);
     }
-    x_319->has_var_position = true;
-    x_319->var_position = AsDEString(x_327);
-    return MakeUnit();
-  });
+  }
+  x_307->has_var_position = true;
+  x_307->var_position = AsDEString(x_314);
   WriteMetric();
-  RecordEval([&](const auto &x_1310) {
-    auto x_332 = eval_expr_x_331(x_319);
-    if (x_319->has_var_flex_grow) {
-      if (!EqualValue(x_319->var_flex_grow, x_332)) {
-        var_modified_x_334(x_319);
-      }
+  auto x_319 = eval_expr_x_318(x_307);
+  if (x_307->has_var_flex_grow) {
+    if (!EqualValue(x_307->var_flex_grow, x_319)) {
+      var_modified_x_321(x_307);
     }
-    x_319->has_var_flex_grow = true;
-    x_319->var_flex_grow = Asdouble(x_332);
-    return MakeUnit();
-  });
+  }
+  x_307->has_var_flex_grow = true;
+  x_307->var_flex_grow = Asdouble(x_319);
   WriteMetric();
-  RecordEval([&](const auto &x_1313) {
-    auto x_337 = eval_expr_x_336(x_319);
-    if (x_319->has_var_flex_shrink) {
-      if (!EqualValue(x_319->var_flex_shrink, x_337)) {
-        var_modified_x_339(x_319);
-      }
+  auto x_324 = eval_expr_x_323(x_307);
+  if (x_307->has_var_flex_shrink) {
+    if (!EqualValue(x_307->var_flex_shrink, x_324)) {
+      var_modified_x_326(x_307);
     }
-    x_319->has_var_flex_shrink = true;
-    x_319->var_flex_shrink = Asdouble(x_337);
-    return MakeUnit();
-  });
+  }
+  x_307->has_var_flex_shrink = true;
+  x_307->var_flex_shrink = Asdouble(x_324);
   WriteMetric();
-  RecordEval([&](const auto &x_1316) {
-    auto x_342 = eval_expr_x_341(x_319);
-    if (x_319->has_var_flex_grow_sum) {
-      if (!EqualValue(x_319->var_flex_grow_sum, x_342)) {
-        var_modified_x_344(x_319);
-      }
+  auto x_329 = eval_expr_x_328(x_307);
+  if (x_307->has_var_flex_grow_sum) {
+    if (!EqualValue(x_307->var_flex_grow_sum, x_329)) {
+      var_modified_x_331(x_307);
     }
-    x_319->has_var_flex_grow_sum = true;
-    x_319->var_flex_grow_sum = Asdouble(x_342);
-    return MakeUnit();
-  });
+  }
+  x_307->has_var_flex_grow_sum = true;
+  x_307->var_flex_grow_sum = Asdouble(x_329);
   WriteMetric();
-  RecordEval([&](const auto &x_1319) {
-    auto x_347 = eval_expr_x_346(x_319);
-    if (x_319->has_var_flex_shrink_sum) {
-      if (!EqualValue(x_319->var_flex_shrink_sum, x_347)) {
-        var_modified_x_349(x_319);
-      }
+  auto x_334 = eval_expr_x_333(x_307);
+  if (x_307->has_var_flex_shrink_sum) {
+    if (!EqualValue(x_307->var_flex_shrink_sum, x_334)) {
+      var_modified_x_336(x_307);
     }
-    x_319->has_var_flex_shrink_sum = true;
-    x_319->var_flex_shrink_sum = Asdouble(x_347);
-    return MakeUnit();
-  });
+  }
+  x_307->has_var_flex_shrink_sum = true;
+  x_307->var_flex_shrink_sum = Asdouble(x_334);
   WriteMetric();
-  RecordEval([&](const auto &x_1322) {
-    auto x_352 = eval_expr_x_351(x_319);
-    if (x_319->has_var_flex_direction) {
-      if (!EqualValue(x_319->var_flex_direction, x_352)) {
-        var_modified_x_354(x_319);
-      }
+  auto x_339 = eval_expr_x_338(x_307);
+  if (x_307->has_var_flex_direction) {
+    if (!EqualValue(x_307->var_flex_direction, x_339)) {
+      var_modified_x_341(x_307);
     }
-    x_319->has_var_flex_direction = true;
-    x_319->var_flex_direction = AsDEString(x_352);
-    return MakeUnit();
-  });
+  }
+  x_307->has_var_flex_direction = true;
+  x_307->var_flex_direction = AsDEString(x_339);
   WriteMetric();
-  RecordEval([&](const auto &x_1325) {
-    auto x_357 = eval_expr_x_356(x_319);
-    if (x_319->has_var_is_flex_row) {
-      if (!EqualValue(x_319->var_is_flex_row, x_357)) {
-        var_modified_x_359(x_319);
-      }
+  auto x_344 = eval_expr_x_343(x_307);
+  if (x_307->has_var_is_flex_row) {
+    if (!EqualValue(x_307->var_is_flex_row, x_344)) {
+      var_modified_x_346(x_307);
     }
-    x_319->has_var_is_flex_row = true;
-    x_319->var_is_flex_row = Asbool(x_357);
-    return MakeUnit();
-  });
+  }
+  x_307->has_var_is_flex_row = true;
+  x_307->var_is_flex_row = Asbool(x_344);
   WriteMetric();
-  RecordEval([&](const auto &x_1328) {
-    auto x_362 = eval_expr_x_361(x_319);
-    if (x_319->has_var_is_flex_column) {
-      if (!EqualValue(x_319->var_is_flex_column, x_362)) {
-        var_modified_x_364(x_319);
-      }
+  auto x_349 = eval_expr_x_348(x_307);
+  if (x_307->has_var_is_flex_column) {
+    if (!EqualValue(x_307->var_is_flex_column, x_349)) {
+      var_modified_x_351(x_307);
     }
-    x_319->has_var_is_flex_column = true;
-    x_319->var_is_flex_column = Asbool(x_362);
-    return MakeUnit();
-  });
+  }
+  x_307->has_var_is_flex_column = true;
+  x_307->var_is_flex_column = Asbool(x_349);
   WriteMetric();
-  RecordEval([&](const auto &x_1331) {
-    auto x_367 = eval_expr_x_366(x_319);
-    if (x_319->has_var_width_attr_expr) {
-      if (!EqualValue(x_319->var_width_attr_expr, x_367)) {
-        var_modified_x_369(x_319);
-      }
+  auto x_354 = eval_expr_x_353(x_307);
+  if (x_307->has_var_width_attr_expr) {
+    if (!EqualValue(x_307->var_width_attr_expr, x_354)) {
+      var_modified_x_356(x_307);
     }
-    x_319->has_var_width_attr_expr = true;
-    x_319->var_width_attr_expr = AsDEString(x_367);
-    return MakeUnit();
-  });
+  }
+  x_307->has_var_width_attr_expr = true;
+  x_307->var_width_attr_expr = AsDEString(x_354);
   WriteMetric();
-  RecordEval([&](const auto &x_1334) {
-    auto x_372 = eval_expr_x_371(x_319);
-    if (x_319->has_var_has_width_attr) {
-      if (!EqualValue(x_319->var_has_width_attr, x_372)) {
-        var_modified_x_374(x_319);
-      }
+  auto x_359 = eval_expr_x_358(x_307);
+  if (x_307->has_var_has_width_attr) {
+    if (!EqualValue(x_307->var_has_width_attr, x_359)) {
+      var_modified_x_361(x_307);
     }
-    x_319->has_var_has_width_attr = true;
-    x_319->var_has_width_attr = Asbool(x_372);
-    return MakeUnit();
-  });
+  }
+  x_307->has_var_has_width_attr = true;
+  x_307->var_has_width_attr = Asbool(x_359);
   WriteMetric();
-  RecordEval([&](const auto &x_1337) {
-    auto x_377 = eval_expr_x_376(x_319);
-    if (x_319->has_var_height_attr_expr) {
-      if (!EqualValue(x_319->var_height_attr_expr, x_377)) {
-        var_modified_x_379(x_319);
-      }
+  auto x_364 = eval_expr_x_363(x_307);
+  if (x_307->has_var_height_attr_expr) {
+    if (!EqualValue(x_307->var_height_attr_expr, x_364)) {
+      var_modified_x_366(x_307);
     }
-    x_319->has_var_height_attr_expr = true;
-    x_319->var_height_attr_expr = AsDEString(x_377);
-    return MakeUnit();
-  });
+  }
+  x_307->has_var_height_attr_expr = true;
+  x_307->var_height_attr_expr = AsDEString(x_364);
   WriteMetric();
-  RecordEval([&](const auto &x_1340) {
-    auto x_382 = eval_expr_x_381(x_319);
-    if (x_319->has_var_has_height_attr) {
-      if (!EqualValue(x_319->var_has_height_attr, x_382)) {
-        var_modified_x_384(x_319);
-      }
+  auto x_369 = eval_expr_x_368(x_307);
+  if (x_307->has_var_has_height_attr) {
+    if (!EqualValue(x_307->var_has_height_attr, x_369)) {
+      var_modified_x_371(x_307);
     }
-    x_319->has_var_has_height_attr = true;
-    x_319->var_has_height_attr = Asbool(x_382);
-    return MakeUnit();
-  });
+  }
+  x_307->has_var_has_height_attr = true;
+  x_307->var_has_height_attr = Asbool(x_369);
   WriteMetric();
-  RecordEval([&](const auto &x_1343) {
-    auto x_387 = eval_expr_x_386(x_319);
-    if (x_319->has_var_is_svg_block) {
-      if (!EqualValue(x_319->var_is_svg_block, x_387)) {
-        var_modified_x_389(x_319);
-      }
+  auto x_374 = eval_expr_x_373(x_307);
+  if (x_307->has_var_is_svg_block) {
+    if (!EqualValue(x_307->var_is_svg_block, x_374)) {
+      var_modified_x_376(x_307);
     }
-    x_319->has_var_is_svg_block = true;
-    x_319->var_is_svg_block = Asbool(x_387);
-    return MakeUnit();
-  });
+  }
+  x_307->has_var_is_svg_block = true;
+  x_307->var_is_svg_block = Asbool(x_374);
   WriteMetric();
-  RecordEval([&](const auto &x_1346) {
-    auto x_392 = eval_expr_x_391(x_319);
-    if (x_319->has_var_inside_svg) {
-      if (!EqualValue(x_319->var_inside_svg, x_392)) {
-        var_modified_x_394(x_319);
-      }
+  auto x_379 = eval_expr_x_378(x_307);
+  if (x_307->has_var_inside_svg) {
+    if (!EqualValue(x_307->var_inside_svg, x_379)) {
+      var_modified_x_381(x_307);
     }
-    x_319->has_var_inside_svg = true;
-    x_319->var_inside_svg = Asbool(x_392);
-    return MakeUnit();
-  });
+  }
+  x_307->has_var_inside_svg = true;
+  x_307->var_inside_svg = Asbool(x_379);
   WriteMetric();
-  RecordEval([&](const auto &x_1349) {
-    auto x_397 = eval_expr_x_396(x_319);
-    if (x_319->has_var_disabled) {
-      if (!EqualValue(x_319->var_disabled, x_397)) {
-        var_modified_x_399(x_319);
-      }
+  auto x_384 = eval_expr_x_383(x_307);
+  if (x_307->has_var_disabled) {
+    if (!EqualValue(x_307->var_disabled, x_384)) {
+      var_modified_x_386(x_307);
     }
-    x_319->has_var_disabled = true;
-    x_319->var_disabled = Asbool(x_397);
-    return MakeUnit();
-  });
+  }
+  x_307->has_var_disabled = true;
+  x_307->var_disabled = Asbool(x_384);
   WriteMetric();
-  RecordEval([&](const auto &x_1352) {
-    auto x_402 = eval_expr_x_401(x_319);
-    if (x_319->has_var_visible) {
-      if (!EqualValue(x_319->var_visible, x_402)) {
-        var_modified_x_404(x_319);
-      }
+  auto x_389 = eval_expr_x_388(x_307);
+  if (x_307->has_var_visible) {
+    if (!EqualValue(x_307->var_visible, x_389)) {
+      var_modified_x_391(x_307);
     }
-    x_319->has_var_visible = true;
-    x_319->var_visible = Asbool(x_402);
-    return MakeUnit();
-  });
+  }
+  x_307->has_var_visible = true;
+  x_307->var_visible = Asbool(x_389);
   WriteMetric();
-  RecordEval([&](const auto &x_1355) {
-    auto x_407 = eval_expr_x_406(x_319);
-    if (x_319->has_var_line_break) {
-      if (!EqualValue(x_319->var_line_break, x_407)) {
-        var_modified_x_409(x_319);
-      }
+  auto x_394 = eval_expr_x_393(x_307);
+  if (x_307->has_var_line_break) {
+    if (!EqualValue(x_307->var_line_break, x_394)) {
+      var_modified_x_396(x_307);
     }
-    x_319->has_var_line_break = true;
-    x_319->var_line_break = Asbool(x_407);
-    return MakeUnit();
-  });
+  }
+  x_307->has_var_line_break = true;
+  x_307->var_line_break = Asbool(x_394);
   return MakeUnit();
 }
-Unit eval_stmts_x_200(const auto &x_411) { return MakeUnit(); }
-Unit eval_stmts_x_196(const auto &x_413) {
+Unit eval_stmts_x_193(const auto &x_398) { return MakeUnit(); }
+Unit eval_stmts_x_191(const auto &x_399) {
   WriteMetric();
-  RecordEval([&](const auto &x_1358) {
-    auto x_416 = eval_expr_x_415(x_413);
-    if (x_413->has_var_box_width) {
-      if (!EqualValue(x_413->var_box_width, x_416)) {
-        var_modified_x_418(x_413);
-      }
+  auto x_401 = eval_expr_x_400(x_399);
+  if (x_399->has_var_box_width) {
+    if (!EqualValue(x_399->var_box_width, x_401)) {
+      var_modified_x_403(x_399);
     }
-    x_413->has_var_box_width = true;
-    x_413->var_box_width = Asdouble(x_416);
-    return MakeUnit();
-  });
+  }
+  x_399->has_var_box_width = true;
+  x_399->var_box_width = Asdouble(x_401);
   WriteMetric();
-  RecordEval([&](const auto &x_1361) {
-    auto x_421 = eval_expr_x_420(x_413);
-    if (x_413->has_var_box_height) {
-      if (!EqualValue(x_413->var_box_height, x_421)) {
-        var_modified_x_423(x_413);
-      }
+  auto x_406 = eval_expr_x_405(x_399);
+  if (x_399->has_var_box_height) {
+    if (!EqualValue(x_399->var_box_height, x_406)) {
+      var_modified_x_408(x_399);
     }
-    x_413->has_var_box_height = true;
-    x_413->var_box_height = Asdouble(x_421);
-    return MakeUnit();
-  });
+  }
+  x_399->has_var_box_height = true;
+  x_399->var_box_height = Asdouble(x_406);
   WriteMetric();
-  RecordEval([&](const auto &x_1364) {
-    auto x_426 = eval_expr_x_425(x_413);
-    if (x_413->has_var_left_over) {
-      if (!EqualValue(x_413->var_left_over, x_426)) {
-        var_modified_x_428(x_413);
-      }
+  auto x_411 = eval_expr_x_410(x_399);
+  if (x_399->has_var_left_over) {
+    if (!EqualValue(x_399->var_left_over, x_411)) {
+      var_modified_x_413(x_399);
     }
-    x_413->has_var_left_over = true;
-    x_413->var_left_over = Asdouble(x_426);
-    return MakeUnit();
-  });
+  }
+  x_399->has_var_left_over = true;
+  x_399->var_left_over = Asdouble(x_411);
   WriteMetric();
-  RecordEval([&](const auto &x_1367) {
-    auto x_431 = eval_expr_x_430(x_413);
-    if (x_413->has_var_flex_amount) {
-      if (!EqualValue(x_413->var_flex_amount, x_431)) {
-        var_modified_x_433(x_413);
-      }
+  auto x_416 = eval_expr_x_415(x_399);
+  if (x_399->has_var_flex_amount) {
+    if (!EqualValue(x_399->var_flex_amount, x_416)) {
+      var_modified_x_418(x_399);
     }
-    x_413->has_var_flex_amount = true;
-    x_413->var_flex_amount = Asdouble(x_431);
-    return MakeUnit();
-  });
+  }
+  x_399->has_var_flex_amount = true;
+  x_399->var_flex_amount = Asdouble(x_416);
   WriteMetric();
-  RecordEval([&](const auto &x_1370) {
-    auto x_436 = eval_expr_x_435(x_413);
-    if (x_413->has_var_flex_unit) {
-      if (!EqualValue(x_413->var_flex_unit, x_436)) {
-        var_modified_x_438(x_413);
-      }
+  auto x_421 = eval_expr_x_420(x_399);
+  if (x_399->has_var_flex_unit) {
+    if (!EqualValue(x_399->var_flex_unit, x_421)) {
+      var_modified_x_423(x_399);
     }
-    x_413->has_var_flex_unit = true;
-    x_413->var_flex_unit = Asdouble(x_436);
-    return MakeUnit();
-  });
+  }
+  x_399->has_var_flex_unit = true;
+  x_399->var_flex_unit = Asdouble(x_421);
   WriteMetric();
-  RecordEval([&](const auto &x_1373) {
-    auto x_441 = eval_expr_x_440(x_413);
-    if (x_413->has_var_x) {
-      if (!EqualValue(x_413->var_x, x_441)) {
-        var_modified_x_443(x_413);
-      }
+  auto x_426 = eval_expr_x_425(x_399);
+  if (x_399->has_var_x) {
+    if (!EqualValue(x_399->var_x, x_426)) {
+      var_modified_x_428(x_399);
     }
-    x_413->has_var_x = true;
-    x_413->var_x = Asdouble(x_441);
-    return MakeUnit();
-  });
+  }
+  x_399->has_var_x = true;
+  x_399->var_x = Asdouble(x_426);
   WriteMetric();
-  RecordEval([&](const auto &x_1376) {
-    auto x_446 = eval_expr_x_445(x_413);
-    if (x_413->has_var_width_internal) {
-      if (!EqualValue(x_413->var_width_internal, x_446)) {
-        var_modified_x_448(x_413);
-      }
+  auto x_431 = eval_expr_x_430(x_399);
+  if (x_399->has_var_width_internal) {
+    if (!EqualValue(x_399->var_width_internal, x_431)) {
+      var_modified_x_433(x_399);
     }
-    x_413->has_var_width_internal = true;
-    x_413->var_width_internal = Asdouble(x_446);
-    return MakeUnit();
-  });
+  }
+  x_399->has_var_width_internal = true;
+  x_399->var_width_internal = Asdouble(x_431);
   WriteMetric();
-  RecordEval([&](const auto &x_1379) {
-    auto x_451 = eval_expr_x_450(x_413);
-    if (x_413->has_var_width_external) {
-      if (!EqualValue(x_413->var_width_external, x_451)) {
-        var_modified_x_453(x_413);
-      }
+  auto x_436 = eval_expr_x_435(x_399);
+  if (x_399->has_var_width_external) {
+    if (!EqualValue(x_399->var_width_external, x_436)) {
+      var_modified_x_438(x_399);
     }
-    x_413->has_var_width_external = true;
-    x_413->var_width_external = Asdouble(x_451);
-    return MakeUnit();
-  });
+  }
+  x_399->has_var_width_external = true;
+  x_399->var_width_external = Asdouble(x_436);
   WriteMetric();
-  RecordEval([&](const auto &x_1382) {
-    auto x_456 = eval_expr_x_455(x_413);
-    if (x_413->has_var_y) {
-      if (!EqualValue(x_413->var_y, x_456)) {
-        var_modified_x_458(x_413);
-      }
+  auto x_441 = eval_expr_x_440(x_399);
+  if (x_399->has_var_y) {
+    if (!EqualValue(x_399->var_y, x_441)) {
+      var_modified_x_443(x_399);
     }
-    x_413->has_var_y = true;
-    x_413->var_y = Asdouble(x_456);
-    return MakeUnit();
-  });
+  }
+  x_399->has_var_y = true;
+  x_399->var_y = Asdouble(x_441);
   WriteMetric();
-  RecordEval([&](const auto &x_1385) {
-    auto x_461 = eval_expr_x_460(x_413);
-    if (x_413->has_var_height_internal) {
-      if (!EqualValue(x_413->var_height_internal, x_461)) {
-        var_modified_x_463(x_413);
-      }
+  auto x_446 = eval_expr_x_445(x_399);
+  if (x_399->has_var_height_internal) {
+    if (!EqualValue(x_399->var_height_internal, x_446)) {
+      var_modified_x_448(x_399);
     }
-    x_413->has_var_height_internal = true;
-    x_413->var_height_internal = Asdouble(x_461);
-    return MakeUnit();
-  });
+  }
+  x_399->has_var_height_internal = true;
+  x_399->var_height_internal = Asdouble(x_446);
   WriteMetric();
-  RecordEval([&](const auto &x_1388) {
-    auto x_466 = eval_expr_x_465(x_413);
-    if (x_413->has_var_height_external) {
-      if (!EqualValue(x_413->var_height_external, x_466)) {
-        var_modified_x_468(x_413);
-      }
+  auto x_451 = eval_expr_x_450(x_399);
+  if (x_399->has_var_height_external) {
+    if (!EqualValue(x_399->var_height_external, x_451)) {
+      var_modified_x_453(x_399);
     }
-    x_413->has_var_height_external = true;
-    x_413->var_height_external = Asdouble(x_466);
-    return MakeUnit();
-  });
+  }
+  x_399->has_var_height_external = true;
+  x_399->var_height_external = Asdouble(x_451);
   WriteMetric();
-  RecordEval([&](const auto &x_1391) {
-    auto x_471 = eval_expr_x_470(x_413);
-    if (x_413->has_var_line_height) {
-      if (!EqualValue(x_413->var_line_height, x_471)) {
-        var_modified_x_473(x_413);
-      }
+  auto x_456 = eval_expr_x_455(x_399);
+  if (x_399->has_var_line_height) {
+    if (!EqualValue(x_399->var_line_height, x_456)) {
+      var_modified_x_458(x_399);
     }
-    x_413->has_var_line_height = true;
-    x_413->var_line_height = Asdouble(x_471);
-    return MakeUnit();
-  });
+  }
+  x_399->has_var_line_height = true;
+  x_399->var_line_height = Asdouble(x_456);
   return MakeUnit();
 }
-Unit x_45(const auto &x_46, const auto &x_47, const auto &x_48) {
-  auto x_49 = ListHeadExn(x_46);
-  auto x_50 = ListTailExn(x_46);
-  if (ListIsEmpty(x_50)) {
-    auto x_51 = ListSplitN(x_47->children, x_49);
-    OutputChangeMetric(IntAdd(layout_size_x_3(ListNthExn(x_47->children, x_49)), layout_size_x_3(x_48)));
-    x_47->children = ListAppend(Zro(x_51), Cons(x_48, ListTailExn(Fst(x_51))));
+Unit x_43(const auto &x_44, const auto &x_45, const auto &x_46) {
+  auto x_47 = ListHeadExn(x_44);
+  auto x_48 = ListTailExn(x_44);
+  if (ListIsEmpty(x_48)) {
+    auto x_49 = ListSplitN(x_45->children, x_47);
+    OutputChangeMetric(IntAdd(layout_size_x_3(ListNthExn(x_45->children, x_47)), layout_size_x_3(x_46)));
+    x_45->children = ListAppend(Zro(x_49), Cons(x_46, ListTailExn(Fst(x_49))));
     return MakeUnit();
   } else {
-    return x_45(x_50, ListNthExn(x_47->children, x_49), x_48);
+    return x_43(x_48, ListNthExn(x_45->children, x_47), x_46);
   }
 }
-Unit replace_layout_node_x_44(const auto &x_46, const auto &x_47, const auto &x_48) { return x_45(x_46, x_47, x_48); }
-Unit x_52(const auto &x_53, const auto &x_54, const auto &x_55) {
-  auto x_56 = ListHeadExn(x_53);
-  auto x_57 = ListTailExn(x_53);
-  if (ListIsEmpty(x_57)) {
-    OutputChangeMetric(layout_size_x_3(x_55));
-    auto x_58 = ListSplitN(x_54->children, x_56);
-    x_54->children = ListAppend(Zro(x_58), Cons(x_55, Fst(x_58)));
+Unit replace_layout_node_x_42(const auto &x_44, const auto &x_45, const auto &x_46) { return x_43(x_44, x_45, x_46); }
+Unit x_50(const auto &x_51, const auto &x_52, const auto &x_53) {
+  auto x_54 = ListHeadExn(x_51);
+  auto x_55 = ListTailExn(x_51);
+  if (ListIsEmpty(x_55)) {
+    OutputChangeMetric(layout_size_x_3(x_53));
+    auto x_56 = ListSplitN(x_52->children, x_54);
+    x_52->children = ListAppend(Zro(x_56), Cons(x_53, Fst(x_56)));
     return MakeUnit();
   } else {
-    return x_52(x_57, ListNthExn(x_54->children, x_56), x_55);
+    return x_50(x_55, ListNthExn(x_52->children, x_54), x_53);
   }
 }
-Unit add_layout_node_x_42(const auto &x_53, const auto &x_54, const auto &x_55) { return x_52(x_53, x_54, x_55); }
-Unit x_59(const auto &x_60, const auto &x_61, const auto &x_62) {
-  auto x_63 = ListHeadExn(x_60);
-  auto x_64 = ListTailExn(x_60);
-  if (ListIsEmpty(x_64)) {
-    OutputChangeMetric(layout_size_x_3(ListNthExn(x_61->children, x_63)));
-    auto x_65 = ListSplitN(x_61->children, x_63);
-    x_61->children = ListAppend(Zro(x_65), ListTailExn(Fst(x_65)));
+Unit add_layout_node_x_40(const auto &x_51, const auto &x_52, const auto &x_53) { return x_50(x_51, x_52, x_53); }
+Unit x_57(const auto &x_58, const auto &x_59, const auto &x_60) {
+  auto x_61 = ListHeadExn(x_58);
+  auto x_62 = ListTailExn(x_58);
+  if (ListIsEmpty(x_62)) {
+    OutputChangeMetric(layout_size_x_3(ListNthExn(x_59->children, x_61)));
+    auto x_63 = ListSplitN(x_59->children, x_61);
+    x_59->children = ListAppend(Zro(x_63), ListTailExn(Fst(x_63)));
     return MakeUnit();
   } else {
-    return x_59(x_64, ListNthExn(x_61->children, x_63), x_62);
+    return x_57(x_62, ListNthExn(x_59->children, x_61), x_60);
   }
 }
-Unit remove_layout_node_x_40(const auto &x_60, const auto &x_61, const auto &x_62) { return x_59(x_60, x_61, x_62); }
-Unit x_66(const auto &x_67, const auto &x_68, const auto &x_69) {
+Unit remove_layout_node_x_38(const auto &x_58, const auto &x_59, const auto &x_60) { return x_57(x_58, x_59, x_60); }
+Unit x_64(const auto &x_65, const auto &x_66, const auto &x_67) {
   return ListMatch(
-      x_67,
-      [&](const auto &x_72) {
-        auto x_73 = Zro(x_69);
-        auto x_74 = Zro(x_73);
-        auto x_75 = Fst(x_73);
-        auto x_76 = Fst(x_69);
+      x_65,
+      [&](const auto &x_70) {
+        auto x_71 = Zro(x_67);
+        auto x_72 = Zro(x_71);
+        auto x_73 = Fst(x_71);
+        auto x_74 = Fst(x_67);
         InputChangeMetric(static_cast<int64_t>(1));
-        std::string x_1393 = x_74;
-        if (x_1393 == "attributes") {
-          std::string x_1394 = x_75;
-          if (x_1394 == "width") {
+        std::string x_1284 = x_72;
+        if (x_1284 == "attributes") {
+          std::string x_1285 = x_73;
+          if (x_1285 == "width") {
             WriteMetric();
-            x_68->has_attr_width = true;
-            x_68->attr_width = AsDEString(x_76);
+            x_66->has_attr_width = true;
+            x_66->attr_width = AsDEString(x_74);
             return MakeUnit();
-          } else if (x_1394 == "image_height") {
+          } else if (x_1285 == "image_height") {
             WriteMetric();
-            x_68->has_attr_image_height = true;
-            x_68->attr_image_height = Asint64_t(x_76);
+            x_66->has_attr_image_height = true;
+            x_66->attr_image_height = Asint64_t(x_74);
             return MakeUnit();
-          } else if (x_1394 == "image_width") {
+          } else if (x_1285 == "image_width") {
             WriteMetric();
-            x_68->has_attr_image_width = true;
-            x_68->attr_image_width = Asint64_t(x_76);
+            x_66->has_attr_image_width = true;
+            x_66->attr_image_width = Asint64_t(x_74);
             return MakeUnit();
-          } else if (x_1394 == "height") {
+          } else if (x_1285 == "height") {
             WriteMetric();
-            x_68->has_attr_height = true;
-            x_68->attr_height = AsDEString(x_76);
+            x_66->has_attr_height = true;
+            x_66->attr_height = AsDEString(x_74);
             return MakeUnit();
-          } else if (x_1394 == "viewBox") {
+          } else if (x_1285 == "viewBox") {
             WriteMetric();
-            x_68->has_attr_viewBox = true;
-            x_68->attr_viewBox = AsDEString(x_76);
+            x_66->has_attr_viewBox = true;
+            x_66->attr_viewBox = AsDEString(x_74);
             return MakeUnit();
           } else {
             return MakeUnit();
           }
-        } else if (x_1393 == "properties") {
-          std::string x_1395 = x_75;
-          if (x_1395 == "width") {
+        } else if (x_1284 == "properties") {
+          std::string x_1286 = x_73;
+          if (x_1286 == "width") {
             WriteMetric();
-            x_68->has_prop_width = true;
-            x_68->prop_width = AsDEString(x_76);
+            x_66->has_prop_width = true;
+            x_66->prop_width = AsDEString(x_74);
             return MakeUnit();
-          } else if (x_1395 == "flex-grow") {
+          } else if (x_1286 == "flex-grow") {
             WriteMetric();
-            x_68->has_prop_flex_grow = true;
-            x_68->prop_flex_grow = AsDEString(x_76);
+            x_66->has_prop_flex_grow = true;
+            x_66->prop_flex_grow = AsDEString(x_74);
             return MakeUnit();
-          } else if (x_1395 == "height") {
+          } else if (x_1286 == "height") {
             WriteMetric();
-            x_68->has_prop_height = true;
-            x_68->prop_height = AsDEString(x_76);
+            x_66->has_prop_height = true;
+            x_66->prop_height = AsDEString(x_74);
             return MakeUnit();
-          } else if (x_1395 == "display") {
+          } else if (x_1286 == "display") {
             WriteMetric();
-            x_68->has_prop_display = true;
-            x_68->prop_display = AsDEString(x_76);
+            x_66->has_prop_display = true;
+            x_66->prop_display = AsDEString(x_74);
             return MakeUnit();
-          } else if (x_1395 == "position") {
+          } else if (x_1286 == "position") {
             WriteMetric();
-            x_68->has_prop_position = true;
-            x_68->prop_position = AsDEString(x_76);
+            x_66->has_prop_position = true;
+            x_66->prop_position = AsDEString(x_74);
             return MakeUnit();
-          } else if (x_1395 == "flex-shrink") {
+          } else if (x_1286 == "flex-shrink") {
             WriteMetric();
-            x_68->has_prop_flex_shrink = true;
-            x_68->prop_flex_shrink = AsDEString(x_76);
+            x_66->has_prop_flex_shrink = true;
+            x_66->prop_flex_shrink = AsDEString(x_74);
             return MakeUnit();
-          } else if (x_1395 == "flex-direction") {
+          } else if (x_1286 == "flex-direction") {
             WriteMetric();
-            x_68->has_prop_flex_direction = true;
-            x_68->prop_flex_direction = AsDEString(x_76);
+            x_66->has_prop_flex_direction = true;
+            x_66->prop_flex_direction = AsDEString(x_74);
             return MakeUnit();
           } else {
             return MakeUnit();
@@ -2118,71 +2071,71 @@ Unit x_66(const auto &x_67, const auto &x_68, const auto &x_69) {
           Panic();
         }
       },
-      [&](const auto &x_70, const auto &x_71) { return x_66(x_71, ListNthExn(x_68->children, x_70), x_69); });
+      [&](const auto &x_68, const auto &x_69) { return x_64(x_69, ListNthExn(x_66->children, x_68), x_67); });
 }
-Unit insert_value_x_38(const auto &x_67, const auto &x_68, const auto &x_69) { return x_66(x_67, x_68, x_69); }
-Unit x_77(const auto &x_78, const auto &x_79, const auto &x_80) {
+Unit insert_value_x_36(const auto &x_65, const auto &x_66, const auto &x_67) { return x_64(x_65, x_66, x_67); }
+Unit x_75(const auto &x_76, const auto &x_77, const auto &x_78) {
   return ListMatch(
-      x_78,
-      [&](const auto &x_83) {
-        auto x_84 = Zro(x_80);
-        auto x_85 = Fst(x_80);
+      x_76,
+      [&](const auto &x_81) {
+        auto x_82 = Zro(x_78);
+        auto x_83 = Fst(x_78);
         InputChangeMetric(static_cast<int64_t>(1));
-        std::string x_1396 = x_84;
-        if (x_1396 == "attributes") {
-          std::string x_1397 = x_85;
-          if (x_1397 == "width") {
+        std::string x_1287 = x_82;
+        if (x_1287 == "attributes") {
+          std::string x_1288 = x_83;
+          if (x_1288 == "width") {
             WriteMetric();
-            x_79->has_attr_width = false;
+            x_77->has_attr_width = false;
             return MakeUnit();
-          } else if (x_1397 == "image_height") {
+          } else if (x_1288 == "image_height") {
             WriteMetric();
-            x_79->has_attr_image_height = false;
+            x_77->has_attr_image_height = false;
             return MakeUnit();
-          } else if (x_1397 == "image_width") {
+          } else if (x_1288 == "image_width") {
             WriteMetric();
-            x_79->has_attr_image_width = false;
+            x_77->has_attr_image_width = false;
             return MakeUnit();
-          } else if (x_1397 == "height") {
+          } else if (x_1288 == "height") {
             WriteMetric();
-            x_79->has_attr_height = false;
+            x_77->has_attr_height = false;
             return MakeUnit();
-          } else if (x_1397 == "viewBox") {
+          } else if (x_1288 == "viewBox") {
             WriteMetric();
-            x_79->has_attr_viewBox = false;
+            x_77->has_attr_viewBox = false;
             return MakeUnit();
           } else {
             return MakeUnit();
           }
-        } else if (x_1396 == "properties") {
-          std::string x_1398 = x_85;
-          if (x_1398 == "width") {
+        } else if (x_1287 == "properties") {
+          std::string x_1289 = x_83;
+          if (x_1289 == "width") {
             WriteMetric();
-            x_79->has_prop_width = false;
+            x_77->has_prop_width = false;
             return MakeUnit();
-          } else if (x_1398 == "flex-grow") {
+          } else if (x_1289 == "flex-grow") {
             WriteMetric();
-            x_79->has_prop_flex_grow = false;
+            x_77->has_prop_flex_grow = false;
             return MakeUnit();
-          } else if (x_1398 == "height") {
+          } else if (x_1289 == "height") {
             WriteMetric();
-            x_79->has_prop_height = false;
+            x_77->has_prop_height = false;
             return MakeUnit();
-          } else if (x_1398 == "display") {
+          } else if (x_1289 == "display") {
             WriteMetric();
-            x_79->has_prop_display = false;
+            x_77->has_prop_display = false;
             return MakeUnit();
-          } else if (x_1398 == "position") {
+          } else if (x_1289 == "position") {
             WriteMetric();
-            x_79->has_prop_position = false;
+            x_77->has_prop_position = false;
             return MakeUnit();
-          } else if (x_1398 == "flex-shrink") {
+          } else if (x_1289 == "flex-shrink") {
             WriteMetric();
-            x_79->has_prop_flex_shrink = false;
+            x_77->has_prop_flex_shrink = false;
             return MakeUnit();
-          } else if (x_1398 == "flex-direction") {
+          } else if (x_1289 == "flex-direction") {
             WriteMetric();
-            x_79->has_prop_flex_direction = false;
+            x_77->has_prop_flex_direction = false;
             return MakeUnit();
           } else {
             return MakeUnit();
@@ -2191,109 +2144,109 @@ Unit x_77(const auto &x_78, const auto &x_79, const auto &x_80) {
           Panic();
         }
       },
-      [&](const auto &x_81, const auto &x_82) { return x_77(x_82, ListNthExn(x_79->children, x_81), x_80); });
+      [&](const auto &x_79, const auto &x_80) { return x_75(x_80, ListNthExn(x_77->children, x_79), x_78); });
 }
-Unit delete_value_x_36(const auto &x_78, const auto &x_79, const auto &x_80) { return x_77(x_78, x_79, x_80); }
-Unit x_86(const auto &x_87, const auto &x_88, const auto &x_89) {
+Unit delete_value_x_34(const auto &x_76, const auto &x_77, const auto &x_78) { return x_75(x_76, x_77, x_78); }
+Unit x_84(const auto &x_85, const auto &x_86, const auto &x_87) {
   return ListMatch(
-      x_87,
-      [&](const auto &x_92) {
-        auto x_93 = Zro(x_89);
-        auto x_94 = Zro(x_93);
-        auto x_95 = Fst(x_93);
-        auto x_96 = Fst(x_89);
+      x_85,
+      [&](const auto &x_90) {
+        auto x_91 = Zro(x_87);
+        auto x_92 = Zro(x_91);
+        auto x_93 = Fst(x_91);
+        auto x_94 = Fst(x_87);
         InputChangeMetric(static_cast<int64_t>(1));
-        std::string x_1399 = x_94;
-        if (x_1399 == "attributes") {
-          std::string x_1400 = x_95;
-          if (x_1400 == "width") {
+        std::string x_1290 = x_92;
+        if (x_1290 == "attributes") {
+          std::string x_1291 = x_93;
+          if (x_1291 == "width") {
             WriteMetric();
-            x_88->has_attr_width = false;
+            x_86->has_attr_width = false;
             WriteMetric();
-            x_88->has_attr_width = true;
-            x_88->attr_width = AsDEString(x_96);
+            x_86->has_attr_width = true;
+            x_86->attr_width = AsDEString(x_94);
             return MakeUnit();
-          } else if (x_1400 == "image_height") {
+          } else if (x_1291 == "image_height") {
             WriteMetric();
-            x_88->has_attr_image_height = false;
+            x_86->has_attr_image_height = false;
             WriteMetric();
-            x_88->has_attr_image_height = true;
-            x_88->attr_image_height = Asint64_t(x_96);
+            x_86->has_attr_image_height = true;
+            x_86->attr_image_height = Asint64_t(x_94);
             return MakeUnit();
-          } else if (x_1400 == "image_width") {
+          } else if (x_1291 == "image_width") {
             WriteMetric();
-            x_88->has_attr_image_width = false;
+            x_86->has_attr_image_width = false;
             WriteMetric();
-            x_88->has_attr_image_width = true;
-            x_88->attr_image_width = Asint64_t(x_96);
+            x_86->has_attr_image_width = true;
+            x_86->attr_image_width = Asint64_t(x_94);
             return MakeUnit();
-          } else if (x_1400 == "height") {
+          } else if (x_1291 == "height") {
             WriteMetric();
-            x_88->has_attr_height = false;
+            x_86->has_attr_height = false;
             WriteMetric();
-            x_88->has_attr_height = true;
-            x_88->attr_height = AsDEString(x_96);
+            x_86->has_attr_height = true;
+            x_86->attr_height = AsDEString(x_94);
             return MakeUnit();
-          } else if (x_1400 == "viewBox") {
+          } else if (x_1291 == "viewBox") {
             WriteMetric();
-            x_88->has_attr_viewBox = false;
+            x_86->has_attr_viewBox = false;
             WriteMetric();
-            x_88->has_attr_viewBox = true;
-            x_88->attr_viewBox = AsDEString(x_96);
+            x_86->has_attr_viewBox = true;
+            x_86->attr_viewBox = AsDEString(x_94);
             return MakeUnit();
           } else {
             return MakeUnit();
           }
-        } else if (x_1399 == "properties") {
-          std::string x_1401 = x_95;
-          if (x_1401 == "width") {
+        } else if (x_1290 == "properties") {
+          std::string x_1292 = x_93;
+          if (x_1292 == "width") {
             WriteMetric();
-            x_88->has_prop_width = false;
+            x_86->has_prop_width = false;
             WriteMetric();
-            x_88->has_prop_width = true;
-            x_88->prop_width = AsDEString(x_96);
+            x_86->has_prop_width = true;
+            x_86->prop_width = AsDEString(x_94);
             return MakeUnit();
-          } else if (x_1401 == "flex-grow") {
+          } else if (x_1292 == "flex-grow") {
             WriteMetric();
-            x_88->has_prop_flex_grow = false;
+            x_86->has_prop_flex_grow = false;
             WriteMetric();
-            x_88->has_prop_flex_grow = true;
-            x_88->prop_flex_grow = AsDEString(x_96);
+            x_86->has_prop_flex_grow = true;
+            x_86->prop_flex_grow = AsDEString(x_94);
             return MakeUnit();
-          } else if (x_1401 == "height") {
+          } else if (x_1292 == "height") {
             WriteMetric();
-            x_88->has_prop_height = false;
+            x_86->has_prop_height = false;
             WriteMetric();
-            x_88->has_prop_height = true;
-            x_88->prop_height = AsDEString(x_96);
+            x_86->has_prop_height = true;
+            x_86->prop_height = AsDEString(x_94);
             return MakeUnit();
-          } else if (x_1401 == "display") {
+          } else if (x_1292 == "display") {
             WriteMetric();
-            x_88->has_prop_display = false;
+            x_86->has_prop_display = false;
             WriteMetric();
-            x_88->has_prop_display = true;
-            x_88->prop_display = AsDEString(x_96);
+            x_86->has_prop_display = true;
+            x_86->prop_display = AsDEString(x_94);
             return MakeUnit();
-          } else if (x_1401 == "position") {
+          } else if (x_1292 == "position") {
             WriteMetric();
-            x_88->has_prop_position = false;
+            x_86->has_prop_position = false;
             WriteMetric();
-            x_88->has_prop_position = true;
-            x_88->prop_position = AsDEString(x_96);
+            x_86->has_prop_position = true;
+            x_86->prop_position = AsDEString(x_94);
             return MakeUnit();
-          } else if (x_1401 == "flex-shrink") {
+          } else if (x_1292 == "flex-shrink") {
             WriteMetric();
-            x_88->has_prop_flex_shrink = false;
+            x_86->has_prop_flex_shrink = false;
             WriteMetric();
-            x_88->has_prop_flex_shrink = true;
-            x_88->prop_flex_shrink = AsDEString(x_96);
+            x_86->has_prop_flex_shrink = true;
+            x_86->prop_flex_shrink = AsDEString(x_94);
             return MakeUnit();
-          } else if (x_1401 == "flex-direction") {
+          } else if (x_1292 == "flex-direction") {
             WriteMetric();
-            x_88->has_prop_flex_direction = false;
+            x_86->has_prop_flex_direction = false;
             WriteMetric();
-            x_88->has_prop_flex_direction = true;
-            x_88->prop_flex_direction = AsDEString(x_96);
+            x_86->has_prop_flex_direction = true;
+            x_86->prop_flex_direction = AsDEString(x_94);
             return MakeUnit();
           } else {
             return MakeUnit();
@@ -2302,316 +2255,308 @@ Unit x_86(const auto &x_87, const auto &x_88, const auto &x_89) {
           Panic();
         }
       },
-      [&](const auto &x_90, const auto &x_91) { return x_86(x_91, ListNthExn(x_88->children, x_90), x_89); });
+      [&](const auto &x_88, const auto &x_89) { return x_84(x_89, ListNthExn(x_86->children, x_88), x_87); });
 }
-Unit replace_value_x_34(const auto &x_87, const auto &x_88, const auto &x_89) { return x_86(x_87, x_88, x_89); }
-Unit x_97(const auto &x_98, const auto &x_99, const auto &x_100) {
-  auto x_101 = ListHeadExn(x_98);
-  auto x_102 = ListTailExn(x_98);
-  if (ListIsEmpty(x_102)) {
-    InputChangeMetric(IntAdd(node_size_x_4(ListNthExn(x_99->children, x_101)), node_size_x_4(x_100)));
-    auto x_103 = ListSplitN(x_99->children, x_101);
-    auto x_104 = Zro(x_103);
-    auto x_105 = Fst(x_103);
-    auto x_106 = ListHeadExn(x_105);
-    auto x_107 = ListTailExn(x_105);
-    x_99->children = ListAppend(x_104, x_107);
+Unit replace_value_x_32(const auto &x_85, const auto &x_86, const auto &x_87) { return x_84(x_85, x_86, x_87); }
+Unit x_95(const auto &x_96, const auto &x_97, const auto &x_98) {
+  auto x_99 = ListHeadExn(x_96);
+  auto x_100 = ListTailExn(x_96);
+  if (ListIsEmpty(x_100)) {
+    InputChangeMetric(IntAdd(node_size_x_4(ListNthExn(x_97->children, x_99)), node_size_x_4(x_98)));
+    auto x_101 = ListSplitN(x_97->children, x_99);
+    auto x_102 = Zro(x_101);
+    auto x_103 = Fst(x_101);
+    auto x_104 = ListHeadExn(x_103);
+    auto x_105 = ListTailExn(x_103);
+    x_97->children = ListAppend(x_102, x_105);
     OptionMatch(
-        x_106->prev, [&](const auto &x_109) { return MakeUnit(); },
+        x_104->prev, [&](const auto &x_107) { return MakeUnit(); },
+        [&](const auto &x_106) {
+          x_106->next = ToPath(x_104->next);
+          return MakeUnit();
+        });
+    OptionMatch(
+        x_104->next, [&](const auto &x_109) { return MakeUnit(); },
         [&](const auto &x_108) {
-          x_108->next = ToPath(x_106->next);
+          x_108->prev = ToPath(x_104->prev);
           return MakeUnit();
         });
-    OptionMatch(
-        x_106->next, [&](const auto &x_111) { return MakeUnit(); },
-        [&](const auto &x_110) {
-          x_110->prev = ToPath(x_106->prev);
-          return MakeUnit();
-        });
-    if (ListIsEmpty(x_104)) {
-      x_99->first = ToPath(ListHead(x_107));
+    if (ListIsEmpty(x_102)) {
+      x_97->first = ToPath(ListHead(x_105));
     }
-    if (ListIsEmpty(x_107)) {
-      x_99->last = ToPath(ListLast(x_104));
+    if (ListIsEmpty(x_105)) {
+      x_97->last = ToPath(ListLast(x_102));
     }
     MakeUnit();
-    auto x_118 = ListSplitN(x_99->children, x_101);
-    auto x_119 = Zro(x_118);
-    auto x_120 = Fst(x_118);
-    x_99->children = ListAppend(x_119, Cons(x_100, x_120));
-    if (ListIsEmpty(x_119)) {
-      x_99->first = x_100.get();
+    auto x_116 = ListSplitN(x_97->children, x_99);
+    auto x_117 = Zro(x_116);
+    auto x_118 = Fst(x_116);
+    x_97->children = ListAppend(x_117, Cons(x_98, x_118));
+    if (ListIsEmpty(x_117)) {
+      x_97->first = x_98.get();
     }
-    if (ListIsEmpty(x_120)) {
-      x_99->last = x_100.get();
+    if (ListIsEmpty(x_118)) {
+      x_97->last = x_98.get();
     }
     OptionMatch(
-        ListLast(x_119),
+        ListLast(x_117),
+        [&](const auto &x_120) {
+          x_98->prev = nullptr;
+          return MakeUnit();
+        },
+        [&](const auto &x_119) {
+          x_98->prev = x_119.get();
+          x_119->next = x_98.get();
+          return MakeUnit();
+        });
+    OptionMatch(
+        ListHead(x_118),
         [&](const auto &x_122) {
-          x_100->prev = nullptr;
+          x_98->next = nullptr;
           return MakeUnit();
         },
         [&](const auto &x_121) {
-          x_100->prev = x_121.get();
-          x_121->next = x_100.get();
+          x_98->next = x_121.get();
+          x_121->prev = x_98.get();
           return MakeUnit();
         });
-    OptionMatch(
-        ListHead(x_120),
-        [&](const auto &x_124) {
-          x_100->next = nullptr;
-          return MakeUnit();
-        },
-        [&](const auto &x_123) {
-          x_100->next = x_123.get();
-          x_123->prev = x_100.get();
-          return MakeUnit();
-        });
-    x_100->parent = x_99.get();
+    x_98->parent = x_97.get();
     MakeUnit();
     MakeUnit();
     MakeUnit();
     return MakeUnit();
   } else {
-    return x_97(x_102, ListNthExn(x_99->children, x_101), x_100);
+    return x_95(x_100, ListNthExn(x_97->children, x_99), x_98);
   }
 }
-Unit replace_node_x_32(const auto &x_98, const auto &x_99, const auto &x_100) { return x_97(x_98, x_99, x_100); }
-Unit x_133(const auto &x_134) {
-  ListIter2(x_134->children, [&](const auto &x_135, const auto &x_136) {
-    x_135->parent = x_134.get();
-    x_136->parent = x_134.get();
-    x_135->next = x_136.get();
-    x_136->prev = x_135.get();
-    x_133(x_135);
+Unit replace_node_x_30(const auto &x_96, const auto &x_97, const auto &x_98) { return x_95(x_96, x_97, x_98); }
+Unit x_131(const auto &x_132) {
+  ListIter2(x_132->children, [&](const auto &x_133, const auto &x_134) {
+    x_133->parent = x_132.get();
+    x_134->parent = x_132.get();
+    x_133->next = x_134.get();
+    x_134->prev = x_133.get();
+    x_131(x_133);
     return MakeUnit();
   });
   OptionMatch(
-      ListHead(x_134->children),
+      ListHead(x_132->children),
+      [&](const auto &x_136) {
+        x_132->first = nullptr;
+        return MakeUnit();
+      },
+      [&](const auto &x_135) {
+        x_132->first = x_135.get();
+        x_135->parent = x_132.get();
+        return MakeUnit();
+      });
+  OptionMatch(
+      ListLast(x_132->children),
       [&](const auto &x_138) {
-        x_134->first = nullptr;
+        x_132->last = nullptr;
         return MakeUnit();
       },
       [&](const auto &x_137) {
-        x_134->first = x_137.get();
-        x_137->parent = x_134.get();
-        return MakeUnit();
-      });
-  OptionMatch(
-      ListLast(x_134->children),
-      [&](const auto &x_140) {
-        x_134->last = nullptr;
-        return MakeUnit();
-      },
-      [&](const auto &x_139) {
-        x_134->last = x_139.get();
-        x_139->parent = x_134.get();
-        x_133(x_139);
+        x_132->last = x_137.get();
+        x_137->parent = x_132.get();
+        x_131(x_137);
         return MakeUnit();
       });
   return MakeUnit();
 }
-Unit set_children_relation_x_30(const auto &x_134) { return x_133(x_134); }
-Unit x_141(const auto &x_142, const auto &x_143, const auto &x_144) {
-  auto x_145 = ListHeadExn(x_142);
-  auto x_146 = ListTailExn(x_142);
-  if (ListIsEmpty(x_146)) {
-    InputChangeMetric(node_size_x_4(ListNthExn(x_143->children, x_145)));
-    auto x_147 = ListSplitN(x_143->children, x_145);
-    auto x_148 = Zro(x_147);
-    auto x_149 = Fst(x_147);
-    auto x_150 = ListHeadExn(x_149);
-    auto x_151 = ListTailExn(x_149);
-    x_143->children = ListAppend(x_148, x_151);
+Unit set_children_relation_x_28(const auto &x_132) { return x_131(x_132); }
+Unit x_139(const auto &x_140, const auto &x_141, const auto &x_142) {
+  auto x_143 = ListHeadExn(x_140);
+  auto x_144 = ListTailExn(x_140);
+  if (ListIsEmpty(x_144)) {
+    InputChangeMetric(node_size_x_4(ListNthExn(x_141->children, x_143)));
+    auto x_145 = ListSplitN(x_141->children, x_143);
+    auto x_146 = Zro(x_145);
+    auto x_147 = Fst(x_145);
+    auto x_148 = ListHeadExn(x_147);
+    auto x_149 = ListTailExn(x_147);
+    x_141->children = ListAppend(x_146, x_149);
     OptionMatch(
-        x_150->prev, [&](const auto &x_153) { return MakeUnit(); },
+        x_148->prev, [&](const auto &x_151) { return MakeUnit(); },
+        [&](const auto &x_150) {
+          x_150->next = ToPath(x_148->next);
+          return MakeUnit();
+        });
+    OptionMatch(
+        x_148->next, [&](const auto &x_153) { return MakeUnit(); },
         [&](const auto &x_152) {
-          x_152->next = ToPath(x_150->next);
+          x_152->prev = ToPath(x_148->prev);
           return MakeUnit();
         });
-    OptionMatch(
-        x_150->next, [&](const auto &x_155) { return MakeUnit(); },
-        [&](const auto &x_154) {
-          x_154->prev = ToPath(x_150->prev);
-          return MakeUnit();
-        });
-    if (ListIsEmpty(x_148)) {
-      x_143->first = ToPath(ListHead(x_151));
+    if (ListIsEmpty(x_146)) {
+      x_141->first = ToPath(ListHead(x_149));
     }
-    if (ListIsEmpty(x_151)) {
-      x_143->last = ToPath(ListLast(x_148));
+    if (ListIsEmpty(x_149)) {
+      x_141->last = ToPath(ListLast(x_146));
     }
     return MakeUnit();
   } else {
-    return x_141(x_146, ListNthExn(x_143->children, x_145), x_144);
+    return x_139(x_144, ListNthExn(x_141->children, x_143), x_142);
   }
 }
-Unit remove_node_x_28(const auto &x_142, const auto &x_143, const auto &x_144) { return x_141(x_142, x_143, x_144); }
-Unit recalculate_x_26(const auto &x_162) {
-  RecordOverhead([&](const auto &x_1402) { return eval_stmts_x_17(x_162); });
-  RecordOverhead([&](const auto &x_1404) { return eval_stmts_x_19(x_162); });
+Unit remove_node_x_26(const auto &x_140, const auto &x_141, const auto &x_142) { return x_139(x_140, x_141, x_142); }
+Unit recalculate_x_24(const auto &x_160) {
+  eval_stmts_x_16(x_160);
+  eval_stmts_x_17(x_160);
   return MakeUnit();
 }
-Unit x_164(const auto &x_165, const auto &x_166, const auto &x_167) {
-  auto x_168 = ListHeadExn(x_165);
-  auto x_169 = ListTailExn(x_165);
-  if (ListIsEmpty(x_169)) {
-    InputChangeMetric(node_size_x_4(x_167));
-    auto x_170 = ListSplitN(x_166->children, x_168);
-    auto x_171 = Zro(x_170);
-    auto x_172 = Fst(x_170);
-    x_166->children = ListAppend(x_171, Cons(x_167, x_172));
-    if (ListIsEmpty(x_171)) {
-      x_166->first = x_167.get();
+Unit x_161(const auto &x_162, const auto &x_163, const auto &x_164) {
+  auto x_165 = ListHeadExn(x_162);
+  auto x_166 = ListTailExn(x_162);
+  if (ListIsEmpty(x_166)) {
+    InputChangeMetric(node_size_x_4(x_164));
+    auto x_167 = ListSplitN(x_163->children, x_165);
+    auto x_168 = Zro(x_167);
+    auto x_169 = Fst(x_167);
+    x_163->children = ListAppend(x_168, Cons(x_164, x_169));
+    if (ListIsEmpty(x_168)) {
+      x_163->first = x_164.get();
     }
-    if (ListIsEmpty(x_172)) {
-      x_166->last = x_167.get();
+    if (ListIsEmpty(x_169)) {
+      x_163->last = x_164.get();
     }
     OptionMatch(
-        ListLast(x_171),
-        [&](const auto &x_174) {
-          x_167->prev = nullptr;
+        ListLast(x_168),
+        [&](const auto &x_171) {
+          x_164->prev = nullptr;
           return MakeUnit();
         },
+        [&](const auto &x_170) {
+          x_164->prev = x_170.get();
+          x_170->next = x_164.get();
+          return MakeUnit();
+        });
+    OptionMatch(
+        ListHead(x_169),
         [&](const auto &x_173) {
-          x_167->prev = x_173.get();
-          x_173->next = x_167.get();
-          return MakeUnit();
-        });
-    OptionMatch(
-        ListHead(x_172),
-        [&](const auto &x_176) {
-          x_167->next = nullptr;
+          x_164->next = nullptr;
           return MakeUnit();
         },
-        [&](const auto &x_175) {
-          x_167->next = x_175.get();
-          x_175->prev = x_167.get();
+        [&](const auto &x_172) {
+          x_164->next = x_172.get();
+          x_172->prev = x_164.get();
           return MakeUnit();
         });
-    x_167->parent = x_166.get();
+    x_164->parent = x_163.get();
     MakeUnit();
     MakeUnit();
     return MakeUnit();
   } else {
-    return x_164(x_169, ListNthExn(x_166->children, x_168), x_167);
+    return x_161(x_166, ListNthExn(x_163->children, x_165), x_164);
   }
 }
-Unit add_node_x_25(const auto &x_165, const auto &x_166, const auto &x_167) { return x_164(x_165, x_166, x_167); }
-Unit x_185(const auto &x_186) {
-  ListIter2(x_186->children, [&](const auto &x_187, const auto &x_188) {
-    x_187->parent = x_186.get();
-    x_188->parent = x_186.get();
-    x_187->next = x_188.get();
-    x_188->prev = x_187.get();
-    x_185(x_187);
+Unit add_node_x_23(const auto &x_162, const auto &x_163, const auto &x_164) { return x_161(x_162, x_163, x_164); }
+Unit x_182(const auto &x_183) {
+  ListIter2(x_183->children, [&](const auto &x_184, const auto &x_185) {
+    x_184->parent = x_183.get();
+    x_185->parent = x_183.get();
+    x_184->next = x_185.get();
+    x_185->prev = x_184.get();
+    x_182(x_184);
     return MakeUnit();
   });
   OptionMatch(
-      ListHead(x_186->children),
-      [&](const auto &x_190) {
-        x_186->first = nullptr;
+      ListHead(x_183->children),
+      [&](const auto &x_187) {
+        x_183->first = nullptr;
         return MakeUnit();
       },
+      [&](const auto &x_186) {
+        x_183->first = x_186.get();
+        x_186->parent = x_183.get();
+        return MakeUnit();
+      });
+  OptionMatch(
+      ListLast(x_183->children),
       [&](const auto &x_189) {
-        x_186->first = x_189.get();
-        x_189->parent = x_186.get();
-        return MakeUnit();
-      });
-  OptionMatch(
-      ListLast(x_186->children),
-      [&](const auto &x_192) {
-        x_186->last = nullptr;
+        x_183->last = nullptr;
         return MakeUnit();
       },
-      [&](const auto &x_191) {
-        x_186->last = x_191.get();
-        x_191->parent = x_186.get();
-        x_185(x_191);
+      [&](const auto &x_188) {
+        x_183->last = x_188.get();
+        x_188->parent = x_183.get();
+        x_182(x_188);
         return MakeUnit();
       });
   return MakeUnit();
 }
-Unit set_children_relation_x_23(const auto &x_186) { return x_185(x_186); }
-Unit eval_stmts_x_19(const auto &x_193) {
-  RecordOverhead([&](const auto &x_195) { return eval_stmts_x_196(x_193); });
-  RecordEval([&](const auto &x_1408) {
-    return ListIter(x_193->children, [&](const auto &x_197) {
-      return RecordOverhead([&](const auto &x_198) { return eval_stmts_x_19(x_197); });
-    });
-  });
-  RecordOverhead([&](const auto &x_199) { return eval_stmts_x_200(x_193); });
+Unit set_children_relation_x_21(const auto &x_183) { return x_182(x_183); }
+Unit eval_stmts_x_17(const auto &x_190) {
+  eval_stmts_x_191(x_190);
+  ListIter(x_190->children, [&](const auto &x_192) { return eval_stmts_x_17(x_192); });
+  eval_stmts_x_193(x_190);
   return MakeUnit();
 }
-Unit eval_stmts_x_17(const auto &x_201) {
-  RecordOverhead([&](const auto &x_203) { return eval_stmts_x_204(x_201); });
-  RecordEval([&](const auto &x_1414) {
-    return ListIter(x_201->children, [&](const auto &x_205) {
-      return RecordOverhead([&](const auto &x_206) { return eval_stmts_x_17(x_205); });
-    });
-  });
-  RecordOverhead([&](const auto &x_207) { return eval_stmts_x_208(x_201); });
+Unit eval_stmts_x_16(const auto &x_194) {
+  eval_stmts_x_195(x_194);
+  ListIter(x_194->children, [&](const auto &x_196) { return eval_stmts_x_16(x_196); });
+  eval_stmts_x_197(x_194);
   return MakeUnit();
 }
-Unit x_209(const auto &x_210) {
-  ListIter2(x_210->children, [&](const auto &x_211, const auto &x_212) {
-    x_211->parent = x_210.get();
-    x_212->parent = x_210.get();
-    x_211->next = x_212.get();
-    x_212->prev = x_211.get();
-    x_209(x_211);
+Unit x_198(const auto &x_199) {
+  ListIter2(x_199->children, [&](const auto &x_200, const auto &x_201) {
+    x_200->parent = x_199.get();
+    x_201->parent = x_199.get();
+    x_200->next = x_201.get();
+    x_201->prev = x_200.get();
+    x_198(x_200);
     return MakeUnit();
   });
   OptionMatch(
-      ListHead(x_210->children),
-      [&](const auto &x_214) {
-        x_210->first = nullptr;
+      ListHead(x_199->children),
+      [&](const auto &x_203) {
+        x_199->first = nullptr;
         return MakeUnit();
       },
-      [&](const auto &x_213) {
-        x_210->first = x_213.get();
-        x_213->parent = x_210.get();
+      [&](const auto &x_202) {
+        x_199->first = x_202.get();
+        x_202->parent = x_199.get();
         return MakeUnit();
       });
   OptionMatch(
-      ListLast(x_210->children),
-      [&](const auto &x_216) {
-        x_210->last = nullptr;
+      ListLast(x_199->children),
+      [&](const auto &x_205) {
+        x_199->last = nullptr;
         return MakeUnit();
       },
-      [&](const auto &x_215) {
-        x_210->last = x_215.get();
-        x_215->parent = x_210.get();
-        x_209(x_215);
+      [&](const auto &x_204) {
+        x_199->last = x_204.get();
+        x_204->parent = x_199.get();
+        x_198(x_204);
         return MakeUnit();
       });
   return MakeUnit();
 }
-Unit set_children_relation_x_13(const auto &x_210) { return x_209(x_210); }
-int64_t x_217(const auto &x_218) {
-  return IntAdd(static_cast<int64_t>(1), ListIntSum(x_218->children, [&](const auto &x_219) { return x_217(x_219); }));
+Unit set_children_relation_x_13(const auto &x_199) { return x_198(x_199); }
+int64_t x_206(const auto &x_207) {
+  return IntAdd(static_cast<int64_t>(1), ListIntSum(x_207->children, [&](const auto &x_208) { return x_206(x_208); }));
 }
-int64_t node_size_x_4(const auto &x_218) { return x_217(x_218); }
-int64_t x_220(const auto &x_221) {
-  return IntAdd(static_cast<int64_t>(1), ListIntSum(x_221->children, [&](const auto &x_222) { return x_220(x_222); }));
+int64_t node_size_x_4(const auto &x_207) { return x_206(x_207); }
+int64_t x_209(const auto &x_210) {
+  return IntAdd(static_cast<int64_t>(1), ListIntSum(x_210->children, [&](const auto &x_211) { return x_209(x_211); }));
 }
-int64_t layout_size_x_3(const auto &x_221) { return x_220(x_221); }
-LayoutNode x_223(const auto &x_224) {
+int64_t layout_size_x_3(const auto &x_210) { return x_209(x_210); }
+LayoutNode x_212(const auto &x_213) {
   return MakeLayoutNode(
-      ListMap(JsonToList(JsonMember("children", x_224)), [&](const auto &x_225) { return x_223(x_225); }));
+      ListMap(JsonToList(JsonMember("children", x_213)), [&](const auto &x_214) { return x_212(x_214); }));
 }
-LayoutNode json_to_layout_node_x_2(const auto &x_224) { return x_223(x_224); }
-Node x_226(const auto &x_227) {
-  return MakeNode(x_227->name, x_227->attr, x_227->prop, x_227->extern_id,
-                  ListMap(x_227->children, [&](const auto &x_228) { return x_226(x_228); }));
+LayoutNode json_to_layout_node_x_2(const auto &x_213) { return x_212(x_213); }
+Node x_215(const auto &x_216) {
+  return MakeNode(x_216->name, x_216->attr, x_216->prop, x_216->extern_id,
+                  ListMap(x_216->children, [&](const auto &x_217) { return x_215(x_217); }));
 }
-Node node_to_fs_node_x_1(const auto &x_227) { return x_226(x_227); }
-Node x_229(const auto &x_230) {
-  return MakeNode(JsonToString(JsonMember("name", x_230)), JsonToDict(JsonMember("attributes", x_230)),
-                  JsonToDict(JsonMember("properties", x_230)), JsonToInt(JsonMember("id", x_230)),
-                  ListMap(JsonToList(JsonMember("children", x_230)), [&](const auto &x_231) { return x_229(x_231); }));
+Node node_to_fs_node_x_1(const auto &x_216) { return x_215(x_216); }
+Node x_218(const auto &x_219) {
+  return MakeNode(JsonToString(JsonMember("name", x_219)), JsonToDict(JsonMember("attributes", x_219)),
+                  JsonToDict(JsonMember("properties", x_219)), JsonToInt(JsonMember("id", x_219)),
+                  ListMap(JsonToList(JsonMember("children", x_219)), [&](const auto &x_220) { return x_218(x_220); }));
 }
-Node json_to_node_aux_x_0(const auto &x_230) { return x_229(x_230); }
+Node json_to_node_aux_x_0(const auto &x_219) { return x_218(x_219); }
 int main() {
   WithOutFile("espn.out", [&](const auto &x_5) {
     PrintEndline("RUNNING FS_D");
@@ -2635,113 +2580,113 @@ int main() {
       auto x_15 = json_to_layout_node_x_2(JsonMember("node", x_10));
       OutputChangeMetric(layout_size_x_3(x_15));
       InputChangeMetric(node_size_x_4(x_14));
-      RecordOverhead([&](const auto &x_16) { return eval_stmts_x_17(x_14); });
-      RecordOverhead([&](const auto &x_18) { return eval_stmts_x_19(x_14); });
+      eval_stmts_x_16(x_14);
+      eval_stmts_x_17(x_14);
       JsonToChannel(x_5, [&]() {
-        auto x_1418 = FreshJson();
-        WriteJson(x_1418, "name", "FS_D");
-        WriteJson(x_1418, "diff_num", ReadRef(x_7));
-        WriteJson(x_1418, "read_count", MetricReadCount());
-        WriteJson(x_1418, "meta_read_count", MetricMetaReadCount());
-        WriteJson(x_1418, "write_count", MetricWriteCount());
-        WriteJson(x_1418, "meta_write_count", MetricMetaWriteCount());
-        WriteJson(x_1418, "queue_size_acc", MetricQueueSizeAcc());
-        WriteJson(x_1418, "input_change_count", MetricInputChangeCount());
-        WriteJson(x_1418, "output_change_count", MetricOutputChangeCount());
-        WriteJson(x_1418, "overhead_time", MetricOverheadTime());
-        WriteJson(x_1418, "overhead_l2m", MetricOverheadL2m());
-        WriteJson(x_1418, "eval_time", MetricEvalCount());
-        WriteJson(x_1418, "html", "");
-        WriteJson(x_1418, "command", StackToList(x_11));
-        return x_1418;
+        auto x_1293 = FreshJson();
+        WriteJson(x_1293, "name", "FS_D");
+        WriteJson(x_1293, "diff_num", ReadRef(x_7));
+        WriteJson(x_1293, "read_count", MetricReadCount());
+        WriteJson(x_1293, "meta_read_count", MetricMetaReadCount());
+        WriteJson(x_1293, "write_count", MetricWriteCount());
+        WriteJson(x_1293, "meta_write_count", MetricMetaWriteCount());
+        WriteJson(x_1293, "queue_size_acc", MetricQueueSizeAcc());
+        WriteJson(x_1293, "input_change_count", MetricInputChangeCount());
+        WriteJson(x_1293, "output_change_count", MetricOutputChangeCount());
+        WriteJson(x_1293, "overhead_time", MetricOverheadTime());
+        WriteJson(x_1293, "overhead_l2m", MetricOverheadL2m());
+        WriteJson(x_1293, "eval_time", MetricEvalCount());
+        WriteJson(x_1293, "html", "");
+        WriteJson(x_1293, "command", StackToList(x_11));
+        return x_1293;
       }());
       OutputString(x_5, "\n");
       ClearStack(x_11);
       WriteRef(x_7, IntAdd(ReadRef(x_7), static_cast<int64_t>(1)));
       ResetMetric();
       PrintEndline("EVAL OK!");
-      IterLines(x_6, [&](const auto &x_20) {
-        auto x_21 = JsonOfString(x_20);
-        PushStack(x_11, x_21);
-        std::string x_1420 = JsonToString(JsonMember("name", x_21));
-        if (x_1420 == "add") {
-          return add_node_x_25(
-              ListMap(JsonToList(JsonMember("path", x_21)), [&](const auto &x_24) { return JsonToInt(x_24); }), x_14,
+      IterLines(x_6, [&](const auto &x_18) {
+        auto x_19 = JsonOfString(x_18);
+        PushStack(x_11, x_19);
+        std::string x_1295 = JsonToString(JsonMember("name", x_19));
+        if (x_1295 == "add") {
+          return add_node_x_23(
+              ListMap(JsonToList(JsonMember("path", x_19)), [&](const auto &x_22) { return JsonToInt(x_22); }), x_14,
               [&]() {
-                auto x_22 = json_to_node_aux_x_0(JsonMember("node", x_21));
-                x_22->parent = nullptr;
-                x_22->prev = nullptr;
-                x_22->next = nullptr;
-                set_children_relation_x_23(x_22);
-                return x_22;
+                auto x_20 = json_to_node_aux_x_0(JsonMember("node", x_19));
+                x_20->parent = nullptr;
+                x_20->prev = nullptr;
+                x_20->next = nullptr;
+                set_children_relation_x_21(x_20);
+                return x_20;
               }());
-        } else if (x_1420 == "recalculate") {
-          recalculate_x_26(x_14);
+        } else if (x_1295 == "recalculate") {
+          recalculate_x_24(x_14);
           JsonToChannel(x_5, [&]() {
-            auto x_1419 = FreshJson();
-            WriteJson(x_1419, "name", "FS_D");
-            WriteJson(x_1419, "diff_num", ReadRef(x_7));
-            WriteJson(x_1419, "read_count", MetricReadCount());
-            WriteJson(x_1419, "meta_read_count", MetricMetaReadCount());
-            WriteJson(x_1419, "write_count", MetricWriteCount());
-            WriteJson(x_1419, "meta_write_count", MetricMetaWriteCount());
-            WriteJson(x_1419, "queue_size_acc", MetricQueueSizeAcc());
-            WriteJson(x_1419, "input_change_count", MetricInputChangeCount());
-            WriteJson(x_1419, "output_change_count", MetricOutputChangeCount());
-            WriteJson(x_1419, "overhead_time", MetricOverheadTime());
-            WriteJson(x_1419, "overhead_l2m", MetricOverheadL2m());
-            WriteJson(x_1419, "eval_time", MetricEvalCount());
-            WriteJson(x_1419, "html", "");
-            WriteJson(x_1419, "command", StackToList(x_11));
-            return x_1419;
+            auto x_1294 = FreshJson();
+            WriteJson(x_1294, "name", "FS_D");
+            WriteJson(x_1294, "diff_num", ReadRef(x_7));
+            WriteJson(x_1294, "read_count", MetricReadCount());
+            WriteJson(x_1294, "meta_read_count", MetricMetaReadCount());
+            WriteJson(x_1294, "write_count", MetricWriteCount());
+            WriteJson(x_1294, "meta_write_count", MetricMetaWriteCount());
+            WriteJson(x_1294, "queue_size_acc", MetricQueueSizeAcc());
+            WriteJson(x_1294, "input_change_count", MetricInputChangeCount());
+            WriteJson(x_1294, "output_change_count", MetricOutputChangeCount());
+            WriteJson(x_1294, "overhead_time", MetricOverheadTime());
+            WriteJson(x_1294, "overhead_l2m", MetricOverheadL2m());
+            WriteJson(x_1294, "eval_time", MetricEvalCount());
+            WriteJson(x_1294, "html", "");
+            WriteJson(x_1294, "command", StackToList(x_11));
+            return x_1294;
           }());
           OutputString(x_5, "\n");
           ClearStack(x_11);
           WriteRef(x_7, IntAdd(ReadRef(x_7), static_cast<int64_t>(1)));
           ResetMetric();
           return MakeUnit();
-        } else if (x_1420 == "remove") {
-          return remove_node_x_28(
-              ListMap(JsonToList(JsonMember("path", x_21)), [&](const auto &x_27) { return JsonToInt(x_27); }), x_14,
+        } else if (x_1295 == "remove") {
+          return remove_node_x_26(
+              ListMap(JsonToList(JsonMember("path", x_19)), [&](const auto &x_25) { return JsonToInt(x_25); }), x_14,
               MakeUnit());
-        } else if (x_1420 == "replace") {
-          return replace_node_x_32(
-              ListMap(JsonToList(JsonMember("path", x_21)), [&](const auto &x_31) { return JsonToInt(x_31); }), x_14,
+        } else if (x_1295 == "replace") {
+          return replace_node_x_30(
+              ListMap(JsonToList(JsonMember("path", x_19)), [&](const auto &x_29) { return JsonToInt(x_29); }), x_14,
               [&]() {
-                auto x_29 = json_to_node_aux_x_0(JsonMember("node", x_21));
-                x_29->parent = nullptr;
-                x_29->prev = nullptr;
-                x_29->next = nullptr;
-                set_children_relation_x_30(x_29);
-                return x_29;
+                auto x_27 = json_to_node_aux_x_0(JsonMember("node", x_19));
+                x_27->parent = nullptr;
+                x_27->prev = nullptr;
+                x_27->next = nullptr;
+                set_children_relation_x_28(x_27);
+                return x_27;
               }());
-        } else if (x_1420 == "replace_value") {
-          return replace_value_x_34(
-              ListMap(JsonToList(JsonMember("path", x_21)), [&](const auto &x_33) { return JsonToInt(x_33); }), x_14,
-              MakePair(MakePair(JsonToString(JsonMember("type", x_21)), JsonToString(JsonMember("key", x_21))),
-                       JsonToValue(JsonMember("value", x_21))));
-        } else if (x_1420 == "delete_value") {
-          return delete_value_x_36(
-              ListMap(JsonToList(JsonMember("path", x_21)), [&](const auto &x_35) { return JsonToInt(x_35); }), x_14,
-              MakePair(JsonToString(JsonMember("type", x_21)), JsonToString(JsonMember("key", x_21))));
-        } else if (x_1420 == "insert_value") {
-          return insert_value_x_38(
-              ListMap(JsonToList(JsonMember("path", x_21)), [&](const auto &x_37) { return JsonToInt(x_37); }), x_14,
-              MakePair(MakePair(JsonToString(JsonMember("type", x_21)), JsonToString(JsonMember("key", x_21))),
-                       JsonToValue(JsonMember("value", x_21))));
-        } else if (x_1420 == "layout_remove") {
-          return remove_layout_node_x_40(
-              ListMap(JsonToList(JsonMember("path", x_21)), [&](const auto &x_39) { return JsonToInt(x_39); }), x_15,
+        } else if (x_1295 == "replace_value") {
+          return replace_value_x_32(
+              ListMap(JsonToList(JsonMember("path", x_19)), [&](const auto &x_31) { return JsonToInt(x_31); }), x_14,
+              MakePair(MakePair(JsonToString(JsonMember("type", x_19)), JsonToString(JsonMember("key", x_19))),
+                       JsonToValue(JsonMember("value", x_19))));
+        } else if (x_1295 == "delete_value") {
+          return delete_value_x_34(
+              ListMap(JsonToList(JsonMember("path", x_19)), [&](const auto &x_33) { return JsonToInt(x_33); }), x_14,
+              MakePair(JsonToString(JsonMember("type", x_19)), JsonToString(JsonMember("key", x_19))));
+        } else if (x_1295 == "insert_value") {
+          return insert_value_x_36(
+              ListMap(JsonToList(JsonMember("path", x_19)), [&](const auto &x_35) { return JsonToInt(x_35); }), x_14,
+              MakePair(MakePair(JsonToString(JsonMember("type", x_19)), JsonToString(JsonMember("key", x_19))),
+                       JsonToValue(JsonMember("value", x_19))));
+        } else if (x_1295 == "layout_remove") {
+          return remove_layout_node_x_38(
+              ListMap(JsonToList(JsonMember("path", x_19)), [&](const auto &x_37) { return JsonToInt(x_37); }), x_15,
               MakeUnit());
-        } else if (x_1420 == "layout_add") {
-          return add_layout_node_x_42(
-              ListMap(JsonToList(JsonMember("path", x_21)), [&](const auto &x_41) { return JsonToInt(x_41); }), x_15,
-              json_to_layout_node_x_2(JsonMember("node", x_21)));
-        } else if (x_1420 == "layout_replace") {
-          return replace_layout_node_x_44(
-              ListMap(JsonToList(JsonMember("path", x_21)), [&](const auto &x_43) { return JsonToInt(x_43); }), x_15,
-              json_to_layout_node_x_2(JsonMember("node", x_21)));
-        } else if (x_1420 == "layout_info_changed") {
+        } else if (x_1295 == "layout_add") {
+          return add_layout_node_x_40(
+              ListMap(JsonToList(JsonMember("path", x_19)), [&](const auto &x_39) { return JsonToInt(x_39); }), x_15,
+              json_to_layout_node_x_2(JsonMember("node", x_19)));
+        } else if (x_1295 == "layout_replace") {
+          return replace_layout_node_x_42(
+              ListMap(JsonToList(JsonMember("path", x_19)), [&](const auto &x_41) { return JsonToInt(x_41); }), x_15,
+              json_to_layout_node_x_2(JsonMember("node", x_19)));
+        } else if (x_1295 == "layout_info_changed") {
           return OutputChangeMetric(static_cast<int64_t>(1));
         } else {
           Panic();

@@ -132,36 +132,39 @@ module EVAL (SD : SD) = MakeEval (struct
 
   let bb_dirtied_internal p (n : meta node sd) ~(proc_name : string) ~(bb_name : string) (m : metric sd) : unit sd =
     Core.ignore proc_name;
-    record_overhead m (fun _ ->
-        option_match
-          (hashtbl_find (meta_get_bb_time_table (node_get_meta n)) (string bb_name))
-          (fun _ -> tt)
-          (fun order ->
-            ite
-              (not_
-                 (and_
-                    (is_some (hashtbl_find (meta_get_bb_dirtied (node_get_meta n)) (string bb_name)))
-                    (fun _ -> hashtbl_find_exn (meta_get_bb_dirtied (node_get_meta n)) (string bb_name))))
-              (fun _ ->
-                seqs
-                  [
-                    (fun _ -> hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool true));
-                    (fun _ -> queue_force_push order n (int (bb_intern bb_name)) m);
-                  ])
-              (fun _ -> tt)))
+
+    option_match
+      (hashtbl_find (meta_get_bb_time_table (node_get_meta n)) (string bb_name))
+      (fun _ -> tt)
+      (fun order ->
+        ite
+          (not_
+             (and_
+                (is_some (hashtbl_find (meta_get_bb_dirtied (node_get_meta n)) (string bb_name)))
+                (fun _ -> hashtbl_find_exn (meta_get_bb_dirtied (node_get_meta n)) (string bb_name))))
+          (fun _ ->
+            seqs
+              [
+                (fun _ -> hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool true));
+                (fun _ -> queue_force_push order n (int (bb_intern bb_name)) m);
+              ])
+          (fun _ -> tt))
 
   let bb_dirtied_external = bb_dirtied_internal
 
-  let bracket_call_bb (n : meta node sd) bb_name (f : unit -> unit sd) : unit sd =
+  let bracket_call_bb (n : meta node sd) bb_name (f : unit -> unit sd) m : unit sd =
     seqs
       [
-        (fun _ -> hashtbl_set (meta_get_bb_time_table (node_get_meta n)) (string bb_name) (read_ref current_time));
-        (fun _ -> write_ref current_time (next_total_order (read_ref current_time)));
+        (fun _ ->
+          record_overhead m (fun _ ->
+              hashtbl_set (meta_get_bb_time_table (node_get_meta n)) (string bb_name) (read_ref current_time)));
+        (fun _ -> record_overhead m (fun _ -> write_ref current_time (next_total_order (read_ref current_time))));
         (fun _ -> f ());
-        (fun _ -> hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool false));
+        (fun _ ->
+          record_overhead m (fun _ -> hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool false)));
       ]
 
-  let bracket_call_proc (n : meta node sd) proc_name (f : unit -> unit sd) : unit sd =
+  let bracket_call_proc (n : meta node sd) proc_name (f : unit -> unit sd) m : unit sd =
     Core.ignore proc_name;
     f ()
 
@@ -176,49 +179,50 @@ module EVAL (SD : SD) = MakeEval (struct
 
   let recalculate_internal (p : prog) (n : meta node sd) (m : metric sd) (eval_stmts : meta node sd -> stmts -> unit sd)
       : unit sd =
-    seq
-      (while_
-         (fun _ -> not_ (queue_isempty ()))
-         (fun _ ->
-           let_ (queue_pop ()) (fun qp ->
-               let_ (zro qp) (fun x ->
-                   let_ (fst qp) (fun k ->
-                       seqs
-                         [
-                           (fun _ -> meta_read_metric m);
-                           (fun _ -> queue_size_metric m (queue_size ()));
-                           (fun _ ->
-                             ite
-                               (k |> key_get_node |> node_get_meta |> meta_get_alive)
+    record_overhead m (fun _ ->
+        seq
+          (while_
+             (fun _ -> not_ (queue_isempty ()))
+             (fun _ ->
+               let_ (queue_pop ()) (fun qp ->
+                   let_ (zro qp) (fun x ->
+                       let_ (fst qp) (fun k ->
+                           seqs
+                             [
+                               (fun _ -> meta_read_metric m);
+                               (fun _ -> queue_size_metric m (queue_size ()));
                                (fun _ ->
-                                 let bb_cases =
-                                   List.map (Hashtbl.to_alist p.bbs) ~f:(fun (bb_name, BasicBlock (_, stmts)) ->
-                                       ( bb_intern bb_name,
-                                         fun _ ->
-                                           seqs
-                                             [
-                                               (fun _ -> eval_stmts (key_get_node k) stmts);
-                                               (fun _ ->
-                                                 hashtbl_set
-                                                   (meta_get_bb_dirtied (node_get_meta (key_get_node k)))
-                                                   (string bb_name) (bool false));
-                                             ] ))
-                                 in
-                                 let proc_cases =
-                                   List.map (Hashtbl.to_alist p.procs) ~f:(fun (str, ProcessedProc (_, stmts)) ->
-                                       ( proc_intern str,
-                                         fun _ ->
-                                           let_ (read_ref current_time) (fun old_time ->
+                                 ite
+                                   (k |> key_get_node |> node_get_meta |> meta_get_alive)
+                                   (fun _ ->
+                                     let bb_cases =
+                                       List.map (Hashtbl.to_alist p.bbs) ~f:(fun (bb_name, BasicBlock (_, stmts)) ->
+                                           ( bb_intern bb_name,
+                                             fun _ ->
                                                seqs
                                                  [
-                                                   (fun _ -> write_ref current_time x);
                                                    (fun _ -> eval_stmts (key_get_node k) stmts);
-                                                   (fun _ -> write_ref current_time old_time);
-                                                 ]) ))
-                                 in
-                                 int_match (k |> key_get_rf) (List.append bb_cases proc_cases) (fun _ ->
-                                     panic (string "unknown bb/proc")))
-                               (fun _ -> tt));
-                         ])))))
-      (fun _ -> check p n)
+                                                   (fun _ ->
+                                                     hashtbl_set
+                                                       (meta_get_bb_dirtied (node_get_meta (key_get_node k)))
+                                                       (string bb_name) (bool false));
+                                                 ] ))
+                                     in
+                                     let proc_cases =
+                                       List.map (Hashtbl.to_alist p.procs) ~f:(fun (str, ProcessedProc (_, stmts)) ->
+                                           ( proc_intern str,
+                                             fun _ ->
+                                               let_ (read_ref current_time) (fun old_time ->
+                                                   seqs
+                                                     [
+                                                       (fun _ -> write_ref current_time x);
+                                                       (fun _ -> eval_stmts (key_get_node k) stmts);
+                                                       (fun _ -> write_ref current_time old_time);
+                                                     ]) ))
+                                     in
+                                     int_match (k |> key_get_rf) (List.append bb_cases proc_cases) (fun _ ->
+                                         panic (string "unknown bb/proc")))
+                                   (fun _ -> tt));
+                             ])))))
+          (fun _ -> check p n))
 end)

@@ -166,7 +166,7 @@ module type SDIN = sig
   val metric_record_eval : metric sd -> int sd -> unit sd
   val metric_eval_count : metric sd -> int sd
   val record_overhead : metric sd -> (unit -> unit sd) -> unit sd
-  val record_eval : metric sd -> (unit -> unit sd) -> unit sd
+  val record_eval : metric sd -> (unit -> 'a sd) -> 'a sd
   val vbool : bool sd -> value sd
   val vint : int sd -> value sd
   val vfloat : float sd -> value sd

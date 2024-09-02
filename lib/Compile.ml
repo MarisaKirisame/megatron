@@ -35,6 +35,7 @@ let rec is_pure x =
   | CSetMember _ | CPanic _ | CWhile _ -> false
   | CInt _ | CString _ | CVar _ -> true
   | CAssert _ -> false
+  | CAnd (x, y) -> is_pure x && is_pure y
   | CFun (_, body) -> is_pure body
   | CSeq xs -> List.for_all xs ~f:is_pure
   | CApp (CVar _, _) -> false
@@ -257,8 +258,8 @@ let rec simplify_record (p : prog) x =
   let recurse x = simplify_record p x in
   match x with
   | CApp (CPF ("RecordOverhead" | "RecordEval"), [ CFun (_, CApp (CPF "MakeUnit", [])) ]) -> CApp (CPF "MakeUnit", [])
-  | CApp (CPF (("RecordOverhead" | "RecordEval") as f), [ CFun ([ _ ], CSeq xs) ]) ->
-      CSeq (List.map xs ~f:(fun x -> CApp (CPF f, [ CFun ([ fresh () ], x) ])))
+  (*| CApp (CPF (("RecordOverhead" | "RecordEval") as f), [ CFun ([ _ ], CSeq xs) ]) ->
+      CSeq (List.map xs ~f:(fun x -> CApp (CPF f, [ CFun ([ fresh () ], x) ])))*)
   | CApp
       ( CPF ("RecordOverhead" | "RecordEval"),
         [ CFun ([ _ ], (CApp (CPF ("RecordOverhead" | "RecordEval" | "WriteMetric"), _) as x)) ] ) ->
@@ -317,7 +318,7 @@ let rec compile_stmt c x =
       output_string c "return ";
       compile_expr c x;
       output_string c ";"
-  | CSetMember _ ->
+  | CSetMember _ | CWhile _ ->
       compile_proc c x;
       output_string c "return MakeUnit();"
   | CAssert (b, _, t) ->
