@@ -135,9 +135,13 @@ module EVAL (SD : SD) = MakeEval (struct
                                (fun _ -> rerun_if_dirty up_name);
                              ])
                          (fun _ ->
-                           seq
-                             (hashtbl_add_exn (meta_get_proc_inited (node_get_meta n)) (string proc_name) tt)
-                             (fun _ -> eval_stmts n (stmts_of_processed_proc p proc_name))))
+                           seqs
+                             [
+                               (fun _ -> hashtbl_add_exn (meta_get_proc_inited (node_get_meta n)) (string proc_name) tt);
+                               (fun _ -> stop_record_overhead m);
+                               (fun _ -> eval_stmts n (stmts_of_processed_proc p proc_name));
+                               (fun _ -> start_record_overhead m);
+                             ]))
                      (fun _ -> tt));
                  (fun _ ->
                    hashtbl_set (meta_get_recursive_proc_dirtied (node_get_meta n)) (string proc_name) (bool false));
@@ -162,11 +166,16 @@ module EVAL (SD : SD) = MakeEval (struct
 
   let recalculate_internal (p : prog) (n : meta node sd) (m : metric sd) (eval_stmts : meta node sd -> stmts -> unit sd)
       : unit sd =
-    record_overhead m (fun _ ->
-        seq
-          (seqs
-             (List.map p.order ~f:(fun proc_name _ ->
-                  let down, up = get_bb_from_proc p proc_name in
-                  recalculate_internal_aux p n proc_name down up m eval_stmts)))
-          (fun _ -> if is_static then check p (n |> unstatic) |> static else tt))
+    seqs
+      [
+        (fun _ -> start_record_overhead m);
+        (fun _ ->
+          seq
+            (seqs
+               (List.map p.order ~f:(fun proc_name _ ->
+                    let down, up = get_bb_from_proc p proc_name in
+                    recalculate_internal_aux p n proc_name down up m eval_stmts)))
+            (fun _ -> if is_static then check p (n |> unstatic) |> static else tt));
+        (fun _ -> stop_record_overhead m);
+      ]
 end)

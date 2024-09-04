@@ -166,7 +166,11 @@ module type SDIN = sig
   val metric_record_eval : metric sd -> int sd -> unit sd
   val metric_eval_count : metric sd -> int sd
   val record_overhead : metric sd -> (unit -> unit sd) -> unit sd
+  val start_record_overhead : metric sd -> unit sd
+  val stop_record_overhead : metric sd -> unit sd
   val record_eval : metric sd -> (unit -> 'a sd) -> 'a sd
+  val start_record_eval : metric sd -> unit sd
+  val stop_record_eval : metric sd -> unit sd
   val vbool : bool sd -> value sd
   val vint : int sd -> value sd
   val vfloat : float sd -> value sd
@@ -441,7 +445,11 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
   let metric_overhead_l2m m = m.overhead_l2m
   let metric_record_overhead_l2m m i = m.overhead_l2m <- m.overhead_l2m + i
   let record_overhead m f = f ()
+  let start_record_overhead m = ()
+  let stop_record_overhead m = ()
   let record_eval m f = f ()
+  let start_record_eval m = ()
+  let stop_record_eval m = ()
   let vbool b = VBool b
   let vint i = VInt i
   let vstring x = VString x
@@ -731,7 +739,11 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let metric_overhead_l2m m = CApp (CPF "MetricOverheadL2m", [ m ])
   let metric_record_overhead_l2m m i = CApp (CPF "MetricRecordOverheadL2m", [ m; i ])
   let record_overhead m f = CApp (CPF "RecordOverhead", [ m; lam (fun _ -> f ()) ])
+  let start_record_overhead m = CApp (CPF "StartRecordOverhead", [ m ])
+  let stop_record_overhead m = CApp (CPF "StopRecordOverhead", [ m ])
   let record_eval m f = CApp (CPF "RecordEval", [ m; lam (fun _ -> f ()) ])
+  let start_record_eval m = CApp (CPF "StartRecordEval", [ m ])
+  let stop_record_eval m = CApp (CPF "StopRecordEval", [ m ])
   let vbool b = CApp (CPF "VBool", [ b ])
   let vint i = CApp (CPF "VInt", [ i ])
   let vstring s = CApp (CPF "VString", [ s ])

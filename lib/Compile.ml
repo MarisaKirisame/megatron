@@ -20,7 +20,8 @@ let is_pure_function f =
   | "PushStack" | "Assert" | "IterLines" | "JsonToChannel" | "OutputString" | "ResetMetric" | "ClearStack" | "WriteRef"
   | "ReadMetric" | "HashtblSet" | "WriteJson" | "MetaReadMetric" | "MetaWriteMetric" | "RemoveMeta" | "NextTotalOrder"
   | "QueuePop" | "QueuePush" | "QueueForcePush" | "MetricQueueSize" | "MetricRecordOverheadL2m"
-  | "MetricRecordOverheadTime" | "RecordOverhead" | "RecordEval" ->
+  | "MetricRecordOverheadTime" | "RecordOverhead" | "RecordEval" | "StopRecordOverhead" | "StartRecordOverhead"
+  | "StopRecordEval" | "StartRecordEval" ->
       false
   | "MakeUnit" | "ListIsEmpty" | "IntEqual" | "ListLength" | "ListSplitN" | "Zro" | "Fst" | "FreshMetric" | "Cons"
   | "Nil" | "IsNone" | "HashtblFind" | "UnSome" | "ListLast" | "JsonMember" | "ListMatch" | "OptionIter" | "OptionMatch"
@@ -171,7 +172,8 @@ let rec simplify (p : prog) x =
       ( CPF
           (( "WriteMetric" | "MetricWriteCount" | "MetaWriteMetric" | "MetricQueueSizeAcc" | "MetricMetaReadCount"
            | "MetricMetaWriteCount" | "MetricOutputChangeCount" | "MetricInputChangeCount" | "MetricReadCount"
-           | "ResetMetric" | "MetaReadMetric" | "MetricOverheadTime" | "MetricOverheadL2m" | "MetricEvalCount" ) as f),
+           | "ResetMetric" | "MetaReadMetric" | "MetricOverheadTime" | "MetricOverheadL2m" | "MetricEvalCount"
+           | "StartRecordOverhead" | "StopRecordOverhead" | "StartRecordEval" | "StopRecordEval" ) as f),
         [ _ ] ) ->
       CApp (CPF f, [])
   | CApp

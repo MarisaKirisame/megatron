@@ -761,11 +761,12 @@ void pfm_init() {
 
 struct PFMInitializer {
   PFMInitializer() {
-    pfm_init();
+    //pfm_init();
   }
 } pfm_initializer;
 
 int64_t read_pfm() {
+  return 1;
   // return pfm_event->read_count().count;
   return pfm_event->read_count_rdpmc().value().count;
 }
@@ -829,4 +830,27 @@ auto RecordEval(const auto& f) {
   Stat stat = stat_diff - begin_node.skipped_stat;
   MetricRecordEval(stat.time);
   return val;
+}
+
+Stat stat;
+
+Unit StartRecordOverhead() {
+  stat = Stat::measure();
+  return Unit{};
+}
+Unit StopRecordOverhead() {
+  Stat diff = Stat::measure() - stat;
+  MetricRecordOverheadTime(diff.time);
+  MetricRecordOverheadL2m(diff.l2m);
+  return Unit{};
+}
+
+Unit StartRecordEval() {
+  stat = Stat::measure();
+  return Unit{};
+}
+Unit StopRecordEval() {
+  Stat diff = Stat::measure() - stat;
+  MetricRecordEval(diff.time);
+  return Unit{};
 }
