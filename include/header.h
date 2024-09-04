@@ -766,6 +766,7 @@ struct PFMInitializer {
 } pfm_initializer;
 
 int64_t read_pfm() {
+  return 1;
   // return pfm_event->read_count().count;
   return pfm_event->read_count_rdpmc().value().count;
 }
