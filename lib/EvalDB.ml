@@ -113,10 +113,13 @@ module EVAL (SD : SD) = MakeEval (struct
                ite
                  (hashtbl_find_exn (meta_get_bb_dirtied (node_get_meta n)) (string name))
                  (fun _ ->
-                   seqs [(fun _ -> eval_stmts n (stmts_of_basic_block p name));
-                         (fun _ -> stop_record_overhead m);
-                         (fun _ -> hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string name) (bool false));
-                         (fun _ -> start_record_overhead m)])
+                   seqs
+                     [
+                       (fun _ -> stop_record_overhead m);
+                       (fun _ -> eval_stmts n (stmts_of_basic_block p name));
+                       (fun _ -> start_record_overhead m);
+                       (fun _ -> hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string name) (bool false));
+                     ])
                  (fun _ -> tt)
              in
              seqs

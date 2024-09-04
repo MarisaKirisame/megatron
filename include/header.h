@@ -802,10 +802,10 @@ struct Timer {
   std::vector<Node> v;
 } t;
 
-bool measuring = false;
+//bool measuring = false;
 auto RecordOverhead(const auto& f) {
-  if (measuring) { Panic(); }
-  measuring = true;
+  //if (measuring) { Panic(); }
+  //measuring = true;
   t.v.push_back(Timer::Node());
   auto val = f(Unit {});
   Stat end_stat = Stat::measure();
@@ -818,13 +818,13 @@ auto RecordOverhead(const auto& f) {
   Stat stat = stat_diff - begin_node.skipped_stat;
   MetricRecordOverheadTime(stat.time);
   MetricRecordOverheadL2m(stat.l2m);
-  measuring = false;
+  //measuring = false;
   return val;
 }
 
 auto RecordEval(const auto& f) {
-  if (measuring) { Panic(); }
-  measuring = true;
+  //if (measuring) { Panic(); }
+  //measuring = true;
   t.v.push_back(Timer::Node());
   auto val = f(Unit {});
   Stat end_stat = Stat::measure();
@@ -837,15 +837,15 @@ auto RecordEval(const auto& f) {
   }
   Stat stat = stat_diff - begin_node.skipped_stat;
   MetricRecordEval(stat.time);
-  measuring = false;
+  //measuring = false;
   return val;
 }
 
 Stat stat;
 
 Unit StartRecordOverhead() {
-  if (measuring) { Panic(); }
-  measuring = true;
+  //if (measuring) { Panic(); }
+  //measuring = true;
   stat = Stat::measure();
   return Unit{};
 }
@@ -853,19 +853,19 @@ Unit StopRecordOverhead() {
   Stat diff = Stat::measure() - stat;
   MetricRecordOverheadTime(diff.time);
   MetricRecordOverheadL2m(diff.l2m);
-  measuring = false;
+  //measuring = false;
   return Unit{};
 }
 
 Unit StartRecordEval() {
-  if (measuring) { Panic(); }
-  measuring = true;
+  //if (measuring) { Panic(); }
+  //measuring = true;
   stat = Stat::measure();
   return Unit{};
 }
 Unit StopRecordEval() {
   Stat diff = Stat::measure() - stat;
   MetricRecordEval(diff.time);
-  measuring = false;
+  //measuring = false;
   return Unit{};
 }
