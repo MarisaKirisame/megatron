@@ -639,6 +639,7 @@ struct PerfEvent{
         attr.exclude_kernel = 1;
         attr.exclude_hv = 1;
         attr.read_format = PERF_FORMAT_TOTAL_TIME_ENABLED|PERF_FORMAT_TOTAL_TIME_RUNNING|PERF_FORMAT_ID|PERF_FORMAT_LOST;
+	attr.sample_period = 1;
         fd = perf_event_open(&attr, 0, -1, -1, 0);
         if(fd<0){
             perror("PerfEvent creation failed");
