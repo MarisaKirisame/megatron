@@ -752,7 +752,7 @@ void pfm_init() {
   const char* pfm_cycle = "CYCLES";
   const char* pfm_branch_miss = "BR_MISP_EXEC";
 
-  static PerfEvent event(pfm.get_perf_arg(pfm_l2_miss_stall));
+  static PerfEvent event(pfm.get_perf_arg(pfm_l2_miss));
   pfm_event = &event;
 
   pfm_event->reset();
