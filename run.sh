@@ -9,6 +9,8 @@ process(){
 
 rm Layout*.cpp || true
 rm *.out || true
+
+process SM2
 process github_nologin
 process discord_nologin
 process espn

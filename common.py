@@ -1,12 +1,12 @@
 # path is a list of int.
-def command_init(node, time):
-    return { "name": "init", "node": node, "time": time }
+def command_init(node, time, suite, phase):
+    return { "name": "init", "node": node, "time": time, "suite": suite, "phase": phase }
 
 def command_layout_init(node):
     return { "name": "layout_init", "node": node }
 
-def command_recalculate(time):
-    return { "name": "recalculate", "time": time }
+def command_recalculate(time, suite, phase):
+    return { "name": "recalculate", "time": time, "suite": suite, "phase": phase }
 
 def command_add(path, node):
     return { "name": "add", "path": path, "node": node }
