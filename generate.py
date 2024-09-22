@@ -89,58 +89,26 @@ def enforce_unique_id(j, s):
     s.add(j["id"])
     for c in j["children"]:
         enforce_unique_id(c, s)
-
-def anal_marks(marks):
-    if len(marks) == 0:
-        return "None", "None"
-    pattern = [("suite-TodoMVC-", "-Complex-DOM-prepare-start", "prepare-start"),
-               ("suite-TodoMVC-", "-Complex-DOM-start", "start"),
-               ("TodoMVC-", "-Complex-DOM.CompletingAllItems-start", "add-items"),
-               ("TodoMVC-", "-Complex-DOM.DeletingAllItems-start", "delete-items")]
-    for mark in marks:
-        for prefix, suffix, phase in pattern:
-            if mark.startswith(prefix) and mark.endswith(suffix):
-                return mark.removeprefix(prefix).removesuffix(suffix), phase
-        if mark == 'iteration-end':
-            return "None", "None"
-    print(marks)
-    raise
-
+    
 with open(trace_path) as f:
-    try:
-        dom_tree_old = None
-        layout_tree_old = None
-        marks = []
-        while True:
-            l = next(f)
-            j = json.loads(l)
-            #print(l[:200])
-            if j["type"] == "out":
-                dom_tree = regularize_dom(j["dom_tree"])
-                layout_tree = regularize_layout(j["layout_tree"])
-                suite, phase = anal_marks(marks)
-                semantic_check(dom_tree)
-                TOTAL_SIZE += size(dom_tree)
-                if dom_tree_old is None:
-                    assert layout_tree_old is None
-                    out(command_init(dom_tree, j["time"], suite, phase))
-                    out(command_layout_init(layout_tree))
-                else:
-                    assert layout_tree_old is not None
-                    diff_dom_tree(dom_tree_old, dom_tree, [])
-                    diff_layout_tree(layout_tree_old, layout_tree, [])
-                    out(command_recalculate(j["time"], suite, phase))
-                dom_tree_old = dom_tree
-                layout_tree_old = layout_tree
-                marks = []
-            elif j["type"] == "mark":
-                print(j["name"])
-                marks.append(j["name"])
-            else:
-                print(j["type"])
-                assert False
-
-    except StopIteration:
-        pass
+    dom_tree_old = None
+    layout_tree_old = None
+    for l in f.readlines():
+        j = json.loads(l)
+        dom_tree = regularize_dom(j["dom_tree"])
+        layout_tree = regularize_layout(j["layout_tree"])
+        semantic_check(dom_tree)
+        TOTAL_SIZE += size(dom_tree)
+        if dom_tree_old is None:
+            assert layout_tree_old is None
+            out(command_init(dom_tree, j["time"]))
+            out(command_layout_init(layout_tree))
+        else:
+            assert layout_tree_old is not None
+            diff_dom_tree(dom_tree_old, dom_tree, [])
+            diff_layout_tree(layout_tree_old, layout_tree, [])
+            out(command_recalculate(j["time"]))
+        dom_tree_old = dom_tree
+        layout_tree_old = layout_tree
 
 print((TOTAL_DIFF_SIZE, TOTAL_SIZE))
