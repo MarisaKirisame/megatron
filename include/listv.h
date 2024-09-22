@@ -4,127 +4,207 @@
 #include <cstdio>
 #include <memory>
 #include <queue>
+#include <string>
+#include <variant>
 #include <vector>
 
-template <typename T> struct listv {
-  struct _node {
-    T _elem;
-    uint32_t _next = 0;
-    uint32_t _prev = 0;
+template <typename T> class listv {
+private:
+  struct ptr;
+
+  struct node {
+    T elem;
+    ptr next{this};
+    ptr prev{this};
   };
 
-  static inline std::vector<_node> _storage;
-  static inline std::queue<uint32_t> _freelist;
+  static inline std::vector<node> storage;
+  static inline std::queue<uint32_t> freelist;
 
-  uint32_t _head = 0;
+  ptr head{this};
+  ptr tail{this};
 
-  struct iterator {
-    uint32_t p;
+  struct ptr {
+    std::variant<const listv<T> *, uint32_t> inner;
 
-    inline iterator next() const { return iterator{_storage[p]._next}; }
-    inline iterator prev() const { return iterator{_storage[p]._prev}; }
+    operator bool() const { return inner.index() == 1; }
 
-    inline T &operator*() { return _storage[p]._elem; }
+    uint32_t idx() const { return std::get<1>(inner); }
 
-    inline iterator &operator++() {
-      p = _storage[p]._next;
+    std::string to_string() const {
+      if (inner.index() == 0) {
+        return "/";
+      } else {
+        return std::to_string(idx());
+      }
+    }
+
+    ptr prev() const {
+      if (inner.index() == 0) {
+        return std::get<0>(inner)->tail;
+      } else {
+        return storage[idx()].prev;
+      }
+    }
+
+    ptr next() const { return storage[idx()].next; }
+
+    node &n() const { return storage[idx()]; }
+
+    friend bool operator==(const ptr &l, const ptr &r) { return l.inner == r.inner; }
+
+    T *operator->() const { return &n().elem; }
+
+    T &operator*() const { return n().elem; }
+
+    ptr &operator++() {
+      if (inner.index() == 0) {
+        printf("hole\n");
+        fflush(stdout);
+      }
+      inner = storage[idx()].next;
       return *this;
     }
 
-    inline iterator &operator--() {
-      p = _storage[p]._prev;
-      return *this;
-    }
-
-    inline iterator operator++(int) {
-      iterator old = *this;
+    ptr operator++(int) {
+      ptr old = *this;
       operator++();
       return old;
     }
 
-    inline iterator operator--(int) {
-      iterator old = *this;
+    ptr &operator--() {
+      inner = prev();
+      return *this;
+    }
+
+    ptr operator--(int) {
+      ptr old = *this;
       operator--();
       return old;
     }
-
-    friend inline bool operator==(const iterator &l, const iterator &r) { return l.p == r.p; }
   };
 
-  listv() {
-    if (_storage.size() == 0) {
-      // sentinel
-      _storage.push_back(_node{});
-    }
-  }
+public:
+  using iterator = ptr;
 
-  ~listv() {}
-
-  iterator begin() const { return iterator{_head}; }
-
-  iterator end() const { return iterator{0}; }
+  iterator begin() const { return head; }
+  iterator end() const { return ptr{this}; }
 
   template <typename... Args> iterator emplace(const iterator &pos, Args &&...args) {
-    uint32_t cur_p;
-    if (!_freelist.empty()) {
-      cur_p = _freelist.front();
-      _freelist.pop();
-      std::construct_at(&_storage[cur_p]._elem, std::forward<Args>(args)...);
-      _storage[cur_p]._next = pos.p;
-      _storage[cur_p]._prev = _storage[pos.p]._prev;
+    ptr cur;
+    ptr pos_prev = pos.prev();
+
+    if (!freelist.empty()) {
+      uint32_t f = freelist.front();
+      cur = ptr{f};
+      storage[f].next = pos;
+      storage[f].prev = pos_prev;
+      std::construct_at(&storage[f].elem, std::forward<Args>(args)...);
+      freelist.pop();
     } else {
-      cur_p = _storage.size();
-      _storage.emplace_back(std::forward<Args>(args)..., pos.p, _storage[pos.p]._prev);
+      cur = ptr{static_cast<uint32_t>(storage.size())};
+      T elem{std::forward<Args>(args)...};
+      storage.emplace_back(std::move(elem), pos, pos_prev);
     }
-    _storage[pos.p]._prev = cur_p;
-    if (_head == pos.p) {
-      _head = cur_p;
+
+    if (pos) {
+      pos.n().prev = cur;
+      if (pos_prev) {
+        pos_prev.n().next = cur;
+      }
+    } else {
+      tail = cur;
     }
-    return iterator{cur_p};
+
+    if (head == pos) {
+      head = cur;
+    }
+
+    return cur;
   }
 
-  void remove(const iterator &pos) {
-    if (pos.p == 0) {
+  template <typename... Args> iterator emplace_back(Args &&...args) {
+    return emplace(end(), std::forward<Args>(args)...);
+  }
+
+  void erase(const iterator &pos) {
+    if (!pos) {
       return;
     }
 
-    uint32_t old_prev = _storage[pos.p]._prev;
-    uint32_t old_next = _storage[pos.p]._next;
-    _storage[old_prev]._next = old_next;
-    _storage[old_next]._prev = old_prev;
-    _freelist.push(pos.p);
+    ptr pos_prev = pos.prev();
+    ptr pos_next = pos.next();
 
-    if (_head == pos.p) {
-      _head = old_next;
+    if (pos_prev) {
+      pos_prev.n().next = pos_next;
     }
+
+    if (pos_next) {
+      pos_next.n().prev = pos_prev;
+    }
+
+    if (head == pos) {
+      head = pos_next;
+    }
+
+    if (tail == pos) {
+      tail = pos_prev;
+    }
+
+    freelist.push(pos.idx());
   }
 
   void splice(const iterator &pos, listv<T> &other, const iterator &first, const iterator &last) {
-    // 1. remove [first, last)
-    _storage[_storage[first.p]._prev]._next = last.p;
-    uint32_t old_prev = _storage[last.p]._prev;
-    _storage[last.p]._prev = _storage[first.p]._prev;
-
-    // 2. concat before pos
-    _storage[_storage[pos.p]._prev]._next = first.p;
-    _storage[first.p]._prev = _storage[pos.p]._prev;
-
-    _storage[old_prev]._next = pos.p;
-    _storage[pos.p]._prev = old_prev;
-
-    if (_head == pos.p) {
-      _head = first.p;
+    if (!first) {
+      return;
     }
-    
-    if (other._head == first.p) {
-      other._head = last.p;
+
+    ptr old_last_prev = last.prev();
+
+    // 1. Cut off [first, last)
+    if (first.prev()) {
+      first.prev().n().next = last;
+    }
+
+    if (last) {
+      last.n().prev = first.prev();
+    }
+
+    if (other.head == first) {
+      other.head = last;
+    }
+
+    // 2. Attach the segment to our list
+
+    if (pos) {
+      ptr pos_prev = pos.prev();
+      first.n().prev = pos_prev;
+      if (pos_prev) {
+        pos_prev.n().next = first;
+      }
+      pos.n().prev = old_last_prev;
+      if (old_last_prev) {
+        old_last_prev.n().next = pos;
+      }
+    } else {
+      first.n().prev = pos;
+      if (old_last_prev) {
+        old_last_prev.n().next = pos;
+      }
+
+      tail = old_last_prev;
+    }
+
+    if (pos == head) {
+      head = first;
     }
   }
 
   void print() {
-    printf("head: %d\n", _head);
-    for (int i = 0; i < _storage.size(); i++) {
-      printf("%d <-  %d  -> %d  |  %ld\n", _storage[i]._prev, i, _storage[i]._next, _storage[i]._elem);
+    printf("head: %s\n", head.to_string().c_str());
+    for (int i = 0; i < storage.size(); i++) {
+      printf("%s <-  %d  -> %s  |  %ld\n", storage[i].prev.to_string().c_str(), i, storage[i].next.to_string().c_str(),
+             storage[i].elem);
     }
   }
 };
