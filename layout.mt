@@ -230,6 +230,7 @@ proc pass_0() {
       (get_name() = "HOME-PAGE-HERO-BLOCK-ICON-BAR") ||
       (get_name() = "HOME-PAGE-HERO-BLOCK") ||
       (get_name() = "HOME-PAGE-ONBOARDING") ||
+      (get_name() = "INFINITE-SCROLLER") ||
       (get_name() = "ONBOARDING-TILE") ||
       (get_name() = "HERO-BLOCK-ANNOUNCEMENTS") ||
       (get_name() = "SAVE-PAGE-FORM") ||
