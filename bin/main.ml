@@ -168,6 +168,11 @@ let default_tag : (string, unit) Hashtbl.t =
          "APP-ROOT";
          "STRONG";
          "SELECT";
+         "META";
+         "TITLE";
+         "LINK";
+         "SCRIPT";
+         "STYLE";   
        ])
 
 let rec node_to_html_buffer (b : Buffer.t) (parent_x : int) (parent_y : int) (n : _ node) : unit =
