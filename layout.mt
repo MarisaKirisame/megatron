@@ -51,7 +51,7 @@ proc pass_0() {
   self.width_attr_expr <- 
     if !(has_attr(width))
     then "auto"
-    else if string_is_float(get_attr(width)) || has_suffix(get_attr(width), "%")
+    else if string_is_float(get_attr(width)) || has_suffix(get_attr(width), "%") || has_suffix(get_attr(width), "px")
     then get_attr(width)
     else if get_attr(width) = "Auto"
     then "auto"
@@ -61,7 +61,7 @@ proc pass_0() {
   self.height_attr_expr <- 
     if !(has_attr(height))
     then "auto"
-    else if string_is_float(get_attr(height)) || has_suffix(get_attr(height), "%")
+    else if string_is_float(get_attr(height)) || has_suffix(get_attr(height), "%") || has_suffix(get_attr(height), "px")
     then get_attr(height)
     else if get_attr(height) = "Auto"
     then "auto"
