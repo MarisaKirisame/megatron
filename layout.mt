@@ -227,6 +227,7 @@ proc pass_0() {
       (get_name() = "SAVE-PAGE-FORM") ||
       (get_name() = "FIELDSET") ||
       (get_name() = "MODAL-TEMPLATE") ||
+      (get_name() = "ROUTER-SLOT") ||
       (get_name() = "STRONG")
     then true
     else if 
