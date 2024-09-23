@@ -211,6 +211,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "NOBR";
          "TH";
          "S";
+         "TT";
          "BLOCKQUOTE";
        ])
 
