@@ -186,7 +186,6 @@ let default_tag : (string, unit) Hashtbl.t =
          "SIGNED-OUT-DROPDOWN";
          "SEARCH-MENU";
          "DESKTOP-SUBNAV";
-         "WAYBACK-SEARCH";
          "IA-TOPNAV";
          "MODAL-MANAGER";
          "HORIZONTAL-ACTIVITY-INDICATOR";
