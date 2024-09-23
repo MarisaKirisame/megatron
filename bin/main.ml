@@ -193,6 +193,11 @@ let default_tag : (string, unit) Hashtbl.t =
          "WAYBACK-SEARCH";
          "HOME-PAGE";
          "HOME-PAGE-HERO-BLOCK-ICON-BAR";
+         "HOME-PAGE-HERO-BLOCK";
+         "HOME-PAGE-ONBOARDING";
+         "INFINITE-SCROLLER";
+         "ONBOARDING-TILE";
+         "HERO-BLOCK-ANNOUNCEMENTS";
          "SAVE-PAGE-FORM";
          "FIELDSET";
          "MODAL-TEMPLATE";
