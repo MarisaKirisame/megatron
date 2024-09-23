@@ -220,6 +220,7 @@ proc pass_0() {
       (get_name() = "SIGNED-OUT-DROPDOWN") ||
       (get_name() = "SEARCH-MENU") ||
       (get_name() = "DESKTOP-SUBNAV") ||
+      (get_name() = "IA-TOPNAV") ||
       (get_name() = "STRONG")
     then true
     else if 
