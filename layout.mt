@@ -243,6 +243,7 @@ proc pass_0() {
       (get_name() = "CIRCULAR-ACTIVITY-INDICATOR") ||
       (get_name() = "COLLECTION-TILE") ||
       (get_name() = "NOBR") ||
+      (get_name() = "TH") ||
       (get_name() = "STRONG")
     then true
     else if 

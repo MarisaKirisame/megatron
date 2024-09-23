@@ -208,7 +208,8 @@ let default_tag : (string, unit) Hashtbl.t =
          "APP-FOOTER";
          "CIRCULAR-ACTIVITY-INDICATOR";
          "COLLECTION-TILE";
-         "NOBR"
+         "NOBR";
+         "TH";
        ])
 
 let rec node_to_html_buffer (b : Buffer.t) (parent_x : int) (parent_y : int) (n : _ node) : unit =
