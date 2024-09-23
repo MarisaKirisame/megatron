@@ -248,6 +248,7 @@ proc pass_0() {
       (get_name() = "S") ||
       (get_name() = "BLOCKQUOTE") ||
       (get_name() = "TT") ||
+      (get_name() = "CODE") ||
       (get_name() = "STRONG")
     then true
     else if 
