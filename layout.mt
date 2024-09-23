@@ -91,6 +91,8 @@ proc pass_0() {
     then false
     else if self.display = "inline-block"
     then false
+    else if self.display = "inline-grid"
+    then false
     else if self.display = "flex"
     then 
       (if get_prop(flex-direction) = "row"
