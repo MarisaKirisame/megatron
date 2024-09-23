@@ -222,6 +222,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "FOCUS-GROUP";
          "ACTION-MENU";
          "RELATIVE-TIME";
+         "REACT-APP";
          "BLOCKQUOTE";
        ])
 
