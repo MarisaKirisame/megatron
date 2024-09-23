@@ -267,6 +267,8 @@ proc pass_0() {
       then 
         (if self.has_width_attr && string_is_float(self.width_attr_expr)
         then string_to_float(self.width_attr_expr)
+        else if self.has_width_attr && has_suffix(self.has_width_attr, "px")
+        then string_to_float(strip_suffix(self.has_width_attr, "px"))
         else if !(self.has_width_attr) && has_attr(viewBox)
         then string_to_float(nth_by_sep(get_attr(viewBox), " ", i2))
         else if self.has_width_attr && has_suffix(self.width_attr_expr, "%") && has_attr(viewBox)
@@ -363,7 +365,9 @@ proc pass_0() {
       else if get_name() = "svg"
       then 
         (if self.has_height_attr && string_is_float(self.height_attr_expr)
-        then string_to_float(self.height_attr_expr) 
+        then string_to_float(self.height_attr_expr)
+        else if self.has_height_attr && has_suffix(self.height_attr_expr, "px")
+        then string_to_float(strip_suffix(self.height_attr_expr, "px"))
         else if has_attr(viewBox)
         then string_to_float(nth_by_sep(get_attr(viewBox), " ", i3))
         else if self.has_height_attr && has_suffix(self.height_attr_expr, "%") && has_attr(viewBox)
