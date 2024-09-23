@@ -225,6 +225,7 @@ proc pass_0() {
       (get_name() = "HORIZONTAL-ACTIVITY-INDICATOR") ||
       (get_name() = "WAYBACK-SEARCH") ||
       (get_name() = "IA-WAYBACK-SEARCH") ||
+      (get_name() = "HOME-PAGE") ||
       (get_name() = "SAVE-PAGE-FORM") ||
       (get_name() = "FIELDSET") ||
       (get_name() = "MODAL-TEMPLATE") ||
