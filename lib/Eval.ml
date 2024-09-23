@@ -126,9 +126,10 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
         ~data:(lift "Unit" "var_modified" (lazy (var_modified_aux p var_name m)));
     app (Hashtbl.find_exn var_modified_hash var_name) n
 
+  let truncate s = if String.length s >= 100 then String.sub s 0 100 else s;
   let rec eval_expr_aux (n : 'meta node sd) (e : expr) (m : metric sd) : value sd =
     let recurse e = eval_expr_aux n e m in
-    Stdio.print_endline (show_expr e);
+    Stdio.print_endline (truncate (show_expr e));
     match e with
     | Panic (_, x) ->
         panic
