@@ -329,7 +329,7 @@ proc pass_0() {
         else panic("unknown SVG", self.width_attr_expr))
       else if get_name() = "IMG"
       then 
-        (if self.has_width_attr
+        (if self.has_width_attr && string_is_float(self.width_attr_expr)
         then string_to_float(self.width_attr_expr)
         else if has_attr(image_width) && !(self.has_height_attr)
         then int_to_float(get_attr(image_width))
@@ -436,7 +436,7 @@ proc pass_0() {
         else panic("unknown SVG"))
       else if get_name() = "IMG"
       then 
-        (if self.has_height_attr
+        (if self.has_height_attr && string_is_float(self.height_attr_expr)
         then string_to_float(self.height_attr_expr)
         else if has_attr(image_height) && !(self.has_width_attr)
         then int_to_float(get_attr(image_height))
