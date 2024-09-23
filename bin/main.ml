@@ -189,6 +189,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "IA-TOPNAV";
          "MODAL-MANAGER";
          "HORIZONTAL-ACTIVITY-INDICATOR";
+         "IA-WAYBACK-SEARCH";
          "WAYBACK-SEARCH";
          "SAVE-PAGE-FORM";
          "FIELDSET";
