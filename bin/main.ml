@@ -224,6 +224,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "RELATIVE-TIME";
          "REACT-APP";
          "TURBO-FRAME";
+         "TOOL-TIP";
          "BLOCKQUOTE";
        ])
 
