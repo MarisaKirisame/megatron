@@ -211,6 +211,7 @@ proc pass_0() {
       (get_name() = "NAV-SEARCH") ||
       (get_name() = "LOGIN-BUTTON") ||
       (get_name() = "MEDIA-BUTTON") ||
+      (get_name() = "MEDIA-MENU") ||
       (get_name() = "STRONG")
     then true
     else if 
