@@ -254,6 +254,7 @@ proc pass_0() {
       (get_name() = "SUMMARY") ||
       (get_name() = "DETAILS") ||
       (get_name() = "ACTION-LIST") ||
+      (get_name() = "ANCHORED-POSITION") ||
       (get_name() = "STRONG")
     then true
     else if 
