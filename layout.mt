@@ -225,6 +225,7 @@ proc pass_0() {
       (get_name() = "HORIZONTAL-ACTIVITY-INDICATOR") ||
       (get_name() = "WAYBACK-SEARCH") ||
       (get_name() = "IA-WAYBACK-SEARCH") ||
+      (get_name() = "IA-ICON-CLOSE") ||
       (get_name() = "COLLECTION-SEARCH-INPUT") ||
       (get_name() = "HOME-PAGE") ||
       (get_name() = "HOME-PAGE-HERO-BLOCK-ICON-BAR") ||
