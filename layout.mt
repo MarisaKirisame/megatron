@@ -217,6 +217,7 @@ proc pass_0() {
       (get_name() = "WAYBACK-SLIDER") ||
       (get_name() = "MORE-SLIDER") ||
       (get_name() = "MEDIA-SLIDER") ||
+      (get_name() = "SIGNED-OUT-DROPDOWN") ||
       (get_name() = "STRONG")
     then true
     else if 
