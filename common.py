@@ -91,7 +91,7 @@ def regularize_layout(j):
 trace_list = []
 #trace_list.append("aliyun")
 #trace_list.append("amazon")
-trace_list.append("anydesk")
+#trace_list.append("anydesk")
 trace_list.append("apple")
 trace_list.append("archive")
 trace_list.append("arxiv")

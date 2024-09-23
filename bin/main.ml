@@ -172,7 +172,8 @@ let default_tag : (string, unit) Hashtbl.t =
          "TITLE";
          "LINK";
          "SCRIPT";
-         "STYLE";   
+         "STYLE";
+         "PSA-BANNERS";
        ])
 
 let rec node_to_html_buffer (b : Buffer.t) (parent_x : int) (parent_y : int) (n : _ node) : unit =
