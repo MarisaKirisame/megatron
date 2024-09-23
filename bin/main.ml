@@ -174,6 +174,21 @@ let default_tag : (string, unit) Hashtbl.t =
          "SCRIPT";
          "STYLE";
          "PSA-BANNERS";
+         "NAV-SEARCH";
+         "LOGIN-BUTTON";
+         "MEDIA-BUTTON";
+         "MEDIA-MENU";
+         "ICON-HAMBURGER";
+         "PRIMARY-NAV";
+         "WAYBACK-SLIDER";
+         "MORE-SLIDER";
+         "MEDIA-SLIDER";
+         "SIGNED-OUT-DROPDOWN";
+         "SEARCH-MENU";
+         "DESKTOP-SUBNAV";
+         "IA-TOPNAV";
+         "MODAL-MANAGER";
+         "HORIZONTAL-ACTIVITY-INDICATOR";
        ])
 
 let rec node_to_html_buffer (b : Buffer.t) (parent_x : int) (parent_y : int) (n : _ node) : unit =
