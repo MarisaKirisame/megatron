@@ -212,6 +212,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "TH";
          "S";
          "TT";
+         "THEAD";
          "CODE";
          "PRE";
          "HGROUP";
