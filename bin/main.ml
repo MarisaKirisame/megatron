@@ -191,6 +191,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "HORIZONTAL-ACTIVITY-INDICATOR";
          "IA-WAYBACK-SEARCH";
          "IA-ICON-CLOSE";
+         "IA-CLEARABLE-TEXT-INPUT";
          "WAYBACK-SEARCH";
          "COLLECTION-SEARCH-INPUT";
          "HOME-PAGE";
