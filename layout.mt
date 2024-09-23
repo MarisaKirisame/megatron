@@ -252,6 +252,7 @@ proc pass_0() {
       (get_name() = "PRE") ||
       (get_name() = "HGROUP") ||
       (get_name() = "SUMMARY") ||
+      (get_name() = "DETAILS") ||
       (get_name() = "STRONG")
     then true
     else if 
