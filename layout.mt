@@ -205,6 +205,7 @@ proc pass_0() {
       (get_name() = "META") ||
       (get_name() = "TITLE") ||
       (get_name() = "LINK") ||
+      (get_name() = "SCRIPT") ||
       (get_name() = "STYLE") ||
       (get_name() = "STRONG")
     then true
