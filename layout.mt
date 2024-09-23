@@ -204,6 +204,7 @@ proc pass_0() {
       (get_name() = "html") ||
       (get_name() = "META") ||
       (get_name() = "TITLE") ||
+      (get_name() = "STYLE") ||
       (get_name() = "STRONG")
     then true
     else if 
