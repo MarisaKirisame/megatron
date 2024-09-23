@@ -214,6 +214,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "TT";
          "CODE";
          "PRE";
+         "HGROUP";
          "BLOCKQUOTE";
        ])
 
