@@ -127,10 +127,9 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
     app (Hashtbl.find_exn var_modified_hash var_name) n
 
   let truncate s = if String.length s >= 100 then String.sub s 0 100 else s
-  
+
   let rec eval_expr_aux (n : 'meta node sd) (e : expr) (m : metric sd) : value sd =
     let recurse e = eval_expr_aux n e m in
-    Stdio.print_endline (truncate (show_expr e));
     match e with
     | Panic (_, x) ->
         panic
@@ -168,7 +167,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
     | Or (x, y) -> vbool (or_ (bool_of_value (recurse x)) (fun _ -> bool_of_value (recurse y)))
     | GetName -> vstring (node_get_name n)
     | Bool x -> vbool (bool x)
-    | Call (f, xs) -> eval_func f (List.map ~f:(fun v -> recurse v) xs)
+    | Call (f, xs) ->     Stdio.print_endline (truncate (show_expr e));     eval_func f (List.map ~f:(fun v -> recurse v) xs)
   (*| _ -> panic ("unhandled case in eval_expr:" ^ show_expr e)*)
 
   module EXPR = struct
