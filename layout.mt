@@ -241,6 +241,7 @@ proc pass_0() {
       (get_name() = "ROUTER-SLOT") ||
       (get_name() = "APP-FOOTER") ||
       (get_name() = "CIRCULAR-ACTIVITY-INDICATOR") ||
+      (get_name() = "COLLECTION-TILE") ||
       (get_name() = "STRONG")
     then true
     else if 
