@@ -271,7 +271,8 @@ proc pass_0() {
       has_suffix(self.width_expr, "px") ||
       has_suffix(self.width_expr, "ch") ||
       has_prefix(self.width_expr, "calc") ||
-      (self.width_expr = "max-content")
+      (self.width_expr = "max-content") ||
+      (self.width_expr = "min-content")
     then true
     else if has_suffix(self.width_expr, "%") || self.width_expr = "fit-content"
     then false
@@ -289,6 +290,7 @@ proc pass_0() {
       (!(has_suffix(self.width_expr, "%"))) && 
       (self.width_expr != "fit-content") && 
       (self.width_expr != "max-content") && 
+      (self.width_expr != "min-content") && 
       (!(has_prefix(self.width_expr, "calc")))
     then 
       (if has_suffix(self.width_expr, "px") 
@@ -377,7 +379,8 @@ proc pass_0() {
       has_suffix(self.height_expr, "ch") ||
       has_suffix(self.height_expr, "lh") ||
       has_prefix(self.height_expr, "calc") ||
-      (self.height_expr = "max-content")
+      (self.height_expr = "max-content") ||
+      (self.height_expr = "min-content")
     then true
     else if has_suffix(self.height_expr, "%") || self.height_expr = "fit-content"
     then false
@@ -392,6 +395,7 @@ proc pass_0() {
       (!(has_suffix(self.height_expr, "%"))) && 
       (self.height_expr != "fit-content") &&
       (self.height_expr != "max-content") &&
+      (self.height_expr != "min-content") &&
       (!(has_prefix(self.height_expr, "calc")))
     then 
       (if has_suffix(self.height_expr, "px") 
