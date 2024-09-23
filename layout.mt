@@ -157,6 +157,8 @@ proc pass_0() {
       (get_name() = "H2") ||
       (get_name() = "H3") ||
       (get_name() = "H4") ||
+      (get_name() = "H5") ||
+      (get_name() = "H6") ||
       (get_name() = "DT") ||
       (get_name() = "DD") ||
       (get_name() = "DL") ||
