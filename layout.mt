@@ -221,6 +221,7 @@ proc pass_0() {
       (get_name() = "SEARCH-MENU") ||
       (get_name() = "DESKTOP-SUBNAV") ||
       (get_name() = "IA-TOPNAV") ||
+      (get_name() = "HORIZONTAL-ACTIVITY-INDICATOR") ||
       (get_name() = "STRONG")
     then true
     else if 
