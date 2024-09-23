@@ -203,7 +203,7 @@ def plot(xs, ys, name):
     ys = [max(ys[i], 1) for i in range(len(ys))]
 
     speedup = [math.log(xs[i]/ys[i]) for i in range(len(xs))]
-    n_clusters = 4
+    n_clusters = min(4, len(speedup))
     est = KMeans(n_clusters=n_clusters)
     est.fit(np.array(speedup).reshape(-1, 1))
     mp = []
