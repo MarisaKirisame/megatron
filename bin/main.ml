@@ -223,6 +223,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "ACTION-MENU";
          "RELATIVE-TIME";
          "REACT-APP";
+         "TURBO-FRAME";
          "BLOCKQUOTE";
        ])
 
