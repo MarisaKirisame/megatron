@@ -112,6 +112,8 @@ proc pass_0() {
     then true
     else if self.display = "table-row-group"
     then true
+    else if self.display = "table-header-group"
+    then true
     else if self.display = "table-row"
     then true
     else if self.display = "table-cell"
