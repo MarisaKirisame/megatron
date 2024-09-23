@@ -261,6 +261,7 @@ proc pass_0() {
       (get_name() = "REACT-APP") ||
       (get_name() = "TURBO-FRAME") ||
       (get_name() = "TOOL-TIP") ||
+      (get_name() = "SHOW-DIALOG-ON-LOAD") ||
       (get_name() = "STRONG")
     then true
     else if 

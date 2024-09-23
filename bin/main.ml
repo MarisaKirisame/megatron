@@ -225,6 +225,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "REACT-APP";
          "TURBO-FRAME";
          "TOOL-TIP";
+         "SHOW-DIALOG-ON-LOAD";
          "BLOCKQUOTE";
        ])
 
