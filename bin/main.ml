@@ -124,6 +124,8 @@ let default_tag : (string, unit) Hashtbl.t =
          "INCLUDE-FRAGMENT";
          "H1";
          "H4";
+         "H5";
+         "H6";
          "DL";
          "DT";
          "LABEL";
