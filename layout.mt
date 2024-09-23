@@ -226,6 +226,7 @@ proc pass_0() {
       (get_name() = "WAYBACK-SEARCH") ||
       (get_name() = "IA-WAYBACK-SEARCH") ||
       (get_name() = "HOME-PAGE") ||
+      (get_name() = "HOME-PAGE-HERO-BLOCK-ICON-BAR") ||
       (get_name() = "SAVE-PAGE-FORM") ||
       (get_name() = "FIELDSET") ||
       (get_name() = "MODAL-TEMPLATE") ||
