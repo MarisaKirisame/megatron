@@ -209,6 +209,7 @@ proc pass_0() {
       (get_name() = "STYLE") ||
       (get_name() = "PSA-BANNERS") ||
       (get_name() = "NAV-SEARCH") ||
+      (get_name() = "LOGIN-BUTTON") ||
       (get_name() = "STRONG")
     then true
     else if 
