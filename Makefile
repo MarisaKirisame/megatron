@@ -1,3 +1,3 @@
 nightly:
-	chmod +x ./nightly.sh ./run.sh
+	chmod +x ./nightly.sh
 	./nightly.sh
