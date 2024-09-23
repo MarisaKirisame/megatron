@@ -224,7 +224,7 @@ proc pass_0() {
       (get_name() = "MODAL-MANAGER") ||
       (get_name() = "HORIZONTAL-ACTIVITY-INDICATOR") ||
       (get_name() = "WAYBACK-SEARCH") ||
-      (get_name() = "SAVE-PAGE-FROM") ||
+      (get_name() = "SAVE-PAGE-FORM") ||
       (get_name() = "STRONG")
     then true
     else if 
