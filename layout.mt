@@ -43,7 +43,7 @@ proc pass_0() {
     then
       (if (parent().flex_direction = "column") || (parent().flex_direction = "column-reverse")
       then true
-      else if (parent().flex_direction = "row" || (parent().flex_direction = "row-reverse"))
+      else if (parent().flex_direction = "row") || (parent().flex_direction = "row-reverse")
       then false
       else panic("flex_direction:", parent().flex_direction))
     else false;
