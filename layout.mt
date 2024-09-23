@@ -333,6 +333,7 @@ proc pass_0() {
       has_suffix(self.height_expr, "px") ||
       has_suffix(self.height_expr, "ch") ||
       has_suffix(self.height_expr, "lh") ||
+      has_prefix(self.height_expr, "calc") ||
       (self.height_expr = "max-content")
     then true
     else if has_suffix(self.height_expr, "%") || self.height_expr = "fit-content"
