@@ -107,7 +107,7 @@ trace_list = []
 #trace_list.append("firefox")
 #trace_list.append("github_commits")
 #trace_list.append("github_nologin")
-trace_list.append("github_repo")
+#trace_list.append("github_repo")
 trace_list.append("gmail_nologin")
 trace_list.append("google_hover")
 trace_list.append("google_play")
