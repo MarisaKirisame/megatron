@@ -344,7 +344,12 @@ proc pass_0() {
     if self.display = "none" then 0 
     else if self.inside_svg then 0
     else if self.disabled then 0
-    else if (self.height_expr != "auto") && (!(has_suffix(self.height_expr, "%"))) && (self.height_expr != "fit-content")
+    else if 
+      (self.height_expr != "auto") && 
+      (!(has_suffix(self.height_expr, "%"))) && 
+      (self.height_expr != "fit-content") &&
+      (self.height_expr != "max-content") &&
+      (!(has_prefix(self.height_expr, "calc")))
     then 
       (if has_suffix(self.height_expr, "px") 
       then string_to_float(strip_suffix(self.height_expr, "px"))
