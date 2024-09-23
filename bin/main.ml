@@ -227,6 +227,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "TURBO-FRAME";
          "TOOL-TIP";
          "SHOW-DIALOG-ON-LOAD";
+         "LOTTIE-PLAYER";
          "BLOCKQUOTE";
        ])
 
