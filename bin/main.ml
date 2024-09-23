@@ -221,6 +221,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "ANCHORED-POSITION";
          "FOCUS-GROUP";
          "ACTION-MENU";
+         "RELATIVE-TIME";
          "BLOCKQUOTE";
        ])
 
