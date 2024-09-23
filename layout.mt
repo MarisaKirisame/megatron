@@ -36,16 +36,16 @@ proc pass_0() {
       then true
       else if (parent().flex_direction = "column") || (parent().flex_direction = "column-reverse")
       then false
-      else panic(parent().flex_direction))
+      else panic("flex_direction:", parent().flex_direction))
     else false;
   self.is_flex_column <- 
     if (has_parent() && ((parent().display = "flex") || (parent().display = "inline-flex")))
     then
       (if (parent().flex_direction = "column") || (parent().flex_direction = "column-reverse")
       then true
-      else if parent().flex_direction = "row"
+      else if (parent().flex_direction = "row" || (parent().flex_direction = "row-reverse"))
       then false
-      else panic(parent().flex_direction))
+      else panic("flex_direction:", parent().flex_direction))
     else false;
 
   self.width_attr_expr <- 
@@ -67,7 +67,6 @@ proc pass_0() {
     then "auto"
     else panic("height_attr:", get_attr(height));
   self.has_height_attr <- self.height_attr_expr != "auto";
-
 
   self.is_svg_block <- get_name() = "svg";
   self.inside_svg <- has_parent() && (parent().is_svg_block || parent().inside_svg);
