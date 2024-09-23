@@ -190,6 +190,12 @@ let default_tag : (string, unit) Hashtbl.t =
          "IA-TOPNAV";
          "MODAL-MANAGER";
          "HORIZONTAL-ACTIVITY-INDICATOR";
+         "WAYBACK-SEARCH";
+         "SAVE-PAGE-FORM";
+         "FIELDSET";
+         "MODAL-TEMPLATE";
+         "ROUTER-SLOT";
+         "APP-FOOTER";
        ])
 
 let rec node_to_html_buffer (b : Buffer.t) (parent_x : int) (parent_y : int) (n : _ node) : unit =
