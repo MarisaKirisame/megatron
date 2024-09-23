@@ -5,7 +5,7 @@ def shell(str):
     subprocess.run(str, shell=True, check=True)
 
 def process(name):
-    print(f"processing {name}...")
+    print(f"processing {name}...", flush=True)
     shell(f"tar -xf {name}.tar.xz")
     shell(f"python3 generate.py {name}.trace")
     shell(f"dune exec megatron -- {name}.out")
