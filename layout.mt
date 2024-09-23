@@ -256,6 +256,7 @@ proc pass_0() {
       (get_name() = "ACTION-LIST") ||
       (get_name() = "ANCHORED-POSITION") ||
       (get_name() = "FOCUS-GROUP") ||
+      (get_name() = "ACTION-MENU") ||
       (get_name() = "STRONG")
     then true
     else if 
