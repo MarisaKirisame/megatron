@@ -219,6 +219,7 @@ proc pass_0() {
       (get_name() = "MEDIA-SLIDER") ||
       (get_name() = "SIGNED-OUT-DROPDOWN") ||
       (get_name() = "SEARCH-MENU") ||
+      (get_name() = "DESKTOP-SUBNAV") ||
       (get_name() = "STRONG")
     then true
     else if 
