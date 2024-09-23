@@ -217,6 +217,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "HGROUP";
          "SUMMARY";
          "DETAILS";
+         "ACTION-LIST";
          "BLOCKQUOTE";
        ])
 

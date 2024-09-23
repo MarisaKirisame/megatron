@@ -104,7 +104,7 @@ trace_list = []
 #trace_list.append("discord_nologin")
 #trace_list.append("espn")
 #trace_list.append("expedia")
-trace_list.append("firefox")
+#trace_list.append("firefox")
 trace_list.append("github_commits")
 trace_list.append("github_nologin")
 trace_list.append("github_repo")
