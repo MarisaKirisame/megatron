@@ -251,6 +251,7 @@ proc pass_0() {
       (get_name() = "CODE") ||
       (get_name() = "PRE") ||
       (get_name() = "HGROUP") ||
+      (get_name() = "SUMMARY") ||
       (get_name() = "STRONG")
     then true
     else if 
