@@ -128,6 +128,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
 
   let rec eval_expr_aux (n : 'meta node sd) (e : expr) (m : metric sd) : value sd =
     let recurse e = eval_expr_aux n e m in
+    Stdio.print_endline (show_expr e);
     match e with
     | Panic (_, x) ->
         panic
