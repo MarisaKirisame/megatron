@@ -191,6 +191,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "HORIZONTAL-ACTIVITY-INDICATOR";
          "IA-WAYBACK-SEARCH";
          "WAYBACK-SEARCH";
+         "HOME-PAGE";
          "SAVE-PAGE-FORM";
          "FIELDSET";
          "MODAL-TEMPLATE";
