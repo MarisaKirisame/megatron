@@ -301,6 +301,7 @@ proc pass_0() {
       (get_name() = "SHREDDIT-ASYNC-LOADER") ||
       (get_name() = "SHREDDIT-GOOD-VISIT-TRACKER") ||
       (get_name() = "FACEPLATE-SERVER-SESSION") ||
+      (get_name() = "SCREEN-READER-ALERT-OUTLET") ||
       (get_name() = "STRONG")
     then true
     else if 
