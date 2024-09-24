@@ -299,6 +299,7 @@ proc pass_0() {
       (get_name() = "DATA-SRC") ||
       (get_name() = "REPUTATION-RECAPTCHA") ||
       (get_name() = "SHREDDIT-ASYNC-LOADER") ||
+      (get_name() = "SHREDDIT-GOOD-VISIT-TRACKER") ||
       (get_name() = "FACEPLATE-SERVER-SESSION") ||
       (get_name() = "STRONG")
     then true
