@@ -231,6 +231,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "C-WIZ";
          "BLOCKQUOTE";
          "CANVAS";
+         "NEXT-ROUTE-ANNOUNCER";
        ])
 
 let rec node_to_html_buffer (b : Buffer.t) (parent_x : int) (parent_y : int) (n : _ node) : unit =
