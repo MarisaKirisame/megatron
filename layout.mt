@@ -284,6 +284,7 @@ proc pass_0() {
       (get_name() = "LEGEND") ||
       (get_name() = "CG-BOARD") ||
       (get_name() = "CG-CONTAINER") ||
+      (get_name() = "CG-AUTO-PIECES") ||
       (get_name() = "STRONG")
     then true
     else if 
