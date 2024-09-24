@@ -281,6 +281,7 @@ proc pass_0() {
       (get_name() = "LOTTIE-PLAYER") ||
       (get_name() = "C-WIZ") ||
       (get_name() = "NEXT-ROUTE-ANNOUNCER") ||
+      (get_name() = "LEGEND") ||
       (get_name() = "STRONG")
     then true
     else if 
