@@ -298,6 +298,7 @@ proc pass_0() {
       (get_name() = "SIGNAL") ||
       (get_name() = "DATA-SRC") ||
       (get_name() = "REPUTATION-RECAPTCHA") ||
+      (get_name() = "SHREDDIT-ASYNC-LOADER") ||
       (get_name() = "STRONG")
     then true
     else if 
