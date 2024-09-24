@@ -115,7 +115,7 @@ trace_list = []
 #trace_list.append("google_searchbar")
 #trace_list.append("google_searchpage")
 #trace_list.append("googlesource_chromium")
-trace_list.append("haskell")
+#trace_list.append("haskell") need fixing
 trace_list.append("hn_type")
 trace_list.append("hsr")
 trace_list.append("hsreplay")
