@@ -348,7 +348,7 @@ proc pass_0() {
         then string_to_float(nth_by_sep(get_attr(viewBox), " ", i2))
         else if self.has_width_attr && has_suffix(self.width_attr_expr, "%") && has_attr(viewBox)
         then string_to_float(nth_by_sep(get_attr(viewBox), " ", i2)) * string_to_float(strip_suffix(self.width_attr_expr, "%")) / 100
-        else panic("unknown SVG", self.width_attr_expr, self.height_attr_expr))
+        else panic("unknown SVG:", self.width_attr_expr, self.height_attr_expr))
       else if get_name() = "IMG"
       then 
         (if self.has_width_attr && string_is_float(self.width_attr_expr)
@@ -455,7 +455,7 @@ proc pass_0() {
         then string_to_float(nth_by_sep(get_attr(viewBox), " ", i3))
         else if self.has_height_attr && has_suffix(self.height_attr_expr, "%") && has_attr(viewBox)
         then string_to_float(nth_by_sep(get_attr(viewBox), " ", i3)) * string_to_float(strip_suffix(self.height_attr_expr, "%")) / 100
-        else panic("unknown SVG"))
+        else panic("unknown SVG:", self.width_attr_expr, self.height_attr_expr))
       else if get_name() = "IMG"
       then 
         (if self.has_height_attr && !(string_is_float(self.height_attr_expr))
