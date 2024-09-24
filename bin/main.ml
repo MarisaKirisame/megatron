@@ -246,6 +246,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "INDEX";
          "MOVE";
          "SIGNAL";
+         "DATA-SRC";
          "SAN";
        ])
 
