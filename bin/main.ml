@@ -236,6 +236,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "CG-BOARD";
          "CG-CONTAINER";
          "CG-AUTO-PIECES";
+         "COORD";
        ])
 
 let rec node_to_html_buffer (b : Buffer.t) (parent_x : int) (parent_y : int) (n : _ node) : unit =
