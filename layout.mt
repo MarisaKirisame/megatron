@@ -293,6 +293,7 @@ proc pass_0() {
       (get_name() = "CG-RESIZE") ||
       (get_name() = "SQUARE") ||
       (get_name() = "INDEX") ||
+      (get_name() = "SAN") ||
       (get_name() = "STRONG")
     then true
     else if 
