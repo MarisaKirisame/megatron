@@ -290,6 +290,7 @@ proc pass_0() {
       (get_name() = "PIECE") ||
       (get_name() = "PEARL") ||
       (get_name() = "HELP") ||
+      (get_name() = "CG-RESIZE") ||
       (get_name() = "STRONG")
     then true
     else if 
