@@ -252,6 +252,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "FACEPLATE-SERVER-SESSION";
          "SHREDDIT-GOOD-VISIT-TRACKER";
          "SCREEN-READER-ALERT-OUTLET";
+         "SHREDDIT-PAGE-META";
          "SAN";
        ])
 
