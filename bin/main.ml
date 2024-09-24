@@ -249,6 +249,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "DATA-SRC";
          "REPUTATION-RECAPTCHA";
          "SHREDDIT-ASYNC-LOADER";
+         "FACEPLATE-SERVER-SESSION";
          "SAN";
        ])
 
