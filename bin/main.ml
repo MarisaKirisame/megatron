@@ -244,6 +244,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "CG-RESIZE";
          "SQUARE";
          "INDEX";
+         "MOVE";
          "SAN";
        ])
 

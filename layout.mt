@@ -294,6 +294,7 @@ proc pass_0() {
       (get_name() = "SQUARE") ||
       (get_name() = "INDEX") ||
       (get_name() = "SAN") ||
+      (get_name() = "MOVE") ||
       (get_name() = "STRONG")
     then true
     else if 
