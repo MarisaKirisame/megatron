@@ -233,6 +233,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "CANVAS";
          "NEXT-ROUTE-ANNOUNCER";
          "LEGEND";
+         "CG-BOARD";
        ])
 
 let rec node_to_html_buffer (b : Buffer.t) (parent_x : int) (parent_y : int) (n : _ node) : unit =
