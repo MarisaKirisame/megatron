@@ -250,6 +250,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "REPUTATION-RECAPTCHA";
          "SHREDDIT-ASYNC-LOADER";
          "FACEPLATE-SERVER-SESSION";
+         "FACEPLATE-SCREENREADER-CONTENT";
          "SHREDDIT-GOOD-VISIT-TRACKER";
          "SCREEN-READER-ALERT-OUTLET";
          "SHREDDIT-PAGE-META";
