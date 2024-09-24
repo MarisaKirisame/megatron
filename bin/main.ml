@@ -709,13 +709,13 @@ end
 
 (*module DEBUG = Main (Megatron.EvalPQ.EVAL (S))*)
 
-(*module MainFSI = Main (Megatron.EvalFS.EVAL (S))*)
+module MainFSI = Main (Megatron.EvalFS.EVAL (S))
 (*module MainFSC = Main (Megatron.EvalFS.EVAL (D))*)
 
 (*module MainDBI = Main (Megatron.EvalDB.EVAL (S))*)
-module MainDBC = Main (Megatron.EvalDB.EVAL (D))
+(*module MainDBC = Main (Megatron.EvalDB.EVAL (D))*)
 
 (*module MainPQI = Main (Megatron.EvalPQ.EVAL (S))*)
-module MainPQC = Main (Megatron.EvalPQ.EVAL (D))
+(*module MainPQC = Main (Megatron.EvalPQ.EVAL (D))*)
 (*module MainHBC = Main (Megatron.EvalHB.EVAL (D))
 *)
