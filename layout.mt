@@ -344,8 +344,6 @@ proc pass_0() {
       then 
         (if !(self.has_width_attr) && !(self.has_height_attr)
         then 300
-        else if self.has_width_attr && !(string_is_float(self.width_attr_expr))
-        then 0
         else if self.has_width_attr && string_is_float(self.width_attr_expr)
         then string_to_float(self.width_attr_expr)
         else if self.has_width_attr && has_suffix(self.width_attr_expr, "px")
@@ -466,9 +464,7 @@ proc pass_0() {
         else panic("unknown SVG:", self.width_attr_expr, self.height_attr_expr))
       else if get_name() = "IMG"
       then 
-        (if self.has_height_attr && !(string_is_float(self.height_attr_expr))
-        then 0
-        else if self.has_height_attr && string_is_float(self.height_attr_expr)
+        (if self.has_height_attr && string_is_float(self.height_attr_expr)
         then string_to_float(self.height_attr_expr)
         else if has_attr(image_height) && !(self.has_width_attr)
         then int_to_float(get_attr(image_height))
