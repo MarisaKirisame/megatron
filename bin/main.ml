@@ -247,6 +247,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "MOVE";
          "SIGNAL";
          "DATA-SRC";
+         "REPUTATION-RECAPTCHA";
          "SAN";
        ])
 
