@@ -289,6 +289,7 @@ proc pass_0() {
       (get_name() = "COORDS") ||
       (get_name() = "PIECE") ||
       (get_name() = "PEARL") ||
+      (get_name() = "HELP") ||
       (get_name() = "STRONG")
     then true
     else if 
