@@ -315,6 +315,7 @@ proc pass_0() {
       (get_name() = "SHREDDIT-FEED-ERROR-BANNER") ||
       (get_name() = "SHREDDIT-SORT-DROPDOWN") ||
       (get_name() = "SHREDDIT-LAYOUT-EVENT-SETTER") ||
+      (get_name() = "COMMUNITY-HIGHLIGHT-CARD") ||
       (get_name() = "DATA") ||
       (get_name() = "FACEPLATE-PARTIAL") ||
       (get_name() = "REDDIT-HEADER-LARGE") ||
