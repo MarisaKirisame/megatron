@@ -385,6 +385,7 @@ proc pass_0() {
       (get_name() = "TP-YT-APP-DRAWER") ||
       (get_name() = "YTD-MINI-GUIDE-RENDERER") ||
       (get_name() = "YTD-PAGE-MANAGER") ||
+      (get_name() = "YTD-POPUP-CONTAINER") ||
       (get_name() = "YTD-PERMISSION-ROLE-BOTTOM-BAR-RENDERER") ||
       (get_name() = "CUSTOM-STYLE") ||
       (get_name() = "STRONG")
