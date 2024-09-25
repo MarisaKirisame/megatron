@@ -132,7 +132,7 @@ trace_list = []
 #trace_list.append("twitter_login")
 #trace_list.append("twitter_main")
 #trace_list.append("vscode")
-trace_list.append("walmart")
+#trace_list.append("walmart")
 trace_list.append("w3school")
 trace_list.append("wikipedia_hover")
 trace_list.append("wikipedia_idle")
