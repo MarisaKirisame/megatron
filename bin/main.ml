@@ -271,6 +271,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "DSA-TRANSPARENCY-MODAL-PROVIDER";
          "FACEPLATE-NUMBER";
          "CREATE-POST-ENTRY-POINT-WRAPPER";
+         "REDDIT-SKIP-TO-SIDEBAR";
          "SCREEN-READER-ALERT-OUTLET";
          "SHREDDIT-PAGE-META";
          "SAN";

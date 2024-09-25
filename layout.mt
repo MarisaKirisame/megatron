@@ -311,6 +311,7 @@ proc pass_0() {
       (get_name() = "FACEPLATE-LOADER") ||
       (get_name() = "FACEPLATE-NUMBER") ||
       (get_name() = "CREATE-POST-ENTRY-POINT-WRAPPER") ||
+      (get_name() = "REDDIT-SKIP-TO-SIDEBAR") ||
       (get_name() = "FACEPLATE-PARTIAL") ||
       (get_name() = "REDDIT-HEADER-LARGE") ||
       (get_name() = "REDDIT-BREADCRUMBS") ||
