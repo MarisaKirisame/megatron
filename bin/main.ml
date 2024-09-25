@@ -325,6 +325,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "YTD-THIRD-PARTY-MANAGER";
          "YT-ICON";
          "YT-INTERACTION";
+         "YT-ICON-BUTTON";
          "INS";
          "LEFT-NAV-TOPIC-TRACKER";
          "HUI-LEFT-NAV-SEE-MORE";

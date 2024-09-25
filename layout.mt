@@ -388,6 +388,7 @@ proc pass_0() {
       (get_name() = "YTD-POPUP-CONTAINER") ||
       (get_name() = "YTD-THIRD-PARTY-MANAGER") ||
       (get_name() = "YT-ICON") ||
+      (get_name() = "YT-ICON-BUTTON") ||
       (get_name() = "YT-INTERACTION") ||
       (get_name() = "YTD-PERMISSION-ROLE-BOTTOM-BAR-RENDERER") ||
       (get_name() = "CUSTOM-STYLE") ||
