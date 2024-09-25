@@ -253,6 +253,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "FACEPLATE-SCREEN-READER-CONTENT";
          "ACTIVATE-FEATURE";
          "FACEPLATE-TRACKER";
+         "FACEPLATE-TOOLTIP";
          "SHREDDIT-GOOD-VISIT-TRACKER";
          "SCREEN-READER-ALERT-OUTLET";
          "SHREDDIT-PAGE-META";
