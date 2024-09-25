@@ -285,6 +285,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "SHREDDIT-DISTINGUISHED-POST-TAGS";
          "FACEPLATE-TIMEAGO";
          "SHREDDIT-STATUS-ICONS";
+         "SHREDDIT-POST-OVERFLOW-MENU";
          "SHREDDIT-PAGE-META";
          "SAN";
        ])
