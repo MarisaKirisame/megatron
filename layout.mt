@@ -336,6 +336,7 @@ proc pass_0() {
       (get_name() = "FACEPLATE-AUTO-HEIGHT-ANIMATOR") ||
       (get_name() = "REDDIT-HEADER-LARGE") ||
       (get_name() = "REDDIT-BREADCRUMBS") ||
+      (get_name() = "REDDIT-SIDEBAR-NAV") ||
       (get_name() = "DSA-TRANSPARENCY-MODAL-PROVIDER") ||
       (get_name() = "SHREDDIT-MEDIA-LIGHTBOX") ||
       (get_name() = "FACEPLATE-DROPDOWN-MENU") ||

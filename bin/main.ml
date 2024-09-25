@@ -300,6 +300,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "REDDIT-RECENT-PAGES";
          "LEFT-NAV-TOPIC-TRACKER";
          "HUI-LEFT-NAV-SEE-MORE";
+         "REDDIT-SIDEBAR-NAV";
          "DROPDOWN-CLOSE-ON-SCROLL";
          "SAN";
        ])
