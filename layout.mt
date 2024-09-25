@@ -344,6 +344,7 @@ proc pass_0() {
       (get_name() = "SHREDDIT-OVERLAY-DISPLAY") ||
       (get_name() = "REDDIT-PAGE-DATA") ||
       (get_name() = "SHREDDIT-SCREENVIEW-DATA") ||
+      (get_name() = "SHREDDIT-RECENT-PAGE-DATA") ||
       (get_name() = "FACEPLATE-DROPDOWN-MENU") ||
       (get_name() = "FACEPLATE-SEARCH-INPUT") ||
       (get_name() = "FACEPLATE-EXPANDABLE-SECTION-HELPER") ||
