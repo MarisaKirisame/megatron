@@ -276,6 +276,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "SHREDDIT-SORT-DROPDOWN";
          "DATA";
          "SHREDDIT-LAYOUT-EVENT-SETTER";
+         "COMMUNITY-HIGHLIGHT-CARD";
          "SCREEN-READER-ALERT-OUTLET";
          "SHREDDIT-PAGE-META";
          "SAN";
