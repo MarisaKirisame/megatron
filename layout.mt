@@ -309,6 +309,7 @@ proc pass_0() {
       (get_name() = "FACEPLATE-IMG") ||
       (get_name() = "FACEPLATE-DIALOG") ||
       (get_name() = "FACEPLATE-LOADER") ||
+      (get_name() = "FACEPLATE-NUMBER") ||
       (get_name() = "FACEPLATE-PARTIAL") ||
       (get_name() = "REDDIT-HEADER-LARGE") ||
       (get_name() = "REDDIT-BREADCRUMBS") ||

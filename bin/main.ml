@@ -269,6 +269,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "SHREDDIT-MEDIA-LIGHTBOX";
          "REDDIT-BREADCRUMBS";
          "DSA-TRANSPARENCY-MODAL-PROVIDER";
+         "FACEPLATE-NUMBER";
          "SCREEN-READER-ALERT-OUTLET";
          "SHREDDIT-PAGE-META";
          "SAN";
