@@ -318,6 +318,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "YT-PLAYLIST-MANAGER";
          "YT-HOTKEY-MANAGER";
          "TP-YT-APP-DRAWER";
+         "YTD-MINI-GUIDE-RENDERER";
          "INS";
          "LEFT-NAV-TOPIC-TRACKER";
          "HUI-LEFT-NAV-SEE-MORE";
