@@ -268,6 +268,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "SHREDDIT-GOOD-VISIT-TRACKER";
          "SHREDDIT-MEDIA-LIGHTBOX";
          "REDDIT-BREADCRUMBS";
+         "DSA-TRANSPARENCY-MODAL-PROVIDER";
          "SCREEN-READER-ALERT-OUTLET";
          "SHREDDIT-PAGE-META";
          "SAN";
