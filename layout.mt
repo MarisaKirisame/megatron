@@ -325,6 +325,7 @@ proc pass_0() {
       (get_name() = "SHREDDIT-STATUS-ICONS") ||
       (get_name() = "SHREDDIT-POST-OVERFLOW-MENU") ||
       (get_name() = "SHREDDIT-POST-FLAIR") ||
+      (get_name() = "SHREDDIT-POST") ||
       (get_name() = "OBJECT") ||
       (get_name() = "DATA") ||
       (get_name() = "FACEPLATE-PARTIAL") ||
