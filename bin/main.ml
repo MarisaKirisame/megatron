@@ -295,6 +295,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "SHREDDIT-PAGE-META";
          "SHREDDIT-SUBREDDIT-HEADER";
          "FACEPLATE-AUTO-HEIGHT-ANIMATOR";
+         "DROPDOWN-CLOSE-ON-SCROLL";
          "SAN";
        ])
 
