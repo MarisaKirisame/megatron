@@ -302,6 +302,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "REDDIT-PAGE-DATA";
          "SHREDDIT-SCREENVIEW-DATA";
          "SHREDDIT-RECENT-PAGE-DATA";
+         "FACEPLATE-PERFMETRIC-COLLECTOR";
          "LEFT-NAV-TOPIC-TRACKER";
          "HUI-LEFT-NAV-SEE-MORE";
          "REDDIT-SIDEBAR-NAV";
