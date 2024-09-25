@@ -278,6 +278,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "SHREDDIT-LAYOUT-EVENT-SETTER";
          "COMMUNITY-HIGHLIGHT-CARD";
          "SHREDDIT-GALLERY-CAROUSEL";
+         "SHREDDIT-TITLE";
          "SCREEN-READER-ALERT-OUTLET";
          "SHREDDIT-PAGE-META";
          "SAN";
