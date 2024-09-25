@@ -55,6 +55,8 @@ proc pass_0() {
     then get_attr(width)
     else if has_suffix(get_attr(width), "px")
     then strip_suffix(get_attr(width), "px")
+    else if has_suffix(get_attr(width), "em")
+    then strip_suffix(get_attr(width), "em")
     else if get_attr(width) = "Auto"
     then "auto"
     else if get_attr(width) = "auto"
@@ -73,6 +75,8 @@ proc pass_0() {
     then get_attr(height)
     else if has_suffix(get_attr(height), "px")
     then strip_suffix(get_attr(height), "px")
+    else if has_suffix(get_attr(height), "em")
+    then strip_suffix(get_attr(height), "em")
     else if get_attr(height) = "Auto"
     then "auto"
     else if get_attr(height) = "auto"
