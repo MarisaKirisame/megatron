@@ -352,6 +352,7 @@ proc pass_0() {
       (get_name() = "FACEPLATE-EXPANDABLE-SECTION-HELPER") ||
       (get_name() = "COMMUNITY-HIGHLIGHT-CAROUSEL") ||
       (get_name() = "DEVVIT-EFFECT-WRAPPER") ||
+      (get_name() = "SHREDDIT-WITH-OBSERVER-WRAPPER") ||
       (get_name() = "FACEPLATE-DROPDOWN-MENU") ||
       (get_name() = "FACEPLATE-SEARCH-INPUT") ||
       (get_name() = "FACEPLATE-EXPANDABLE-SECTION-HELPER") ||
