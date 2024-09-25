@@ -342,6 +342,7 @@ proc pass_0() {
       (get_name() = "FACEPLATE-SEARCH-INPUT") ||
       (get_name() = "FACEPLATE-EXPANDABLE-SECTION-HELPER") ||
       (get_name() = "LEFT-NAV-TOP-SECTION") ||
+      (get_name() = "REDDIT-RECENT-PAGES") ||
       (get_name() = "DROPDOWN-CLOSE-ON-SCROLL") ||
       (get_name() = "SHREDDIT-SIDEBAR-AD") ||
       (get_name() = "REDDIT-SEARCH-LARGE") ||

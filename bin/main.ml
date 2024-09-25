@@ -297,6 +297,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "FACEPLATE-AUTO-HEIGHT-ANIMATOR";
          "SHREDDIT-SIDEBAR-AD";
          "LEFT-NAV-TOP-SECTION";
+         "REDDIT-RECENT-PAGES";
          "DROPDOWN-CLOSE-ON-SCROLL";
          "SAN";
        ])
