@@ -152,7 +152,7 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
               (hashtbl_find (node_get_attr n) (string p))
               (fun _ ->
                 panic
-                  (string_append (string "cannot find property ")
+                  (string_append (string "cannot find attribute ")
                      (string_append (string p) (string_append (string " in ") (string_of_int (node_get_extern_id n))))))
               (fun x -> x))
     | String s -> vstring (string s)

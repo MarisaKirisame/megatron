@@ -127,7 +127,7 @@ trace_list = []
 #trace_list.append("panda_express")
 #trace_list.append("reddit")
 #trace_list.append("spotify")
-trace_list.append("stack_overflow_main")
+#trace_list.append("stack_overflow_main")
 trace_list.append("steam")
 trace_list.append("twitter_login")
 trace_list.append("twitter_main")

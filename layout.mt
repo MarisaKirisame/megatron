@@ -75,7 +75,7 @@ proc pass_0() {
     then "auto"
     else if get_attr(height) = "auto"
     then "auto"
-    else if get_attr(width) = "100%"
+    else if get_attr(height) = "100%"
     then "auto"
     else panic("height_attr:", get_attr(height));
   self.has_height_attr <- self.height_attr_expr != "auto";
