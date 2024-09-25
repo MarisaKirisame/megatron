@@ -272,6 +272,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "FACEPLATE-NUMBER";
          "CREATE-POST-ENTRY-POINT-WRAPPER";
          "REDDIT-SKIP-TO-SIDEBAR";
+         "SHREDDIT-FEED-ERROR-BANNER";
          "SCREEN-READER-ALERT-OUTLET";
          "SHREDDIT-PAGE-META";
          "SAN";
