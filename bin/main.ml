@@ -298,6 +298,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "SHREDDIT-SIDEBAR-AD";
          "LEFT-NAV-TOP-SECTION";
          "REDDIT-RECENT-PAGES";
+         "LEFT-NAV-TOPIC-TRACKER";
          "DROPDOWN-CLOSE-ON-SCROLL";
          "SAN";
        ])
