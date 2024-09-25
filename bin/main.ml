@@ -339,6 +339,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "AUTH-FLOW-GOOGLE-ONE-TAP-SHELL";
          "DROPDOWN-CLOSE-ON-SCROLL";
          "YTD-SEARCHBOX";
+         "YT-ATTRIBUTED-STRING";
          "SAN";
        ])
 
