@@ -282,6 +282,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "FACEPLATE-PROGRESS";
          "FACEPLATE-HOVERCARD";
          "SCREEN-READER-ALERT-OUTLET";
+         "SHREDDIT-DISTINGUISHED-POST-TAGS";
          "SHREDDIT-PAGE-META";
          "SAN";
        ])
