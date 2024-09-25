@@ -321,6 +321,7 @@ proc pass_0() {
       (get_name() = "FACEPLATE-PROGRESS") ||
       (get_name() = "FACEPLATE-HOVERCARD") ||
       (get_name() = "SHREDDIT-DISTINGUISHED-POST-TAGS") ||
+      (get_name() = "FACEPLATE-TIMEAGO") ||
       (get_name() = "DATA") ||
       (get_name() = "FACEPLATE-PARTIAL") ||
       (get_name() = "REDDIT-HEADER-LARGE") ||

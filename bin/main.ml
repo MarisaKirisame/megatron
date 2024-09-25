@@ -283,6 +283,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "FACEPLATE-HOVERCARD";
          "SCREEN-READER-ALERT-OUTLET";
          "SHREDDIT-DISTINGUISHED-POST-TAGS";
+         "FACEPLATE-TIMEAGO";
          "SHREDDIT-PAGE-META";
          "SAN";
        ])
