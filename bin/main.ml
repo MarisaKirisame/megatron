@@ -298,6 +298,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "SHREDDIT-SIDEBAR-AD";
          "LEFT-NAV-TOP-SECTION";
          "REDDIT-RECENT-PAGES";
+         "YTD-MASTHEAD";
          "SHREDDIT-OVERLAY-DISPLAY";
          "REDDIT-PAGE-DATA";
          "SHREDDIT-SCREENVIEW-DATA";

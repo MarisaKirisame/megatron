@@ -376,6 +376,7 @@ proc pass_0() {
       (get_name() = "SEARCH-DYNAMIC-ID-CACHE-CONTROLLER") ||
       (get_name() = "SCREEN-READER-ALERT-OUTLET") ||
       (get_name() = "SHREDDIT-PAGE-META") ||
+      (get_name() = "YTD-MASTHEAD") ||
       (get_name() = "STRONG")
     then true
     else if 
