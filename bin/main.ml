@@ -316,6 +316,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "DEVVIT-EFFECT-WRAPPER";
          "SHREDDIT-WITH-OBSERVER-WRAPPER";
          "YT-PLAYLIST-MANAGER";
+         "YT-HOTKEY-MANAGER";
          "INS";
          "LEFT-NAV-TOPIC-TRACKER";
          "HUI-LEFT-NAV-SEE-MORE";
