@@ -286,6 +286,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "FACEPLATE-TIMEAGO";
          "SHREDDIT-STATUS-ICONS";
          "SHREDDIT-POST-OVERFLOW-MENU";
+         "SHREDDIT-POST-FLAIR";
          "SHREDDIT-PAGE-META";
          "SAN";
        ])
