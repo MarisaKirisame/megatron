@@ -284,6 +284,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "SCREEN-READER-ALERT-OUTLET";
          "SHREDDIT-DISTINGUISHED-POST-TAGS";
          "FACEPLATE-TIMEAGO";
+         "SHREDDIT-STATUS-ICONS";
          "SHREDDIT-PAGE-META";
          "SAN";
        ])
