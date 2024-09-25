@@ -259,6 +259,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "FACEPLATE-SEARCH-INPUT";
          "REDDIT-SEARCH-LARGE";
          "REDDIT-HEADER-ACTION-ITEMS";
+         "FACEPLATE-IMG";
          "SEARCH-DYNAMIC-ID-CACHE-CONTROLLER";
          "SHREDDIT-GOOD-VISIT-TRACKER";
          "SCREEN-READER-ALERT-OUTLET";
