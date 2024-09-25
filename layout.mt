@@ -349,6 +349,7 @@ proc pass_0() {
       (get_name() = "SHREDDIT-NAVTIMINGS-COLLECTOR") ||
       (get_name() = "SHREDDIT-APP") ||
       (get_name() = "NAVIGATION-INDICATOR") ||
+      (get_name() = "FACEPLATE-EXPANDABLE-SECTION-HELPER") ||
       (get_name() = "FACEPLATE-DROPDOWN-MENU") ||
       (get_name() = "FACEPLATE-SEARCH-INPUT") ||
       (get_name() = "FACEPLATE-EXPANDABLE-SECTION-HELPER") ||
