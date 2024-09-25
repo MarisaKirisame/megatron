@@ -255,6 +255,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "FACEPLATE-TRACKER";
          "FACEPLATE-TOOLTIP";
          "FACEPLATE-SEARCH-INPUT";
+         "REDDIT-SEARCH-LARGE";
          "SHREDDIT-GOOD-VISIT-TRACKER";
          "SCREEN-READER-ALERT-OUTLET";
          "SHREDDIT-PAGE-META";
