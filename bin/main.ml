@@ -317,6 +317,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "SHREDDIT-WITH-OBSERVER-WRAPPER";
          "YT-PLAYLIST-MANAGER";
          "YT-HOTKEY-MANAGER";
+         "TP-YT-APP-DRAWER";
          "INS";
          "LEFT-NAV-TOPIC-TRACKER";
          "HUI-LEFT-NAV-SEE-MORE";

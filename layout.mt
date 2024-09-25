@@ -382,6 +382,7 @@ proc pass_0() {
       (get_name() = "YT-MDX-MANAGER") ||
       (get_name() = "YT-PLAYLIST-MANAGER") ||
       (get_name() = "YT-HOTKEY-MANAGER") ||
+      (get_name() = "TP-YT-APP-DRAWER") ||
       (get_name() = "CUSTOM-STYLE") ||
       (get_name() = "STRONG")
     then true
