@@ -329,6 +329,7 @@ proc pass_0() {
       (get_name() = "SHREDDIT-CONTENT-TAGS") ||
       (get_name() = "SHREDDIT-FEED-PAGE-LOADING") ||
       (get_name() = "SHREDDIT-FEED") ||
+      (get_name() = "SHREDDIT-SUBREDDIT-HEADER") ||
       (get_name() = "OBJECT") ||
       (get_name() = "DATA") ||
       (get_name() = "FACEPLATE-PARTIAL") ||

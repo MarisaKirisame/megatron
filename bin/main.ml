@@ -293,6 +293,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "SHREDDIT-FEED";
          "OBJECT";
          "SHREDDIT-PAGE-META";
+         "SHREDDIT-SUBREDDIT-HEADER";
          "SAN";
        ])
 
