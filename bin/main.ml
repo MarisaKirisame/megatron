@@ -320,6 +320,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "TP-YT-APP-DRAWER";
          "YTD-MINI-GUIDE-RENDERER";
          "YTD-PAGE-MANAGER";
+         "YTD-PERMISSION-ROLE-BOTTOM-BAR-RENDERER";
          "INS";
          "LEFT-NAV-TOPIC-TRACKER";
          "HUI-LEFT-NAV-SEE-MORE";
