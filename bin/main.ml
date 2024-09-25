@@ -254,6 +254,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "ACTIVATE-FEATURE";
          "FACEPLATE-TRACKER";
          "FACEPLATE-TOOLTIP";
+         "FACEPLATE-PERFMARK";
          "FACEPLATE-SEARCH-INPUT";
          "REDDIT-SEARCH-LARGE";
          "SEARCH-DYNAMIC-ID-CACHE-CONTROLLER";
