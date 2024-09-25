@@ -289,6 +289,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "SHREDDIT-POST-FLAIR";
          "SHREDDIT-POST";
          "SHREDDIT-CONTENT-TAGS";
+         "SHREDDIT-FEED-PAGE-LOADING";
          "OBJECT";
          "SHREDDIT-PAGE-META";
          "SAN";
