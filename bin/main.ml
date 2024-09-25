@@ -288,6 +288,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "SHREDDIT-POST-OVERFLOW-MENU";
          "SHREDDIT-POST-FLAIR";
          "SHREDDIT-POST";
+         "SHREDDIT-CONTENT-TAGS";
          "OBJECT";
          "SHREDDIT-PAGE-META";
          "SAN";
