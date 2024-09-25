@@ -274,6 +274,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "REDDIT-SKIP-TO-SIDEBAR";
          "SHREDDIT-FEED-ERROR-BANNER";
          "SHREDDIT-SORT-DROPDOWN";
+         "DATA";
          "SCREEN-READER-ALERT-OUTLET";
          "SHREDDIT-PAGE-META";
          "SAN";
