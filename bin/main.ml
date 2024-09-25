@@ -315,6 +315,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "COMMUNITY-HIGHLIGHT-CAROUSEL";
          "DEVVIT-EFFECT-WRAPPER";
          "SHREDDIT-WITH-OBSERVER-WRAPPER";
+         "YT-PLAYLIST-MANAGER";
          "INS";
          "LEFT-NAV-TOPIC-TRACKER";
          "HUI-LEFT-NAV-SEE-MORE";
