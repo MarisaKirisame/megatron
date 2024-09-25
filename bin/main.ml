@@ -301,6 +301,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "YTD-MASTHEAD";
          "YTD-APP";
          "CUSTOM-STYLE";
+         "YT-GUIDE-MANAGER";
          "SHREDDIT-OVERLAY-DISPLAY";
          "REDDIT-PAGE-DATA";
          "SHREDDIT-SCREENVIEW-DATA";

@@ -378,6 +378,7 @@ proc pass_0() {
       (get_name() = "SHREDDIT-PAGE-META") ||
       (get_name() = "YTD-MASTHEAD") ||
       (get_name() = "YTD-APP") ||
+      (get_name() = "YT-GUIDE-MANAGER") ||
       (get_name() = "CUSTOM-STYLE") ||
       (get_name() = "STRONG")
     then true
