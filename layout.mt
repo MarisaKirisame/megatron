@@ -318,6 +318,7 @@ proc pass_0() {
       (get_name() = "COMMUNITY-HIGHLIGHT-CARD") ||
       (get_name() = "SHREDDIT-GALLERY-CAROUSEL") ||
       (get_name() = "SHREDDIT-TITLE") ||
+      (get_name() = "FACEPLATE-PROGRESS") ||
       (get_name() = "DATA") ||
       (get_name() = "FACEPLATE-PARTIAL") ||
       (get_name() = "REDDIT-HEADER-LARGE") ||
