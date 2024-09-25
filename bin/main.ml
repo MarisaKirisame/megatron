@@ -299,6 +299,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "LEFT-NAV-TOP-SECTION";
          "REDDIT-RECENT-PAGES";
          "SHREDDIT-OVERLAY-DISPLAY";
+         "REDDIT-PAGE-DATA";
          "LEFT-NAV-TOPIC-TRACKER";
          "HUI-LEFT-NAV-SEE-MORE";
          "REDDIT-SIDEBAR-NAV";
