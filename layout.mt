@@ -310,6 +310,7 @@ proc pass_0() {
       (get_name() = "FACEPLATE-DIALOG") ||
       (get_name() = "FACEPLATE-LOADER") ||
       (get_name() = "FACEPLATE-PARTIAL") ||
+      (get_name() = "REDDIT-HEADER-LARGE") ||
       (get_name() = "FACEPLATE-DROPDOWN-MENU") ||
       (get_name() = "FACEPLATE-SEARCH-INPUT") ||
       (get_name() = "REDDIT-SEARCH-LARGE") ||

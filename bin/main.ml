@@ -263,6 +263,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "FACEPLATE-DIALOG";
          "FACEPLATE-LOADER";
          "FACEPLATE-PARTIAL";
+         "REDDIT-HEADER-LARGE";
          "SEARCH-DYNAMIC-ID-CACHE-CONTROLLER";
          "SHREDDIT-GOOD-VISIT-TRACKER";
          "SCREEN-READER-ALERT-OUTLET";
