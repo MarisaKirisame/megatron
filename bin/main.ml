@@ -270,6 +270,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "REDDIT-BREADCRUMBS";
          "DSA-TRANSPARENCY-MODAL-PROVIDER";
          "FACEPLATE-NUMBER";
+         "CREATE-POST-ENTRY-POINT-WRAPPER";
          "SCREEN-READER-ALERT-OUTLET";
          "SHREDDIT-PAGE-META";
          "SAN";
