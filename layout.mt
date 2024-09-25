@@ -343,6 +343,7 @@ proc pass_0() {
       (get_name() = "FACEPLATE-EXPANDABLE-SECTION-HELPER") ||
       (get_name() = "LEFT-NAV-TOP-SECTION") ||
       (get_name() = "LEFT-NAV-TOPIC-TRACKER") ||
+      (get_name() = "HUI-LEFT-NAV-SEE-MORE") ||
       (get_name() = "REDDIT-RECENT-PAGES") ||
       (get_name() = "DROPDOWN-CLOSE-ON-SCROLL") ||
       (get_name() = "SHREDDIT-SIDEBAR-AD") ||
