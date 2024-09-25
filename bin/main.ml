@@ -322,6 +322,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "YTD-PAGE-MANAGER";
          "YTD-PERMISSION-ROLE-BOTTOM-BAR-RENDERER";
          "YTD-POPUP-CONTAINER";
+         "YTD-THIRD-PARTY-MANAGER";
          "INS";
          "LEFT-NAV-TOPIC-TRACKER";
          "HUI-LEFT-NAV-SEE-MORE";
