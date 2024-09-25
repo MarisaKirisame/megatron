@@ -302,6 +302,7 @@ proc pass_0() {
       (get_name() = "SHREDDIT-GOOD-VISIT-TRACKER") ||
       (get_name() = "FACEPLATE-SERVER-SESSION") ||
       (get_name() = "FACEPLATE-SCREEN-READER-CONTENT") ||
+      (get_name() = "ACTIVATE-FEATURE") ||
       (get_name() = "SCREEN-READER-ALERT-OUTLET") ||
       (get_name() = "SHREDDIT-PAGE-META") ||
       (get_name() = "STRONG")

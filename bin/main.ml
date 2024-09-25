@@ -251,6 +251,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "SHREDDIT-ASYNC-LOADER";
          "FACEPLATE-SERVER-SESSION";
          "FACEPLATE-SCREEN-READER-CONTENT";
+         "ACTIVATE-FEATURE";
          "SHREDDIT-GOOD-VISIT-TRACKER";
          "SCREEN-READER-ALERT-OUTLET";
          "SHREDDIT-PAGE-META";
