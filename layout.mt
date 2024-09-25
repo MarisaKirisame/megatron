@@ -307,6 +307,7 @@ proc pass_0() {
       (get_name() = "FACEPLATE-TOOLTIP") ||
       (get_name() = "FACEPLATE-SEARCH-INPUT") ||
       (get_name() = "REDDIT-SEARCH-LARGE") ||
+      (get_name() = "SEARCH-DYNAMIC-ID-CACHE-CONTROLLER") ||
       (get_name() = "SCREEN-READER-ALERT-OUTLET") ||
       (get_name() = "SHREDDIT-PAGE-META") ||
       (get_name() = "STRONG")
