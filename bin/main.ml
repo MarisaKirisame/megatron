@@ -301,6 +301,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "LEFT-NAV-TOPIC-TRACKER";
          "HUI-LEFT-NAV-SEE-MORE";
          "REDDIT-SIDEBAR-NAV";
+         "SHREDDIT-SLOTTER";
          "DROPDOWN-CLOSE-ON-SCROLL";
          "SAN";
        ])
