@@ -305,6 +305,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "FACEPLATE-PERFMETRIC-COLLECTOR";
          "SHREDDIT-NAVTIMINGS-COLLECTOR";
          "SHREDDIT-APP";
+         "NAVIGATION-INDICATOR";
          "LEFT-NAV-TOPIC-TRACKER";
          "HUI-LEFT-NAV-SEE-MORE";
          "REDDIT-SIDEBAR-NAV";
