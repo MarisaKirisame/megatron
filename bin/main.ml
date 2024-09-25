@@ -302,6 +302,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "HUI-LEFT-NAV-SEE-MORE";
          "REDDIT-SIDEBAR-NAV";
          "SHREDDIT-SLOTTER";
+         "AUTH-FLOW-GOOGLE-ONE-TAP-SHELL";
          "DROPDOWN-CLOSE-ON-SCROLL";
          "SAN";
        ])

@@ -339,6 +339,7 @@ proc pass_0() {
       (get_name() = "REDDIT-SIDEBAR-NAV") ||
       (get_name() = "SHREDDIT-SLOTTER") ||
       (get_name() = "DSA-TRANSPARENCY-MODAL-PROVIDER") ||
+      (get_name() = "AUTH-FLOW-GOOGLE-ONE-TAP-SHELL") ||
       (get_name() = "SHREDDIT-MEDIA-LIGHTBOX") ||
       (get_name() = "FACEPLATE-DROPDOWN-MENU") ||
       (get_name() = "FACEPLATE-SEARCH-INPUT") ||
