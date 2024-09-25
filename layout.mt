@@ -333,6 +333,7 @@ proc pass_0() {
       (get_name() = "OBJECT") ||
       (get_name() = "DATA") ||
       (get_name() = "FACEPLATE-PARTIAL") ||
+      (get_name() = "FACEPLATE-AUTO-HEIGHT-ANIMATOR") ||
       (get_name() = "REDDIT-HEADER-LARGE") ||
       (get_name() = "REDDIT-BREADCRUMBS") ||
       (get_name() = "DSA-TRANSPARENCY-MODAL-PROVIDER") ||
