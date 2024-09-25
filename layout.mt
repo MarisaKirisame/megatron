@@ -389,6 +389,7 @@ proc pass_0() {
       (get_name() = "YTD-THIRD-PARTY-MANAGER") ||
       (get_name() = "YTD-LOTTIE-PLAYER") ||
       (get_name() = "YTD-YOODLE-RENDERER") ||
+      (get_name() = "YTD-TOPBAR-LOGO-RENDERER") ||
       (get_name() = "YT-ICON") ||
       (get_name() = "YT-ICON-BUTTON") ||
       (get_name() = "YTD-LOGO") ||
