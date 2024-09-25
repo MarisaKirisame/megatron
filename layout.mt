@@ -313,6 +313,7 @@ proc pass_0() {
       (get_name() = "CREATE-POST-ENTRY-POINT-WRAPPER") ||
       (get_name() = "REDDIT-SKIP-TO-SIDEBAR") ||
       (get_name() = "SHREDDIT-FEED-ERROR-BANNER") ||
+      (get_name() = "SHREDDIT-SORT-DROPDOWN") ||
       (get_name() = "FACEPLATE-PARTIAL") ||
       (get_name() = "REDDIT-HEADER-LARGE") ||
       (get_name() = "REDDIT-BREADCRUMBS") ||

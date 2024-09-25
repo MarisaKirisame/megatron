@@ -273,6 +273,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "CREATE-POST-ENTRY-POINT-WRAPPER";
          "REDDIT-SKIP-TO-SIDEBAR";
          "SHREDDIT-FEED-ERROR-BANNER";
+         "SHREDDIT-SORT-DROPDOWN";
          "SCREEN-READER-ALERT-OUTLET";
          "SHREDDIT-PAGE-META";
          "SAN";
