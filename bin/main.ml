@@ -266,6 +266,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "REDDIT-HEADER-LARGE";
          "SEARCH-DYNAMIC-ID-CACHE-CONTROLLER";
          "SHREDDIT-GOOD-VISIT-TRACKER";
+         "SHREDDIT-MEDIA-LIGHTBOX";
          "SCREEN-READER-ALERT-OUTLET";
          "SHREDDIT-PAGE-META";
          "SAN";
