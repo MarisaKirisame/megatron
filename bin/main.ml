@@ -302,6 +302,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "YTD-APP";
          "CUSTOM-STYLE";
          "YT-GUIDE-MANAGER";
+         "YT-MDX-MANAGER";
          "SHREDDIT-OVERLAY-DISPLAY";
          "REDDIT-PAGE-DATA";
          "SHREDDIT-SCREENVIEW-DATA";
