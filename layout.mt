@@ -340,6 +340,7 @@ proc pass_0() {
       (get_name() = "SHREDDIT-MEDIA-LIGHTBOX") ||
       (get_name() = "FACEPLATE-DROPDOWN-MENU") ||
       (get_name() = "FACEPLATE-SEARCH-INPUT") ||
+      (get_name() = "FACEPLATE-EXPANDABLE-SECTION-HELPER") ||
       (get_name() = "REDDIT-SEARCH-LARGE") ||
       (get_name() = "REDDIT-HEADER-ACTION-ITEMS") ||
       (get_name() = "SEARCH-DYNAMIC-ID-CACHE-CONTROLLER") ||
