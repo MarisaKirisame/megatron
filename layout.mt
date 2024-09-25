@@ -306,6 +306,7 @@ proc pass_0() {
       (get_name() = "FACEPLATE-TRACKER") ||
       (get_name() = "FACEPLATE-TOOLTIP") ||
       (get_name() = "FACEPLATE-PERFMARK") ||
+      (get_name() = "FACEPLATE-DROPDOWN-MENU") ||
       (get_name() = "FACEPLATE-SEARCH-INPUT") ||
       (get_name() = "REDDIT-SEARCH-LARGE") ||
       (get_name() = "SEARCH-DYNAMIC-ID-CACHE-CONTROLLER") ||
