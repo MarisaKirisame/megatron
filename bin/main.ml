@@ -299,6 +299,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "LEFT-NAV-TOP-SECTION";
          "REDDIT-RECENT-PAGES";
          "YTD-MASTHEAD";
+         "YTD-APP";
          "SHREDDIT-OVERLAY-DISPLAY";
          "REDDIT-PAGE-DATA";
          "SHREDDIT-SCREENVIEW-DATA";
