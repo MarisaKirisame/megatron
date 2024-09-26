@@ -411,6 +411,7 @@ proc pass_0() {
       (get_name() = "YTD-WATCH-NEXT-SECONDARY-RESULTS-RENDERER") ||
       (get_name() = "TP-YT-PAPER-ITEM") ||
       (get_name() = "YTD-WATCH-INFO-TEXT") ||
+      (get_name() = "YTD-STRUCTURED-DESCRIPTION-CONTENT-RENDERER") ||
       (get_name() = "YTD-CHANNEL-NAME") ||
       (get_name() = "YTD-VIDEO-OWNER-RENDERER") ||
       (get_name() = "YT-TOUCH-FEEDBACK-SHAPE") ||
