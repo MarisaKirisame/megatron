@@ -342,6 +342,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "YT-ATTRIBUTED-STRING";
          "YT-FORMATTED-STRING";
          "YT-IMAGE";
+         "YTD-THUMBNAIL";
          "SAN";
        ])
 
