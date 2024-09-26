@@ -402,6 +402,7 @@ proc pass_0() {
       (get_name() = "YTD-RICH-SECTION-RENDERER") ||
       (get_name() = "YTD-GUIDE-RENDERER") ||
       (get_name() = "YT-BUTTON-SHAPE") ||
+      (get_name() = "YTD-BUTTON-RENDERER") ||
       (get_name() = "YT-INLINE-PLAYER-CONTROLS") ||
       (get_name() = "YT-IMG-SHADOW") ||
       (get_name() = "IRON-A11Y-ANNOUNCER") ||
