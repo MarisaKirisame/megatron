@@ -345,6 +345,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "YTD-THUMBNAIL";
          "YTD-MINIPLAYER-TOAST";
          "YTD-MINIPLAYER";
+         "IRON-A11Y-ANNOUNCER";
          "SAN";
        ])
 

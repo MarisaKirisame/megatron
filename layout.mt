@@ -394,6 +394,7 @@ proc pass_0() {
       (get_name() = "YTD-THUMBNAIL") ||
       (get_name() = "YTD-MINIPLAYER-TOAST") ||
       (get_name() = "YTD-MINIPLAYER") ||
+      (get_name() = "IRON-A11Y-ANNOUNCER") ||
       (get_name() = "YT-FORMATTED-STRING") ||
       (get_name() = "YT-IMAGE") ||
       (get_name() = "YT-ATTRIBUTED-STRING") ||
