@@ -341,6 +341,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "YTD-SEARCHBOX";
          "YT-ATTRIBUTED-STRING";
          "YT-FORMATTED-STRING";
+         "YT-IMAGE";
          "SAN";
        ])
 

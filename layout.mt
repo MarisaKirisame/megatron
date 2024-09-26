@@ -392,6 +392,7 @@ proc pass_0() {
       (get_name() = "YTD-TOPBAR-LOGO-RENDERER") ||
       (get_name() = "YTD-SEARCHBOX") ||
       (get_name() = "YT-FORMATTED-STRING") ||
+      (get_name() = "YT-IMAGE") ||
       (get_name() = "YT-ATTRIBUTED-STRING") ||
       (get_name() = "TP-YT-PAPER-TOOLTIP") ||
       (get_name() = "YT-ICON") ||
