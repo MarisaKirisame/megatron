@@ -410,6 +410,7 @@ proc pass_0() {
       (get_name() = "YTD-GUIDE-SIGNIN-PROMO-RENDERER") ||
       (get_name() = "YTD-WATCH-NEXT-SECONDARY-RESULTS-RENDERER") ||
       (get_name() = "TP-YT-PAPER-ITEM") ||
+      (get_name() = "YTD-CHANNEL-NAME") ||
       (get_name() = "YT-TOUCH-FEEDBACK-SHAPE") ||
       (get_name() = "YT-INLINE-PLAYER-CONTROLS") ||
       (get_name() = "YT-IMG-SHADOW") ||
