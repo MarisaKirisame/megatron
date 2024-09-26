@@ -348,6 +348,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "IRON-A11Y-ANNOUNCER";
          "YTD-RICH-GRID-RENDERER";
          "YTD-TWO-COLUMN-BROWSE-RESULTS-RENDERER";
+         "YTD-BROWSE";
          "SAN";
        ])
 
