@@ -366,6 +366,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "YTD-CHANNEL-NAME";
          "YTD-VIDEO-OWNER-RENDERER";
          "YTD-STRUCTURED-DESCRIPTION-CONTENT-RENDERER";
+         "YTD-METADATA-ROW-CONTAINER-RENDERER";
          "YTD-WATCH-INFO-TEXT";
          "YT-IMG-SHADOW";
          "YT-INLINE-PLAYER-CONTROLS";
