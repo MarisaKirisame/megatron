@@ -356,6 +356,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "YT-BUTTON-SHAPE";
          "YTD-BUTTON-RENDERER";
          "YT-TOUCH-FEEDBACK-SHAPE";
+         "YTD-TOPBAR-MENU-BUTTON-RENDERER";
          "YT-IMG-SHADOW";
          "YT-INLINE-PLAYER-CONTROLS";
          "SAN";
