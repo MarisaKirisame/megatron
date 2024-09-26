@@ -361,6 +361,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "YTD-GUIDE-ENTRY-RENDERER";
          "YTD-GUIDE-SECTION-RENDERER";
          "YTD-GUIDE-SIGNIN-PROMO-RENDERER";
+         "YTD-WATCH-NEXT-SECONDARY-RESULTS-RENDERER";
          "TP-YT-PAPER-ITEM";
          "YT-IMG-SHADOW";
          "YT-INLINE-PLAYER-CONTROLS";
