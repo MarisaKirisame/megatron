@@ -350,6 +350,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "YTD-TWO-COLUMN-BROWSE-RESULTS-RENDERER";
          "YTD-BROWSE";
          "YTD-PLAYER";
+         "YT-IMG-SHADOW";
          "YT-INLINE-PLAYER-CONTROLS";
          "SAN";
        ])
