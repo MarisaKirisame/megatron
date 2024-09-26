@@ -423,6 +423,7 @@ proc pass_0() {
       (get_name() = "YT-ATTRIBUTED-STRING") ||
       (get_name() = "TP-YT-PAPER-TOOLTIP") ||
       (get_name() = "YTD-METADATA-ROW-CONTAINER-RENDERER") ||
+      (get_name() = "YTD-TEXT-INLINE-EXPANDER") ||
       (get_name() = "YT-ICON") ||
       (get_name() = "YT-ICON-BUTTON") ||
       (get_name() = "YTD-LOGO") ||
