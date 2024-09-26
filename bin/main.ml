@@ -340,6 +340,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "DROPDOWN-CLOSE-ON-SCROLL";
          "YTD-SEARCHBOX";
          "YT-ATTRIBUTED-STRING";
+         "YT-FORMATTED-STRING";
          "SAN";
        ])
 
