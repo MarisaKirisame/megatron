@@ -48,45 +48,79 @@ proc pass_0() {
       else panic("flex_direction:", parent().flex_direction))
     else false;
 
-  self.width_attr_expr <- 
+  self.width_attr <- 
     if !(has_attr(width))
-    then "auto"
+    then 0
     else if string_is_float(get_attr(width))
-    then get_attr(width)
+    then string_to_float(get_attr(width))
     else if has_suffix(get_attr(width), "px")
-    then strip_suffix(get_attr(width), "px")
+    then string_to_float(strip_suffix(get_attr(width), "px"))
     else if has_suffix(get_attr(width), "em")
-    then strip_suffix(get_attr(width), "em")
+    then string_to_float(strip_suffix(get_attr(width), "em"))
     else if get_attr(width) = "Auto"
-    then "auto"
+    then 0
     else if get_attr(width) = "auto"
-    then "auto"
+    then 0
     else if get_attr(width) = "100%"
-    then "auto"
-    else if get_attr(height) = ""
-    then "auto"
+    then 0
+    else if get_attr(width) = ""
+    then 0
     else panic("width_attr:", get_attr(width));
-  self.has_width_attr <- self.width_attr_expr != "auto";
+  self.has_width_attr <- 
+    if !(has_attr(width))
+    then false
+    else if string_is_float(get_attr(width))
+    then true
+    else if has_suffix(get_attr(width), "px")
+    then true
+    else if has_suffix(get_attr(width), "em")
+    then true
+    else if get_attr(width) = "Auto"
+    then false
+    else if get_attr(width) = "auto"
+    then false
+    else if get_attr(width) = "100%"
+    then false
+    else if get_attr(width) = ""
+    then false
+    else panic("width_attr:", get_attr(width));
 
-  self.height_attr_expr <- 
+  self.height_attr <- 
     if !(has_attr(height))
-    then "auto"
+    then 0
     else if string_is_float(get_attr(height))
-    then get_attr(height)
+    then string_to_float(get_attr(height))
     else if has_suffix(get_attr(height), "px")
-    then strip_suffix(get_attr(height), "px")
+    then string_to_float(strip_suffix(get_attr(height), "px"))
     else if has_suffix(get_attr(height), "em")
-    then strip_suffix(get_attr(height), "em")
+    then string_to_float(strip_suffix(get_attr(height), "em"))
     else if get_attr(height) = "Auto"
-    then "auto"
+    then 0
     else if get_attr(height) = "auto"
-    then "auto"
+    then 0
     else if get_attr(height) = "100%"
-    then "auto"
+    then 0
     else if get_attr(height) = ""
-    then "auto"
+    then 0
     else panic("height_attr:", get_attr(height));
-  self.has_height_attr <- self.height_attr_expr != "auto";
+  self.has_height_attr <- 
+    if !(has_attr(height))
+    then false
+    else if string_is_float(get_attr(height))
+    then true
+    else if has_suffix(get_attr(height), "px")
+    then true
+    else if has_suffix(get_attr(height), "em")
+    then true
+    else if get_attr(height) = "Auto"
+    then false
+    else if get_attr(height) = "auto"
+    then false
+    else if get_attr(height) = "100%"
+    then false
+    else if get_attr(height) = ""
+    then false
+    else panic("height_attr:", get_attr(height));
 
   self.is_svg_block <- get_name() = "svg";
   self.inside_svg <- has_parent() && (parent().is_svg_block || parent().inside_svg);
@@ -504,38 +538,34 @@ proc pass_0() {
       then 
         (if !(self.has_width_attr) && !(self.has_height_attr)
         then 300
-        else if self.has_width_attr && string_is_float(self.width_attr_expr)
-        then string_to_float(self.width_attr_expr)
-        else if self.has_width_attr && has_suffix(self.width_attr_expr, "px")
-        then string_to_float(strip_suffix(self.width_attr_expr, "px"))
+        else if self.has_width_attr
+        then self.width_attr
         else if !(self.has_width_attr) && has_attr(viewBox)
         then string_to_float(nth_by_sep(get_attr(viewBox), " ", i2))
-        else if self.has_width_attr && has_suffix(self.width_attr_expr, "%") && has_attr(viewBox)
-        then string_to_float(nth_by_sep(get_attr(viewBox), " ", i2)) * string_to_float(strip_suffix(self.width_attr_expr, "%")) / 100
-        else panic("unknown SVG:", self.width_attr_expr, self.height_attr_expr))
+        else panic("unknown SVG:", self.width_attr, self.height_attr))
       else if get_name() = "IMG"
       then 
-        (if self.has_width_attr && string_is_float(self.width_attr_expr)
-        then string_to_float(self.width_attr_expr)
+        (if self.has_width_attr
+        then self.width_attr
         else if has_attr(image_width) && !(self.has_height_attr)
         then int_to_float(get_attr(image_width))
         else if !(self.has_width_attr) && self.has_height_attr && has_attr(image_width) && has_attr(image_height)
         then 
           (if get_attr(image_height) != i0
-          then string_to_float(self.height_attr_expr) * int_to_float(get_attr(image_width)) / int_to_float(get_attr(image_height))
+          then self.height_attr * int_to_float(get_attr(image_width)) / int_to_float(get_attr(image_height))
           else 0)
         else panic("IMG width:", self.has_width_attr, self.has_height_attr, has_attr(image_width), has_attr(image_height)))
       else if get_name() = "IFRAME"
       then
         (if self.has_width_attr
-        then panic("IFRAME width:", self.width_attr_expr)
+        then panic("IFRAME width:", self.width_attr)
         else 300)
       else if get_name() = "TEXTAREA"
       then 100
       else if get_name() = "VIDEO"
       then 
         (if self.has_width_attr
-        then panic("VIDEO width:", self.width_attr_expr)
+        then panic("VIDEO width:", self.width_attr)
         else 300)
       else panic("intrinsic_width name:", get_name()));
 
@@ -613,38 +643,34 @@ proc pass_0() {
       then 
         (if !(self.has_width_attr) && !(self.has_height_attr)
         then 150
-        else if self.has_height_attr && string_is_float(self.height_attr_expr)
-        then string_to_float(self.height_attr_expr)
-        else if self.has_height_attr && has_suffix(self.height_attr_expr, "px")
-        then string_to_float(strip_suffix(self.height_attr_expr, "px"))
+        else if self.has_height_attr
+        then self.height_attr
         else if has_attr(viewBox)
         then string_to_float(nth_by_sep(get_attr(viewBox), " ", i3))
-        else if self.has_height_attr && has_suffix(self.height_attr_expr, "%") && has_attr(viewBox)
-        then string_to_float(nth_by_sep(get_attr(viewBox), " ", i3)) * string_to_float(strip_suffix(self.height_attr_expr, "%")) / 100
-        else panic("unknown SVG:", self.width_attr_expr, self.height_attr_expr))
+        else panic("unknown SVG:", self.width_attr, self.height_attr))
       else if get_name() = "IMG"
       then 
-        (if self.has_height_attr && string_is_float(self.height_attr_expr)
-        then string_to_float(self.height_attr_expr)
+        (if self.has_height_attr
+        then self.height_attr
         else if has_attr(image_height) && !(self.has_width_attr)
         then int_to_float(get_attr(image_height))
         else if self.has_width_attr && !(self.has_height_attr) && has_attr(image_width) && has_attr(image_height)
         then 
           (if get_attr(image_width) != i0
-          then string_to_float(self.width_attr_expr) * int_to_float(get_attr(image_height)) / int_to_float(get_attr(image_width))
+          then self.width_attr * int_to_float(get_attr(image_height)) / int_to_float(get_attr(image_width))
           else 0)
         else panic("IMG height", self.has_width_attr, self.has_height_attr, has_attr(image_width), has_attr(image_height)))
       else if get_name() = "IFRAME"
       then
         (if self.has_height_attr
-        then panic("IFRAME height:", self.height_attr_expr)
+        then panic("IFRAME height:", self.height_attr)
         else 150)
       else if get_name() = "TEXTAREA"
       then 100
       else if get_name() = "VIDEO"
       then 
         (if self.has_height_attr
-        then panic("VIDEO height:", self.height_attr_expr)
+        then panic("VIDEO height:", self.height_attr)
         else 150)
       else panic("intrinsic_height name:", get_name()));
 
