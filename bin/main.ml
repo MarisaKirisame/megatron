@@ -364,6 +364,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "YTD-WATCH-NEXT-SECONDARY-RESULTS-RENDERER";
          "TP-YT-PAPER-ITEM";
          "TP-YT-PAPER-BUTTON";
+         "TEXT";
          "YTD-VIDEO-PRIMARY-INFO-RENDERER";
          "YT-ANIMATED-ROLLING-NUMBER";
          "YTD-TEXT-INLINE-EXPANDER";

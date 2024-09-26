@@ -425,6 +425,7 @@ proc pass_0() {
       (get_name() = "YT-ANIMATED-ROLLING-NUMBER") ||
       (get_name() = "TP-YT-PAPER-BUTTON") ||
       (get_name() = "YTD-WATCH-METADATA") ||
+      (get_name() = "TEXT") ||
       (get_name() = "YTD-VIDEO-PRIMARY-INFO-RENDERER") ||
       (get_name() = "YTD-METADATA-ROW-CONTAINER-RENDERER") ||
       (get_name() = "YTD-TEXT-INLINE-EXPANDER") ||
