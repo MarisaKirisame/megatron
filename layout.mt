@@ -397,6 +397,7 @@ proc pass_0() {
       (get_name() = "YTD-RICH-GRID-RENDERER") ||
       (get_name() = "YTD-TWO-COLUMN-BROWSE-RESULTS-RENDERER") ||
       (get_name() = "YTD-BROWSE") ||
+      (get_name() = "YTD-PLAYER") ||
       (get_name() = "IRON-A11Y-ANNOUNCER") ||
       (get_name() = "YT-FORMATTED-STRING") ||
       (get_name() = "YT-IMAGE") ||

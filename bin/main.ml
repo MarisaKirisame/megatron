@@ -349,6 +349,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "YTD-RICH-GRID-RENDERER";
          "YTD-TWO-COLUMN-BROWSE-RESULTS-RENDERER";
          "YTD-BROWSE";
+         "YTD-PLAYER";
          "SAN";
        ])
 
