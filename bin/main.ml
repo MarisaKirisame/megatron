@@ -359,6 +359,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "YTD-TOPBAR-MENU-BUTTON-RENDERER";
          "YTD-MINI-GUIDE-ENTRY-RENDERER";
          "YTD-GUIDE-ENTRY-RENDERER";
+         "YTD-GUIDE-SECTION-RENDERER";
          "TP-YT-PAPER-ITEM";
          "YT-IMG-SHADOW";
          "YT-INLINE-PLAYER-CONTROLS";
