@@ -422,6 +422,7 @@ proc pass_0() {
       (get_name() = "YT-IMAGE") ||
       (get_name() = "YT-ATTRIBUTED-STRING") ||
       (get_name() = "TP-YT-PAPER-TOOLTIP") ||
+      (get_name() = "YT-ANIMATED-ROLLING-NUMBER") ||
       (get_name() = "YTD-WATCH-METADATA") ||
       (get_name() = "YTD-VIDEO-PRIMARY-INFO-RENDERER") ||
       (get_name() = "YTD-METADATA-ROW-CONTAINER-RENDERER") ||
