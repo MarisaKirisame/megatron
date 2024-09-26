@@ -363,6 +363,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "YTD-GUIDE-SIGNIN-PROMO-RENDERER";
          "YTD-WATCH-NEXT-SECONDARY-RESULTS-RENDERER";
          "TP-YT-PAPER-ITEM";
+         "YTD-VIDEO-PRIMARY-INFO-RENDERER";
          "YTD-TEXT-INLINE-EXPANDER";
          "YTD-WATCH-METADATA";
          "YTD-CHANNEL-NAME";
