@@ -364,6 +364,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "YTD-WATCH-NEXT-SECONDARY-RESULTS-RENDERER";
          "TP-YT-PAPER-ITEM";
          "YTD-CHANNEL-NAME";
+         "YTD-VIDEO-OWNER-RENDERER";
          "YT-IMG-SHADOW";
          "YT-INLINE-PLAYER-CONTROLS";
          "SAN";
