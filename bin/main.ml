@@ -347,6 +347,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "YTD-MINIPLAYER";
          "IRON-A11Y-ANNOUNCER";
          "YTD-RICH-GRID-RENDERER";
+         "YTD-TWO-COLUMN-BROWSE-RESULTS-RENDERER";
          "SAN";
        ])
 
