@@ -352,6 +352,7 @@ let default_tag : (string, unit) Hashtbl.t =
          "YTD-PLAYER";
          "YTD-FEED-NUDGE-RENDERER";
          "YTD-RICH-SECTION-RENDERER";
+         "YTD-GUIDE-RENDERER";
          "YT-IMG-SHADOW";
          "YT-INLINE-PLAYER-CONTROLS";
          "SAN";

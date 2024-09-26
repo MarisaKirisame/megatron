@@ -400,6 +400,7 @@ proc pass_0() {
       (get_name() = "YTD-PLAYER") ||
       (get_name() = "YTD-FEED-NUDGE-RENDERER") ||
       (get_name() = "YTD-RICH-SECTION-RENDERER") ||
+      (get_name() = "YTD-GUIDE-RENDERER") ||
       (get_name() = "YT-INLINE-PLAYER-CONTROLS") ||
       (get_name() = "YT-IMG-SHADOW") ||
       (get_name() = "IRON-A11Y-ANNOUNCER") ||
