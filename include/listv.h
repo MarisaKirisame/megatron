@@ -2,209 +2,172 @@
 
 #include <cstdint>
 #include <cstdio>
-#include <memory>
-#include <queue>
-#include <string>
-#include <variant>
 #include <vector>
+#include <memory>
 
-template <typename T> class listv {
+template <typename T>
+class listv
+{
 private:
-  struct ptr;
+  using ptr_t = uint32_t;
 
-  struct node {
+  struct node
+  {
+    ptr_t prev;
+    ptr_t next;
     T elem;
-    ptr next{this};
-    ptr prev{this};
   };
 
   static inline std::vector<node> storage;
-  static inline std::queue<uint32_t> freelist;
+  static inline std::vector<ptr_t> freelist;
 
-  ptr head{this};
-  ptr tail{this};
-
-  struct ptr {
-    std::variant<const listv<T> *, uint32_t> inner;
-
-    operator bool() const { return inner.index() == 1; }
-
-    uint32_t idx() const { return std::get<1>(inner); }
-
-    std::string to_string() const {
-      if (inner.index() == 0) {
-        return "/";
-      } else {
-        return std::to_string(idx());
-      }
+  template <typename... Args>
+  ptr_t _new(Args &&...args)
+  {
+    if (freelist.empty())
+    {
+      ptr_t result = storage.size();
+      storage.emplace_back(std::forward<Args>(args)...);
+      return result;
     }
-
-    ptr prev() const {
-      if (inner.index() == 0) {
-        return std::get<0>(inner)->tail;
-      } else {
-        return storage[idx()].prev;
-      }
+    else
+    {
+      ptr_t result = freelist.back();
+      freelist.pop_back();
+      return result;
     }
+  }
 
-    ptr next() const { return storage[idx()].next; }
+  void _del(ptr_t n) { freelist.push_back(n); }
 
-    node &n() const { return storage[idx()]; }
+  ptr_t sentinel;
 
-    friend bool operator==(const ptr &l, const ptr &r) { return l.inner == r.inner; }
+public:
+  struct iterator
+  {
+    ptr_t inner;
 
-    T *operator->() const { return &n().elem; }
-
-    T &operator*() const { return n().elem; }
-
-    ptr &operator++() {
-      if (inner.index() == 0) {
-        printf("hole\n");
-        fflush(stdout);
-      }
-      inner = storage[idx()].next;
+    iterator &operator++()
+    {
+      inner = storage[inner].next;
       return *this;
     }
 
-    ptr operator++(int) {
-      ptr old = *this;
+    iterator operator++(int)
+    {
+      iterator old = *this;
       operator++();
       return old;
     }
 
-    ptr &operator--() {
-      inner = prev();
+    iterator &operator--()
+    {
+      inner = storage[inner].prev;
       return *this;
     }
 
-    ptr operator--(int) {
-      ptr old = *this;
-      operator--();
+    iterator operator--(int)
+    {
+      iterator old = *this;
+      operator++();
       return old;
     }
   };
 
-public:
-  using iterator = ptr;
-
-  iterator begin() const { return head; }
-  iterator end() const { return ptr{this}; }
-
-  template <typename... Args> iterator emplace(const iterator &pos, Args &&...args) {
-    ptr cur;
-    ptr pos_prev = pos.prev();
-
-    if (!freelist.empty()) {
-      uint32_t f = freelist.front();
-      cur = ptr{f};
-      storage[f].next = pos;
-      storage[f].prev = pos_prev;
-      std::construct_at(&storage[f].elem, std::forward<Args>(args)...);
-      freelist.pop();
-    } else {
-      cur = ptr{static_cast<uint32_t>(storage.size())};
-      T elem{std::forward<Args>(args)...};
-      storage.emplace_back(std::move(elem), pos, pos_prev);
-    }
-
-    if (pos) {
-      pos.n().prev = cur;
-      if (pos_prev) {
-        pos_prev.n().next = cur;
-      }
-    } else {
-      tail = cur;
-    }
-
-    if (head == pos) {
-      head = cur;
-    }
-
-    return cur;
+  listv()
+  {
+    sentinel = _new();
+    storage[sentinel].prev = sentinel;
+    storage[sentinel].next = sentinel;
   }
 
-  template <typename... Args> iterator emplace_back(Args &&...args) {
+  ~listv()
+  {
+    // TODO: Del other nodes
+    _del(sentinel);
+  }
+
+  iterator begin()
+  {
+    return iterator{storage[sentinel].next};
+  }
+
+  iterator end()
+  {
+    return iterator{sentinel};
+  }
+
+  template <typename... Args>
+  iterator emplace(const iterator &pos, Args &&...args)
+  {
+    ptr_t result = _new();
+    storage[result].prev = storage[pos.inner].prev;
+    storage[result].next = pos.inner;
+    std::construct_at(&storage[result].elem, std::forward<Args>(args)...);
+
+    storage[storage[pos.inner].prev].next = result;
+    storage[pos.inner].prev = result;
+
+    return iterator{result};
+  }
+
+  template <typename... Args>
+  iterator emplace_back(Args &&...args)
+  {
     return emplace(end(), std::forward<Args>(args)...);
   }
 
-  void erase(const iterator &pos) {
-    if (!pos) {
+  void erase(const iterator &pos)
+  {
+    if (pos.inner == sentinel)
+    {
       return;
     }
 
-    ptr pos_prev = pos.prev();
-    ptr pos_next = pos.next();
+    ptr_t pos_prev = storage[pos.inner].prev;
+    ptr_t pos_next = storage[pos.inner].next;
 
-    if (pos_prev) {
-      pos_prev.n().next = pos_next;
-    }
+    storage[pos_prev].next = pos_next;
+    storage[pos_next].prev = pos_prev;
 
-    if (pos_next) {
-      pos_next.n().prev = pos_prev;
-    }
-
-    if (head == pos) {
-      head = pos_next;
-    }
-
-    if (tail == pos) {
-      tail = pos_prev;
-    }
-
-    freelist.push(pos.idx());
+    _del(pos.inner);
   }
 
-  void splice(const iterator &pos, listv<T> &other, const iterator &first, const iterator &last) {
-    if (!first) {
+  void splice(const iterator &pos, listv<T> &other, const iterator &first, const iterator &last)
+  {
+    if (first.inner == other.sentinel)
+    {
       return;
     }
 
-    ptr old_last_prev = last.prev();
+    ptr_t old_last_prev = storage[last.inner].prev;
 
     // 1. Cut off [first, last)
-    if (first.prev()) {
-      first.prev().n().next = last;
-    }
+    storage[storage[first.inner].prev].next = last.inner;
+    storage[last.inner].prev = storage[first.inner].prev;
 
-    if (last) {
-      last.n().prev = first.prev();
-    }
-
-    if (other.head == first) {
-      other.head = last;
-    }
-
-    // 2. Attach the segment to our list
-
-    if (pos) {
-      ptr pos_prev = pos.prev();
-      first.n().prev = pos_prev;
-      if (pos_prev) {
-        pos_prev.n().next = first;
-      }
-      pos.n().prev = old_last_prev;
-      if (old_last_prev) {
-        old_last_prev.n().next = pos;
-      }
-    } else {
-      first.n().prev = pos;
-      if (old_last_prev) {
-        old_last_prev.n().next = pos;
-      }
-
-      tail = old_last_prev;
-    }
-
-    if (pos == head) {
-      head = first;
-    }
+    // 2. Attach to our list
+    storage[storage[pos.inner].prev].next = first.inner;
+    storage[first.inner].prev = storage[pos.inner].prev;
+    storage[pos.inner].prev = old_last_prev;
+    storage[old_last_prev].next = pos.inner;
   }
 
-  void print() {
-    printf("head: %s\n", head.to_string().c_str());
-    for (int i = 0; i < storage.size(); i++) {
-      printf("%s <-  %d  -> %s  |  %ld\n", storage[i].prev.to_string().c_str(), i, storage[i].next.to_string().c_str(),
-             storage[i].elem);
+  void print()
+  {
+    printf("---------------------------------\n");
+    printf("Sentinel: %d\n", sentinel);
+    for (int i = 0; i < storage.size(); i++)
+    {
+      printf(
+          "%s <- %d -> %s | %d\n",
+          storage[i].prev == sentinel ? "/"
+                                      : std::to_string(storage[i].prev).c_str(),
+          i,
+          storage[i].next == sentinel ? "/"
+                                      : std::to_string(storage[i].next).c_str(),
+          storage[i].elem);
     }
+    printf("---------------------------------\n");
   }
 };
