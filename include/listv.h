@@ -2,17 +2,14 @@
 
 #include <cstdint>
 #include <cstdio>
-#include <vector>
 #include <memory>
+#include <vector>
 
-template <typename T>
-class listv
-{
+template <typename T> class listv {
 private:
   using ptr_t = uint32_t;
 
-  struct node
-  {
+  struct node {
     ptr_t prev;
     ptr_t next;
     T elem;
@@ -21,17 +18,12 @@ private:
   static inline std::vector<node> storage;
   static inline std::vector<ptr_t> freelist;
 
-  template <typename... Args>
-  ptr_t _new(Args &&...args)
-  {
-    if (freelist.empty())
-    {
+  template <typename... Args> ptr_t _new(Args &&...args) {
+    if (freelist.empty()) {
       ptr_t result = storage.size();
       storage.emplace_back(std::forward<Args>(args)...);
       return result;
-    }
-    else
-    {
+    } else {
       ptr_t result = freelist.back();
       freelist.pop_back();
       return result;
@@ -43,63 +35,60 @@ private:
   ptr_t sentinel;
 
 public:
-  struct iterator
-  {
+  struct iterator {
     ptr_t inner;
 
-    iterator &operator++()
-    {
+    iterator &operator++() {
       inner = storage[inner].next;
       return *this;
     }
 
-    iterator operator++(int)
-    {
+    iterator operator++(int) {
       iterator old = *this;
       operator++();
       return old;
     }
 
-    iterator &operator--()
-    {
+    iterator &operator--() {
       inner = storage[inner].prev;
       return *this;
     }
 
-    iterator operator--(int)
-    {
+    iterator operator--(int) {
       iterator old = *this;
       operator++();
       return old;
     }
+
+    friend bool operator==(const iterator &l, const iterator &r) { return l.inner == r.inner; }
+
+    T *operator->() const { return &storage[inner].elem; }
+
+    T &operator*() const { return storage[inner].elem; }
+
+    iterator next() const { return iterator{storage[inner].next}; }
+
+    iterator prev() const { return iterator{storage[inner].prev}; }
   };
 
-  listv()
-  {
+  listv() {
     sentinel = _new();
     storage[sentinel].prev = sentinel;
     storage[sentinel].next = sentinel;
   }
 
-  ~listv()
-  {
-    // TODO: Del other nodes
+  ~listv() {
+    for (ptr_t cur = storage[sentinel].next; cur != sentinel; cur = storage[cur].next) {
+      _del(cur);
+    }
     _del(sentinel);
   }
 
-  iterator begin()
-  {
-    return iterator{storage[sentinel].next};
-  }
+  iterator begin() { return iterator{storage[sentinel].next}; }
 
-  iterator end()
-  {
-    return iterator{sentinel};
-  }
+  iterator end() { return iterator{sentinel}; }
 
-  template <typename... Args>
-  iterator emplace(const iterator &pos, Args &&...args)
-  {
+  template <typename... Args> iterator emplace(const iterator &pos, Args &&...args) {
     ptr_t result = _new();
     storage[result].prev = storage[pos.inner].prev;
     storage[result].next = pos.inner;
@@ -111,16 +100,12 @@ public:
     return iterator{result};
   }
 
-  template <typename... Args>
-  iterator emplace_back(Args &&...args)
-  {
+  template <typename... Args> iterator emplace_back(Args &&...args) {
     return emplace(end(), std::forward<Args>(args)...);
   }
 
-  void erase(const iterator &pos)
-  {
-    if (pos.inner == sentinel)
-    {
+  void erase(const iterator &pos) {
+    if (pos.inner == sentinel) {
       return;
     }
 
@@ -133,10 +118,8 @@ public:
     _del(pos.inner);
   }
 
-  void splice(const iterator &pos, listv<T> &other, const iterator &first, const iterator &last)
-  {
-    if (first.inner == other.sentinel)
-    {
+  void splice(const iterator &pos, listv<T> &other, const iterator &first, const iterator &last) {
+    if (first.inner == other.sentinel) {
       return;
     }
 
@@ -153,20 +136,16 @@ public:
     storage[old_last_prev].next = pos.inner;
   }
 
-  void print()
-  {
+  void print() {
     printf("---------------------------------\n");
     printf("Sentinel: %d\n", sentinel);
-    for (int i = 0; i < storage.size(); i++)
-    {
-      printf(
-          "%s <- %d -> %s | %d\n",
-          storage[i].prev == sentinel ? "/"
-                                      : std::to_string(storage[i].prev).c_str(),
-          i,
-          storage[i].next == sentinel ? "/"
-                                      : std::to_string(storage[i].next).c_str(),
-          storage[i].elem);
+    for (int i = 0; i < storage.size(); i++) {
+      printf("%s <- %d -> %s | %d\n", storage[i].prev == sentinel ? "/" : std::to_string(storage[i].prev).c_str(), i,
+             storage[i].next == sentinel ? "/" : std::to_string(storage[i].next).c_str(), storage[i].elem);
+    }
+    printf("---------------------------------\n");
+    for (int i = 0; i < freelist.size(); i++) {
+      printf("%d\n", freelist[i]);
     }
     printf("---------------------------------\n");
   }
