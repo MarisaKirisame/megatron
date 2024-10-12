@@ -88,6 +88,7 @@ public:
   ~listv() {
     if (!moved)
     {
+      // use after free here is fine because there is no intermediate malloc
       for (ptr_t cur = storage[sentinel].next; cur != sentinel; cur = storage[cur].next) {
         _del(cur);
       }
