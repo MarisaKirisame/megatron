@@ -33,6 +33,7 @@ private:
   void _del(ptr_t n) { freelist.push_back(n); }
 
   ptr_t sentinel;
+  bool moved;
 
 public:
   struct iterator {
@@ -75,13 +76,23 @@ public:
     sentinel = _new();
     storage[sentinel].prev = sentinel;
     storage[sentinel].next = sentinel;
+    moved = false;
+  }
+
+  listv(const listv&) = delete;
+  listv(listv&& other) {
+    sentinel = other.sentinel;
+    other.moved = true;
   }
 
   ~listv() {
-    for (ptr_t cur = storage[sentinel].next; cur != sentinel; cur = storage[cur].next) {
-      _del(cur);
+    if (!moved)
+    {
+      for (ptr_t cur = storage[sentinel].next; cur != sentinel; cur = storage[cur].next) {
+        _del(cur);
+      }
+      _del(sentinel);
     }
-    _del(sentinel);
   }
 
   iterator begin() { return iterator{storage[sentinel].next}; }
@@ -105,9 +116,9 @@ public:
   }
 
   void erase(const iterator &pos) {
-    if (pos.inner == sentinel) {
-      return;
-    }
+    // if (pos.inner == sentinel) {
+    //   return;
+    // }
 
     ptr_t pos_prev = storage[pos.inner].prev;
     ptr_t pos_next = storage[pos.inner].next;
@@ -119,9 +130,9 @@ public:
   }
 
   void splice(const iterator &pos, listv<T> &other, const iterator &first, const iterator &last) {
-    if (first.inner == other.sentinel) {
-      return;
-    }
+    // if (first.inner == other.sentinel) {
+    //   return;
+    // }
 
     ptr_t old_last_prev = storage[last.inner].prev;
 
