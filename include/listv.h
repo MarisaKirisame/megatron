@@ -18,8 +18,8 @@ private:
   static inline std::vector<node>* _storage = nullptr;
   static inline std::vector<ptr_t>* _freelist = nullptr;
 
-  std::vector<node>& storage;
-  std::vector<ptr_t>& freelist;
+  std::vector<node>& storage = *_storage;
+  std::vector<ptr_t>& freelist = *_freelist;
 
   template <typename... Args> ptr_t _new(Args &&...args) {
     if (freelist.empty()) {
@@ -79,13 +79,14 @@ public:
     if (_storage == nullptr)
     {
       _storage = new std::vector<node>();
+      storage = *_storage;
     }
     if (_freelist == nullptr)
     {
       _freelist = new std::vector<node>();
+      freelist = *_freelist;
     }
-    storage = *_storage;
-    freelist = *_freelist;
+
     sentinel = _new();
     storage[sentinel].prev = sentinel;
     storage[sentinel].next = sentinel;
