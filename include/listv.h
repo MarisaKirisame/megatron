@@ -76,10 +76,12 @@ public:
     if (storage == nullptr)
     {
       storage = new std::vector<node>();
+      storage->reserve(16 * 1024 * 1024 / sizeof(node));
     }
     if (freelist == nullptr)
     {
       freelist = new std::vector<ptr_t>();
+      freelist->reserve(16 * 1024 * 1024 / sizeof(ptr_t));
     }
 
     sentinel = _new();
