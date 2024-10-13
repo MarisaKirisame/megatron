@@ -1,9 +1,9 @@
 #pragma once
 
+#include "listv.h"
 #include <boost/predef.h>
 #include <cassert>
 #include <concepts>
-#include <list>
 #include <optional>
 #include <type_traits>
 
@@ -29,11 +29,11 @@ public:
   struct _l2_node;
 
   struct _l1_node {
-    std::list<_l2_node, Allocator<_l2_node>> children;
+    listv<_l2_node> children;
     Label label;
   };
 
-  typedef std::list<_l1_node, Allocator<_l1_node>>::iterator _l1_iter;
+  typedef listv<_l1_node>::iterator _l1_iter;
 
   struct _l2_node {
     _l1_iter parent;
@@ -95,25 +95,9 @@ public:
     }
   };
 
-  typedef std::list<_l2_node, Allocator<_l2_node>>::iterator _l2_iter;
+  typedef listv<_l2_node>::iterator _l2_iter;
 
-  std::list<_l1_node, Allocator<_l1_node>> _l1_nodes;
-
-  template <typename T>
-  [[gnu::always_inline]]
-  inline T prev_of(T it) {
-    T copy = it;
-    copy--;
-    return copy;
-  }
-
-  template <typename T>
-  [[gnu::always_inline]]
-  inline T next_of(T it) {
-    T copy = it;
-    copy++;
-    return copy;
-  }
+  listv<_l1_node> _l1_nodes;
 
   [[gnu::always_inline]]
   inline void balance_l1(_l1_iter n) {
@@ -130,7 +114,7 @@ public:
       hi_label = lo_label | label_mask;
 
       while (true) {
-        auto prev = prev_of(lo);
+        auto prev = lo.prev();
         if (lo == _l1_nodes.begin() || prev->label < lo_label || prev->label > lo->label) {
           break;
         }
@@ -139,7 +123,7 @@ public:
       }
 
       while (true) {
-        auto next = next_of(hi);
+        auto next = hi.next();
         if (next == _l1_nodes.end() || next->label > hi_label || next->label < hi->label) {
           break;
         }
@@ -193,7 +177,7 @@ public:
       // we have some leftover l2 nodes
       if (cur2 != cur1->children.end()) {
         Label prev_label = cur1->label;
-        auto next = next_of(cur1);
+        auto next = cur1.next();
         Label next_label = 0;
 
         if (next != _l1_nodes.end() && next->label > prev_label) {
@@ -202,7 +186,7 @@ public:
           next_label = prev_label + 2;
         }
 
-        _l1_iter new_node = _l1_nodes.emplace(next, std::list<_l2_node, Allocator<_l2_node>>(), prev_label);
+        _l1_iter new_node = _l1_nodes.emplace(next, listv<_l2_node>(), prev_label);
         new_node->children.splice(new_node->children.end(), cur1->children, cur2, cur1->children.end());
 
         if (prev_label + 1 == next_label) {
@@ -219,13 +203,14 @@ public:
   [[gnu::always_inline]]
   inline _l2_iter insert(_l2_iter n) {
     Label next_label;
-    if (next_of(n) != n->parent->children.end()) {
-      next_label = next_of(n)->label;
+    _l2_iter nextn = n.next();
+    if (nextn != n->parent->children.end()) {
+      next_label = nextn->label;
     } else {
       next_label = _max_label;
     }
 
-    auto new_node = n->parent->children.emplace(next_of(n), n->parent, (n->label + next_label) >> 1);
+    auto new_node = n->parent->children.emplace(nextn, n->parent, (n->label + next_label) >> 1);
 
     if (n->label == new_node->label) {
       balance_l2(n->parent);
@@ -236,11 +221,11 @@ public:
 
   [[gnu::always_inline]]
   inline std::optional<_l2_iter> succ(_l2_iter n) {
-    if (next_of(n) != n->parent->children.end()) {
-      return std::optional<_l2_iter>(next_of(n));
+    if (n.next() != n->parent->children.end()) {
+      return std::optional<_l2_iter>(n.next());
     } else {
-      if (next_of(n->parent) != _l1_nodes.end()) {
-        _l2_iter m = next_of(n->parent)->children.begin();
+      if (n->parent.next() != _l1_nodes.end()) {
+        _l2_iter m = n->parent.next()->children.begin();
         assert(*n < *m);
         return std::optional<_l2_iter>(m);
       } else {
@@ -255,7 +240,7 @@ public:
       return std::optional<_l2_iter>(prev_of(n));
     } else {
       if (n->parent != _l1_nodes.begin()) {
-        _l2_iter m = prev_of(prev_of(n->parent)->children.end());
+        _l2_iter m = n->parent.prev()->children.end().prev();
         assert(*m < *n);
         return std::optional<_l2_iter>(m);
       } else {
@@ -305,7 +290,7 @@ public:
   typedef _l2_iter_wrapper node;
 
   inline total_order() {
-    auto n1 = _l1_nodes.emplace(_l1_nodes.end(), std::list<_l2_node, Allocator<_l2_node>>(), 0x0);
+    auto n1 = _l1_nodes.emplace(_l1_nodes.end(), listv<_l2_node>(), 0x0);
     n1->children.emplace_back(n1, 0x0);
   }
 
