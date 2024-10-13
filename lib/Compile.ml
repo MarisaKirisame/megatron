@@ -706,6 +706,6 @@ let compile (prog : prog) defs main meta_defs (ds : destringed list) c : unit =
   List.iter defs ~f:(compile_forward_def prog c);
   List.iter defs ~f:(compile_def prog c);
   Stdio.Out_channel.output_string c "int main(){";
-  Stdio.Out_channel.output_string c "current_time = tos->smallest();";
+  Stdio.Out_channel.output_string c "current_time = MakeRef(tos->smallest());";
   compile_proc c (main |> optimize prog);
   Stdio.Out_channel.output_string c "}"
