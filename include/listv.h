@@ -15,8 +15,11 @@ private:
     T elem;
   };
 
-  static inline std::vector<node> storage;
-  static inline std::vector<ptr_t> freelist;
+  static inline std::vector<node>* _storage = nullptr;
+  static inline std::vector<ptr_t>* _freelist = nullptr;
+
+  std::vector<node>& storage;
+  std::vector<ptr_t>& freelist;
 
   template <typename... Args> ptr_t _new(Args &&...args) {
     if (freelist.empty()) {
@@ -73,6 +76,16 @@ public:
   };
 
   listv() {
+    if (_storage == nullptr)
+    {
+      _storage = new std::vector<node>();
+    }
+    if (_freelist == nullptr)
+    {
+      _freelist = new std::vector<node>();
+    }
+    storage = *_storage;
+    freelist = *_freelist;
     sentinel = _new();
     storage[sentinel].prev = sentinel;
     storage[sentinel].next = sentinel;
