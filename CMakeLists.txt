@@ -46,6 +46,7 @@ function(megatron_new_layout layout_name)
         else()
             message(WARNING "IPO is not supported: ${ipo_output}")
         endif()
+        target_link_options("${layout_name}" PUBLIC -fsanitize=undefined PUBLIC -fsanitize=address)
     endif()
 endfunction()
 
