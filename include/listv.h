@@ -15,25 +15,22 @@ private:
     T elem;
   };
 
-  static inline std::vector<node>* _storage = nullptr;
-  static inline std::vector<ptr_t>* _freelist = nullptr;
-
-  std::vector<node>& storage = *_storage;
-  std::vector<ptr_t>& freelist = *_freelist;
+  static inline std::vector<node>* storage = nullptr;
+  static inline std::vector<ptr_t>* freelist = nullptr;
 
   template <typename... Args> ptr_t _new(Args &&...args) {
-    if (freelist.empty()) {
-      ptr_t result = storage.size();
-      storage.emplace_back(std::forward<Args>(args)...);
+    if (freelist->empty()) {
+      ptr_t result = storage->size();
+      storage->emplace_back(std::forward<Args>(args)...);
       return result;
     } else {
-      ptr_t result = freelist.back();
-      freelist.pop_back();
+      ptr_t result = freelist->back();
+      freelist->pop_back();
       return result;
     }
   }
 
-  void _del(ptr_t n) { freelist.push_back(n); }
+  void _del(ptr_t n) { freelist->push_back(n); }
 
   ptr_t sentinel;
   bool moved;
@@ -43,7 +40,7 @@ public:
     ptr_t inner;
 
     iterator &operator++() {
-      inner = storage[inner].next;
+      inner = (*storage)[inner].next;
       return *this;
     }
 
@@ -54,7 +51,7 @@ public:
     }
 
     iterator &operator--() {
-      inner = storage[inner].prev;
+      inner = (*storage)[inner].prev;
       return *this;
     }
 
@@ -66,30 +63,28 @@ public:
 
     friend bool operator==(const iterator &l, const iterator &r) { return l.inner == r.inner; }
 
-    T *operator->() const { return &storage[inner].elem; }
+    T *operator->() const { return &(*storage)[inner].elem; }
 
-    T &operator*() const { return storage[inner].elem; }
+    T &operator*() const { return (*storage)[inner].elem; }
 
-    iterator next() const { return iterator{storage[inner].next}; }
+    iterator next() const { return iterator{(*storage)[inner].next}; }
 
-    iterator prev() const { return iterator{storage[inner].prev}; }
+    iterator prev() const { return iterator{(*storage)[inner].prev}; }
   };
 
   listv() {
-    if (_storage == nullptr)
+    if (storage == nullptr)
     {
-      _storage = new std::vector<node>();
-      storage = *_storage;
+      storage = new std::vector<node>();
     }
-    if (_freelist == nullptr)
+    if (freelist == nullptr)
     {
-      _freelist = new std::vector<node>();
-      freelist = *_freelist;
+      freelist = new std::vector<ptr_t>();
     }
 
     sentinel = _new();
-    storage[sentinel].prev = sentinel;
-    storage[sentinel].next = sentinel;
+    (*storage)[sentinel].prev = sentinel;
+    (*storage)[sentinel].next = sentinel;
     moved = false;
   }
 
@@ -103,25 +98,25 @@ public:
     if (!moved)
     {
       // use after free here is fine because there is no intermediate malloc
-      for (ptr_t cur = storage[sentinel].next; cur != sentinel; cur = storage[cur].next) {
+      for (ptr_t cur = (*storage)[sentinel].next; cur != sentinel; cur = (*storage)[cur].next) {
         _del(cur);
       }
       _del(sentinel);
     }
   }
 
-  iterator begin() { return iterator{storage[sentinel].next}; }
+  iterator begin() { return iterator{(*storage)[sentinel].next}; }
 
   iterator end() { return iterator{sentinel}; }
 
   template <typename... Args> iterator emplace(const iterator &pos, Args &&...args) {
     ptr_t result = _new();
-    storage[result].prev = storage[pos.inner].prev;
-    storage[result].next = pos.inner;
-    std::construct_at(&storage[result].elem, std::forward<Args>(args)...);
+    (*storage)[result].prev = (*storage)[pos.inner].prev;
+    (*storage)[result].next = pos.inner;
+    std::construct_at(&(*storage)[result].elem, std::forward<Args>(args)...);
 
-    storage[storage[pos.inner].prev].next = result;
-    storage[pos.inner].prev = result;
+    (*storage)[(*storage)[pos.inner].prev].next = result;
+    (*storage)[pos.inner].prev = result;
 
     return iterator{result};
   }
@@ -135,11 +130,11 @@ public:
     //   return;
     // }
 
-    ptr_t pos_prev = storage[pos.inner].prev;
-    ptr_t pos_next = storage[pos.inner].next;
+    ptr_t pos_prev = (*storage)[pos.inner].prev;
+    ptr_t pos_next = (*storage)[pos.inner].next;
 
-    storage[pos_prev].next = pos_next;
-    storage[pos_next].prev = pos_prev;
+    (*storage)[pos_prev].next = pos_next;
+    (*storage)[pos_next].prev = pos_prev;
 
     _del(pos.inner);
   }
@@ -149,17 +144,17 @@ public:
     //   return;
     // }
 
-    ptr_t old_last_prev = storage[last.inner].prev;
+    ptr_t old_last_prev = (*storage)[last.inner].prev;
 
     // 1. Cut off [first, last)
-    storage[storage[first.inner].prev].next = last.inner;
-    storage[last.inner].prev = storage[first.inner].prev;
+    (*storage)[(*storage)[first.inner].prev].next = last.inner;
+    (*storage)[last.inner].prev = (*storage)[first.inner].prev;
 
     // 2. Attach to our list
-    storage[storage[pos.inner].prev].next = first.inner;
-    storage[first.inner].prev = storage[pos.inner].prev;
-    storage[pos.inner].prev = old_last_prev;
-    storage[old_last_prev].next = pos.inner;
+    (*storage)[(*storage)[pos.inner].prev].next = first.inner;
+    (*storage)[first.inner].prev = (*storage)[pos.inner].prev;
+    (*storage)[pos.inner].prev = old_last_prev;
+    (*storage)[old_last_prev].next = pos.inner;
   }
 
   void print() {
@@ -170,8 +165,8 @@ public:
              storage[i].next == sentinel ? "/" : std::to_string(storage[i].next).c_str(), storage[i].elem);
     }
     printf("---------------------------------\n");
-    for (int i = 0; i < freelist.size(); i++) {
-      printf("%d\n", freelist[i]);
+    for (int i = 0; i < freelist->size(); i++) {
+      printf("%d\n", (*freelist)[i]);
     }
     printf("---------------------------------\n");
   }
