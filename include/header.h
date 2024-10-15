@@ -431,8 +431,8 @@ template <typename T> using default_allocator = PoolAllocator<T>;
 #include "otto.h"
 typedef total_order<1.4, uint32_t> TotalOrderS;
 typedef TotalOrderS::node TotalOrder;
-TotalOrderS *tos = new TotalOrderS();
-std::shared_ptr<RefNode<TotalOrder>> current_time;
+TotalOrderS *tos = nullptr;
+TotalOrder* current_time = nullptr;
 TotalOrder NextTotalOrder(const TotalOrder &to) { return tos->insert(to); }
 
 #if BOOST_ARCH_X86
