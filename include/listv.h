@@ -15,8 +15,8 @@ private:
     T elem;
   };
 
-  static inline std::vector<node>* storage = nullptr;
-  static inline std::vector<ptr_t>* freelist = nullptr;
+  static inline std::vector<node>* storage = new std::vector<node>();
+  static inline std::vector<ptr_t>* freelist = new std::vector<ptr_t>();
 
   template <typename... Args> ptr_t _new(Args &&...args) {
     if (freelist->empty()) {
