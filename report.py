@@ -243,7 +243,7 @@ def plot(xs, ys, name):
 
         def geomean(points):
             speedup = list([math.log(x/y) for x, y in points])
-            return math.exp(sum(speedup)/len(speedup))
+            return math.exp(sum(speedup)/len(speedup)) if len(speedup) > 0 else 1
 
         def points_to_mp(points):
             points = list([list(l) for l in points])
