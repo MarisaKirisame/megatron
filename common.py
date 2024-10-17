@@ -140,5 +140,3 @@ trace_list.append("wikipedia_idle")
 trace_list.append("windows")
 trace_list.append("yahoo")
 trace_list.append("youtube")
-
-trace_list = ["wikipedia_hover", "google_searchbar", "github_nologin"]
