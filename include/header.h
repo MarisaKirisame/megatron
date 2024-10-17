@@ -749,10 +749,11 @@ void pfm_init() {
   const char* pfm_l1_miss = "PERF_COUNT_HW_CACHE_L1D:MISS";
   const char* pfm_l2_miss = "L2_RQSTS:MISS";
   const char* pfm_l2_miss_stall = "CYCLE_ACTIVITY:STALLS_L2_PENDING";
+  const char* pfm_l2 = "L2_RQSTS";
   const char* pfm_cycle = "CYCLES";
   const char* pfm_branch_miss = "BR_MISP_EXEC";
 
-  static PerfEvent event(pfm.get_perf_arg(pfm_l2_miss));
+  static PerfEvent event(pfm.get_perf_arg(pfm_l2));
   pfm_event = &event;
 
   pfm_event->reset();
