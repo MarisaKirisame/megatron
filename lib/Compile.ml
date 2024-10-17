@@ -710,4 +710,5 @@ let compile (prog : prog) defs main meta_defs (ds : destringed list) c : unit =
   Stdio.Out_channel.output_string c "TotalOrder sm = tos->smallest();";
   Stdio.Out_channel.output_string c "current_time = &sm;";
   compile_proc c (main |> optimize prog);
+  Stdio.Out_channel.output_string c "delete tos;";
   Stdio.Out_channel.output_string c "}"
