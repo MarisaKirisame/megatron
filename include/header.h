@@ -787,7 +787,16 @@ struct Stat {
     l2m += rhs.l2m;
     return *this;
   }
-  static Stat measure() {
+  static Stat measure_begin() {
+#if BOOST_OS_LINUX
+    auto pfm = read_pfm();
+    auto tsc = readTSC();
+    return Stat(tsc, pfm);
+#else
+    return Stat(readTSC(), 1);
+#endif
+  }
+  static Stat measure_end() {
 #if BOOST_OS_LINUX
     auto tsc = readTSC();
     auto pfm = read_pfm();
@@ -798,79 +807,42 @@ struct Stat {
   }
 };
 
-// a timer that allow recursive measuring. however, the outer level does not contain the inner level time.
-struct Timer {
-  struct Node {
-    Stat start_stat = Stat::measure();
-    Stat skipped_stat;
-  };
-  std::vector<Node> v;
-} t;
-
-//bool measuring = false;
-auto RecordOverhead(const auto& f) {
-  //if (measuring) { Panic(); }
-  //measuring = true;
-  t.v.push_back(Timer::Node());
-  auto val = f(Unit {});
-  Stat end_stat = Stat::measure();
-  auto begin_node = t.v.back();
-  t.v.pop_back();
-  auto stat_diff = end_stat - begin_node.start_stat;
-  if (!t.v.empty()) {
-    t.v.back().skipped_stat += stat_diff;
-  }
-  Stat stat = stat_diff - begin_node.skipped_stat;
-  MetricRecordOverheadTime(stat.time);
-  MetricRecordOverheadL2m(stat.l2m);
-  //measuring = false;
-  return val;
-}
-
-auto RecordEval(const auto& f) {
-  //if (measuring) { Panic(); }
-  //measuring = true;
-  t.v.push_back(Timer::Node());
-  auto val = f(Unit {});
-  Stat end_stat = Stat::measure();
-  auto begin_node = t.v.back();
-  t.v.pop_back();
-  auto stat_diff = end_stat - begin_node.start_stat;
-  if (!t.v.empty()) {
-    Panic();
-    t.v.back().skipped_stat += stat_diff;
-  }
-  Stat stat = stat_diff - begin_node.skipped_stat;
-  MetricRecordEval(stat.time);
-  //measuring = false;
-  return val;
-}
-
 Stat stat;
 
 Unit StartRecordOverhead() {
-  //if (measuring) { Panic(); }
-  //measuring = true;
-  stat = Stat::measure();
+  stat = Stat::measure_begin();
   return Unit{};
 }
+
 Unit StopRecordOverhead() {
-  Stat diff = Stat::measure() - stat;
+  Stat diff = Stat::measure_end() - stat;
   MetricRecordOverheadTime(diff.time);
   MetricRecordOverheadL2m(diff.l2m);
-  //measuring = false;
   return Unit{};
 }
 
 Unit StartRecordEval() {
-  //if (measuring) { Panic(); }
-  //measuring = true;
-  stat = Stat::measure();
+  stat = Stat::measure_begin();
   return Unit{};
 }
+
 Unit StopRecordEval() {
-  Stat diff = Stat::measure() - stat;
+  Stat diff = Stat::measure_end() - stat;
   MetricRecordEval(diff.time);
-  //measuring = false;
   return Unit{};
 }
+
+auto RecordOverhead(const auto& f) {
+  StartRecordOverhead();
+  auto val = f(Unit {});
+  StopRecordOverhead();
+  return val;
+}
+
+auto RecordEval(const auto& f) {
+  StartRecordEval();
+  auto val = f(Unit {});
+  StopRecordEval();
+  return val;
+}
+
