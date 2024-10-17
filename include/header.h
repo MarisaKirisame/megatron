@@ -561,7 +561,7 @@ int64_t read_papi() {
 #define barrier() do{rmb();			\
     unsigned tmp;\
     __cpuid(0, tmp, tmp, tmp, tmp);rmb();}while(0)
-#define barrier()
+//#define barrier()
 template <typename T>
 static inline T atomic_load(T* t)
 {
