@@ -248,7 +248,7 @@ def plot(xs, ys, name):
         def points_to_mp(points):
             points = list([list(l) for l in points])
             total_size = sum(len(l) for l in points)
-            return [(geomean(ps), len(ps)/total_size)for ps in points]
+            return [(geomean(ps), 100 * len(ps)/total_size)for ps in points]
         
         make_table("clustering", mp)
         make_table("slowdown:speedup", points_to_mp([[(xs[i], ys[i]) for i in range(len(xs)) if xs[i] <= ys[i]], [(xs[i], ys[i]) for i in range(len(xs)) if xs[i] > ys[i]]]))
