@@ -559,8 +559,8 @@ int64_t read_papi() {
 
 // https://w0.hatenablog.com/entry/20140307/1394139628
 //#define barrier() do{rmb();unsigned tmp;__cpuid(0, tmp, tmp, tmp, tmp);rmb();}while(0)
-#define barrier() do{rmb();}while(0)
-//#define barrier() do{unsigned tmp;__cpuid(0, tmp, tmp, tmp, tmp);}while(0)
+//#define barrier() do{rmb();}while(0)
+#define barrier() do{unsigned tmp;__cpuid(0, tmp, tmp, tmp, tmp);}while(0)
 //#define barrier()
 template <typename T>
 static inline T atomic_load(T* t)
