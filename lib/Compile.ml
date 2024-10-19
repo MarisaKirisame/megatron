@@ -707,8 +707,8 @@ let compile (prog : prog) defs main meta_defs (ds : destringed list) c : unit =
   List.iter defs ~f:(compile_def prog c);
   Stdio.Out_channel.output_string c "int main(){";
   Stdio.Out_channel.output_string c "tos = new TotalOrderS();";
-  Stdio.Out_channel.output_string c "TotalOrder sm = tos->smallest();";
-  Stdio.Out_channel.output_string c "WriteRef(current_time, sm);";
+  Stdio.Out_channel.output_string c "current_time = MakeRef(tos->smallest());";
   compile_proc c (main |> optimize prog);
+  Stdio.Out_channel.output_string c "current_time = nullptr;";
   Stdio.Out_channel.output_string c "delete tos;";
   Stdio.Out_channel.output_string c "}"

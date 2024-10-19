@@ -15,9 +15,6 @@ private:
     T elem;
   };
 
-  static inline std::vector<node>* storage = new std::vector<node>();
-  static inline std::vector<ptr_t>* freelist = new std::vector<ptr_t>();
-
   template <typename... Args> ptr_t _new(Args &&...args) {
     if (freelist->empty()) {
       ptr_t result = storage->size();
@@ -36,6 +33,17 @@ private:
   bool moved;
 
 public:
+  static inline std::vector<node> *storage = []() {
+    auto v = new std::vector<node>();
+    v->reserve(16 * 1024 * 1024 / sizeof(node));
+    return v;
+  }();
+  static inline std::vector<ptr_t> *freelist = []() {
+    auto v = new std::vector<ptr_t>();
+    v->reserve(16 * 1024 * 1024 / sizeof(ptr_t));
+    return v;
+  }();
+
   struct iterator {
     ptr_t inner;
 
@@ -73,32 +81,20 @@ public:
   };
 
   listv() {
-    // if (storage == nullptr)
-    // {
-    //   storage = new std::vector<node>();
-    //   storage->reserve(16 * 1024 * 1024 / sizeof(node));
-    // }
-    // if (freelist == nullptr)
-    // {
-    //   freelist = new std::vector<ptr_t>();
-    //   freelist->reserve(16 * 1024 * 1024 / sizeof(ptr_t));
-    // }
-
     sentinel = _new();
     (*storage)[sentinel].prev = sentinel;
     (*storage)[sentinel].next = sentinel;
     moved = false;
   }
 
-  listv(const listv&) = delete;
-  listv(listv&& other) {
+  listv(const listv &) = delete;
+  listv(listv &&other) {
     sentinel = other.sentinel;
     other.moved = true;
   }
 
   ~listv() {
-    if (!moved)
-    {
+    if (!moved) {
       // use after free here is fine because there is no intermediate malloc
       for (ptr_t cur = (*storage)[sentinel].next; cur != sentinel; cur = (*storage)[cur].next) {
         _del(cur);

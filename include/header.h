@@ -87,13 +87,8 @@ template <typename T> struct RefNode {
 template <typename T> using Ref = std::shared_ptr<RefNode<T>>;
 template <typename T> Ref<T> MakeRef(const T &t) { return std::make_shared<RefNode<T>>(t); }
 template <typename T> T ReadRef(const Ref<T> &r) { return r->t; }
-template <typename T> T ReadRef(const RefNode<T> &r) { return r.t; }
 template <typename T> Unit WriteRef(Ref<T> &r, const T &t) {
   r->t = t;
-  return Unit{};
-}
-template <typename T> Unit WriteRef(RefNode<T> &r, const T &t) {
-  r.t = t;
   return Unit{};
 }
 // we dont need to output command
@@ -437,7 +432,7 @@ template <typename T> using default_allocator = PoolAllocator<T>;
 typedef total_order<1.4, uint32_t> TotalOrderS;
 typedef TotalOrderS::node TotalOrder;
 TotalOrderS *tos = nullptr;
-RefNode<TotalOrder> current_time;
+Ref<TotalOrder> current_time = nullptr;
 TotalOrder NextTotalOrder(const TotalOrder &to) { return tos->insert(to); }
 
 #if BOOST_ARCH_X86
