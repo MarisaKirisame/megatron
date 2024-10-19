@@ -9,7 +9,7 @@ module EVAL (SD : SD) = MakeEval (struct
   include SD
   module SD = SD
 
-  let name = "DB"
+  let name = "NE"
 
   type meta = { bb_dirtied : (string, bool) Hashtbl.t; proc_inited : (string, unit) Hashtbl.t }
 
