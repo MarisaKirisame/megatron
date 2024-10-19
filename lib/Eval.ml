@@ -167,7 +167,8 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
     | Or (x, y) -> vbool (or_ (bool_of_value (recurse x)) (fun _ -> bool_of_value (recurse y)))
     | GetName -> vstring (node_get_name n)
     | Bool x -> vbool (bool x)
-    | Call (f, xs) -> (*Stdio.print_endline (truncate (show_expr e));*) eval_func f (List.map ~f:(fun v -> recurse v) xs)
+    | Call (f, xs) ->
+        (*Stdio.print_endline (truncate (show_expr e));*) eval_func f (List.map ~f:(fun v -> recurse v) xs)
   (*| _ -> panic ("unhandled case in eval_expr:" ^ show_expr e)*)
 
   module EXPR = struct
