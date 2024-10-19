@@ -231,23 +231,39 @@ def plot(xs, ys, name):
     with div(style="display:flex"):
         img(src=pic_path)
 
-        with table(border="1", style="display:inline-table"):
-            with thead():                   
-                tr(td("fraction"), td("geomean"))
-            with tbody():
-                for geomean, percentage in mp:
-                    tr(td(f"{percentage:.2f}"), td(f"{geomean:.2f}"))
-                tr(td("total"), td(f"{math.exp(sum(speedup)/len(speedup)):.2f}"))
+        def make_table(title, mp):
+            with table(border="1", style="display:inline-table"):
+                caption(title)
+                with thead():                   
+                    tr(td("fraction"), td("geomean"))
+                with tbody():
+                    for geomean, percentage in mp:
+                        tr(td(f"{percentage:.2f}"), td(f"{geomean:.2f}"))
+                    tr(td("total"), td(f"{math.exp(sum(speedup)/len(speedup)):.2f}"))
 
-            cdf_x = sorted([xs[i]/ys[i] for i in range(len(xs))])
-            cdf_y = [(i + 1)/len(cdf_x) for i in range(len(cdf_x))]
-            plt.plot(cdf_x, cdf_y)
-            plt.xscale('log')
-            plt.title('cdf')
-            pic_path = f"{count()}.jpg"
-            plt.savefig(out_path + pic_path)
-            plt.clf()
-            img(src=pic_path)
+        def geomean(points):
+            speedup = list([math.log(x/y) for x, y in points])
+            return math.exp(sum(speedup)/len(speedup)) if len(speedup) > 0 else 1
+
+        def points_to_mp(points):
+            points = list([list(l) for l in points])
+            total_size = sum(len(l) for l in points)
+            return [(geomean(ps), 100 * len(ps)/total_size)for ps in points]
+        
+        make_table("clustering", mp)
+        make_table("slowdown:speedup", points_to_mp([[(xs[i], ys[i]) for i in range(len(xs)) if xs[i] <= ys[i]], [(xs[i], ys[i]) for i in range(len(xs)) if xs[i] > ys[i]]]))
+        make_table(">1e6:<=1e6", points_to_mp([[(xs[i], ys[i]) for i in range(len(xs)) if xs[i] > 1e6], [(xs[i], ys[i]) for i in range(len(xs)) if xs[i] <= 1e6]]))
+        
+        cdf_x = sorted([xs[i]/ys[i] for i in range(len(xs))])
+        cdf_y = [(i + 1)/len(cdf_x) for i in range(len(cdf_x))]
+        plt.plot(cdf_x, cdf_y)
+        plt.xscale('log')
+        plt.title('cdf')
+        pic_path = f"{count()}.jpg"
+        plt.savefig(out_path + pic_path)
+        plt.clf()
+        img(src=pic_path)
+ 
 
         span(f"arithmean={sum(xs)/sum(ys):.2f}")
 

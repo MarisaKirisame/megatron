@@ -557,11 +557,11 @@ int64_t read_papi() {
 #define rdpmc(x) __rdpmc(x)
 #define rdtsc() __rdtsc()
 
-// https://w0.hatenablog.com/entry/20140307/1394139628
-#define barrier() do{rmb();			\
-    unsigned tmp;\
-    __cpuid(0, tmp, tmp, tmp, tmp);rmb();}while(0)
-#define barrier()
+//https://w0.hatenablog.com/entry/20140307/1394139628
+//#define barrier() do{rmb();unsigned tmp;__cpuid(0, tmp, tmp, tmp, tmp);rmb();}while(0)
+//#define barrier() do{rmb();}while(0)
+#define barrier() do{unsigned tmp;__cpuid(0, tmp, tmp, tmp, tmp);}while(0)
+//#define barrier()
 template <typename T>
 static inline T atomic_load(T* t)
 {
@@ -639,7 +639,7 @@ struct PerfEvent{
         attr.exclude_kernel = 1;
         attr.exclude_hv = 1;
         attr.read_format = PERF_FORMAT_TOTAL_TIME_ENABLED|PERF_FORMAT_TOTAL_TIME_RUNNING|PERF_FORMAT_ID|PERF_FORMAT_LOST;
-	attr.sample_period = 1;
+	//attr.sample_period = 1;
         fd = perf_event_open(&attr, 0, -1, -1, 0);
         if(fd<0){
             perror("PerfEvent creation failed");
@@ -749,6 +749,7 @@ void pfm_init() {
   const char* pfm_l1_miss = "PERF_COUNT_HW_CACHE_L1D:MISS";
   const char* pfm_l2_miss = "L2_RQSTS:MISS";
   const char* pfm_l2_miss_stall = "CYCLE_ACTIVITY:STALLS_L2_PENDING";
+  const char* pfm_l2 = "L2_RQSTS";
   const char* pfm_cycle = "CYCLES";
   const char* pfm_branch_miss = "BR_MISP_EXEC";
 
@@ -784,7 +785,16 @@ struct Stat {
     l2m += rhs.l2m;
     return *this;
   }
-  static Stat measure() {
+  static Stat measure_begin() {
+#if BOOST_OS_LINUX
+    auto pfm = read_pfm();
+    auto tsc = readTSC();
+    return Stat(tsc, pfm);
+#else
+    return Stat(readTSC(), 1);
+#endif
+  }
+  static Stat measure_end() {
 #if BOOST_OS_LINUX
     auto tsc = readTSC();
     auto pfm = read_pfm();
@@ -795,79 +805,42 @@ struct Stat {
   }
 };
 
-// a timer that allow recursive measuring. however, the outer level does not contain the inner level time.
-struct Timer {
-  struct Node {
-    Stat start_stat = Stat::measure();
-    Stat skipped_stat;
-  };
-  std::vector<Node> v;
-} t;
-
-//bool measuring = false;
-auto RecordOverhead(const auto& f) {
-  //if (measuring) { Panic(); }
-  //measuring = true;
-  t.v.push_back(Timer::Node());
-  auto val = f(Unit {});
-  Stat end_stat = Stat::measure();
-  auto begin_node = t.v.back();
-  t.v.pop_back();
-  auto stat_diff = end_stat - begin_node.start_stat;
-  if (!t.v.empty()) {
-    t.v.back().skipped_stat += stat_diff;
-  }
-  Stat stat = stat_diff - begin_node.skipped_stat;
-  MetricRecordOverheadTime(stat.time);
-  MetricRecordOverheadL2m(stat.l2m);
-  //measuring = false;
-  return val;
-}
-
-auto RecordEval(const auto& f) {
-  //if (measuring) { Panic(); }
-  //measuring = true;
-  t.v.push_back(Timer::Node());
-  auto val = f(Unit {});
-  Stat end_stat = Stat::measure();
-  auto begin_node = t.v.back();
-  t.v.pop_back();
-  auto stat_diff = end_stat - begin_node.start_stat;
-  if (!t.v.empty()) {
-    Panic();
-    t.v.back().skipped_stat += stat_diff;
-  }
-  Stat stat = stat_diff - begin_node.skipped_stat;
-  MetricRecordEval(stat.time);
-  //measuring = false;
-  return val;
-}
-
 Stat stat;
 
 Unit StartRecordOverhead() {
-  //if (measuring) { Panic(); }
-  //measuring = true;
-  stat = Stat::measure();
+  stat = Stat::measure_begin();
   return Unit{};
 }
+
 Unit StopRecordOverhead() {
-  Stat diff = Stat::measure() - stat;
+  Stat diff = Stat::measure_end() - stat;
   MetricRecordOverheadTime(diff.time);
   MetricRecordOverheadL2m(diff.l2m);
-  //measuring = false;
   return Unit{};
 }
 
 Unit StartRecordEval() {
-  //if (measuring) { Panic(); }
-  //measuring = true;
-  stat = Stat::measure();
+  stat = Stat::measure_begin();
   return Unit{};
 }
+
 Unit StopRecordEval() {
-  Stat diff = Stat::measure() - stat;
+  Stat diff = Stat::measure_end() - stat;
   MetricRecordEval(diff.time);
-  //measuring = false;
   return Unit{};
 }
+
+auto RecordOverhead(const auto& f) {
+  StartRecordOverhead();
+  auto val = f(Unit {});
+  StopRecordOverhead();
+  return val;
+}
+
+auto RecordEval(const auto& f) {
+  StartRecordEval();
+  auto val = f(Unit {});
+  StopRecordEval();
+  return val;
+}
+

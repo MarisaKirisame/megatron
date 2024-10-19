@@ -62,15 +62,13 @@ struct MinHeap {
     while (true) {
       size_t a_child_idx = heap_left_child(idx);
       size_t b_child_idx = heap_right_child(idx);
-      if (has_value(a_child_idx) || has_value(b_child_idx)) {
+      if (has_value(a_child_idx)) {
         size_t smaller_idx = [&](){
-          if (!has_value(a_child_idx)) {
-            return b_child_idx;
-          } else if (!has_value(b_child_idx)) {
-            return a_child_idx;
-          } else {
-            return ((*this)[a_child_idx].first < (*this)[b_child_idx].first) ? a_child_idx : b_child_idx;
-          }
+	  if (has_value(b_child_idx)) {
+	    return ((*this)[a_child_idx].first < (*this)[b_child_idx].first) ? a_child_idx : b_child_idx;
+	  } else {
+	    return a_child_idx;
+	  }
         }();
         if ((*this)[smaller_idx].first < (*this)[idx].first) {
           swap(idx, smaller_idx);

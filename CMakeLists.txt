@@ -51,5 +51,6 @@ function(megatron_new_layout layout_name)
 endfunction()
 
 megatron_new_layout(LayoutFS_D)
+megatron_new_layout(LayoutNE_D)
 megatron_new_layout(LayoutDB_D)
 megatron_new_layout(LayoutPQ_D)
