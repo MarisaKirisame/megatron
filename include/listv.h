@@ -88,7 +88,21 @@ public:
     moved = false;
   }
 
-  listv(const listv &) = delete;
+  listv(const listv &other) {
+    if (!moved) {
+      // use after free here is fine because there is no intermediate malloc
+      for (ptr_t cur = (*storage)[sentinel].next; cur != sentinel; cur = (*storage)[cur].next) {
+        _del(cur);
+      }
+    }
+    (*storage)[sentinel].prev = sentinel;
+    (*storage)[sentinel].next = sentinel;
+    moved = false;
+    for (ptr_t cur = (*storage)[other.sentinel].next; cur != sentinel; cur = (*storage)[cur].next) {
+      emplace_back((*storage)[cur].elem);
+    }
+  }
+  
   listv(listv &&other) {
     sentinel = other.sentinel;
     other.moved = true;
