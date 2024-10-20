@@ -36,12 +36,12 @@ private:
 public:
   static inline no_destructor<std::vector<node>> storage = []() {
     std::vector<node> v;
-    v->reserve(16 * 1024 * 1024 / sizeof(node));
+    v.reserve(16 * 1024 * 1024 / sizeof(node));
     return no_destructor<std::vector<node>>(v);
   }();
   static inline no_destructor<std::vector<ptr_t>> freelist = []() {
     std::vector<ptr_t> v;
-    v->reserve(16 * 1024 * 1024 / sizeof(ptr_t));
+    v.reserve(16 * 1024 * 1024 / sizeof(ptr_t));
     return no_destructor<std::vector<ptr_t>>(v);
   }();
 
