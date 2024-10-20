@@ -161,42 +161,16 @@ def per_trace(trace_out_path):
                 for j in summary.values():
                     tr(*[td(j[h]) for h in header])
 
-        xs = []
-        ys = []
-        for k in overhead_htbl.keys():
-            if k.startswith(trace_out_path) and eval_htbl[k]["PQ_D"] != 0:
-                x = overhead_htbl[k]["DB_D"]
-                y = overhead_htbl[k]["PQ_D"]
-                xs.append(x)
-                ys.append(y)
-        plot(xs, ys, "overhead")
-
-        xs = []
-        ys = []
-        for k in overhead_htbl.keys():
-            if k.startswith(trace_out_path) and eval_htbl[k]["PQ_D"] != 0:
-                x = eval_htbl[k]["DB_D"]
-                y = eval_htbl[k]["PQ_D"]
-                xs.append(x)
-                ys.append(y)
-        plot(xs, ys, "eval")
-
-        xs = []
-        ys = []
-        for k in overhead_htbl.keys():
-            if k.startswith(trace_out_path) and eval_htbl[k]["PQ_D"] != 0:
-                x = overhead_htbl[k]["DB_D"] + eval_htbl[k]["DB_D"]
-                y = overhead_htbl[k]["PQ_D"] + eval_htbl[k]["PQ_D"]
-                xs.append(x)
-                ys.append(y)
-        plot(xs, ys, "total")
+        compare("NE", "DB")
+        compare("NE", "PQ")
+        compare("DB", "PQ")
     
     page_path = f"{count()}.html"
     write_to(out_path + page_path, str(doc))
 
     return page_path
     
-def plot(xs, ys, name):
+def plot(xs_name, xs, ys_name, ys, name):
     min_value = min(min(*xs), min(*ys))
     max_value = max(max(*xs), max(*ys))
 
@@ -220,8 +194,8 @@ def plot(xs, ys, name):
     plt.plot([min_value, max_value], [min_value, max_value])
     plt.xscale('log')
     plt.yscale('log')
-    plt.xlabel(f'DB_{name}')
-    plt.ylabel(f'PQ_{name}')
+    plt.xlabel(f'{xs_name}_{name}')
+    plt.ylabel(f'{ys_name}_{name}')
     plt.xlim(min_value / 2, max_value * 2)
     plt.ylim(min_value / 2, max_value * 2)
     pic_path = f"{count()}.jpg"
@@ -263,45 +237,49 @@ def plot(xs, ys, name):
         plt.savefig(out_path + pic_path)
         plt.clf()
         img(src=pic_path)
- 
 
         span(f"arithmean={sum(xs)/sum(ys):.2f}")
+
+def compare(x_name, y_name):
+    xs = []
+    ys = []
+    for v in overhead_htbl.keys():
+        if eval_htbl[v][f"{y_name}_D"] != 0:
+            x = overhead_htbl[v][f"{x_name}_D"]
+            y = overhead_htbl[v][f"{y_name}_D"]
+            xs.append(x)
+            ys.append(y)
+    plot(x_name, xs, y_name, ys, "overhead")
+    
+    xs = []
+    ys = []
+    for v in overhead_htbl.keys():
+        if eval_htbl[v][f"{y_name}_D"] != 0:
+            x = eval_htbl[v][f"{x_name}_D"]
+            y = eval_htbl[v][f"{y_name}_D"]
+            xs.append(x)
+            ys.append(y)
+    plot(x_name, xs, y_name, ys, "eval")
+
+    xs = []
+    ys = []
+    for v in overhead_htbl.keys():
+        if eval_htbl[v][f"{y_name}_D"] != 0:
+            x = overhead_htbl[v][f"{x_name}_D"] + eval_htbl[v][f"{x_name}_D"]
+            y = overhead_htbl[v][f"{y_name}_D"] + eval_htbl[v][f"{y_name}_D"]
+            xs.append(x)
+            ys.append(y)
+    plot(x_name, xs, y_name, ys, "total")
 
 doc = make_doc(title=out_path)
 with doc:
     for t in trace_list:
         a(t, href=per_trace(t+".out"))
         br()
-
-    xs = []
-    ys = []
-    for v in overhead_htbl.keys():
-        if eval_htbl[v]["PQ_D"] != 0:
-            x = overhead_htbl[v]["DB_D"]
-            y = overhead_htbl[v]["PQ_D"]
-            xs.append(x)
-            ys.append(y)
-    plot(xs, ys, "overhead")
-    
-    xs = []
-    ys = []
-    for v in overhead_htbl.keys():
-        if eval_htbl[v]["PQ_D"] != 0:
-            x = eval_htbl[v]["DB_D"]
-            y = eval_htbl[v]["PQ_D"]
-            xs.append(x)
-            ys.append(y)
-    plot(xs, ys, "eval")
-
-    xs = []
-    ys = []
-    for v in overhead_htbl.keys():
-        if eval_htbl[v]["PQ_D"] != 0:
-            x = overhead_htbl[v]["DB_D"] + eval_htbl[v]["DB_D"]
-            y = overhead_htbl[v]["PQ_D"] + eval_htbl[v]["PQ_D"]
-            xs.append(x)
-            ys.append(y)
-    plot(xs, ys, "total")
+        
+    compare("NE", "DB")
+    compare("NE", "PQ")
+    compare("DB", "PQ")
 
 write_to(out_path + "index.html", str(doc))
 
