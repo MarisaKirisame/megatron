@@ -3,16 +3,16 @@
 #include <vector>
 
 inline bool heap_is_root(size_t i) {
-  return i == 1;
+  return i == 0;
 }
 
 inline size_t heap_parent(size_t i) {
   // Heap index calculation assume array index starting from 1.
-  return i / 2;
+  return (i + 1) / 2 - 1;
 }
 
 inline size_t heap_left_child(size_t i) {
-  return i * 2;
+  return (i + 1) * 2 - 1;
 }
 
 inline size_t heap_right_child(size_t i) {
@@ -27,21 +27,20 @@ struct MinHeap {
 
   MinHeap() {
     arr.reserve(16384);
-    arr.push_back(T());
   }
 
   T& peek() {
-    return (*this)[1];
+    return (*this)[0];
   }
 
   const T& peek() const {
-    return (*this)[1];
+    return (*this)[0];
   }
 
   T pop() {
-    auto val = remove_no_rebalance(1);
+    auto val = remove_no_rebalance(0);
     if (!empty()) {
-        sink(1);
+        sink(0);
     }
     return val;
   }
@@ -88,11 +87,11 @@ struct MinHeap {
   }
 
   bool empty() const {
-    return arr.size() == 1;
+    return arr.empty();
   }
 
   size_t size() const {
-    return arr.size() - 1;
+    return arr.size();
   }
 
   void clear() {
