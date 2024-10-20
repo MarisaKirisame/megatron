@@ -100,8 +100,9 @@ struct MinHeap {
 
   template<typename K_, typename V_>
   void push(K_ && k, V_ && v) {
+    auto last_index = arr.size();
     arr.push_back(std::pair<K, V>(std::forward<K_>(k), std::forward<V_>(v)));
-    flow(arr.size() - 1);
+    flow(last_index);
   }
 
   bool has_value(const size_t& idx) const {
