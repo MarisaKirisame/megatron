@@ -1,5 +1,6 @@
 #pragma once
 
+#include "no_destructor.h"
 #include <cstdint>
 #include <cstdio>
 #include <memory>
@@ -33,15 +34,15 @@ private:
   bool moved;
 
 public:
-  static inline std::vector<node> *storage = []() {
-    auto v = new std::vector<node>();
+  static inline no_destructor<std::vector<node>> storage = []() {
+    std::vector<node> v;
     v->reserve(16 * 1024 * 1024 / sizeof(node));
-    return v;
+    return no_destructor<std::vector<node>>(v);
   }();
-  static inline std::vector<ptr_t> *freelist = []() {
-    auto v = new std::vector<ptr_t>();
+  static inline no_destructor<std::vector<ptr_t>> freelist = []() {
+    std::vector<ptr_t> v;
     v->reserve(16 * 1024 * 1024 / sizeof(ptr_t));
-    return v;
+    return no_destructor<std::vector<ptr_t>>(v);
   }();
 
   struct iterator {
