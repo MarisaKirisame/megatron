@@ -94,14 +94,12 @@ public:
       for (ptr_t cur = (*storage)[sentinel].next; cur != sentinel; cur = (*storage)[cur].next) {
         _del(cur);
       }
-      (*storage)[sentinel].prev = sentinel;
-      (*storage)[sentinel].next = sentinel;
     } else {
       sentinel = _new();
-      (*storage)[sentinel].prev = sentinel;
-      (*storage)[sentinel].next = sentinel;
       moved = false;
     }
+    (*storage)[sentinel].prev = sentinel;
+    (*storage)[sentinel].next = sentinel;
     for (ptr_t cur = (*storage)[other.sentinel].next; cur != sentinel; cur = (*storage)[cur].next) {
       emplace_back((*storage)[cur].elem);
     }
