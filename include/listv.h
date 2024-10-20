@@ -37,12 +37,12 @@ public:
   static inline no_destructor<std::vector<node>> storage = []() {
     std::vector<node> v;
     v.reserve(64 * 1024 * 1024 / sizeof(node));
-    return no_destructor<std::vector<node>>(v);
+    return no_destructor<std::vector<node>>(std::move(v));
   }();
   static inline no_destructor<std::vector<ptr_t>> freelist = []() {
     std::vector<ptr_t> v;
     v.reserve(64 * 1024 * 1024 / sizeof(ptr_t));
-    return no_destructor<std::vector<ptr_t>>(v);
+    return no_destructor<std::vector<ptr_t>>(std::move(v));
   }();
 
   struct iterator {
