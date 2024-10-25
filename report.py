@@ -161,9 +161,7 @@ def per_trace(trace_out_path):
                 for j in summary.values():
                     tr(*[td(j[h]) for h in header])
 
-        compare("NE", "DB")
-        compare("NE", "PQ")
-        compare("DB", "PQ")
+        run_compare()
     
     page_path = f"{count()}.html"
     write_to(out_path + page_path, str(doc))
@@ -274,15 +272,18 @@ def compare(x_name, y_name):
             ys.append(y)
     plot(x_name, xs, y_name, ys, "total")
 
+def run_compare():
+    # compare("NE", "DB")
+    # compare("NE", "PQ")
+    compare("DB", "PQ")
+
 doc = make_doc(title=out_path)
 with doc:
     for t in trace_list:
         a(t, href=per_trace(t+".out"))
         br()
-        
-    compare("NE", "DB")
-    compare("NE", "PQ")
-    compare("DB", "PQ")
+
+    run_compare()
 
 write_to(out_path + "index.html", str(doc))
 

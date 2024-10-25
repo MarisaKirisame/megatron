@@ -860,7 +860,7 @@ end
 (*module MainFSC = Main (Megatron.EvalFS.EVAL (D))*)
 
 (*module MainNEI = Main (Megatron.EvalNE.EVAL (S))*)
-module MainNEC = Main (Megatron.EvalNE.EVAL (D))
+(*module MainNEC = Main (Megatron.EvalNE.EVAL (D))*)
 
 (*module MainDBI = Main (Megatron.EvalDB.EVAL (S))*)
 module MainDBC = Main (Megatron.EvalDB.EVAL (D))
