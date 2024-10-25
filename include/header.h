@@ -31,28 +31,41 @@ Unit ResetMetric() {
   return Unit{};
 }
 int64_t FreshMetric() { return 0; }
+constexpr bool detailed_metric = false;
 Unit WriteMetric() {
-  m.write_count += 1;
+  if (detailed_metric) {
+    m.write_count += 1;
+  }
   return Unit{};
 }
 Unit MetaWriteMetric() {
-  m.meta_write_count += 1;
+  if (detailed_metric) {
+    m.meta_write_count += 1;
+  }
   return Unit{};
 }
 Unit MetaReadMetric() {
-  m.meta_read_count += 1;
+  if (detailed_metric) {
+    m.meta_read_count += 1;
+  }
   return Unit{};
 }
 Unit InputChangeMetric(int64_t i) {
-  m.input_change_count += i;
+  if (detailed_metric) {
+    m.input_change_count += i;
+  }
   return Unit{};
 }
 Unit OutputChangeMetric(int64_t i) {
-  m.output_change_count += i;
+  if (detailed_metric) {
+    m.output_change_count += i;
+  }
   return Unit{};
 }
 Unit MetricQueueSize(int64_t i) {
-  m.queue_size_acc += i;
+  if (detailed_metric) {
+    m.queue_size_acc += i;
+  }
   return Unit{};
 }
 int64_t MetricQueueSizeAcc() { return m.queue_size_acc; }

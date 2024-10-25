@@ -231,7 +231,9 @@ def plot(xs_name, xs, ys_name, ys, name):
         cdf_x = sorted([xs[i]/ys[i] for i in range(len(xs))])
         cdf_y = [(i + 1)/len(cdf_x) for i in range(len(cdf_x))]
         plt.plot(cdf_x, cdf_y)
-        plt.axvline(x=1,c='green')
+        plt.axvline(x=1,c='black',linewidth=0.5)
+        x_range = math.exp(max(abs(math.log(max(cdf_x))), abs(math.log(min(cdf_x)))))
+        plt.xlim(1/x_range, x_range)
         plt.xscale('log')
         plt.title('cdf')
         pic_path = f"{count()}.jpg"
