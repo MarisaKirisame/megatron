@@ -31,7 +31,7 @@ Unit ResetMetric() {
   return Unit{};
 }
 int64_t FreshMetric() { return 0; }
-constexpr bool detailed_metric = false;
+constexpr bool detailed_metric = true;
 Unit WriteMetric() {
   if (detailed_metric) {
     m.write_count += 1;
