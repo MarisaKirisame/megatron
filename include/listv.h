@@ -8,7 +8,7 @@
 
 template <typename T> class listv {
 private:
-  using ptr_t = uint16_t;
+  using ptr_t = uint32_t;
 
   struct node {
     ptr_t prev;
