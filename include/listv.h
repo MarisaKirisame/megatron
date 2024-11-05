@@ -31,8 +31,6 @@ private:
   void _del(ptr_t n) { freelist->push_back(n); }
 
   ptr_t sentinel;
-  bool moved;
-
 public:
   static inline no_destructor<std::vector<node>> storage = []() {
     std::vector<node> v;
@@ -85,18 +83,16 @@ public:
     sentinel = _new();
     (*storage)[sentinel].prev = sentinel;
     (*storage)[sentinel].next = sentinel;
-    moved = false;
   }
 
   listv(const listv &other) {
-    if (!moved) {
+    if (sentinel != std::numeric_limits<ptr_t>::max()) {
       // use after free here is fine because there is no intermediate malloc
       for (ptr_t cur = (*storage)[sentinel].next; cur != sentinel; cur = (*storage)[cur].next) {
         _del(cur);
       }
     } else {
       sentinel = _new();
-      moved = false;
     }
     (*storage)[sentinel].prev = sentinel;
     (*storage)[sentinel].next = sentinel;
@@ -107,11 +103,11 @@ public:
 
   listv(listv &&other) {
     sentinel = other.sentinel;
-    other.moved = true;
+    other.sentinel = std::numeric_limits<ptr_t>::max();
   }
 
   ~listv() {
-    if (!moved) {
+    if (sentinel != std::numeric_limits<ptr_t>::max()) {
       // use after free here is fine because there is no intermediate malloc
       for (ptr_t cur = (*storage)[sentinel].next; cur != sentinel; cur = (*storage)[cur].next) {
         _del(cur);
