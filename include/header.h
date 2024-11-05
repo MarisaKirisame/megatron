@@ -442,7 +442,7 @@ template <typename T> using default_allocator = PoolAllocator<T>;
 //template <typename T> using default_allocator = std::allocator<T>;
 
 #include "otto.h"
-typedef total_order<1.4, uint32_t> TotalOrderS;
+typedef total_order<1.4, uint16_t> TotalOrderS;
 typedef TotalOrderS::node TotalOrder;
 TotalOrderS *tos = nullptr;
 Ref<TotalOrder> current_time = nullptr;
