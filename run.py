@@ -11,7 +11,7 @@ def process(name):
     shell(f"dune exec megatron -- {name}.out")
 
 def clean():
-    shell("rm Layout*.cpp || true")
+    #shell("rm Layout*.cpp || true")
     shell("rm *.out || true")
     shell("rm *.trace || true")
 

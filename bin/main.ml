@@ -759,6 +759,8 @@ module Main (EVAL : Eval) = struct
                                                                       (int_to_json (metric_input_change_count m));
                                                                     make_pair (string "output_change_count")
                                                                       (int_to_json (metric_output_change_count m));
+                                                                    make_pair (string "tree_size")
+                                                                      (int_to_json (node_size n));  
                                                                     make_pair (string "overhead_time")
                                                                       (int_to_json (metric_overhead_time m));
                                                                     make_pair (string "overhead_l2m")

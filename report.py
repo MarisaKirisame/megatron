@@ -21,6 +21,16 @@ out_dir = get_time()
 out_path = "output/" + out_dir + "/"
 os.makedirs(out_path)
 
+out_tex = open(out_path + "out.tex", "w")
+
+def output_tex(out):
+    out_tex.write(out)
+
+total_diff_count = 0
+def new_diff():
+    global total_diff_count
+    total_diff_count += 1
+
 COUNTER = 0
 def count():
     global COUNTER
@@ -106,6 +116,7 @@ def get_time(js):
 
 overhead_htbl = {}
 eval_htbl = {}
+json_htbl = {}
 
 def per_trace(trace_out_path):
     default_count = {}
@@ -113,10 +124,11 @@ def per_trace(trace_out_path):
     for l in readlines_file(trace_out_path):
         j = json.loads(l)
         anal(j, default_count)
-        header = ["name", "diff_num", "read_count", "write_count", "meta_read_count", "meta_write_count", "queue_size_acc", "input_change_count", "output_change_count", "overhead_time", "overhead_l2m", "eval_time", "command", "full_command", "html", "time"]
+        header = ["name", "diff_num", "read_count", "write_count", "meta_read_count", "meta_write_count", "queue_size_acc", "input_change_count", "output_change_count", "tree_size", "overhead_time", "overhead_l2m", "eval_time", "command", "full_command", "html", "time"]
         diff_num = j["diff_num"]
         if diff_num not in j_by_diff:
             j_by_diff[diff_num] = []
+            new_diff()
         j_by_diff[diff_num].append(j)
     strip_default = default_count_to_strip_default(default_count)
 
@@ -148,8 +160,10 @@ def per_trace(trace_out_path):
                         if key not in overhead_htbl:
                             overhead_htbl[key] = {}
                             eval_htbl[key] = {}
+                            json_htbl[key] = {}
                         overhead_htbl[key][name] = j["overhead_time"]
                         eval_htbl[key][name] = j["eval_time"]
+                        json_htbl[key][name] = j
 
                         if name not in summary:
                             summary[name] = {"name": name, "diff_num": "total", "html": "NA", "command": "NA", "full_command": "NA", "time": "NA"}
@@ -167,8 +181,8 @@ def per_trace(trace_out_path):
     write_to(out_path + page_path, str(doc))
 
     return page_path
-    
-def plot(xs_name, xs, ys_name, ys, name):
+
+def plot(xs_name, xs, ys_name, ys, name, *, tex):
     min_value = min(min(*xs), min(*ys))
     max_value = max(max(*xs), max(*ys))
 
@@ -211,7 +225,11 @@ def plot(xs_name, xs, ys_name, ys, name):
                 with tbody():
                     for geomean, percentage in mp:
                         tr(td(f"{percentage:.2f}"), td(f"{geomean:.2f}"))
-                    tr(td("total"), td(f"{math.exp(sum(speedup)/len(speedup)):.2f}"))
+                    total = f"{math.exp(sum(speedup)/len(speedup)):.2f}"
+                    tr(td("total"), td(total))
+                if tex and title == "clustering":
+                    command_name = "\\" + xs_name + ys_name + name
+                    output_tex(f"\\newcommand{{{command_name}}}{{{total}}}\n")
 
         def geomean(points):
             speedup = list([math.log(x/y) for x, y in points])
@@ -221,11 +239,11 @@ def plot(xs_name, xs, ys_name, ys, name):
             points = list([list(l) for l in points])
             total_size = sum(len(l) for l in points)
             return [(geomean(ps), 100 * len(ps)/total_size)for ps in points]
-        
+
         make_table("clustering", mp)
         make_table("slowdown:speedup", points_to_mp([[(xs[i], ys[i]) for i in range(len(xs)) if xs[i] <= ys[i]], [(xs[i], ys[i]) for i in range(len(xs)) if xs[i] > ys[i]]]))
         make_table(">1e6:<=1e6", points_to_mp([[(xs[i], ys[i]) for i in range(len(xs)) if xs[i] > 1e6], [(xs[i], ys[i]) for i in range(len(xs)) if xs[i] <= 1e6]]))
-        
+
         cdf_x = sorted([xs[i]/ys[i] for i in range(len(xs))])
         cdf_y = [(i + 1)/len(cdf_x) for i in range(len(cdf_x))]
         plt.plot(cdf_x, cdf_y)
@@ -240,52 +258,63 @@ def plot(xs_name, xs, ys_name, ys, name):
         img(src=pic_path)
 
         span(f"arithmean={sum(xs)/sum(ys):.2f}")
-
-def compare(x_name, y_name):
+    
+def compare(x_name, y_name, *, prefix="", predicate=(lambda v: True), tex):
     xs = []
     ys = []
     for v in overhead_htbl.keys():
-        if eval_htbl[v][f"{y_name}_D"] != 0:
+        if eval_htbl[v][f"{y_name}_D"] != 0 and predicate(v):
             x = overhead_htbl[v][f"{x_name}_D"]
             y = overhead_htbl[v][f"{y_name}_D"]
             xs.append(x)
             ys.append(y)
-    plot(x_name, xs, y_name, ys, "overhead")
-    
+    plot(x_name, xs, y_name, ys, prefix+"overhead", tex=tex)
+
     xs = []
     ys = []
     for v in overhead_htbl.keys():
-        if eval_htbl[v][f"{y_name}_D"] != 0:
+        if eval_htbl[v][f"{y_name}_D"] != 0 and predicate(v):
             x = eval_htbl[v][f"{x_name}_D"]
             y = eval_htbl[v][f"{y_name}_D"]
             xs.append(x)
             ys.append(y)
-    plot(x_name, xs, y_name, ys, "eval")
+    plot(x_name, xs, y_name, ys, prefix+"eval", tex=tex)
 
     xs = []
     ys = []
     for v in overhead_htbl.keys():
-        if eval_htbl[v][f"{y_name}_D"] != 0:
+        if eval_htbl[v][f"{y_name}_D"] != 0 and predicate(v):
             x = overhead_htbl[v][f"{x_name}_D"] + eval_htbl[v][f"{x_name}_D"]
             y = overhead_htbl[v][f"{y_name}_D"] + eval_htbl[v][f"{y_name}_D"]
             xs.append(x)
             ys.append(y)
-    plot(x_name, xs, y_name, ys, "total")
+    plot(x_name, xs, y_name, ys, prefix+"total", tex=tex)
 
-def run_compare():
+
+def run_compare(*, tex=False):
     # compare("NE", "DB")
     # compare("NE", "PQ")
-    compare("DB", "PQ")
+    compare("DB", "PQ", tex=tex)
+    def is_small(v):
+        tree_size = json_htbl[v]["PQ_D"]["tree_size"]
+        meta_write_count = json_htbl[v]["PQ_D"]["meta_write_count"]
+        return meta_write_count * 100 < tree_size * 3
+        
+    compare("DB", "PQ", prefix="small_", predicate=is_small, tex=tex)
+    compare("DB", "PQ", prefix="large_", predicate=(lambda v: not is_small(v)), tex=tex)
 
 doc = make_doc(title=out_path)
 with doc:
+    a("out.tex", href="out.tex")
     for t in trace_list:
         a(t, href=per_trace(t+".out"))
         br()
 
-    run_compare()
+    run_compare(tex=True)
 
 write_to(out_path + "index.html", str(doc))
+output_tex(f"\\newcommand{{\\TotalDiffCount}}{{{total_diff_count}}}\n")
+output_tex(f"\\newcommand{{\\TotalTraceCount}}{{{len(trace_list)}}}\n")
 
 if subprocess.run("command -v nightly-results", shell=True).returncode == 0:
     subprocess.run(f"""nightly-results publish {out_path}""", shell=True, check=True)
