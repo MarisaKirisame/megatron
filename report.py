@@ -10,6 +10,9 @@ from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
 import numpy as np
 
+def tex_string(x):
+    return x.replace("_", "")
+
 def get_time():
     return datetime.datetime.now().strftime("%m%d_%H%M%S")
 
@@ -229,7 +232,7 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
                     tr(td("total"), td(total))
                 if tex and title == "clustering":
                     command_name = "\\" + xs_name + ys_name + name
-                    output_tex(f"\\newcommand{{{command_name}}}{{{total}}}\n")
+                    output_tex(f"\\newcommand{{{tex_string(command_name)}}}{{{total}}}\n")
 
         def geomean(points):
             speedup = list([math.log(x/y) for x, y in points])
