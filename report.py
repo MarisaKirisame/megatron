@@ -320,6 +320,7 @@ output_tex(f"\\newcommand{{\\TotalDiffCount}}{{{total_diff_count}}}\n")
 output_tex(f"\\newcommand{{\\TotalTraceCount}}{{{len(trace_list)}}}\n")
 
 if subprocess.run("command -v nightly-results", shell=True).returncode == 0:
+    out_tex.close()
     subprocess.run(f"""nightly-results publish {out_path}""", shell=True, check=True)
     subprocess.run(f"""rm -rf output/*""", shell=True, check=True)
 else:
