@@ -39,6 +39,11 @@ module EVAL (SD : SD) = MakeEval (struct
         (List.map (Hashtbl.to_alist p.bbs) ~f:(fun (bb, _) -> "TotalOrder " ^ bb ^ "_bb_time_table;"))
         ~sep:""
     ^ "bool alive=true;"
+    ^ "~Meta(){"
+    ^ String.concat
+        (List.map (Hashtbl.to_alist p.bbs) ~f:(fun (bb, _) -> "tos->remove(" ^ bb ^ "_bb_time_table);"))
+        ~sep:""
+    ^ "}"
 
   let meta_get_bb_time_table m =
     if is_static then (m |> unstatic).bb_time_table |> static else CGetMember (m |> undyn, "BBTimeTable") |> dyn
