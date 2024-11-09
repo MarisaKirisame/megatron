@@ -251,7 +251,7 @@ public:
 
   [[gnu::always_inline]]
   inline void remove(_l2_iter n) {
-    if (n->parent->children.size() == 1) {
+    if (n->parent->children.begin().next() == n->parent->children.end()) {
       _l1_nodes.erase(n->parent);
     } else {
       n->parent->children.erase(n);
