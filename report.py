@@ -202,14 +202,16 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
         mp.append((math.exp(sum(sub)/len(sub)), 100 * len(sub)/len(speedup)))
     mp.sort()
 
-    for nc in range(n_clusters):
-        sub_xs = [xs[i] for i in range(len(speedup)) if est.labels_[i] == nc]
-        sub_ys = [ys[i] for i in range(len(speedup)) if est.labels_[i] == nc]
-        plt.scatter(sub_xs, sub_ys, color="#1f77b4", alpha=0.7)
-    plt.plot([min_value, max_value], [min_value, max_value], color="black")
-    plt.xscale('log')
-    plt.yscale('log')
-    def scatterplot_label(x):
+    plt.style.use('_mpl-gallery-nogrid')
+
+    fig, ax = plt.subplots()
+    ax.plot([min_value, max_value], [min_value, max_value], color="black")
+    ax.set_xscale('log')
+    ax.set_yscale('log')
+    ax.set_xlim(min_value / 2, max_value * 2)
+    ax.set_ylim(min_value / 2, max_value * 2)
+    ax.hist2d(xs, ys, bins=(np.geomspace(min_value, max_value, 50), np.geomspace(min_value, max_value, 50)))
+    def histplot_label(x):
         if x == "DB_overhead":
             return "Overhead Cycles for Double Dirty Bit"
         elif x == "PQ_overhead":
@@ -220,16 +222,57 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
             return "(Incremental) Overhead Cycles for Spineless Traversal"
         else:
             return x
-    plt.xlabel(scatterplot_label(f'{xs_name}_{name}'))
-    plt.ylabel(scatterplot_label(f'{ys_name}_{name}'))
-    plt.xlim(min_value / 2, max_value * 2)
-    plt.ylim(min_value / 2, max_value * 2)
-    pic_path = f"{count()}.jpg"
-    plt.savefig(out_path + pic_path)
-    plt.clf()
+    ax.set_xlabel(histplot_label(f'{xs_name}_{name}'))
+    ax.set_ylabel(histplot_label(f'{ys_name}_{name}'))
+    pic_path1 = f"{count()}.svg"
+    fig.set_figheight(6)
+    fig.set_figwidth(6)
+    fig.savefig(out_path + pic_path1, bbox_inches='tight')
+
+    plt.close()
+
+    # for nc in range(n_clusters):
+    #     sub_xs = [xs[i] for i in range(len(speedup)) if est.labels_[i] == nc]
+    #     sub_ys = [ys[i] for i in range(len(speedup)) if est.labels_[i] == nc]
+    #     plt.scatter(sub_xs, sub_ys, color="#1f77b4", alpha=0.7)
+    # plt.plot([min_value, max_value], [min_value, max_value], color="black")
+    # plt.xscale('log')
+    # plt.yscale('log')
+
+    # plt.xlim(min_value / 2, max_value * 2)
+    # plt.ylim(min_value / 2, max_value * 2)
+    # pic_path = f"{count()}.jpg"
+    # plt.savefig(out_path + pic_path)
+    # plt.clf()
+
+    fig, ax = plt.subplots()
+    cdf_x = sorted([xs[i]/ys[i] for i in range(len(xs))])
+    cdf_y = [(i + 1)/len(cdf_x) for i in range(len(cdf_x))]
+    ax.plot(cdf_x, cdf_y)
+    ax.axvline(x=1,c='black',linewidth=0.5)
+    ax.annotate(f'{np.interp(1.0, cdf_x, cdf_y):.2f}', xy=(1, np.interp(1.0, cdf_x, cdf_y)), xytext=(-50, 0), textcoords='offset points', bbox = dict(boxstyle="round", fc="0.8"), arrowprops = dict(arrowstyle="->"))
+    x_range = math.exp(max(abs(math.log(max(cdf_x))), abs(math.log(min(cdf_x)))))
+    ax.set_xlim(1/x_range, x_range)
+    ax.set_xscale('log')
+    def cdf_xlabel(x):
+        if x == "DB_overhead":
+            return "Speed of Spineless Traversal over Double Dirty Bit"
+        elif x == "DB_small_overhead":
+            return "(Incremental) Speed of Spineless Traversal over Double Dirty Bit"
+        else:
+            return x
+    ax.set_xlabel(cdf_xlabel(f'{xs_name}_{name}'))
+    ax.set_ylabel("Probability")
+    ax.set_title('cdf')
+    fig.set_figheight(6)
+    fig.set_figwidth(6)
+    pic_path2 = f"{count()}.svg"
+    fig.savefig(out_path + pic_path2, bbox_inches='tight')
+
+    plt.close()
 
     with div(style="display:flex"):
-        img(src=pic_path)
+        img(src=pic_path1)
 
         def make_table(title, mp):
             with table(border="1", style="display:inline-table"):
@@ -258,27 +301,8 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
         make_table("slowdown:speedup", points_to_mp([[(xs[i], ys[i]) for i in range(len(xs)) if xs[i] <= ys[i]], [(xs[i], ys[i]) for i in range(len(xs)) if xs[i] > ys[i]]]))
         make_table(">1e6:<=1e6", points_to_mp([[(xs[i], ys[i]) for i in range(len(xs)) if xs[i] > 1e6], [(xs[i], ys[i]) for i in range(len(xs)) if xs[i] <= 1e6]]))
 
-        cdf_x = sorted([xs[i]/ys[i] for i in range(len(xs))])
-        cdf_y = [(i + 1)/len(cdf_x) for i in range(len(cdf_x))]
-        plt.plot(cdf_x, cdf_y)
-        plt.axvline(x=1,c='black',linewidth=0.5)
-        x_range = math.exp(max(abs(math.log(max(cdf_x))), abs(math.log(min(cdf_x)))))
-        plt.xlim(1/x_range, x_range)
-        plt.xscale('log')
-        def cdf_xlabel(x):
-            if x == "DB_overhead":
-                return "Speed of Spineless Traversal over Double Dirty Bit"
-            elif x == "DB_small_overhead":
-                return "(Incremental) Speed of Spineless Traversal over Double Dirty Bit"
-            else:
-                return x
-        plt.xlabel(cdf_xlabel(f'{xs_name}_{name}'))
-        plt.ylabel("Probability")
-        plt.title('cdf')
-        pic_path = f"{count()}.jpg"
-        plt.savefig(out_path + pic_path)
-        plt.clf()
-        img(src=pic_path)
+        
+        img(src=pic_path2)
 
         span(f"arithmean={sum(xs)/sum(ys):.2f}")
     
