@@ -205,12 +205,23 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
     for nc in range(n_clusters):
         sub_xs = [xs[i] for i in range(len(speedup)) if est.labels_[i] == nc]
         sub_ys = [ys[i] for i in range(len(speedup)) if est.labels_[i] == nc]
-        plt.scatter(sub_xs, sub_ys, color="#1f77b4")
+        plt.scatter(sub_xs, sub_ys, color="#1f77b4", alpha=0.7)
     plt.plot([min_value, max_value], [min_value, max_value], color="black")
     plt.xscale('log')
     plt.yscale('log')
-    plt.xlabel(f'{xs_name}_{name}')
-    plt.ylabel(f'{ys_name}_{name}')
+    def scatterplot_label(x):
+        if x == "DB_overhead":
+            return "Overhead Cycles for Double Dirty Bit"
+        elif x == "PQ_overhead":
+            return "Overhead Cycles for Spineless Traversal"
+        elif x == "DB_small_overhead":
+            return "(Incremental) Overhead Cycles for Double Dirty Bit"
+        elif x == "PQ_small_overhead":
+            return "(Incremental) Overhead Cycles for Spineless Traversal"
+        else:
+            return x
+    plt.xlabel(scatterplot_label(f'{xs_name}_{name}'))
+    plt.ylabel(scatterplot_label(f'{ys_name}_{name}'))
     plt.xlim(min_value / 2, max_value * 2)
     plt.ylim(min_value / 2, max_value * 2)
     pic_path = f"{count()}.jpg"
@@ -254,6 +265,15 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
         x_range = math.exp(max(abs(math.log(max(cdf_x))), abs(math.log(min(cdf_x)))))
         plt.xlim(1/x_range, x_range)
         plt.xscale('log')
+        def cdf_xlabel(x):
+            if x == "DB_overhead":
+                return "Speed of Spineless Traversal over Double Dirty Bit"
+            elif x == "DB_small_overhead":
+                return "(Incremental) Speed of Spineless Traversal over Double Dirty Bit"
+            else:
+                return x
+        plt.xlabel(cdf_xlabel(f'{xs_name}_{name}'))
+        plt.ylabel("Probability")
         plt.title('cdf')
         pic_path = f"{count()}.jpg"
         plt.savefig(out_path + pic_path)
