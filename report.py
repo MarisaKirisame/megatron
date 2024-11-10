@@ -202,7 +202,11 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
         mp.append((math.exp(sum(sub)/len(sub)), 100 * len(sub)/len(speedup)))
     mp.sort()
 
-    plt.style.use('_mpl-gallery-nogrid')
+    # https://matplotlib.org/stable/users/explain/colors/colormaps.html#colormaps
+    # cmap = 'viridis' # purple to yellow
+    cmap = 'Blues'
+    # cmap = 'bwr'
+
 
     fig, ax = plt.subplots()
     ax.plot([min_value, max_value], [min_value, max_value], color="black")
@@ -210,7 +214,7 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
     ax.set_yscale('log')
     ax.set_xlim(min_value / 2, max_value * 2)
     ax.set_ylim(min_value / 2, max_value * 2)
-    ax.hist2d(xs, ys, bins=(np.geomspace(min_value, max_value, 50), np.geomspace(min_value, max_value, 50)))
+    ax.hist2d(xs, ys, bins=(np.geomspace(min_value, max_value, 50), np.geomspace(min_value, max_value, 50)), cmap=cmap)
     def histplot_label(x):
         if x == "DB_overhead":
             return "Overhead Cycles for Double Dirty Bit"
