@@ -355,8 +355,8 @@ def run_compare(*, tex=False):
     compare("DB", "PQ", tex=tex)
     def is_small(v):
         tree_size = json_htbl[v]["PQ_D"]["tree_size"]
-        meta_write_count = json_htbl[v]["PQ_D"]["meta_write_count"]
-        return meta_write_count * 100 < tree_size * 3
+        meta_read_count = json_htbl[v]["PQ_D"]["meta_read_count"]
+        return meta_read_count * 100 < tree_size * 3
         
     compare("DB", "PQ", prefix="small_", predicate=is_small, tex=tex)
     compare("DB", "PQ", prefix="large_", predicate=(lambda v: not is_small(v)), tex=tex)
