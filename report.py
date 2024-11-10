@@ -8,7 +8,13 @@ from common import *
 import math
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
+from matplotlib import font_manager
 import numpy as np
+
+font_manager.fontManager.addfont('LinBiolinum_Rah.ttf')
+prop = font_manager.FontProperties(fname='LinBiolinum_Rah.ttf')
+plt.rcParams['font.family'] = 'sans-serif'
+plt.rcParams['font.sans-serif'] = prop.get_name()
 
 def tex_string(x):
     return x.replace("_", "")
@@ -207,8 +213,8 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
     cmap = 'Blues'
     # cmap = 'bwr'
 
-
     fig, ax = plt.subplots()
+    ax.grid(False)
     ax.plot([min_value, max_value], [min_value, max_value], color="black")
     ax.set_xscale('log')
     ax.set_yscale('log')
@@ -229,6 +235,7 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
     ax.set_xlabel(histplot_label(f'{xs_name}_{name}'))
     ax.set_ylabel(histplot_label(f'{ys_name}_{name}'))
     pic_path1 = f"{count()}.svg"
+    fig.set_dpi(300)
     fig.set_figheight(6)
     fig.set_figwidth(6)
     fig.savefig(out_path + pic_path1, bbox_inches='tight')
