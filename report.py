@@ -247,8 +247,9 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
         ax.set_xlim(min_value / 2, max_value * 2)
         ax.set_ylim(min_value / 2, max_value * 2)
         ax.hist2d(xs, ys, bins=(np.geomspace(min_value, max_value, 50), np.geomspace(min_value, max_value, 50)), cmap=cmap)
-        ax.set_xlabel(plot_label(f'{xs_name}_{name}'))
-        ax.set_ylabel(plot_label(f'{ys_name}_{name}'))
+
+    ax.set_xlabel(plot_label(f'{xs_name}_{name}'))
+    ax.set_ylabel(plot_label(f'{ys_name}_{name}'))
 
     pic_path1 = f"{count()}.svg"
 
