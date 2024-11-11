@@ -320,21 +320,29 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
         make_table("clustering", mp)
         make_table("slowdown:speedup", points_to_mp([[(xs[i], ys[i]) for i in range(len(xs)) if xs[i] <= ys[i]], [(xs[i], ys[i]) for i in range(len(xs)) if xs[i] > ys[i]]]))
         make_table(">1e6:<=1e6", points_to_mp([[(xs[i], ys[i]) for i in range(len(xs)) if xs[i] > 1e6], [(xs[i], ys[i]) for i in range(len(xs)) if xs[i] <= 1e6]]))
-
         
         img(src=pic_path2)
 
         span(f"arithmean={sum(xs)/sum(ys):.2f}")
-    
+
 def compare(x_name, y_name, *, prefix="", predicate=(lambda v: True), tex):
     xs = []
     ys = []
+
+    tree_size = []
+    db_meta_read = []
+    pq_meta_read = []
+    
     for v in overhead_htbl.keys():
         if eval_htbl[v][f"{y_name}_D"] != 0 and predicate(v):
             x = overhead_htbl[v][f"{x_name}_D"]
             y = overhead_htbl[v][f"{y_name}_D"]
             xs.append(x)
             ys.append(y)
+            if x_name == "DB" and y_name == "PQ":
+                tree_size.append(json_htbl[v]["DB_D"]["tree_size"])
+                db_meta_read.append(json_htbl[v]["DB_D"]["meta_read_count"])
+                pq_meta_read.append(json_htbl[v]["DB_D"]["meta_read_count"])
     plot(x_name, xs, y_name, ys, prefix+"overhead", tex=tex)
 
     xs = []
@@ -357,6 +365,10 @@ def compare(x_name, y_name, *, prefix="", predicate=(lambda v: True), tex):
             ys.append(y)
     plot(x_name, xs, y_name, ys, prefix+"total", tex=tex)
 
+    if x_name == "DB" and y_name == "PQ":
+        hist(tree_size, "Tree Size")
+        hist(db_meta_read, "Spine+1")
+        hist(pq_meta_read, "Dirtied Elements Count")
 
 def run_compare(*, tex=False):
     # compare("NE", "DB")
@@ -366,9 +378,21 @@ def run_compare(*, tex=False):
         tree_size = json_htbl[v]["PQ_D"]["tree_size"]
         meta_read_count = json_htbl[v]["PQ_D"]["meta_read_count"]
         return meta_read_count * 100 < tree_size * 3
-        
+
     compare("DB", "PQ", prefix="small_", predicate=is_small, tex=tex)
     compare("DB", "PQ", prefix="large_", predicate=(lambda v: not is_small(v)), tex=tex)
+
+def hist(xs, label):
+    # a histogram returns 3 objects : n (i.e. frequncies), bins, patches
+    freq, bins, patches = plt.hist(xs, edgecolor='black')
+    plt.xticks(bins)
+
+    pic_path = f"{count()}.svg"
+    plt.xscale("log")
+    plt.xlabel(label)
+    plt.savefig(out_path + pic_path, bbox_inches='tight')
+    plt.clf()
+    img(src=pic_path)
 
 doc = make_doc(title=out_path)
 with doc:
@@ -378,6 +402,7 @@ with doc:
         br()
 
     run_compare(tex=True)
+    
 
 write_to(out_path + "index.html", str(doc))
 output_tex(f"\\newcommand{{\\TotalDiffCount}}{{{total_diff_count}}}\n")
