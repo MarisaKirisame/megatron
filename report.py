@@ -265,10 +265,12 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
     cdf_y = [(i + 1)/len(cdf_x) for i in range(len(cdf_x))]
 
     pct_slowdown = np.interp(1.0, cdf_x, cdf_y)
+    def tex_percentage(x):
+        return f"{x * 100:.1f}\\%"
     command_name = "\\" + xs_name + ys_name
     if tex and name == "overhead":
-        output_tex(f"""\\newcommand{{{tex_string(command_name + "pct_slowdown")}}}{{{pct_slowdown:.2f}}}\n""")
-        output_tex(f"""\\newcommand{{{tex_string(command_name + "pct_speedup")}}}{{{1 - pct_slowdown:.2f}}}\n""")
+        output_tex(f"""\\newcommand{{{tex_string(command_name + "pct_slowdown")}}}{{{tex_percentage(pct_slowdown)}}}\n""")
+        output_tex(f"""\\newcommand{{{tex_string(command_name + "pct_speedup")}}}{{{tex_percentage(1 - pct_slowdown)}}}\n""")
     ax.plot(cdf_x, cdf_y)
     ax.axvline(x=1,c='black',linewidth=0.5)                    
     ax.annotate(f'{pct_slowdown:.2f}', xy=(1, pct_slowdown), xytext=(-50, 0), textcoords='offset points', bbox = dict(boxstyle="round", fc="0.8"), arrowprops = dict(arrowstyle="->"))
@@ -343,7 +345,7 @@ def compare(x_name, y_name, *, prefix="", predicate=(lambda v: True), tex):
             if x_name == "DB" and y_name == "PQ":
                 tree_size.append(json_htbl[v]["DB_D"]["tree_size"])
                 db_meta_read.append(json_htbl[v]["DB_D"]["meta_read_count"])
-                pq_meta_read.append(json_htbl[v]["DB_D"]["meta_read_count"])
+                pq_meta_read.append(json_htbl[v]["PQ_D"]["meta_read_count"])
     plot(x_name, xs, y_name, ys, prefix+"overhead", tex=tex)
 
     xs = []
@@ -368,6 +370,8 @@ def compare(x_name, y_name, *, prefix="", predicate=(lambda v: True), tex):
 
     if x_name == "DB" and y_name == "PQ":
         hist(tree_size, "Tree Size")
+        hist([x for x in db_meta_read if x <= 200], "Spine+1 (<=200)")
+        hist([x for x in pq_meta_read if x <= 100], "Dirtied Elements Count (<=100)")
         hist(db_meta_read, "Spine+1")
         hist(pq_meta_read, "Dirtied Elements Count")
 
@@ -389,7 +393,7 @@ def hist(xs, label):
     plt.xticks(bins)
 
     pic_path = f"{count()}.svg"
-    plt.xscale("log")
+    #plt.xscale("log")
     plt.xlabel(label)
     plt.savefig(out_path + pic_path, bbox_inches='tight')
     plt.clf()
