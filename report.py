@@ -225,7 +225,7 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
         for nc in range(n_clusters):
             sub_xs = [xs[i] for i in range(len(speedup)) if est.labels_[i] == nc]
             sub_ys = [ys[i] for i in range(len(speedup)) if est.labels_[i] == nc]
-            ax.scatter(sub_xs, sub_ys, color="#1f77b4", alpha=0.7)
+            ax.scatter(sub_xs, sub_ys, color="#1f77b4", alpha=0.5, edgecolor="none")
         ax.plot([min_value, max_value], [min_value, max_value], color="black")
         ax.set_xscale('log')
         ax.set_yscale('log')
@@ -286,7 +286,6 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
             return x
     ax.set_xlabel(cdf_xlabel(f'{xs_name}_{name}'))
     ax.set_ylabel("Probability")
-    ax.set_title('cdf')
     fig.set_figheight(6)
     fig.set_figwidth(6)
     pic_path2 = f"{count()}.svg"
