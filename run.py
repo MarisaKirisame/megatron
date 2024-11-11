@@ -12,7 +12,7 @@ def process(name):
 
 def clean():
     #shell("rm Layout*.cpp || true")
-    shell("rm *.out || true")
+    #shell("rm *.out || true")
     shell("rm *.trace || true")
 
 clean()

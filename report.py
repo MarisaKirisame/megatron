@@ -191,6 +191,18 @@ def per_trace(trace_out_path):
 
     return page_path
 
+def plot_label(x):
+    if x == "DB_overhead":
+        return "Overhead Cycles for Double Dirty Bit"
+    elif x == "PQ_overhead":
+        return "Overhead Cycles for Spineless Traversal"
+    elif x == "DB_small_overhead":
+        return "(Incremental) Overhead Cycles for Double Dirty Bit"
+    elif x == "PQ_small_overhead":
+        return "(Incremental) Overhead Cycles for Spineless Traversal"
+    else:
+        return x
+
 def plot(xs_name, xs, ys_name, ys, name, *, tex):
     min_value = min(min(*xs), min(*ys))
     max_value = max(max(*xs), max(*ys))
@@ -208,33 +220,38 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
         mp.append((math.exp(sum(sub)/len(sub)), 100 * len(sub)/len(speedup)))
     mp.sort()
 
-    # https://matplotlib.org/stable/users/explain/colors/colormaps.html#colormaps
-    # cmap = 'viridis' # purple to yellow
-    cmap = 'Blues'
-    # cmap = 'bwr'
-
     fig, ax = plt.subplots()
-    ax.grid(False)
-    ax.plot([min_value, max_value], [min_value, max_value], color="black")
-    ax.set_xscale('log')
-    ax.set_yscale('log')
-    ax.set_xlim(min_value / 2, max_value * 2)
-    ax.set_ylim(min_value / 2, max_value * 2)
-    ax.hist2d(xs, ys, bins=(np.geomspace(min_value, max_value, 50), np.geomspace(min_value, max_value, 50)), cmap=cmap)
-    def histplot_label(x):
-        if x == "DB_overhead":
-            return "Overhead Cycles for Double Dirty Bit"
-        elif x == "PQ_overhead":
-            return "Overhead Cycles for Spineless Traversal"
-        elif x == "DB_small_overhead":
-            return "(Incremental) Overhead Cycles for Double Dirty Bit"
-        elif x == "PQ_small_overhead":
-            return "(Incremental) Overhead Cycles for Spineless Traversal"
-        else:
-            return x
-    ax.set_xlabel(histplot_label(f'{xs_name}_{name}'))
-    ax.set_ylabel(histplot_label(f'{ys_name}_{name}'))
+    def scatterplot():
+        for nc in range(n_clusters):
+            sub_xs = [xs[i] for i in range(len(speedup)) if est.labels_[i] == nc]
+            sub_ys = [ys[i] for i in range(len(speedup)) if est.labels_[i] == nc]
+            ax.scatter(sub_xs, sub_ys, color="#1f77b4", alpha=0.7)
+        ax.plot([min_value, max_value], [min_value, max_value], color="black")
+        ax.set_xscale('log')
+        ax.set_yscale('log')
+        ax.set_xlim(min_value / 2, max_value * 2)
+        ax.set_ylim(min_value / 2, max_value * 2)
+
+    scatterplot()
+    
+    def histoplot():
+        # https://matplotlib.org/stable/users/explain/colors/colormaps.html#colormaps
+        # cmap = 'viridis' # purple to yellow
+        cmap = 'Blues'
+        # cmap = 'bwr'
+
+        ax.grid(False)
+        ax.plot([min_value, max_value], [min_value, max_value], color="black")
+        ax.set_xscale('log')
+        ax.set_yscale('log')
+        ax.set_xlim(min_value / 2, max_value * 2)
+        ax.set_ylim(min_value / 2, max_value * 2)
+        ax.hist2d(xs, ys, bins=(np.geomspace(min_value, max_value, 50), np.geomspace(min_value, max_value, 50)), cmap=cmap)
+        ax.set_xlabel(plot_label(f'{xs_name}_{name}'))
+        ax.set_ylabel(plot_label(f'{ys_name}_{name}'))
+
     pic_path1 = f"{count()}.svg"
+
     fig.set_dpi(300)
     fig.set_figheight(6)
     fig.set_figwidth(6)
@@ -242,26 +259,18 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
 
     plt.close()
 
-    # for nc in range(n_clusters):
-    #     sub_xs = [xs[i] for i in range(len(speedup)) if est.labels_[i] == nc]
-    #     sub_ys = [ys[i] for i in range(len(speedup)) if est.labels_[i] == nc]
-    #     plt.scatter(sub_xs, sub_ys, color="#1f77b4", alpha=0.7)
-    # plt.plot([min_value, max_value], [min_value, max_value], color="black")
-    # plt.xscale('log')
-    # plt.yscale('log')
-
-    # plt.xlim(min_value / 2, max_value * 2)
-    # plt.ylim(min_value / 2, max_value * 2)
-    # pic_path = f"{count()}.jpg"
-    # plt.savefig(out_path + pic_path)
-    # plt.clf()
-
     fig, ax = plt.subplots()
     cdf_x = sorted([xs[i]/ys[i] for i in range(len(xs))])
     cdf_y = [(i + 1)/len(cdf_x) for i in range(len(cdf_x))]
+
+    pct_slowdown = np.interp(1.0, cdf_x, cdf_y)
+    command_name = "\\" + xs_name + ys_name
+    if tex and name == "overhead":
+        output_tex(f"""\\newcommand{{{tex_string(command_name + "pct_slowdown")}}}{{{pct_slowdown:.2f}}}\n""")
+        output_tex(f"""\\newcommand{{{tex_string(command_name + "pct_speedup")}}}{{{1 - pct_slowdown:.2f}}}\n""")
     ax.plot(cdf_x, cdf_y)
-    ax.axvline(x=1,c='black',linewidth=0.5)
-    ax.annotate(f'{np.interp(1.0, cdf_x, cdf_y):.2f}', xy=(1, np.interp(1.0, cdf_x, cdf_y)), xytext=(-50, 0), textcoords='offset points', bbox = dict(boxstyle="round", fc="0.8"), arrowprops = dict(arrowstyle="->"))
+    ax.axvline(x=1,c='black',linewidth=0.5)                    
+    ax.annotate(f'{pct_slowdown:.2f}', xy=(1, pct_slowdown), xytext=(-50, 0), textcoords='offset points', bbox = dict(boxstyle="round", fc="0.8"), arrowprops = dict(arrowstyle="->"))
     x_range = math.exp(max(abs(math.log(max(cdf_x))), abs(math.log(min(cdf_x)))))
     ax.set_xlim(1/x_range, x_range)
     ax.set_xscale('log')
