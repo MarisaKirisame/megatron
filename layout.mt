@@ -176,6 +176,10 @@ proc pass_0() {
     then true
     else if self.display = "grid"
     then true
+    else if self.display = "table-caption"
+    then true
+    else if self.display = "flow-root"
+    then false
     else panic("line_break: ", self.display);
 
   children.pass_0();
@@ -469,6 +473,10 @@ proc pass_0() {
       (get_name() = "YT-INTERACTION") ||
       (get_name() = "YTD-PERMISSION-ROLE-BOTTOM-BAR-RENDERER") ||
       (get_name() = "CUSTOM-STYLE") ||
+      (get_name() = "CAPTION") ||
+      (get_name() = "DFN") ||
+      (get_name() = "BDI") ||
+      (get_name() = "CITE") ||
       (get_name() = "STRONG")
     then true
     else if 

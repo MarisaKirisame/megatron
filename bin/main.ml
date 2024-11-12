@@ -377,6 +377,10 @@ let default_tag : (string, unit) Hashtbl.t =
          "YT-IMG-SHADOW";
          "YT-INLINE-PLAYER-CONTROLS";
          "SAN";
+         "CAPTION";
+         "DFN";
+         "CITE";
+         "BDI";
        ])
 
 let rec node_to_html_buffer (b : Buffer.t) (parent_x : int) (parent_y : int) (n : _ node) : unit =
@@ -856,7 +860,7 @@ module Main (EVAL : Eval) = struct
   let () = if is_static then () else run_dynamic ()
 end
 
-(*module DEBUG = Main (Megatron.EvalPQ.EVAL (S))*)
+module DEBUG = Main (Megatron.EvalPQ.EVAL (S))
 
 (*module MainFSI = Main (Megatron.EvalFS.EVAL (S))*)
 (*module MainFSC = Main (Megatron.EvalFS.EVAL (D))*)
