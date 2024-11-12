@@ -42,7 +42,7 @@ def count():
     COUNTER += 1
     return ret
 
-with open('archive.trace') as f:
+with open('twitter_main.trace') as f:
     for l in f.readlines():
         j = json.loads(l)
         print(f'===================== #{count()} =====================')
