@@ -250,7 +250,7 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
     ax.set_xlabel(plot_label(f'{xs_name}_{name}'))
     ax.set_ylabel(plot_label(f'{ys_name}_{name}'))
 
-    pic_path1 = f"{count()}.svg"
+    pic_path1 = f"{count()}.png"
 
     fig.set_dpi(300)
     fig.set_figheight(6)
@@ -288,7 +288,7 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
     ax.set_ylabel("Probability")
     fig.set_figheight(6)
     fig.set_figwidth(6)
-    pic_path2 = f"{count()}.svg"
+    pic_path2 = f"{count()}.png"
     fig.savefig(out_path + pic_path2, bbox_inches='tight')
 
     plt.close()
@@ -386,7 +386,7 @@ def compare(x_name, y_name, *, prefix="", predicate=(lambda v: True), tex):
         ax.xaxis.set_major_formatter(StrMethodFormatter('{x:.0f}'))
         ax.xaxis.set_minor_formatter(NullFormatter())
 
-        pic_path = f"{count()}.svg"
+        pic_path = f"{count()}.png"
         ax.set_xlabel("Number of Nodes Accessed")
         ax.legend(loc="upper right")
         plt.savefig(out_path + pic_path, bbox_inches='tight')
@@ -420,7 +420,7 @@ def hist(xs, bins, label):
     ax.xaxis.set_major_formatter(StrMethodFormatter('{x:.0f}'))
     ax.xaxis.set_minor_formatter(NullFormatter())
 
-    pic_path = f"{count()}.svg"
+    pic_path = f"{count()}.png"
     ax.set_xlabel(label)
     plt.savefig(out_path + pic_path, bbox_inches='tight')
     plt.clf()
