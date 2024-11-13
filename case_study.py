@@ -6,6 +6,7 @@ font_manager.fontManager.addfont('LinBiolinum_Rah.ttf')
 prop = font_manager.FontProperties(fname='LinBiolinum_Rah.ttf')
 plt.rcParams['font.family'] = 'sans-serif'
 plt.rcParams['font.sans-serif'] = prop.get_name()
+plt.rcParams['font.size'] = 16
 
 fig, ax = plt.subplots()
 
@@ -79,4 +80,4 @@ ax.xaxis.set_minor_formatter(NullFormatter())
 
 ax.set_xlabel("Delta Size")
 
-fig.savefig('case_study.svg')
+fig.savefig('CaseStudy.svg', bbox_inches='tight')
