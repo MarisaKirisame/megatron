@@ -374,7 +374,10 @@ def compare(x_name, y_name, *, prefix="", predicate=(lambda v: True), tex):
         fig, ax = plt.subplots()
 
         # a histogram returns 3 objects : n (i.e. frequncies), bins, patches
-        freq, bins, patches = ax.hist((db_meta_read, pq_meta_read), bins=np.geomspace(1, max(db_meta_read + pq_meta_read), 10).tolist(), edgecolor='black')
+        freq, bins, patches = ax.hist((pq_meta_read, db_meta_read),
+                                      bins=np.geomspace(1, max(db_meta_read + pq_meta_read), 10).tolist(),
+                                      edgecolor='black',
+                                      label=["Spineless Traversal", "Double Dirty Bit"])
         ax.set_xticks(bins)
         ax.set_xscale("log")
 
@@ -383,7 +386,7 @@ def compare(x_name, y_name, *, prefix="", predicate=(lambda v: True), tex):
         ax.xaxis.set_minor_formatter(NullFormatter())
 
         pic_path = f"{count()}.svg"
-        ax.set_xlabel("")
+        ax.set_xlabel("Number of Nodes Accessed")
         plt.savefig(out_path + pic_path, bbox_inches='tight')
         plt.clf()
         img(src=pic_path)
