@@ -1,4 +1,11 @@
 import matplotlib.pyplot as plt
+from matplotlib import font_manager
+import numpy as np
+
+font_manager.fontManager.addfont('LinBiolinum_Rah.ttf')
+prop = font_manager.FontProperties(fname='LinBiolinum_Rah.ttf')
+plt.rcParams['font.family'] = 'sans-serif'
+plt.rcParams['font.sans-serif'] = prop.get_name()
 
 fig, ax = plt.subplots()
 
@@ -63,7 +70,7 @@ size = [
 ]
 print(len(size))
 print(len([x for x in size if x <= 20]))
-ax.hist(size, [1,2,5,10,20,50,100,200,500,1000], edgecolor='black')
+ax.hist(size, np.geomspace(1, 1000, 8).tolist(), edgecolor='black')
 ax.set_xscale("log")
 
 from matplotlib.ticker import StrMethodFormatter, NullFormatter
@@ -71,6 +78,5 @@ ax.xaxis.set_major_formatter(StrMethodFormatter('{x:.0f}'))
 ax.xaxis.set_minor_formatter(NullFormatter())
 
 ax.set_xlabel("Delta Size")
-ax.set_ylabel("Number of Delta")
 
-plt.show()
+fig.savefig('case_study.svg')
