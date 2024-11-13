@@ -137,7 +137,6 @@ def per_trace(trace_out_path):
         diff_num = j["diff_num"]
         if diff_num not in j_by_diff:
             j_by_diff[diff_num] = []
-            new_diff()
         j_by_diff[diff_num].append(j)
     strip_default = default_count_to_strip_default(default_count)
 
@@ -334,7 +333,7 @@ def compare(x_name, y_name, *, prefix="", predicate=(lambda v: True), tex):
     tree_size = []
     db_meta_read = []
     pq_meta_read = []
-    
+
     for v in overhead_htbl.keys():
         if eval_htbl[v][f"{y_name}_D"] != 0 and predicate(v):
             x = overhead_htbl[v][f"{x_name}_D"]
@@ -369,8 +368,8 @@ def compare(x_name, y_name, *, prefix="", predicate=(lambda v: True), tex):
 
     if x_name == "DB" and y_name == "PQ":
         hist(tree_size, "Tree Size")
-        hist([x for x in db_meta_read if x <= 200], "Spine+1 (<=200)")
-        hist([x for x in pq_meta_read if x <= 100], "Dirtied Elements Count (<=100)")
+        hist([x for x in db_meta_read if x <= 200], [1,2,5,10,20,50,100,200,500,1000,2000,5000,10000,20000], "Spine+1")
+        hist([x for x in pq_meta_read if x <= 100], [1,2,5,10,20,50,100,200,500,1000,2000,5000,10000,20000], "Dirtied Elements Count")
         hist(db_meta_read, "Spine+1")
         hist(pq_meta_read, "Dirtied Elements Count")
 
@@ -386,9 +385,9 @@ def run_compare(*, tex=False):
     compare("DB", "PQ", prefix="small_", predicate=is_small, tex=tex)
     compare("DB", "PQ", prefix="large_", predicate=(lambda v: not is_small(v)), tex=tex)
 
-def hist(xs, label):
+def hist(xs, bins, label):
     # a histogram returns 3 objects : n (i.e. frequncies), bins, patches
-    freq, bins, patches = plt.hist(xs, edgecolor='black')
+    freq, bins, patches = plt.hist(xs, bins=bins, edgecolor='black')
     plt.xticks(bins)
 
     pic_path = f"{count()}.svg"
@@ -407,6 +406,9 @@ with doc:
 
     run_compare(tex=True)
     
+for v in overhead_htbl.keys():
+    if eval_htbl[v][f"{y_name}_D"] != 0:
+        new_diff()
 
 write_to(out_path + "index.html", str(doc))
 output_tex(f"\\newcommand{{\\TotalDiffCount}}{{{total_diff_count}}}\n")
