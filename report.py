@@ -11,6 +11,8 @@ import matplotlib.pyplot as plt
 from matplotlib import font_manager
 import numpy as np
 
+FIG_SIZE = 5
+
 font_manager.fontManager.addfont('LinBiolinum_Rah.ttf')
 prop = font_manager.FontProperties(fname='LinBiolinum_Rah.ttf')
 plt.rcParams['font.family'] = 'sans-serif'
@@ -254,8 +256,8 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
     pic_path1 = f"{count()}.svg"
 
     fig.set_dpi(300)
-    fig.set_figheight(6)
-    fig.set_figwidth(6)
+    fig.set_figheight(FIG_SIZE)
+    fig.set_figwidth(FIG_SIZE)
     fig.savefig(out_path + pic_path1, bbox_inches='tight')
 
     plt.close()
@@ -287,8 +289,8 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
             return x
     ax.set_xlabel(cdf_xlabel(f'{xs_name}_{name}'))
     ax.set_ylabel("Probability")
-    fig.set_figheight(6)
-    fig.set_figwidth(6)
+    fig.set_figheight(FIG_SIZE)
+    fig.set_figwidth(FIG_SIZE)
     pic_path2 = f"{count()}.svg"
     fig.savefig(out_path + pic_path2, bbox_inches='tight')
 
