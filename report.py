@@ -387,6 +387,7 @@ def compare(x_name, y_name, *, prefix="", predicate=(lambda v: True), tex):
 
         pic_path = f"{count()}.svg"
         ax.set_xlabel("Number of Nodes Accessed")
+        ax.legend(loc="upper right")
         plt.savefig(out_path + pic_path, bbox_inches='tight')
         plt.clf()
         img(src=pic_path)
