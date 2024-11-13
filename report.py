@@ -368,8 +368,8 @@ def compare(x_name, y_name, *, prefix="", predicate=(lambda v: True), tex):
 
     if x_name == "DB" and y_name == "PQ":
         hist(tree_size, [1,2,5,10,20,50,100,200,500,1000,2000,5000,10000,20000], "Tree Size")
-        hist(db_meta_read, [1,2,5,10,20,50,100,200,500,1000, 2000], "Spine+1")
-        hist(pq_meta_read, [1,2,5,10,20,50,100,200,500,1000, 2000], "Dirtied Elements Count")
+        hist(db_meta_read, [1,2,5,10,20,50,100,200,500,1000, 2000], "Number of Nodes Accessed by Double Dirty Bit")
+        hist(pq_meta_read, [1,2,5,10,20,50,100,200,500,1000, 2000], "Number of Nodes Accessed by Spineless Traversal")
 
 def run_compare(*, tex=False):
     # compare("NE", "DB")
