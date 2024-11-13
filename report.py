@@ -384,13 +384,19 @@ def run_compare(*, tex=False):
     compare("DB", "PQ", prefix="large_", predicate=(lambda v: not is_small(v)), tex=tex)
 
 def hist(xs, bins, label):
+    fig, ax = plt.subplots()
+
     # a histogram returns 3 objects : n (i.e. frequncies), bins, patches
-    freq, bins, patches = plt.hist(xs, bins=bins, edgecolor='black')
-    plt.xticks(bins)
+    freq, bins, patches = ax.hist(xs, bins=bins, edgecolor='black')
+    ax.set_xticks(bins)
+    ax.set_xscale("log")
+
+    from matplotlib.ticker import StrMethodFormatter, NullFormatter
+    ax.xaxis.set_major_formatter(StrMethodFormatter('{x:.0f}'))
+    ax.xaxis.set_minor_formatter(NullFormatter())
 
     pic_path = f"{count()}.svg"
-    plt.xscale("log")
-    plt.xlabel(label)
+    ax.set_xlabel(label)
     plt.savefig(out_path + pic_path, bbox_inches='tight')
     plt.clf()
     img(src=pic_path)
