@@ -15,6 +15,7 @@ font_manager.fontManager.addfont('LinBiolinum_Rah.ttf')
 prop = font_manager.FontProperties(fname='LinBiolinum_Rah.ttf')
 plt.rcParams['font.family'] = 'sans-serif'
 plt.rcParams['font.sans-serif'] = prop.get_name()
+plt.rcParams['font.size'] = 16
 
 def tex_string(x):
     return x.replace("_", "")
