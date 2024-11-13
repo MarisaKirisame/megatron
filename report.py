@@ -15,7 +15,7 @@ font_manager.fontManager.addfont('LinBiolinum_Rah.ttf')
 prop = font_manager.FontProperties(fname='LinBiolinum_Rah.ttf')
 plt.rcParams['font.family'] = 'sans-serif'
 plt.rcParams['font.sans-serif'] = prop.get_name()
-plt.rcParams['font.size'] = 16
+plt.rcParams['font.size'] = 13
 
 def tex_string(x):
     return x.replace("_", "")
@@ -185,7 +185,7 @@ def per_trace(trace_out_path):
                     tr(*[td(j[h]) for h in header])
 
         run_compare()
-    
+
     page_path = f"{count()}.html"
     write_to(out_path + page_path, str(doc))
 
@@ -233,7 +233,7 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
         ax.set_ylim(min_value / 2, max_value * 2)
 
     scatterplot()
-    
+
     def histoplot():
         # https://matplotlib.org/stable/users/explain/colors/colormaps.html#colormaps
         # cmap = 'viridis' # purple to yellow
@@ -251,7 +251,7 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
     ax.set_xlabel(plot_label(f'{xs_name}_{name}'))
     ax.set_ylabel(plot_label(f'{ys_name}_{name}'))
 
-    pic_path1 = f"{count()}.png"
+    pic_path1 = f"{count()}.svg"
 
     fig.set_dpi(300)
     fig.set_figheight(6)
@@ -273,7 +273,7 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
         output_tex(f"""\\newcommand{{{tex_string(command_name + "pct_slowdown")}}}{{{tex_percentage(pct_slowdown)}}}\n""")
         output_tex(f"""\\newcommand{{{tex_string(command_name + "pct_speedup")}}}{{{tex_percentage(1 - pct_slowdown)}}}\n""")
     ax.plot(cdf_x, cdf_y)
-    ax.axvline(x=1,c='black',linewidth=0.5)                    
+    ax.axvline(x=1,c='black',linewidth=0.5)
     ax.annotate(f'{pct_slowdown:.2f}', xy=(1, pct_slowdown), xytext=(-50, 0), textcoords='offset points', bbox = dict(boxstyle="round", fc="0.8"), arrowprops = dict(arrowstyle="->"))
     x_range = math.exp(max(abs(math.log(max(cdf_x))), abs(math.log(min(cdf_x)))))
     ax.set_xlim(1/x_range, x_range)
@@ -289,7 +289,7 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
     ax.set_ylabel("Probability")
     fig.set_figheight(6)
     fig.set_figwidth(6)
-    pic_path2 = f"{count()}.png"
+    pic_path2 = f"{count()}.svg"
     fig.savefig(out_path + pic_path2, bbox_inches='tight')
 
     plt.close()
@@ -300,7 +300,7 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
         def make_table(title, mp):
             with table(border="1", style="display:inline-table"):
                 caption(title)
-                with thead():                   
+                with thead():
                     tr(td("fraction"), td("geomean"))
                 with tbody():
                     for geomean, percentage in mp:
@@ -323,7 +323,7 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
         make_table("clustering", mp)
         make_table("slowdown:speedup", points_to_mp([[(xs[i], ys[i]) for i in range(len(xs)) if xs[i] <= ys[i]], [(xs[i], ys[i]) for i in range(len(xs)) if xs[i] > ys[i]]]))
         make_table(">1e6:<=1e6", points_to_mp([[(xs[i], ys[i]) for i in range(len(xs)) if xs[i] > 1e6], [(xs[i], ys[i]) for i in range(len(xs)) if xs[i] <= 1e6]]))
-        
+
         img(src=pic_path2)
 
         span(f"arithmean={sum(xs)/sum(ys):.2f}")
@@ -387,7 +387,7 @@ def compare(x_name, y_name, *, prefix="", predicate=(lambda v: True), tex):
         ax.xaxis.set_major_formatter(StrMethodFormatter('{x:.0f}'))
         ax.xaxis.set_minor_formatter(NullFormatter())
 
-        pic_path = f"{count()}.png"
+        pic_path = f"{count()}.svg"
         ax.set_xlabel("Number of Nodes Accessed")
         ax.legend(loc="upper right")
         plt.savefig(out_path + pic_path, bbox_inches='tight')
@@ -407,7 +407,7 @@ def run_compare(*, tex=False):
     compare("DB", "PQ", prefix="small_", predicate=is_small, tex=tex)
     compare("DB", "PQ", prefix="large_", predicate=(lambda v: not is_small(v)), tex=tex)
 
-    
+
 
 def hist(xs, bins, label):
     fig, ax = plt.subplots()
@@ -421,7 +421,7 @@ def hist(xs, bins, label):
     ax.xaxis.set_major_formatter(StrMethodFormatter('{x:.0f}'))
     ax.xaxis.set_minor_formatter(NullFormatter())
 
-    pic_path = f"{count()}.png"
+    pic_path = f"{count()}.svg"
     ax.set_xlabel(label)
     plt.savefig(out_path + pic_path, bbox_inches='tight')
     plt.clf()
@@ -435,7 +435,7 @@ with doc:
         br()
 
     run_compare(tex=True)
-    
+
 for v in overhead_htbl.keys():
     if eval_htbl[v][f"PQ_D"] != 0:
         new_diff()
