@@ -423,8 +423,13 @@ def hist(xs, bins, label):
     ax.xaxis.set_major_formatter(StrMethodFormatter('{x:.0f}'))
     ax.xaxis.set_minor_formatter(NullFormatter())
 
-    pic_path = f"{count()}.svg"
     ax.set_xlabel(label)
+
+    fig.set_dpi(300)
+    fig.set_figheight(FIG_SIZE)
+    fig.set_figwidth(FIG_SIZE)
+
+    pic_path = f"{count()}.svg"
     plt.savefig(out_path + pic_path, bbox_inches='tight')
     plt.clf()
     img(src=pic_path)
