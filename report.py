@@ -370,8 +370,6 @@ def compare(x_name, y_name, *, prefix="", predicate=(lambda v: True), tex):
         hist(tree_size, [1,2,5,10,20,50,100,200,500,1000,2000,5000,10000,20000], "Tree Size")
         hist([x for x in db_meta_read if x <= 200], [1,2,5,10,20,50,100,200,500,1000,2000,5000,10000,20000], "Spine+1")
         hist([x for x in pq_meta_read if x <= 100], [1,2,5,10,20,50,100,200,500,1000,2000,5000,10000,20000], "Dirtied Elements Count")
-        hist(db_meta_read, "Spine+1")
-        hist(pq_meta_read, "Dirtied Elements Count")
 
 def run_compare(*, tex=False):
     # compare("NE", "DB")
