@@ -15,16 +15,35 @@ output = open("command.json", "w")
 def out(x):
     output.write(json.dumps(x) + "\n")    
 
+class Counter:
+    def __init__(self):
+        self.cnt = 0
+    def count(self):
+        self.cnt += 1
+    def num(self):
+        return self.cnt
+
+INSERT_COUNT = Counter()
+REMOVE_COUNT = Counter()
+REPLACE_COUNT = Counter()
+REPLACE_VALUE_COUNT = Counter()
+INSERT_VALUE_COUNT = Counter()
+DELETE_VALUE_COUNT = Counter()
+
 def diff_simple_dict(l_dict, r_dict, path, on, type_):
     for k in l_dict.keys():
         if k in r_dict:
             if l_dict[k] != r_dict[k]:
+                REPLACE_VALUE_COUNT.count()
                 out(command_replace_value(path, on, type_, k, l_dict[k], r_dict[k]))
         else:
+            DELETE_VALUE_COUNT.count()
             out(command_delete_value(path, on, type_, k, l_dict[k]))
     for k in r_dict.keys():
         if k not in l_dict:
+            INSERT_VALUE_COUNT.count()
             out(command_insert_value(path, on, type_, k, r_dict[k]))
+
 
 # tree diffing is very hard.
 # one possible road is to use difftastic, but conversion between our stuff and theirs is also very hard.
@@ -32,6 +51,7 @@ def diff_simple_dict(l_dict, r_dict, path, on, type_):
 def diff_dom_tree(lhs, rhs, path):
     if lhs["id"] != rhs["id"]:
         report_diff(rhs)
+        REPLACE_COUNT.count()
         out(command_replace(path, lhs, rhs))
     else:
         if lhs["attributes"] != rhs["attributes"]:
@@ -53,12 +73,14 @@ def diff_dom_tree(lhs, rhs, path):
                 if l_ids[l_i] == r_id:
                     assert not found
                     for x in range(l_i - unused_l_i):
+                        REMOVE_COUNT.count()
                         out(command_remove(path + [r_i], l_children[unused_l_i + x]))
                     diff_dom_tree(l_children[l_i], r_children[r_i], path + [r_i])
                     unused_l_i = l_i + 1
                     found = True
                     break
             if not found:
+                INSERT_COUNT.count()
                 out(command_add(path + [r_i], r_children[r_i]))                
 
 def layout_info(node):
@@ -112,3 +134,5 @@ with open(trace_path) as f:
         layout_tree_old = layout_tree
 
 print((TOTAL_DIFF_SIZE, TOTAL_SIZE))
+
+print((INSERT_COUNT.num(), REMOVE_COUNT.num(), REPLACE_COUNT.num(), REPLACE_VALUE_COUNT.num(), INSERT_VALUE_COUNT.num(), DELETE_VALUE_COUNT.num()))

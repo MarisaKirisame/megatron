@@ -225,7 +225,7 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
         for nc in range(n_clusters):
             sub_xs = [xs[i] for i in range(len(speedup)) if est.labels_[i] == nc]
             sub_ys = [ys[i] for i in range(len(speedup)) if est.labels_[i] == nc]
-            ax.scatter(sub_xs, sub_ys, color="#1f77b4", alpha=0.5, edgecolor="none")
+            ax.scatter(sub_xs, sub_ys, color="#1f77b4", alpha=0.3, edgecolor="none")
         ax.plot([min_value, max_value], [min_value, max_value], color="black")
         ax.set_xscale('log')
         ax.set_yscale('log')
