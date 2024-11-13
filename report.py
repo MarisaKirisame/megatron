@@ -387,7 +387,7 @@ def hist(xs, bins, label):
     fig, ax = plt.subplots()
 
     # a histogram returns 3 objects : n (i.e. frequncies), bins, patches
-    freq, bins, patches = ax.hist(xs, bins=bins, edgecolor='black')
+    freq, bins, patches = ax.hist(xs, bins=np.geomspace(1, max(xs), 10).tolist(), edgecolor='black')
     ax.set_xticks(bins)
     ax.set_xscale("log")
 
