@@ -266,7 +266,7 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
     pct_slowdown = np.interp(1.0, cdf_x, cdf_y)
     def tex_percentage(x):
         return f"{x * 100:.1f}\\%"
-    command_name = "\\" + xs_name + ys_name
+    command_name = "\\" + xs_name + ys_name + name
     if tex and name in ["overhead", "small_overhead"]:
         output_tex(f"""\\newcommand{{{tex_string(command_name + "Count")}}}{{{len(xs)}}}\n""")
         output_tex(f"""\\newcommand{{{tex_string(command_name + "pct_slowdown")}}}{{{tex_percentage(pct_slowdown)}}}\n""")
