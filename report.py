@@ -268,6 +268,7 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
         return f"{x * 100:.1f}\\%"
     command_name = "\\" + xs_name + ys_name
     if tex and name == "overhead":
+        output_tex(f"""\\newcommand{{{tex_string(command_name + "Count")}}}{{{len(xs)}}}\n""")
         output_tex(f"""\\newcommand{{{tex_string(command_name + "pct_slowdown")}}}{{{tex_percentage(pct_slowdown)}}}\n""")
         output_tex(f"""\\newcommand{{{tex_string(command_name + "pct_speedup")}}}{{{tex_percentage(1 - pct_slowdown)}}}\n""")
     ax.plot(cdf_x, cdf_y)
