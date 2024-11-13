@@ -21,4 +21,4 @@ for t in trace_list:
     process(t)
 
 shell("python3 report.py")
-clean()
+#clean()
