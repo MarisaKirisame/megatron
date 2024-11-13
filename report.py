@@ -405,7 +405,7 @@ with doc:
     run_compare(tex=True)
     
 for v in overhead_htbl.keys():
-    if eval_htbl[v][f"{y_name}_D"] != 0:
+    if eval_htbl[v][f"PQ_D"] != 0:
         new_diff()
 
 write_to(out_path + "index.html", str(doc))
