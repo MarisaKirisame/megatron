@@ -389,7 +389,7 @@ def hist(xs, bins, label):
     plt.xticks(bins)
 
     pic_path = f"{count()}.svg"
-    #plt.xscale("log")
+    plt.xscale("log")
     plt.xlabel(label)
     plt.savefig(out_path + pic_path, bbox_inches='tight')
     plt.clf()
