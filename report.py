@@ -383,7 +383,7 @@ def compare(x_name, y_name, *, prefix="", predicate=(lambda v: True), tex):
         ax.xaxis.set_minor_formatter(NullFormatter())
 
         pic_path = f"{count()}.svg"
-        ax.set_xlabel(label)
+        ax.set_xlabel("")
         plt.savefig(out_path + pic_path, bbox_inches='tight')
         plt.clf()
         img(src=pic_path)
