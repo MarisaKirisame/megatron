@@ -420,6 +420,8 @@ def hist2(xs1, xs2, xlabel, label1, label2):
     ax.bar(bins[:-1], heights1, np.diff(bins) * 0.9, align='edge', edgecolor='black', color=(0.8, 0.1, 0.1, 0.3), label=label1)
     ax.bar(bins[1:], heights2, -np.diff(bins) * 0.95, align='edge', edgecolor='black', color=(0.1, 0.8, 0.1, 0.3), label=label2)
     ax.set_xlabel(xlabel)
+    ax.xaxis.set_major_formatter(StrMethodFormatter('{x:.0f}'))
+    ax.xaxis.set_minor_formatter(NullFormatter())
     ax.legend()
     pic_path = f"{count()}.svg"
     plt.savefig(out_path + pic_path)
