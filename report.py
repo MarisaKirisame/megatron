@@ -256,6 +256,8 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
     pic_path1 = f"{count()}.svg"
 
     fig.set_dpi(300)
+    ax.tick_params(which="major", width=2, length=8)
+    ax.tick_params(which="minor", width=1, length=4)
     fig.set_figheight(FIG_SIZE)
     fig.set_figwidth(FIG_SIZE)
     fig.savefig(out_path + pic_path1, bbox_inches='tight')
@@ -289,8 +291,8 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
             return x
     ax.set_xlabel(cdf_xlabel(f'{xs_name}_{name}'))
     ax.set_ylabel("Probability")
-    ax.tick_params(which="major", width=2, length=4)
-    ax.tick_params(which="minor", width=1, length=2)
+    ax.tick_params(which="major", width=2, length=8)
+    ax.tick_params(which="minor", width=1, length=4)
     fig.set_figheight(FIG_SIZE)
     fig.set_figwidth(FIG_SIZE)
     pic_path2 = f"{count()}.svg"
@@ -428,6 +430,8 @@ def hist(xs, bins, label):
     ax.set_xlabel(label)
 
     fig.set_dpi(300)
+    ax.tick_params(which="major", width=2, length=8)
+    ax.tick_params(which="minor", width=1, length=4)
     fig.set_figheight(FIG_SIZE)
     fig.set_figwidth(FIG_SIZE)
 
