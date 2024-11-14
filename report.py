@@ -10,6 +10,7 @@ from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
 from matplotlib import font_manager
 import numpy as np
+from matplotlib.ticker import FuncFormatter, NullFormatter
 
 FIG_SIZE = 5
 
@@ -222,17 +223,18 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
         mp.append((math.exp(sum(sub)/len(sub)), 100 * len(sub)/len(speedup)))
     mp.sort()
 
-    fig, ax = plt.subplots()
+    fig, (ax1, ax2) = plt.subplots(1, 2, layout='constrained')
+
     def scatterplot():
         for nc in range(n_clusters):
             sub_xs = [xs[i] for i in range(len(speedup)) if est.labels_[i] == nc]
             sub_ys = [ys[i] for i in range(len(speedup)) if est.labels_[i] == nc]
-            ax.scatter(sub_xs, sub_ys, color="#1f77b4", alpha=0.3, edgecolor="none")
-        ax.plot([min_value, max_value], [min_value, max_value], color="black")
-        ax.set_xscale('log')
-        ax.set_yscale('log')
-        ax.set_xlim(min_value / 2, max_value * 2)
-        ax.set_ylim(min_value / 2, max_value * 2)
+            ax1.scatter(sub_xs, sub_ys, color="#1f77b4", alpha=0.3, edgecolor="none")
+        ax1.plot([min_value, max_value], [min_value, max_value], color="black")
+        ax1.set_xscale('log')
+        ax1.set_yscale('log')
+        ax1.set_xlim(min_value / 2, max_value * 2)
+        ax1.set_ylim(min_value / 2, max_value * 2)
 
     scatterplot()
 
@@ -250,21 +252,16 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
         ax.set_ylim(min_value / 2, max_value * 2)
         ax.hist2d(xs, ys, bins=(np.geomspace(min_value, max_value, 50), np.geomspace(min_value, max_value, 50)), cmap=cmap)
 
-    ax.set_xlabel(plot_label(f'{xs_name}_{name}'))
-    ax.set_ylabel(plot_label(f'{ys_name}_{name}'))
+    ax1.set_xlabel(plot_label(f'{xs_name}_{name}'))
+    ax1.set_ylabel(plot_label(f'{ys_name}_{name}'))
 
+    ax1.tick_params(which="major", width=1, length=8)
+    ax1.tick_params(which="minor", width=1, length=4)
+    fig.set_dpi(300)
+    fig.set_figheight(FIG_SIZE)
+    fig.set_figwidth(2 * FIG_SIZE)
     pic_path1 = f"{count()}.svg"
 
-    fig.set_dpi(300)
-    ax.tick_params(which="major", width=1, length=8)
-    ax.tick_params(which="minor", width=1, length=4)
-    fig.set_figheight(FIG_SIZE)
-    fig.set_figwidth(FIG_SIZE)
-    fig.savefig(out_path + pic_path1, bbox_inches='tight')
-
-    plt.close()
-
-    fig, ax = plt.subplots()
     cdf_x = sorted([xs[i]/ys[i] for i in range(len(xs))])
     cdf_y = [(i + 1)/len(cdf_x) for i in range(len(cdf_x))]
 
@@ -276,12 +273,12 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
         output_tex(f"""\\newcommand{{{tex_string(command_name + "Count")}}}{{{len(xs)}}}\n""")
         output_tex(f"""\\newcommand{{{tex_string(command_name + "pct_slowdown")}}}{{{tex_percentage(pct_slowdown)}}}\n""")
         output_tex(f"""\\newcommand{{{tex_string(command_name + "pct_speedup")}}}{{{tex_percentage(1 - pct_slowdown)}}}\n""")
-    ax.plot(cdf_x, cdf_y)
-    ax.axvline(x=1,c='black',linewidth=0.5)
-    ax.annotate(f'{pct_slowdown:.2f}', xy=(1, pct_slowdown), xytext=(-50, 0), textcoords='offset points', bbox = dict(boxstyle="round", fc="0.8"), arrowprops = dict(arrowstyle="->"))
+    ax2.plot(cdf_x, cdf_y)
+    ax2.axvline(x=1,c='black',linewidth=0.5)
+    ax2.annotate('{:.0f}%'.format(pct_slowdown * 100), xy=(1, pct_slowdown), xytext=(-50, 0), textcoords='offset points', bbox = dict(boxstyle="round", fc="0.8"), arrowprops = dict(arrowstyle="->"))
     x_range = math.exp(max(abs(math.log(max(cdf_x))), abs(math.log(min(cdf_x)))))
-    ax.set_xlim(1/x_range, x_range)
-    ax.set_xscale('log')
+    ax2.set_xlim(1/x_range, x_range)
+    ax2.set_xscale('log')
     def cdf_xlabel(x):
         if x == "DB_overhead":
             return "Speed of Spineless Traversal over Double Dirty Bit"
@@ -289,14 +286,12 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
             return "(Incremental) Speed of Spineless Traversal over Double Dirty Bit"
         else:
             return x
-    ax.set_xlabel(cdf_xlabel(f'{xs_name}_{name}'))
-    ax.set_ylabel("Probability")
-    ax.tick_params(which="major", width=1, length=8)
-    ax.tick_params(which="minor", width=1, length=4)
-    fig.set_figheight(FIG_SIZE)
-    fig.set_figwidth(FIG_SIZE)
-    pic_path2 = f"{count()}.svg"
-    fig.savefig(out_path + pic_path2, bbox_inches='tight')
+    ax2.set_xlabel(cdf_xlabel(f'{xs_name}_{name}'))
+    ax2.set_ylabel("Percentage")
+    ax2.yaxis.set_major_formatter(FuncFormatter(lambda x, pos: "{:.0f}%".format(x * 100)))
+    ax2.yaxis.set_minor_formatter(NullFormatter())
+
+    fig.savefig(out_path + pic_path1)
 
     plt.close()
 
@@ -330,7 +325,7 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
         make_table("slowdown:speedup", points_to_mp([[(xs[i], ys[i]) for i in range(len(xs)) if xs[i] <= ys[i]], [(xs[i], ys[i]) for i in range(len(xs)) if xs[i] > ys[i]]]))
         make_table(">1e6:<=1e6", points_to_mp([[(xs[i], ys[i]) for i in range(len(xs)) if xs[i] > 1e6], [(xs[i], ys[i]) for i in range(len(xs)) if xs[i] <= 1e6]]))
 
-        img(src=pic_path2)
+        # img(src=pic_path2)
 
         span(f"arithmean={sum(xs)/sum(ys):.2f}")
 
@@ -378,6 +373,7 @@ def compare(x_name, y_name, *, prefix="", predicate=(lambda v: True), tex):
         hist(tree_size, [1,2,5,10,20,50,100,200,500,1000,2000,5000,10000,20000], "Tree Size")
         hist(db_meta_read, [1,2,5,10,20,50,100,200,500,1000, 2000], "Number of Nodes Accessed by Double Dirty Bit")
         hist(pq_meta_read, [1,2,5,10,20,50,100,200,500,1000, 2000], "Number of Nodes Accessed by Spineless Traversal")
+        hist2(db_meta_read, pq_meta_read, "Number of Nodes Accessed", "Double Dirty Bit", "Spineless Traversal")
 
         fig, ax = plt.subplots()
 
@@ -396,8 +392,8 @@ def compare(x_name, y_name, *, prefix="", predicate=(lambda v: True), tex):
         pic_path = f"{count()}.svg"
         ax.set_xlabel("Number of Nodes Accessed")
         ax.legend(loc="upper right")
-        plt.savefig(out_path + pic_path, bbox_inches='tight')
-        plt.clf()
+        plt.savefig(out_path + pic_path)
+        plt.close()
         img(src=pic_path)
 
 
@@ -413,7 +409,20 @@ def run_compare(*, tex=False):
     compare("DB", "PQ", prefix="small_", predicate=is_small, tex=tex)
     compare("DB", "PQ", prefix="large_", predicate=(lambda v: not is_small(v)), tex=tex)
 
-
+def hist2(xs1, xs2, xlabel, label1, label2):
+    fig, ax = plt.subplots(layout='constrained')
+    bins = np.geomspace(1, max(max(xs1), max(xs2)), 10)
+    (heights1, _) = np.histogram(xs1, bins=bins)
+    (heights2, _) = np.histogram(xs2, bins=bins)
+    ax.set_xscale('log')
+    ax.bar(bins[:-1], heights1, np.diff(bins) * 0.9, align='edge', edgecolor='black', color=(0.8, 0.1, 0.1, 0.3), label=label1)
+    ax.bar(bins[1:], heights2, -np.diff(bins) * 0.95, align='edge', edgecolor='black', color=(0.1, 0.8, 0.1, 0.3), label=label2)
+    ax.set_xlabel(xlabel)
+    ax.legend()
+    pic_path = f"{count()}.svg"
+    plt.savefig(out_path + pic_path)
+    plt.close()
+    img(src=pic_path)
 
 def hist(xs, bins, label):
     fig, ax = plt.subplots()
@@ -437,7 +446,7 @@ def hist(xs, bins, label):
 
     pic_path = f"{count()}.svg"
     plt.savefig(out_path + pic_path, bbox_inches='tight')
-    plt.clf()
+    plt.close()
     img(src=pic_path)
 
 doc = make_doc(title=out_path)
