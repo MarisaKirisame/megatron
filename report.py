@@ -290,6 +290,8 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
     ax2.set_ylabel("Percentage")
     ax2.yaxis.set_major_formatter(FuncFormatter(lambda x, pos: "{:.0f}%".format(x * 100)))
     ax2.yaxis.set_minor_formatter(NullFormatter())
+    ax2.tick_params(which="major", width=1, length=8)
+    ax2.tick_params(which="minor", width=1, length=4)
 
     fig.savefig(out_path + pic_path1)
 

@@ -2,11 +2,13 @@ import matplotlib.pyplot as plt
 from matplotlib import font_manager
 import numpy as np
 
+FIG_SIZE = 5
+
 font_manager.fontManager.addfont('LinBiolinum_Rah.ttf')
 prop = font_manager.FontProperties(fname='LinBiolinum_Rah.ttf')
 plt.rcParams['font.family'] = 'sans-serif'
 plt.rcParams['font.sans-serif'] = prop.get_name()
-plt.rcParams['font.size'] = 16
+plt.rcParams['font.size'] = 13
 
 fig, ax = plt.subplots()
 
@@ -78,6 +80,12 @@ from matplotlib.ticker import StrMethodFormatter, NullFormatter
 ax.xaxis.set_major_formatter(StrMethodFormatter('{x:.0f}'))
 ax.xaxis.set_minor_formatter(NullFormatter())
 
-ax.set_xlabel("Delta Size")
+ax.set_xlabel("Number of Nodes Changed Per Frame")
+
+fig.set_dpi(300)
+ax.tick_params(which="major", width=1, length=8)
+ax.tick_params(which="minor", width=1, length=4)
+fig.set_figheight(FIG_SIZE)
+fig.set_figwidth(FIG_SIZE)
 
 fig.savefig('CaseStudy.svg', bbox_inches='tight')
