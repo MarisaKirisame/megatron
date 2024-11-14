@@ -10,8 +10,7 @@ from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
 from matplotlib import font_manager
 import numpy as np
-from matplotlib.ticker import FuncFormatter, NullFormatter
-
+from matplotlib.ticker import FuncFormatter, NullFormatter, StrMethodFormatter
 FIG_SIZE = 5
 
 font_manager.fontManager.addfont('LinBiolinum_Rah.ttf')
@@ -387,7 +386,6 @@ def compare(x_name, y_name, *, prefix="", predicate=(lambda v: True), tex):
         ax.set_xticks(bins)
         ax.set_xscale("log")
 
-        from matplotlib.ticker import StrMethodFormatter, NullFormatter
         ax.xaxis.set_major_formatter(StrMethodFormatter('{x:.0f}'))
         ax.xaxis.set_minor_formatter(NullFormatter())
 
