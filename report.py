@@ -259,7 +259,7 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
     fig.set_dpi(300)
     fig.set_figheight(FIG_SIZE)
     fig.set_figwidth(2 * FIG_SIZE)
-    pic_path1 = f"{count()}.svg"
+    pic_path1 = f"{count()}.png"
 
     cdf_x = sorted([xs[i]/ys[i] for i in range(len(xs))])
     cdf_y = [(i + 1)/len(cdf_x) for i in range(len(cdf_x))]
@@ -389,7 +389,7 @@ def compare(x_name, y_name, *, prefix="", predicate=(lambda v: True), tex):
         ax.xaxis.set_major_formatter(StrMethodFormatter('{x:.0f}'))
         ax.xaxis.set_minor_formatter(NullFormatter())
 
-        pic_path = f"{count()}.svg"
+        pic_path = f"{count()}.png"
         ax.set_xlabel("Number of Nodes Accessed")
         ax.legend(loc="upper right")
         plt.savefig(out_path + pic_path)
@@ -421,7 +421,7 @@ def hist2(xs1, xs2, xlabel, label1, label2):
     ax.xaxis.set_major_formatter(StrMethodFormatter('{x:.0f}'))
     ax.xaxis.set_minor_formatter(NullFormatter())
     ax.legend()
-    pic_path = f"{count()}.svg"
+    pic_path = f"{count()}.png"
     plt.savefig(out_path + pic_path)
     plt.close()
     img(src=pic_path)
@@ -446,7 +446,7 @@ def hist(xs, bins, label):
     fig.set_figheight(FIG_SIZE)
     fig.set_figwidth(FIG_SIZE)
 
-    pic_path = f"{count()}.svg"
+    pic_path = f"{count()}.png"
     plt.savefig(out_path + pic_path, bbox_inches='tight')
     plt.close()
     img(src=pic_path)
