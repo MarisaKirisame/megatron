@@ -88,4 +88,4 @@ ax.tick_params(which="minor", width=1, length=4)
 fig.set_figheight(FIG_SIZE)
 fig.set_figwidth(FIG_SIZE)
 
-fig.savefig('CaseStudy.svg', bbox_inches='tight')
+fig.savefig('CaseStudy.png', bbox_inches='tight')
