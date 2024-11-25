@@ -412,6 +412,12 @@ def run_compare(json_htbl, *, tex=False):
     compare(json_htbl, "DB", "PQ", prefix="large_", predicate=(lambda v: not is_small(v)), tex=tex)
 
 def hist2(xs1, xs2, xlabel, label1, label2):
+    if len(xs1) == 0:
+        return
+
+    if len(xs2) == 0:
+        return
+    
     fig, ax = plt.subplots(layout='constrained')
     bins = np.geomspace(1, max(max(xs1), max(xs2)), 10)
     (heights1, _) = np.histogram(xs1, bins=bins)
