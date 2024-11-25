@@ -205,6 +205,9 @@ def plot_label(x):
         return x
 
 def plot(xs_name, xs, ys_name, ys, name, *, tex):
+    if len(xs) <= 1:
+        return
+
     min_value = min(min(*xs), min(*ys))
     max_value = max(max(*xs), max(*ys))
 
