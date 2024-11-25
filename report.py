@@ -126,11 +126,10 @@ def get_time(js):
             return j["time"]
     return ""
 
-overhead_htbl = {}
-eval_htbl = {}
 json_htbl = {}
 
 def per_trace(trace_out_path):
+    local_json_htbl = {}
     default_count = {}
     j_by_diff = {}
     for l in readlines_file(trace_out_path):
@@ -168,13 +167,13 @@ def per_trace(trace_out_path):
                         name = j["name"]
 
                         key = trace_out_path + str(j["diff_num"])
-                        if key not in overhead_htbl:
-                            overhead_htbl[key] = {}
-                            eval_htbl[key] = {}
+                        if key not in json_htbl:
                             json_htbl[key] = {}
-                        overhead_htbl[key][name] = j["overhead_time"]
-                        eval_htbl[key][name] = j["eval_time"]
                         json_htbl[key][name] = j
+
+                        if key not in local_json_htbl:
+                            local_json_htbl[key] = {}
+                        local_json_htbl[key][name] = j
 
                         if name not in summary:
                             summary[name] = {"name": name, "diff_num": "total", "html": "NA", "command": "NA", "full_command": "NA", "time": "NA"}
@@ -186,7 +185,7 @@ def per_trace(trace_out_path):
                 for j in summary.values():
                     tr(*[td(j[h]) for h in header])
 
-        run_compare()
+        run_compare(local_json_htbl)
 
     page_path = f"{count()}.html"
     write_to(out_path + page_path, str(doc))
@@ -330,7 +329,7 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
 
         span(f"arithmean={sum(xs)/sum(ys):.2f}")
 
-def compare(x_name, y_name, *, prefix="", predicate=(lambda v: True), tex):
+def compare(json_htbl, x_name, y_name, *, prefix="", predicate=(lambda v: True), tex):
     xs = []
     ys = []
 
@@ -338,10 +337,10 @@ def compare(x_name, y_name, *, prefix="", predicate=(lambda v: True), tex):
     db_meta_read = []
     pq_meta_read = []
 
-    for v in overhead_htbl.keys():
-        if eval_htbl[v][f"{y_name}_D"] != 0 and predicate(v):
-            x = overhead_htbl[v][f"{x_name}_D"]
-            y = overhead_htbl[v][f"{y_name}_D"]
+    for v in json_htbl.keys():
+        if json_htbl[v][f"{y_name}_D"]["eval_time"] != 0 and predicate(v):
+            x = json_htbl[v][f"{x_name}_D"]["overhead_time"]
+            y = json_htbl[v][f"{y_name}_D"]["overhead_time"]
             xs.append(x)
             ys.append(y)
             if x_name == "DB" and y_name == "PQ":
@@ -352,20 +351,20 @@ def compare(x_name, y_name, *, prefix="", predicate=(lambda v: True), tex):
 
     xs = []
     ys = []
-    for v in overhead_htbl.keys():
-        if eval_htbl[v][f"{y_name}_D"] != 0 and predicate(v):
-            x = eval_htbl[v][f"{x_name}_D"]
-            y = eval_htbl[v][f"{y_name}_D"]
+    for v in json_htbl.keys():
+        if json_htbl[v][f"{y_name}_D"]["eval_time"] != 0 and predicate(v):
+            x = json_htbl[v][f"{x_name}_D"]["eval_time"]
+            y = json_htbl[v][f"{y_name}_D"]["eval_time"]
             xs.append(x)
             ys.append(y)
     plot(x_name, xs, y_name, ys, prefix+"eval", tex=tex)
 
     xs = []
     ys = []
-    for v in overhead_htbl.keys():
-        if eval_htbl[v][f"{y_name}_D"] != 0 and predicate(v):
-            x = overhead_htbl[v][f"{x_name}_D"] + eval_htbl[v][f"{x_name}_D"]
-            y = overhead_htbl[v][f"{y_name}_D"] + eval_htbl[v][f"{y_name}_D"]
+    for v in json_htbl.keys():
+        if json_htbl[v][f"{y_name}_D"]["eval_time"] != 0 and predicate(v):
+            x = json_htbl[v][f"{x_name}_D"]["overhead_time"] + json_htbl[v][f"{x_name}_D"]["eval_time"]
+            y = json_htbl[v][f"{y_name}_D"]["overhead_time"] + json_htbl[v][f"{y_name}_D"]["eval_time"]
             xs.append(x)
             ys.append(y)
     plot(x_name, xs, y_name, ys, prefix+"total", tex=tex)
@@ -397,17 +396,17 @@ def compare(x_name, y_name, *, prefix="", predicate=(lambda v: True), tex):
         img(src=pic_path)
 
 
-def run_compare(*, tex=False):
+def run_compare(json_htbl, *, tex=False):
     # compare("NE", "DB")
     # compare("NE", "PQ")
-    compare("DB", "PQ", tex=tex)
+    compare(json_htbl, "DB", "PQ", tex=tex)
     def is_small(v):
         tree_size = json_htbl[v]["PQ_D"]["tree_size"]
         meta_read_count = json_htbl[v]["PQ_D"]["meta_read_count"]
         return meta_read_count * 100 < tree_size * 3
 
-    compare("DB", "PQ", prefix="small_", predicate=is_small, tex=tex)
-    compare("DB", "PQ", prefix="large_", predicate=(lambda v: not is_small(v)), tex=tex)
+    compare(json_htbl, "DB", "PQ", prefix="small_", predicate=is_small, tex=tex)
+    compare(json_htbl, "DB", "PQ", prefix="large_", predicate=(lambda v: not is_small(v)), tex=tex)
 
 def hist2(xs1, xs2, xlabel, label1, label2):
     fig, ax = plt.subplots(layout='constrained')
@@ -458,10 +457,10 @@ with doc:
         a(t, href=per_trace(t+".out"))
         br()
 
-    run_compare(tex=True)
+    run_compare(json_htbl, tex=True)
 
-for v in overhead_htbl.keys():
-    if eval_htbl[v][f"PQ_D"] != 0:
+for v in json_htbl.keys():
+    if json_htbl[v][f"PQ_D"]["eval_time"] != 0:
         new_diff()
 
 write_to(out_path + "index.html", str(doc))
