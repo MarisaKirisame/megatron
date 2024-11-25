@@ -429,6 +429,9 @@ def hist2(xs1, xs2, xlabel, label1, label2):
     img(src=pic_path)
 
 def hist(xs, bins, label):
+    if len(xs) == 0:
+        return
+
     fig, ax = plt.subplots()
 
     # a histogram returns 3 objects : n (i.e. frequncies), bins, patches
