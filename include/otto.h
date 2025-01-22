@@ -210,8 +210,8 @@ public:
       next_label = _max_label;
     }
 
-    auto new_node = n->parent->children.emplace(nextn, n->parent, std::min((n->label + next_label) >> 1, n->label + 64));
-
+    auto new_node = n->parent->children.emplace(nextn, n->parent, (n->label + next_label) >> 1);
+    
     if (n->label == new_node->label) {
       balance_l2(n->parent);
     }
