@@ -27,5 +27,5 @@ clean()
 for t in trace_list:
     process(t)
 
-shell(f"python3 report.py {mode}")
+#shell(f"python3 report.py {mode}")
 #clean()
