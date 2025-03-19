@@ -1,5 +1,12 @@
 from common import *
 import subprocess
+import sys
+
+mode = "default"
+if len(sys.argv) >= 2:
+    mode = sys.argv[1]
+    if mode == "small-ae":
+        trace_list = ["google_searchpage"]
 
 def shell(str):
     subprocess.run(str, shell=True, check=True)
@@ -20,5 +27,5 @@ clean()
 for t in trace_list:
     process(t)
 
-shell("python3 report.py")
+shell(f"python3 report.py {mode}")
 #clean()

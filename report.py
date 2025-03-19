@@ -11,6 +11,14 @@ import matplotlib.pyplot as plt
 from matplotlib import font_manager
 import numpy as np
 from matplotlib.ticker import FuncFormatter, NullFormatter, StrMethodFormatter
+import sys
+
+mode = "default"
+if len(sys.argv) >= 2:
+    mode = sys.argv[1]
+    if mode == "small-ae":
+        trace_list = ["google_searchpage"]
+
 FIG_SIZE = 5
 
 font_manager.fontManager.addfont('LinBiolinum_Rah.ttf')
