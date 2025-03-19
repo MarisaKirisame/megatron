@@ -490,6 +490,8 @@ static int EventSet = PAPI_NULL;
 static bool papi_initialized = false;
 
 void papi_init() {
+  return;
+  
   assert(!papi_initialized);
 
   int retval;
@@ -757,6 +759,8 @@ static bool pfm_initialized = false;
 static PerfEvent* pfm_event = nullptr;
 
 void pfm_init() {
+  return;
+
   static LibPFM pfm;
 
   const char* pfm_l1_miss = "PERF_COUNT_HW_CACHE_L1D:MISS";
