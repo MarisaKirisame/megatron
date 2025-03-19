@@ -799,22 +799,10 @@ struct Stat {
     return *this;
   }
   static Stat measure_begin() {
-#if BOOST_OS_LINUX
-    auto pfm = read_pfm();
-    auto tsc = readTSC();
-    return Stat(tsc, pfm);
-#else
     return Stat(readTSC(), 1);
-#endif
   }
   static Stat measure_end() {
-#if BOOST_OS_LINUX
-    auto tsc = readTSC();
-    auto pfm = read_pfm();
-    return Stat(tsc, pfm);
-#else
     return Stat(readTSC(), 1);
-#endif
   }
 };
 
