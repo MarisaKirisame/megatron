@@ -161,6 +161,10 @@ module type SDIN = sig
   val metric_queue_size_acc : metric sd -> int sd
   val metric_record_overhead_time : metric sd -> int sd -> unit sd
   val metric_overhead_time : metric sd -> int sd
+  val metric_record_queue_time : metric sd -> int sd -> unit sd
+  val metric_queue_time : metric sd -> int sd
+  val metric_record_om_time : metric sd -> int sd -> unit sd
+  val metric_om_time : metric sd -> int sd
   val metric_record_overhead_l2m : metric sd -> int sd -> unit sd
   val metric_overhead_l2m : metric sd -> int sd
   val metric_record_eval : metric sd -> int sd -> unit sd
@@ -168,6 +172,9 @@ module type SDIN = sig
   val record_overhead : metric sd -> (unit -> unit sd) -> unit sd
   val start_record_overhead : metric sd -> unit sd
   val stop_record_overhead : metric sd -> unit sd
+  val record_om : metric sd -> (unit -> unit sd) -> unit sd
+  val start_record_queue : metric sd -> unit sd
+  val stop_record_queue : metric sd -> unit sd
   val record_eval : metric sd -> (unit -> 'a sd) -> 'a sd
   val start_record_eval : metric sd -> unit sd
   val stop_record_eval : metric sd -> unit sd
@@ -304,6 +311,8 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
       overhead_time = 0;
       overhead_l2m = 0;
       eval_time = 0;
+      queue_time = 0;
+      om_time = 0;
     }
 
   let make_stack = Stack.make
@@ -421,6 +430,8 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
     m.input_change_count <- 0;
     m.output_change_count <- 0;
     m.eval_time <- 0;
+    m.queue_time <- 0;
+    m.om_time <- 0;
     m.overhead_time <- 0;
     m.overhead_l2m <- 0
 
@@ -442,11 +453,18 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
   let metric_record_eval m i = m.eval_time <- m.eval_time + i
   let metric_overhead_time m = m.overhead_time
   let metric_record_overhead_time m i = m.overhead_time <- m.overhead_time + i
+  let metric_queue_time m = m.queue_time
+  let metric_record_queue_time m i = m.queue_time <- m.queue_time + i
+  let metric_om_time m = m.om_time
+  let metric_record_om_time m i = m.om_time <- m.om_time + i
   let metric_overhead_l2m m = m.overhead_l2m
   let metric_record_overhead_l2m m i = m.overhead_l2m <- m.overhead_l2m + i
   let record_overhead m f = f ()
+  let record_om m f = f ()
   let start_record_overhead m = ()
   let stop_record_overhead m = ()
+  let start_record_queue m = ()
+  let stop_record_queue m = ()
   let record_eval m f = f ()
   let start_record_eval m = ()
   let stop_record_eval m = ()
@@ -736,11 +754,18 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let metric_record_eval m i = CApp (CPF "MetricRecordEval", [ m; i ])
   let metric_overhead_time m = CApp (CPF "MetricOverheadTime", [ m ])
   let metric_record_overhead_time m i = CApp (CPF "MetricRecordOverheadTime", [ m; i ])
+  let metric_queue_time m = CApp (CPF "MetricQueueTime", [ m ])
+  let metric_record_queue_time m i = CApp (CPF "MetricRecordQueueTime", [ m; i ])
+  let metric_om_time m = CApp (CPF "MetricOMTime", [ m ])
+  let metric_record_om_time m i = CApp (CPF "MetricRecordOMTime", [ m; i ])
   let metric_overhead_l2m m = CApp (CPF "MetricOverheadL2m", [ m ])
   let metric_record_overhead_l2m m i = CApp (CPF "MetricRecordOverheadL2m", [ m; i ])
   let record_overhead m f = CApp (CPF "RecordOverhead", [ m; lam (fun _ -> f ()) ])
+  let record_om m f = CApp (CPF "RecordOM", [ m; lam (fun _ -> f ()) ])
   let start_record_overhead m = CApp (CPF "StartRecordOverhead", [ m ])
   let stop_record_overhead m = CApp (CPF "StopRecordOverhead", [ m ])
+  let start_record_queue m = CApp (CPF "StartRecordQueue", [ m ])
+  let stop_record_queue m = CApp (CPF "StopRecordQueue", [ m ])
   let record_eval m f = CApp (CPF "RecordEval", [ m; lam (fun _ -> f ()) ])
   let start_record_eval m = CApp (CPF "StartRecordEval", [ m ])
   let stop_record_eval m = CApp (CPF "StopRecordEval", [ m ])

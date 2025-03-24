@@ -158,7 +158,7 @@ module EVAL (SD : SD) = MakeEval (struct
         (fun _ ->
           record_overhead m (fun _ ->
               hashtbl_set (meta_get_bb_time_table (node_get_meta n)) (string bb_name) (read_ref current_time)));
-        (fun _ -> record_overhead m (fun _ -> write_ref current_time (next_total_order (read_ref current_time))));
+        (fun _ -> record_om m (fun _ -> write_ref current_time (next_total_order (read_ref current_time))));
         (fun _ -> f ());
         (fun _ ->
           record_overhead m (fun _ -> hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool false)));
@@ -181,7 +181,7 @@ module EVAL (SD : SD) = MakeEval (struct
       : unit sd =
     seqs
       [
-        (fun _ -> start_record_overhead m);
+        (fun _ -> start_record_queue m);
         (fun _ ->
           while_
             (fun _ -> not_ (queue_isempty ()))
@@ -191,8 +191,10 @@ module EVAL (SD : SD) = MakeEval (struct
                       let_ (fst qp) (fun k ->
                           seqs
                             [
+                              (fun _ -> stop_record_queue m);
                               (fun _ -> meta_read_metric m);
                               (fun _ -> queue_size_metric m (queue_size ()));
+                              (fun _ -> start_record_overhead m);
                               (fun _ ->
                                 ite
                                   (k |> key_get_node |> node_get_meta |> meta_get_alive)

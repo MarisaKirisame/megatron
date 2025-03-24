@@ -21,7 +21,7 @@ let is_pure_function f =
   | "ReadMetric" | "HashtblSet" | "WriteJson" | "MetaReadMetric" | "MetaWriteMetric" | "RemoveMeta" | "NextTotalOrder"
   | "QueuePop" | "QueuePush" | "QueueForcePush" | "MetricQueueSize" | "MetricRecordOverheadL2m"
   | "MetricRecordOverheadTime" | "RecordOverhead" | "RecordEval" | "StopRecordOverhead" | "StartRecordOverhead"
-  | "StopRecordEval" | "StartRecordEval" ->
+  | "StopRecordEval" | "StartRecordEval" | "StopRecordQueue" | "StartRecordQueue" | "RecordOM" ->
       false
   | "MakeUnit" | "ListIsEmpty" | "IntEqual" | "ListLength" | "ListSplitN" | "Zro" | "Fst" | "FreshMetric" | "Cons"
   | "Nil" | "IsNone" | "HashtblFind" | "UnSome" | "ListLast" | "JsonMember" | "ListMatch" | "OptionIter" | "OptionMatch"
@@ -172,14 +172,15 @@ let rec simplify (p : prog) x =
       ( CPF
           (( "WriteMetric" | "MetricWriteCount" | "MetaWriteMetric" | "MetricQueueSizeAcc" | "MetricMetaReadCount"
            | "MetricMetaWriteCount" | "MetricOutputChangeCount" | "MetricInputChangeCount" | "MetricReadCount"
-           | "ResetMetric" | "MetaReadMetric" | "MetricOverheadTime" | "MetricOverheadL2m" | "MetricEvalCount"
-           | "StartRecordOverhead" | "StopRecordOverhead" | "StartRecordEval" | "StopRecordEval" ) as f),
+           | "ResetMetric" | "MetaReadMetric" | "MetricOverheadTime" | "MetricQueueTime" | "MetricOMTime"
+           | "MetricOverheadL2m" | "MetricEvalCount" | "StartRecordOverhead" | "StopRecordOverhead" | "StartRecordQueue"
+           | "StopRecordQueue" | "StartRecordEval" | "StopRecordEval" ) as f),
         [ _ ] ) ->
       CApp (CPF f, [])
   | CApp
       ( CPF
           (( "OutputChangeMetric" | "InputChangeMetric" | "MetricQueueSize" | "MetricRecordOverheadTime"
-           | "MetricRecordOverheadL2m" | "MetricRecordEval" | "MetricRecordOverhead" | "RecordOverhead" | "RecordEval"
+           | "MetricRecordOverheadL2m" | "MetricRecordEval" | "MetricRecordOverhead" | "RecordOverhead" | "RecordOM" | "RecordEval"
              ) as f),
         [ _; i ] ) ->
       CApp (CPF f, [ i ])

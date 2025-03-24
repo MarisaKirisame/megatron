@@ -1,3 +1,0 @@
-(test
- (name test_megatron)
- (libraries megatron ounit2))

@@ -24,6 +24,8 @@ struct Metric {
   int64_t meta_write_count = 0;
   int64_t eval_time = 0;
   int64_t overhead_time = 0;
+  int64_t queue_time = 0;
+  int64_t om_time = 0;
   int64_t overhead_l2m = 0;
 } m;
 Unit ResetMetric() {
@@ -78,12 +80,22 @@ int64_t MetricInputChangeCount() { return m.input_change_count; }
 int64_t MetricEvalCount() { return m.eval_time; }
 int64_t MetricOverheadTime() { return m.overhead_time; }
 int64_t MetricOverheadL2m() { return m.overhead_l2m; }
+int64_t MetricQueueTime() { return m.queue_time; }
+int64_t MetricOMTime() { return m.om_time; }
 Unit MetricRecordEval(int64_t i) {
   m.eval_time += i;
   return Unit{};
 }
 Unit MetricRecordOverheadTime(int64_t i) {
   m.overhead_time += i;
+  return Unit{};
+}
+Unit MetricRecordOMTime(int64_t i) {
+  m.om_time += i;
+  return Unit{};
+}
+Unit MetricRecordQueueTime(int64_t i) {
+  m.queue_time += i;
   return Unit{};
 }
 Unit MetricRecordOverheadL2m(int64_t i) {
@@ -832,6 +844,31 @@ Unit StopRecordOverhead() {
   return Unit{};
 }
 
+Unit StartRecordQueue() {
+  stat = Stat::measure_begin();
+  return Unit{};
+}
+
+Unit StopRecordQueue() {
+  Stat diff = Stat::measure_end() - stat;
+  MetricRecordOverheadTime(diff.time);
+  MetricRecordQueueTime(diff.time);
+  return Unit{};
+}
+
+Unit StartRecordOM() {
+  stat = Stat::measure_begin();
+  return Unit{};
+}
+
+Unit StopRecordOM() {
+  Stat diff = Stat::measure_end() - stat;
+  MetricRecordOverheadTime(diff.time);
+  MetricRecordOMTime(diff.time);
+  return Unit{};
+}
+
+
 Unit StartRecordEval() {
   stat = Stat::measure_begin();
   return Unit{};
@@ -857,3 +894,9 @@ auto RecordEval(const auto& f) {
   return val;
 }
 
+auto RecordOM(const auto& f) {
+  StartRecordOM();
+  auto val = f(Unit {});
+  StopRecordOM();
+  return val;
+}
