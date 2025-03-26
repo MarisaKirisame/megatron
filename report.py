@@ -29,8 +29,7 @@ def readlines_file(path):
     with open(path, "r") as f:
         return f.readlines()
 
-out_dir = get_time()
-out_path = "output/" + out_dir + "/"
+out_path = "output/"
 os.makedirs(out_path)
 
 out_tex = open(out_path + "out.tex", "w")
@@ -479,9 +478,5 @@ write_to(out_path + "index.html", str(doc))
 output_tex(f"\\newcommand{{\\TotalDiffCount}}{{{total_diff_count}}}\n")
 output_tex(f"\\newcommand{{\\TotalTraceCount}}{{{len(trace_list)}}}\n")
 
-if subprocess.run("command -v nightly-results", shell=True).returncode == 0:
-    out_tex.close()
-    subprocess.run(f"""nightly-results publish {out_path}""", shell=True, check=True)
-    #subprocess.run(f"""rm -rf output/*""", shell=True, check=True)
-else:
+if subprocess.run("command -v nightly-results", shell=True).returncode != 0:
     subprocess.run(f"xdg-open {out_path}/index.html", shell=True, check=True)
