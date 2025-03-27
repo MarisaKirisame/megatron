@@ -30,7 +30,7 @@ def readlines_file(path):
         return f.readlines()
 
 out_path = "output/"
-os.makedirs(out_path)
+os.makedirs(out_path, exist_ok=True)
 
 out_tex = open(out_path + "out.tex", "w")
 
