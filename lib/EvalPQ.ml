@@ -179,60 +179,55 @@ module EVAL (SD : SD) = MakeEval (struct
 
   let recalculate_internal (p : prog) (n : meta node sd) (m : metric sd) (eval_stmts : meta node sd -> stmts -> unit sd)
       : unit sd =
-    seqs
-      [
-        (fun _ -> start_record_queue m);
-        (fun _ ->
-          while_
-            (fun _ -> not_ (queue_isempty ()))
-            (fun _ ->
-              let_ (queue_pop ()) (fun qp ->
-                  let_ (zro qp) (fun x ->
-                      let_ (fst qp) (fun k ->
-                          seqs
-                            [
-                              (fun _ -> stop_record_queue m);
-                              (fun _ -> meta_read_metric m);
-                              (fun _ -> queue_size_metric m (queue_size ()));
-                              (fun _ -> start_record_overhead m);
+    let bb_cases x k =
+      List.map (Hashtbl.to_alist p.bbs) ~f:(fun (bb_name, BasicBlock (_, stmts)) ->
+          ( bb_intern bb_name,
+            fun _ ->
+              seqs
+                [
+                  (fun _ -> stop_record_overhead m);
+                  (fun _ -> eval_stmts (key_get_node k) stmts);
+                  (fun _ -> start_record_overhead m);
+                  (fun _ ->
+                    hashtbl_set (meta_get_bb_dirtied (node_get_meta (key_get_node k))) (string bb_name) (bool false));
+                ] ))
+    in
+
+    let proc_cases x k =
+      List.map (Hashtbl.to_alist p.procs) ~f:(fun (str, ProcessedProc (_, stmts)) ->
+          ( proc_intern str,
+            fun _ ->
+              let_ (read_ref current_time) (fun old_time ->
+                  seqs
+                    [
+                      (fun _ -> write_ref current_time x);
+                      (fun _ -> stop_record_overhead m);
+                      (fun _ -> eval_stmts (key_get_node k) stmts);
+                      (fun _ -> start_record_overhead m);
+                      (fun _ -> write_ref current_time old_time);
+                    ]) ))
+    in
+    let loop_body () =
+      seq (start_record_queue m) (fun _ ->
+          let_ (queue_pop ()) (fun qp ->
+              let_ (zro qp) (fun x ->
+                  let_ (fst qp) (fun k ->
+                      seqs
+                        [
+                          (fun _ -> stop_record_queue m);
+                          (fun _ -> meta_read_metric m);
+                          (fun _ -> queue_size_metric m (queue_size ()));
+                          (fun _ -> start_record_overhead m);
+                          (fun _ ->
+                            ite
+                              (k |> key_get_node |> node_get_meta |> meta_get_alive)
                               (fun _ ->
-                                ite
-                                  (k |> key_get_node |> node_get_meta |> meta_get_alive)
-                                  (fun _ ->
-                                    let bb_cases =
-                                      List.map (Hashtbl.to_alist p.bbs) ~f:(fun (bb_name, BasicBlock (_, stmts)) ->
-                                          ( bb_intern bb_name,
-                                            fun _ ->
-                                              seqs
-                                                [
-                                                  (fun _ -> stop_record_overhead m);
-                                                  (fun _ -> eval_stmts (key_get_node k) stmts);
-                                                  (fun _ -> start_record_overhead m);
-                                                  (fun _ ->
-                                                    hashtbl_set
-                                                      (meta_get_bb_dirtied (node_get_meta (key_get_node k)))
-                                                      (string bb_name) (bool false));
-                                                ] ))
-                                    in
-                                    let proc_cases =
-                                      List.map (Hashtbl.to_alist p.procs) ~f:(fun (str, ProcessedProc (_, stmts)) ->
-                                          ( proc_intern str,
-                                            fun _ ->
-                                              let_ (read_ref current_time) (fun old_time ->
-                                                  seqs
-                                                    [
-                                                      (fun _ -> write_ref current_time x);
-                                                      (fun _ -> stop_record_overhead m);
-                                                      (fun _ -> eval_stmts (key_get_node k) stmts);
-                                                      (fun _ -> start_record_overhead m);
-                                                      (fun _ -> write_ref current_time old_time);
-                                                    ]) ))
-                                    in
-                                    int_match (k |> key_get_rf) (List.append bb_cases proc_cases) (fun _ ->
-                                        panic (string "unknown bb/proc")))
-                                  (fun _ -> tt));
-                            ])))));
-        (fun _ -> stop_record_overhead m);
-        (fun _ -> check p n);
-      ]
+                                int_match (k |> key_get_rf)
+                                  (List.append (bb_cases x k) (proc_cases x k))
+                                  (fun _ -> panic (string "unknown bb/proc")))
+                              (fun _ -> tt));
+                          (fun _ -> stop_record_overhead m);
+                        ]))))
+    in
+    seqs [ (fun _ -> while_ (fun _ -> not_ (queue_isempty ())) (fun _ -> loop_body ())); (fun _ -> check p n) ]
 end)

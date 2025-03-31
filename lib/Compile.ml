@@ -180,8 +180,8 @@ let rec simplify (p : prog) x =
   | CApp
       ( CPF
           (( "OutputChangeMetric" | "InputChangeMetric" | "MetricQueueSize" | "MetricRecordOverheadTime"
-           | "MetricRecordOverheadL2m" | "MetricRecordEval" | "MetricRecordOverhead" | "RecordOverhead" | "RecordOM" | "RecordEval"
-             ) as f),
+           | "MetricRecordOverheadL2m" | "MetricRecordEval" | "MetricRecordOverhead" | "RecordOverhead" | "RecordOM"
+           | "RecordEval" ) as f),
         [ _; i ] ) ->
       CApp (CPF f, [ i ])
   | CApp (CPF (("QueuePush" | "QueueForcePush") as f), [ a; b; c; _ ]) -> CApp (CPF f, [ a; b; c ])
