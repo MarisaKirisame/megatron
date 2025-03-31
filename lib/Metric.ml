@@ -11,6 +11,7 @@ type metric = {
   mutable overhead_time : int;
   mutable overhead_l2m : int;
   mutable eval_time : int;
+  mutable dirty_time : int;
   mutable queue_time : int;
   mutable om_time : int;
 }

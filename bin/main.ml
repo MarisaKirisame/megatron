@@ -767,6 +767,8 @@ module Main (EVAL : Eval) = struct
                                                                       (int_to_json (node_size n));
                                                                     make_pair (string "overhead_time")
                                                                       (int_to_json (metric_overhead_time m));
+                                                                    make_pair (string "dirty_time")
+                                                                      (int_to_json (metric_dirty_time m));
                                                                     make_pair (string "queue_time")
                                                                       (int_to_json (metric_queue_time m));
                                                                     make_pair (string "om_time")

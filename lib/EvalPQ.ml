@@ -98,11 +98,17 @@ module EVAL (SD : SD) = MakeEval (struct
         else CApp (CPF "QueuePush", [ x |> undyn; y |> undyn; z |> undyn; m |> undyn ]) |> dyn)
 
   let queue_force_push (x : TotalOrder.t sd) (y : meta node sd) (z : int sd) (m : metric sd) : unit sd =
-    seq (meta_write_metric m) (fun _ ->
-        if is_static then
-          if PriorityQueue.add queue (x |> unstatic, { n = y |> unstatic; rf = z |> unstatic }) then tt
-          else panic (string "push false")
-        else CApp (CPF "QueueForcePush", [ x |> undyn; y |> undyn; z |> undyn; m |> undyn ]) |> dyn)
+    seqs
+      [
+        (fun _ -> meta_write_metric m);
+        (fun _ -> start_record_queue m);
+        (fun _ ->
+          if is_static then
+            if PriorityQueue.add queue (x |> unstatic, { n = y |> unstatic; rf = z |> unstatic }) then tt
+            else panic (string "push false")
+          else CApp (CPF "QueueForcePush", [ x |> undyn; y |> undyn; z |> undyn; m |> undyn ]) |> dyn);
+        (fun _ -> stop_record_queue m);
+      ]
 
   let register_todo_proc p (y : meta node sd) proc_name (m : metric sd) : unit sd =
     let down, up = get_bb_from_proc p proc_name in
@@ -126,29 +132,40 @@ module EVAL (SD : SD) = MakeEval (struct
                   [
                     (fun _ -> hashtbl_add_exn (meta_get_bb_dirtied (node_get_meta y)) (string down) (bool true));
                     (fun _ -> hashtbl_add_exn (meta_get_bb_time_table (node_get_meta y)) (string down) time);
+                    (fun _ -> stop_record_overhead m);
                     (fun _ -> queue_force_push time y (int (proc_intern proc_name)) m);
+                    (fun _ -> start_record_overhead m);
                   ]))
           (fun _ -> (*otherwise this proc is already in the queue with y's ancestor.*) tt))
 
   let bb_dirtied_internal p (n : meta node sd) ~(proc_name : string) ~(bb_name : string) (m : metric sd) : unit sd =
     Core.ignore proc_name;
-
-    option_match
-      (hashtbl_find (meta_get_bb_time_table (node_get_meta n)) (string bb_name))
-      (fun _ -> tt)
-      (fun order ->
-        ite
-          (not_
-             (and_
-                (is_some (hashtbl_find (meta_get_bb_dirtied (node_get_meta n)) (string bb_name)))
-                (fun _ -> hashtbl_find_exn (meta_get_bb_dirtied (node_get_meta n)) (string bb_name))))
-          (fun _ ->
-            seqs
-              [
-                (fun _ -> hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool true));
-                (fun _ -> queue_force_push order n (int (bb_intern bb_name)) m);
-              ])
-          (fun _ -> tt))
+    seqs
+      [
+        (fun _ -> stop_record_overhead m);
+        (fun _ -> start_record_dirty m);
+        (fun _ ->
+          option_match
+            (hashtbl_find (meta_get_bb_time_table (node_get_meta n)) (string bb_name))
+            (fun _ -> tt)
+            (fun order ->
+              ite
+                (not_
+                   (and_
+                      (is_some (hashtbl_find (meta_get_bb_dirtied (node_get_meta n)) (string bb_name)))
+                      (fun _ -> hashtbl_find_exn (meta_get_bb_dirtied (node_get_meta n)) (string bb_name))))
+                (fun _ ->
+                  seqs
+                    [
+                      (fun _ -> hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool true));
+                      (fun _ -> stop_record_dirty m);
+                      (fun _ -> queue_force_push order n (int (bb_intern bb_name)) m);
+                      (fun _ -> start_record_dirty m);
+                    ])
+                (fun _ -> tt)));
+        (fun _ -> stop_record_dirty m);
+        (fun _ -> start_record_overhead m);
+      ]
 
   let bb_dirtied_external = bb_dirtied_internal
 

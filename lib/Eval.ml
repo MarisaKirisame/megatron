@@ -96,29 +96,34 @@ module MakeEval (EI : EvalIn) : Eval with type 'a sd = 'a EI.sd = struct
   let var_modified_hash : (string, (meta node -> unit) sd) Hashtbl.t = Hashtbl.create (module String)
 
   let var_modified_aux (p : prog) (var_name : string) m : (meta node -> unit) sd =
+    let f n (proc_name, _) _ =
+      let down, up = get_bb_from_proc p proc_name in
+      let work bb_name : unit sd =
+        let (BasicBlock (_, stmts)) = Hashtbl.find_exn p.bbs bb_name in
+        let reads = reads_of_stmts stmts in
+        let dirty read : path Option.t =
+          match read with
+          | ReadVar (path, read_var_name) -> if String.equal var_name read_var_name then Some path else None
+          | ReadHasPath _ -> None (*property being changed cannot change haspath status*)
+          | ReadProp _ | ReadAttr _ -> None
+        in
+        seqs
+          (List.map
+             (List.dedup_and_sort (List.filter_map reads ~f:dirty) ~compare:compare_path)
+             ~f:(fun path _ ->
+               list_iter (reversed_path path n) (fun dirtied_node ->
+                   bb_dirtied_internal p dirtied_node ~proc_name ~bb_name m)))
+      in
+
+      seqs (List.map [ down; up ] ~f:(fun n () -> work n))
+    in
     lam (fun n ->
-        record_overhead m (fun _ ->
-            seqs
-              (List.map (Hashtbl.to_alist p.procs) ~f:(fun (proc_name, _) _ ->
-                   let down, up = get_bb_from_proc p proc_name in
-                   let work bb_name : unit sd =
-                     let (BasicBlock (_, stmts)) = Hashtbl.find_exn p.bbs bb_name in
-                     let reads = reads_of_stmts stmts in
-                     let dirty read : path Option.t =
-                       match read with
-                       | ReadVar (path, read_var_name) ->
-                           if String.equal var_name read_var_name then Some path else None
-                       | ReadHasPath _ -> None (*property being changed cannot change haspath status*)
-                       | ReadProp _ | ReadAttr _ -> None
-                     in
-                     seqs
-                       (List.map
-                          (List.dedup_and_sort (List.filter_map reads ~f:dirty) ~compare:compare_path)
-                          ~f:(fun path _ ->
-                            list_iter (reversed_path path n) (fun dirtied_node ->
-                                bb_dirtied_internal p dirtied_node ~proc_name ~bb_name m)))
-                   in
-                   seqs (List.map [ down; up ] ~f:(fun n () -> work n))))))
+        seqs
+          [
+            (fun _ -> start_record_overhead m);
+            (fun _ -> seqs (List.map (Hashtbl.to_alist p.procs) ~f:(f n)));
+            (fun _ -> stop_record_overhead m);
+          ])
 
   let var_modified (p : prog) (var_name : string) (n : meta node sd) (m : metric sd) : unit sd =
     if Option.is_none (Hashtbl.find var_modified_hash var_name) then
