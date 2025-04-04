@@ -101,13 +101,11 @@ module EVAL (SD : SD) = MakeEval (struct
     seqs
       [
         (fun _ -> meta_write_metric m);
-        (fun _ -> start_record_queue m);
         (fun _ ->
           if is_static then
             if PriorityQueue.add queue (x |> unstatic, { n = y |> unstatic; rf = z |> unstatic }) then tt
             else panic (string "push false")
           else CApp (CPF "QueueForcePush", [ x |> undyn; y |> undyn; z |> undyn; m |> undyn ]) |> dyn);
-        (fun _ -> stop_record_queue m);
       ]
 
   let register_todo_proc p (y : meta node sd) proc_name (m : metric sd) : unit sd =
@@ -132,9 +130,7 @@ module EVAL (SD : SD) = MakeEval (struct
                   [
                     (fun _ -> hashtbl_add_exn (meta_get_bb_dirtied (node_get_meta y)) (string down) (bool true));
                     (fun _ -> hashtbl_add_exn (meta_get_bb_time_table (node_get_meta y)) (string down) time);
-                    (fun _ -> stop_record_overhead m);
                     (fun _ -> queue_force_push time y (int (proc_intern proc_name)) m);
-                    (fun _ -> start_record_overhead m);
                   ]))
           (fun _ -> (*otherwise this proc is already in the queue with y's ancestor.*) tt))
 
@@ -219,26 +215,23 @@ module EVAL (SD : SD) = MakeEval (struct
                     ]) ))
     in
     let loop_body () =
-      seq (start_record_queue m) (fun _ ->
-          let_ (queue_pop ()) (fun qp ->
-              let_ (zro qp) (fun x ->
-                  let_ (fst qp) (fun k ->
-                      seqs
-                        [
-                          (fun _ -> stop_record_queue m);
-                          (fun _ -> meta_read_metric m);
-                          (fun _ -> queue_size_metric m (queue_size ()));
-                          (fun _ -> start_record_overhead m);
+      let_ (queue_pop ()) (fun qp ->
+          let_ (zro qp) (fun x ->
+              let_ (fst qp) (fun k ->
+                  seqs
+                    [
+                      (fun _ -> meta_read_metric m);
+                      (fun _ -> queue_size_metric m (queue_size ()));
+                      (fun _ ->
+                        ite
+                          (k |> key_get_node |> node_get_meta |> meta_get_alive)
                           (fun _ ->
-                            ite
-                              (k |> key_get_node |> node_get_meta |> meta_get_alive)
-                              (fun _ ->
-                                int_match (k |> key_get_rf)
-                                  (List.append (bb_cases x k) (proc_cases x k))
-                                  (fun _ -> panic (string "unknown bb/proc")))
-                              (fun _ -> tt));
-                          (fun _ -> stop_record_overhead m);
-                        ]))))
+                            int_match (k |> key_get_rf)
+                              (List.append (bb_cases x k) (proc_cases x k))
+                              (fun _ -> panic (string "unknown bb/proc")))
+                          (fun _ -> tt));
+                    ])))
     in
-    seqs [ (fun _ -> while_ (fun _ -> not_ (queue_isempty ())) (fun _ -> loop_body ())); (fun _ -> check p n) ]
+    record_overhead m (fun _ ->
+        seqs [ (fun _ -> while_ (fun _ -> not_ (queue_isempty ())) (fun _ -> loop_body ())); (fun _ -> check p n) ])
 end)
