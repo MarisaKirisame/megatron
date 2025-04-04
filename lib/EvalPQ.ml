@@ -142,7 +142,6 @@ module EVAL (SD : SD) = MakeEval (struct
     Core.ignore proc_name;
     seqs
       [
-        (fun _ -> start_record_overhead m);
         (fun _ ->
           option_match
             (hashtbl_find (meta_get_bb_time_table (node_get_meta n)) (string bb_name))
@@ -160,7 +159,6 @@ module EVAL (SD : SD) = MakeEval (struct
                       (fun _ -> queue_force_push order n (int (bb_intern bb_name)) m);
                     ])
                 (fun _ -> tt)));
-        (fun _ -> stop_record_overhead m);
       ]
 
   let bb_dirtied_external = bb_dirtied_internal
