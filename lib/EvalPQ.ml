@@ -142,8 +142,7 @@ module EVAL (SD : SD) = MakeEval (struct
     Core.ignore proc_name;
     seqs
       [
-        (fun _ -> stop_record_overhead m);
-        (fun _ -> start_record_dirty m);
+        (fun _ -> start_record_overhead m);
         (fun _ ->
           option_match
             (hashtbl_find (meta_get_bb_time_table (node_get_meta n)) (string bb_name))
@@ -158,13 +157,10 @@ module EVAL (SD : SD) = MakeEval (struct
                   seqs
                     [
                       (fun _ -> hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool true));
-                      (fun _ -> stop_record_dirty m);
                       (fun _ -> queue_force_push order n (int (bb_intern bb_name)) m);
-                      (fun _ -> start_record_dirty m);
                     ])
                 (fun _ -> tt)));
-        (fun _ -> stop_record_dirty m);
-        (fun _ -> start_record_overhead m);
+        (fun _ -> stop_record_overhead m);
       ]
 
   let bb_dirtied_external = bb_dirtied_internal
@@ -175,7 +171,7 @@ module EVAL (SD : SD) = MakeEval (struct
         (fun _ ->
           record_overhead m (fun _ ->
               hashtbl_set (meta_get_bb_time_table (node_get_meta n)) (string bb_name) (read_ref current_time)));
-        (fun _ -> record_om m (fun _ -> write_ref current_time (next_total_order (read_ref current_time))));
+        (fun _ -> record_overhead m (fun _ -> write_ref current_time (next_total_order (read_ref current_time))));
         (fun _ -> f ());
         (fun _ ->
           record_overhead m (fun _ -> hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool false)));
