@@ -186,7 +186,7 @@ module EVAL (SD : SD) = MakeEval (struct
 
   let rec fix_dirty_aux (p : prog) (n : meta node sd) (rf : int) (m : metric sd)
       (eval_stmts : meta node sd -> stmts -> unit sd) : unit sd =
-    let bb_cases n rf =
+    let bb_cases =
       List.map (Hashtbl.to_alist p.bbs) ~f:(fun (bb_name, BasicBlock (_, stmts)) ->
           ( bb_intern bb_name,
             fun _ ->
@@ -198,16 +198,7 @@ module EVAL (SD : SD) = MakeEval (struct
                   (fun _ -> hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool false));
                 ] ))
     in
-    seqs
-      [
-        (fun _ -> meta_read_metric m);
-        (fun _ -> queue_size_metric m (queue_size ()));
-        (fun _ ->
-          ite
-            (n |> node_get_meta |> meta_get_alive)
-            (fun _ -> int_match_static rf (bb_cases n rf) (fun _ -> panic (string "unknown bb/proc")))
-            (fun _ -> tt));
-      ]
+    int_match_static rf bb_cases (fun _ -> panic (string "unknown bb/proc"))
 
   and fix_dirty_hash : (int, (meta node -> unit) sd) Hashtbl.t = Hashtbl.create (module Int)
 

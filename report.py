@@ -436,11 +436,6 @@ def hist2(xs1, xs2, xlabel, label1, label2):
     img(src=pic_path)
 
 def hist(xs, bins, label):
-    for x in xs:
-        if x == 0:
-            print(xs)
-            return
-
     if len(xs) == 0:
         return
 
