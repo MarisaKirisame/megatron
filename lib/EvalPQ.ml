@@ -184,40 +184,65 @@ module EVAL (SD : SD) = MakeEval (struct
 
   let check (p : prog) (n : meta node sd) : unit sd = if is_static then check_aux p (n |> unstatic) |> static else tt
 
-  let recalculate_internal (p : prog) (n : meta node sd) (m : metric sd) (eval_stmts : meta node sd -> stmts -> unit sd)
-      : unit sd =
-    let bb_cases x k =
+  let rec fix_dirty_aux (p : prog) (n : meta node sd) (rf : int) (m : metric sd)
+      (eval_stmts : meta node sd -> stmts -> unit sd) : unit sd =
+    let bb_cases n rf =
       List.map (Hashtbl.to_alist p.bbs) ~f:(fun (bb_name, BasicBlock (_, stmts)) ->
           ( bb_intern bb_name,
             fun _ ->
               seqs
                 [
                   (fun _ -> stop_record_overhead m);
-                  (fun _ -> eval_stmts (key_get_node k) stmts);
+                  (fun _ -> eval_stmts n stmts);
                   (fun _ -> start_record_overhead m);
-                  (fun _ ->
-                    hashtbl_set (meta_get_bb_dirtied (node_get_meta (key_get_node k))) (string bb_name) (bool false));
+                  (fun _ -> hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool false));
                 ] ))
     in
+    seqs
+      [
+        (fun _ -> meta_read_metric m);
+        (fun _ -> queue_size_metric m (queue_size ()));
+        (fun _ ->
+          ite
+            (n |> node_get_meta |> meta_get_alive)
+            (fun _ -> int_match_static rf (bb_cases n rf) (fun _ -> panic (string "unknown bb/proc")))
+            (fun _ -> tt));
+      ]
 
-    let proc_cases x k =
-      List.map (Hashtbl.to_alist p.procs) ~f:(fun (str, ProcessedProc (_, stmts)) ->
-          ( proc_intern str,
-            fun _ ->
-              let_ (read_ref current_time) (fun old_time ->
-                  seqs
-                    [
-                      (fun _ -> write_ref current_time x);
-                      (fun _ -> stop_record_overhead m);
-                      (fun _ -> eval_stmts (key_get_node k) stmts);
-                      (fun _ -> start_record_overhead m);
-                      (fun _ -> write_ref current_time old_time);
-                    ]) ))
-    in
+  and fix_dirty_hash : (int, (meta node -> unit) sd) Hashtbl.t = Hashtbl.create (module Int)
+
+  and fix_dirty (p : prog) (x : meta node sd) (k : int) (m : metric sd) (eval_stmts : meta node sd -> stmts -> unit sd)
+      : unit sd =
+    if Option.is_none (Hashtbl.find fix_dirty_hash k) then
+      Hashtbl.add_exn fix_dirty_hash ~key:k
+        ~data:(lift "Unit" "fix_dirty" (lazy (lam (fun x -> fix_dirty_aux p x k m eval_stmts))));
+    app (Hashtbl.find_exn fix_dirty_hash k) x
+
+  let recalculate_internal (p : prog) (n : meta node sd) (m : metric sd) (eval_stmts : meta node sd -> stmts -> unit sd)
+      : unit sd =
     let loop_body () =
       let_ (queue_pop ()) (fun qp ->
           let_ (zro qp) (fun x ->
               let_ (fst qp) (fun k ->
+                  let bb_cases x k =
+                    List.map (Hashtbl.to_alist p.bbs) ~f:(fun (bb_name, BasicBlock (_, stmts)) ->
+                        (bb_intern bb_name, fun _ -> fix_dirty p (key_get_node k) (bb_intern bb_name) m eval_stmts))
+                  in
+
+                  let proc_cases x k =
+                    List.map (Hashtbl.to_alist p.procs) ~f:(fun (str, ProcessedProc (_, stmts)) ->
+                        ( proc_intern str,
+                          fun _ ->
+                            let_ (read_ref current_time) (fun old_time ->
+                                seqs
+                                  [
+                                    (fun _ -> write_ref current_time x);
+                                    (fun _ -> stop_record_overhead m);
+                                    (fun _ -> eval_stmts (key_get_node k) stmts);
+                                    (fun _ -> start_record_overhead m);
+                                    (fun _ -> write_ref current_time old_time);
+                                  ]) ))
+                  in
                   seqs
                     [
                       (fun _ -> meta_read_metric m);
