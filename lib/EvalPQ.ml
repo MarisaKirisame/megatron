@@ -184,6 +184,44 @@ module EVAL (SD : SD) = MakeEval (struct
 
   let check (p : prog) (n : meta node sd) : unit sd = if is_static then check_aux p (n |> unstatic) |> static else tt
 
+  let next (p : prog) (n : meta node sd) (rf : int) (k_none : unit -> 'a sd) (k_some : meta node sd -> int -> 'a sd) :
+      'a sd =
+    let bb_cases =
+      List.concat_map (Hashtbl.to_alist p.procs) (fun (proc_name, ProcessedProc (_, _)) ->
+          let down, up = get_bb_from_proc p proc_name in
+          [
+            ( bb_intern down,
+              fun _ ->
+                option_match (node_get_first n) (fun _ -> k_some n (bb_intern up)) (fun x -> k_some x (bb_intern down))
+            );
+            ( bb_intern up,
+              fun _ ->
+                option_match (node_get_next n)
+                  (fun _ -> option_match (node_get_parent n) k_none (fun x -> k_some x (bb_intern up)))
+                  (fun x -> k_some x (bb_intern down)) );
+          ])
+    in
+    int_match_static rf bb_cases (fun _ -> panic (string "unknown bb"))
+
+  let prev (p : prog) (n : meta node sd) (rf : int) (k_none : unit -> 'a sd) (k_some : meta node sd -> int -> 'a sd) :
+      'a sd =
+    let bb_cases =
+      List.concat_map (Hashtbl.to_alist p.procs) (fun (proc_name, ProcessedProc (_, _)) ->
+          let down, up = get_bb_from_proc p proc_name in
+          [
+            ( bb_intern down,
+              fun _ ->
+                option_match (node_get_prev n)
+                  (fun _ -> option_match (node_get_parent n) k_none (fun x -> k_some x (bb_intern down)))
+                  (fun x -> k_some x (bb_intern up)) );
+            ( bb_intern up,
+              fun _ ->
+                option_match (node_get_last n) (fun _ -> k_some n (bb_intern down)) (fun x -> k_some x (bb_intern up))
+            );
+          ])
+    in
+    int_match_static rf bb_cases (fun _ -> panic (string "unknown bb"))
+
   let rec fix_dirty_aux (p : prog) (n : meta node sd) (rf : int) (m : metric sd)
       (eval_stmts : meta node sd -> stmts -> unit sd) : unit sd =
     let bb_cases =
@@ -198,7 +236,7 @@ module EVAL (SD : SD) = MakeEval (struct
                   (fun _ -> hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool false));
                 ] ))
     in
-    int_match_static rf bb_cases (fun _ -> panic (string "unknown bb/proc"))
+    int_match_static rf bb_cases (fun _ -> panic (string "unknown bb"))
 
   and fix_dirty_hash : (int, (meta node -> unit) sd) Hashtbl.t = Hashtbl.create (module Int)
 
@@ -219,7 +257,6 @@ module EVAL (SD : SD) = MakeEval (struct
                     List.map (Hashtbl.to_alist p.bbs) ~f:(fun (bb_name, BasicBlock (_, stmts)) ->
                         (bb_intern bb_name, fun _ -> fix_dirty p (key_get_node k) (bb_intern bb_name) m eval_stmts))
                   in
-
                   let proc_cases x k =
                     List.map (Hashtbl.to_alist p.procs) ~f:(fun (str, ProcessedProc (_, stmts)) ->
                         ( proc_intern str,
