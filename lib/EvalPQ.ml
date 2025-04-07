@@ -52,6 +52,7 @@ module EVAL (SD : SD) = MakeEval (struct
     else CSetMember (m |> undyn, "alive", CBool false) |> dyn
 
   let bb_intern_hash : (string, int) Hashtbl.t = Hashtbl.create (module String)
+  let bb_unintern_hash : (int, string) Hashtbl.t = Hashtbl.create (module Int)
   let proc_intern_hash : (string, int) Hashtbl.t = Hashtbl.create (module String)
 
   let bb_intern (s : string) : int =
@@ -60,7 +61,10 @@ module EVAL (SD : SD) = MakeEval (struct
     | None ->
         let i = Hashtbl.length bb_intern_hash + Hashtbl.length proc_intern_hash in
         Hashtbl.add_exn bb_intern_hash s i;
+        Hashtbl.add_exn bb_unintern_hash i s;
         i
+
+  let bb_unintern (i : int) : string = Hashtbl.find_exn bb_unintern_hash i
 
   let proc_intern (s : string) : int =
     match Hashtbl.find proc_intern_hash s with
@@ -134,56 +138,6 @@ module EVAL (SD : SD) = MakeEval (struct
                   ]))
           (fun _ -> (*otherwise this proc is already in the queue with y's ancestor.*) tt))
 
-  let bb_dirtied_internal p (n : meta node sd) ~(proc_name : string) ~(bb_name : string) (m : metric sd) : unit sd =
-    Core.ignore proc_name;
-    seqs
-      [
-        (fun _ ->
-          option_match
-            (hashtbl_find (meta_get_bb_time_table (node_get_meta n)) (string bb_name))
-            (fun _ -> tt)
-            (fun order ->
-              ite
-                (not_
-                   (and_
-                      (is_some (hashtbl_find (meta_get_bb_dirtied (node_get_meta n)) (string bb_name)))
-                      (fun _ -> hashtbl_find_exn (meta_get_bb_dirtied (node_get_meta n)) (string bb_name))))
-                (fun _ ->
-                  seqs
-                    [
-                      (fun _ -> hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool true));
-                      (fun _ -> queue_force_push order n (int (bb_intern bb_name)) m);
-                    ])
-                (fun _ -> tt)));
-      ]
-
-  let bb_dirtied_external = bb_dirtied_internal
-
-  let bracket_call_bb (n : meta node sd) bb_name (f : unit -> unit sd) m : unit sd =
-    seqs
-      [
-        (fun _ ->
-          record_overhead m (fun _ ->
-              hashtbl_set (meta_get_bb_time_table (node_get_meta n)) (string bb_name) (read_ref current_time)));
-        (fun _ -> record_overhead m (fun _ -> write_ref current_time (next_total_order (read_ref current_time))));
-        (fun _ -> f ());
-        (fun _ ->
-          record_overhead m (fun _ -> hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool false)));
-      ]
-
-  let bracket_call_proc (n : meta node sd) proc_name (f : unit -> unit sd) m : unit sd =
-    Core.ignore proc_name;
-    f ()
-
-  let rec check_aux (p : prog) (n : meta node) : unit =
-    Hashtbl.iter p.bbs ~f:(fun (BasicBlock (bb, _)) ->
-        assert (not (Hashtbl.find_exn n.m.bb_dirtied bb));
-        Core.ignore (Hashtbl.find_exn n.m.bb_time_table bb));
-    List.iter p.vars ~f:(fun (VarDecl (p, _)) -> Core.ignore (Hashtbl.find_exn n.var p));
-    List.iter n.children ~f:(check_aux p)
-
-  let check (p : prog) (n : meta node sd) : unit sd = if is_static then check_aux p (n |> unstatic) |> static else tt
-
   let next (p : prog) (n : meta node sd) (rf : int) (k_none : unit -> 'a sd) (k_some : meta node sd -> int -> 'a sd) :
       'a sd =
     let bb_cases =
@@ -222,19 +176,78 @@ module EVAL (SD : SD) = MakeEval (struct
     in
     int_match_static rf bb_cases (fun _ -> panic (string "unknown bb"))
 
+  let bb_dirtied_internal p (n : meta node sd) ~(proc_name : string) ~(bb_name : string) (m : metric sd) : unit sd =
+    Core.ignore proc_name;
+    let dirtied n bb =
+      and_
+        (is_some (hashtbl_find (meta_get_bb_dirtied (node_get_meta n)) (string bb)))
+        (fun _ -> hashtbl_find_exn (meta_get_bb_dirtied (node_get_meta n)) (string bb))
+    in
+    seqs
+      [
+        (fun _ ->
+          option_match
+            (hashtbl_find (meta_get_bb_time_table (node_get_meta n)) (string bb_name))
+            (fun _ -> tt)
+            (fun order ->
+              let push () = queue_force_push order n (int (bb_intern bb_name)) m in
+              ite (dirtied n bb_name)
+                (fun _ -> tt)
+                (fun _ ->
+                  seqs
+                    [
+                      (fun _ -> hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool true));
+                      (fun _ ->
+                        prev p n (bb_intern bb_name) push (fun n rf ->
+                            ite (dirtied n (bb_unintern rf)) (fun _ -> tt) push));
+                    ])));
+      ]
+
+  let bb_dirtied_external = bb_dirtied_internal
+
+  let bracket_call_bb (n : meta node sd) bb_name (f : unit -> unit sd) m : unit sd =
+    seqs
+      [
+        (fun _ ->
+          record_overhead m (fun _ ->
+              hashtbl_set (meta_get_bb_time_table (node_get_meta n)) (string bb_name) (read_ref current_time)));
+        (fun _ -> record_overhead m (fun _ -> write_ref current_time (next_total_order (read_ref current_time))));
+        (fun _ -> f ());
+        (fun _ ->
+          record_overhead m (fun _ -> hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool false)));
+      ]
+
+  let bracket_call_proc (n : meta node sd) proc_name (f : unit -> unit sd) m : unit sd =
+    Core.ignore proc_name;
+    f ()
+
+  let rec check_aux (p : prog) (n : meta node) : unit =
+    Hashtbl.iter p.bbs ~f:(fun (BasicBlock (bb, _)) ->
+        assert (not (Hashtbl.find_exn n.m.bb_dirtied bb));
+        Core.ignore (Hashtbl.find_exn n.m.bb_time_table bb));
+    List.iter p.vars ~f:(fun (VarDecl (p, _)) -> Core.ignore (Hashtbl.find_exn n.var p));
+    List.iter n.children ~f:(check_aux p)
+
+  let check (p : prog) (n : meta node sd) : unit sd = if is_static then check_aux p (n |> unstatic) |> static else tt
+
   let rec fix_dirty_aux (p : prog) (n : meta node sd) (rf : int) (m : metric sd)
       (eval_stmts : meta node sd -> stmts -> unit sd) : unit sd =
     let bb_cases =
       List.map (Hashtbl.to_alist p.bbs) ~f:(fun (bb_name, BasicBlock (_, stmts)) ->
           ( bb_intern bb_name,
             fun _ ->
-              seqs
-                [
-                  (fun _ -> stop_record_overhead m);
-                  (fun _ -> eval_stmts n stmts);
-                  (fun _ -> start_record_overhead m);
-                  (fun _ -> hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool false));
-                ] ))
+              ite
+                (hashtbl_find_exn (meta_get_bb_dirtied (node_get_meta n)) (string bb_name))
+                (fun _ ->
+                  seqs
+                    [
+                      (fun _ -> stop_record_overhead m);
+                      (fun _ -> eval_stmts n stmts);
+                      (fun _ -> start_record_overhead m);
+                      (fun _ -> hashtbl_set (meta_get_bb_dirtied (node_get_meta n)) (string bb_name) (bool false));
+                      (fun _ -> next p n rf (fun _ -> tt) (fun n rf -> fix_dirty p n rf m eval_stmts));
+                    ])
+                (fun _ -> tt) ))
     in
     int_match_static rf bb_cases (fun _ -> panic (string "unknown bb"))
 
@@ -253,11 +266,11 @@ module EVAL (SD : SD) = MakeEval (struct
       let_ (queue_pop ()) (fun qp ->
           let_ (zro qp) (fun x ->
               let_ (fst qp) (fun k ->
-                  let bb_cases x k =
+                  let bb_cases x n =
                     List.map (Hashtbl.to_alist p.bbs) ~f:(fun (bb_name, BasicBlock (_, stmts)) ->
-                        (bb_intern bb_name, fun _ -> fix_dirty p (key_get_node k) (bb_intern bb_name) m eval_stmts))
+                        (bb_intern bb_name, fun _ -> fix_dirty p n (bb_intern bb_name) m eval_stmts))
                   in
-                  let proc_cases x k =
+                  let proc_cases x n =
                     List.map (Hashtbl.to_alist p.procs) ~f:(fun (str, ProcessedProc (_, stmts)) ->
                         ( proc_intern str,
                           fun _ ->
@@ -266,7 +279,7 @@ module EVAL (SD : SD) = MakeEval (struct
                                   [
                                     (fun _ -> write_ref current_time x);
                                     (fun _ -> stop_record_overhead m);
-                                    (fun _ -> eval_stmts (key_get_node k) stmts);
+                                    (fun _ -> eval_stmts n stmts);
                                     (fun _ -> start_record_overhead m);
                                     (fun _ -> write_ref current_time old_time);
                                   ]) ))
@@ -276,13 +289,15 @@ module EVAL (SD : SD) = MakeEval (struct
                       (fun _ -> meta_read_metric m);
                       (fun _ -> queue_size_metric m (queue_size ()));
                       (fun _ ->
-                        ite
-                          (k |> key_get_node |> node_get_meta |> meta_get_alive)
-                          (fun _ ->
-                            int_match (k |> key_get_rf)
-                              (List.append (bb_cases x k) (proc_cases x k))
-                              (fun _ -> panic (string "unknown bb/proc")))
-                          (fun _ -> tt));
+                        let_ (k |> key_get_node) (fun n ->
+                            let_ (k |> key_get_rf) (fun rf ->
+                                ite
+                                  (n |> node_get_meta |> meta_get_alive)
+                                  (fun _ ->
+                                    int_match rf
+                                      (List.append (bb_cases x n) (proc_cases x n))
+                                      (fun _ -> panic (string "unknown bb/proc")))
+                                  (fun _ -> tt))));
                     ])))
     in
     record_overhead m (fun _ ->
