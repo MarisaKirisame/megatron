@@ -1,4 +1,5 @@
 import datetime
+import sys
 import os
 import dominate
 from dominate.tags import *
@@ -480,5 +481,5 @@ write_to(out_path + "index.html", str(doc))
 output_tex(f"\\newcommand{{\\TotalDiffCount}}{{{total_diff_count}}}\n")
 output_tex(f"\\newcommand{{\\TotalTraceCount}}{{{len(trace_list)}}}\n")
 
-if subprocess.run("command -v nightly-results", shell=True).returncode != 0:
+if "--no-open" not in sys.argv:
     subprocess.run(f"xdg-open {out_path}/index.html", shell=True, check=True)
