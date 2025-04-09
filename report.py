@@ -373,11 +373,11 @@ def compare(json_htbl, x_name, y_name, *, prefix="", predicate=(lambda v: True),
             ys.append(y)
     plot(x_name, xs, y_name, ys, prefix+"total", tex=tex)
 
-    if x_name == "DB" and y_name == "PQ" and len(db_meta_read) >= 1 and len(pq_meta_read) >= 1:
-        #hist(tree_size, [1,2,5,10,20,50,100,200,500,1000,2000,5000,10000,20000], "Tree Size")
-        #hist(db_meta_read, [1,2,5,10,20,50,100,200,500,1000, 2000], "Number of Nodes Accessed by Double Dirty Bit")
-        #hist(pq_meta_read, [1,2,5,10,20,50,100,200,500,1000, 2000], "Number of Nodes Accessed by Spineless Traversal")
-        #hist2(db_meta_read, pq_meta_read, "Number of Nodes Accessed", "Double Dirty Bit", "Spineless Traversal")
+    if False and x_name == "DB" and y_name == "PQ" and len(db_meta_read) >= 1 and len(pq_meta_read) >= 1:
+        hist(tree_size, [1,2,5,10,20,50,100,200,500,1000,2000,5000,10000,20000], "Tree Size")
+        hist(db_meta_read, [1,2,5,10,20,50,100,200,500,1000, 2000], "Number of Nodes Accessed by Double Dirty Bit")
+        hist(pq_meta_read, [1,2,5,10,20,50,100,200,500,1000, 2000], "Number of Nodes Accessed by Spineless Traversal")
+        hist2(db_meta_read, pq_meta_read, "Number of Nodes Accessed", "Double Dirty Bit", "Spineless Traversal")
 
         fig, ax = plt.subplots()
 
