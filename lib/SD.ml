@@ -140,7 +140,9 @@ module type SDIN = sig
   val make_layout_node : layout_node list sd -> layout_node sd
   val layout_node_get_children : layout_node sd -> layout_node list sd
   val layout_node_set_children : layout_node sd -> layout_node list sd -> unit sd
+  val bit_width : int sd -> int sd
   val int_add : int sd -> int sd -> int sd
+  val int_mult : int sd -> int sd -> int sd
   val int_equal : int sd -> int sd -> bool sd
   val int_lt : int sd -> int sd -> bool sd
   val fresh_metric : unit -> metric sd
@@ -421,7 +423,9 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
   let make_layout_node l = { children = l }
   let layout_node_get_children (l : layout_node) = l.children
   let layout_node_set_children (l : layout_node) c = l.children <- c
+  let bit_width x = panic "unimplemented bitwidth"
   let int_add x y = x + y
+  let int_mult x y = x * y
   let int_equal x y = Int.equal x y
   let int_lt x y = x < y
 
@@ -733,7 +737,9 @@ module D : SD with type 'x sd = code = MakeSD (struct
   let make_layout_node l = CApp (CPF "MakeLayoutNode", [ l ])
   let layout_node_get_children l = CGetMember (l, "children")
   let layout_node_set_children l c = CSetMember (l, "children", c)
+  let bit_width x = CApp (CPF "BitWidth", [ x ])
   let int_add x y = CApp (CPF "IntAdd", [ x; y ])
+  let int_mult x y = CApp (CPF "IntMult", [ x; y ])
   let int_equal x y = CApp (CPF "IntEqual", [ x; y ])
   let int_lt x y = CApp (CPF "IntLt", [ x; y ])
   let panic x = CPanic x

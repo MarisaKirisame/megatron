@@ -22,6 +22,7 @@ module type EvalIn = sig
   include SD
   module SD : SD with type 'a sd = 'a sd
 
+  val comp_size : int ref sd
   val name : string
 
   type meta (*extra information at each node*)

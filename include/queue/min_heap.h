@@ -126,4 +126,10 @@ struct MinHeap {
     arr.pop_back();
     return ret;
   }
+
+  void forall(const auto& f) {
+    for (const T& t: arr) {
+      f(t);
+    }
+  }
 };

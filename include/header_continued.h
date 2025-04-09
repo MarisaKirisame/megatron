@@ -139,6 +139,15 @@ Unit QueueForcePush(const TotalOrder &to, Content *n, PQData &&data) {
 
 std::pair<TotalOrder, QueueValue> QueuePeek() { return queue.peek(); }
 std::pair<TotalOrder, QueueValue> QueuePop() { return queue.pop(); }
+
+Unit QueueForall(const auto& f) {
+  queue.forall(f);
+  return Unit{};
+}
+Unit QueueReset() {
+  queue.clear();
+  return Unit{};
+}
 #endif
 
 bool eq(const DEStringRest &l, const DEStringRest &r) {

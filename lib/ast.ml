@@ -182,7 +182,13 @@ let exprs_of_stmt (s : stmt) : expr list =
 let reads_of_stmt (s : stmt) : read list = List.( >>= ) (exprs_of_stmt s) (fun e -> reads_of_expr e)
 let reads_of_stmts (s : stmts) : read list = List.( >>= ) s reads_of_stmt
 
-let get_bb_from_proc (p : prog) (n : string) : string * string =
-  match stmts_of_processed_proc p n with
+let get_bb_from_proc (p : prog) (proc_name : string) : string * string =
+  match stmts_of_processed_proc p proc_name with
   | [ BBCall x; ChildrenCall _; BBCall y ] -> (x, y)
   | stmts -> panic (show_stmts stmts)
+
+let get_proc_from_bb (p : prog) (bb_name : string) : string =
+  List.hd_exn
+    (List.concat_map (Hashtbl.to_alist p.procs) ~f:(fun (proc_name, _) ->
+         let down, up = get_bb_from_proc p proc_name in
+         if bb_name == down || bb_name == up then [ proc_name ] else []))

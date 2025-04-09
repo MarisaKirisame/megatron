@@ -22,13 +22,13 @@ let is_pure_function f =
   | "QueuePop" | "QueuePush" | "QueueForcePush" | "MetricQueueSize" | "MetricRecordOverheadL2m"
   | "MetricRecordOverheadTime" | "RecordOverhead" | "RecordEval" | "StopRecordOverhead" | "StartRecordOverhead"
   | "StopRecordEval" | "StartRecordEval" | "StopRecordQueue" | "StartRecordQueue" | "RecordOM" | "StartRecordDirty"
-  | "StopRecordDirty" ->
+  | "StopRecordDirty" | "QueueForall" | "QueueReset" ->
       false
   | "MakeUnit" | "ListIsEmpty" | "IntEqual" | "ListLength" | "ListSplitN" | "Zro" | "Fst" | "FreshMetric" | "Cons"
   | "Nil" | "IsNone" | "HashtblFind" | "UnSome" | "ListLast" | "JsonMember" | "ListMatch" | "OptionIter" | "OptionMatch"
   | "ListIter" | "HashtblFind" | "EqualValue" | "ListZip" | "ListDropLast" | "ListTl" | "ListHead" | "ListHeadExn"
   | "ListTailExn" | "ListIter2" | "HashtblContain" | "IsSome" | "HashtblFindExn" | "ListIsSingleton" | "RFMatch"
-  | "TotalOrderEqual" ->
+  | "TotalOrderEqual" | "ReadRef" | "QueueSize" | "IntLt" | "IntMult" | "BitWidth" ->
       true
   | _ -> panic ("is_pure_function:" ^ f)
 
@@ -87,6 +87,9 @@ let rec inline lhs rhs body =
   | CAnd (x, y) -> CAnd (recurse x, recurse y)
   | CFun (args, func_body) ->
       if List.for_all args ~f:(fun arg -> lhs != arg) then CFun (args, recurse func_body) else body
+  | CIntMatch (i, cases, default) ->
+      CIntMatch (recurse i, List.map cases ~f:(fun (l, r) -> (l, recurse r)), recurse default)
+  | CPanic msg -> CPanic (recurse msg)
   | _ -> Common.panic ("inline:" ^ truncate (show_code body))
 
 let rec simplify (p : prog) x =
@@ -711,7 +714,11 @@ let compile (prog : prog) defs main meta_defs (ds : destringed list) c : unit =
   Stdio.Out_channel.output_string c "int main(){";
   Stdio.Out_channel.output_string c "tos = new TotalOrderS();";
   Stdio.Out_channel.output_string c "current_time = MakeRef(tos->smallest());";
+  Stdio.Out_channel.output_string c "comp_size = MakeRef<int64_t>(0);";
+  Stdio.Out_channel.output_string c "in_pq_mode = MakeRef(true);";
   compile_proc c (main |> optimize prog);
+  Stdio.Out_channel.output_string c "in_pq_mode = nullptr;";
+  Stdio.Out_channel.output_string c "comp_size = nullptr;";
   Stdio.Out_channel.output_string c "current_time = nullptr;";
   Stdio.Out_channel.output_string c "delete tos;";
   Stdio.Out_channel.output_string c "}"

@@ -133,6 +133,9 @@ void WriteJson(json &j, const std::string &name, const int64_t &value) { j[name]
 json IntToJson(int64_t i) { return json(i); }
 json StringToJson(const std::string& str) { return json(str); }
 int64_t IntAdd(int64_t l, int64_t r) { return l + r; }
+int64_t IntMult(int64_t l, int64_t r) { return l * r; }
+bool IntLt(int64_t l, int64_t r) { return l < r; }
+int64_t BitWidth(int64_t x) { return std::bit_width(static_cast<uint64_t>(x)); }
 auto WithOutFile(const std::string &path, const auto &f) {
   std::ofstream s{path, std::ios_base::app};
   return f(s);
@@ -464,6 +467,8 @@ typedef total_order<1.4, uint32_t> TotalOrderS;
 typedef TotalOrderS::node TotalOrder;
 TotalOrderS *tos = nullptr;
 Ref<TotalOrder> current_time = nullptr;
+Ref<int64_t> comp_size = nullptr;
+Ref<bool> in_pq_mode = nullptr;
 TotalOrder NextTotalOrder(const TotalOrder &to) { return tos->insert(to); }
 
 #if BOOST_ARCH_X86

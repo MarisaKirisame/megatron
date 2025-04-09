@@ -9,6 +9,7 @@ module EVAL (SD : SD) = MakeEval (struct
   include SD
   module SD = SD
 
+  let comp_size = if is_static then make_ref (int 0) else CVar "comp_size" |> dyn
   let make_total_order () = if is_static then TotalOrder.create () |> static else CApp (CPF "MakeTotalOrder", []) |> dyn
 
   let next_total_order o =

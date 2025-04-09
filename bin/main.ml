@@ -414,6 +414,8 @@ module Main (EVAL : Eval) = struct
   include EVAL
   module FS = Megatron.EvalFS.EVAL (EVAL.SD)
 
+  let multiplier = int 4
+
   let node_to_html (n : _ node sd) : string sd =
     if is_static then (
       let b = Buffer.create 0 in
@@ -545,7 +547,11 @@ module Main (EVAL : Eval) = struct
         seq (input_change_metric m (node_size y)) (fun _ -> EVAL.add_children prog x y i m))
 
   let add_node (path : int list sd) (x : _ node sd) (y : _ node sd) (m : metric sd) : unit sd =
-    app3 (add_node_aux m) path x y
+    seqs
+      [
+        (fun _ -> write_ref comp_size (int_add (read_ref comp_size) (int_mult multiplier (node_size x))));
+        (fun _ -> app3 (add_node_aux m) path x y);
+      ]
 
   let add_layout_node_aux m =
     follow_layout_path_last "add_layout_node" (fun i x y ->
@@ -565,7 +571,13 @@ module Main (EVAL : Eval) = struct
           (input_change_metric m (node_size (list_nth_exn (node_get_children x) i)))
           (fun _ -> EVAL.remove_children prog x i m))
 
-  let remove_node (path : int list sd) (x : _ node sd) (m : metric sd) : unit sd = app3 (remove_node_aux m) path x tt
+  let remove_node (path : int list sd) (x : _ node sd) (m : metric sd) : unit sd =
+    seqs
+      [
+        (fun _ ->
+          write_ref comp_size (int_add (read_ref comp_size) (int_mult (int (-1)) (int_mult multiplier (node_size x)))));
+        (fun _ -> app3 (remove_node_aux m) path x tt);
+      ]
 
   let remove_layout_node_aux m =
     follow_layout_path_last "remove_layout_node" (fun i x _ ->
@@ -844,6 +856,7 @@ module Main (EVAL : Eval) = struct
                                                     [
                                                       (fun _ -> output_change_metric m (layout_size layout_n));
                                                       (fun _ -> input_change_metric m (node_size n));
+                                                      (fun _ -> write_ref comp_size (int_mult multiplier (node_size n)));
                                                       (fun _ -> EVAL.eval prog n m);
                                                       (fun _ -> diff_evaluated ());
                                                       (fun _ -> print_endline (string "EVAL OK!"));
