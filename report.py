@@ -203,6 +203,14 @@ def plot_label(x):
         return "(Incremental) Overhead Cycles for Double Dirty Bit"
     elif x == "PQ_small_overhead":
         return "(Incremental) Overhead Cycles for Spineless Traversal"
+    elif x == "DB_total":
+        return "Cycles for Double Dirty Bit"
+    elif x == "PQ_total":
+        return "Cycles for Spineless Traversal"
+    elif x == "DB_small_total":
+        return "(Incremental) Cycles for Double Dirty Bit"
+    elif x == "PQ_small_total":
+        return "(Incremental) Cycles for Spineless Traversal"
     else:
         return x
 
@@ -272,7 +280,7 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
     def tex_percentage(x):
         return f"{x * 100:.1f}\\%"
     command_name = "\\" + xs_name + ys_name + name
-    if tex and name in ["overhead", "small_overhead"]:
+    if tex and name in ["overhead", "small_overhead", "total", "small_total"]:
         output_tex(f"""\\newcommand{{{tex_string(command_name + "Count")}}}{{{len(xs)}}}\n""")
         output_tex(f"""\\newcommand{{{tex_string(command_name + "pct_slowdown")}}}{{{tex_percentage(pct_slowdown)}}}\n""")
         output_tex(f"""\\newcommand{{{tex_string(command_name + "pct_speedup")}}}{{{tex_percentage(1 - pct_slowdown)}}}\n""")
@@ -284,8 +292,12 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
     ax2.set_xscale('log')
     def cdf_xlabel(x):
         if x == "DB_overhead":
-            return "Speed of Spineless Traversal over Double Dirty Bit"
+            return "(Overhead) Speed of Spineless Traversal over Double Dirty Bit"
         elif x == "DB_small_overhead":
+            return "(Incremental) (Overhead) Speed of Spineless Traversal over Double Dirty Bit"
+        elif x == "DB_total":
+            return "Speed of Spineless Traversal over Double Dirty Bit"
+        elif x == "DB_small_total":
             return "(Incremental) Speed of Spineless Traversal over Double Dirty Bit"
         else:
             return x
