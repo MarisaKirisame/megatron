@@ -234,7 +234,10 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
         mp.append((math.exp(sum(sub)/len(sub)), 100 * len(sub)/len(speedup)))
     mp.sort()
 
-    fig, (ax1, ax2) = plt.subplots(1, 2, layout='constrained')
+    fig, ax1 = plt.subplots(1, 1, layout='constrained')
+    fig.set_dpi(300)
+    fig.set_figheight(FIG_SIZE)
+    fig.set_figwidth(FIG_SIZE)
 
     def scatterplot():
         for nc in range(n_clusters):
@@ -268,10 +271,13 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
 
     ax1.tick_params(which="major", width=1, length=8)
     ax1.tick_params(which="minor", width=1, length=4)
+    pic_path0 = f"{count()}.png"
+    fig.savefig(out_path + pic_path0)
+
+    fig, ax2 = plt.subplots(1, 1, layout='constrained')
     fig.set_dpi(300)
     fig.set_figheight(FIG_SIZE)
-    fig.set_figwidth(2 * FIG_SIZE)
-    pic_path1 = f"{count()}.png"
+    fig.set_figwidth(FIG_SIZE)
 
     cdf_x = sorted([xs[i]/ys[i] for i in range(len(xs))])
     cdf_y = [(i + 1)/len(cdf_x) for i in range(len(cdf_x))]
@@ -307,12 +313,13 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
     ax2.yaxis.set_minor_formatter(NullFormatter())
     ax2.tick_params(which="major", width=1, length=8)
     ax2.tick_params(which="minor", width=1, length=4)
-
+    pic_path1 = f"{count()}.png"
     fig.savefig(out_path + pic_path1)
 
     plt.close()
 
     with div(style="display:flex"):
+        img(src=pic_path0)
         img(src=pic_path1)
 
         def make_table(title, mp):
