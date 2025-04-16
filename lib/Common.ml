@@ -76,3 +76,8 @@ let rec unsnoc x =
   | x :: xs ->
       let l, r = unsnoc xs in
       (x :: l, r)
+
+let rec int_match_static i cases default =
+  match cases with
+  | (chs, chc) :: ct -> if Int.equal chs i then chc () else int_match_static i ct default
+  | [] -> default ()

@@ -553,9 +553,7 @@ module S : SD with type 'x sd = 'x = MakeSD (struct
     | (chs, chc) :: ct -> if String.equal chs s then chc () else string_match s ct default
     | [] -> default ()
 
-  let rec int_match i cases default =
-    match cases with (chs, chc) :: ct -> if Int.equal chs i then chc () else int_match i ct default | [] -> default ()
-
+  let rec int_match = int_match_static
   let list_split_n l i = List.split_n l i
   let list_tail_exn l = match l with _ :: t -> t
   let list_hd x = match x with [] -> None | x :: _ -> Some x

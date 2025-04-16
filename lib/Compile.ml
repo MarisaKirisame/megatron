@@ -87,7 +87,10 @@ let rec inline lhs rhs body =
   | CAnd (x, y) -> CAnd (recurse x, recurse y)
   | CFun (args, func_body) ->
       if List.for_all args ~f:(fun arg -> lhs != arg) then CFun (args, recurse func_body) else body
-  | _ -> Common.panic ("inline:" ^ truncate (show_code body))
+  | CIntMatch (i, cases, default) ->
+      CIntMatch (recurse i, List.map cases ~f:(fun (l, r) -> (l, recurse r)), recurse default)
+  | CPanic xs -> CPanic (recurse xs)
+  | _ -> Common.panic ("inline:" ^ lhs ^ truncate (show_code rhs) ^ truncate (show_code body))
 
 let rec simplify (p : prog) x =
   let recurse x = simplify p x in
