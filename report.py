@@ -342,7 +342,8 @@ def compare(json_htbl, x_name, y_name, *, prefix="", predicate=(lambda v: True),
     pq_meta_read = []
 
     for v in json_htbl.keys():
-        if json_htbl[v][f"{y_name}_D"]["eval_time"] != 0 and predicate(v):
+        if (json_htbl[v][f"{x_name}_D"]["eval_time"] != 0 and json_htbl[v][f"{y_name}_D"]["eval_time"] != 0) and predicate(v):
+            assert(json_htbl[v][f"{x_name}_D"]["eval_time"] != 0)
             x = json_htbl[v][f"{x_name}_D"]["overhead_time"]
             y = json_htbl[v][f"{y_name}_D"]["overhead_time"]
             xs.append(x)
@@ -356,7 +357,7 @@ def compare(json_htbl, x_name, y_name, *, prefix="", predicate=(lambda v: True),
     xs = []
     ys = []
     for v in json_htbl.keys():
-        if json_htbl[v][f"{y_name}_D"]["eval_time"] != 0 and predicate(v):
+        if (json_htbl[v][f"{x_name}_D"]["eval_time"] != 0 and json_htbl[v][f"{y_name}_D"]["eval_time"] != 0) and predicate(v):
             x = json_htbl[v][f"{x_name}_D"]["eval_time"]
             y = json_htbl[v][f"{y_name}_D"]["eval_time"]
             xs.append(x)
@@ -366,7 +367,7 @@ def compare(json_htbl, x_name, y_name, *, prefix="", predicate=(lambda v: True),
     xs = []
     ys = []
     for v in json_htbl.keys():
-        if json_htbl[v][f"{y_name}_D"]["eval_time"] != 0 and predicate(v):
+        if (json_htbl[v][f"{x_name}_D"]["eval_time"] != 0 and json_htbl[v][f"{y_name}_D"]["eval_time"] != 0) and predicate(v):
             x = json_htbl[v][f"{x_name}_D"]["overhead_time"] + json_htbl[v][f"{x_name}_D"]["eval_time"]
             y = json_htbl[v][f"{y_name}_D"]["overhead_time"] + json_htbl[v][f"{y_name}_D"]["eval_time"]
             xs.append(x)
