@@ -249,7 +249,7 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
     
     pic_path1 = f"{count()}.png"
 
-    fig.savefig(out_path + "/em" + pic_path1)
+    fig.savefig(out_path + "em" + pic_path1)
 
     scatterplot()
 
@@ -301,6 +301,9 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
     fig.savefig(out_path + pic_path1)
 
     plt.close()
+
+    with div(style="display:flex"):
+        img(src="em" + pic_path1)
 
     with div(style="display:flex"):
         img(src=pic_path1)
