@@ -1,13 +1,13 @@
 import datetime
 import sys
 import os
-# import dominate
-# from dominate.tags import *
+import dominate
+from dominate.tags import *
 import subprocess
 import json
-# from common import *
+from common import *
 import math
-# from sklearn.cluster import KMeans
+from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
 from matplotlib import font_manager
 import numpy as np
