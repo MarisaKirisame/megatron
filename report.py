@@ -246,10 +246,34 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
         ax1.set_yscale('log')
         ax1.set_xlim(min_value / 2, max_value * 2)
         ax1.set_ylim(min_value / 2, max_value * 2)
+
+    def scatterplotem():
+        for nc in range(n_clusters):
+            sub_xs = [xs[i] for i in range(len(speedup)) if est.labels_[i] == nc]
+            sub_ys = [ys[i] for i in range(len(speedup)) if est.labels_[i] == nc]
+            ax1.scatter(sub_xs, sub_ys, color="#1f77b4", alpha=0, edgecolor="none")
+        ax1.plot([min_value, max_value], [min_value, max_value], color="black")
+        ax1.set_xscale('log')
+        ax1.set_yscale('log')
+        ax1.set_xlim(min_value / 2, max_value * 2)
+        ax1.set_ylim(min_value / 2, max_value * 2)
     
     pic_path1 = f"{count()}.png"
 
+    scatterplotem()
+
+    ax1.set_xlabel(plot_label(f'{xs_name}_{name}'))
+    ax1.set_ylabel(plot_label(f'{ys_name}_{name}'))
+
+    ax1.tick_params(which="major", width=1, length=8)
+    ax1.tick_params(which="minor", width=1, length=4)
+    fig.set_dpi(300)
+    fig.set_figheight(FIG_SIZE)
+    fig.set_figwidth(2 * FIG_SIZE)
+
     fig.savefig(out_path + "em" + pic_path1)
+
+    ax1.clear()
 
     scatterplot()
 
@@ -261,6 +285,8 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
     fig.set_dpi(300)
     fig.set_figheight(FIG_SIZE)
     fig.set_figwidth(2 * FIG_SIZE)
+
+    fig.savefig(out_path + pic_path1)
 
 
     cdf_x = sorted([xs[i]/ys[i] for i in range(len(xs))])
