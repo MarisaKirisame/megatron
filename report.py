@@ -1,13 +1,13 @@
 import datetime
 import sys
 import os
-import dominate
-from dominate.tags import *
+# import dominate
+# from dominate.tags import *
 import subprocess
 import json
-from common import *
+# from common import *
 import math
-from sklearn.cluster import KMeans
+# from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
 from matplotlib import font_manager
 import numpy as np
@@ -246,22 +246,12 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
         ax1.set_yscale('log')
         ax1.set_xlim(min_value / 2, max_value * 2)
         ax1.set_ylim(min_value / 2, max_value * 2)
+    
+    pic_path1 = f"{count()}.png"
+
+    fig.savefig(out_path + "/em" + pic_path1)
 
     scatterplot()
-
-    def histoplot():
-        # https://matplotlib.org/stable/users/explain/colors/colormaps.html#colormaps
-        # cmap = 'viridis' # purple to yellow
-        cmap = 'Blues'
-        # cmap = 'bwr'
-
-        ax.grid(False)
-        ax.plot([min_value, max_value], [min_value, max_value], color="black")
-        ax.set_xscale('log')
-        ax.set_yscale('log')
-        ax.set_xlim(min_value / 2, max_value * 2)
-        ax.set_ylim(min_value / 2, max_value * 2)
-        ax.hist2d(xs, ys, bins=(np.geomspace(min_value, max_value, 50), np.geomspace(min_value, max_value, 50)), cmap=cmap)
 
     ax1.set_xlabel(plot_label(f'{xs_name}_{name}'))
     ax1.set_ylabel(plot_label(f'{ys_name}_{name}'))
@@ -271,7 +261,7 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
     fig.set_dpi(300)
     fig.set_figheight(FIG_SIZE)
     fig.set_figwidth(2 * FIG_SIZE)
-    pic_path1 = f"{count()}.png"
+
 
     cdf_x = sorted([xs[i]/ys[i] for i in range(len(xs))])
     cdf_y = [(i + 1)/len(cdf_x) for i in range(len(cdf_x))]
