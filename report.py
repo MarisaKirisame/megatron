@@ -234,7 +234,7 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
         mp.append((math.exp(sum(sub)/len(sub)), 100 * len(sub)/len(speedup)))
     mp.sort()
 
-    fig, (ax1, ax2) = plt.subplots(1, 2, layout='constrained')
+    fig, ax1 = plt.subplots(1, 1, layout='constrained')
 
     def scatterplot():
         for nc in range(n_clusters):
@@ -269,7 +269,7 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
     ax1.tick_params(which="minor", width=1, length=4)
     fig.set_dpi(300)
     fig.set_figheight(FIG_SIZE)
-    fig.set_figwidth(2 * FIG_SIZE)
+    fig.set_figwidth(FIG_SIZE)
 
     fig.savefig(out_path + "em" + pic_path1)
 
@@ -282,49 +282,50 @@ def plot(xs_name, xs, ys_name, ys, name, *, tex):
 
     ax1.tick_params(which="major", width=1, length=8)
     ax1.tick_params(which="minor", width=1, length=4)
+    
     fig.set_dpi(300)
     fig.set_figheight(FIG_SIZE)
-    fig.set_figwidth(2 * FIG_SIZE)
+    fig.set_figwidth(FIG_SIZE)
 
     fig.savefig(out_path + pic_path1)
 
 
-    cdf_x = sorted([xs[i]/ys[i] for i in range(len(xs))])
-    cdf_y = [(i + 1)/len(cdf_x) for i in range(len(cdf_x))]
+    # cdf_x = sorted([xs[i]/ys[i] for i in range(len(xs))])
+    # cdf_y = [(i + 1)/len(cdf_x) for i in range(len(cdf_x))]
 
-    pct_slowdown = np.interp(1.0, cdf_x, cdf_y)
-    def tex_percentage(x):
-        return f"{x * 100:.1f}\\%"
-    command_name = "\\" + xs_name + ys_name + name
-    if tex and name in ["overhead", "small_overhead", "total", "small_total"]:
-        output_tex(f"""\\newcommand{{{tex_string(command_name + "Count")}}}{{{len(xs)}}}\n""")
-        output_tex(f"""\\newcommand{{{tex_string(command_name + "pct_slowdown")}}}{{{tex_percentage(pct_slowdown)}}}\n""")
-        output_tex(f"""\\newcommand{{{tex_string(command_name + "pct_speedup")}}}{{{tex_percentage(1 - pct_slowdown)}}}\n""")
-    ax2.plot(cdf_x, cdf_y)
-    ax2.axvline(x=1,c='black',linewidth=0.5)
-    ax2.annotate('{:.0f}%'.format(pct_slowdown * 100), xy=(1, pct_slowdown), xytext=(-50, 0), textcoords='offset points', bbox = dict(boxstyle="round", fc="0.8"), arrowprops = dict(arrowstyle="->"))
-    x_range = math.exp(max(abs(math.log(max(cdf_x))), abs(math.log(min(cdf_x)))))
-    ax2.set_xlim(1/x_range, x_range)
-    ax2.set_xscale('log')
-    def cdf_xlabel(x):
-        if x == "DB_overhead":
-            return "(Overhead) Speed of Spineless Traversal over Double Dirty Bit"
-        elif x == "DB_small_overhead":
-            return "(Incremental) (Overhead) Speed of Spineless Traversal over Double Dirty Bit"
-        elif x == "DB_total":
-            return "Speed of Spineless Traversal over Double Dirty Bit"
-        elif x == "DB_small_total":
-            return "(Incremental) Speed of Spineless Traversal over Double Dirty Bit"
-        else:
-            return x
-    ax2.set_xlabel(cdf_xlabel(f'{xs_name}_{name}'))
-    ax2.set_ylabel("Percentage")
-    ax2.yaxis.set_major_formatter(FuncFormatter(lambda x, pos: "{:.0f}%".format(x * 100)))
-    ax2.yaxis.set_minor_formatter(NullFormatter())
-    ax2.tick_params(which="major", width=1, length=8)
-    ax2.tick_params(which="minor", width=1, length=4)
+    # pct_slowdown = np.interp(1.0, cdf_x, cdf_y)
+    # def tex_percentage(x):
+    #     return f"{x * 100:.1f}\\%"
+    # command_name = "\\" + xs_name + ys_name + name
+    # if tex and name in ["overhead", "small_overhead", "total", "small_total"]:
+    #     output_tex(f"""\\newcommand{{{tex_string(command_name + "Count")}}}{{{len(xs)}}}\n""")
+    #     output_tex(f"""\\newcommand{{{tex_string(command_name + "pct_slowdown")}}}{{{tex_percentage(pct_slowdown)}}}\n""")
+    #     output_tex(f"""\\newcommand{{{tex_string(command_name + "pct_speedup")}}}{{{tex_percentage(1 - pct_slowdown)}}}\n""")
+    # ax2.plot(cdf_x, cdf_y)
+    # ax2.axvline(x=1,c='black',linewidth=0.5)
+    # ax2.annotate('{:.0f}%'.format(pct_slowdown * 100), xy=(1, pct_slowdown), xytext=(-50, 0), textcoords='offset points', bbox = dict(boxstyle="round", fc="0.8"), arrowprops = dict(arrowstyle="->"))
+    # x_range = math.exp(max(abs(math.log(max(cdf_x))), abs(math.log(min(cdf_x)))))
+    # ax2.set_xlim(1/x_range, x_range)
+    # ax2.set_xscale('log')
+    # def cdf_xlabel(x):
+    #     if x == "DB_overhead":
+    #         return "(Overhead) Speed of Spineless Traversal over Double Dirty Bit"
+    #     elif x == "DB_small_overhead":
+    #         return "(Incremental) (Overhead) Speed of Spineless Traversal over Double Dirty Bit"
+    #     elif x == "DB_total":
+    #         return "Speed of Spineless Traversal over Double Dirty Bit"
+    #     elif x == "DB_small_total":
+    #         return "(Incremental) Speed of Spineless Traversal over Double Dirty Bit"
+    #     else:
+    #         return x
+    # ax2.set_xlabel(cdf_xlabel(f'{xs_name}_{name}'))
+    # ax2.set_ylabel("Percentage")
+    # ax2.yaxis.set_major_formatter(FuncFormatter(lambda x, pos: "{:.0f}%".format(x * 100)))
+    # ax2.yaxis.set_minor_formatter(NullFormatter())
+    # ax2.tick_params(which="major", width=1, length=8)
+    # ax2.tick_params(which="minor", width=1, length=4)
 
-    fig.savefig(out_path + pic_path1)
+    # fig.savefig(out_path + pic_path1)
 
     plt.close()
 
